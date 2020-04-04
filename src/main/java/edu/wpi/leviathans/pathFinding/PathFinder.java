@@ -51,7 +51,7 @@ public class PathFinder {
         // Start from the source Node and recursively update the priority Queue
         NodeEntry destNode = aStarPathFindHelper(source, destination);
 
-
+        return null;
     }
 
     private static NodeEntry aStarPathFindHelper(Node source, Node destination) {
@@ -66,6 +66,7 @@ public class PathFinder {
      * @return
      */
     private static LinkedList<Node> entryToList(NodeEntry entry) {
-
+        //TODO: Impliment
+        return null;
     }
 }
