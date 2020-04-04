@@ -27,6 +27,7 @@ public class Graph {
    */
   public void addNode(Node newNode) {
     String name = newNode.getName();
+    newNode.graph = this;
 
     nodes.put(name, newNode);
   }
