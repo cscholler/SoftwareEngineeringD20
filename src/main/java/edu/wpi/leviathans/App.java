@@ -9,7 +9,7 @@ public class App extends Application {
 
   @Override
   public void init() {
-    //log.info("Starting Up");
+    // log.info("Starting Up");
   }
 
   @Override
@@ -17,6 +17,6 @@ public class App extends Application {
 
   @Override
   public void stop() {
-    //log.info("Shutting Down");
+    // log.info("Shutting Down");
   }
 }
