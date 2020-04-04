@@ -21,6 +21,10 @@ public class Node {
     edges = p_edges;
   }
 
+  public Collection<Edge> getEdges() {
+      return edges;
+  }
+
   /**
    * Sets the name to the given string.
    *
