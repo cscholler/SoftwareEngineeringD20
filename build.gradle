@@ -37,6 +37,7 @@ dependencies {
     testRuntimeOnly(
             'org.testfx:openjfx-monocle:8u76-b04',
     )
+    implementation 'org.jetbrains:annotations:15.0'
 }
 
 javafx {
@@ -44,6 +45,9 @@ javafx {
     modules = ['javafx.controls', 'javafx.fxml']
 }
 
+run {
+    standardInput = System.in
+}
 
 test {
     useJUnitPlatform()
