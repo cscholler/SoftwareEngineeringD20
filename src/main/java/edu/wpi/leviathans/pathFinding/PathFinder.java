@@ -21,6 +21,8 @@ public class PathFinder {
     }
 
     public int absoluteDist() {
+      if (shortestPath == Integer.MAX_VALUE) return shortestPath;
+
       return shortestPath + distFromDest;
     }
   }
@@ -44,14 +46,12 @@ public class PathFinder {
     for (Node node : graph.getNodes()) {
       if (!node.equals(source)) {
         NodeEntry newEntry = new NodeEntry(node);
-        newEntry.distFromDest = 1; // TODO: Distances
         priorityQueue.add(newEntry);
         priorityQueueKey.put(node, newEntry);
       }
     }
 
     NodeEntry sourceEntry = new NodeEntry(source, 0);
-    sourceEntry.distFromDest = 1;
 
     priorityQueue.add(sourceEntry);
     priorityQueueKey.put(source, sourceEntry);
@@ -79,7 +79,6 @@ public class PathFinder {
         if (currentNode.shortestPath + edge.length < otherNodeEntry.shortestPath) {
           otherNodeEntry.shortestPath = currentNode.shortestPath + edge.length;
           otherNodeEntry.parent = currentNode.node;
-          // otherNodeEntry.distFromDest += edge.length;
         }
       }
     }
