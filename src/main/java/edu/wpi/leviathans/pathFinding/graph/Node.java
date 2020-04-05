@@ -22,7 +22,7 @@ public class Node {
   }
 
   public Collection<Edge> getEdges() {
-      return edges;
+    return edges;
   }
 
   /**
