@@ -26,8 +26,8 @@ public class PathFinder {
   }
 
   private Comparator<NodeEntry> NodeEntrySorter = Comparator.comparing(NodeEntry::absoluteDist);
-  private PriorityQueue<NodeEntry> priorityQueue = new PriorityQueue<>(NodeEntrySorter);
-  private HashMap<Node, NodeEntry> priorityQueueKey = new HashMap<>();
+  private PriorityQueue<NodeEntry> priorityQueue = new PriorityQueue<NodeEntry>(NodeEntrySorter);
+  private HashMap<Node, NodeEntry> priorityQueueKey = new HashMap<Node, NodeEntry>();
 
   /**
    * Uses the A-Star algorithm to get a path between the source and destination node. Throws error
@@ -44,12 +44,14 @@ public class PathFinder {
     for (Node node : graph.getNodes()) {
       if (!node.equals(source)) {
         NodeEntry newEntry = new NodeEntry(node);
+        newEntry.distFromDest = 1; // TODO: Distances
         priorityQueue.add(newEntry);
         priorityQueueKey.put(node, newEntry);
       }
     }
 
     NodeEntry sourceEntry = new NodeEntry(source, 0);
+    sourceEntry.distFromDest = 1;
 
     priorityQueue.add(sourceEntry);
     priorityQueueKey.put(source, sourceEntry);
@@ -62,7 +64,6 @@ public class PathFinder {
 
   private NodeEntry aStarPathFindHelper(Node source, Node destination) {
     // TODO: Implement
-
     while (!priorityQueue.isEmpty()) {
       NodeEntry currentNode = priorityQueue.poll();
 
@@ -99,9 +100,11 @@ public class PathFinder {
     NodeEntry current = entry;
     while (current.shortestPath != 0) {
       path.addFirst(current.node);
+      System.out.println(current.node.getName());
       current = priorityQueueKey.get(current.parent);
     }
-
+    System.out.println(current.node.getName());
+    path.addFirst(current.node);
     return path;
   }
 }
