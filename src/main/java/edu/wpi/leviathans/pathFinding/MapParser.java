@@ -1,62 +1,78 @@
 package edu.wpi.leviathans.pathFinding;
 
 import edu.wpi.leviathans.pathFinding.graph.*;
-
 import java.io.*;
 
 public class MapParser {
 
-    public static String X_LABEL = "x";
-    public static String Y_LABEL = "y";
+  public static class DATA_LABELS {
+    public static String X = "x";
+    public static String Y = "y";
+    public static String NODE_TYPE = "nodeType";
+    public static String SHORT_NAME = "shortName";
+    public static String LONG_NAME = "longName";
+  }
 
-    public static Graph parseMapToGraph(String nodesPath, String edgesPath) {
-        try {
-            BufferedReader nodeReader = new BufferedReader(new FileReader(nodesPath));
-            BufferedReader edgeReader = new BufferedReader(new FileReader(edgesPath));
+  public static class NODE_TYPES {
+    public static String CONFERENCE = "CONF";
+    public static String HALL = "HALL";
+    public static String DEPARTMENT = "DEPT";
+    public static String INFO = "INFO";
+    public static String LAB = "LABS";
+    public static String RESTROOM = "REST";
+  }
 
-            // Skip to the second row, the first row is just the labels for the data fields
-            nodeReader.readLine();
-            edgeReader.readLine();
+  public static Graph parseMapToGraph(String nodesPath, String edgesPath) {
+    try {
+      BufferedReader nodeReader = new BufferedReader(new FileReader(nodesPath));
+      BufferedReader edgeReader = new BufferedReader(new FileReader(edgesPath));
 
-            Graph newGraph = new Graph();
+      // Skip to the second row, the first row is just the labels for the data fields
+      nodeReader.readLine();
+      edgeReader.readLine();
 
-            String row = "";
-            while ((row = nodeReader.readLine()) != null) {
-                String[] data = row.split(",");
+      Graph newGraph = new Graph();
 
-                Node newNode = new Node(data[0]);
-                newNode.data.put(X_LABEL, Integer.parseInt(data[1]));
-                newNode.data.put(Y_LABEL, Integer.parseInt(data[2]));
+      String row = "";
+      while ((row = nodeReader.readLine()) != null) {
+        String[] data = row.split(",");
 
-                newGraph.addNode(newNode);
-            }
+        Node newNode = new Node(data[0]);
+        newNode.data.put(DATA_LABELS.X, Integer.parseInt(data[1]));
+        newNode.data.put(DATA_LABELS.Y, Integer.parseInt(data[2]));
+        newNode.data.put(DATA_LABELS.NODE_TYPE, Integer.parseInt(data[5]));
+        newNode.data.put(DATA_LABELS.LONG_NAME, Integer.parseInt(data[6]));
+        newNode.data.put(DATA_LABELS.SHORT_NAME, Integer.parseInt(data[7]));
 
-            while ((row = edgeReader.readLine()) != null) {
-                String[] data = row.split(",");
+        newGraph.addNode(newNode);
+      }
 
-                Node source = newGraph.getNode(data[1]);
-                Node destination = newGraph.getNode(data[2]);
+      while ((row = edgeReader.readLine()) != null) {
+        String[] data = row.split(",");
 
-                if (source != null && destination != null) {
-                    int x1 = (int) source.data.get(X_LABEL);
-                    int y1 = (int) source.data.get(Y_LABEL);
-                    int x2 = (int) destination.data.get(X_LABEL);
-                    int y2 = (int) destination.data.get(Y_LABEL);
+        Node source = newGraph.getNode(data[1]);
+        Node destination = newGraph.getNode(data[2]);
 
-                    int length = (int) Math.round(Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
+        if (source != null && destination != null) {
+          int x1 = (int) source.data.get(DATA_LABELS.X);
+          int y1 = (int) source.data.get(DATA_LABELS.Y);
+          int x2 = (int) destination.data.get(DATA_LABELS.X);
+          int y2 = (int) destination.data.get(DATA_LABELS.Y);
 
-                    source.addEdgeTwoWay(new Edge(destination, length));
-                }
-            }
+          int length = (int) Math.round(Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
 
-            return newGraph;
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+          source.addEdgeTwoWay(new Edge(destination, length));
         }
+      }
 
-        return null;
+      return newGraph;
+
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
+
+    return null;
+  }
 }
