@@ -36,9 +36,9 @@ public class Path implements Iterable<Node> {
             current = next;
         }
 
+        length = retLength;
 
-
-        return retLength;
+        return length;
     }
 
     /**
