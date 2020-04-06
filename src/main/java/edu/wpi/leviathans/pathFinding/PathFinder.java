@@ -41,7 +41,7 @@ public class PathFinder {
      * @param destination The Node to pathfind to
      * @return a list of Nodes in representing the path between source and destination (inclusive).
      */
-    public static LinkedList<Node> aStarPathFind(Graph graph, Node source, Node destination) {
+    public static Path aStarPathFind(Graph graph, Node source, Node destination) {
         PathFinder pathFinder = new PathFinder();
         return pathFinder.doAStarPathFind(graph, source, destination);
     }
@@ -53,7 +53,7 @@ public class PathFinder {
      * @param destination The Node to pathfind to
      * @return a list of Nodes in representing the path between source and destination (inclusive).
      */
-    public LinkedList<Node> doAStarPathFind(Graph graph, Node source, Node destination) {
+    public Path doAStarPathFind(Graph graph, Node source, Node destination) {
 
         // Initialize all nodes in the priority queue to infinity but don't add the source
         for (Node node : graph.getNodes()) {
@@ -79,7 +79,7 @@ public class PathFinder {
         // Start from the source Node and recursively update the priority Queue
         NodeEntry destNode = aStarPathFindHelper(source, destination);
 
-        return entryToList(destNode);
+        return Path.listToPath(entryToList(destNode));
     }
 
     private NodeEntry aStarPathFindHelper(Node source, Node destination) {
