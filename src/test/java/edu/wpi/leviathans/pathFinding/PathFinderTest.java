@@ -48,6 +48,6 @@ class PathFinderTest {
     assertEquals(1, 1);
     // assertEquals(newGraph.getNode("one").getName(), "one");
 
-    assertEquals(12, pathfinder.aStarPathFind(newGraph, n1, n3).recalculateLength());
+    assertEquals(3, pathfinder.aStarPathFind(newGraph, n8, n1).getLength());
   }
 }

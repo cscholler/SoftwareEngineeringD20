@@ -9,8 +9,13 @@ class GraphTest {
   @Test
   public void createGraph() throws Exception {
     Graph newGraph = new Graph();
-    newGraph.addNode(new Node("Test_Node"));
+    Node test_1 = new Node("test_1");
+    Node test_2 = new Node("test_2");
+    newGraph.addNode(test_1);
+    newGraph.addNode(test_2);
 
-    assertEquals(newGraph.getNode("Test_Node").getName(), "Test_Node");
+    test_1.addEdgeTwoWay(new Edge(test_2, 3));
+
+    assertEquals("test_1", test_2.getEdge(test_1).destination.getName());
   }
 }
