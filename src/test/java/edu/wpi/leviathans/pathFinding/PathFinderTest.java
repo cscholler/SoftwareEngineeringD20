@@ -33,6 +33,15 @@ class PathFinderTest {
     assertEquals(1, 1);
     // assertEquals(newGraph.getNode("one").getName(), "one");
 
-    assertEquals(3, pathfinder.aStarPathFind(newGraph, n1, n3).size());
+    assertEquals(3, pathfinder.aStarPathFind(newGraph, n1, n3).getPathNodes().size());
+  }
+
+  @Test
+  public void parseGraph() throws Exception {
+    Graph testGraph = MapParser.parseMapToGraph("C:\\Users\\chjm6\\Downloads\\Faulkner Hospital Data\\MapBnodes.csv",
+            "C:\\Users\\chjm6\\Downloads\\Faulkner Hospital Data\\MapBedges.csv");
+
+
+    //assertEquals(3, pathfinder.aStarPathFind(newGraph, n1, n3).getPathNodes().size());
   }
 }
