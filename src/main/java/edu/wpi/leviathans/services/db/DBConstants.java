@@ -30,10 +30,12 @@ public class DBConstants {
             "INSERT INTO Paintings(name, museum_id, artist, date_painted)" + "VALUES(?, ?, ?, ?)";
 
     // Select all museums in the table
-    public static final String selectAllMuseums = "SELECT *" + "FROM Museums";
+    public static final String selectAllMuseums =
+            "SELECT *" + "FROM Museums";
 
     // Select all paintings in the table
-    public static final String selectAllPaintings = "SELECT * " + "FROM Paintings";
+    public static final String selectAllPaintings =
+            "SELECT * " + "FROM Paintings";
 
     // Update the phone number of a given museum
     public static final String updateMuseumPhone =

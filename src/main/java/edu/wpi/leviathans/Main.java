@@ -32,8 +32,7 @@ public class Main {
             } else {
                 System.out.println("Please enter your password:");
                 password = scanner.nextLine();
-                System.out.print(
-                        "\nPlease enter the number indicating what mode you'd like the program to run the program in:");
+                System.out.print("Please enter the number indicating what mode you'd like the program to run the program in:");
                 programMode = Integer.parseInt(scanner.nextLine());
             }
         } else {
@@ -55,29 +54,7 @@ public class Main {
 
         DatabaseService dbService = new DatabaseService(props);
         dbService.buildTestDB();
-        handleUserRequest(programMode, dbService, museumName);
+        dbService.handleUserRequest(programMode, museumName);
         dbService.disconnect();
-    }
-
-    private static void handleUserRequest(
-            int programMode, DatabaseService dbService, String museumName) {
-        switch (programMode) {
-            case 1: {
-                dbService.reportMuseumInfo();
-            }
-            break;
-            case 2: {
-                dbService.reportPaintingInfo();
-            }
-            break;
-            case 3: {
-                dbService.setPhoneNumber(museumName);
-            }
-            break;
-            case 4:
-            default: {
-                System.exit(0);
-            }
-        }
     }
 }

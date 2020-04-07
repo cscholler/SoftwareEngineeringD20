@@ -47,13 +47,12 @@ public class DatabaseService {
         }
     }
 
-    public Collection<ResultSet> executeQueries(
-            Collection<String> sqlQueries, Collection<Object>... valuesList) {
+    public Collection<ResultSet> executeQueries(Collection<String> sqlQueries, Collection<ArrayList<Object>> valuesList) {
         Collection<ResultSet> resultSets = new ArrayList<>();
         ResultSet rs;
-        int i = 0;
-        for (String query : sqlQueries) {
-            rs = executeQuery(query, valuesList[i]);
+        for (int i = 0; i < sqlQueries.size(); i++) {
+            //TODO: fix this
+            rs = executeQuery(sqlQueries[i], valuesList[i]);
             resultSets.add(rs);
             i++;
         }
@@ -73,16 +72,13 @@ public class DatabaseService {
         }
     }
 
-    public Collection<Integer> executeUpdates(
-            Collection<String> sqlUpdates, Collection<Object>... valuesList) {
+    public Collection<Integer> executeUpdates(Collection<String> sqlUpdates, Collection<ArrayList<Object>> valuesList) {
         Collection<Integer> totalAffectedRows = new ArrayList<>();
         int currentAffectedRows = 0;
-        int j = 0;
-
-        for (String update : sqlUpdates) {
-            currentAffectedRows = executeUpdate(update, valuesList[j]);
+        for (int i = 0; i < sqlUpdates.size(); i++) {
+            // TODO: fix this
+            currentAffectedRows = executeUpdate(sqlUpdates[i], valuesList[i]);
             totalAffectedRows.add(currentAffectedRows);
-            j++;
         }
         return totalAffectedRows;
     }
@@ -95,31 +91,69 @@ public class DatabaseService {
             log.error("SQLException", ex);
         }
     }
-
-    public void buildTestDB() {
-        Collection<String> testTables = new ArrayList<>();
-        testTables.add(DBConstants.createMuseumsTable);
-        testTables.add(DBConstants.createPaintingsTable);
-        Collection<String> addMuseums = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            addMuseums.add(DBConstants.addMuseum);
+    public void handleUserRequest(int programMode, String museumName) {
+        switch (programMode) {
+            case 1: {
+                reportMuseumInfo();
+            }
+            break;
+            case 2: {
+                reportPaintingInfo();
+            }
+            break;
+            case 3: {
+                setPhoneNumber(museumName);
+            }
+            break;
+            case 4:
+            default: {
+                System.exit(0);
+            }
         }
-        Collection<String> addPaintings = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            addPaintings.add(DBConstants.addPainting);
-        }
-        testTables.add(DBConstants.addMuseum);
-        executeUpdates(testTables, null);
-        log.info("Created tables");
     }
 
-    public void reportMuseumInfo() {
+
+    public void buildTestDB() {
+        Collection<String> tablesToAdd = new ArrayList<>();
+        tablesToAdd.add(DBConstants.createMuseumsTable);
+        tablesToAdd.add(DBConstants.createPaintingsTable);
+        executeUpdates(tablesToAdd, null);
+        log.info("Created tables");
+        Collection<String> museumsToAdd = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            museumsToAdd.add(DBConstants.addMuseum);
+        }
+        Collection<ArrayList<Object>> museumsInfo = new ArrayList<>();
+        executeUpdates(museumsToAdd, museumsInfo);
+        log.info("Added museums");
+        // TODO: fill prepared statements
+        Collection<String> paintingsToAdd = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            paintingsToAdd.add(DBConstants.addPainting);
+        }
+        Collection<ArrayList<Object>> paintingsInfo = new ArrayList<>();
+        executeUpdates(paintingsToAdd, paintingsInfo);
+        log.info("Added paintings");
+        // TODO: fill prepared statements
+    }
+
+    private void reportMuseumInfo() {
+        ResultSet resultSet = executeQuery(DBConstants.selectAllMuseums);
+        processResults(resultSet);
     }
 
     public void reportPaintingInfo() {
+        ResultSet resultSet = executeQuery(DBConstants.selectAllPaintings);
+        processResults(resultSet);
     }
 
     public void setPhoneNumber(String museumName) {
-        executeUpdate(DBConstants.updateMuseumPhone);
+        Collection<Object> values = new ArrayList<>();
+        values.add(museumName);
+        executeUpdate(DBConstants.updateMuseumPhone, values);
+    }
+
+    private void processResults(ResultSet resultSet) {
+        //TODO: implement
     }
 }
