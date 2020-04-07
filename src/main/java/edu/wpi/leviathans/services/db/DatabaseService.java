@@ -5,8 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Properties;
 
 import lombok.extern.slf4j.Slf4j;
@@ -34,11 +34,11 @@ public class DatabaseService {
         }
     }
 
-    public ResultSet executeQuery(String sqlQuery, Object... values) {
+    public ResultSet executeQuery(String sqlQuery, ArrayList<Object> values) {
         try {
             PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            for (int i = 0; i < values.length; i++) {
-                statement.setObject(i, values[i]);
+            for (int i = 0; i < values.size(); i++) {
+                statement.setObject(i, values.get(i));
             }
             return statement.executeQuery();
         } catch (SQLException ex) {
@@ -47,24 +47,22 @@ public class DatabaseService {
         }
     }
 
-    public Collection<ResultSet> executeQueries(Collection<String> sqlQueries, Collection<ArrayList<Object>> valuesList) {
-        // This function is not used for the database. Comment out if it won't work in order to build.
-        Collection<ResultSet> resultSets = new ArrayList<>();
+    public ArrayList<ResultSet> executeQueries(ArrayList<String> sqlQueries, ArrayList<ArrayList<Object>> valuesList) {
+        ArrayList<ResultSet> resultSets = new ArrayList<>();
         ResultSet rs;
         for (int i = 0; i < sqlQueries.size(); i++) {
-            //TODO: fix this
-            rs = executeQuery(sqlQueries[i], valuesList[i]);
+            rs = executeQuery(sqlQueries.get(i), valuesList.get(i));
             resultSets.add(rs);
             i++;
         }
         return resultSets;
     }
 
-    public int executeUpdate(String sqlUpdate, Object... values) {
+    public int executeUpdate(String sqlUpdate, ArrayList<Object> values) {
         try {
             PreparedStatement statement = connection.prepareStatement(sqlUpdate);
-            for (int i = 0; i < values.length; i++) {
-                statement.setObject(i, values[i]);
+            for (int i = 0; i < values.size(); i++) {
+                statement.setObject(i, values.get(i));
             }
             return statement.executeUpdate();
         } catch (SQLException ex) {
@@ -73,12 +71,11 @@ public class DatabaseService {
         }
     }
 
-    public Collection<Integer> executeUpdates(Collection<String> sqlUpdates, Collection<ArrayList<Object>> valuesList) {
-        Collection<Integer> totalAffectedRows = new ArrayList<>();
+    public ArrayList<Integer> executeUpdates(ArrayList<String> sqlUpdates, ArrayList<ArrayList<Object>> valuesList) {
+        ArrayList<Integer> totalAffectedRows = new ArrayList<>();
         int currentAffectedRows = 0;
         for (int i = 0; i < sqlUpdates.size(); i++) {
-            // TODO: REALLY fix this
-            currentAffectedRows = executeUpdate(sqlUpdates[i], valuesList[i]);
+            currentAffectedRows = executeUpdate(sqlUpdates.get(i), valuesList.get(i));
             totalAffectedRows.add(currentAffectedRows);
         }
         return totalAffectedRows;
@@ -116,42 +113,44 @@ public class DatabaseService {
 
 
     public void buildTestDB() {
-        Collection<String> tablesToAdd = new ArrayList<>();
+        ArrayList<String> tablesToAdd = new ArrayList<>();
         tablesToAdd.add(DBConstants.createMuseumsTable);
         tablesToAdd.add(DBConstants.createPaintingsTable);
         executeUpdates(tablesToAdd, null);
         log.info("Created tables");
-        Collection<String> museumsToAdd = new ArrayList<>();
+        ArrayList<String> museumsToAdd = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             museumsToAdd.add(DBConstants.addMuseum);
         }
-        Collection<ArrayList<Object>> museumsInfo = new ArrayList<>();
+        ArrayList<ArrayList<Object>> museumsInfo = new ArrayList<>();
         // TODO: populate museumsInfo to fill prepared statements
         executeUpdates(museumsToAdd, museumsInfo);
         log.info("Added museums");
 
-        Collection<String> paintingsToAdd = new ArrayList<>();
+        ArrayList<String> paintingsToAdd = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             paintingsToAdd.add(DBConstants.addPainting);
         }
-        Collection<ArrayList<Object>> paintingsInfo = new ArrayList<>();
+        ArrayList<ArrayList<Object>> paintingsInfo = new ArrayList<>();
         // TODO: populate museumsInfo to fill prepared statements
         executeUpdates(paintingsToAdd, paintingsInfo);
         log.info("Added paintings");
     }
 
     private void reportMuseumInfo() {
-        ResultSet resultSet = executeQuery(DBConstants.selectAllMuseums);
+        //TODO: fix warning (implement null check?)
+        ResultSet resultSet = executeQuery(DBConstants.selectAllMuseums, null);
         processResults(resultSet);
     }
 
     public void reportPaintingInfo() {
-        ResultSet resultSet = executeQuery(DBConstants.selectAllPaintings);
+        //TODO: fix warning (implement null check?)
+        ResultSet resultSet = executeQuery(DBConstants.selectAllPaintings, null);
         processResults(resultSet);
     }
 
     public void setPhoneNumber(String museumName) {
-        Collection<Object> values = new ArrayList<>();
+        ArrayList<Object> values = new ArrayList<>();
         values.add(museumName);
         executeUpdate(DBConstants.updateMuseumPhone, values);
     }
