@@ -48,6 +48,7 @@ public class DatabaseService {
     }
 
     public Collection<ResultSet> executeQueries(Collection<String> sqlQueries, Collection<ArrayList<Object>> valuesList) {
+        // This function is not used for the database. Comment out if it won't work in order to build.
         Collection<ResultSet> resultSets = new ArrayList<>();
         ResultSet rs;
         for (int i = 0; i < sqlQueries.size(); i++) {
@@ -76,7 +77,7 @@ public class DatabaseService {
         Collection<Integer> totalAffectedRows = new ArrayList<>();
         int currentAffectedRows = 0;
         for (int i = 0; i < sqlUpdates.size(); i++) {
-            // TODO: fix this
+            // TODO: REALLY fix this
             currentAffectedRows = executeUpdate(sqlUpdates[i], valuesList[i]);
             totalAffectedRows.add(currentAffectedRows);
         }
@@ -91,6 +92,7 @@ public class DatabaseService {
             log.error("SQLException", ex);
         }
     }
+
     public void handleUserRequest(int programMode, String museumName) {
         switch (programMode) {
             case 1: {
@@ -124,17 +126,18 @@ public class DatabaseService {
             museumsToAdd.add(DBConstants.addMuseum);
         }
         Collection<ArrayList<Object>> museumsInfo = new ArrayList<>();
+        // TODO: populate museumsInfo to fill prepared statements
         executeUpdates(museumsToAdd, museumsInfo);
         log.info("Added museums");
-        // TODO: fill prepared statements
+
         Collection<String> paintingsToAdd = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             paintingsToAdd.add(DBConstants.addPainting);
         }
         Collection<ArrayList<Object>> paintingsInfo = new ArrayList<>();
+        // TODO: populate museumsInfo to fill prepared statements
         executeUpdates(paintingsToAdd, paintingsInfo);
         log.info("Added paintings");
-        // TODO: fill prepared statements
     }
 
     private void reportMuseumInfo() {
