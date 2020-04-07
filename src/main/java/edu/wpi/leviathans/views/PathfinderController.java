@@ -5,6 +5,7 @@ import edu.wpi.leviathans.pathFinding.PathFinder;
 import edu.wpi.leviathans.pathFinding.graph.Edge;
 import edu.wpi.leviathans.pathFinding.graph.Graph;
 import edu.wpi.leviathans.pathFinding.graph.Node;
+import java.util.Iterator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -59,7 +60,6 @@ public class PathfinderController {
 
   @FXML
   private void generatePath(ActionEvent event) {
-    System.out.println("Btn pressed!");
 
     if (!setupGraph) {
       setupGraph = true;
@@ -71,6 +71,23 @@ public class PathfinderController {
 
     Path path = pathfinder.aStarPathFind(newGraph, startNode, endNode);
 
-    txt.setText(Integer.toString(path.getLength()));
+    txt.setText(pathToString(path));
+  }
+
+  private String pathToString(Path path) {
+
+    String newString = "Path:\n\t";
+
+    Iterator<Node> nodes = path.iterator();
+
+    while (nodes.hasNext()) {
+      Node currentNode = nodes.next();
+      newString += currentNode.getName();
+      if (nodes.hasNext()) newString += " --> ";
+    }
+
+    newString += "\n\nPath Length:\n\t" + path.getLength();
+
+    return newString;
   }
 }
