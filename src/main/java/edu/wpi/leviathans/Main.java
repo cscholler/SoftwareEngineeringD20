@@ -23,7 +23,7 @@ public class Main {
 			if (args.length >= 2) {
 				password = args[1];
 				if (args.length >= 3) {
-					museumName = args[2];
+					programMode = Integer.parseInt(args[2]);
 				} else {
 					System.out.println("Please enter your password:");
 					password = scanner.nextLine();
@@ -31,8 +31,8 @@ public class Main {
 			} else {
 				System.out.println("Please enter your password:");
 				password = scanner.nextLine();
-				System.out.println("Please enter the number indicating what mode you'd like the program to run the program in:");
-				programMode = Integer.parseInt(scanner.nextLine());
+				System.out.println("Please enter the number indicating what mode you'd like the program to run in:");
+				programMode = scanner.nextInt();
 			}
 		} else {
 			System.out.println("Please enter your username:");
@@ -40,8 +40,11 @@ public class Main {
 			System.out.println("Please enter your password:");
 			password = scanner.nextLine();
 			System.out.println("Please enter the number indicating what mode you'd like the program to run in:");
-			programMode = Integer.parseInt(scanner.nextLine());
+			programMode = scanner.nextInt();
 		}
+		System.out.println(username);
+		System.out.println(password);
+		System.out.println(programMode);
 		if (programMode == 3) {
 			System.out.println("Please enter the name of the museum to change the phone number of:");
 			museumName = scanner.nextLine();
@@ -53,7 +56,6 @@ public class Main {
 		props.put("user", username);
 		props.put("password", password);
 		DatabaseService dbService = new DatabaseService(props);
-		dbService.startService();
 		dbService.buildTestDB();
 		dbService.handleUserRequest(programMode, museumName, newPhoneNumber);
 		dbService.stopService();

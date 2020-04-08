@@ -172,7 +172,7 @@ public class DatabaseService extends Service {
 
 			// Museum 4
 			pStmt = connection.prepareStatement(query);
-			pStmt.setString(1, "Musée d’Orsay");
+			pStmt.setString(1, "Musee d'Orsay");
 			pStmt.setString(2, "Philadelphia, PA");
 			pStmt.setString(3, "33-(0)14-049-4814");
 			pStmt.setString(4, "1986");
@@ -330,7 +330,7 @@ public class DatabaseService extends Service {
 			// Painting 17
 			pStmt = connection.prepareStatement(query);
 			pStmt.setString(1, "Van Gogh self-Portrait");
-			pStmt.setString(2, "Musée d’Orsay");
+			pStmt.setString(2, "Musee d'Orsay");
 			pStmt.setString(3, "Vincent van Gogh");
 			pStmt.setString(4, "1889");
 			pStmt.execute();
@@ -338,7 +338,7 @@ public class DatabaseService extends Service {
 			// Painting 18
 			pStmt = connection.prepareStatement(query);
 			pStmt.setString(1, "L'Origine du monde");
-			pStmt.setString(2, "Musée d’Orsay");
+			pStmt.setString(2, "Musee d'Orsay");
 			pStmt.setString(3, "Gustave Courbet");
 			pStmt.setString(4, "1866");
 			pStmt.execute();
@@ -346,7 +346,7 @@ public class DatabaseService extends Service {
 			// Painting 19
 			pStmt = connection.prepareStatement(query);
 			pStmt.setString(1, "A Meeting");
-			pStmt.setString(2, "Musée d’Orsay");
+			pStmt.setString(2, "Musee d'Orsay");
 			pStmt.setString(3, "Marie Bashkrsteff");
 			pStmt.setString(4, "1884");
 			pStmt.execute();
@@ -354,7 +354,7 @@ public class DatabaseService extends Service {
 			// Painting 20
 			pStmt = connection.prepareStatement(query);
 			pStmt.setString(1, "Le Dejeuner sur l'herbe");
-			pStmt.setString(2, "Musée d’Orsay");
+			pStmt.setString(2, "Musee d'Orsay");
 			pStmt.setString(3, "Edouard Manet");
 			pStmt.setString(4, "1863");
 			pStmt.execute();
