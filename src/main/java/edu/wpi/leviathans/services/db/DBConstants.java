@@ -3,6 +3,7 @@ package edu.wpi.leviathans.services.db;
 public class DBConstants {
 	public static final String DB_DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
 	public static final String DB_URL = "jdbc:derby:myDB;create=true";
+	public static final String SERVICE_NAME = "derby-db-embedded-01";
 
 	// Create museums table in test database
 	public static final String createMuseumsTable =

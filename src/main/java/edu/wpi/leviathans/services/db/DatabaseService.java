@@ -24,12 +24,13 @@ public class DatabaseService extends Service {
 
 	public DatabaseService(Properties props) {
 		super();
+		this.serviceName = DBConstants.SERVICE_NAME;
 		this.props = props;
 	}
 
 	public DatabaseService() {
 		super();
-		this.props = null;
+		this.serviceName = DBConstants.SERVICE_NAME;
 	}
 
 	@Override
