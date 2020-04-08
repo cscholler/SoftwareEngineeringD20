@@ -14,6 +14,7 @@ class MapParserTest {
             "C:\\Users\\chjm6\\Downloads\\Faulkner Hospital Data\\MapBnodes.csv",
             "C:\\Users\\chjm6\\Downloads\\Faulkner Hospital Data\\MapBedges.csv");
 
-    Assertions.assertEquals(2150, testGraph.getNode("BCONF00102").data.get(MapParser.DATA_LABELS.X));
+    Assertions.assertEquals(
+        2150, testGraph.getNode("BCONF00102").data.get(MapParser.DATA_LABELS.X));
   }
 }

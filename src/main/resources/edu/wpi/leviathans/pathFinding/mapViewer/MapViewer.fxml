@@ -22,7 +22,7 @@
                             <items>
                                 <MenuItem fx:id="save" onAction="#save" text="Save" />
                                 <MenuItem fx:id="saveAs" onAction="#saveAs" text="Save As" />
-                                <MenuItem fx:id="open" text="Open" />
+                                <MenuItem fx:id="open" text="Open" onAction="#open"/>
                                 <MenuItem fx:id="quit" onAction="#quit" text="Quit" />
                             </items>
                         </Menu>
@@ -74,10 +74,8 @@
         </VBox>
     </top>
     <center>
-        <AnchorPane BorderPane.alignment="TOP_LEFT">
-            <children>
-                <AnchorPane prefHeight="750.0" prefWidth="1000.0" />
-            </children>
+        <AnchorPane BorderPane.alignment="TOP_LEFT" fx:id="body">
+
         </AnchorPane>
     </center>
 </BorderPane>

@@ -1,5 +1,6 @@
 package edu.wpi.leviathans.pathFinding.graph;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -18,6 +19,23 @@ public class Graph {
    */
   public Collection<Node> getNodes() {
     return nodes.values();
+  }
+
+  /**
+   * Gets a list of all edges between nodes in this Graph
+   *
+   * @return An ArrayList of Edges
+   */
+  public ArrayList<Edge> getEdges() {
+    ArrayList<Edge> edges = new ArrayList<>();
+
+    for (Node node : getNodes()) {
+      for (Edge edge : node.getEdges()) {
+        if (!edges.contains(edge)) edges.add(edge);
+      }
+    }
+
+    return edges;
   }
 
   /**
