@@ -111,11 +111,12 @@ jacocoTestCoverageVerification {
 
 check.dependsOn jacocoTestCoverageVerification
 jacocoTestCoverageVerification.dependsOn jacocoTestReport
-compileJava.dependsOn 'spotlessApply'
+
+/*compileJava.dependsOn 'spotlessApply'
 
 // uncomment to enable spotless checking
 spotless {
     java {
         googleJavaFormat()
     }
-}
+}*/
