@@ -13,40 +13,70 @@ import java.util.Properties;
 
 import lombok.extern.slf4j.Slf4j;
 
+import edu.wpi.leviathans.services.Service;
+
 @Slf4j
-public class DatabaseService {
+public class DatabaseService extends Service {
 	private Connection connection;
-	//TODO: Populate with used statements and result sets to close on disconnect
+	private Properties props;
 	private ArrayList<ResultSet> usedResSets = new ArrayList<>();
 	private ArrayList<Statement> usedStmts = new ArrayList<>();
 
 	public DatabaseService(Properties props) {
-		connect(props);
+		super();
+		this.props = props;
+	}
+
+	public DatabaseService() {
+		super();
+		this.props = null;
+	}
+
+	@Override
+	public void startService() {
+		if (connection == null) {
+			connect(props);
+		}
+	}
+
+	@Override
+	public void stopService() {
+		disconnect();
 	}
 
 	private void connect(Properties props) {
 		try {
-			Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+			Class.forName(DBConstants.DB_DRIVER);
 		} catch (ClassNotFoundException ex) {
 			log.error("ClassNotFoundException", ex);
 			return;
 		}
 
 		try {
-			connection = DriverManager.getConnection("jdbc:derby:myDB;create=true", props);
+			connection = DriverManager.getConnection(DBConstants.DB_URL, props);
+
+			log.info("Connection established.");
 		} catch (SQLException ex) {
-			log.error("SQLException", ex);
+			log.error("Encountered SQLException.", ex);
 		}
 	}
 
-	public void disconnect() {
+	private void disconnect() {
 		try {
+			for (ResultSet rs : usedResSets) {
+				rs.close();
+			}
+			for (Statement stmt : usedStmts) {
+				stmt.close();
+			}
 			if (connection != null) {
 				connection.commit();
 				connection.close();
 			}
+
+			log.info("Connection closed.");
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			log.error("SQL Exception", ex);
 		}
 	}
 
@@ -66,37 +96,55 @@ public class DatabaseService {
 			break;
 			case 4:
 			default: {
-				disconnect();
+				stopService();
 				System.exit(0);
 			}
 		}
 	}
 
 	public void buildTestDB() {
-		Statement stmt;
 		String query;
+		Statement stmt;
+		ResultSet rs;
 
 		try {
 			stmt = connection.createStatement();
-			query = DBConstants.dropMuseumsTable;
-			stmt.execute(query);
+
+			rs = connection.getMetaData().getTables(null, "APP", "MUSEUMS", null);
+			if (rs.next()) {
+				query = DBConstants.dropMuseumsTable;
+				stmt.execute(query);
+				log.info("Museums table already exists. Dropping table.");
+			}
 			query = DBConstants.createMuseumsTable;
 			stmt.execute(query);
-			query = DBConstants.dropPaintingsTable;
-			stmt.execute(query);
+			log.info("Added Museums table to test database.");
+
+			rs = connection.getMetaData().getTables(null, "APP", "PAINTINGS", null);
+			if (rs.next()) {
+				query = DBConstants.dropPaintingsTable;
+				stmt.execute(query);
+				log.info("Paintings table already exists. Dropping table.");
+			}
 			query = DBConstants.createPaintingsTable;
 			stmt.execute(query);
+			log.info("Added Paintings table to test database.");
+
+			usedStmts.add(stmt);
 		} catch (SQLException ex) {
-			log.error("SQLException", ex);
+			log.error("Encountered SQLException.", ex);
 		}
 
 		addMuseums();
 		addPaintings();
+
+		log.info("Test database built.");
 	}
 
 	public void addMuseums() {
-		PreparedStatement pStmt;
 		String query = DBConstants.addMuseum;
+		PreparedStatement pStmt;
+
 		try {
 			// Museum 1
 			pStmt = connection.prepareStatement(query);
@@ -137,11 +185,13 @@ public class DatabaseService {
 			pStmt.setString(3, "212-535-7710");
 			pStmt.setString(4, "1870");
 			pStmt.execute();
+
+			usedStmts.add(pStmt);
 		} catch (SQLException ex) {
-			log.error("SQLException", ex);
+			log.error("Encountered SQLException.", ex);
 		}
 
-		log.info("Added museums to test database");
+		log.info("Added museums to test database.");
 	}
 
 	public void addPaintings() {
@@ -308,11 +358,12 @@ public class DatabaseService {
 			pStmt.setString(3, "Edouard Manet");
 			pStmt.setString(4, "1863");
 			pStmt.execute();
-		} catch (SQLException ex) {
-			log.error("SQLException", ex);
-		}
 
-		log.info("Added paintings to test database");
+			usedStmts.add(pStmt);
+			log.info("Added paintings to test database.");
+		} catch (SQLException ex) {
+			log.error("Encountered SQLException.", ex);
+		}
 	}
 
 	private void reportQueryResults(String query) {
@@ -322,6 +373,7 @@ public class DatabaseService {
 		try {
 			stmt = connection.createStatement();
 			rs = stmt.executeQuery(query);
+
 			StringBuilder sb = new StringBuilder();
 			ResultSetMetaData rsmd = rs.getMetaData();
 			int totalCols = rsmd.getColumnCount();
@@ -345,12 +397,14 @@ public class DatabaseService {
 				}
 				sb.append("|\n");
 			}
-			System.out.println(getHorizontalLine(colCounts) + sb.toString());
-		} catch (SQLException ex) {
-			log.error("SQLException", ex);
-		}
 
-		log.info("Query successful. Results displayed.");
+			usedResSets.add(rs);
+			usedStmts.add(stmt);
+			log.info("Query successful. Displaying results.");
+			System.out.println("\n" + getHorizontalLine(colCounts) + sb.toString());
+		} catch (SQLException ex) {
+			log.error("Encountered SQLException.", ex);
+		}
 	}
 
 	private void setPhoneNumber(String museumName, String newPhoneNumber) {
@@ -361,12 +415,14 @@ public class DatabaseService {
 			pStmt = connection.prepareStatement(query);
 			pStmt.setString(1, newPhoneNumber);
 			pStmt.setString(2, museumName);
+			pStmt.execute();
+
+			usedStmts.add(pStmt);
+			log.info("Successfully updated phone number for museum '" + museumName + "' to '" + newPhoneNumber + "'.");
 		} catch (SQLException ex) {
 			log.error("SQL Exception", ex);
 		}
-
-		log.info("Successfully updated phone number for museum '" + museumName + "' to '" + newPhoneNumber + "'.");
-}
+	}
 
 	private String getHorizontalLine(int[] colCounts) {
 		StringBuilder sb = new StringBuilder();

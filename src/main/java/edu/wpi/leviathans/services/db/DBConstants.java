@@ -1,13 +1,8 @@
 package edu.wpi.leviathans.services.db;
 
 public class DBConstants {
-	// Drop museums table if it exists
-	public static final String dropMuseumsTable =
-			"DROP TABLE Museums";
-
-	// Drop paintings table if it exists
-	public static final String dropPaintingsTable =
-			"DROP TABLE Paintings";
+	public static final String DB_DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
+	public static final String DB_URL = "jdbc:derby:myDB;create=true";
 
 	// Create museums table in test database
 	public static final String createMuseumsTable =
@@ -28,6 +23,14 @@ public class DBConstants {
 					+ "artist VARCHAR(64), "
 					+ "year_painted VARCHAR(4), "
 					+ "PRIMARY KEY (id))";
+
+	// Drop museums table from test database
+	public static final String dropMuseumsTable =
+			"DROP TABLE Museums";
+
+	// Drop paintings table from test database
+	public static final String dropPaintingsTable =
+			"DROP TABLE Paintings";
 
 	// Add new museum to test database
 	public static final String addMuseum =

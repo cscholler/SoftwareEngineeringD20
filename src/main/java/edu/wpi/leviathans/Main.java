@@ -53,8 +53,9 @@ public class Main {
 		props.put("user", username);
 		props.put("password", password);
 		DatabaseService dbService = new DatabaseService(props);
+		dbService.startService();
 		dbService.buildTestDB();
 		dbService.handleUserRequest(programMode, museumName, newPhoneNumber);
-		dbService.disconnect();
+		dbService.stopService();
 	}
 }
