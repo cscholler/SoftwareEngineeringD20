@@ -39,7 +39,7 @@ public class Main {
 			username = scanner.nextLine();
 			System.out.println("Please enter your password:");
 			password = scanner.nextLine();
-			System.out.println("Please enter the number indicating what mode you'd like the program to run the program in:");
+			System.out.println("Please enter the number indicating what mode you'd like the program to run in:");
 			programMode = Integer.parseInt(scanner.nextLine());
 		}
 		if (programMode == 3) {
