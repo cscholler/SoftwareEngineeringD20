@@ -23,6 +23,8 @@ public class MapParser {
   }
 
   public static Graph parseMapToGraph(File nodesFile, File edgesFile) {
+    if(nodesFile == null || edgesFile == null) return null;
+
     try {
       BufferedReader nodeReader = new BufferedReader(new FileReader(nodesFile));
       BufferedReader edgeReader = new BufferedReader(new FileReader(edgesFile));

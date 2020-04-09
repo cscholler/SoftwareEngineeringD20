@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.control.ToolBar?>
@@ -11,9 +13,10 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.leviathans.pathFinding.mapViewer.MapViewer">
+<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.leviathans.pathFinding.mapViewer.MapViewer">
     <top>
         <VBox prefWidth="100.0" BorderPane.alignment="CENTER">
             <children>
@@ -74,10 +77,21 @@
             </children>
         </VBox>
     </top>
-    <center>
-        <AnchorPane fx:id="body" BorderPane.alignment="TOP_LEFT">
+   <center>
+      <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="position" alignment="BOTTOM_LEFT" layoutX="14.0" layoutY="300.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" />
-         </children></AnchorPane>
-    </center>
+            <ScrollPane fx:id="scroller" prefHeight="200.0" prefWidth="200.0">
+               <content>
+                  <AnchorPane fx:id="body" prefHeight="200.0" prefWidth="200.0">
+                     <padding>
+                        <Insets bottom="100.0" left="100.0" right="100.0" top="100.0" />
+                     </padding></AnchorPane>
+               </content></ScrollPane>
+                <Label fx:id="position" alignment="BOTTOM_LEFT" StackPane.alignment="BOTTOM_LEFT">
+               <StackPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </StackPane.margin></Label>
+         </children>
+      </StackPane>
+   </center>
 </BorderPane>
