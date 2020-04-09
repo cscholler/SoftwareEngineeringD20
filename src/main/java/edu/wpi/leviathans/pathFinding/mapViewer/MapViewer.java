@@ -3,41 +3,73 @@ package edu.wpi.leviathans.pathFinding.mapViewer;
 import edu.wpi.leviathans.pathFinding.MapParser;
 import edu.wpi.leviathans.pathFinding.graph.*;
 
-import java.io.File;
-
+import edu.wpi.leviathans.pathFinding.mapViewer.dataDialogue.*;
 import javafx.application.Platform;
+import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.stage.FileChooser;
+
+import javafx.geometry.Point2D;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapViewer {
-    public MenuItem save;
-    public MenuItem saveAs;
-    public MenuItem open;
-    public MenuItem quit;
+    @FXML MenuItem save;
+    @FXML MenuItem saveAs;
+    @FXML MenuItem open;
+    @FXML MenuItem quit;
 
-    public MenuItem undo;
-    public MenuItem redo;
+    @FXML MenuItem undo;
+    @FXML MenuItem redo;
 
-    public MenuItem node;
-    public MenuItem edge;
+    @FXML MenuItem node;
+    @FXML MenuItem edge;
 
-    public ToggleGroup tools;
+    @FXML ToggleGroup tools;
 
-    public AnchorPane body;
+    @FXML AnchorPane body;
+    @FXML Label position;
 
-    public MapApp appInstance;
+    AnchorPane nodePane = new AnchorPane();
+    Graph graph = new Graph();
 
-    private int circleRadius;
-    private Color nodeColor;
+    List<javafx.scene.Node> nodes = new ArrayList<>();
 
-    public void quit() {
+    @FXML MapApp appInstance;
+
+    private int circleRadius = 12;
+    private Color nodeColor = Color.ORANGE;
+    private double zoomLevel = 0.5;
+
+    public void setZoomLevel(double newZoomLevel) {
+        newZoomLevel = Math.max(newZoomLevel, 0.01);
+
+        for(javafx.scene.Node node : nodes) {
+            Point2D prevPos = new Point2D(node.getLayoutX(), node.getLayoutY());
+            Point2D newPos = prevPos.multiply(newZoomLevel / zoomLevel);
+            node.setLayoutX(newPos.getX());
+            node.setLayoutY(newPos.getY());
+        }
+
+        zoomLevel = newZoomLevel;
+    }
+
+    public void changeZoomLevelBy(double deltaZoomLevel) {
+        setZoomLevel(zoomLevel + deltaZoomLevel);
+    }
+
+    public double getZoomLevel() {
+        return zoomLevel;
+    }
+
+    @FXML void quit() {
         Platform.exit();
     }
 
-    public void save() {
+    @FXML void save() {
         Alert saveAlert = new Alert(Alert.AlertType.WARNING);
         saveAlert.setTitle("Cannot complete operation");
         saveAlert.setContentText("Nothing to save");
@@ -45,22 +77,20 @@ public class MapViewer {
         saveAlert.showAndWait();
     }
 
-    public void saveAs() {
+    @FXML public void saveAs() {
         save();
     }
 
-    public void open() {
-        FileChooser nodeChooser = new FileChooser();
-        FileChooser edgeChooser = new FileChooser();
+    @FXML public void open() {
+        DataDialogue data = new DataDialogue();
 
-        File nodesFile = nodeChooser.showOpenDialog(appInstance.pStage);
-        File edgesFile = edgeChooser.showOpenDialog(appInstance.pStage);
+        data.showDialogue(appInstance.pStage);
 
-        Graph graph = MapParser.parseMapToGraph(nodesFile, edgesFile);
+        graph = MapParser.parseMapToGraph(data.getNodeFile(), data.getEdgeFile());
 
-        AnchorPane graphUI = paneFromGraph(graph);
+        nodePane = paneFromGraph(graph);
 
-        body.getChildren().add(graphUI);
+        body.getChildren().add(nodePane);
     }
 
     private AnchorPane paneFromGraph(Graph graph) {
@@ -70,10 +100,11 @@ public class MapViewer {
             Circle nodeGUI = new Circle(circleRadius);
             nodeGUI.fillProperty().setValue(nodeColor);
 
-            nodeGUI.setLayoutX((int) node.data.get(MapParser.DATA_LABELS.X));
-            nodeGUI.setLayoutY((int) node.data.get(MapParser.DATA_LABELS.Y));
+            nodeGUI.setLayoutX(((int) node.data.get(MapParser.DATA_LABELS.X)) * zoomLevel);
+            nodeGUI.setLayoutY(((int) node.data.get(MapParser.DATA_LABELS.Y)) * zoomLevel);
 
             root.getChildren().add(nodeGUI);
+            nodes.add(nodeGUI);
             node.data.put("GUI", nodeGUI);
         }
 
