@@ -6,14 +6,16 @@ import edu.wpi.leviathans.pathFinding.graph.Graph;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class MapParserTest {
-  @Test
-  public void parsingTest() {
-    Graph testGraph =
-        MapParser.parseMapToGraph(
-            "C:\\Users\\chjm6\\Downloads\\Faulkner Hospital Data\\MapBnodes.csv",
-            "C:\\Users\\chjm6\\Downloads\\Faulkner Hospital Data\\MapBedges.csv");
+import java.io.File;
 
-    Assertions.assertEquals(2150, testGraph.getNode("BCONF00102").data.get(MapParser.X_LABEL));
-  }
+class MapParserTest {
+    @Test
+    public void parsingTest() {
+        Graph testGraph =
+                MapParser.parseMapToGraph(
+                        new File(getClass().getResource("MapBnodes.csv").getFile()),
+                        new File(getClass().getResource("MapBedges.csv").getFile()));
+
+        Assertions.assertEquals(2150, testGraph.getNode("BCONF00102").data.get(MapParser.DATA_LABELS.X));
+    }
 }
