@@ -3,24 +3,26 @@ package edu.wpi.leviathans.pathFinding;
 import edu.wpi.leviathans.pathFinding.graph.*;
 
 import java.io.*;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class MapParser {
 
-    public static class DATA_LABELS {
-        public static String X = "x";
-        public static String Y = "y";
-        public static String NODE_TYPE = "nodeType";
-        public static String SHORT_NAME = "shortName";
-        public static String LONG_NAME = "longName";
+    public static final class DATA_LABELS {
+        public static final String X = "x";
+        public static final String Y = "y";
+        public static final String NODE_TYPE = "nodeType";
+        public static final String SHORT_NAME = "shortName";
+        public static final String LONG_NAME = "longName";
     }
 
-    public static class NODE_TYPES {
-        public static String CONFERENCE = "CONF";
-        public static String HALL = "HALL";
-        public static String DEPARTMENT = "DEPT";
-        public static String INFO = "INFO";
-        public static String LAB = "LABS";
-        public static String RESTROOM = "REST";
+    public static final class NODE_TYPES {
+        public static final String CONFERENCE = "CONF";
+        public static final String HALL = "HALL";
+        public static final String DEPARTMENT = "DEPT";
+        public static final String INFO = "INFO";
+        public static final String LAB = "LABS";
+        public static final String RESTROOM = "REST";
     }
 
     public static Graph parseMapToGraph(File nodesFile, File edgesFile) {
@@ -71,9 +73,9 @@ public class MapParser {
             return newGraph;
 
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            log.error("File not found"); //Should never get here
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Error in reading file");
         }
 
         return null;

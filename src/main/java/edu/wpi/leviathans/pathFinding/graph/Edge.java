@@ -1,14 +1,17 @@
 package edu.wpi.leviathans.pathFinding.graph;
 
+import java.util.HashMap;
+
 public class Edge {
 
-  public int length;
-  public Node destination;
+    public int length;
+    public Node destination;
+    public HashMap<String, Object> data;
 
-  Node source;
+    Node source;
 
-  public Edge(Node dest, int len) {
-    destination = dest;
-    length = len;
-  }
+    public Edge(Node p_destination, int p_length) {
+        destination = p_destination;
+        length = p_length;
+    }
 }
