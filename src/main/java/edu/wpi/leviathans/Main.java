@@ -9,7 +9,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		// Uncomment for use with JavaFX
-		// App.launch(App.class, args);
+		App.launch(App.class, args);
 
 		Scanner scanner = new Scanner(System.in);
 		String username = "";
