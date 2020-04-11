@@ -3,6 +3,9 @@ package edu.wpi.leviathans.pathFinding;
 import edu.wpi.leviathans.pathFinding.graph.*;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -23,6 +26,22 @@ public class MapParser {
         public static final String INFO = "INFO";
         public static final String LAB = "LABS";
         public static final String RESTROOM = "REST";
+    }
+
+    /**
+     * Writes a graph to two csv files and returns an array containing both of them.
+     * @param graph
+     * @return
+     */
+    public static List<File> parseGraphToMap(Graph graph) {
+        try {
+            FileWriter nodesFile = new FileWriter("nodesFile.csv");
+            FileWriter edgesFile = new FileWriter("edgesFile.csv");
+        } catch (IOException e) {
+
+        }
+
+        return new ArrayList<>(2);
     }
 
     public static Graph parseMapToGraph(File nodesFile, File edgesFile) {
