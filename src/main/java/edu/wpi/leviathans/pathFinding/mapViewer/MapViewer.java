@@ -76,19 +76,23 @@ public class MapViewer {
         position.setText(positionInfo());
         scroller.setPannable(true);
 
-        body.setOnScroll(event -> {
-            // Get the initial zoom level
-            double prevZoomLevel = getZoomLevel();
+        scroller.setOnScroll(event -> {
+            if(event.isControlDown()) {
+                // Get the initial zoom level
+                double prevZoomLevel = getZoomLevel();
 
-            // Change the zoom level
-            setZoomLevel(prevZoomLevel * (1 + event.getDeltaY() / 100));
+                // Change the zoom level
+                setZoomLevel(prevZoomLevel * (1 + event.getDeltaY() / 100));
 
-            position.setText(positionInfo());
+                position.setText(positionInfo());
+            }
         });
 
+        scroller.setOnMouseDragged(event -> position.setText(positionInfo()));
     }
 
     private void coreShortcuts() {
+        // Instantiate key combinations with ancronyms as naming convention (cv --> Ctrl-V)
         KeyCombination cq = new KeyCodeCombination(KeyCode.Q, KeyCombination.CONTROL_DOWN);
         KeyCombination cs = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
         KeyCombination css = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN);

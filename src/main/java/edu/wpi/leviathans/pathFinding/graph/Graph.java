@@ -3,6 +3,7 @@ package edu.wpi.leviathans.pathFinding.graph;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 public class Graph {
 
@@ -26,7 +27,7 @@ public class Graph {
      *
      * @return An ArrayList of Edges
      */
-    public ArrayList<Edge> getEdges() {
+    public List<Edge> getEdges() {
         ArrayList<Edge> edges = new ArrayList<>();
 
         for (Node node : getNodes()) {
@@ -56,6 +57,17 @@ public class Graph {
      * @param newNodes Collection of nodes to add
      */
     public void addAllNodes(Collection<Node> newNodes) {
+        for (Node node : newNodes) {
+            addNode(node);
+        }
+    }
+
+    /**
+     * Adds all nodes in the given collection.
+     *
+     * @param newNodes Collection of nodes to add
+     */
+    public void addAllNodes(Node ... newNodes) {
         for (Node node : newNodes) {
             addNode(node);
         }

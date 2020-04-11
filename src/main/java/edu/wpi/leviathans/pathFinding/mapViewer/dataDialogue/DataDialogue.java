@@ -65,7 +65,7 @@ public class DataDialogue {
 
         stage = new Stage();
         stage.setTitle("Pick csv files for data");
-        stage.setScene(new Scene(root, 500, 230));
+        stage.setScene(new Scene(root));
         stage.initOwner(owner);
         stage.initModality(Modality.APPLICATION_MODAL);
 

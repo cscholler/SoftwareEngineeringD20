@@ -51,7 +51,7 @@
                 </MenuBar>
                 <ToolBar prefHeight="40.0" prefWidth="200.0">
                     <items>
-                        <ToggleButton mnemonicParsing="false">
+                        <ToggleButton mnemonicParsing="false" selected="true">
                             <toggleGroup>
                                 <ToggleGroup fx:id="tools" />
                             </toggleGroup>
