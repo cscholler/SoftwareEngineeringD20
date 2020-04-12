@@ -1,38 +1,95 @@
 package edu.wpi.leviathans.views;
 
 import com.google.inject.Inject;
+import edu.wpi.leviathans.pathFinding.MapParser;
 import edu.wpi.leviathans.pathFinding.Path;
 import edu.wpi.leviathans.pathFinding.PathFinder;
 import edu.wpi.leviathans.pathFinding.graph.Edge;
 import edu.wpi.leviathans.pathFinding.graph.Graph;
 import edu.wpi.leviathans.pathFinding.graph.Node;
 
+import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Iterator;
+import java.util.ResourceBundle;
 
+import edu.wpi.leviathans.services.db.DBConstants;
 import edu.wpi.leviathans.services.db.DatabaseService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import lombok.extern.slf4j.Slf4j;
 
-public class PathfinderController {
+@Slf4j
+public class PathfinderController implements Initializable {
 	PathFinder pathfinder = new PathFinder();
 	Graph newGraph = new Graph();
 	@Inject
 	DatabaseService db;
 
-	Node n1 = new Node("n1");
-	Node n2 = new Node("n2");
-	Node n3 = new Node("n3");
-	Node n4 = new Node("n4");
-	Node n5 = new Node("n5");
-	Node n6 = new Node("n6");
-	Node n7 = new Node("n7");
-	Node n8 = new Node("n8");
-	Node n9 = new Node("n9");
+	public static final class DATA_LABELS {
+		public static final String X = "x";
+		public static final String Y = "y";
+		public static final String NODE_TYPE = "nodeType";
+		public static final String SHORT_NAME = "shortName";
+		public static final String LONG_NAME = "longName";
+	}
 
-	private boolean setupGraph = false;
+	public static final class NODE_TYPES {
+		public static final String CONFERENCE = "CONF";
+		public static final String HALL = "HALL";
+		public static final String DEPARTMENT = "DEPT";
+		public static final String INFO = "INFO";
+		public static final String LAB = "LABS";
+		public static final String RESTROOM = "REST";
+	}
+
+	@Override
+	public void initialize(URL url, ResourceBundle rb) {
+		try {
+			generateGraph();
+		} catch (SQLException ex) {
+			log.error("Encountered SQLException.", ex);
+		}
+	}
+
+	private void generateGraph() throws SQLException {
+		ResultSet rs = db.executeQuery(DBConstants.selectAllNodes, null);
+
+		while (rs.next()) {
+			Node newNode = new Node(rs.getString(1));
+			newNode.data.put(MapParser.DATA_LABELS.X, Integer.parseInt(rs.getString(2)));
+			newNode.data.put(MapParser.DATA_LABELS.Y, Integer.parseInt(rs.getString(3)));
+			newNode.data.put(MapParser.DATA_LABELS.NODE_TYPE, rs.getString(4));
+			newNode.data.put(MapParser.DATA_LABELS.LONG_NAME, rs.getString(5));
+			newNode.data.put(MapParser.DATA_LABELS.SHORT_NAME, rs.getString(6));
+
+			newGraph.addNode(newNode);
+		}
+
+		rs = db.executeQuery(DBConstants.selectAllEdges, null);
+
+		while (rs.next()) {
+			Node source = newGraph.getNode(rs.getString(2));
+			Node destination = newGraph.getNode(rs.getString(3));
+
+			if (source != null && destination != null) {
+				int x1 = (int) source.data.get(MapParser.DATA_LABELS.X);
+				int y1 = (int) source.data.get(MapParser.DATA_LABELS.Y);
+				int x2 = (int) destination.data.get(MapParser.DATA_LABELS.X);
+				int y2 = (int) destination.data.get(MapParser.DATA_LABELS.Y);
+
+				int length = (int) Math.round(Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
+
+				source.addEdgeTwoWay(new Edge(destination, length));
+			}
+		}
+	}
+
 
 	@FXML
 	private TextField end, start;
@@ -43,37 +100,8 @@ public class PathfinderController {
 	@FXML
 	private TextArea txt;
 
-	private void generateGraph() {
-		newGraph.addNode(n1);
-		newGraph.addNode(n2);
-		newGraph.addNode(n3);
-		newGraph.addNode(n4);
-		newGraph.addNode(n5);
-		newGraph.addNode(n6);
-		newGraph.addNode(n7);
-		newGraph.addNode(n8);
-		newGraph.addNode(n9);
-
-		n1.addEdgeTwoWay(new Edge(n8, 3));
-		n1.addEdge(new Edge(n9, 5));
-		n2.addEdgeTwoWay(new Edge(n9, 4));
-		n3.addEdge(new Edge(n2, 3));
-		n3.addEdgeTwoWay(new Edge(n4, 2));
-		n4.addEdgeTwoWay(new Edge(n9, 5));
-		n4.addEdge(new Edge(n5, 4));
-		n5.addEdgeTwoWay(new Edge(n6, 2));
-		n6.addEdge(new Edge(n9, 6));
-		n6.addEdgeTwoWay(new Edge(n7, 1));
-		n7.addEdge(new Edge(n8, 3));
-	}
-
 	@FXML
 	private void generatePath(ActionEvent event) {
-
-		if (!setupGraph) {
-			setupGraph = true;
-			generateGraph();
-		}
 
 		Node startNode = newGraph.getNode(start.getText());
 		Node endNode = newGraph.getNode(end.getText());
