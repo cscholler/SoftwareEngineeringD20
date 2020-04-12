@@ -2,6 +2,9 @@ package edu.wpi.leviathans;
 
 import java.io.IOException;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import edu.wpi.leviathans.modules.DatabaseServiceProvider;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,6 +22,8 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
+		Injector injector = Guice.createInjector(new DatabaseServiceProvider());
+
         Parent root = FXMLLoader.load(getClass().getResource("views/pathfinder.fxml"));
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
