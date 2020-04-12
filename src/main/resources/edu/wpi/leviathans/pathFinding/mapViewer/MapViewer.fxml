@@ -16,7 +16,9 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.leviathans.pathFinding.mapViewer.MapViewer">
+<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.leviathans.pathFinding.mapViewer.MapViewer">
     <top>
         <VBox prefWidth="100.0" BorderPane.alignment="CENTER">
             <children>
@@ -24,27 +26,27 @@
                     <menus>
                         <Menu text="File">
                             <items>
-                                <MenuItem fx:id="save" onAction="#save" text="Save" />
-                                <MenuItem fx:id="saveAs" onAction="#saveAs" text="Save As" />
-                                <MenuItem fx:id="open" onAction="#open" text="Open" />
-                                <MenuItem fx:id="quit" onAction="#quit" text="Quit" />
+                                <MenuItem fx:id="save" onAction="#save" text="Save"/>
+                                <MenuItem fx:id="saveAs" onAction="#saveAs" text="Save As"/>
+                                <MenuItem fx:id="open" onAction="#open" text="Open"/>
+                                <MenuItem fx:id="quit" onAction="#quit" text="Quit"/>
                             </items>
                         </Menu>
                         <Menu text="Edit">
                             <items>
-                                <MenuItem fx:id="undo" text="Undo" />
-                                <MenuItem fx:id="redo" text="Redo" />
+                                <MenuItem fx:id="undo" text="Undo"/>
+                                <MenuItem fx:id="redo" text="Redo"/>
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Insert">
                             <items>
-                                <MenuItem fx:id="node" text="Node" />
-                                <MenuItem fx:id="edge" text="Edge" />
+                                <MenuItem fx:id="node" text="Node"/>
+                                <MenuItem fx:id="edge" text="Edge"/>
                             </items>
                         </Menu>
                         <Menu text="Help">
                             <items>
-                                <MenuItem text="About" />
+                                <MenuItem text="About"/>
                             </items>
                         </Menu>
                     </menus>
@@ -53,12 +55,12 @@
                     <items>
                         <ToggleButton mnemonicParsing="false" selected="true">
                             <toggleGroup>
-                                <ToggleGroup fx:id="tools" />
+                                <ToggleGroup fx:id="tools"/>
                             </toggleGroup>
                             <graphic>
                                 <ImageView fitHeight="20.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@Cursor_placeholder.png" />
+                                        <Image url="@Cursor_placeholder.png"/>
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -67,7 +69,7 @@
                             <graphic>
                                 <ImageView fitHeight="20.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@Hand_Placeholder.png" />
+                                        <Image url="@Hand_Placeholder.png"/>
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -77,21 +79,24 @@
             </children>
         </VBox>
     </top>
-   <center>
-      <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <ScrollPane fx:id="scroller" prefHeight="200.0" prefWidth="200.0">
-               <content>
-                  <AnchorPane fx:id="body" prefHeight="200.0" prefWidth="200.0">
-                     <padding>
-                        <Insets bottom="100.0" left="100.0" right="100.0" top="100.0" />
-                     </padding></AnchorPane>
-               </content></ScrollPane>
+    <center>
+        <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <ScrollPane fx:id="scroller" prefHeight="200.0" prefWidth="200.0">
+                    <content>
+                        <AnchorPane fx:id="body" prefHeight="200.0" prefWidth="200.0">
+                            <padding>
+                                <Insets bottom="100.0" left="100.0" right="100.0" top="100.0"/>
+                            </padding>
+                        </AnchorPane>
+                    </content>
+                </ScrollPane>
                 <Label fx:id="position" alignment="BOTTOM_LEFT" StackPane.alignment="BOTTOM_LEFT">
-               <StackPane.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </StackPane.margin></Label>
-         </children>
-      </StackPane>
-   </center>
+                    <StackPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                    </StackPane.margin>
+                </Label>
+            </children>
+        </StackPane>
+    </center>
 </BorderPane>
