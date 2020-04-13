@@ -67,10 +67,10 @@ public class PathFinder {
         // Calculate the distance of each node from the destination if coordinates are in the data
         if (hasCoords) {
             for (NodeEntry entry : priorityQueue) {
-                int x1 = (int) entry.node.data.get(MapParser.DATA_LABELS.X);
-                int y1 = (int) entry.node.data.get(MapParser.DATA_LABELS.Y);
-                int x2 = (int) destination.data.get(MapParser.DATA_LABELS.X);
-                int y2 = (int) destination.data.get(MapParser.DATA_LABELS.Y);
+                double x1 = entry.node.position.getX();
+                double y1 = entry.node.position.getY();
+                double x2 = destination.position.getX();
+                double y2 = destination.position.getY();
 
                 int distance = (int) Math.round(Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
 
@@ -131,7 +131,7 @@ public class PathFinder {
         priorityQueue.add(newEntry);
         priorityQueueKey.put(node, newEntry);
 
-        if (node.data.containsKey(MapParser.DATA_LABELS.X) && node.data.containsKey(MapParser.DATA_LABELS.X)) {
+        if (node.position != null) {
             if (priorityQueue.size() == 1) hasCoords = true;
         } else {
             hasCoords = false;
