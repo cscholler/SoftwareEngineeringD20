@@ -40,7 +40,7 @@
                         </Menu>
                         <Menu mnemonicParsing="false" text="Insert">
                             <items>
-                                <MenuItem fx:id="node" text="Node"/>
+                                <MenuItem fx:id="node" text="Node" onAction="#insertNode"/>
                                 <MenuItem fx:id="edge" text="Edge"/>
                             </items>
                         </Menu>

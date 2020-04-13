@@ -69,7 +69,7 @@ public class MapViewer {
     private int circleRadius = 12;
     private Color nodeColor = Color.ORANGE;
     private Paint highLightColor = Color.CYAN;
-    private double highlightRadius = 2;
+    private double highlightThickness = 2;
 
     private double zoomLevel = 1;
     private Scene scene;
@@ -78,6 +78,18 @@ public class MapViewer {
         for (NodeGUI nodeGUI : selectedNodes.keySet())
             nodeGUI.setHighlighted(false);
         selectedNodes.clear();
+    }
+
+    private void removeNode(NodeGUI nodeGUI) {
+        System.out.println("Removing Node " + nodeGUI.node.getName());
+        nodes.remove(nodeGUI);
+        body.getChildren().remove(nodeGUI.gui);
+        graph.removeNode(nodeGUI.node);
+        for (Node neighbor : nodeGUI.node.getNeighbors()) {
+            Edge edgeToNode = neighbor.edgeFromDest(nodeGUI.node);
+            neighbor.removeEdge(edgeToNode);
+            body.getChildren().removeAll(edges.get(edgeToNode).getAllNodes());
+        }
     }
 
     public void init() {
@@ -100,13 +112,32 @@ public class MapViewer {
             }
         });
 
-        body.addEventHandler(MouseEvent.ANY, event -> {
-            if (event.getButton() == MouseButton.PRIMARY && !event.isShortcutDown() && !event.isShiftDown() && !onSelectable)
+        body.setOnMouseClicked(event -> {
+            if (event.isPrimaryButtonDown()) {
                 clearSelection();
-            if (event.getButton() != MouseButton.MIDDLE) event.consume();
+            }
         });
 
-        scroller.setOnMouseDragged(event -> position.setText(positionInfo()));
+        scene.setOnKeyReleased(event -> {
+            if(event.getCode().equals(KeyCode.DELETE)) {
+                for (NodeGUI nodeGUI : selectedNodes.keySet())
+                    removeNode(nodeGUI);
+            }
+        });
+
+        // Change the position of all the selected nodes as the mouse is being dragged keeping their offset
+        body.setOnMouseDragged(event -> {
+            if(dragging) {
+                for (NodeGUI gui : selectedNodes.keySet()) {
+                    gui.setLayoutPos(selectedNodes.get(gui).add(new Point2D(event.getX(), event.getY())));
+                }
+            }
+            position.setText(positionInfo());
+        });
+
+        body.addEventHandler(MouseEvent.ANY, event -> {
+            if (event.getButton() != MouseButton.MIDDLE) event.consume();
+        });
     }
 
     private void coreShortcuts() {
@@ -180,7 +211,15 @@ public class MapViewer {
 
         graph = MapParser.parseMapToGraph(data.getNodeFile(), data.getEdgeFile());
 
-        if (graph != null) body.getChildren().addAll(paneFromGraph(graph).getChildren());
+        if (graph != null) {
+            body.getChildren().clear();
+            body.getChildren().addAll(paneFromGraph(graph).getChildren());
+        }
+    }
+
+    @FXML
+    private void insertNode() {
+
     }
 
     private String positionInfo() {
@@ -207,7 +246,7 @@ public class MapViewer {
             nodeGUI.gui.setRadius(circleRadius);
             nodeGUI.gui.fillProperty().setValue(nodeColor);
             nodeGUI.setHighlightColor(highLightColor);
-            nodeGUI.setHighlightRadius(highlightRadius);
+            nodeGUI.setHighlightRadius(highlightThickness);
 
             Point2D zoomedPos = new Point2D(nodeGUI.layoutX.get() * zoomLevel, nodeGUI.layoutY.get() * zoomLevel);
             nodeGUI.setLayoutPos(zoomedPos);
@@ -246,7 +285,8 @@ public class MapViewer {
             // -----------Handle moving the nodes-----------
 
             // When a mouse drag is started, check if the node is selected and, if so, record the offset of every selected node from the mouse
-            nodeGUI.gui.setOnDragDetected(event -> {
+            /*nodeGUI.gui.setOnDragDetected(event -> {
+                System.out.println("Drag detected");
                 if(selectedNodes.keySet().contains(nodeGUI) && event.isPrimaryButtonDown()) { // TODO: This condition is not met after it is met once for some reason
                     for(NodeGUI gui : selectedNodes.keySet()) {
                         selectedNodes.replace(gui, gui.getLayoutPos().subtract(new Point2D(event.getX(), event.getY())));
@@ -255,18 +295,19 @@ public class MapViewer {
                     dragging = true;
                     scene.setCursor(Cursor.MOVE);
                 }
-            });
+            });*/
 
-            // Change the position of all the selected nodes as the mouse is being dragged keeping their offset
-            nodeGUI.gui.setOnMouseDragged(event -> {
-                if(dragging) {
-                    for (NodeGUI gui : selectedNodes.keySet()) {
-                        gui.setLayoutPos(selectedNodes.get(gui).add(new Point2D(event.getX(), event.getY())));
-                    }
+            nodeGUI.gui.setOnMousePressed(event -> {
+                if(selectedNodes.size() > 0 && event.isPrimaryButtonDown()) { // TODO: This condition is not met after it is met once for some reason
+                    for(NodeGUI gui : selectedNodes.keySet())
+                        selectedNodes.replace(gui, gui.getLayoutPos().subtract(new Point2D(event.getX(), event.getY())));
+
+                    dragging = true;
+                    scene.setCursor(Cursor.MOVE);
                 }
             });
 
-            nodeGUI.gui.setOnDragDone(event -> {
+            nodeGUI.gui.setOnMouseReleased(event -> {
                 for (NodeGUI gui : selectedNodes.keySet()) {
                     gui.node.position = gui.getLayoutPos().multiply(1 / zoomLevel);
                     selectedNodes.replace(gui, gui.getLayoutPos().subtract(new Point2D(event.getX(), event.getY())));
@@ -284,7 +325,7 @@ public class MapViewer {
             EdgeGUI edgeGUI = new EdgeGUI(edge);
             edgeGUI.gui.strokeProperty().setValue(nodeColor);
             edgeGUI.setHighlightColor(highLightColor);
-            edgeGUI.setHighlightRadius(highlightRadius);
+            edgeGUI.setHighlightRadius(highlightThickness);
 
             // Set start position of the line to the source node
             edgeGUI.startX.bind(nodes.get(edge.getSource()).layoutX);

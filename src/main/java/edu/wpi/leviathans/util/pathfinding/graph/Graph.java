@@ -83,6 +83,23 @@ public class Graph {
     }
 
     /**
+     * Gets a collection of all the edges pointing to a given node.
+     *
+     * @param node The node the edges all point to
+     * @return a collection of edges pointing to the node
+     */
+    public Collection<Edge> getEdgesPointingTo(Node node) {
+        Collection<Edge> pointingEdges = new ArrayList<>();
+
+        for (Edge edge : getEdges()) {
+            if (edge.destination.equals(node))
+                pointingEdges.add(edge);
+        }
+
+        return pointingEdges;
+    }
+
+    /**
      * Removes a given node.
      *
      * @param node The node to remove
