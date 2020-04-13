@@ -1,20 +1,21 @@
 package edu.wpi.leviathans.views;
 
-import com.google.inject.Inject;
-import edu.wpi.leviathans.pathFinding.Path;
-import edu.wpi.leviathans.pathFinding.PathFinder;
-import edu.wpi.leviathans.pathFinding.graph.Edge;
-import edu.wpi.leviathans.pathFinding.graph.Graph;
-import edu.wpi.leviathans.pathFinding.graph.Node;
-
 import java.util.Iterator;
 
-import edu.wpi.leviathans.services.db.DatabaseService;
+import com.google.inject.Inject;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+
+import edu.wpi.leviathans.services.db.DatabaseService;
+import edu.wpi.leviathans.util.pathfinding.Path;
+import edu.wpi.leviathans.util.pathfinding.PathFinder;
+import edu.wpi.leviathans.util.pathfinding.graph.Edge;
+import edu.wpi.leviathans.util.pathfinding.graph.Graph;
+import edu.wpi.leviathans.util.pathfinding.graph.Node;
 
 public class PathfinderController {
 	PathFinder pathfinder = new PathFinder();

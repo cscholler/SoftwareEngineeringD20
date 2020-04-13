@@ -1,4 +1,4 @@
-package edu.wpi.leviathans.pathFinding.graph;
+package edu.wpi.leviathans.util.pathfinding.graph;
 
 import java.util.HashMap;
 

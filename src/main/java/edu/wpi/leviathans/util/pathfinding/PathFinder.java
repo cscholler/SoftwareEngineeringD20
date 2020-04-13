@@ -1,8 +1,14 @@
-package edu.wpi.leviathans.pathFinding;
+package edu.wpi.leviathans.util.pathfinding;
 
-import edu.wpi.leviathans.pathFinding.graph.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.PriorityQueue;
 
-import java.util.*;
+import edu.wpi.leviathans.util.pathfinding.graph.Edge;
+import edu.wpi.leviathans.util.pathfinding.graph.Graph;
+import edu.wpi.leviathans.util.pathfinding.graph.Node;
 
 public class PathFinder {
 

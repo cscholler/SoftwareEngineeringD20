@@ -1,7 +1,11 @@
 package edu.wpi.leviathans.services.db;
 
-import java.sql.*;
-
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -11,8 +15,8 @@ import edu.wpi.leviathans.services.Service;
 
 @Slf4j
 public class DatabaseService extends Service {
-	private Connection connection;
-	private Properties props;
+	private Connection connection = null;
+	private Properties props = null;
 	private ArrayList<ResultSet> usedResSets = new ArrayList<>();
 	private ArrayList<Statement> usedStmts = new ArrayList<>();
 
@@ -48,8 +52,11 @@ public class DatabaseService extends Service {
 		}
 
 		try {
-			connection = DriverManager.getConnection(DBConstants.DB_URL, props);
-
+			if (props != null) {
+				connection = DriverManager.getConnection(DBConstants.DB_URL, props);
+			} else {
+				connection = DriverManager.getConnection(DBConstants.DB_URL);
+			}
 			log.info("Connection established.");
 		} catch (SQLException ex) {
 			log.error("Encountered SQLException.", ex);
@@ -67,30 +74,16 @@ public class DatabaseService extends Service {
 			if (connection != null) {
 				connection.commit();
 				connection.close();
+				connection = null;
 			}
-
 			log.info("Connection closed.");
 		} catch (SQLException ex) {
 			log.error("SQL Exception", ex);
 		}
 	}
 
-	public ArrayList<ResultSet> executeQueries(ArrayList<String> queries, ArrayList<ArrayList<Object>> valuesSets) {
-		ArrayList<ResultSet> resSets = new ArrayList<>();
-
-		if (queries.size() != valuesSets.size()) {
-			throw new IllegalArgumentException();
-		}
-		for (int i = 0; i < queries.size(); i++) {
-			resSets.add(executeQuery(queries.get(i), valuesSets.get(i)));
-		}
-
-		return resSets;
-	}
-	
 	public ResultSet executeQuery(String query, ArrayList<Object> values) {
 		ResultSet resSet = null;
-
 		try {
 			if (values.size() == 0) {
 				Statement stmt;
@@ -103,28 +96,22 @@ public class DatabaseService extends Service {
 		} catch (SQLException ex) {
 			log.error("Encountered SQLException.", ex);
 		}
-
 		return resSet;
 	}
 
-	public boolean executeUpdates(ArrayList<String> updates, ArrayList<ArrayList<Object>> valuesSets) {
-		boolean isSuccess = true;
-
-		if (updates.size() != valuesSets.size()) {
+	public ArrayList<ResultSet> executeQueries(ArrayList<String> queries, ArrayList<ArrayList<Object>> valuesList) {
+		ArrayList<ResultSet> resSets = new ArrayList<>();
+		if (queries.size() != valuesList.size()) {
 			throw new IllegalArgumentException();
 		}
-		for (int i = 0; i < updates.size(); i++) {
-			if (!executeUpdate(updates.get(i), valuesSets.get(i))) {
-				isSuccess = false;
-			}
+		for (int i = 0; i < queries.size(); i++) {
+			resSets.add(executeQuery(queries.get(i), valuesList.get(i)));
 		}
-
-		return isSuccess;
+		return resSets;
 	}
 
 	public boolean executeUpdate(String update, ArrayList<Object> values) {
 		boolean isSuccess = false;
-
 		try {
 			if (values.size() == 0) {
 				Statement stmt;
@@ -137,13 +124,24 @@ public class DatabaseService extends Service {
 		} catch (SQLException ex) {
 			log.error("Encountered SQLException.", ex);
 		}
+		return isSuccess;
+	}
 
+	public boolean executeUpdates(ArrayList<String> updates, ArrayList<ArrayList<Object>> valuesList) {
+		boolean isSuccess = true;
+		if (updates.size() != valuesList.size()) {
+			throw new IllegalArgumentException();
+		}
+		for (int i = 0; i < updates.size(); i++) {
+			if (!executeUpdate(updates.get(i), valuesList.get(i))) {
+				isSuccess = false;
+			}
+		}
 		return isSuccess;
 	}
 
 	public PreparedStatement fillPreparedStatement(String query, ArrayList<Object> values) {
 		PreparedStatement pStmt = null;
-
 		try {
 			pStmt = connection.prepareStatement(query);
 			for (int i = 1; i < values.size() + 1; i++) {
@@ -157,7 +155,22 @@ public class DatabaseService extends Service {
 		} catch (SQLException ex) {
 			log.error("Encountered SQLException.", ex);
 		}
-
 		return pStmt;
+	}
+
+	public void collectUsedResultSet(ResultSet resSet) {
+		usedResSets.add(resSet);
+	}
+
+	public void collectUsedResultSets(ArrayList<ResultSet> resSets) {
+		usedResSets.addAll(resSets);
+	}
+
+	public void collectUsedStatement(Statement stmt) {
+		usedStmts.add(stmt);
+	}
+
+	public void collectUsedStatements(ArrayList<Statement> stmt) {
+		usedStmts.addAll(stmt);
 	}
 }

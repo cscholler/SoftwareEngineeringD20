@@ -1,10 +1,11 @@
-package edu.wpi.leviathans.pathFinding;
-
-import edu.wpi.leviathans.pathFinding.graph.*;
+package edu.wpi.leviathans.util.pathfinding;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import edu.wpi.leviathans.util.pathfinding.graph.Edge;
+import edu.wpi.leviathans.util.pathfinding.graph.Node;
 
 public class Path implements Iterable<Node> {
 

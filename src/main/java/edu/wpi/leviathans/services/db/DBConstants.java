@@ -1,7 +1,5 @@
 package edu.wpi.leviathans.services.db;
 
-import javax.print.StreamPrintServiceFactory;
-
 public class DBConstants {
 	public static final String DB_DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
 	public static final String DB_URL = "jdbc:derby:myDB;create=true";

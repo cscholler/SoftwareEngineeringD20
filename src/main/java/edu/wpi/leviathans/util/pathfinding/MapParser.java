@@ -1,9 +1,16 @@
-package edu.wpi.leviathans.pathFinding;
+package edu.wpi.leviathans.util.pathfinding;
 
-import edu.wpi.leviathans.pathFinding.graph.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
-import java.io.*;
 import lombok.extern.slf4j.Slf4j;
+
+import edu.wpi.leviathans.util.pathfinding.graph.Edge;
+import edu.wpi.leviathans.util.pathfinding.graph.Graph;
+import edu.wpi.leviathans.util.pathfinding.graph.Node;
 
 @Slf4j
 public class MapParser {
