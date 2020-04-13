@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -8,7 +9,10 @@
 
 <AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.leviathans.App">
    <children>
-      <Button fx:id="btnBack" layoutX="580.0" layoutY="761.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Back" />
+      <Button fx:id="btnBack" layoutX="566.0" layoutY="754.0" mnemonicParsing="false" onAction="#handleButtonAction" style="-fx-background-color: #082A55;" text="Back" textFill="WHITE">
+         <font>
+            <Font name="Century Gothic" size="18.0" />
+         </font></Button>
       <TableView layoutX="45.0" layoutY="41.0" prefHeight="754.0" prefWidth="1200.0" AnchorPane.bottomAnchor="46.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columns>
           <TableColumn prefWidth="200.0" text="nodeID" />
