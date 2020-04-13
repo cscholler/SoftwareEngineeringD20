@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,6 +38,7 @@ public class App extends Application {
       stage = (Stage) btnModify.getScene().getWindow();
       root = FXMLLoader.load(getClass().getResource("Modify.fxml"));
 
+
     } else if (e.getSource() == btnDownload) {
 
       stage = (Stage) btnDownload.getScene().getWindow();
@@ -50,7 +52,7 @@ public class App extends Application {
     } else {
 
       stage = (Stage) btnBack.getScene().getWindow();
-      root = FXMLLoader.load(getClass().getResource("Window.fxml"));
+      root = FXMLLoader.load(getClass().getResource("Display.fxml"));
 
     }
 
