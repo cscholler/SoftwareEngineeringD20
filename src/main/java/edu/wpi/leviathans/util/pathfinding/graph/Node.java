@@ -1,5 +1,6 @@
 package edu.wpi.leviathans.util.pathfinding.graph;
 
+import javafx.geometry.Point2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -7,6 +8,7 @@ import java.util.HashMap;
 public class Node {
 
   public Graph graph;
+  public Point2D position;
   public HashMap<String, Object> data = new HashMap<>();
 
   private Collection<Edge> edges = new ArrayList<>();
@@ -101,26 +103,6 @@ public class Node {
     edges.remove(toRemove);
     toRemove.source = null;
   }
-
-  /**
-   * Gets number data from the node
-   *
-   * @param key The name of the data field
-   * @return the number associated with the given key (could be integer, double, float, etc.)
-   */
-  /*public <T extends Number> T getNumberData(String key) {
-      return (T) (Number) Double.parseDouble(data.get(key));
-  }
-
-  /**
-   * Adds an number value to the nodes data with the given label
-   *
-   * @param key   The name of the data field
-   * @param value The number value to add (could be integer, double, float, etc.)
-   */
-  /*public void putNumberData(String key, Number value) {
-      data.put(key, value.toString());
-  }*/
 
   /**
    * Finds an edge in this Node that leads to a specified Node.

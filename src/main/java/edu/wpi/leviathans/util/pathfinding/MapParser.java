@@ -1,35 +1,44 @@
 package edu.wpi.leviathans.util.pathfinding;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import edu.wpi.leviathans.util.pathfinding.graph.*;
+import javafx.geometry.Point2D;
 
-import lombok.extern.slf4j.Slf4j;
+import java.io.*;
+import java.util.ArrayList;
 
-import edu.wpi.leviathans.util.pathfinding.graph.Edge;
-import edu.wpi.leviathans.util.pathfinding.graph.Graph;
-import edu.wpi.leviathans.util.pathfinding.graph.Node;
-
-@Slf4j
 public class MapParser {
 
-    public static final class DATA_LABELS {
-        public static final String X = "x";
-        public static final String Y = "y";
-        public static final String NODE_TYPE = "nodeType";
-        public static final String SHORT_NAME = "shortName";
-        public static final String LONG_NAME = "longName";
+    public static class DATA_LABELS {
+        public static String X = "x";
+        public static String Y = "y";
+        public static String NODE_TYPE = "nodeType";
+        public static String SHORT_NAME = "shortName";
+        public static String LONG_NAME = "longName";
     }
 
-    public static final class NODE_TYPES {
-        public static final String CONFERENCE = "CONF";
-        public static final String HALL = "HALL";
-        public static final String DEPARTMENT = "DEPT";
-        public static final String INFO = "INFO";
-        public static final String LAB = "LABS";
-        public static final String RESTROOM = "REST";
+    public static class NODE_TYPES {
+        public static String CONFERENCE = "CONF";
+        public static String HALL = "HALL";
+        public static String DEPARTMENT = "DEPT";
+        public static String INFO = "INFO";
+        public static String LAB = "LABS";
+        public static String RESTROOM = "REST";
+    }
+
+    /**
+     * Writes a graph to two csv files and returns an array containing both of them.
+     * @param graph
+     * @return
+     */
+    public static ArrayList<File> parseGraphToMap(Graph graph) {
+        try {
+            FileWriter nodesFile = new FileWriter("nodesFile.csv");
+            FileWriter edgesFile = new FileWriter("edgesFile.csv");
+        } catch (IOException e) {
+
+        }
+
+        return new ArrayList<>(2);
     }
 
     public static Graph parseMapToGraph(File nodesFile, File edgesFile) {
@@ -50,8 +59,7 @@ public class MapParser {
                 String[] data = row.split(",");
 
                 Node newNode = new Node(data[0]);
-                newNode.data.put(DATA_LABELS.X, Integer.parseInt(data[1]));
-                newNode.data.put(DATA_LABELS.Y, Integer.parseInt(data[2]));
+                newNode.position = new Point2D(Double.parseDouble(data[1]), Double.parseDouble(data[2]));
                 newNode.data.put(DATA_LABELS.NODE_TYPE, data[5]);
                 newNode.data.put(DATA_LABELS.LONG_NAME, data[6]);
                 newNode.data.put(DATA_LABELS.SHORT_NAME, data[7]);
@@ -66,10 +74,10 @@ public class MapParser {
                 Node destination = newGraph.getNode(data[2]);
 
                 if (source != null && destination != null) {
-                    int x1 = (int) source.data.get(DATA_LABELS.X);
-                    int y1 = (int) source.data.get(DATA_LABELS.Y);
-                    int x2 = (int) destination.data.get(DATA_LABELS.X);
-                    int y2 = (int) destination.data.get(DATA_LABELS.Y);
+                    double x1 = source.position.getX();
+                    double y1 = source.position.getY();
+                    double x2 = destination.position.getX();
+                    double y2 = destination.position.getY();
 
                     int length = (int) Math.round(Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
 
@@ -80,9 +88,9 @@ public class MapParser {
             return newGraph;
 
         } catch (FileNotFoundException e) {
-            log.error("File not found"); //Should never get here
+            e.printStackTrace();
         } catch (IOException e) {
-            log.error("Error in reading file");
+            e.printStackTrace();
         }
 
         return null;
