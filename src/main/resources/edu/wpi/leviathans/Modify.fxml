@@ -3,225 +3,115 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="735.0" prefWidth="1197.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.leviathans.App">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.leviathans.App">
    <children>
-      <SplitPane dividerPositions="0.32552301255230126" layoutX="499.0" layoutY="215.0" prefHeight="735.0" prefWidth="1197.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+      <GridPane layoutX="150.0" layoutY="143.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="292.5332946777344" minWidth="10.0" prefWidth="262.13330078125" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="344.26666259765625" minWidth="10.0" prefWidth="337.86669921875" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="74.0" minHeight="10.0" prefHeight="33.99998245239258" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="345.6000175476074" minHeight="10.0" prefHeight="324.8000061035156" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="123.4000244140625" minHeight="5.5333251953125" prefHeight="40.399993896484375" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="15.0" GridPane.rowIndex="1">
                <children>
-                  <GridPane layoutX="-117.0" layoutY="61.0" prefHeight="733.2" prefWidth="386.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                     <children>
-                        <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0">
-                           <children>
-                              <Label text="Label">
-                                 <font>
-                                    <Font name="Segoe UI Bold" size="21.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Label">
-                                 <font>
-                                    <Font name="Segoe UI Bold" size="21.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Label">
-                                 <font>
-                                    <Font name="Segoe UI Bold" size="21.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Label">
-                                 <font>
-                                    <Font name="Segoe UI Bold" size="21.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Label">
-                                 <font>
-                                    <Font name="Segoe UI Bold" size="21.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Label">
-                                 <font>
-                                    <Font name="Segoe UI Bold" size="21.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Label">
-                                 <font>
-                                    <Font name="Segoe UI Bold" size="21.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Label">
-                                 <font>
-                                    <Font name="Segoe UI Bold" size="21.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                           <GridPane.margin>
-                              <Insets left="30.0" top="100.0" />
-                           </GridPane.margin>
-                        </VBox>
-                        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
-                           <children>
-                              <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0">
-                                 <opaqueInsets>
-                                    <Insets />
-                                 </opaqueInsets>
-                                 <VBox.margin>
-                                    <Insets top="100.0" />
-                                 </VBox.margin>
-                                 <children>
-                                    <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0">
-                                       <children>
-                                          <Label text="Label">
-                                             <font>
-                                                <Font name="Segoe UI" size="21.0" />
-                                             </font>
-                                          </Label>
-                                          <Label text="Label">
-                                             <font>
-                                                <Font name="Segoe UI" size="21.0" />
-                                             </font>
-                                          </Label>
-                                          <Label text="Label">
-                                             <font>
-                                                <Font name="Segoe UI" size="21.0" />
-                                             </font>
-                                          </Label>
-                                          <Label text="Label">
-                                             <font>
-                                                <Font name="Segoe UI" size="21.0" />
-                                             </font>
-                                          </Label>
-                                          <Label text="Label">
-                                             <font>
-                                                <Font name="Segoe UI" size="21.0" />
-                                             </font>
-                                          </Label>
-                                          <Label text="Label">
-                                             <font>
-                                                <Font name="Segoe UI" size="21.0" />
-                                             </font>
-                                          </Label>
-                                          <Label text="Label">
-                                             <font>
-                                                <Font name="Segoe UI" size="21.0" />
-                                             </font>
-                                          </Label>
-                                          <Label text="Label">
-                                             <font>
-                                                <Font name="Segoe UI" size="21.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                       <opaqueInsets>
-                                          <Insets />
-                                       </opaqueInsets>
-                                    </VBox>
-                                 </children>
-                              </VBox>
-                           </children>
-                        </VBox>
-                     </children>
-                  </GridPane>
+                  <Label text="NodeID">
+                     <font>
+                        <Font name="Segoe UI" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label text="XCoord">
+                     <font>
+                        <Font name="Segoe UI" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label text="YCoord">
+                     <font>
+                        <Font name="Segoe UI" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label text="Floor">
+                     <font>
+                        <Font name="Segoe UI" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label text="Building">
+                     <font>
+                        <Font name="Segoe UI" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label text="NodeType">
+                     <font>
+                        <Font name="Segoe UI" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label text="ShortName">
+                     <font>
+                        <Font name="Segoe UI" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label text="LongName">
+                     <font>
+                        <Font name="Segoe UI" size="16.0" />
+                     </font>
+                  </Label>
                </children>
-            </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <padding>
+                  <Insets left="100.0" />
+               </padding>
+            </VBox>
+            <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
-                  <GridPane layoutX="1.0" layoutY="1.0" prefHeight="733.2" prefWidth="803.2" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="1.0">
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints maxHeight="728.8" minHeight="10.0" prefHeight="655.3333129882812" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="238.60000610351562" minHeight="0.0" prefHeight="73.4666870117187" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                     <children>
-                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
-                           <children>
-                              <Label text="Label">
-                                 <font>
-                                    <Font name="Segoe UI Bold" size="21.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Label">
-                                 <font>
-                                    <Font name="Segoe UI Bold" size="21.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Label">
-                                 <font>
-                                    <Font name="Segoe UI Bold" size="21.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Label">
-                                 <font>
-                                    <Font name="Segoe UI Bold" size="21.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Label">
-                                 <font>
-                                    <Font name="Segoe UI Bold" size="21.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Label">
-                                 <font>
-                                    <Font name="Segoe UI Bold" size="21.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Label">
-                                 <font>
-                                    <Font name="Segoe UI Bold" size="21.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Label">
-                                 <font>
-                                    <Font name="Segoe UI Bold" size="21.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                           <padding>
-                              <Insets left="40.0" />
-                           </padding>
-                        </VBox>
-                        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="23.0" GridPane.columnIndex="1">
-                           <children>
-                              <TextField maxWidth="300.0" />
-                              <TextField maxWidth="300.0" />
-                              <TextField maxWidth="300.0" />
-                              <TextField maxWidth="300.0" />
-                              <TextField maxWidth="300.0" />
-                              <TextField maxWidth="300.0" />
-                              <TextField maxWidth="300.0" />
-                              <TextField maxWidth="300.0" />
-                           </children>
-                        </VBox>
-                     </children>
-                  </GridPane>
-                  <Button fx:id="btnBack" layoutX="46.0" layoutY="679.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Back" />
+                  <TextField maxWidth="250.0" />
+                  <TextField maxWidth="250.0" />
+                  <TextField maxWidth="250.0" />
+                  <TextField maxWidth="250.0" />
+                  <TextField maxWidth="250.0" />
+                  <TextField maxWidth="250.0" />
+                  <TextField maxWidth="250.0" />
+                  <TextField maxWidth="250.0" />
                </children>
-            </AnchorPane>
-        </items>
-      </SplitPane>
+            </VBox>
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #082A55;">
+               <children>
+                  <Label layoutX="22.0" layoutY="9.0" text="Editing Node:" textFill="WHITE">
+                     <font>
+                        <Font name="Century Gothic" size="13.0" />
+                     </font></Label>
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #082A55;" GridPane.columnIndex="1" />
+            <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+                  <Button fx:id="btnBack" mnemonicParsing="false" onAction="#handleButtonAction" text="Cancel">
+                     <font>
+                        <Font name="Century Gothic" size="13.0" />
+                     </font>
+                  </Button>
+                  <Button mnemonicParsing="false" style="-fx-background-color: #082a55;" text="Save" textFill="WHITE">
+                     <font>
+                        <Font name="Century Gothic" size="13.0" />
+                     </font>
+                  </Button>
+               </children>
+               <padding>
+                  <Insets right="30.0" />
+               </padding>
+            </HBox>
+         </children>
+      </GridPane>
    </children>
 </AnchorPane>

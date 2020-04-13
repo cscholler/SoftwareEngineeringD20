@@ -5,14 +5,30 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.leviathans.App">
    <children>
-      <Button fx:id="btnBack" layoutX="356.0" layoutY="747.0" mnemonicParsing="false" onAction="#handleButtonAction" style="-fx-background-color: #082A55;" text="Back" textFill="WHITE">
-         <font>
-            <Font name="Century Gothic" size="18.0" />
-         </font></Button>
+      <HBox layoutX="48.0" layoutY="749.0" spacing="50.0">
+         <children>
+            <Button fx:id="btnModify" mnemonicParsing="false" onAction="#handleButtonAction" style="-fx-background-color: #082A55;" text="Edit" textFill="WHITE">
+               <font>
+                  <Font name="Century Gothic" size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnDemonstration" mnemonicParsing="false" onAction="#handleButtonAction" style="-fx-background-color: #082A55;" text="Map" textFill="WHITE">
+               <font>
+                  <Font name="Century Gothic" size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnDownload" mnemonicParsing="false" onAction="#handleButtonAction" style="-fx-background-color: #082A55;" text="Download" textFill="WHITE">
+               <font>
+                  <Font name="Century Gothic" size="18.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
       <ScrollPane prefHeight="744.0" prefWidth="1199.0">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="743.0" prefWidth="1199.0">
@@ -23,8 +39,8 @@
                       <TableColumn prefWidth="150.0" text="xcoord" />
                         <TableColumn prefWidth="150.0" text="ycoord" />
                         <TableColumn prefWidth="50.0" text="floor" />
-                        <TableColumn prefWidth="143.60003662109375" text="building" />
-                        <TableColumn prefWidth="144.66668701171875" text="nodeType" />
+                        <TableColumn prefWidth="145.0" text="building" />
+                        <TableColumn prefWidth="150.0" text="nodeType" />
                         <TableColumn prefWidth="211.7333984375" text="longName" />
                         <TableColumn prefWidth="150.0" text="shortName" />
                     </columns>
@@ -33,10 +49,5 @@
             </AnchorPane>
         </content>
       </ScrollPane>
-      <Button fx:id="btnBack1" layoutX="753.0" layoutY="748.0" mnemonicParsing="false" onAction="#handleButtonAction" style="-fx-background-color: #082A55;" text="Edit" textFill="WHITE">
-         <font>
-            <Font name="Century Gothic" size="18.0" />
-         </font>
-      </Button>
    </children>
 </AnchorPane>
