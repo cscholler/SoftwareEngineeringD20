@@ -18,12 +18,21 @@ public class DBConstants {
 					"visible BOOLEAN" +
 					"PRIMARY KEY (id)))";
 
+	public static final String updateNode =
+			"UPDATE Nodes " +
+					"SET x_pos = ?, y_pos = ?" +
+					"WHERE id = ?";
+
 	public static final String createEdgeTable =
 			"CREATE TABLE Edges(" +
 					"id VARCHAR(21), " +
 					"start VARCHAR(10) REFERENCES Nodes (id), " +
 					"end VARCHAR(10) REFERENCES Node (id)" +
 					"PRIMARY KEY (id)))";
+
+	public static final String removeEdge =
+			"DELETE FROM Node " +
+					"WHERE Node(id) = ?";
 
 	public static final String createDoctorTable =
 			"CREATE TABLE Doctors(" +
