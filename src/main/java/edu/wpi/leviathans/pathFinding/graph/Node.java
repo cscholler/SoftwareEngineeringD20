@@ -1,5 +1,6 @@
 package edu.wpi.leviathans.pathFinding.graph;
 
+import javafx.geometry.Point2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -7,6 +8,7 @@ import java.util.HashMap;
 public class Node {
 
   public Graph graph;
+  public Point2D position;
   public HashMap<String, Object> data = new HashMap<>();
 
   private Collection<Edge> edges = new ArrayList<>();

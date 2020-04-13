@@ -16,6 +16,8 @@ public class DataDialogueController {
     @FXML
     private TextField edgeField;
 
+    private final FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("CSV files .csv", "*.csv");
+
     @FXML
     private void cancel(ActionEvent event) {
         owner.stage.close();
@@ -30,14 +32,21 @@ public class DataDialogueController {
 
     @FXML
     private void fillNode() {
-        FileChooser nodeChooser = new FileChooser();
-        nodeField.setText(nodeChooser.showOpenDialog(owner.stage).getPath());
+        fillField(nodeField);
     }
 
     @FXML
     private void fillEdge() {
-        FileChooser edgeChooser = new FileChooser();
-        edgeField.setText(edgeChooser.showOpenDialog(owner.stage).getPath());
+        fillField(edgeField);
+    }
+
+    private void fillField(TextField field) {
+        FileChooser chooser = new FileChooser();
+        chooser.getExtensionFilters().add(filter);
+        chooser.setSelectedExtensionFilter(filter);
+
+        File chosenFile = chooser.showOpenDialog(owner.stage);
+        if(chosenFile != null) field.setText(chosenFile.getPath());
     }
 
 }

@@ -1,10 +1,10 @@
 package edu.wpi.leviathans.pathFinding;
 
 import edu.wpi.leviathans.pathFinding.graph.*;
+import javafx.geometry.Point2D;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MapParser {
 
@@ -59,8 +59,7 @@ public class MapParser {
                 String[] data = row.split(",");
 
                 Node newNode = new Node(data[0]);
-                newNode.data.put(DATA_LABELS.X, Integer.parseInt(data[1]));
-                newNode.data.put(DATA_LABELS.Y, Integer.parseInt(data[2]));
+                newNode.position = new Point2D(Double.parseDouble(data[1]), Double.parseDouble(data[2]));
                 newNode.data.put(DATA_LABELS.NODE_TYPE, data[5]);
                 newNode.data.put(DATA_LABELS.LONG_NAME, data[6]);
                 newNode.data.put(DATA_LABELS.SHORT_NAME, data[7]);
@@ -75,10 +74,10 @@ public class MapParser {
                 Node destination = newGraph.getNode(data[2]);
 
                 if (source != null && destination != null) {
-                    int x1 = (int) source.data.get(DATA_LABELS.X);
-                    int y1 = (int) source.data.get(DATA_LABELS.Y);
-                    int x2 = (int) destination.data.get(DATA_LABELS.X);
-                    int y2 = (int) destination.data.get(DATA_LABELS.Y);
+                    double x1 = source.position.getX();
+                    double y1 = source.position.getY();
+                    double x2 = destination.position.getX();
+                    double y2 = destination.position.getY();
 
                     int length = (int) Math.round(Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
 
