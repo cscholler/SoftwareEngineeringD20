@@ -1,22 +1,11 @@
-package edu.wpi.leviathans.pathFinding.mapViewer;
+package edu.wpi.leviathans.util.pathFinding.mapViewer;
 
-import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Point2D;
-import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
-
-import java.awt.event.ActionEvent;
 
 @Slf4j
 public class MapApp extends Application {

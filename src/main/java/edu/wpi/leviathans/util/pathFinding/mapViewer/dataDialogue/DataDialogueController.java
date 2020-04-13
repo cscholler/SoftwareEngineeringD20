@@ -1,4 +1,4 @@
-package edu.wpi.leviathans.pathFinding.mapViewer.dataDialogue;
+package edu.wpi.leviathans.util.pathFinding.mapViewer.dataDialogue;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

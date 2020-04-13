@@ -1,6 +1,6 @@
-package edu.wpi.leviathans.pathFinding;
+package edu.wpi.leviathans.util.pathFinding;
 
-import edu.wpi.leviathans.pathFinding.graph.*;
+import edu.wpi.leviathans.util.pathFinding.graph.*;
 
 import java.util.*;
 

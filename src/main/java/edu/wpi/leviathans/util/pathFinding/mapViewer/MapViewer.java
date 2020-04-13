@@ -1,9 +1,9 @@
-package edu.wpi.leviathans.pathFinding.mapViewer;
+package edu.wpi.leviathans.util.pathFinding.mapViewer;
 
-import edu.wpi.leviathans.pathFinding.MapParser;
-import edu.wpi.leviathans.pathFinding.graph.*;
+import edu.wpi.leviathans.util.pathFinding.MapParser;
+import edu.wpi.leviathans.util.pathFinding.graph.*;
 
-import edu.wpi.leviathans.pathFinding.mapViewer.dataDialogue.*;
+import edu.wpi.leviathans.util.pathFinding.mapViewer.dataDialogue.*;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXML;
@@ -19,7 +19,6 @@ import javafx.scene.shape.Circle;
 
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Shape;
 
 import java.util.ArrayList;
 import java.util.Collection;

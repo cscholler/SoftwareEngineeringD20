@@ -1,10 +1,10 @@
 package edu.wpi.leviathans.views;
 
-import edu.wpi.leviathans.pathFinding.Path;
-import edu.wpi.leviathans.pathFinding.PathFinder;
-import edu.wpi.leviathans.pathFinding.graph.Edge;
-import edu.wpi.leviathans.pathFinding.graph.Graph;
-import edu.wpi.leviathans.pathFinding.graph.Node;
+import edu.wpi.leviathans.util.pathFinding.Path;
+import edu.wpi.leviathans.util.pathFinding.PathFinder;
+import edu.wpi.leviathans.util.pathFinding.graph.Edge;
+import edu.wpi.leviathans.util.pathFinding.graph.Graph;
+import edu.wpi.leviathans.util.pathFinding.graph.Node;
 import java.util.Iterator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

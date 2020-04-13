@@ -1,8 +1,7 @@
-package edu.wpi.leviathans.pathFinding.graph;
+package edu.wpi.leviathans.util.pathFinding.graph;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.assertj.core.api.Assert.*;
 import org.junit.jupiter.api.Test;
 
 class GraphTest {

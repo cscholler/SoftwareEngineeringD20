@@ -1,11 +1,10 @@
-package edu.wpi.leviathans.pathFinding;
+package edu.wpi.leviathans.util.pathFinding;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import edu.wpi.leviathans.pathFinding.graph.Edge;
-import edu.wpi.leviathans.pathFinding.graph.Graph;
-import edu.wpi.leviathans.pathFinding.graph.Node;
+import edu.wpi.leviathans.util.pathFinding.graph.Edge;
+import edu.wpi.leviathans.util.pathFinding.graph.Graph;
+import edu.wpi.leviathans.util.pathFinding.graph.Node;
 import org.junit.jupiter.api.Test;
 
 class PathFinderTest {

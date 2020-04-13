@@ -1,8 +1,6 @@
-package edu.wpi.leviathans.pathFinding;
+package edu.wpi.leviathans.util.pathFinding;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import edu.wpi.leviathans.pathFinding.graph.Graph;
+import edu.wpi.leviathans.util.pathFinding.graph.Graph;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
