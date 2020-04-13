@@ -118,6 +118,7 @@ public class MapViewer {
         KeyCombination cy = new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_DOWN);
         KeyCombination co = new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN);
 
+        // Add shortcut prompts to buttons
         quit.setAccelerator(cq);
         save.setAccelerator(cs);
         saveAs.setAccelerator(css);
@@ -125,6 +126,7 @@ public class MapViewer {
         redo.setAccelerator(cy);
         open.setAccelerator(co);
 
+        // Give the shortcuts functionality within the scene TODO: the section above should do this but it doesn't for some reason
         scene.getAccelerators().put(cq, () -> quit());
         scene.getAccelerators().put(cs, () -> save());
         scene.getAccelerators().put(css, () -> saveAs());
@@ -210,17 +212,22 @@ public class MapViewer {
             Point2D zoomedPos = new Point2D(nodeGUI.layoutX.get() * zoomLevel, nodeGUI.layoutY.get() * zoomLevel);
             nodeGUI.setLayoutPos(zoomedPos);
 
-            // Handle selection
+            // -----------Handle selection-----------
+
+            // Highlight when moused on
             nodeGUI.gui.setOnMouseEntered(event -> {
                 onSelectable = true;
                 nodeGUI.setHighlighted(true);
             });
+
+            // unhighlight when moused off unless the node is selected
             nodeGUI.gui.setOnMouseExited(event -> {
                 onSelectable = false;
                 if (!selectedNodes.keySet().contains(nodeGUI))
                     nodeGUI.setHighlighted(false);
             });
 
+            // Different selection methods based on what shortcut is being held
             nodeGUI.gui.setOnMouseClicked(event -> {
                 if (event.isShiftDown()) {
                     if(!selectedNodes.keySet().contains(nodeGUI))
@@ -236,10 +243,11 @@ public class MapViewer {
                 }
             });
 
-            // Handle moving the nodes TODO: Fix
+            // -----------Handle moving the nodes-----------
+
+            // When a mouse drag is started, check if the node is selected and, if so, record the offset of every selected node from the mouse
             nodeGUI.gui.setOnDragDetected(event -> {
-                System.out.println("Drag Detected");
-                if(selectedNodes.keySet().contains(nodeGUI) && event.isPrimaryButtonDown()) {
+                if(selectedNodes.keySet().contains(nodeGUI) && event.isPrimaryButtonDown()) { // TODO: This condition is not met after it is met once for some reason
                     for(NodeGUI gui : selectedNodes.keySet()) {
                         selectedNodes.replace(gui, gui.getLayoutPos().subtract(new Point2D(event.getX(), event.getY())));
                         System.out.println("Offset for " + gui.node.getName() + " is " + selectedNodes.get(gui));
@@ -249,6 +257,7 @@ public class MapViewer {
                 }
             });
 
+            // Change the position of all the selected nodes as the mouse is being dragged keeping their offset
             nodeGUI.gui.setOnMouseDragged(event -> {
                 if(dragging) {
                     for (NodeGUI gui : selectedNodes.keySet()) {
