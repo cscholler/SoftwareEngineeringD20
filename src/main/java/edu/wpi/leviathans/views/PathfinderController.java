@@ -22,6 +22,7 @@ import edu.wpi.leviathans.services.db.DatabaseService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -67,8 +68,7 @@ public class PathfinderController {
 
 		while (rs.next()) {
 			Node newNode = new Node(rs.getString(1));
-			newNode.data.put(MapParser.DATA_LABELS.X, Integer.parseInt(rs.getString(2)));
-			newNode.data.put(MapParser.DATA_LABELS.Y, Integer.parseInt(rs.getString(3)));
+			newNode.position = new Point2D(Double.parseDouble(rs.getString(2)), Double.parseDouble(rs.getString(3)));
 			newNode.data.put(MapParser.DATA_LABELS.NODE_TYPE, rs.getString(4));
 			newNode.data.put(MapParser.DATA_LABELS.LONG_NAME, rs.getString(5));
 			newNode.data.put(MapParser.DATA_LABELS.SHORT_NAME, rs.getString(6));
@@ -83,10 +83,10 @@ public class PathfinderController {
 			Node destination = newGraph.getNode(rs.getString(3));
 
 			if (source != null && destination != null) {
-				int x1 = (int) source.data.get(MapParser.DATA_LABELS.X);
-				int y1 = (int) source.data.get(MapParser.DATA_LABELS.Y);
-				int x2 = (int) destination.data.get(MapParser.DATA_LABELS.X);
-				int y2 = (int) destination.data.get(MapParser.DATA_LABELS.Y);
+				double x1 = source.position.getX();
+				double y1 = source.position.getY();
+				double x2 = destination.position.getX();
+				double y2 = destination.position.getY();
 
 				int length = (int) Math.round(Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
 
