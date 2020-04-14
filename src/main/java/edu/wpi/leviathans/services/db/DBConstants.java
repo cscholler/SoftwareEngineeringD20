@@ -71,10 +71,10 @@ public class DBConstants {
 					"acct_type CHAR(1), " +
 					"PRIMARY KEY (id))";
 
-	public static final String dropNodesTable =
+	public static final String dropNodeTable =
 			"DROP TABLE Nodes";
 
-	public static final String dropEdgesTable =
+	public static final String dropEdgeTable =
 			"DROP TABLE Edges";
 
 	public static final String dropDoctorTable =
@@ -83,7 +83,7 @@ public class DBConstants {
 	public static final String dropPatientTable =
 			"DROP TABLE Patients";
 
-	public static final String dropMedication_RequestTable =
+	public static final String dropMedicationRequestTable =
 			"DROP TABLE Medication_Requests";
 
 	public static final String dropUserTable =
@@ -93,7 +93,7 @@ public class DBConstants {
 			"INSERT INTO Nodes(id, x_pos, y_pos, floor, building, l_name, s_name, team)" +
 					"VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 
-	public static final String updateVisible =
+	public static final String updateNodeVisibility =
 			"UPDATE Nodes " +
 					"SET visible = ? " +
 					"WHERE id = ?";
@@ -110,7 +110,7 @@ public class DBConstants {
 			"INSERT INTO Patients(id, f_name, l_name, doctor_id, room_id)" +
 					"VALUES(?, ?, ?, ?, ?)";
 
-	public static final String addMedication_Request =
+	public static final String addMedicationRequest =
 			"INSERT INTO Medication_Requests(doctor_id, patient_id, nurse_name, dose, type, notes)" +
 					"VALUES(?, ?, ?, ?, ?, ?)";
 

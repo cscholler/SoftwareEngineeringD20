@@ -1,6 +1,12 @@
 package edu.wpi.leviathans.services.db;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -32,6 +38,7 @@ public class DatabaseService extends Service {
 		if (connection == null) {
 			connect(props);
 		}
+		buildDatabase();
 	}
 
 	@Override
@@ -149,9 +156,28 @@ public class DatabaseService extends Service {
 		return pStmt;
 	}
 
+	private void dropTables() {
+		ArrayList<String> dropTables = new ArrayList<>();
+
+		dropTables.add(DBConstants.dropNodeTable);
+		dropTables.add(DBConstants.dropEdgeTable);
+		dropTables.add(DBConstants.dropDoctorTable);
+		dropTables.add(DBConstants.dropPatientTable);
+		dropTables.add(DBConstants.dropMedicationRequestTable);
+		dropTables.add(DBConstants.dropUserTable);
+
+		try {
+			executeUpdates(dropTables, new ArrayList<>());
+		} catch (Exception ex) {
+			log.debug("Table(s) do not exist.");
+		}
+	}
+	
 	private boolean buildDatabase() {
 		ArrayList<String> createTables = new ArrayList<>();
 		ArrayList<String> populateTables = new ArrayList<>();
+
+		dropTables();
 
 		createTables.add(DBConstants.createNodeTable);
 		createTables.add(DBConstants.createEdgeTable);
