@@ -28,11 +28,6 @@ public class App extends Application {
 		Injector injector = Guice.createInjector(new DatabaseServiceProvider());
 		FXMLLoader fxmlLoader = new FXMLLoader();
 		fxmlLoader.setControllerFactory(injector::getInstance);
-
-        Parent root = FXMLLoader.load(getClass().getResource("views/pathfinder.fxml"));
-        Scene scene = new Scene(root);
-        primaryStage.setScene(scene);
-        primaryStage.show();
     }
 
     @Override

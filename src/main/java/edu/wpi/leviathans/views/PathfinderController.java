@@ -12,6 +12,8 @@ import edu.wpi.leviathans.util.pathfinding.graph.Node;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.ResourceBundle;
 
@@ -59,7 +61,7 @@ public class PathfinderController implements Initializable {
 	}
 
 	private void generateGraph() throws SQLException {
-		ResultSet rs = db.executeQuery(DBConstants.selectAllNodes, null);
+		ResultSet rs = db.executeQuery(DBConstants.selectAllNodes);
 
 		while (rs.next()) {
 			Node newNode = new Node(rs.getString(1));
@@ -72,7 +74,7 @@ public class PathfinderController implements Initializable {
 			newGraph.addNode(newNode);
 		}
 
-		rs = db.executeQuery(DBConstants.selectAllEdges, null);
+		rs = db.executeQuery(DBConstants.selectAllEdges);
 
 		while (rs.next()) {
 			Node source = newGraph.getNode(rs.getString(2));
@@ -89,27 +91,6 @@ public class PathfinderController implements Initializable {
 				source.addEdgeTwoWay(new Edge(destination, length));
 			}
 		}
-	}
-
-
-	@FXML
-	private TextField end, start;
-
-	@FXML
-	private Button btn;
-
-	@FXML
-	private TextArea txt;
-
-	@FXML
-	private void generatePath(ActionEvent event) {
-
-		Node startNode = newGraph.getNode(start.getText());
-		Node endNode = newGraph.getNode(end.getText());
-
-		Path path = PathFinder.aStarPathFind(newGraph, startNode, endNode);
-
-		txt.setText(pathToString(path));
 	}
 
 	private String pathToString(Path path) {
