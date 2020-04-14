@@ -26,7 +26,6 @@ public class App extends Application {
   @FXML private TableView table;
 
   CSVReaderUI reader = new CSVReaderUI();
-  reader.readCSVFile();
 
   @FXML
   private void handleButtonAction(ActionEvent e) throws IOException {
