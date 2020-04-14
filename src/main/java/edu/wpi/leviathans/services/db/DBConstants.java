@@ -15,8 +15,8 @@ public class DBConstants {
 					"l_name VARCHAR(32), " +
 					"s_name VARCHAR(32), " +
 					"team CHAR(1), " +
-					"visible BOOLEAN" +
-					"PRIMARY KEY (id)))";
+					"visible CHAR(1), " +
+					"CONSTRAINT nodes_pk PRIMARY KEY (id))";
 
 	public static final String updateNode =
 			"UPDATE Nodes " +
@@ -26,13 +26,14 @@ public class DBConstants {
 	public static final String createEdgeTable =
 			"CREATE TABLE Edges(" +
 					"id VARCHAR(21), " +
-					"start VARCHAR(10) REFERENCES Nodes (id), " +
-					"end VARCHAR(10) REFERENCES Node (id)" +
-					"PRIMARY KEY (id)))";
+					"first VARCHAR(10), " +
+					"last VARCHAR(10), " +
+					"CONSTRAINT edges_pk PRIMARY KEY (id), " +
+					"CONSTRAINT edges_fk FOREIGN KEY (first, last) REFERENCES Nodes (id, id))";
 
 	public static final String removeEdge =
-			"DELETE FROM Node " +
-					"WHERE Node(id) = ?";
+			"DELETE FROM Edges " +
+					"WHERE Edges (id) = ?";
 
 	public static final String createDoctorTable =
 			"CREATE TABLE Doctors(" +
@@ -40,41 +41,46 @@ public class DBConstants {
 					"f_name VARCHAR(32), " +
 					"l_name VARCHAR(32), " +
 					"email VARCHAR(32), " +
-					"office_id VARCHAR(32) REFERENCES Node (id)" +
-					"PRIMARY KEY (id)))";
+					"office_id, " +
+					"CONSTRAINT doctors_pk PRIMARY KEY (id), " +
+					"CONSTRAINT edges_pk FOREIGN KEY (office_id) REFERENCES Nodes (id)";
 
 	public static final String createPatientTable =
 			"CREATE TABLE Patients(" +
 					"id INT, " +
 					"f_name VARCHAR(32), " +
 					"l_name VARCHAR(32), " +
-					"doctor_id INT REFERENCES Doctor (id), " +
-					"room_id VARCHAR(10) REFERENCES Node (id)" +
-					"PRIMARY KEY (id)))";
+					"doctor_id INT, " +
+					"room_id VARCHAR(10), " +
+					"CONSTRAINT patients_pk PRIMARY KEY (id), " +
+					"CONSTRAINT patients_fk_doc FOREIGN KEY (doctor_id) REFERENCES Doctors (id), " +
+					"CONSTRAINT patients_fk_room FOREIGN KEY (room_id) REFERENCES Nodes (id))";
 
 	public static final String createMedicationRequestTable =
 			"CREATE TABLE Medication_Requests(" +
 					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
-					"doctor_id REFERENCES Doctor (id), " +
-					"patient_id REFERENCES Patient (id), " +
+					"doctor_id INT, " +
+					"patient_id INT, " +
 					"nurse_name VARCHAR(64), " +
 					"dose VARCHAR(64), " +
 					"type VARCHAR(64), " +
-					"notes VARCHAR(512)" +
-					"PRIMARY KEY (id)))";
+					"notes VARCHAR(512), " +
+					"CONSTRAINT medReq_pk PRIMARY KEY (id), " +
+					"CONSTRAINT medReq_fk_doc FOREIGN KEY (doctor_id) REFERENCES Doctors (id), " +
+					"CONSTRAINT medReq_fk_pat FOREIGN KEY (patient_id) REFERENCES Patients (id))";
 
 	public static final String createUserTable =
 			"CREATE TABLE Users(" +
-					"id INT PRIMARY KEY, " +
+					"id INT, " +
 					"username VARCHAR(32), " +
 					"password VARCHAR(32), " +
 					"acct_type CHAR(1), " +
-					"PRIMARY KEY (id))";
+					"CONSTRAINT users_pk PRIMARY KEY (id))";
 
-	public static final String dropNodesTable =
+	public static final String dropNodeTable =
 			"DROP TABLE Nodes";
 
-	public static final String dropEdgesTable =
+	public static final String dropEdgeTable =
 			"DROP TABLE Edges";
 
 	public static final String dropDoctorTable =
@@ -83,7 +89,7 @@ public class DBConstants {
 	public static final String dropPatientTable =
 			"DROP TABLE Patients";
 
-	public static final String dropMedication_RequestTable =
+	public static final String dropMedicationRequestTable =
 			"DROP TABLE Medication_Requests";
 
 	public static final String dropUserTable =
@@ -93,13 +99,13 @@ public class DBConstants {
 			"INSERT INTO Nodes(id, x_pos, y_pos, floor, building, l_name, s_name, team)" +
 					"VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 
-	public static final String updateVisible =
+	public static final String updateNodeVisibility =
 			"UPDATE Nodes " +
 					"SET visible = ? " +
 					"WHERE id = ?";
 
 	public static final String addEdge =
-			"INSERT INTO Edges(id, start, end)" +
+			"INSERT INTO Edges(id, first, last)" +
 					"VALUES(?, ?, ?)";
 
 	public static final String addDoctor =
@@ -110,7 +116,7 @@ public class DBConstants {
 			"INSERT INTO Patients(id, f_name, l_name, doctor_id, room_id)" +
 					"VALUES(?, ?, ?, ?, ?)";
 
-	public static final String addMedication_Request =
+	public static final String addMedicationRequest =
 			"INSERT INTO Medication_Requests(doctor_id, patient_id, nurse_name, dose, type, notes)" +
 					"VALUES(?, ?, ?, ?, ?, ?)";
 
@@ -135,10 +141,10 @@ public class DBConstants {
 					"FROM Patients";
 
 	public static final String selectAllMedication_Requests =
-			"SELECT *" +
+			"SELECT * " +
 					"FROM Medication_Requests";
 
-	public static final String getSelectAllUsers =
-			"SELECT *" +
+	public static final String selectAllUsers =
+			"SELECT * " +
 					"FROM Users";
 }

@@ -1,6 +1,12 @@
 package edu.wpi.leviathans.services.db;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -32,6 +38,7 @@ public class DatabaseService extends Service {
 		if (connection == null) {
 			connect(props);
 		}
+		buildDatabase();
 	}
 
 	@Override
@@ -96,12 +103,14 @@ public class DatabaseService extends Service {
 	}
 
 	public ResultSet executeQuery(String query) {
-		return executeQuery(query, new ArrayList<String>());
+		return executeQuery(query, new ArrayList<>());
 	}
 
 	public ArrayList<ResultSet> executeQueries(ArrayList<String> queries, ArrayList<ArrayList<String>> valuesList) {
 		ArrayList<ResultSet> resSets = new ArrayList<>();
-		if (queries.size() != valuesList.size()) {
+		boolean isPreparedStmt = !valuesList.isEmpty();
+
+		if (isPreparedStmt && queries.size() != valuesList.size()) {
 			throw new IllegalArgumentException();
 		}
 		for (int i = 0; i < queries.size(); i++) {
@@ -128,16 +137,17 @@ public class DatabaseService extends Service {
 	}
 
 	public boolean executeUpdate(String update) {
-		return executeUpdate(update, new ArrayList<String>());
+		return executeUpdate(update, new ArrayList<>());
 	}
 
 	public boolean executeUpdates(ArrayList<String> updates, ArrayList<ArrayList<String>> valuesList) {
 		boolean isSuccess = true;
-		if (updates.size() != valuesList.size()) {
+		boolean isPreparedStmt = !valuesList.isEmpty();
+		if (isPreparedStmt && updates.size() != valuesList.size()) {
 			throw new IllegalArgumentException();
 		}
 		for (int i = 0; i < updates.size(); i++) {
-			if (!executeUpdate(updates.get(i), valuesList.get(i))) {
+			if (!executeUpdate(updates.get(i),isPreparedStmt ? valuesList.get(i) : new ArrayList<>())) {
 				isSuccess = false;
 			}
 		}
@@ -157,9 +167,28 @@ public class DatabaseService extends Service {
 		return pStmt;
 	}
 
+	private void dropTables() {
+		ArrayList<String> dropTables = new ArrayList<>();
+
+		dropTables.add(DBConstants.dropNodeTable);
+		dropTables.add(DBConstants.dropEdgeTable);
+		dropTables.add(DBConstants.dropDoctorTable);
+		dropTables.add(DBConstants.dropPatientTable);
+		dropTables.add(DBConstants.dropMedicationRequestTable);
+		dropTables.add(DBConstants.dropUserTable);
+
+		try {
+			executeUpdates(dropTables, new ArrayList<>());
+		} catch (Exception ex) {
+			log.debug("Table(s) do not exist.");
+		}
+	}
+
 	private boolean buildDatabase() {
 		ArrayList<String> createTables = new ArrayList<>();
 		ArrayList<String> populateTables = new ArrayList<>();
+
+		dropTables();
 
 		createTables.add(DBConstants.createNodeTable);
 		createTables.add(DBConstants.createEdgeTable);
@@ -170,16 +199,9 @@ public class DatabaseService extends Service {
 
 		CSVParser parser = new CSVParser();
 
-		parser.setCsvFile("edu/wpi/leviathans/util/pathfinding/floorMaps/MapLnodes.csv");
 		ArrayList<ArrayList<String>> data = parser.readCSVFile();
 		for (int i = 0; i < data.size(); i++) {
 			populateTables.add(DBConstants.addNode);
-		}
-
-		parser.setCsvFile("edu/wpi/leviathans/util/pathfinding/floorMaps/MapLedges.csv");
-		data = parser.readCSVFile();
-		for (int i = 0; i < data.size(); i++) {
-			populateTables.add(DBConstants.addEdge);
 		}
 
 		return executeUpdates(createTables, new ArrayList<>()) && executeUpdates(populateTables, data);

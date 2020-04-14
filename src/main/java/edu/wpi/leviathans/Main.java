@@ -7,7 +7,5 @@ public class Main {
 
 	public static void main(String[] args) {
 		MapApp.launch(MapApp.class, args);
-		DatabaseService dbService = new DatabaseService();
-		dbService.stopService();
 	}
 }
