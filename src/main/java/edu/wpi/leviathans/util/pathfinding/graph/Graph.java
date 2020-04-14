@@ -1,16 +1,14 @@
 package edu.wpi.leviathans.util.pathfinding.graph;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Graph {
 
-    private HashMap<String, Node> nodes;
+    private Map<String, Node> nodes;
 
     public Graph() {
-        nodes = new HashMap<String, Node>();
+        nodes = new ConcurrentHashMap<String, Node>();
     }
 
     /**

@@ -242,6 +242,12 @@ public class MapViewer {
 
         graph = MapParser.parseMapToGraph(data.getNodeFile(), data.getEdgeFile());
 
+        int i = 0;
+        for (Node node : graph.getNodes()) {
+            node.setName("n" + i);
+            i++;
+        }
+
         if (graph != null) {
             body.getChildren().clear();
             body.getChildren().addAll(paneFromGraph(graph).getChildren());

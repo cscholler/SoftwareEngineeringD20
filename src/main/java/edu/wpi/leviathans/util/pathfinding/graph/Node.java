@@ -62,7 +62,7 @@ public class Node {
      *
      * @param newName String containing the new name
      */
-    void setName(String newName) {
+    public void setName(String newName) {
         // Remove and re-add the node so its hash is updated in the graph
         if (graph != null) graph.removeNode(this);
 
