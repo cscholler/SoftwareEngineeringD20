@@ -28,7 +28,7 @@ import javafx.scene.control.TextField;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class PathfinderController implements Initializable {
+public class PathfinderController {
 	PathFinder pathfinder = new PathFinder();
 	Graph newGraph = new Graph();
 	@Inject
@@ -51,13 +51,15 @@ public class PathfinderController implements Initializable {
 		public static final String RESTROOM = "REST";
 	}
 
-	@Override
-	public void initialize(URL url, ResourceBundle rb) {
+	public Graph initialize() {
 		try {
 			generateGraph();
+			return newGraph;
 		} catch (SQLException ex) {
 			log.error("Encountered SQLException.", ex);
 		}
+
+		return null;
 	}
 
 	private void generateGraph() throws SQLException {

@@ -1,4 +1,4 @@
-package edu.wpi.leviathans.util.pathfinding.mapViewer;
+package edu.wpi.leviathans.views.mapViewer;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -18,7 +18,7 @@ public class MapApp extends Application {
     public Stage pStage;
 
     Parent root;
-    edu.wpi.leviathans.util.pathfinding.mapViewer.MapViewer controller;
+    edu.wpi.leviathans.views.mapViewer.MapViewer controller;
 
     @Override
     public void start(Stage primaryStage) throws Exception {

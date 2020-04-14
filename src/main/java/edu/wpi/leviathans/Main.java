@@ -1,7 +1,7 @@
 package edu.wpi.leviathans;
 
 import edu.wpi.leviathans.services.db.DatabaseService;
-import edu.wpi.leviathans.util.pathfinding.mapViewer.MapApp;
+import edu.wpi.leviathans.views.mapViewer.MapApp;
 
 public class Main {
 

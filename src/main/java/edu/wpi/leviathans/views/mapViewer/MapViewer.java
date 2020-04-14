@@ -1,8 +1,9 @@
-package edu.wpi.leviathans.util.pathfinding.mapViewer;
+package edu.wpi.leviathans.views.mapViewer;
 
 import edu.wpi.leviathans.util.pathfinding.Path;
 import edu.wpi.leviathans.util.pathfinding.PathFinder;
-import edu.wpi.leviathans.util.pathfinding.mapViewer.dataDialogue.*;
+import edu.wpi.leviathans.views.PathfinderController;
+import edu.wpi.leviathans.views.mapViewer.dataDialogue.*;
 import edu.wpi.leviathans.util.pathfinding.MapParser;
 import edu.wpi.leviathans.util.pathfinding.graph.*;
 
@@ -242,13 +243,31 @@ public class MapViewer {
 
         graph = MapParser.parseMapToGraph(data.getNodeFile(), data.getEdgeFile());
 
-        int i = 0;
-        for (Node node : graph.getNodes()) {
-            node.setName("n" + i);
-            i++;
+        if (graph != null) {
+            int i = 0;
+            for (Node node : graph.getNodes()) {
+                node.setName("n" + i);
+                i++;
+            }
+
+            body.getChildren().clear();
+            body.getChildren().addAll(paneFromGraph(graph).getChildren());
         }
+    }
+
+    @FXML
+    void openFromDB() {
+        PathfinderController pController = new PathfinderController();
+
+        graph = pController.initialize();
 
         if (graph != null) {
+            int i = 0;
+            for (Node node : graph.getNodes()) {
+                node.setName("n" + i);
+                i++;
+            }
+
             body.getChildren().clear();
             body.getChildren().addAll(paneFromGraph(graph).getChildren());
         }
