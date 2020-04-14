@@ -116,7 +116,7 @@ public class DBConstants {
 			"INSERT INTO Patients(id, f_name, l_name, doctor_id, room_id)" +
 					"VALUES(?, ?, ?, ?, ?)";
 
-	public static final String addMedication_Request =
+	public static final String addMedicationRequest =
 			"INSERT INTO Medication_Requests(doctor_id, patient_id, nurse_name, dose, type, notes)" +
 					"VALUES(?, ?, ?, ?, ?, ?)";
 
