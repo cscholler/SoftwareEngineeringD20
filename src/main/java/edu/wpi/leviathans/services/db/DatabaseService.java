@@ -99,7 +99,7 @@ public class DatabaseService extends Service {
 	}
 
 	public ResultSet executeQuery(String query) {
-		return executeQuery(query, new ArrayList<String>());
+		return executeQuery(query, new ArrayList<>());
 	}
 
 	public ArrayList<ResultSet> executeQueries(ArrayList<String> queries, ArrayList<ArrayList<String>> valuesList) {
@@ -133,7 +133,7 @@ public class DatabaseService extends Service {
 	}
 
 	public boolean executeUpdate(String update) {
-		return executeUpdate(update, new ArrayList<String>());
+		return executeUpdate(update, new ArrayList<>());
 	}
 
 	public boolean executeUpdates(ArrayList<String> updates, ArrayList<ArrayList<String>> valuesList) {
@@ -163,9 +163,28 @@ public class DatabaseService extends Service {
 		return pStmt;
 	}
 
+	private void dropTables() {
+		ArrayList<String> dropTables = new ArrayList<>();
+
+		dropTables.add(DBConstants.dropNodeTable);
+		dropTables.add(DBConstants.dropEdgeTable);
+		dropTables.add(DBConstants.dropDoctorTable);
+		dropTables.add(DBConstants.dropPatientTable);
+		dropTables.add(DBConstants.dropMedicationRequestTable);
+		dropTables.add(DBConstants.dropUserTable);
+
+		try {
+			executeUpdates(dropTables, new ArrayList<>());
+		} catch (Exception ex) {
+			log.debug("Table(s) do not exist.");
+		}
+	}
+
 	private boolean buildDatabase() {
 		ArrayList<String> createTables = new ArrayList<>();
 		ArrayList<String> populateTables = new ArrayList<>();
+
+		dropTables();
 
 		createTables.add(DBConstants.createNodeTable);
 		createTables.add(DBConstants.createEdgeTable);
@@ -176,19 +195,12 @@ public class DatabaseService extends Service {
 
 		CSVParser parser = new CSVParser();
 
-		/*parser.setCsvFile("src/main/java/edu/wpi/leviathans/util/pathfinding/floorMaps/MapLnodes.csv");
 		ArrayList<ArrayList<String>> data = parser.readCSVFile();
 		for (int i = 0; i < data.size(); i++) {
 			populateTables.add(DBConstants.addNode);
 		}
 
-		parser.setCsvFile("src/main/java/edu/wpi/leviathans/util/pathfinding/floorMaps/MapLedges.csv");
-		data = parser.readCSVFile();
-		for (int i = 0; i < data.size(); i++) {
-			populateTables.add(DBConstants.addEdge);
-		}*/
-
-		return executeUpdates(createTables, new ArrayList<>());// && executeUpdates(populateTables, data);
+		return executeUpdates(createTables, new ArrayList<>()) && executeUpdates(populateTables, data);
 	}
 
 	public ArrayList<String> getColumnNames(ResultSet resSet) {
