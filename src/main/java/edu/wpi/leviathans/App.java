@@ -1,7 +1,11 @@
 package edu.wpi.leviathans;
 
-import edu.wpi.leviathans.util.CSVReaderUI;
+
+import edu.wpi.leviathans.util.Row;
+import edu.wpi.leviathans.util.io.CSVParser;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,58 +18,11 @@ import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 @Slf4j
 public class App extends Application {
 
-  @FXML private Button btnBack;
-  @FXML private Button btnDisplay;
-  @FXML private Button btnModify;
-  @FXML private Button btnDownload;
-  @FXML private Button btnDemonstration;
-  @FXML private TableView table;
-
-  CSVReaderUI reader = new CSVReaderUI();
-
-  @FXML
-  private void handleButtonAction(ActionEvent e) throws IOException {
-
-    Stage stage;
-    Parent root;
-
-    if (e.getSource() == btnDisplay) {
-
-      stage = (Stage) btnDisplay.getScene().getWindow();
-      root = FXMLLoader.load(getClass().getResource("Display.fxml"));
-
-    } else if (e.getSource() == btnModify) {
-
-      stage = (Stage) btnModify.getScene().getWindow();
-      root = FXMLLoader.load(getClass().getResource("Modify.fxml"));
-
-
-    } else if (e.getSource() == btnDownload) {
-
-      stage = (Stage) btnDownload.getScene().getWindow();
-      root = FXMLLoader.load(getClass().getResource("Download.fxml"));
-
-    } else if (e.getSource() == btnDemonstration) {
-
-      stage = (Stage) btnDemonstration.getScene().getWindow();
-      root = FXMLLoader.load(getClass().getResource("Demonstration.fxml"));
-
-    } else {
-
-      stage = (Stage) btnBack.getScene().getWindow();
-      root = FXMLLoader.load(getClass().getResource("Display.fxml"));
-
-    }
-
-    Scene scene = new Scene(root);
-    stage.setScene(scene);
-    stage.show();
-
-  }
 
   @Override
   public void init() {
