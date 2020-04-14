@@ -30,7 +30,6 @@ public class MapApp extends Application {
 
         primaryStage.setTitle("Map Viewer");
         primaryStage.setScene(new Scene(root));
-        primaryStage.setMaximized(true);
 
         primaryStage.show();
 
