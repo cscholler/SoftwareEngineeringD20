@@ -52,7 +52,7 @@ public class DBConstants {
 					"room_id VARCHAR(10) REFERENCES Node (id)" +
 					"PRIMARY KEY (id)))";
 
-	public static final String createMedication_RequestTable =
+	public static final String createMedicationRequestTable =
 			"CREATE TABLE Medication_Requests(" +
 					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
 					"doctor_id REFERENCES Doctor (id), " +

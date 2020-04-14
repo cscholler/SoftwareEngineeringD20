@@ -2,7 +2,6 @@ package edu.wpi.leviathans.views;
 
 import com.google.inject.Inject;
 
-import edu.wpi.leviathans.util.io.CSVReader;
 import edu.wpi.leviathans.util.pathfinding.MapParser;
 import edu.wpi.leviathans.util.pathfinding.Path;
 import edu.wpi.leviathans.util.pathfinding.PathFinder;
@@ -61,23 +60,6 @@ public class PathfinderController implements Initializable {
 		}
 	}
 
-	private void CSVMapParser() {
-		CSVReader nodeReader = new CSVReader("edu/wpi/leviathans/util/pathfinding/floorMaps/MapLnodes.csv", ",");
-		ArrayList<String[]> nodes = nodeReader.readCSVFile();
-
-		CSVReader edgeReader = new CSVReader("edu/wpi/leviathans/util/pathfinding/floorMaps/MapLedges.csv", ",");
-		ArrayList<String[]> edges = edgeReader.readCSVFile();
-
-		db.executeQuery(DBConstants.createNodeTable);
-		db.executeQuery(DBConstants.createEdgeTable);
-
-
-
-		for(String[] node : nodes) {
-			//db.executeQuery(DBConstants.addNode, ArrayList);
-		}
-	}
-
 	private void generateGraph() throws SQLException {
 		ResultSet rs = db.executeQuery(DBConstants.selectAllNodes);
 
@@ -109,27 +91,6 @@ public class PathfinderController implements Initializable {
 				source.addEdgeTwoWay(new Edge(destination, length));
 			}
 		}
-	}
-
-
-	@FXML
-	private TextField end, start;
-
-	@FXML
-	private Button btn;
-
-	@FXML
-	private TextArea txt;
-
-	@FXML
-	private void generatePath(ActionEvent event) {
-
-		Node startNode = newGraph.getNode(start.getText());
-		Node endNode = newGraph.getNode(end.getText());
-
-		Path path = PathFinder.aStarPathFind(newGraph, startNode, endNode);
-
-		txt.setText(pathToString(path));
 	}
 
 	private String pathToString(Path path) {

@@ -1,14 +1,10 @@
 package edu.wpi.leviathans.services.db;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import edu.wpi.leviathans.util.io.CSVParser;
 import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.leviathans.services.Service;
@@ -82,10 +78,10 @@ public class DatabaseService extends Service {
 		}
 	}
 
-	public ResultSet executeQuery(String query, ArrayList<Object> values) {
+	public ResultSet executeQuery(String query, ArrayList<String> values) {
 		ResultSet resSet = null;
 		try {
-			if (values == null || values.size() == 0) {
+			if (values.size() == 0) {
 				Statement stmt;
 				stmt = connection.createStatement();
 				resSet = stmt.executeQuery(query);
@@ -100,10 +96,10 @@ public class DatabaseService extends Service {
 	}
 
 	public ResultSet executeQuery(String query) {
-		return executeQuery(query, null);
+		return executeQuery(query, new ArrayList<String>());
 	}
 
-	public ArrayList<ResultSet> executeQueries(ArrayList<String> queries, ArrayList<ArrayList<Object>> valuesList) {
+	public ArrayList<ResultSet> executeQueries(ArrayList<String> queries, ArrayList<ArrayList<String>> valuesList) {
 		ArrayList<ResultSet> resSets = new ArrayList<>();
 		if (queries.size() != valuesList.size()) {
 			throw new IllegalArgumentException();
@@ -114,10 +110,10 @@ public class DatabaseService extends Service {
 		return resSets;
 	}
 
-	public boolean executeUpdate(String update, ArrayList<Object> values) {
+	public boolean executeUpdate(String update, ArrayList<String> values) {
 		boolean isSuccess = false;
 		try {
-			if (values == null || values.size() == 0) {
+			if (values.size() == 0) {
 				Statement stmt;
 				stmt = connection.createStatement();
 				isSuccess = stmt.execute(update);
@@ -132,10 +128,10 @@ public class DatabaseService extends Service {
 	}
 
 	public boolean executeUpdate(String update) {
-		return executeUpdate(update, null);
+		return executeUpdate(update, new ArrayList<String>());
 	}
 
-	public boolean executeUpdates(ArrayList<String> updates, ArrayList<ArrayList<Object>> valuesList) {
+	public boolean executeUpdates(ArrayList<String> updates, ArrayList<ArrayList<String>> valuesList) {
 		boolean isSuccess = true;
 		if (updates.size() != valuesList.size()) {
 			throw new IllegalArgumentException();
@@ -148,22 +144,77 @@ public class DatabaseService extends Service {
 		return isSuccess;
 	}
 
-	public PreparedStatement fillPreparedStatement(String query, ArrayList<Object> values) {
+	public PreparedStatement fillPreparedStatement(String query, ArrayList<String> values) {
 		PreparedStatement pStmt = null;
 		try {
 			pStmt = connection.prepareStatement(query);
 			for (int i = 1; i < values.size() + 1; i++) {
-				Object value = values.get(i);
-				if (value instanceof String) {
-					pStmt.setString(i, (String) value);
-				} else if (value instanceof Integer) {
-					pStmt.setInt(i, (Integer) value);
-				}
+				pStmt.setString(i, values.get(i));
 			}
 		} catch (SQLException ex) {
 			log.error("Encountered SQLException.", ex);
 		}
 		return pStmt;
+	}
+
+	private boolean buildDatabase() {
+		ArrayList<String> createTables = new ArrayList<>();
+		ArrayList<String> populateTables = new ArrayList<>();
+
+		createTables.add(DBConstants.createNodeTable);
+		createTables.add(DBConstants.createEdgeTable);
+		createTables.add(DBConstants.createDoctorTable);
+		createTables.add(DBConstants.createPatientTable);
+		createTables.add(DBConstants.createMedicationRequestTable);
+		createTables.add(DBConstants.createUserTable);
+
+		CSVParser parser = new CSVParser();
+
+		parser.setCsvFile("edu/wpi/leviathans/util/pathfinding/floorMaps/MapLnodes.csv");
+		ArrayList<ArrayList<String>> data = parser.readCSVFile();
+		for (int i = 0; i < data.size(); i++) {
+			populateTables.add(DBConstants.addNode);
+		}
+
+		parser.setCsvFile("edu/wpi/leviathans/util/pathfinding/floorMaps/MapLedges.csv");
+		data = parser.readCSVFile();
+		for (int i = 0; i < data.size(); i++) {
+			populateTables.add(DBConstants.addEdge);
+		}
+
+		return executeUpdates(createTables, new ArrayList<>()) && executeUpdates(populateTables, data);
+	}
+
+	public ArrayList<String> getColumnNames(ResultSet resSet) {
+		ArrayList<String> colLabels = new ArrayList<>();
+		try {
+			ResultSetMetaData resSetMD = resSet.getMetaData();
+			int totalCols = resSetMD.getColumnCount();
+			for (int i = 0; i < totalCols; i++) {
+				colLabels.set(i, resSetMD.getColumnLabel(i + 1));
+			}
+		} catch (SQLException ex) {
+			log.error("Encountered SQLException.", ex);
+		}
+		return colLabels;
+	}
+
+	public ArrayList<ArrayList<String>> getTableFromResultSet(ResultSet resSet) {
+		ArrayList<ArrayList<String>> table = new ArrayList<>();
+		try {
+			while (resSet.next()) {
+				ResultSetMetaData resSetMD = resSet.getMetaData();
+				int totalCols = resSetMD.getColumnCount();
+				ArrayList<String> row = new ArrayList<>();
+				for (int i = 0; i < totalCols; i++) {
+					row.add(resSet.getString(i + 1));
+				}
+				table.add(row);
+			}
+		} catch (SQLException ex) {
+			log.error("Encountered SQLException.", ex);
+		}
+		return table;
 	}
 
 	public void collectUsedResultSet(ResultSet resSet) {
