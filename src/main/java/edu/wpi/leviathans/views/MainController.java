@@ -13,7 +13,6 @@ import java.io.IOException;
 
 public class MainController {
 
-    @FXML private Button btnBack;
     @FXML private Button btnDisplay;
     @FXML private Button btnModify;
     @FXML private Button btnDownload;
@@ -25,39 +24,15 @@ public class MainController {
         Stage stage;
         Parent root;
 
-        if (e.getSource() == btnDisplay) {
+        if (e.getSource() == btnDisplay);
 
-            stage = (Stage) btnDisplay.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("Display.fxml"));
-
-        } else if (e.getSource() == btnModify) {
-
-            stage = (Stage) btnModify.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("Modify.fxml"));
-
-
-        } else if (e.getSource() == btnDownload) {
-
-            stage = (Stage) btnDownload.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("Download.fxml"));
-
-        } else if (e.getSource() == btnDemonstration) {
-
-            stage = (Stage) btnDemonstration.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("Demonstration.fxml"));
-
-        } else {
-
-            stage = (Stage) btnBack.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("Display.fxml"));
-
-        }
+        stage = (Stage) btnDisplay.getScene().getWindow();
+        root = FXMLLoader.load(getClass().getResource("Display.fxml"));
 
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
 
     }
-
 
 }

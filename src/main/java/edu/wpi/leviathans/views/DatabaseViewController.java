@@ -33,6 +33,9 @@ public class DatabaseViewController {
 	DatabaseService db;
 
 	@FXML private Button btnBack;
+	@FXML private Button btnModify;
+	@FXML private Button btnDownload;
+	@FXML private Button btnDemonstration;
 	@FXML private TableView table;
 
 	@FXML private TableColumn colNodeID;
@@ -53,18 +56,29 @@ public class DatabaseViewController {
 		Stage stage;
 		Parent root;
 
-		if (e.getSource() == btnBack) {
+		if (e.getSource() == btnModify) {
 
+			stage = (Stage) btnModify.getScene().getWindow();
+			root = FXMLLoader.load(getClass().getResource("Modify.fxml"));
+
+		}  else if (e.getSource() == btnDownload) {
+
+			stage = (Stage) btnDownload.getScene().getWindow();
+			root = FXMLLoader.load(getClass().getResource("Download.fxml"));
+
+		} else if (e.getSource() == btnDemonstration){
+
+			stage = (Stage) btnDemonstration.getScene().getWindow();
+			root = FXMLLoader.load(getClass().getResource("Demonstration.fxml"));
+
+		} else {
 			stage = (Stage) btnBack.getScene().getWindow();
-			root = FXMLLoader.load(getClass().getResource("Display.fxml"));
-
-			Scene scene = new Scene(root);
-			stage.setScene(scene);
-			stage.show();
-
+			root = FXMLLoader.load(getClass().getResource("Window.fxml"));
 		}
 
-		//Scene scene = new Scene(root);
+		Scene scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
 
 	}
 
@@ -72,7 +86,7 @@ public class DatabaseViewController {
 	private void loadData() {
 
 		Group groupRoot = new Group();
-		Stage stage;
+		Stage stage = new Stage();
 
 		colNodeID.setCellValueFactory(new PropertyValueFactory<>("nodeID"));
 		colXCoord.setCellValueFactory(new PropertyValueFactory<>("xcoord"));
@@ -83,13 +97,13 @@ public class DatabaseViewController {
 		colLongName.setCellValueFactory(new PropertyValueFactory<>("longName"));
 		colShortName.setCellValueFactory(new PropertyValueFactory<>("shortName"));
 
+		table.setItems(observableList);
+		table.getColumns().addAll(colNodeID, colXCoord, colYCoord, colFloor, colBuilding, colNodeType, colLongName,
+				colShortName);
+
 		Scene scene = new Scene(groupRoot);
 		stage.setScene(scene);
 		stage.show();
-
-
-
-
 	}
 
 	private ArrayList<Row> populateRow(){
@@ -100,7 +114,8 @@ public class DatabaseViewController {
 			Row r = new Row(dataRow.get(0), dataRow.get(1), dataRow.get(2), dataRow.get(3),
 					dataRow.get(4), dataRow.get(5), dataRow.get(6), dataRow.get(7));
 			rows.add(r);
+			//observableList.add(r);
 		}
-
+		return rows;
 	}
 }
