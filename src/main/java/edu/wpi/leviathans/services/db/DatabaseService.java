@@ -188,7 +188,7 @@ public class DatabaseService extends Service {
 		ArrayList<String> createTables = new ArrayList<>();
 		ArrayList<String> populateTables = new ArrayList<>();
 
-		dropTables();
+		//dropTables(); //drop tables doesn't work if tables ain't there
 
 		createTables.add(DBConstants.createNodeTable);
 		createTables.add(DBConstants.createEdgeTable);

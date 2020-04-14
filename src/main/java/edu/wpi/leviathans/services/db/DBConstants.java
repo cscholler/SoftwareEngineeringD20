@@ -16,7 +16,7 @@ public class DBConstants {
 					"s_name VARCHAR(32), " +
 					"team CHAR(1), " +
 					"visible CHAR(1), " +
-					"CONSTRAINT nodes_pk PRIMARY KEY (id))";
+					"PRIMARY KEY (id))";
 
 	public static final String updateNode =
 			"UPDATE Nodes " +
@@ -26,10 +26,11 @@ public class DBConstants {
 	public static final String createEdgeTable =
 			"CREATE TABLE Edges(" +
 					"id VARCHAR(21), " +
-					"first VARCHAR(10), " +
-					"last VARCHAR(10), " +
-					"CONSTRAINT edges_pk PRIMARY KEY (id), " +
-					"CONSTRAINT edges_fk FOREIGN KEY (first, last) REFERENCES Nodes (id, id))";
+					"node_start VARCHAR(10), " +
+					"node_end VARCHAR(10), " +
+					"PRIMARY KEY (id), " +
+					"CONSTRAINT edges_fk_start FOREIGN KEY (node_start) REFERENCES Nodes (id), " +
+					"CONSTRAINT edges_fk_end FOREIGN KEY (node_end) REFERENCES Nodes (id))";
 
 	public static final String removeEdge =
 			"DELETE FROM Edges " +
@@ -41,8 +42,8 @@ public class DBConstants {
 					"f_name VARCHAR(32), " +
 					"l_name VARCHAR(32), " +
 					"email VARCHAR(32), " +
-					"office_id, " +
-					"CONSTRAINT doctors_pk PRIMARY KEY (id), " +
+					"office_id VARCHAR(10), " +
+					"PRIMARY KEY (id), " +
 					"CONSTRAINT edges_pk FOREIGN KEY (office_id) REFERENCES Nodes (id)";
 
 	public static final String createPatientTable =
@@ -52,7 +53,7 @@ public class DBConstants {
 					"l_name VARCHAR(32), " +
 					"doctor_id INT, " +
 					"room_id VARCHAR(10), " +
-					"CONSTRAINT patients_pk PRIMARY KEY (id), " +
+					"PRIMARY KEY (id), " +
 					"CONSTRAINT patients_fk_doc FOREIGN KEY (doctor_id) REFERENCES Doctors (id), " +
 					"CONSTRAINT patients_fk_room FOREIGN KEY (room_id) REFERENCES Nodes (id))";
 
@@ -65,7 +66,7 @@ public class DBConstants {
 					"dose VARCHAR(64), " +
 					"type VARCHAR(64), " +
 					"notes VARCHAR(512), " +
-					"CONSTRAINT medReq_pk PRIMARY KEY (id), " +
+					"PRIMARY KEY (id), " +
 					"CONSTRAINT medReq_fk_doc FOREIGN KEY (doctor_id) REFERENCES Doctors (id), " +
 					"CONSTRAINT medReq_fk_pat FOREIGN KEY (patient_id) REFERENCES Patients (id))";
 
@@ -75,7 +76,7 @@ public class DBConstants {
 					"username VARCHAR(32), " +
 					"password VARCHAR(32), " +
 					"acct_type CHAR(1), " +
-					"CONSTRAINT users_pk PRIMARY KEY (id))";
+					"PRIMARY KEY (id))";
 
 	public static final String dropNodeTable =
 			"DROP TABLE Nodes";
@@ -105,7 +106,7 @@ public class DBConstants {
 					"WHERE id = ?";
 
 	public static final String addEdge =
-			"INSERT INTO Edges(id, first, last)" +
+			"INSERT INTO Edges(id, node_start, node_end)" +
 					"VALUES(?, ?, ?)";
 
 	public static final String addDoctor =
