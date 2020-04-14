@@ -2,6 +2,7 @@ package edu.wpi.leviathans.views;
 
 import com.google.inject.Inject;
 
+import edu.wpi.leviathans.util.io.CSVReader;
 import edu.wpi.leviathans.util.pathfinding.MapParser;
 import edu.wpi.leviathans.util.pathfinding.Path;
 import edu.wpi.leviathans.util.pathfinding.PathFinder;
@@ -12,6 +13,8 @@ import edu.wpi.leviathans.util.pathfinding.graph.Node;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.ResourceBundle;
 
@@ -58,8 +61,25 @@ public class PathfinderController implements Initializable {
 		}
 	}
 
+	private void CSVMapParser() {
+		CSVReader nodeReader = new CSVReader("edu/wpi/leviathans/util/pathfinding/floorMaps/MapLnodes.csv", ",");
+		ArrayList<String[]> nodes = nodeReader.readCSVFile();
+
+		CSVReader edgeReader = new CSVReader("edu/wpi/leviathans/util/pathfinding/floorMaps/MapLedges.csv", ",");
+		ArrayList<String[]> edges = edgeReader.readCSVFile();
+
+		db.executeQuery(DBConstants.createNodeTable);
+		db.executeQuery(DBConstants.createEdgeTable);
+
+
+
+		for(String[] node : nodes) {
+			//db.executeQuery(DBConstants.addNode, ArrayList);
+		}
+	}
+
 	private void generateGraph() throws SQLException {
-		ResultSet rs = db.executeQuery(DBConstants.selectAllNodes, null);
+		ResultSet rs = db.executeQuery(DBConstants.selectAllNodes);
 
 		while (rs.next()) {
 			Node newNode = new Node(rs.getString(1));
@@ -72,7 +92,7 @@ public class PathfinderController implements Initializable {
 			newGraph.addNode(newNode);
 		}
 
-		rs = db.executeQuery(DBConstants.selectAllEdges, null);
+		rs = db.executeQuery(DBConstants.selectAllEdges);
 
 		while (rs.next()) {
 			Node source = newGraph.getNode(rs.getString(2));

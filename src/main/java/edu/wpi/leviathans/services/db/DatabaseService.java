@@ -85,7 +85,7 @@ public class DatabaseService extends Service {
 	public ResultSet executeQuery(String query, ArrayList<Object> values) {
 		ResultSet resSet = null;
 		try {
-			if (values.size() == 0) {
+			if (values == null || values.size() == 0) {
 				Statement stmt;
 				stmt = connection.createStatement();
 				resSet = stmt.executeQuery(query);
@@ -97,6 +97,10 @@ public class DatabaseService extends Service {
 			log.error("Encountered SQLException.", ex);
 		}
 		return resSet;
+	}
+
+	public ResultSet executeQuery(String query) {
+		return executeQuery(query, null);
 	}
 
 	public ArrayList<ResultSet> executeQueries(ArrayList<String> queries, ArrayList<ArrayList<Object>> valuesList) {
@@ -113,7 +117,7 @@ public class DatabaseService extends Service {
 	public boolean executeUpdate(String update, ArrayList<Object> values) {
 		boolean isSuccess = false;
 		try {
-			if (values.size() == 0) {
+			if (values == null || values.size() == 0) {
 				Statement stmt;
 				stmt = connection.createStatement();
 				isSuccess = stmt.execute(update);
@@ -125,6 +129,10 @@ public class DatabaseService extends Service {
 			log.error("Encountered SQLException.", ex);
 		}
 		return isSuccess;
+	}
+
+	public boolean executeUpdate(String update) {
+		return executeUpdate(update, null);
 	}
 
 	public boolean executeUpdates(ArrayList<String> updates, ArrayList<ArrayList<Object>> valuesList) {
