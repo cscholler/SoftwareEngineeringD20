@@ -29,10 +29,11 @@ public class App extends Application {
 		FXMLLoader fxmlLoader = new FXMLLoader();
 		fxmlLoader.setControllerFactory(injector::getInstance);
 
-        Parent root = FXMLLoader.load(getClass().getResource("views/pathfinder.fxml"));
+		// TODO: Fix this. Causing a NullPointerException with new implementation of PathfinderController
+        /*Parent root = FXMLLoader.load(getClass().getResource("views/pathfinder.fxml"));
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
-        primaryStage.show();
+        primaryStage.show();*/
     }
 
     @Override
