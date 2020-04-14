@@ -1,5 +1,6 @@
 package edu.wpi.leviathans;
 
+import edu.wpi.leviathans.util.CSVReaderUI;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -7,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,10 @@ public class App extends Application {
   @FXML private Button btnModify;
   @FXML private Button btnDownload;
   @FXML private Button btnDemonstration;
+  @FXML private TableView table;
+
+  CSVReaderUI reader = new CSVReaderUI();
+  reader.readCSVFile();
 
   @FXML
   private void handleButtonAction(ActionEvent e) throws IOException {
