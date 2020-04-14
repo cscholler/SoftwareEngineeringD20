@@ -18,6 +18,11 @@ import edu.wpi.leviathans.modules.DatabaseServiceProvider;
 @Slf4j
 public class App extends Application {
 
+    public Stage pStage;
+
+    Parent root;
+    edu.wpi.leviathans.views.mapViewer.MapViewer controller;
+
     @Override
     public void init() {
         log.info("Starting Up");
@@ -28,6 +33,17 @@ public class App extends Application {
 		Injector injector = Guice.createInjector(new DatabaseServiceProvider());
 		FXMLLoader fxmlLoader = new FXMLLoader();
 		fxmlLoader.setControllerFactory(injector::getInstance);
+        pStage = primaryStage;
+
+        root = FXMLLoader.load(getClass().getResource("mapViewer/MapViewer.fxml"));
+        controller = fxmlLoader.getController();
+
+        primaryStage.setTitle("Map Viewer");
+        primaryStage.setScene(new Scene(root));
+
+        primaryStage.show();
+
+        controller.init();
     }
 
     @Override

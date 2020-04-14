@@ -26,8 +26,8 @@ public class DBConstants {
 	public static final String createEdgeTable =
 			"CREATE TABLE Edges(" +
 					"id VARCHAR(21), " +
-					"start VARCHAR(10) REFERENCES Nodes (id), " +
-					"end VARCHAR(10) REFERENCES Node (id)" +
+					"first VARCHAR(10) REFERENCES Nodes (id), " +
+					"last VARCHAR(10) REFERENCES Node (id)" +
 					"PRIMARY KEY (id)))";
 
 	public static final String removeEdge =
@@ -99,7 +99,7 @@ public class DBConstants {
 					"WHERE id = ?";
 
 	public static final String addEdge =
-			"INSERT INTO Edges(id, start, end)" +
+			"INSERT INTO Edges(id, first, last)" +
 					"VALUES(?, ?, ?)";
 
 	public static final String addDoctor =

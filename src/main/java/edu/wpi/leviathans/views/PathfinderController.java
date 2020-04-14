@@ -32,8 +32,8 @@ import lombok.extern.slf4j.Slf4j;
 public class PathfinderController {
 	PathFinder pathfinder = new PathFinder();
 	Graph newGraph = new Graph();
-	@Inject
-	DatabaseService db;
+	//@Inject
+	DatabaseService db = new DatabaseService();
 
 	public static final class DATA_LABELS {
 		public static final String X = "x";

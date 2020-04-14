@@ -36,7 +36,9 @@ public class CSVParser {
         try  {
 			BufferedReader br = new BufferedReader(new FileReader(csvFile));
             while ((line = br.readLine()) != null) {
-            	csvContents.add((ArrayList<String>) Arrays.asList(line.split(delimiter)));
+            	ArrayList<String> newContent = new ArrayList<>();
+				newContent.addAll(Arrays.asList(line.split(delimiter)));
+            	csvContents.add(newContent);
 			}
             csvContents.remove(0);
         } catch (IOException ex) {

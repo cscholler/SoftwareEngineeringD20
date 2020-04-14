@@ -32,6 +32,7 @@ public class DatabaseService extends Service {
 		if (connection == null) {
 			connect(props);
 		}
+		buildDatabase();
 	}
 
 	@Override
@@ -57,6 +58,8 @@ public class DatabaseService extends Service {
 		} catch (SQLException ex) {
 			log.error("Encountered SQLException.", ex);
 		}
+
+		buildDatabase();
 	}
 
 	private void disconnect() {
@@ -101,7 +104,9 @@ public class DatabaseService extends Service {
 
 	public ArrayList<ResultSet> executeQueries(ArrayList<String> queries, ArrayList<ArrayList<String>> valuesList) {
 		ArrayList<ResultSet> resSets = new ArrayList<>();
-		if (queries.size() != valuesList.size()) {
+		boolean isPreparedStmt = !valuesList.isEmpty();
+
+		if (isPreparedStmt && queries.size() != valuesList.size()) {
 			throw new IllegalArgumentException();
 		}
 		for (int i = 0; i < queries.size(); i++) {
@@ -133,11 +138,12 @@ public class DatabaseService extends Service {
 
 	public boolean executeUpdates(ArrayList<String> updates, ArrayList<ArrayList<String>> valuesList) {
 		boolean isSuccess = true;
-		if (updates.size() != valuesList.size()) {
+		boolean isPreparedStmt = !valuesList.isEmpty();
+		if (isPreparedStmt && updates.size() != valuesList.size()) {
 			throw new IllegalArgumentException();
 		}
 		for (int i = 0; i < updates.size(); i++) {
-			if (!executeUpdate(updates.get(i), valuesList.get(i))) {
+			if (!executeUpdate(updates.get(i),isPreparedStmt ? valuesList.get(i) : new ArrayList<>())) {
 				isSuccess = false;
 			}
 		}
@@ -170,19 +176,19 @@ public class DatabaseService extends Service {
 
 		CSVParser parser = new CSVParser();
 
-		parser.setCsvFile("edu/wpi/leviathans/util/pathfinding/floorMaps/MapLnodes.csv");
+		/*parser.setCsvFile("src/main/java/edu/wpi/leviathans/util/pathfinding/floorMaps/MapLnodes.csv");
 		ArrayList<ArrayList<String>> data = parser.readCSVFile();
 		for (int i = 0; i < data.size(); i++) {
 			populateTables.add(DBConstants.addNode);
 		}
 
-		parser.setCsvFile("edu/wpi/leviathans/util/pathfinding/floorMaps/MapLedges.csv");
+		parser.setCsvFile("src/main/java/edu/wpi/leviathans/util/pathfinding/floorMaps/MapLedges.csv");
 		data = parser.readCSVFile();
 		for (int i = 0; i < data.size(); i++) {
 			populateTables.add(DBConstants.addEdge);
-		}
+		}*/
 
-		return executeUpdates(createTables, new ArrayList<>()) && executeUpdates(populateTables, data);
+		return executeUpdates(createTables, new ArrayList<>());// && executeUpdates(populateTables, data);
 	}
 
 	public ArrayList<String> getColumnNames(ResultSet resSet) {
