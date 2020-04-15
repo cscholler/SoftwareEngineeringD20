@@ -207,6 +207,8 @@ public class MapViewer {
             nodeGUI.setLayoutPos(newPos);
         }
 
+        scroller.layout();
+
         scroller.setHvalue(prevScroll.getX() * newZoomLevel / zoomLevel);
         scroller.setVvalue(prevScroll.getY() * newZoomLevel / zoomLevel);
 
@@ -216,8 +218,6 @@ public class MapViewer {
     public void setZoomLevelToPosition(double newZoomLevel, Point2D position) {
         double percentX = position.getX() / body.getWidth();
         double percentY = position.getY() / body.getHeight();
-
-        System.out.println(String.format("Mouse is at (%6.6f, %6.6f)", percentX, percentY));
 
         setZoomLevel(newZoomLevel);
 

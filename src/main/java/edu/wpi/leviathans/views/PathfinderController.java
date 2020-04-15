@@ -35,23 +35,6 @@ public class PathfinderController {
 	//@Inject
 	DatabaseService db = new DatabaseService();
 
-	public static final class DATA_LABELS {
-		public static final String X = "x";
-		public static final String Y = "y";
-		public static final String NODE_TYPE = "nodeType";
-		public static final String SHORT_NAME = "shortName";
-		public static final String LONG_NAME = "longName";
-	}
-
-	public static final class NODE_TYPES {
-		public static final String CONFERENCE = "CONF";
-		public static final String HALL = "HALL";
-		public static final String DEPARTMENT = "DEPT";
-		public static final String INFO = "INFO";
-		public static final String LAB = "LABS";
-		public static final String RESTROOM = "REST";
-	}
-
 	public Graph initialize() {
 		try {
 			generateGraph();
