@@ -17,7 +17,7 @@ import edu.wpi.leviathans.services.Service;
 
 @Slf4j
 public class DatabaseService extends Service {
-	private Connection connection = null;
+	private Connection connection;
 	private Properties props = null;
 	private ArrayList<ResultSet> usedResSets = new ArrayList<>();
 	private ArrayList<Statement> usedStmts = new ArrayList<>();
@@ -90,9 +90,6 @@ public class DatabaseService extends Service {
 		try {
 			if (values.size() == 0) {
 				Statement stmt;
-				if (connection == null) {
-					System.out.println("connection is null");
-				}
 				stmt = connection.createStatement();
 				resSet = stmt.executeQuery(query);
 			} else {
@@ -106,7 +103,6 @@ public class DatabaseService extends Service {
 	}
 
 	public ResultSet executeQuery(String query) {
-		System.out.println("[executeQuery()] connection is " + (connection == null ? "null" : "not null"));
 		return executeQuery(query, new ArrayList<>());
 	}
 
@@ -201,21 +197,15 @@ public class DatabaseService extends Service {
 		createTables.add(DBConstants.createMedicationRequestTable);
 		createTables.add(DBConstants.createUserTable);
 
-		System.out.println("connection is " + (connection == null ? "null" : "not null"));
-
 		CSVParser parser = new CSVParser();
-
 		ArrayList<ArrayList<String>> data = parser.readCSVFile();
 		for (int i = 0; i < data.size(); i++) {
 			populateTables.add(DBConstants.addNode);
 		}
-
-		System.out.println("connection is " + (connection == null ? "null" : "not null"));
-
-		executeUpdates(createTables, new ArrayList<>());
-
-		//return executeUpdates(createTables, new ArrayList<>()) && executeUpdates(populateTables, data);
-		return true;
+		for (int i = 0; i < data.size(); i++) {
+			populateTables.add(DBConstants.addNode);
+		}
+		return executeUpdates(createTables, new ArrayList<>()) && executeUpdates(populateTables, data);
 	}
 
 	public ArrayList<String> getColumnNames(ResultSet resSet) {

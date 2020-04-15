@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 
 import lombok.extern.slf4j.Slf4j;
 
-import edu.wpi.leviathans.modules.DatabaseServiceProvider;
+//import edu.wpi.leviathans.modules.DatabaseServiceProvider;
 
 @Slf4j
 public class App extends Application {
@@ -30,9 +30,9 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-		Injector injector = Guice.createInjector(new DatabaseServiceProvider());
+		//Injector injector = Guice.createInjector(new DatabaseServiceProvider());
 		FXMLLoader fxmlLoader = new FXMLLoader();
-		fxmlLoader.setControllerFactory(injector::getInstance);
+		//fxmlLoader.setControllerFactory(injector::getInstance);
         pStage = primaryStage;
 
         root = FXMLLoader.load(getClass().getResource("mapViewer/MapViewer.fxml"));

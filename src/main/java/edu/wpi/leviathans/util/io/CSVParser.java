@@ -11,25 +11,23 @@ import java.util.Arrays;
 
 @Slf4j
 public class CSVParser {
-    String csvFile;
+	public static final String mapDir = "edu/wpi/leviathans/csvFiles/";
+    File csvFile;
     String delimiter;
 	String line = "";
 
     public CSVParser(String csvFileName, String delimiter) {
-		this.csvFile = new File (getClass().getResource(csvFileName).getFile()).getPath();
+		this.csvFile = new File(getClass().getClassLoader().getResource(csvFileName).getFile());
     	this.delimiter = delimiter;
 		this.line = "";
 	}
 
 	public CSVParser() {
-    	this.csvFile = "src/main/java/edu/wpi/leviathans/util/pathfinding/floorMaps/MapLnodes.csv";
-		this.delimiter = ",";
-		this.line = "";
+    	this("MapLnodes.csv", ",");
 	}
 
 	public ArrayList<ArrayList<String>> readCSVFile() {
 		ArrayList<ArrayList<String>> csvContents = new ArrayList<>();
-
         try  {
 			BufferedReader br = new BufferedReader(new FileReader(csvFile));
             while ((line = br.readLine()) != null) {

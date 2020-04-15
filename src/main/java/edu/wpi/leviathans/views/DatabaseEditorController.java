@@ -8,6 +8,6 @@ import edu.wpi.leviathans.services.db.DatabaseService;
 
 @Slf4j
 public class DatabaseEditorController {
-	@Inject
-	DatabaseService db;
+	//@Inject
+	//DatabaseService db;
 }
