@@ -3,7 +3,6 @@ package edu.wpi.leviathans.util.io;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,19 +10,19 @@ import java.util.Arrays;
 
 @Slf4j
 public class CSVParser {
-	public static final String mapDir = "edu/wpi/leviathans/csvFiles/";
-    File csvFile;
+	public static final String mapDir = "src/main/resources/edu/wpi/leviathans/csvFiles/";
+    String csvFile;
     String delimiter;
 	String line = "";
 
     public CSVParser(String csvFileName, String delimiter) {
-		this.csvFile = new File(getClass().getClassLoader().getResource(csvFileName).getFile());
+		this.csvFile = mapDir + csvFileName;
     	this.delimiter = delimiter;
 		this.line = "";
 	}
 
 	public CSVParser() {
-    	this("MapLnodes.csv", ",");
+    	this("MapLnodesFloor2.csv", ",");
 	}
 
 	public ArrayList<ArrayList<String>> readCSVFile() {

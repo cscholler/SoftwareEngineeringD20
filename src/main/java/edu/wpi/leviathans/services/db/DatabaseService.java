@@ -77,7 +77,7 @@ public class DatabaseService extends Service {
 			if (connection != null) {
 				connection.commit();
 				connection.close();
-				//connection = null;
+				connection = null;
 			}
 			log.info("Connection closed.");
 		} catch (SQLException ex) {
@@ -147,7 +147,7 @@ public class DatabaseService extends Service {
 			throw new IllegalArgumentException();
 		}
 		for (int i = 0; i < updates.size(); i++) {
-			if (!executeUpdate(updates.get(i),isPreparedStmt ? valuesList.get(i) : new ArrayList<>())) {
+			if (!executeUpdate(updates.get(i), isPreparedStmt ? valuesList.get(i) : new ArrayList<>())) {
 				isSuccess = false;
 			}
 		}
@@ -167,36 +167,16 @@ public class DatabaseService extends Service {
 		return pStmt;
 	}
 
-	private void dropTables() {
-		ArrayList<String> dropTables = new ArrayList<>();
-
-		dropTables.add(DBConstants.dropNodeTable);
-		dropTables.add(DBConstants.dropEdgeTable);
-		dropTables.add(DBConstants.dropDoctorTable);
-		dropTables.add(DBConstants.dropPatientTable);
-		dropTables.add(DBConstants.dropMedicationRequestTable);
-		dropTables.add(DBConstants.dropUserTable);
-
-		try {
-			executeUpdates(dropTables, new ArrayList<>());
-		} catch (Exception ex) {
-			log.debug("Table(s) do not exist.");
-		}
-	}
-
 	private boolean buildDatabase() {
 		ArrayList<String> createTables = new ArrayList<>();
 		ArrayList<String> populateTables = new ArrayList<>();
-
-		//dropTables(); //drop tables doesn't work if tables ain't there
-
+		dropTables();
 		createTables.add(DBConstants.createNodeTable);
 		createTables.add(DBConstants.createEdgeTable);
 		createTables.add(DBConstants.createDoctorTable);
 		createTables.add(DBConstants.createPatientTable);
 		createTables.add(DBConstants.createMedicationRequestTable);
 		createTables.add(DBConstants.createUserTable);
-
 		CSVParser parser = new CSVParser();
 		ArrayList<ArrayList<String>> data = parser.readCSVFile();
 		for (int i = 0; i < data.size(); i++) {
@@ -207,6 +187,30 @@ public class DatabaseService extends Service {
 		}
 		return executeUpdates(createTables, new ArrayList<>()) && executeUpdates(populateTables, data);
 	}
+
+	private void dropTables() {
+		ResultSet resSet;
+		ArrayList<String> droppableTables = new ArrayList<>();
+		ArrayList<String> tablesToDrop = new ArrayList<>();
+		droppableTables.add(DBConstants.dropNodeTable);
+		droppableTables.add(DBConstants.dropEdgeTable);
+		droppableTables.add(DBConstants.dropDoctorTable);
+		droppableTables.add(DBConstants.dropPatientTable);
+		droppableTables.add(DBConstants.dropMedicationRequestTable);
+		droppableTables.add(DBConstants.dropUserTable);
+		try {
+			for (int i = 0; i < DBConstants.getTableNames().size(); i++) {
+				resSet = connection.getMetaData().getTables(null, "APP", DBConstants.getTableNames().get(i).toUpperCase(), null);
+				if (resSet.next()) {
+					tablesToDrop.add(droppableTables.get((droppableTables.size() - 1) - i));
+				}
+			}
+			executeUpdates(tablesToDrop, new ArrayList<>());
+		} catch (SQLException ex) {
+			log.error("Encountered SQLException.", ex);
+		}
+	}
+
 
 	public ArrayList<String> getColumnNames(ResultSet resSet) {
 		ArrayList<String> colLabels = new ArrayList<>();
