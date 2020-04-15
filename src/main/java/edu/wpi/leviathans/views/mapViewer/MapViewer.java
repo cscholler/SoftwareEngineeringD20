@@ -381,7 +381,6 @@ public class MapViewer {
                         mapSelector.setNodePosition(gui, gui.getLayoutPos().subtract(new Point2D(event.getX(), event.getY())));
 
                     draggingNode = true;
-                    scene.setCursor(Cursor.MOVE);
                 }
             });
 
@@ -391,7 +390,6 @@ public class MapViewer {
                     gui.node.position = gui.getLayoutPos().multiply(1 / zoomLevel);
                     mapSelector.setNodePosition(gui, gui.getLayoutPos().subtract(new Point2D(event.getX(), event.getY())));
                 }
-                scene.setCursor(Cursor.DEFAULT);
                 draggingNode = false;
             });
 
@@ -494,6 +492,7 @@ public class MapViewer {
             selected.add(newItem);
             newItem.setHighlighted(true);
             newItem.selected = true;
+            newItem.gui.setCursor(Cursor.MOVE);
         }
 
         public void addAll(Highlightable... newItems) {
@@ -512,6 +511,7 @@ public class MapViewer {
                     selected.remove(item);
                     item.setHighlighted(false);
                     item.selected = false;
+                    item.gui.setCursor(Cursor.DEFAULT);
                 } else {
                     throw new IllegalArgumentException("Item to remove must be selected");
                 }
