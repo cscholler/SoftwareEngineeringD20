@@ -2,9 +2,7 @@ package edu.wpi.leviathans;
 
 import java.io.IOException;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-
+import edu.wpi.leviathans.views.mapViewer.MapViewController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,7 +19,7 @@ public class App extends Application {
     public Stage pStage;
 
     Parent root;
-    edu.wpi.leviathans.views.mapViewer.MapViewer controller;
+    MapViewController controller;
 
     @Override
     public void init() {
@@ -35,7 +33,7 @@ public class App extends Application {
 		//fxmlLoader.setControllerFactory(injector::getInstance);
         pStage = primaryStage;
 
-        root = FXMLLoader.load(getClass().getResource("mapViewer/MapViewer.fxml"));
+        root = FXMLLoader.load(getClass().getResource("mapViewer/MapViewController.fxml"));
         controller = fxmlLoader.getController();
 
         primaryStage.setTitle("Map Viewer");

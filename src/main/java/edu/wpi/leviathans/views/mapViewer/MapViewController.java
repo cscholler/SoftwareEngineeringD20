@@ -2,7 +2,6 @@ package edu.wpi.leviathans.views.mapViewer;
 
 import edu.wpi.leviathans.util.pathfinding.Path;
 import edu.wpi.leviathans.util.pathfinding.PathFinder;
-import edu.wpi.leviathans.views.PathfinderController;
 import edu.wpi.leviathans.views.mapViewer.dataDialogue.*;
 import edu.wpi.leviathans.util.pathfinding.MapParser;
 import edu.wpi.leviathans.util.pathfinding.graph.*;
@@ -27,7 +26,7 @@ import javafx.scene.shape.Shape;
 
 import java.util.*;
 
-public class MapViewer {
+public class MapViewController {
     @FXML
     MenuItem save, saveAs, open, quit;
 
@@ -74,15 +73,6 @@ public class MapViewer {
 
     private double zoomLevel = 1;
     private Scene scene;
-
-    /*private void clearSelection() {
-        for (NodeGUI nodeGUI : selectedNodes.keySet())
-            nodeGUI.setHighlighted(false);
-        for (EdgeGUI edgeGUI : selectedEdges)
-            edgeGUI.setHighlighted(false);
-        selectedNodes.clear();
-        selectedEdges.clear();
-    }*/
 
     private void removeNode(NodeGUI nodeGUI) {
         nodes.remove(nodeGUI);
@@ -287,9 +277,7 @@ public class MapViewer {
 
     @FXML
     void openFromDB() {
-        PathfinderController pController = new PathfinderController();
-
-        graph = pController.initialize();
+        graph = MapParser.getGraphFromDatabase();
 
         setPaneFromGraph(graph);
     }
@@ -430,7 +418,6 @@ public class MapViewer {
     private class SelectionBox extends Rectangle {
 
         public Point2D rootPosition;
-        public Selector selector;
 
         public SelectionBox(Point2D root) {
             super();
