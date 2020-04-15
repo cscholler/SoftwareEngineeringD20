@@ -17,6 +17,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,52 +31,78 @@ public class DatabaseViewController {
 	//@Inject
 	DatabaseService db;
 
-	@FXML private Button btnBack;
-	@FXML private Button btnModify;
-	@FXML private Button btnDownload;
-	@FXML private Button btnDemonstration;
-	@FXML private TableView table;
+	@FXML
+	private Button btnBack;
+	@FXML
+	private Button btnModify;
+	@FXML
+	private Button btnDownload;
+	@FXML
+	private Button btnDemonstration;
+	@FXML
+	private TableView table;
 
-	@FXML private TableColumn colNodeID;
-	@FXML private TableColumn colXCoord;
-	@FXML private TableColumn colYCoord;
-	@FXML private TableColumn colFloor;
-	@FXML private TableColumn colBuilding;
-	@FXML private TableColumn colNodeType;
-	@FXML private TableColumn colLongName;
-	@FXML private TableColumn colShortName;
+	@FXML
+	private TableColumn colNodeID;
+	@FXML
+	private TableColumn colXCoord;
+	@FXML
+	private TableColumn colYCoord;
+	@FXML
+	private TableColumn colFloor;
+	@FXML
+	private TableColumn colBuilding;
+	@FXML
+	private TableColumn colNodeType;
+	@FXML
+	private TableColumn colLongName;
+	@FXML
+	private TableColumn colShortName;
 
-	@FXML private TextField nodeIDText;
-	@FXML private TextField xCoordText;
-	@FXML private TextField yCoordText;
-	@FXML private TextField floorText;
-	@FXML private TextField buildingText;
-	@FXML private TextField shortNameText;
-	@FXML private TextField longNameText;
-	@FXML private TextField nodeTypeText;
+	@FXML
+	private TextField nodeIDText;
+	@FXML
+	private TextField xCoordText;
+	@FXML
+	private TextField yCoordText;
+	@FXML
+	private TextField floorText;
+	@FXML
+	private TextField buildingText;
+	@FXML
+	private TextField shortNameText;
+	@FXML
+	private TextField longNameText;
+	@FXML
+	private TextField nodeTypeText;
 
 
 	private ObservableList<Row> observableList = FXCollections.observableArrayList(populateRow());
 
 
 	@FXML
-	private void handleButtonAction(ActionEvent e) throws IOException{
+	private void handleButtonAction(ActionEvent e) throws IOException {
 
 		Stage stage;
 		Parent root;
 
 		if (e.getSource() == btnModify) {
 
-			stage = (Stage) btnModify.getScene().getWindow();
+			stage = new Stage ();
 			root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/Modify.fxml"));
+			stage.setScene(new Scene(root));
+			stage.setTitle("My modal window");
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.initOwner(btnModify.getScene().getWindow());
+			stage.showAndWait();
 
-		}  else if (e.getSource() == btnDownload) {
+		} else if (e.getSource() == btnDownload) {
 			loadData();
 			stage = (Stage) btnDownload.getScene().getWindow();
 			root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/Download.fxml"));
 
 
-		} else if (e.getSource() == btnBack){
+		} else if (e.getSource() == btnBack) {
 			stage = (Stage) btnBack.getScene().getWindow();
 			root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/Display.fxml"));
 		} else {
@@ -85,7 +112,7 @@ public class DatabaseViewController {
 
 		}
 
-		if(e.getSource() != btnDownload) {
+		if (e.getSource() != btnDownload) {
 			Scene scene = new Scene(root);
 			stage.setScene(scene);
 			stage.show();
@@ -119,11 +146,8 @@ public class DatabaseViewController {
 	}
 
 
-
-
-
 	@FXML
-	public void loadData(){
+	public void loadData() {
 		colNodeID.setCellValueFactory(new PropertyValueFactory<>("nodeID"));
 		colXCoord.setCellValueFactory(new PropertyValueFactory<>("xcoord"));
 		colYCoord.setCellValueFactory(new PropertyValueFactory<>("ycoord"));
@@ -137,14 +161,13 @@ public class DatabaseViewController {
 		Stage stage = new Stage();
 
 
-
 		table.setItems(observableList);
 		table.getColumns().clear();
 		table.getColumns().addAll(colNodeID, colXCoord, colYCoord, colFloor, colBuilding, colNodeType, colLongName,
 				colShortName);
 	}
 
-	private ArrayList<Row> populateRow(){
+	private ArrayList<Row> populateRow() {
 		CSVParser reader = new CSVParser();
 		ArrayList<ArrayList<String>> data = reader.readCSVFile();
 		ArrayList<Row> rows = new ArrayList<>();
@@ -155,4 +178,5 @@ public class DatabaseViewController {
 		}
 		return rows;
 	}
+
 }
