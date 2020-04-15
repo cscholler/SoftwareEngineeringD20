@@ -119,9 +119,11 @@ public class DatabaseViewController {
 	}
 
 
+
+
+
 	@FXML
-	private void initialize() {
-		//Initialize Node Table
+	public void loadData(){
 		colNodeID.setCellValueFactory(new PropertyValueFactory<>("nodeID"));
 		colXCoord.setCellValueFactory(new PropertyValueFactory<>("xcoord"));
 		colYCoord.setCellValueFactory(new PropertyValueFactory<>("ycoord"));
@@ -130,18 +132,6 @@ public class DatabaseViewController {
 		colNodeType.setCellValueFactory(new PropertyValueFactory<>("nodeType"));
 		colLongName.setCellValueFactory(new PropertyValueFactory<>("longName"));
 		colShortName.setCellValueFactory(new PropertyValueFactory<>("shortName"));
-
-		// Clear person details.
-		showNodeDetails(null);
-
-//		// Listen for selection changes and show the node details when changed.
-//		table.getSelectionModel().selectedItemProperty().addListener(
-//				(observable, oldValue, newValue) -> showNodeDetails(newValue));
-//	}
-
-
-	@FXML
-	public void loadData() {
 
 		Group groupRoot = new Group();
 		Stage stage = new Stage();
