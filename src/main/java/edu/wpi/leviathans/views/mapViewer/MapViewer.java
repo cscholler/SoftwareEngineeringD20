@@ -297,11 +297,11 @@ public class MapViewer {
     private void setPaneFromGraph(Graph graph) {
         if (graph != null) {
             // Set names so they are simpler to test (temporary)
-            int i = 0;
+            /*int i = 0;
             for (Node node : graph.getNodes()) {
                 node.setName("n" + i);
                 i++;
-            }
+            }*/
 
             body.getChildren().clear();
             body.getChildren().addAll(paneFromGraph(graph).getChildren());
