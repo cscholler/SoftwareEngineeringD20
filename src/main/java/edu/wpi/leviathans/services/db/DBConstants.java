@@ -28,7 +28,8 @@ public class DBConstants {
 					"id VARCHAR(21), " +
 					"node_start VARCHAR(10) REFERENCES Nodes(id), " +
 					"node_end VARCHAR(10) REFERENCES Nodes(id), " +
-					"PRIMARY KEY (id))";
+					"PRIMARY KEY (id), " +
+					"CONSTRAINT fk_nodes FOREIGN KEY (node_start, node_end) REFERENCES Nodes(id, id))";
 
 	public static final String removeEdge =
 			"DELETE FROM Edges " +

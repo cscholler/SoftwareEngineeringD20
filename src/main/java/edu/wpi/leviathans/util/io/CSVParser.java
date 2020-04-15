@@ -16,14 +16,14 @@ public class CSVParser {
     String delimiter;
 	String line = "";
 
-    public CSVParser(String csvFileName, String delimiter) {
+    public CSVParser(String csvFileName) {
 		this.csvFile = mapDir + csvFileName;
-    	this.delimiter = delimiter;
+    	this.delimiter = ",";
 		this.line = "";
 	}
 
 	public CSVParser() {
-    	this("MapLnodesFloor2.csv", ",");
+    	this("MapLnodesFloor2.csv");
 	}
 
 	public ArrayList<ArrayList<String>> readCSVFile() {

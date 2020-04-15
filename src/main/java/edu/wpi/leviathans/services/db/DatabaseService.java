@@ -186,7 +186,6 @@ public class DatabaseService extends Service {
 
 	private boolean buildDatabase() {
 		ArrayList<String> createTables = new ArrayList<>();
-		ArrayList<String> populateTables = new ArrayList<>();
 
 		//dropTables(); //drop tables doesn't work if tables ain't there
 
@@ -198,19 +197,26 @@ public class DatabaseService extends Service {
 		createTables.add(DBConstants.createUserTable);
 
 		CSVParser parser = new CSVParser();
-		ArrayList<ArrayList<String>> data = parser.readCSVFile();
+		ArrayList<String> populateNodes = new ArrayList<>();
+		ArrayList<ArrayList<String>> nodeData = parser.readCSVFile();
 
-		for (int i = 0; i < data.size(); i++) {
-			populateTables.add(DBConstants.addNode);
-		}
-		for (int i = 0; i < data.size(); i++) {
-			populateTables.add(DBConstants.addNode);
+		for (int i = 0; i < nodeData.size(); i++) {
+			populateNodes.add(DBConstants.addNode);
 		}
 
-		boolean createT = executeUpdates(createTables, new ArrayList<>());
-		boolean populateT = executeUpdates(populateTables, data);
+		parser = new CSVParser("MapLedgesFloor2.csv");
+		ArrayList<String> populateEdges = new ArrayList<>();
+		ArrayList<ArrayList<String>> edgeData = parser.readCSVFile();
 
-		return createT && populateT;
+		for (int i = 0; i < edgeData.size(); i++) {
+			populateEdges.add(DBConstants.addEdge);
+		}
+
+		boolean createdTables = executeUpdates(createTables, new ArrayList<>());
+		boolean populatedNodes = executeUpdates(populateNodes, nodeData);
+		boolean populatedEdges = executeUpdates(populateEdges, edgeData);
+
+		return createdTables && populatedNodes && populatedEdges;
 	}
 
 	public ArrayList<String> getColumnNames(ResultSet resSet) {
