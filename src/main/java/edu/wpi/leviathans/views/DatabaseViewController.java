@@ -23,7 +23,10 @@ import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.leviathans.services.db.DatabaseService;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 @Slf4j
@@ -39,8 +42,8 @@ public class DatabaseViewController {
     private Button btnDownload;
     @FXML
     private Button btnDemonstration;
-	@FXML
-	private Button btnSearch, btnSave;
+    @FXML
+    private Button btnSearch, btnSave;
     @FXML
     private TableView table;
 
@@ -79,7 +82,7 @@ public class DatabaseViewController {
     private TextField nodeTypeText, searchText;
 
 
-	private static ObservableList<Row> observableList;
+    private static ObservableList<Row> observableList;
     private Row nodeEdit;
     private int nodeNum;
 
@@ -92,33 +95,32 @@ public class DatabaseViewController {
 
         if (e.getSource() == btnModify) {
 
-			stage = new Stage ();
-			root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/Modify.fxml"));
-			stage.setScene(new Scene(root));
-			stage.setTitle("Node Editor");
-			stage.initModality(Modality.APPLICATION_MODAL);
-			stage.initOwner(btnModify.getScene().getWindow());
-			stage.showAndWait();
+            stage = new Stage();
+            root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/Modify.fxml"));
+            stage.setScene(new Scene(root));
+            stage.setTitle("Node Editor");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(btnModify.getScene().getWindow());
+            stage.showAndWait();
 
         } else if (e.getSource() == btnDownload) {
 //            System.out.println((observableList.get(nodeNum)).getFloor() +"before");
-			observableList = FXCollections.observableArrayList(populateRow());
-			loadData();
-            System.out.println((observableList.get(nodeNum)).getFloor() +"after");
+            observableList = FXCollections.observableArrayList(populateRow());
+            loadData();
+            System.out.println((observableList.get(nodeNum)).getFloor() + "after");
             stage = (Stage) btnDownload.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/Download.fxml"));
         } else if (e.getSource() == btnBack) {
-			stage = (Stage) btnBack.getScene().getWindow();
-			root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/Display.fxml"));
-			stage.close();
-		}else if (e.getSource() == btnSearch) {
-        	search();
-			stage = (Stage) btnBack.getScene().getWindow();
-			root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/Display.fxml"));
-		}
-
-        else if (e.getSource() == btnSave) {
+            stage = (Stage) btnBack.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/Display.fxml"));
+            stage.close();
+        } else if (e.getSource() == btnSearch) {
+            search();
+            stage = (Stage) btnBack.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/Display.fxml"));
+        } else if (e.getSource() == btnSave) {
             save(nodeEdit, nodeNum);
+            download();
             System.out.println("Here");
             stage = (Stage) btnSave.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/Display.fxml"));
@@ -142,7 +144,7 @@ public class DatabaseViewController {
     private void showNodeDetails(Row row) {
         if (row != null) {
             // Fill the textfield with info from the row object.
-			System.out.println("showDetails");
+            System.out.println("showDetails");
             nodeIDText.setText(row.getNodeID());
             xCoordText.setText(row.getxcoord());
             yCoordText.setText(row.getycoord());
@@ -165,20 +167,84 @@ public class DatabaseViewController {
         }
     }
 
-    private void search() {
-		String name = searchText.getText();
-		int x = 0;
-		for(Row r: observableList){
-			//System.out.print("Loop");
-			if(r.getShortName().equals(name)){
-				nodeEdit = r;
-				showNodeDetails(r);
-                nodeNum = x;
-				break;
-			}
-			x++;
+    private void download() {
 
-		}
+        try {
+//                FileWriter fw = new FileWriter("src/main/java/edu/wpi/leviathans/util/pathFinding/floorMaps/MapLnodesBackup.csv", true);
+//                BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter pw = new PrintWriter("src/main/java/edu/wpi/leviathans/util/pathFinding/floorMaps/MapLnodesBackup.csv");
+            StringBuilder sb = new StringBuilder();
+
+            sb.append("NodeID");
+            sb.append(",");
+            sb.append("xCoordinate");
+            sb.append(",");
+            sb.append("yCoordinate");
+            sb.append(",");
+            sb.append("Floor");
+            sb.append(",");
+            sb.append("Building");
+            sb.append(",");
+            sb.append("NodeType");
+            sb.append(",");
+            sb.append("ShortName");
+            sb.append(",");
+            sb.append("LongName");
+            sb.append("\r\n");
+
+            for (Row r : observableList) {
+
+                sb.append(r.getNodeID());
+                sb.append(",");
+                sb.append(r.getxcoord());
+                sb.append(",");
+                sb.append(r.getycoord());
+                sb.append(",");
+                sb.append(r.getFloor());
+                sb.append(",");
+                sb.append(r.getBuilding());
+                sb.append(",");
+                sb.append(r.getNodeType());
+                sb.append(",");
+                sb.append(r.getShortName());
+                sb.append(",");
+                sb.append(r.getLongName());
+                sb.append("\r\n");
+
+//                    String id = r.getNodeID();
+//                    String x = r.getxcoord();
+//                    String y = r.getycoord();
+//                    String floor = r.getFloor();
+//                    String building = r.getBuilding();
+//                    String type = r.getNodeType();
+//                    String sName = r.getShortName();
+//                    String lName = r.getLongName();
+//                    pw.println(id + "," + x + "," + y + "," + floor + "," + building + "," + type + "," + sName + "," + lName);
+
+            }
+            pw.write(sb.toString());
+            pw.close();
+            System.out.print("Finished");
+        } catch (Exception E) {
+
+        }
+
+    }
+
+    private void search() {
+        String name = searchText.getText();
+        int x = 0;
+        for (Row r : observableList) {
+            //System.out.print("Loop");
+            if (r.getShortName().equals(name)) {
+                nodeEdit = r;
+                showNodeDetails(r);
+                nodeNum = x;
+                break;
+            }
+            x++;
+
+        }
     }
 
     private void save(Row r, int i) {
