@@ -40,7 +40,7 @@ public class DatabaseViewController {
     @FXML
     private Button btnDemonstration;
 	@FXML
-	private Button btnSearch, btnSave, btnRefresh;
+	private Button btnSearch, btnSave;
     @FXML
     private TableView table;
 
@@ -76,10 +76,10 @@ public class DatabaseViewController {
     @FXML
     private TextField longNameText;
     @FXML
-    private TextField nodeTypeText;
+    private TextField nodeTypeText, searchText;
 
 
-    private ObservableList<Row> observableList = FXCollections.observableArrayList(populateRow());
+	private static ObservableList<Row> observableList;
     private Row nodeEdit;
     private int nodeNum;
 
@@ -95,31 +95,32 @@ public class DatabaseViewController {
 			stage = new Stage ();
 			root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/Modify.fxml"));
 			stage.setScene(new Scene(root));
-			stage.setTitle("My modal window");
+			stage.setTitle("Node Editor");
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.initOwner(btnModify.getScene().getWindow());
 			stage.showAndWait();
 
         } else if (e.getSource() == btnDownload) {
-            System.out.println((observableList.get(nodeNum)).getFloor() +"before");
-            loadData();
+//            System.out.println((observableList.get(nodeNum)).getFloor() +"before");
+			observableList = FXCollections.observableArrayList(populateRow());
+			loadData();
             System.out.println((observableList.get(nodeNum)).getFloor() +"after");
             stage = (Stage) btnDownload.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/Download.fxml"));
-
-
         } else if (e.getSource() == btnBack) {
 			stage = (Stage) btnBack.getScene().getWindow();
 			root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/Display.fxml"));
+			stage.close();
 		}else if (e.getSource() == btnSearch) {
         	search();
 			stage = (Stage) btnBack.getScene().getWindow();
 			root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/Display.fxml"));
 		}
+
         else if (e.getSource() == btnSave) {
             save(nodeEdit, nodeNum);
             System.out.println("Here");
-            stage = (Stage) btnBack.getScene().getWindow();
+            stage = (Stage) btnSave.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/Display.fxml"));
 
         } else {
@@ -129,7 +130,7 @@ public class DatabaseViewController {
 
         }
 
-        if (e.getSource() != btnDownload && e.getSource() != btnSearch && e.getSource() != btnSave) {
+        if (e.getSource() != btnDownload && e.getSource() != btnSearch && e.getSource() != btnSave && e.getSource() != btnBack) {
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
@@ -165,7 +166,7 @@ public class DatabaseViewController {
     }
 
     private void search() {
-		String name = shortNameText.getText();
+		String name = searchText.getText();
 		int x = 0;
 		for(Row r: observableList){
 			//System.out.print("Loop");
