@@ -15,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +44,15 @@ public class DatabaseViewController {
 	@FXML private TableColumn colNodeType;
 	@FXML private TableColumn colLongName;
 	@FXML private TableColumn colShortName;
+
+	@FXML private TextField nodeIDText;
+	@FXML private TextField xCoordText;
+	@FXML private TextField yCoordText;
+	@FXML private TextField floorText;
+	@FXML private TextField buildingText;
+	@FXML private TextField shortNameText;
+	@FXML private TextField longNameText;
+	@FXML private TextField nodeTypeText;
 
 
 	private ObservableList<Row> observableList = FXCollections.observableArrayList(populateRow());
@@ -83,12 +93,35 @@ public class DatabaseViewController {
 
 	}
 
+	private void showNodeDetails(Row row) {
+		if (row != null) {
+			// Fill the textfield with info from the row object.
+			nodeIDText.setText(row.getNodeID());
+			xCoordText.setText(row.getxcoord());
+			yCoordText.setText(row.getycoord());
+			floorText.setText(row.getFloor());
+			buildingText.setText(row.getBuilding());
+			nodeTypeText.setText(row.getNodeType());
+			shortNameText.setText(row.getShortName());
+			longNameText.setText(row.getLongName());
+
+		} else {
+
+			nodeIDText.setText("");
+			xCoordText.setText("");
+			yCoordText.setText("");
+			floorText.setText("");
+			buildingText.setText("");
+			nodeTypeText.setText("");
+			shortNameText.setText("");
+			longNameText.setText("");
+		}
+	}
+
+
 	@FXML
-	public void loadData() {
-
-		Group groupRoot = new Group();
-		Stage stage = new Stage();
-
+	private void initialize() {
+		//Initialize Node Table
 		colNodeID.setCellValueFactory(new PropertyValueFactory<>("nodeID"));
 		colXCoord.setCellValueFactory(new PropertyValueFactory<>("xcoord"));
 		colYCoord.setCellValueFactory(new PropertyValueFactory<>("ycoord"));
@@ -97,6 +130,23 @@ public class DatabaseViewController {
 		colNodeType.setCellValueFactory(new PropertyValueFactory<>("nodeType"));
 		colLongName.setCellValueFactory(new PropertyValueFactory<>("longName"));
 		colShortName.setCellValueFactory(new PropertyValueFactory<>("shortName"));
+
+		// Clear person details.
+		showNodeDetails(null);
+
+//		// Listen for selection changes and show the node details when changed.
+//		table.getSelectionModel().selectedItemProperty().addListener(
+//				(observable, oldValue, newValue) -> showNodeDetails(newValue));
+//	}
+
+
+	@FXML
+	public void loadData() {
+
+		Group groupRoot = new Group();
+		Stage stage = new Stage();
+
+
 
 		table.setItems(observableList);
 		table.getColumns().clear();
