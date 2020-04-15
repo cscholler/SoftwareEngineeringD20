@@ -17,17 +17,18 @@ public class CSVParser {
 	String line = "";
 
     public CSVParser(String csvFileName, String delimiter) {
-		this.csvFile = new File(getClass().getClassLoader().getResource(csvFileName).getFile());
+		this.csvFile = new File(getClass().getClassLoader().getResource(mapDir + csvFileName).getFile());
     	this.delimiter = delimiter;
 		this.line = "";
 	}
 
 	public CSVParser() {
-    	this("MapLnodes.csv", ",");
+    	this("MapLnodesFloor2.csv", ",");
 	}
 
 	public ArrayList<ArrayList<String>> readCSVFile() {
 		ArrayList<ArrayList<String>> csvContents = new ArrayList<>();
+		System.out.println(csvFile.getPath());
         try  {
 			BufferedReader br = new BufferedReader(new FileReader(csvFile));
             while ((line = br.readLine()) != null) {
