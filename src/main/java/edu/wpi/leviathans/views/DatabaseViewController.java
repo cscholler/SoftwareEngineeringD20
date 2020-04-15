@@ -17,6 +17,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
@@ -91,8 +92,13 @@ public class DatabaseViewController {
 
         if (e.getSource() == btnModify) {
 
-            stage = (Stage) btnModify.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/Modify.fxml"));
+			stage = new Stage ();
+			root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/Modify.fxml"));
+			stage.setScene(new Scene(root));
+			stage.setTitle("My modal window");
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.initOwner(btnModify.getScene().getWindow());
+			stage.showAndWait();
 
         } else if (e.getSource() == btnDownload) {
             System.out.println((observableList.get(nodeNum)).getFloor() +"before");
