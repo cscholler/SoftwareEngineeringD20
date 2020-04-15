@@ -26,13 +26,19 @@ public class CSVParser {
 		this.delimiter = ",";
 	}
 
-    public ArrayList<ArrayList<String>> readCSVFile() {
+	public void setCsvFile(String csvFile) {
+		this.csvFile = csvFile;
+	}
+
+	public ArrayList<ArrayList<String>> readCSVFile() {
 		ArrayList<ArrayList<String>> csvContents = new ArrayList<>();
 
         try  {
 			BufferedReader br = new BufferedReader(new FileReader(csvFile));
             while ((line = br.readLine()) != null) {
-            	csvContents.add((ArrayList<String>) Arrays.asList(line.split(delimiter)));
+            	ArrayList<String> newContent = new ArrayList<>();
+				newContent.addAll(Arrays.asList(line.split(delimiter)));
+            	csvContents.add(newContent);
 			}
             csvContents.remove(0);
         } catch (IOException ex) {

@@ -1,16 +1,14 @@
 package edu.wpi.leviathans.util.pathfinding.graph;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Graph {
 
-    private HashMap<String, Node> nodes;
+    private Map<String, Node> nodes;
 
     public Graph() {
-        nodes = new HashMap<String, Node>();
+        nodes = new ConcurrentHashMap<String, Node>();
     }
 
     /**
@@ -80,6 +78,23 @@ public class Graph {
      */
     public Node getNode(String nodeName) {
         return nodes.get(nodeName);
+    }
+
+    /**
+     * Gets a collection of all the edges pointing to a given node.
+     *
+     * @param node The node the edges all point to
+     * @return a collection of edges pointing to the node
+     */
+    public Collection<Edge> getEdgesPointingTo(Node node) {
+        Collection<Edge> pointingEdges = new ArrayList<>();
+
+        for (Edge edge : getEdges()) {
+            if (edge.destination.equals(node))
+                pointingEdges.add(edge);
+        }
+
+        return pointingEdges;
     }
 
     /**

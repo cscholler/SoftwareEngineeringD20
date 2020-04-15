@@ -1,5 +1,8 @@
-package edu.wpi.leviathans.util.pathfinding.mapViewer;
+package edu.wpi.leviathans.views.mapViewer;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import edu.wpi.leviathans.modules.DatabaseServiceProvider;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,19 +21,20 @@ public class MapApp extends Application {
     public Stage pStage;
 
     Parent root;
-    MapViewer controller;
+    edu.wpi.leviathans.views.mapViewer.MapViewer controller;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        //Injector injector = Guice.createInjector(new DatabaseServiceProvider());
         pStage = primaryStage;
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MapViewer.fxml"));
+        //fxmlLoader.setControllerFactory(injector::getInstance);
 
         root = fxmlLoader.load();
         controller = fxmlLoader.getController();
 
         primaryStage.setTitle("Map Viewer");
         primaryStage.setScene(new Scene(root));
-        primaryStage.setMaximized(true);
 
         primaryStage.show();
 
