@@ -12,10 +12,10 @@ public class DBConstants {
 					"y_pos INT, " +
 					"floor CHAR(1), " +
 					"building VARCHAR(64), " +
+					"node_type CHAR(4), " +
 					"l_name VARCHAR(32), " +
 					"s_name VARCHAR(32), " +
 					"team CHAR(1), " +
-					"visible CHAR(1), " +
 					"PRIMARY KEY (id))";
 
 	public static final String updateNode =
@@ -90,8 +90,8 @@ public class DBConstants {
 			"DROP TABLE Users";
 
 	public static final String addNode =
-			"INSERT INTO Nodes(id, x_pos, y_pos, floor, building, l_name, s_name, team)" +
-					"VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+			"INSERT INTO Nodes(id, x_pos, y_pos, floor, building, node_type, l_name, s_name, team)" +
+					"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	public static final String updateNodeVisibility =
 			"UPDATE Nodes " +

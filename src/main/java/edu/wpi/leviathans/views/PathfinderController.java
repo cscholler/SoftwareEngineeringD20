@@ -68,9 +68,9 @@ public class PathfinderController {
 		while (rs.next()) {
 			Node newNode = new Node(rs.getString(1));
 			newNode.position = new Point2D(Double.parseDouble(rs.getString(2)), Double.parseDouble(rs.getString(3)));
-			newNode.data.put(MapParser.DATA_LABELS.NODE_TYPE, rs.getString(4));
-			newNode.data.put(MapParser.DATA_LABELS.LONG_NAME, rs.getString(5));
-			newNode.data.put(MapParser.DATA_LABELS.SHORT_NAME, rs.getString(6));
+			newNode.data.put(MapParser.DATA_LABELS.NODE_TYPE, rs.getString(6));
+			newNode.data.put(MapParser.DATA_LABELS.LONG_NAME, rs.getString(7));
+			newNode.data.put(MapParser.DATA_LABELS.SHORT_NAME, rs.getString(8));
 
 			newGraph.addNode(newNode);
 		}

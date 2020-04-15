@@ -113,7 +113,7 @@ public class DatabaseService extends Service {
 		if (isPreparedStmt && queries.size() != valuesList.size()) {
 			throw new IllegalArgumentException();
 		}
-		for (int i = 0; i < queries.size(); i++) {
+		for (int i = 0; i < queries.size() + 1; i++) {
 			resSets.add(executeQuery(queries.get(i), valuesList.get(i)));
 		}
 		return resSets;
@@ -158,8 +158,8 @@ public class DatabaseService extends Service {
 		PreparedStatement pStmt = null;
 		try {
 			pStmt = connection.prepareStatement(query);
-			for (int i = 1; i < values.size() + 1; i++) {
-				pStmt.setString(i, values.get(i));
+			for (int i = 0; i < values.size(); i++) {
+				pStmt.setString(i + 1, values.get(i));
 			}
 		} catch (SQLException ex) {
 			log.error("Encountered SQLException.", ex);
@@ -199,13 +199,18 @@ public class DatabaseService extends Service {
 
 		CSVParser parser = new CSVParser();
 		ArrayList<ArrayList<String>> data = parser.readCSVFile();
+
 		for (int i = 0; i < data.size(); i++) {
 			populateTables.add(DBConstants.addNode);
 		}
 		for (int i = 0; i < data.size(); i++) {
 			populateTables.add(DBConstants.addNode);
 		}
-		return executeUpdates(createTables, new ArrayList<>()) && executeUpdates(populateTables, data);
+
+		boolean createT = executeUpdates(createTables, new ArrayList<>());
+		boolean populateT = executeUpdates(populateTables, data);
+
+		return createT && populateT;
 	}
 
 	public ArrayList<String> getColumnNames(ResultSet resSet) {
