@@ -110,7 +110,7 @@ public class MapViewer {
                 double prevZoomLevel = getZoomLevel();
 
                 // Change the zoom level
-                setZoomLevel(prevZoomLevel * (1 + event.getDeltaY() / 100));
+                setZoomLevelToPosition(prevZoomLevel * (1 + event.getDeltaY() / 100), new Point2D(event.getX(), event.getY()));
 
                 position.setText(positionInfo());
             }
@@ -199,13 +199,32 @@ public class MapViewer {
     public void setZoomLevel(double newZoomLevel) {
         newZoomLevel = Math.max(newZoomLevel, 0.01);
 
+        Point2D prevScroll = new Point2D(scroller.getHvalue(), scroller.getVvalue());
+
         for (NodeGUI nodeGUI : nodes.values()) {
             Point2D prevPos = new Point2D(nodeGUI.layoutX.get(), nodeGUI.layoutY.get());
             Point2D newPos = prevPos.multiply(newZoomLevel / zoomLevel);
             nodeGUI.setLayoutPos(newPos);
         }
 
+        scroller.setHvalue(prevScroll.getX() * newZoomLevel / zoomLevel);
+        scroller.setVvalue(prevScroll.getY() * newZoomLevel / zoomLevel);
+
         zoomLevel = newZoomLevel;
+    }
+
+    public void setZoomLevelToPosition(double newZoomLevel, Point2D position) {
+        double percentX = position.getX() / body.getWidth();
+        double percentY = position.getY() / body.getHeight();
+
+        System.out.println(String.format("Mouse is at (%6.6f, %6.6f)", percentX, percentY));
+
+        setZoomLevel(newZoomLevel);
+
+        scroller.layout();
+
+        scroller.setHvalue(percentX * scroller.getHmax());
+        scroller.setVvalue(percentY * scroller.getVmax());
     }
 
     public double getZoomLevel() {
@@ -271,7 +290,9 @@ public class MapViewer {
     }
 
     private String positionInfo() {
-        return "+" + round(getZoomLevel(), 3) + "\n(" + round(scroller.getHvalue(), 3) + ", " + round(scroller.getVvalue(), 3) + ")";
+        return "+" + round(getZoomLevel(), 3) + "\n(" +
+                round(scroller.getHvalue(), 3) +
+                ", " + round(scroller.getVvalue(), 3) + ")";
     }
 
     double round(double num, int place) {
