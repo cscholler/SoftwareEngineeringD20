@@ -271,7 +271,7 @@ public class MapViewer {
     }
 
     private String positionInfo() {
-        return "+" + round(getZoomLevel(), 3) + "\n(" + scroller.getHvalue() + ", " + scroller.getVvalue() + ")";
+        return "+" + round(getZoomLevel(), 3) + "\n(" + round(scroller.getHvalue(), 3) + ", " + round(scroller.getVvalue(), 3) + ")";
     }
 
     double round(double num, int place) {
