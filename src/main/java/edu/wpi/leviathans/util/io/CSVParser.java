@@ -11,13 +11,13 @@ import java.util.Arrays;
 
 @Slf4j
 public class CSVParser {
-	public static final String mapDir = "edu/wpi/leviathans/csvFiles/";
-    File csvFile;
+	public static final String mapDir = "src/main/resources/edu/wpi/leviathans/csvFiles/";
+    String csvFile;
     String delimiter;
 	String line = "";
 
     public CSVParser(String csvFileName, String delimiter) {
-		this.csvFile = new File(getClass().getClassLoader().getResource(mapDir + csvFileName).getFile());
+		this.csvFile = mapDir + csvFileName;
     	this.delimiter = delimiter;
 		this.line = "";
 	}
@@ -28,7 +28,6 @@ public class CSVParser {
 
 	public ArrayList<ArrayList<String>> readCSVFile() {
 		ArrayList<ArrayList<String>> csvContents = new ArrayList<>();
-		System.out.println(csvFile.getPath());
         try  {
 			BufferedReader br = new BufferedReader(new FileReader(csvFile));
             while ((line = br.readLine()) != null) {
