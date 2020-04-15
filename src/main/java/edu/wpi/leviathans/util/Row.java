@@ -67,6 +67,38 @@ public class Row {
         return shortName;
     }
 
+    public void setNodeID(String nodeID) {
+        this.nodeID.set(nodeID);
+    }
+
+    public void setxCoord(String xCoord) {
+        this.xCoord.set(xCoord);
+    }
+
+    public void setyCoord(String yCoord) {
+        this.yCoord.set(yCoord);
+    }
+
+    public void setFloor(String floor) {
+        this.floor.set(floor);
+    }
+
+    public void setBuilding(String building) {
+        this.building.set(building);
+    }
+
+    public void setNodeType(String nodeType) {
+        this.nodeType.set(nodeType);
+    }
+
+    public void setLongName(String longName) {
+        this.longName.set(longName);
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName.set(shortName);
+    }
+
     SimpleStringProperty nodeID;
     SimpleStringProperty xCoord;
     SimpleStringProperty yCoord;

@@ -106,7 +106,7 @@
                         <Font name="Century Gothic" size="13.0" />
                      </font>
                   </Button>
-                  <Button mnemonicParsing="false" style="-fx-background-color: #082a55;" text="Save" textFill="WHITE">
+                  <Button fx:id="btnSave" mnemonicParsing="false" onAction="#handleButtonAction" style="-fx-background-color: #082a55;" text="Save" textFill="WHITE">
                      <font>
                         <Font name="Century Gothic" size="13.0" />
                      </font>
@@ -116,6 +116,7 @@
                   <Insets right="30.0" />
                </padding>
             </HBox>
+            <Button fx:id="btnSearch" mnemonicParsing="false" onAction="#handleButtonAction" text="Search" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </children>
