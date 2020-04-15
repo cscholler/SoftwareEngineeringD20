@@ -1,6 +1,6 @@
 package edu.wpi.leviathans.views;
 
-import com.google.inject.Inject;
+//import com.google.inject.Inject;
 
 import edu.wpi.leviathans.util.Row;
 import edu.wpi.leviathans.util.io.CSVParser;
@@ -29,7 +29,7 @@ import java.util.ArrayList;
 
 @Slf4j
 public class DatabaseViewController {
-	@Inject
+	//@Inject
 	DatabaseService db;
 
 	@FXML private Button btnBack;
@@ -50,6 +50,7 @@ public class DatabaseViewController {
 
 	private ObservableList<Row> observableList = FXCollections.observableArrayList(populateRow());
 
+
 	@FXML
 	private void handleButtonAction(ActionEvent e) throws IOException {
 
@@ -62,28 +63,27 @@ public class DatabaseViewController {
 			root = FXMLLoader.load(getClass().getResource("Modify.fxml"));
 
 		}  else if (e.getSource() == btnDownload) {
+			System.out.print(observableList);
+			loadData();
+//			stage = (Stage) btnDownload.getScene().getWindow();
+//			root = FXMLLoader.load(getClass().getResource("Download.fxml"));
 
-			stage = (Stage) btnDownload.getScene().getWindow();
-			root = FXMLLoader.load(getClass().getResource("Download.fxml"));
 
-		} else if (e.getSource() == btnDemonstration){
+		} else {
 
 			stage = (Stage) btnDemonstration.getScene().getWindow();
 			root = FXMLLoader.load(getClass().getResource("Demonstration.fxml"));
 
-		} else {
-			stage = (Stage) btnBack.getScene().getWindow();
-			root = FXMLLoader.load(getClass().getResource("Window.fxml"));
 		}
 
-		Scene scene = new Scene(root);
-		stage.setScene(scene);
-		stage.show();
+//		Scene scene = new Scene(root);
+//		stage.setScene(scene);
+//		stage.show();
 
 	}
 
 	@FXML
-	private void loadData() {
+	public void loadData() {
 
 		Group groupRoot = new Group();
 		Stage stage = new Stage();
@@ -98,6 +98,7 @@ public class DatabaseViewController {
 		colShortName.setCellValueFactory(new PropertyValueFactory<>("shortName"));
 
 		table.setItems(observableList);
+		table.getColumns().clear();
 		table.getColumns().addAll(colNodeID, colXCoord, colYCoord, colFloor, colBuilding, colNodeType, colLongName,
 				colShortName);
 
@@ -114,7 +115,6 @@ public class DatabaseViewController {
 			Row r = new Row(dataRow.get(0), dataRow.get(1), dataRow.get(2), dataRow.get(3),
 					dataRow.get(4), dataRow.get(5), dataRow.get(6), dataRow.get(7));
 			rows.add(r);
-			//observableList.add(r);
 		}
 		return rows;
 	}

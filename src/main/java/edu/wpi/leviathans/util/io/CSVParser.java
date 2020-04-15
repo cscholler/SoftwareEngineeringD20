@@ -21,7 +21,7 @@ public class CSVParser {
 	}
 
 	public CSVParser() {
-		this.csvFile = "MapLnodesFloor2.csv";
+		this.csvFile = "src/main/java/edu/wpi/leviathans/util/pathFinding/floorMaps/MapLnodes.csv";
 		this.line = "";
 		this.delimiter = ",";
 	}

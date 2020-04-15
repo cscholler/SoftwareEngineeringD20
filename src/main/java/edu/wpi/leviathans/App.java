@@ -3,6 +3,7 @@ package edu.wpi.leviathans;
 
 import edu.wpi.leviathans.util.Row;
 import edu.wpi.leviathans.util.io.CSVParser;
+import edu.wpi.leviathans.views.DatabaseViewController;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,9 +33,9 @@ public class App extends Application {
   @Override
   public void start(Stage primaryStage) throws IOException {
 
-    Parent root = FXMLLoader.load(getClass().getResource("Window.fxml"));
+    Parent root = FXMLLoader.load(getClass().getResource("Display.fxml"));
     primaryStage.setTitle("Startup Window");
-    primaryStage.setScene(new Scene(root, 600, 400));
+    primaryStage.setScene(new Scene(root));
     primaryStage.show();
 
   }
