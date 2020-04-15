@@ -4,7 +4,6 @@ package edu.wpi.leviathans.views;
 
 import edu.wpi.leviathans.util.Row;
 import edu.wpi.leviathans.util.io.CSVParser;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,13 +17,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.leviathans.services.db.DatabaseService;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 @Slf4j
@@ -52,7 +49,7 @@ public class DatabaseViewController {
 
 
 	@FXML
-	private void handleButtonAction(ActionEvent e) throws IOException {
+	private void handleButtonAction(ActionEvent e) throws IOException{
 
 		Stage stage;
 		Parent root;
@@ -60,25 +57,29 @@ public class DatabaseViewController {
 		if (e.getSource() == btnModify) {
 
 			stage = (Stage) btnModify.getScene().getWindow();
-			root = FXMLLoader.load(getClass().getResource("Modify.fxml"));
+			root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/Modify.fxml"));
 
 		}  else if (e.getSource() == btnDownload) {
-			System.out.print(observableList);
 			loadData();
-//			stage = (Stage) btnDownload.getScene().getWindow();
-//			root = FXMLLoader.load(getClass().getResource("Download.fxml"));
+			stage = (Stage) btnDownload.getScene().getWindow();
+			root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/Download.fxml"));
 
 
+		} else if (e.getSource() == btnBack){
+			stage = (Stage) btnBack.getScene().getWindow();
+			root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/Display.fxml"));
 		} else {
 
 			stage = (Stage) btnDemonstration.getScene().getWindow();
-			root = FXMLLoader.load(getClass().getResource("Demonstration.fxml"));
+			root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/Demonstration.fxml"));
 
 		}
 
-//		Scene scene = new Scene(root);
-//		stage.setScene(scene);
-//		stage.show();
+		if(e.getSource() != btnDownload) {
+			Scene scene = new Scene(root);
+			stage.setScene(scene);
+			stage.show();
+		}
 
 	}
 
@@ -101,10 +102,6 @@ public class DatabaseViewController {
 		table.getColumns().clear();
 		table.getColumns().addAll(colNodeID, colXCoord, colYCoord, colFloor, colBuilding, colNodeType, colLongName,
 				colShortName);
-
-		Scene scene = new Scene(groupRoot);
-		stage.setScene(scene);
-		stage.show();
 	}
 
 	private ArrayList<Row> populateRow(){
