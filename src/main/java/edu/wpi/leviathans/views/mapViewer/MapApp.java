@@ -21,7 +21,7 @@ public class MapApp extends Application {
     public Stage pStage;
 
     Parent root;
-    edu.wpi.leviathans.views.mapViewer.MapViewer controller;
+    MapViewer controller;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
