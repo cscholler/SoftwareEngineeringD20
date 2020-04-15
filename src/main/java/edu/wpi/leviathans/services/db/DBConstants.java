@@ -26,11 +26,9 @@ public class DBConstants {
 	public static final String createEdgeTable =
 			"CREATE TABLE Edges(" +
 					"id VARCHAR(21), " +
-					"node_start VARCHAR(10), " +
-					"node_end VARCHAR(10), " +
-					"PRIMARY KEY (id), " +
-					"CONSTRAINT edges_fk_start FOREIGN KEY (node_start) REFERENCES Nodes (id), " +
-					"CONSTRAINT edges_fk_end FOREIGN KEY (node_end) REFERENCES Nodes (id))";
+					"node_start VARCHAR(10) REFERENCES Nodes(id), " +
+					"node_end VARCHAR(10) REFERENCES Nodes(id), " +
+					"PRIMARY KEY (id))";
 
 	public static final String removeEdge =
 			"DELETE FROM Edges " +
@@ -42,33 +40,28 @@ public class DBConstants {
 					"f_name VARCHAR(32), " +
 					"l_name VARCHAR(32), " +
 					"email VARCHAR(32), " +
-					"office_id VARCHAR(10), " +
-					"PRIMARY KEY (id), " +
-					"CONSTRAINT edges_pk FOREIGN KEY (office_id) REFERENCES Nodes (id)";
+					"office_id VARCHAR(10) REFERENCES Nodes(id), " +
+					"PRIMARY KEY (id))";
 
 	public static final String createPatientTable =
 			"CREATE TABLE Patients(" +
 					"id INT, " +
 					"f_name VARCHAR(32), " +
 					"l_name VARCHAR(32), " +
-					"doctor_id INT, " +
-					"room_id VARCHAR(10), " +
-					"PRIMARY KEY (id), " +
-					"CONSTRAINT patients_fk_doc FOREIGN KEY (doctor_id) REFERENCES Doctors (id), " +
-					"CONSTRAINT patients_fk_room FOREIGN KEY (room_id) REFERENCES Nodes (id))";
+					"doctor_id INT REFERENCES Doctors(id), " +
+					"room_id VARCHAR(10) REFERENCES Nodes(id), " +
+					"PRIMARY KEY (id))";
 
 	public static final String createMedicationRequestTable =
 			"CREATE TABLE Medication_Requests(" +
 					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
-					"doctor_id INT, " +
-					"patient_id INT, " +
+					"doctor_id INT REFERENCES Doctors(id), " +
+					"patient_id INT REFERENCES Patients(id), " +
 					"nurse_name VARCHAR(64), " +
 					"dose VARCHAR(64), " +
 					"type VARCHAR(64), " +
 					"notes VARCHAR(512), " +
-					"PRIMARY KEY (id), " +
-					"CONSTRAINT medReq_fk_doc FOREIGN KEY (doctor_id) REFERENCES Doctors (id), " +
-					"CONSTRAINT medReq_fk_pat FOREIGN KEY (patient_id) REFERENCES Patients (id))";
+					"PRIMARY KEY (id))";
 
 	public static final String createUserTable =
 			"CREATE TABLE Users(" +

@@ -77,7 +77,7 @@ public class DatabaseService extends Service {
 			if (connection != null) {
 				connection.commit();
 				connection.close();
-				connection = null;
+				//connection = null;
 			}
 			log.info("Connection closed.");
 		} catch (SQLException ex) {
@@ -90,6 +90,9 @@ public class DatabaseService extends Service {
 		try {
 			if (values.size() == 0) {
 				Statement stmt;
+				if (connection == null) {
+					System.out.println("connection is null");
+				}
 				stmt = connection.createStatement();
 				resSet = stmt.executeQuery(query);
 			} else {
@@ -103,6 +106,7 @@ public class DatabaseService extends Service {
 	}
 
 	public ResultSet executeQuery(String query) {
+		System.out.println("[executeQuery()] connection is " + (connection == null ? "null" : "not null"));
 		return executeQuery(query, new ArrayList<>());
 	}
 
@@ -197,6 +201,8 @@ public class DatabaseService extends Service {
 		createTables.add(DBConstants.createMedicationRequestTable);
 		createTables.add(DBConstants.createUserTable);
 
+		System.out.println("connection is " + (connection == null ? "null" : "not null"));
+
 		CSVParser parser = new CSVParser();
 
 		ArrayList<ArrayList<String>> data = parser.readCSVFile();
@@ -204,7 +210,12 @@ public class DatabaseService extends Service {
 			populateTables.add(DBConstants.addNode);
 		}
 
-		return executeUpdates(createTables, new ArrayList<>()) && executeUpdates(populateTables, data);
+		System.out.println("connection is " + (connection == null ? "null" : "not null"));
+
+		executeUpdates(createTables, new ArrayList<>());
+
+		//return executeUpdates(createTables, new ArrayList<>()) && executeUpdates(populateTables, data);
+		return true;
 	}
 
 	public ArrayList<String> getColumnNames(ResultSet resSet) {

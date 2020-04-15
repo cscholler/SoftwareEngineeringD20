@@ -59,7 +59,6 @@ public class PathfinderController {
 		} catch (SQLException ex) {
 			log.error("Encountered SQLException.", ex);
 		}
-
 		return null;
 	}
 

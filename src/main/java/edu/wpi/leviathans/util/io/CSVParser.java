@@ -3,6 +3,7 @@ package edu.wpi.leviathans.util.io;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,20 +15,16 @@ public class CSVParser {
     String delimiter;
 	String line = "";
 
-    public CSVParser(String csvFile, String delimiter) {
-    	this.csvFile = csvFile;
+    public CSVParser(String csvFileName, String delimiter) {
+		this.csvFile = new File (getClass().getResource(csvFileName).getFile()).getPath();
     	this.delimiter = delimiter;
 		this.line = "";
 	}
 
 	public CSVParser() {
-		this.csvFile = "MapLnodesFloor2.csv";
-		this.line = "";
+    	this.csvFile = "src/main/java/edu/wpi/leviathans/util/pathfinding/floorMaps/MapLnodes.csv";
 		this.delimiter = ",";
-	}
-
-	public void setCsvFile(String csvFile) {
-		this.csvFile = csvFile;
+		this.line = "";
 	}
 
 	public ArrayList<ArrayList<String>> readCSVFile() {
