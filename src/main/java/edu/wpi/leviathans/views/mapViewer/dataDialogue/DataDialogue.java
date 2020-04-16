@@ -22,23 +22,43 @@ public class DataDialogue {
 
     private boolean hasInit = false;
 
-    public DataDialogue() {}
+    public DataDialogue() {
+    }
 
     public DataDialogue(Window owner) {
-        init(owner);
+        init();
+        setOwner(owner);
     }
 
-    public void showDialogue(Window owner) {
-        init(owner);
+    /**
+     * Shows the dialogue to get the node and edge csv files. Returns whether any data has been imported. Automatically calls the init() function and sets the owner.
+     *
+     * @param owner The window that is to be the owner of this dialogue
+     * @return {true} If the user clicked 'OK' with some data loaded {false} if the user either confirmed with no data loaded or pressed 'Cancel'
+     */
+    public boolean showDialogue(Window owner) {
+        if(!hasInit) {
+            init();
+
+            setOwner(owner);
+        }
 
         stage.showAndWait();
+
+        return nodeFile != null || edgeFile != null;
     }
 
+    /**
+     * Shows the dialogue to get the node and edge csv files. Returns whether any data has been imported. Automatically calls the init() function and sets the owner.
+     * init() and setOwner(owner) must be called if you do not provide parameters.
+     *
+     * @return {true} If the user clicked 'OK' with some data loaded {false} if the user either confirmed with no data loaded or pressed 'Cancel'
+     */
     public void showDialogue() {
-        if(!hasInit) {
-            try{
+        if (!hasInit) {
+            try {
                 throw new Exception("init method was never called");
-            } catch(Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -54,7 +74,7 @@ public class DataDialogue {
         return edgeFile;
     }
 
-    public void init(Window owner) {
+    public void init() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DataDialogue.fxml"));
         try {
             root = fxmlLoader.load();
@@ -66,11 +86,15 @@ public class DataDialogue {
         stage = new Stage();
         stage.setTitle("Pick csv files for data");
         stage.setScene(new Scene(root));
-        stage.initOwner(owner);
         stage.initModality(Modality.APPLICATION_MODAL);
-
         controller = fxmlLoader.getController();
         controller.owner = this;
+
+        hasInit = true;
+    }
+
+    public void setOwner(Window owner) {
+        stage.initOwner(owner);
     }
 
 }

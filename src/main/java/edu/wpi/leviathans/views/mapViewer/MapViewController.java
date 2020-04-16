@@ -91,10 +91,9 @@ public class MapViewController {
         }
     }
 
-    public void init() {
+    @FXML
+    public void initialize() {
         scene = body.getScene();
-
-        coreShortcuts();
 
         position.setText(positionInfo());
         scroller.setPannable(true);
@@ -116,14 +115,6 @@ public class MapViewController {
         body.setOnMouseClicked(event -> {
             if (event.getButton().equals(MouseButton.PRIMARY) && !onSelectable) {
                 mapSelector.clear();
-            }
-        });
-
-        // Delete selected nodes when delete key is pressed
-        scene.setOnKeyPressed(event -> {
-            if (event.getCode().equals(KeyCode.DELETE)) {
-                for (NodeGUI nodeGUI : mapSelector.getNodes())
-                    removeNode(nodeGUI);
             }
         });
 
@@ -187,6 +178,15 @@ public class MapViewController {
 			nodeGUI.setHighlighted(true);
 		});
 
+        // Delete selected nodes when delete key is pressed
+        scroller.setOnKeyPressed(event -> {
+            if (event.getCode().equals(KeyCode.DELETE)) {
+                for (NodeGUI nodeGUI : mapSelector.getNodes())
+                    removeNode(nodeGUI);
+            }
+        });
+
+        coreShortcuts();
 	}
 
     private void coreShortcuts() {
@@ -205,12 +205,6 @@ public class MapViewController {
         undo.setAccelerator(cz);
         redo.setAccelerator(cy);
         open.setAccelerator(co);
-
-        // Give the shortcuts functionality within the scene TODO: the section above should do this but it doesn't for some reason
-        scene.getAccelerators().put(cq, () -> quit());
-        scene.getAccelerators().put(cs, () -> save());
-        scene.getAccelerators().put(css, () -> saveAs());
-        scene.getAccelerators().put(co, () -> open());
     }
 
     public void setZoomLevel(double newZoomLevel) {
@@ -594,7 +588,7 @@ public class MapViewController {
             super.gui = gui;
 
             // Replacement super constructor
-            init();
+            initialize();
         }
 
         public void setLayoutPos(Point2D newPos) {
@@ -677,7 +671,7 @@ public class MapViewController {
             super.gui = gui;
 
             // Replacement super constructor
-            init();
+            initialize();
         }
 
         public EdgeGUI(Edge initEdge, int lineWidth) {

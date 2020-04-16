@@ -2,6 +2,7 @@ package edu.wpi.leviathans;
 
 import java.io.IOException;
 
+import edu.wpi.leviathans.views.DatabaseViewController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,7 +19,7 @@ public class App extends Application {
 	public Stage pStage;
 
 	Parent root;
-	edu.wpi.leviathans.views.mapViewer.MapViewer controller;
+	DatabaseViewController controller;
 
 	@Override
 	public void init() {

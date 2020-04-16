@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import edu.wpi.leviathans.views.mapViewer.MapViewController;
 import edu.wpi.leviathans.views.mapViewer.dataDialogue.DataDialogue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -100,7 +101,9 @@ public class DatabaseViewController {
             stage.showAndWait();
 
         } else if (e.getSource() == btnLoad) {
-            observableList = FXCollections.observableArrayList(populateRow());
+            ArrayList<Row> data = populateRow();
+            if(data != null)
+                observableList = FXCollections.observableArrayList();
 			loadData();
             stage = (Stage) btnLoad.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/views/LoadData.fxml"));
@@ -263,11 +266,11 @@ public class DatabaseViewController {
     private ArrayList<Row> populateRow() {
         DataDialogue dialogue = new DataDialogue();
 
-        dialogue.showDialogue(btnLoad.getScene().getWindow());
+        boolean hasData = dialogue.showDialogue(btnLoad.getScene().getWindow());
 
-        File nodesFile = dialogue.getNodeFile();
+        if(hasData) {
+            File nodesFile = dialogue.getNodeFile();
 
-        if(nodesFile != null) {
             CSVParser reader = new CSVParser(nodesFile);
 
             ArrayList<ArrayList<String>> data = reader.readCSVFile();
