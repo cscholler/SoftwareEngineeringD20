@@ -2,7 +2,6 @@ package edu.wpi.leviathans.views.mapViewer;
 
 import edu.wpi.leviathans.util.pathfinding.Path;
 import edu.wpi.leviathans.util.pathfinding.PathFinder;
-import edu.wpi.leviathans.views.PathfinderController;
 import edu.wpi.leviathans.views.mapViewer.dataDialogue.*;
 import edu.wpi.leviathans.util.pathfinding.MapParser;
 import edu.wpi.leviathans.util.pathfinding.graph.*;
@@ -30,7 +29,7 @@ import edu.wpi.leviathans.util.pathfinding.graph.Graph;
 import edu.wpi.leviathans.util.pathfinding.graph.Node;
 import java.util.*;
 
-public class MapViewer {
+public class MapViewController {
     @FXML
     MenuItem save, saveAs, open, quit;
 
@@ -78,15 +77,6 @@ public class MapViewer {
     private double zoomLevel = 1;
     private Scene scene;
 
-    /*private void clearSelection() {
-        for (NodeGUI nodeGUI : selectedNodes.keySet())
-            nodeGUI.setHighlighted(false);
-        for (EdgeGUI edgeGUI : selectedEdges)
-            edgeGUI.setHighlighted(false);
-        selectedNodes.clear();
-        selectedEdges.clear();
-    }*/
-
     private void removeNode(NodeGUI nodeGUI) {
         nodes.remove(nodeGUI);
         body.getChildren().removeAll(nodeGUI.getAllNodes());
@@ -101,10 +91,9 @@ public class MapViewer {
         }
     }
 
-    public void init() {
+    @FXML
+    public void initialize() {
         scene = body.getScene();
-
-        coreShortcuts();
 
         position.setText(positionInfo());
         scroller.setPannable(true);
@@ -126,14 +115,6 @@ public class MapViewer {
         body.setOnMouseClicked(event -> {
             if (event.getButton().equals(MouseButton.PRIMARY) && !onSelectable) {
                 mapSelector.clear();
-            }
-        });
-
-        // Delete selected nodes when delete key is pressed
-        scene.setOnKeyPressed(event -> {
-            if (event.getCode().equals(KeyCode.DELETE)) {
-                for (NodeGUI nodeGUI : mapSelector.getNodes())
-                    removeNode(nodeGUI);
             }
         });
 
@@ -197,6 +178,15 @@ public class MapViewer {
 			nodeGUI.setHighlighted(true);
 		});
 
+        // Delete selected nodes when delete key is pressed
+        scroller.setOnKeyPressed(event -> {
+            if (event.getCode().equals(KeyCode.DELETE)) {
+                for (NodeGUI nodeGUI : mapSelector.getNodes())
+                    removeNode(nodeGUI);
+            }
+        });
+
+        coreShortcuts();
 	}
 
     private void coreShortcuts() {
@@ -215,12 +205,6 @@ public class MapViewer {
         undo.setAccelerator(cz);
         redo.setAccelerator(cy);
         open.setAccelerator(co);
-
-        // Give the shortcuts functionality within the scene TODO: the section above should do this but it doesn't for some reason
-        scene.getAccelerators().put(cq, () -> quit());
-        scene.getAccelerators().put(cs, () -> save());
-        scene.getAccelerators().put(css, () -> saveAs());
-        scene.getAccelerators().put(co, () -> open());
     }
 
     public void setZoomLevel(double newZoomLevel) {
@@ -290,9 +274,7 @@ public class MapViewer {
 
     @FXML
     void openFromDB() {
-        PathfinderController pController = new PathfinderController();
-
-        graph = pController.initialize();
+        graph = MapParser.getGraphFromDatabase();
 
         setPaneFromGraph(graph);
     }
@@ -433,7 +415,6 @@ public class MapViewer {
     private class SelectionBox extends Rectangle {
 
         public Point2D rootPosition;
-        public Selector selector;
 
         public SelectionBox(Point2D root) {
             super();
@@ -607,7 +588,7 @@ public class MapViewer {
             super.gui = gui;
 
             // Replacement super constructor
-            init();
+            initialize();
         }
 
         public void setLayoutPos(Point2D newPos) {
@@ -690,7 +671,7 @@ public class MapViewer {
             super.gui = gui;
 
             // Replacement super constructor
-            init();
+            initialize();
         }
 
         public EdgeGUI(Edge initEdge, int lineWidth) {

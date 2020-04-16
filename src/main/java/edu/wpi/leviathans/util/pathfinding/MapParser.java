@@ -1,9 +1,13 @@
 package edu.wpi.leviathans.util.pathfinding;
 
+import edu.wpi.leviathans.services.db.DBConstants;
+import edu.wpi.leviathans.services.db.DatabaseService;
 import edu.wpi.leviathans.util.pathfinding.graph.*;
 import javafx.geometry.Point2D;
 
 import java.io.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class MapParser {
@@ -113,5 +117,46 @@ public class MapParser {
         File edgesFile = new File(edgesPath);
 
         return parseMapToGraph(nodesFile, edgesFile);
+    }
+
+    public static Graph getGraphFromDatabase() {
+        DatabaseService db = new DatabaseService();
+        ResultSet rs = db.executeQuery(DBConstants.selectAllNodes);
+
+        Graph newGraph = new Graph();
+
+        try {
+            while (rs.next()) {
+                Node newNode = new Node(rs.getString(1));
+                newNode.position = new Point2D(Double.parseDouble(rs.getString(2)), Double.parseDouble(rs.getString(3)));
+                newNode.data.put(MapParser.DATA_LABELS.NODE_TYPE, rs.getString(6));
+                newNode.data.put(MapParser.DATA_LABELS.LONG_NAME, rs.getString(7));
+                newNode.data.put(MapParser.DATA_LABELS.SHORT_NAME, rs.getString(8));
+
+                newGraph.addNode(newNode);
+            }
+
+            rs = db.executeQuery(DBConstants.selectAllEdges);
+
+            while (rs.next()) {
+                Node source = newGraph.getNode(rs.getString(2));
+                Node destination = newGraph.getNode(rs.getString(3));
+
+                if (source != null && destination != null) {
+                    double x1 = source.position.getX();
+                    double y1 = source.position.getY();
+                    double x2 = destination.position.getX();
+                    double y2 = destination.position.getY();
+
+                    int length = (int) Math.round(Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
+
+                    source.addEdgeTwoWay(new Edge(destination, length));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return newGraph;
     }
 }
