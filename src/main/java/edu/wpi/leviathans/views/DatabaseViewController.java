@@ -35,11 +35,11 @@ public class DatabaseViewController {
     @FXML
     private Button btnBack;
     @FXML
-    private Button btnModify;
+    private Button btnEdit;
     @FXML
-    private Button btnDownload;
+    private Button btnLoad;
     @FXML
-    private Button btnDemonstration;
+    private Button btnMap;
     @FXML
     private Button btnSearch, btnSave;
     @FXML
@@ -79,57 +79,55 @@ public class DatabaseViewController {
     @FXML
     private TextField nodeTypeText, searchText;
 
-
     private static ObservableList<Row> observableList;
     private Row nodeEdit;
     private int nodeNum;
-
 
     @FXML
     private void handleButtonAction(ActionEvent e) throws IOException {
         Stage stage;
         Parent root;
 
-        if (e.getSource() == btnModify) {
+        if (e.getSource() == btnEdit) {
             stage = new Stage();
-            root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/views/Modify.fxml"));
+            root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/views/EditData.fxml"));
             stage.setScene(new Scene(root));
             stage.setTitle("Node Editor");
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initOwner(btnModify.getScene().getWindow());
+            stage.initOwner(btnEdit.getScene().getWindow());
             stage.showAndWait();
 
-        } else if (e.getSource() == btnDownload) {
+        } else if (e.getSource() == btnLoad) {
             observableList = FXCollections.observableArrayList(populateRow());
-            loadData();
-            //System.out.println((observableList.get(nodeNum)).getFloor() + "after");
-            stage = (Stage) btnDownload.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/views/Download.fxml"));
+			loadData();
+            stage = (Stage) btnLoad.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/views/LoadData.fxml"));
         } else if (e.getSource() == btnBack) {
             stage = (Stage) btnBack.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/views/Display.fxml"));
+            root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/views/DisplayData.fxml"));
             stage.close();
         } else if (e.getSource() == btnSearch) {
             search();
             stage = (Stage) btnBack.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/views/Display.fxml"));
+            root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/views/DisplayData.fxml"));
         } else if (e.getSource() == btnSave) {
             save(nodeEdit, nodeNum);
             download();
-            //System.out.println("Here");
             stage = (Stage) btnSave.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/views/Display.fxml"));
-        } else {
+            root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/views/DisplayData.fxml"));
+        } else if (e.getSource() == btnMap) {
             stage = new Stage();
             root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/views/mapViewer/MapViewer.fxml"));
             stage.setScene(new Scene(root));
             stage.setTitle("Map Viewer");
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initOwner(btnDemonstration.getScene().getWindow());
+            stage.initOwner(btnMap.getScene().getWindow());
             stage.showAndWait();
-        }
+        } else {
+        	log.error("Invalid button ID");
+		}
 //CAUSED ERROR DOESNT SEEM TO BREAK ANYTHING WHEN GONE
-//        if (e.getSource() != btnDownload && e.getSource() != btnSearch && e.getSource() != btnSave && e.getSource() != btnBack) {
+//        if (e.getSource() != btnLoad && e.getSource() != btnSearch && e.getSource() != btnSave && e.getSource() != btnBack) {
 //            Scene scene = new Scene(root);
 //            stage.setScene(scene);
 //            stage.show();
@@ -141,7 +139,6 @@ public class DatabaseViewController {
     private void showNodeDetails(Row row) {
         if (row != null) {
             // Fill the textfield with info from the row object.
-            System.out.println("showDetails");
             nodeIDText.setText(row.getNodeID());
             xCoordText.setText(row.getxcoord());
             yCoordText.setText(row.getycoord());
@@ -237,10 +234,7 @@ public class DatabaseViewController {
         r.setLongName(longNameText.getText());
 
         observableList.set(i, r);
-        System.out.println(r.getFloor());
-        System.out.println((observableList.get(i)).getFloor());
     }
-
 
     @FXML
     public void loadData() {
@@ -265,7 +259,6 @@ public class DatabaseViewController {
     }
 
     private ArrayList<Row> populateRow() {
-        System.out.println("loading data");
         CSVParser reader = new CSVParser("PrototypeNodes.csv");
         ArrayList<ArrayList<String>> data = reader.readCSVFile();
         ArrayList<Row> rows = new ArrayList<>();

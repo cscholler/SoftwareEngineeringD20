@@ -32,7 +32,7 @@ public class App extends Application {
 		//fxmlLoader.setControllerFactory(injector::getInstance);
 		pStage = primaryStage;
 
-		root = FXMLLoader.load(getClass().getResource("views/Display.fxml"));
+		root = FXMLLoader.load(getClass().getResource("views/DisplayData.fxml"));
 		controller = fxmlLoader.getController();
 
 		primaryStage.setTitle("Startup Window");
