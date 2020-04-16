@@ -27,6 +27,7 @@ public class CSVParser {
 
 	public ArrayList<ArrayList<String>> readCSVFile() {
 		ArrayList<ArrayList<String>> csvContents = new ArrayList<>();
+
         try  {
 			BufferedReader br = new BufferedReader(new FileReader(csvFile));
             while ((line = br.readLine()) != null) {

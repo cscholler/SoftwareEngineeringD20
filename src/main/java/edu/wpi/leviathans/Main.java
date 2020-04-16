@@ -6,6 +6,6 @@ import edu.wpi.leviathans.views.mapViewer.MapApp;
 public class Main {
 
 	public static void main(String[] args) {
-		MapApp.launch(MapApp.class, args);
+		App.launch(App.class, args);
 	}
 }

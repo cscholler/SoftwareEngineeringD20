@@ -2,9 +2,6 @@ package edu.wpi.leviathans;
 
 import java.io.IOException;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,6 +11,8 @@ import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
 //import edu.wpi.leviathans.modules.DatabaseServiceProvider;
+import java.io.IOException;
+import java.util.ArrayList;
 
 @Slf4j
 public class App extends Application {
@@ -35,10 +34,10 @@ public class App extends Application {
 		//fxmlLoader.setControllerFactory(injector::getInstance);
         pStage = primaryStage;
 
-        root = FXMLLoader.load(getClass().getResource("mapViewer/MapViewer.fxml"));
+		root = FXMLLoader.load(getClass().getResource("Display.fxml"));
         controller = fxmlLoader.getController();
 
-        primaryStage.setTitle("Map Viewer");
+        primaryStage.setTitle("Startup Window");
         primaryStage.setScene(new Scene(root));
 
         primaryStage.show();
@@ -46,8 +45,8 @@ public class App extends Application {
         controller.init();
     }
 
-    @Override
-    public void stop() {
-        log.info("Shutting Down");
-    }
+  @Override
+  public void stop() {
+    log.info("Shutting Down");
+  }
 }
