@@ -3,7 +3,6 @@ package edu.wpi.cs3733.d20.teamL.views.controllers;
 import edu.wpi.cs3733.d20.teamL.services.graph.Path;
 import edu.wpi.cs3733.d20.teamL.services.graph.PathFinder;
 import edu.wpi.cs3733.d20.teamL.views.dialogues.DataDialogue;
-import edu.wpi.leviathans.views.dialogues.*;
 import edu.wpi.cs3733.d20.teamL.services.graph.MapParser;
 
 import javafx.application.Platform;
