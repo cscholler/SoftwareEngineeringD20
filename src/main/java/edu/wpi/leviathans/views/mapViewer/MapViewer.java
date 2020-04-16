@@ -25,6 +25,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
+import java.io.File;
 import java.util.*;
 
 public class MapViewer {
@@ -193,7 +194,6 @@ public class MapViewer {
             mapSelector.add(nodeGUI);
             nodeGUI.setHighlighted(true);
         });
-
     }
 
     private void coreShortcuts() {
