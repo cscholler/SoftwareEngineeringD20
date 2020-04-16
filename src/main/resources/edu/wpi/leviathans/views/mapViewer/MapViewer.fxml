@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="545.0" prefWidth="1014.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.leviathans.views.mapViewer.MapViewer">
+<BorderPane fx:id="root" maxHeight="800" maxWidth="1200" minHeight="800" minWidth="1200" prefHeight="800" prefWidth="1200" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.leviathans.views.mapViewer.MapViewer">
     <top>
         <VBox prefWidth="100.0" BorderPane.alignment="CENTER">
             <children>

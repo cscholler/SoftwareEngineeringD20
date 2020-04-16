@@ -1,4 +1,4 @@
-package edu.wpi.leviathans.util;
+package entities;
 
 import javafx.beans.property.SimpleStringProperty;
 

@@ -1,13 +1,13 @@
 package edu.wpi.leviathans.views.mapViewer.dataDialogue;
 
+import java.io.File;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-
-import java.io.File;
 
 public class DataDialogue {
 

@@ -1,9 +1,9 @@
 package edu.wpi.leviathans.views;
 
-//import com.google.inject.Inject;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 
-import edu.wpi.leviathans.util.Row;
-import edu.wpi.leviathans.util.io.CSVParser;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,22 +19,18 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+//import com.google.inject.Inject;
+
 import lombok.extern.slf4j.Slf4j;
 
-import edu.wpi.leviathans.services.db.DatabaseService;
-
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
+import entities.Row;
+import edu.wpi.leviathans.util.io.CSVParser;
 
 @Slf4j
 public class DatabaseViewController {
 	//@Inject
 	//DatabaseService db;
-    //@Inject
-    DatabaseService db;
 
     @FXML
     private Button btnBack;
@@ -91,14 +87,12 @@ public class DatabaseViewController {
 
     @FXML
     private void handleButtonAction(ActionEvent e) throws IOException {
-
         Stage stage;
         Parent root;
 
         if (e.getSource() == btnModify) {
-
             stage = new Stage();
-            root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/Modify.fxml"));
+            root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/views/Modify.fxml"));
             stage.setScene(new Scene(root));
             stage.setTitle("Node Editor");
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -106,32 +100,28 @@ public class DatabaseViewController {
             stage.showAndWait();
 
         } else if (e.getSource() == btnDownload) {
-//            System.out.println((observableList.get(nodeNum)).getFloor() +"before");
             observableList = FXCollections.observableArrayList(populateRow());
             loadData();
-            System.out.println((observableList.get(nodeNum)).getFloor() + "after");
+            //System.out.println((observableList.get(nodeNum)).getFloor() + "after");
             stage = (Stage) btnDownload.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/Download.fxml"));
+            root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/views/Download.fxml"));
         } else if (e.getSource() == btnBack) {
             stage = (Stage) btnBack.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/Display.fxml"));
+            root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/views/Display.fxml"));
             stage.close();
         } else if (e.getSource() == btnSearch) {
             search();
             stage = (Stage) btnBack.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/Display.fxml"));
+            root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/views/Display.fxml"));
         } else if (e.getSource() == btnSave) {
             save(nodeEdit, nodeNum);
             download();
-            System.out.println("Here");
+            //System.out.println("Here");
             stage = (Stage) btnSave.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/Display.fxml"));
-
+            root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/views/Display.fxml"));
         } else {
-
             stage = (Stage) btnDemonstration.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/Demonstration.fxml"));
-
+            root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/views/mapViewer/MapViewer.fxml"));
         }
 
         if (e.getSource() != btnDownload && e.getSource() != btnSearch && e.getSource() != btnSave && e.getSource() != btnBack) {
@@ -172,8 +162,6 @@ public class DatabaseViewController {
     private void download() {
 
         try {
-//                FileWriter fw = new FileWriter("src/main/java/edu/wpi/leviathans/util/pathFinding/floorMaps/MapLnodesBackup.csv", true);
-//                BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter pw = new PrintWriter("src/main/java/edu/wpi/leviathans/util/pathFinding/floorMaps/MapLnodesBackup.csv");
             StringBuilder sb = new StringBuilder();
 
@@ -195,7 +183,6 @@ public class DatabaseViewController {
             sb.append("\r\n");
 
             for (Row r : observableList) {
-
                 sb.append(r.getNodeID());
                 sb.append(",");
                 sb.append(r.getxcoord());
@@ -212,41 +199,26 @@ public class DatabaseViewController {
                 sb.append(",");
                 sb.append(r.getLongName());
                 sb.append("\r\n");
-
-//                    String id = r.getNodeID();
-//                    String x = r.getxcoord();
-//                    String y = r.getycoord();
-//                    String floor = r.getFloor();
-//                    String building = r.getBuilding();
-//                    String type = r.getNodeType();
-//                    String sName = r.getShortName();
-//                    String lName = r.getLongName();
-//                    pw.println(id + "," + x + "," + y + "," + floor + "," + building + "," + type + "," + sName + "," + lName);
-
             }
             pw.write(sb.toString());
             pw.close();
-            System.out.print("Finished");
-        } catch (Exception E) {
-
+        } catch (Exception ex) {
+        	ex.printStackTrace();
         }
-
     }
 
     private void search() {
         String name = searchText.getText();
         int x = 0;
         for (Row r : observableList) {
-            //System.out.print("Loop");
-            if (r.getShortName().equals(name)) {
-                nodeEdit = r;
-                showNodeDetails(r);
-                nodeNum = x;
-                break;
-            }
-            x++;
-
-        }
+			if (r.getShortName().equals(name)) {
+				nodeEdit = r;
+				showNodeDetails(r);
+				nodeNum = x;
+				break;
+			}
+			x++;
+		}
     }
 
     private void save(Row r, int i) {
@@ -267,6 +239,7 @@ public class DatabaseViewController {
 
     @FXML
     public void loadData() {
+    	//TODO: deal with warnings
 
         colNodeID.setCellValueFactory(new PropertyValueFactory<>("nodeID"));
         colXCoord.setCellValueFactory(new PropertyValueFactory<>("xcoord"));
@@ -279,7 +252,6 @@ public class DatabaseViewController {
 
         Group groupRoot = new Group();
         Stage stage = new Stage();
-
 
         table.setItems(observableList);
         table.getColumns().clear();
