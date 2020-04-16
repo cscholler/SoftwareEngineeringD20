@@ -14,8 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class App extends Application {
 
-	public Stage pStage;
-
 	Parent root;
 
 	@Override
@@ -25,10 +23,9 @@ public class App extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws IOException {
-		FXMLLoader fxmlLoader = new FXMLLoader();
-		pStage = primaryStage;
+		root = FXMLLoader.load(getClass().getClassLoader().getResource("edu/wpi/cs3733/d20/teamL/views/MapViewer.fxml"));
 
-		primaryStage.setTitle("Startup Window");
+		primaryStage.setTitle("Map Viewer");
 		primaryStage.setScene(new Scene(root));
 
 		primaryStage.show();
