@@ -10,9 +10,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import edu.wpi.leviathans.util.io.CSVParser;
 import lombok.extern.slf4j.Slf4j;
 
+import edu.wpi.leviathans.util.io.CSVParser;
 import edu.wpi.leviathans.services.Service;
 
 @Slf4j

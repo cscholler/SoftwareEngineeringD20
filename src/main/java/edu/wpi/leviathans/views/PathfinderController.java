@@ -2,31 +2,22 @@ package edu.wpi.leviathans.views;
 
 import com.google.inject.Inject;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Iterator;
+
+import javafx.geometry.Point2D;
+
+import lombok.extern.slf4j.Slf4j;
+
+import edu.wpi.leviathans.services.db.DatabaseService;
+import edu.wpi.leviathans.services.db.DBConstants;
 import edu.wpi.leviathans.util.pathfinding.MapParser;
 import edu.wpi.leviathans.util.pathfinding.Path;
 import edu.wpi.leviathans.util.pathfinding.PathFinder;
 import edu.wpi.leviathans.util.pathfinding.graph.Edge;
 import edu.wpi.leviathans.util.pathfinding.graph.Graph;
 import edu.wpi.leviathans.util.pathfinding.graph.Node;
-
-import java.net.URL;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.ResourceBundle;
-
-import edu.wpi.leviathans.services.db.DBConstants;
-import edu.wpi.leviathans.services.db.DatabaseService;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.geometry.Point2D;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class PathfinderController {

@@ -1,11 +1,11 @@
 package edu.wpi.leviathans.views.mapViewer.dataDialogue;
 
+import java.io.File;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
-
-import java.io.File;
 
 public class DataDialogueController {
 

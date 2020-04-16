@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="800.0" maxWidth="1200.0" minHeight="800.0" minWidth="1200.0" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.leviathans.views.DatabaseViewController">
+   <children>
+      <TableView fx:id="table" prefHeight="741.0" prefWidth="1200.0" AnchorPane.bottomAnchor="59.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columns>
+          <TableColumn fx:id="colNodeID" prefWidth="200.0" text="nodeID" />
+          <TableColumn fx:id="colXCoord" prefWidth="150.0" text="xcoord" />
+            <TableColumn fx:id="colYCoord" prefWidth="150.0" text="ycoord" />
+            <TableColumn fx:id="colFloor" prefWidth="50.0" text="floor" />
+            <TableColumn fx:id="colBuilding" prefWidth="145.0" text="building" />
+            <TableColumn fx:id="colNodeType" prefWidth="150.0" text="nodeType" />
+            <TableColumn fx:id="colLongName" prefWidth="211.7333984375" text="longName" />
+            <TableColumn fx:id="colShortName" prefWidth="150.0" text="shortName" />
+        </columns>
+      </TableView>
+      <HBox layoutX="48.0" layoutY="749.0" spacing="50.0" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="48.0">
+         <children>
+            <Button fx:id="btnModify" mnemonicParsing="false" onAction="#handleButtonAction" style="-fx-background-color: #082A55;" text="Edit" textFill="WHITE">
+               <font>
+                  <Font name="Century Gothic" size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnDemonstration" mnemonicParsing="false" onAction="#handleButtonAction" style="-fx-background-color: #082A55;" text="Map" textFill="WHITE">
+               <font>
+                  <Font name="Century Gothic" size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnDownload" mnemonicParsing="false" onAction="#handleButtonAction" style="-fx-background-color: #082A55;" text="Download" textFill="WHITE">
+               <font>
+                  <Font name="Century Gothic" size="18.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
