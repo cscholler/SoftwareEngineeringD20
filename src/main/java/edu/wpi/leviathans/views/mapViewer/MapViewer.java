@@ -281,7 +281,7 @@ public class MapViewer {
     public void open() {
         DataDialogue data = new DataDialogue();
 
-        data.showDialogue(scene.getWindow());
+        data.showDialogue(pathFind.getScene().getWindow());
 
         graph = MapParser.parseMapToGraph(data.getNodeFile(), data.getEdgeFile());
 

@@ -12,18 +12,19 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CSVParser {
 	public static final String mapDir = "edu/wpi/leviathans/csvFiles/";
-	String csvFile;
+	File csvFile;
 	String delimiter;
 	String line = "";
 
-	public CSVParser(String csvFileName) {
-		this.csvFile = new File(getClass().getClassLoader().getResource(mapDir + csvFileName).getFile()).getPath();
+	public CSVParser(File csvFile) {
+		//this.csvFile = new File(getClass().getClassLoader().getResource(mapDir + csvFileName).getFile()).getPath();
+		this.csvFile = csvFile;
 		this.delimiter = ",";
 		this.line = "";
 	}
 
 	public CSVParser() {
-		this("MapLnodesFloor2.csv");
+		//this("MapLnodesFloor2.csv");
 	}
 
 	public ArrayList<ArrayList<String>> readCSVFile() {

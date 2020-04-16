@@ -1,9 +1,11 @@
 package edu.wpi.leviathans.views;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import edu.wpi.leviathans.views.mapViewer.dataDialogue.DataDialogue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -259,14 +261,25 @@ public class DatabaseViewController {
     }
 
     private ArrayList<Row> populateRow() {
-        CSVParser reader = new CSVParser("PrototypeNodes.csv");
-        ArrayList<ArrayList<String>> data = reader.readCSVFile();
-        ArrayList<Row> rows = new ArrayList<>();
-        for (ArrayList<String> dataRow : data) {
-            Row r = new Row(dataRow.get(0), dataRow.get(1), dataRow.get(2), dataRow.get(3),
-                    dataRow.get(4), dataRow.get(5), dataRow.get(6), dataRow.get(7));
-            rows.add(r);
+        DataDialogue dialogue = new DataDialogue();
+
+        dialogue.showDialogue(btnLoad.getScene().getWindow());
+
+        File nodesFile = dialogue.getNodeFile();
+
+        if(nodesFile != null) {
+            CSVParser reader = new CSVParser(nodesFile);
+
+            ArrayList<ArrayList<String>> data = reader.readCSVFile();
+            ArrayList<Row> rows = new ArrayList<>();
+            for (ArrayList<String> dataRow : data) {
+                Row r = new Row(dataRow.get(0), dataRow.get(1), dataRow.get(2), dataRow.get(3),
+                        dataRow.get(4), dataRow.get(5), dataRow.get(6), dataRow.get(7));
+                rows.add(r);
+            }
+            return rows;
         }
-        return rows;
+
+        return null;
     }
 }

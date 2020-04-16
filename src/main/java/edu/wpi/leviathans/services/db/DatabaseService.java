@@ -186,7 +186,7 @@ public class DatabaseService extends Service {
 			populateNodes.add(DBConstants.addNode);
 		}
 
-		parser = new CSVParser("MapLedgesFloor2.csv");
+		//parser = new CSVParser("MapLedgesFloor2.csv");
 		ArrayList<String> populateEdges = new ArrayList<>();
 		ArrayList<ArrayList<String>> edgeData = parser.readCSVFile();
 
