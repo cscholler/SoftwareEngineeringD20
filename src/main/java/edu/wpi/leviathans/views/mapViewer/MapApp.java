@@ -2,7 +2,7 @@ package edu.wpi.leviathans.views.mapViewer;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import edu.wpi.leviathans.modules.DatabaseServiceProvider;
+//import edu.wpi.leviathans.modules.DatabaseServiceProvider;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,7 +21,7 @@ public class MapApp extends Application {
     public Stage pStage;
 
     Parent root;
-    edu.wpi.leviathans.views.mapViewer.MapViewer controller;
+    MapViewer controller;
 
     @Override
     public void start(Stage primaryStage) throws Exception {

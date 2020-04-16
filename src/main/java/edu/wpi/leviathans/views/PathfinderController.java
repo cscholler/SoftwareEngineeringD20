@@ -35,23 +35,6 @@ public class PathfinderController {
 	//@Inject
 	DatabaseService db = new DatabaseService();
 
-	public static final class DATA_LABELS {
-		public static final String X = "x";
-		public static final String Y = "y";
-		public static final String NODE_TYPE = "nodeType";
-		public static final String SHORT_NAME = "shortName";
-		public static final String LONG_NAME = "longName";
-	}
-
-	public static final class NODE_TYPES {
-		public static final String CONFERENCE = "CONF";
-		public static final String HALL = "HALL";
-		public static final String DEPARTMENT = "DEPT";
-		public static final String INFO = "INFO";
-		public static final String LAB = "LABS";
-		public static final String RESTROOM = "REST";
-	}
-
 	public Graph initialize() {
 		try {
 			generateGraph();
@@ -59,7 +42,6 @@ public class PathfinderController {
 		} catch (SQLException ex) {
 			log.error("Encountered SQLException.", ex);
 		}
-
 		return null;
 	}
 
@@ -69,9 +51,9 @@ public class PathfinderController {
 		while (rs.next()) {
 			Node newNode = new Node(rs.getString(1));
 			newNode.position = new Point2D(Double.parseDouble(rs.getString(2)), Double.parseDouble(rs.getString(3)));
-			newNode.data.put(MapParser.DATA_LABELS.NODE_TYPE, rs.getString(4));
-			newNode.data.put(MapParser.DATA_LABELS.LONG_NAME, rs.getString(5));
-			newNode.data.put(MapParser.DATA_LABELS.SHORT_NAME, rs.getString(6));
+			newNode.data.put(MapParser.DATA_LABELS.NODE_TYPE, rs.getString(6));
+			newNode.data.put(MapParser.DATA_LABELS.LONG_NAME, rs.getString(7));
+			newNode.data.put(MapParser.DATA_LABELS.SHORT_NAME, rs.getString(8));
 
 			newGraph.addNode(newNode);
 		}

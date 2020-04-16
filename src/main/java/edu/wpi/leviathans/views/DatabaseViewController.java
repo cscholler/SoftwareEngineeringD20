@@ -31,6 +31,8 @@ import java.util.ArrayList;
 
 @Slf4j
 public class DatabaseViewController {
+	//@Inject
+	//DatabaseService db;
     //@Inject
     DatabaseService db;
 

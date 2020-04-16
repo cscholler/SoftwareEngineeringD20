@@ -1,44 +1,49 @@
 package edu.wpi.leviathans;
 
+import java.io.IOException;
 
-import edu.wpi.leviathans.util.Row;
-import edu.wpi.leviathans.util.io.CSVParser;
-import edu.wpi.leviathans.views.DatabaseViewController;
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableView;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 import lombok.extern.slf4j.Slf4j;
 
+//import edu.wpi.leviathans.modules.DatabaseServiceProvider;
 import java.io.IOException;
 import java.util.ArrayList;
 
 @Slf4j
 public class App extends Application {
 
+    public Stage pStage;
 
-  @Override
-  public void init() {
-    log.info("Starting Up");
-  }
+    Parent root;
+    edu.wpi.leviathans.views.mapViewer.MapViewer controller;
 
-  @Override
-  public void start(Stage primaryStage) throws IOException {
+    @Override
+    public void init() {
+        log.info("Starting Up");
+    }
 
-    Parent root = FXMLLoader.load(getClass().getResource("Display.fxml"));
-    primaryStage.setTitle("Startup Window");
-    primaryStage.setScene(new Scene(root));
-    primaryStage.show();
+    @Override
+    public void start(Stage primaryStage) throws IOException {
+		//Injector injector = Guice.createInjector(new DatabaseServiceProvider());
+		FXMLLoader fxmlLoader = new FXMLLoader();
+		//fxmlLoader.setControllerFactory(injector::getInstance);
+        pStage = primaryStage;
 
-  }
+		root = FXMLLoader.load(getClass().getResource("Display.fxml"));
+        controller = fxmlLoader.getController();
+
+        primaryStage.setTitle("Startup Window");
+        primaryStage.setScene(new Scene(root));
+
+        primaryStage.show();
+
+        controller.init();
+    }
 
   @Override
   public void stop() {

@@ -17,7 +17,7 @@ import edu.wpi.leviathans.services.Service;
 
 @Slf4j
 public class DatabaseService extends Service {
-	private Connection connection = null;
+	private Connection connection;
 	private Properties props = null;
 	private ArrayList<ResultSet> usedResSets = new ArrayList<>();
 	private ArrayList<Statement> usedStmts = new ArrayList<>();
@@ -113,7 +113,7 @@ public class DatabaseService extends Service {
 		if (isPreparedStmt && queries.size() != valuesList.size()) {
 			throw new IllegalArgumentException();
 		}
-		for (int i = 0; i < queries.size(); i++) {
+		for (int i = 0; i < queries.size() + 1; i++) {
 			resSets.add(executeQuery(queries.get(i), valuesList.get(i)));
 		}
 		return resSets;
@@ -147,7 +147,7 @@ public class DatabaseService extends Service {
 			throw new IllegalArgumentException();
 		}
 		for (int i = 0; i < updates.size(); i++) {
-			if (!executeUpdate(updates.get(i),isPreparedStmt ? valuesList.get(i) : new ArrayList<>())) {
+			if (!executeUpdate(updates.get(i), isPreparedStmt ? valuesList.get(i) : new ArrayList<>())) {
 				isSuccess = false;
 			}
 		}
@@ -158,8 +158,8 @@ public class DatabaseService extends Service {
 		PreparedStatement pStmt = null;
 		try {
 			pStmt = connection.prepareStatement(query);
-			for (int i = 1; i < values.size() + 1; i++) {
-				pStmt.setString(i, values.get(i));
+			for (int i = 0; i < values.size(); i++) {
+				pStmt.setString(i + 1, values.get(i));
 			}
 		} catch (SQLException ex) {
 			log.error("Encountered SQLException.", ex);
@@ -167,29 +167,10 @@ public class DatabaseService extends Service {
 		return pStmt;
 	}
 
-	private void dropTables() {
-		ArrayList<String> dropTables = new ArrayList<>();
-
-		dropTables.add(DBConstants.dropNodeTable);
-		dropTables.add(DBConstants.dropEdgeTable);
-		dropTables.add(DBConstants.dropDoctorTable);
-		dropTables.add(DBConstants.dropPatientTable);
-		dropTables.add(DBConstants.dropMedicationRequestTable);
-		dropTables.add(DBConstants.dropUserTable);
-
-		try {
-			executeUpdates(dropTables, new ArrayList<>());
-		} catch (Exception ex) {
-			log.debug("Table(s) do not exist.");
-		}
-	}
-
 	private boolean buildDatabase() {
 		ArrayList<String> createTables = new ArrayList<>();
 		ArrayList<String> populateTables = new ArrayList<>();
-
-		//dropTables(); //drop tables doesn't work if tables ain't there
-
+		dropTables();
 		createTables.add(DBConstants.createNodeTable);
 		createTables.add(DBConstants.createEdgeTable);
 		createTables.add(DBConstants.createDoctorTable);
@@ -198,14 +179,51 @@ public class DatabaseService extends Service {
 		createTables.add(DBConstants.createUserTable);
 
 		CSVParser parser = new CSVParser();
+		ArrayList<String> populateNodes = new ArrayList<>();
+		ArrayList<ArrayList<String>> nodeData = parser.readCSVFile();
 
-		ArrayList<ArrayList<String>> data = parser.readCSVFile();
-		for (int i = 0; i < data.size(); i++) {
-			populateTables.add(DBConstants.addNode);
+		for (int i = 0; i < nodeData.size(); i++) {
+			populateNodes.add(DBConstants.addNode);
 		}
 
-		return executeUpdates(createTables, new ArrayList<>()) && executeUpdates(populateTables, data);
+		parser = new CSVParser("MapLedgesFloor2.csv");
+		ArrayList<String> populateEdges = new ArrayList<>();
+		ArrayList<ArrayList<String>> edgeData = parser.readCSVFile();
+
+		for (int i = 0; i < edgeData.size(); i++) {
+			populateEdges.add(DBConstants.addEdge);
+		}
+
+		boolean createdTables = executeUpdates(createTables, new ArrayList<>());
+		boolean populatedNodes = executeUpdates(populateNodes, nodeData);
+		boolean populatedEdges = executeUpdates(populateEdges, edgeData);
+
+		return createdTables && populatedNodes && populatedEdges;
 	}
+
+	private void dropTables() {
+		ResultSet resSet;
+		ArrayList<String> droppableTables = new ArrayList<>();
+		ArrayList<String> tablesToDrop = new ArrayList<>();
+		droppableTables.add(DBConstants.dropNodeTable);
+		droppableTables.add(DBConstants.dropEdgeTable);
+		droppableTables.add(DBConstants.dropDoctorTable);
+		droppableTables.add(DBConstants.dropPatientTable);
+		droppableTables.add(DBConstants.dropMedicationRequestTable);
+		droppableTables.add(DBConstants.dropUserTable);
+		try {
+			for (int i = 0; i < DBConstants.getTableNames().size(); i++) {
+				resSet = connection.getMetaData().getTables(null, "APP", DBConstants.getTableNames().get(i).toUpperCase(), null);
+				if (resSet.next()) {
+					tablesToDrop.add(droppableTables.get((droppableTables.size() - 1) - i));
+				}
+			}
+			executeUpdates(tablesToDrop, new ArrayList<>());
+		} catch (SQLException ex) {
+			log.error("Encountered SQLException.", ex);
+		}
+	}
+
 
 	public ArrayList<String> getColumnNames(ResultSet resSet) {
 		ArrayList<String> colLabels = new ArrayList<>();
