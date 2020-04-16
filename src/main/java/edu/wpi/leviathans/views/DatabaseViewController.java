@@ -120,8 +120,13 @@ public class DatabaseViewController {
             stage = (Stage) btnSave.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/views/Display.fxml"));
         } else {
-            stage = (Stage) btnDemonstration.getScene().getWindow();
+            stage = new Stage();
             root = FXMLLoader.load(getClass().getResource("/edu/wpi/leviathans/views/mapViewer/MapViewer.fxml"));
+            stage.setScene(new Scene(root));
+            stage.setTitle("Map Viewer");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(btnDemonstration.getScene().getWindow());
+            stage.showAndWait();
         }
 
         if (e.getSource() != btnDownload && e.getSource() != btnSearch && e.getSource() != btnSave && e.getSource() != btnBack) {
