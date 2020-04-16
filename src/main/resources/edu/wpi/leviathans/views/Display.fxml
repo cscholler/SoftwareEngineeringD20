@@ -37,7 +37,7 @@
                   <Font name="Century Gothic" size="18.0" />
                </font>
             </Button>
-            <Button fx:id="btnDownload" mnemonicParsing="false" onAction="#handleButtonAction" style="-fx-background-color: #082A55;" text="Download" textFill="WHITE">
+            <Button fx:id="btnDownload" mnemonicParsing="false" onAction="#handleButtonAction" style="-fx-background-color: #082A55;" text="Refresh" textFill="WHITE">
                <font>
                   <Font name="Century Gothic" size="18.0" />
                </font>
