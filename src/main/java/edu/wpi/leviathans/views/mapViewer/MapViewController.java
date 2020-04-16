@@ -24,6 +24,9 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
+import edu.wpi.leviathans.util.pathfinding.graph.Edge;
+import edu.wpi.leviathans.util.pathfinding.graph.Graph;
+import edu.wpi.leviathans.util.pathfinding.graph.Node;
 import java.util.*;
 
 public class MapViewController {
@@ -176,15 +179,15 @@ public class MapViewController {
                 mapSelector.add(nodeGUI);
                 mapSelector.add(edgeGUI);
 
-                currentNode = nextNode;
-            }
-            // The above loop does not highlight the last node, this does that
-            NodeGUI nodeGUI = nodes.get(currentNode);
-            mapSelector.add(nodeGUI);
-            nodeGUI.setHighlighted(true);
-        });
+				currentNode = nextNode;
+			}
+			// The above loop does not highlight the last node, this does that
+			NodeGUI nodeGUI = nodes.get(currentNode);
+			mapSelector.add(nodeGUI);
+			nodeGUI.setHighlighted(true);
+		});
 
-    }
+	}
 
     private void coreShortcuts() {
         // Instantiate key combinations with ancronyms as naming convention (cv --> Ctrl-V)
@@ -268,7 +271,7 @@ public class MapViewController {
     public void open() {
         DataDialogue data = new DataDialogue();
 
-        data.showDialogue(scene.getWindow());
+        data.showDialogue(pathFind.getScene().getWindow());
 
         graph = MapParser.parseMapToGraph(data.getNodeFile(), data.getEdgeFile());
 

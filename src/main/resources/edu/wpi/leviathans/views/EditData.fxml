@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.leviathans.views.DatabaseViewController">
+   <children>
+      <GridPane layoutX="150.0" layoutY="143.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="292.5332946777344" minWidth="10.0" prefWidth="262.13330078125" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="344.26666259765625" minWidth="10.0" prefWidth="337.86669921875" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="74.0" minHeight="10.0" prefHeight="53.999993896484376" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="345.6000175476074" minHeight="10.0" prefHeight="301.20000610351565" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="123.4000244140625" minHeight="5.5333251953125" prefHeight="45.59996337890624" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="15.0" GridPane.rowIndex="1">
+               <children>
+                  <Label text="NodeID">
+                     <font>
+                        <Font name="Segoe UI" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label text="XCoord">
+                     <font>
+                        <Font name="Segoe UI" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label text="YCoord">
+                     <font>
+                        <Font name="Segoe UI" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label text="Floor">
+                     <font>
+                        <Font name="Segoe UI" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label text="Building">
+                     <font>
+                        <Font name="Segoe UI" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label text="NodeType">
+                     <font>
+                        <Font name="Segoe UI" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label text="ShortName">
+                     <font>
+                        <Font name="Segoe UI" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label text="LongName">
+                     <font>
+                        <Font name="Segoe UI" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets left="80.0" />
+               </padding>
+            </VBox>
+            <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                  <TextField fx:id="nodeIDText" maxWidth="250.0" />
+                  <TextField maxWidth="250.0" fx:id="xCoordText" />
+                  <TextField fx:id="yCoordText" maxWidth="250.0" />
+                  <TextField fx:id="floorText" maxWidth="250.0" />
+                  <TextField fx:id="buildingText" maxWidth="250.0" />
+                  <TextField fx:id="nodeTypeText" maxWidth="250.0" />
+                  <TextField fx:id="shortNameText" maxWidth="250.0" />
+                  <TextField fx:id="longNameText" maxWidth="250.0" />
+               </children>
+            </VBox>
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #082A55;">
+               <children>
+                  <Label layoutX="75.0" layoutY="18.0" text="Search Short Name" textFill="WHITE">
+                     <font>
+                        <Font name="Century Gothic Bold" size="15.0" />
+                     </font></Label>
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #082A55;" GridPane.columnIndex="1">
+               <children>
+                  <HBox layoutY="15.0" spacing="30.0">
+                     <children>
+                        <TextField fx:id="searchText" maxWidth="250.0" prefHeight="16.0" prefWidth="163.0" />
+                        <Button fx:id="btnSearch" mnemonicParsing="false" onAction="#handleButtonAction" text="Search">
+                           <font>
+                              <Font name="Century Gothic" size="13.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children></Pane>
+            <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+                  <Button fx:id="btnBack" mnemonicParsing="false" onAction="#handleButtonAction" text="Close">
+                     <font>
+                        <Font name="Century Gothic" size="13.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btnSave" mnemonicParsing="false" onAction="#handleButtonAction" style="-fx-background-color: #082a55;" text="Save" textFill="WHITE">
+                     <font>
+                        <Font name="Century Gothic" size="13.0" />
+                     </font>
+                  </Button>
+               </children>
+               <padding>
+                  <Insets right="30.0" />
+               </padding>
+            </HBox>
+         </children>
+      </GridPane>
+   </children>
+</AnchorPane>
