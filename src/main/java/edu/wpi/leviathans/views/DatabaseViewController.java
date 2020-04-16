@@ -167,7 +167,7 @@ public class DatabaseViewController {
     private void download() {
 
         try {
-            PrintWriter pw = new PrintWriter("src/main/java/edu/wpi/leviathans/util/pathFinding/floorMaps/MapLnodesBackup.csv");
+            PrintWriter pw = new PrintWriter("src/main/resources/edu/wpi/leviathans/csvFiles/PrototypeNodesEdit.csv");
             StringBuilder sb = new StringBuilder();
 
             sb.append("NodeID");
@@ -266,7 +266,7 @@ public class DatabaseViewController {
 
     private ArrayList<Row> populateRow() {
         System.out.println("loading data");
-        CSVParser reader = new CSVParser();
+        CSVParser reader = new CSVParser("PrototypeNodes.csv");
         ArrayList<ArrayList<String>> data = reader.readCSVFile();
         ArrayList<Row> rows = new ArrayList<>();
         for (ArrayList<String> dataRow : data) {
