@@ -2,8 +2,8 @@ NodeID,xCoordinate,yCoordinate,Floor,Building,NodeType,ShortName,LongName
 BCONF00102,2150,1025,2,45 Francis,CONF,Conf B0102,Duncan Reid Conference Room
 BHALL03802,2279,786,2,45 Francis,HALL,Hallway B3802,Hallway Intersection 38 Level 2
 BDEPT00202,2166,1039,2,45 Francis,DEPT,DEPT B0202,Oral Medicine and Dentistry
-BDEPT00302,2385,753,2,;ghasdo;sfghasdjlgkjlksdgahgasdjlkvhasdl,DEPT,DEPT B0302,Lee Bell Breast Center
-BDEPT00402,2439,902,2,45 Francis,DEPT,DEPT B0402,Jen Center for Primary Care
+BDEPT00302,2385,753,2,45 Francis,DEPT,DEPT B0302,Lee Bell Breast Center
+fjsldSDAfgjksdlahgklfdsaqjgdkls;,2439,902,2,45 Francis,DEPT,DEPT B0402,Jen Center for Primary Care
 BDEPT00502,2623,1018,2,45 Francis,DEPT,DEPT B0502,Ear Nose & Throat
 BDEPT00602,2782,1303,2,45 Francis,HALL,Hallway B3102,Hallway Intersection 31 Level 2
 BDEPT00702,2945,775,2,45 Francis,DEPT,DEPT B0702,Plastic Surgery

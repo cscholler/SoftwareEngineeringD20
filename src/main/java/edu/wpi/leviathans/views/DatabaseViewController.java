@@ -128,12 +128,12 @@ public class DatabaseViewController {
             stage.initOwner(btnDemonstration.getScene().getWindow());
             stage.showAndWait();
         }
-
-        if (e.getSource() != btnDownload && e.getSource() != btnSearch && e.getSource() != btnSave && e.getSource() != btnBack) {
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        }
+//CAUSED ERROR DOESNT SEEM TO BREAK ANYTHING WHEN GONE
+//        if (e.getSource() != btnDownload && e.getSource() != btnSearch && e.getSource() != btnSave && e.getSource() != btnBack) {
+//            Scene scene = new Scene(root);
+//            stage.setScene(scene);
+//            stage.show();
+//        }
 
     }
 
