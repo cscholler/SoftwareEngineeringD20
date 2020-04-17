@@ -77,15 +77,24 @@ public class MapViewController {
     private double zoomLevel = 1;
     private Scene scene;
 
+    /*private void clearSelection() {
+        for (NodeGUI nodeGUI : selectedNodes.keySet())
+            nodeGUI.setHighlighted(false);
+        for (EdgeGUI edgeGUI : selectedEdges)
+            edgeGUI.setHighlighted(false);
+        selectedNodes.clear();
+        selectedEdges.clear();
+    }*/
+
     private void removeNode(NodeGUI nodeGUI) {
         nodes.remove(nodeGUI);
         body.getChildren().removeAll(nodeGUI.getAllNodes());
-        graph.removeNode(nodeGUI.node);
-        for (Node neighbor : nodeGUI.node.getNeighbors()) {
-            Edge edgeToNode = neighbor.edgeFromDest(nodeGUI.node);
-            Edge edgeFromNode = nodeGUI.node.getEdge(neighbor);
+        graph.removeNode(nodeGUI.getNode());
+        for (Node neighbor : nodeGUI.getNode().getNeighbors()) {
+            Edge edgeToNode = neighbor.edgeFromDest(nodeGUI.getNode());
+            Edge edgeFromNode = nodeGUI.getNode().getEdge(neighbor);
             neighbor.removeEdge(edgeToNode);
-            nodeGUI.node.removeEdge(edgeFromNode);
+            nodeGUI.getNode().removeEdge(edgeFromNode);
             body.getChildren().removeAll(edges.get(edgeToNode).getAllNodes());
             body.getChildren().removeAll(edges.get(edgeFromNode).getAllNodes());
         }
@@ -94,6 +103,8 @@ public class MapViewController {
     @FXML
     public void initialize() {
         scene = body.getScene();
+
+        coreShortcuts();
 
         position.setText(positionInfo());
         scroller.setPannable(true);
@@ -118,6 +129,14 @@ public class MapViewController {
             }
         });
 
+        // Delete selected nodes when delete key is pressed
+        body.setOnKeyPressed(event -> {
+            if (event.getCode().equals(KeyCode.DELETE)) {
+                for (NodeGUI nodeGUI : mapSelector.getNodes())
+                    removeNode(nodeGUI);
+            }
+        });
+
         body.setOnMousePressed(event -> {
             if(!draggingNode && !onSelectable && event.isPrimaryButtonDown()) {
                 dragSelecting = true;
@@ -135,7 +154,7 @@ public class MapViewController {
             } else if (dragSelecting) {
                 selectionBox.mouseDrag(new Point2D(event.getX(), event.getY()));
                 for (NodeGUI node : nodes.values()) {
-                    if (selectionBox.getBoundsInParent().contains(node.gui.getBoundsInParent()))
+                    if (selectionBox.getBoundsInParent().contains(node.getBoundsInParent()))
                         mapSelector.add(node);
                     else if(mapSelector.contains(node) && !event.isShiftDown())
                         mapSelector.remove(node);
@@ -177,14 +196,6 @@ public class MapViewController {
 			mapSelector.add(nodeGUI);
 			nodeGUI.setHighlighted(true);
 		});
-
-        // Delete selected nodes when delete key is pressed
-        scroller.setOnKeyPressed(event -> {
-            if (event.getCode().equals(KeyCode.DELETE)) {
-                for (NodeGUI nodeGUI : mapSelector.getNodes())
-                    removeNode(nodeGUI);
-            }
-        });
 
         coreShortcuts();
 	}
@@ -321,19 +332,19 @@ public class MapViewController {
         for (Node node : graph.getNodes()) {
             NodeGUI nodeGUI = new NodeGUI(node);
 
-            nodeGUI.gui.setRadius(circleRadius);
-            nodeGUI.gui.fillProperty().setValue(nodeColor);
+            nodeGUI.setRadius(circleRadius);
+            nodeGUI.fillProperty().setValue(nodeColor);
             nodeGUI.setHighlightColor(highLightColor);
             nodeGUI.setHighlightRadius(highlightThickness);
 
             Point2D zoomedPos = new Point2D(nodeGUI.layoutX.get() * zoomLevel, nodeGUI.layoutY.get() * zoomLevel);
             nodeGUI.setLayoutPos(zoomedPos);
 
-            nodeGUI.gui.setOnMouseEntered(event -> {
+            nodeGUI.setOnMouseEntered(event -> {
                 nodeGUI.setHighlighted(true);
                 onSelectable = true;
             });
-            nodeGUI.gui.setOnMouseExited(event -> {
+            nodeGUI.setOnMouseExited(event -> {
                 if (!mapSelector.contains(nodeGUI))
                     nodeGUI.setHighlighted(false);
                 onSelectable = false;
@@ -342,7 +353,7 @@ public class MapViewController {
             // -----------Handle selection-----------
 
             // Different selection methods based on what shortcut is being held
-            nodeGUI.gui.setOnMouseClicked(event -> {
+            nodeGUI.setOnMouseClicked(event -> {
                 if (event.isShiftDown()) {
                     if (!mapSelector.contains(nodeGUI))
                         mapSelector.add(nodeGUI);
@@ -360,7 +371,7 @@ public class MapViewController {
             // -----------Handle moving the nodes-----------
 
             // Start dragging the selected nodes
-            nodeGUI.gui.setOnMousePressed(event -> {
+            nodeGUI.setOnMousePressed(event -> {
                 if (mapSelector.contains(nodeGUI) && event.isPrimaryButtonDown()) {
                     for (NodeGUI gui : mapSelector.getNodes())
                         mapSelector.setNodePosition(gui, gui.getLayoutPos().subtract(new Point2D(event.getX(), event.getY())));
@@ -370,9 +381,9 @@ public class MapViewController {
             });
 
             // Done dragging
-            nodeGUI.gui.setOnMouseReleased(event -> {
+            nodeGUI.setOnMouseReleased(event -> {
                 for (NodeGUI gui : mapSelector.getNodes()) {
-                    gui.node.position = gui.getLayoutPos().multiply(1 / zoomLevel);
+                    gui.getNode().position = gui.getLayoutPos().multiply(1 / zoomLevel);
                     mapSelector.setNodePosition(gui, gui.getLayoutPos().subtract(new Point2D(event.getX(), event.getY())));
                 }
                 draggingNode = false;
@@ -385,7 +396,7 @@ public class MapViewController {
         // Add lines to the scene
         for (Edge edge : graph.getEdges()) {
             EdgeGUI edgeGUI = new EdgeGUI(edge);
-            edgeGUI.gui.strokeProperty().setValue(nodeColor);
+            edgeGUI.getGUI().strokeProperty().setValue(nodeColor);
             edgeGUI.setHighlightColor(highLightColor);
             edgeGUI.setHighlightRadius(highlightThickness);
 
@@ -397,8 +408,8 @@ public class MapViewController {
             edgeGUI.endX.bind(nodes.get(edge.destination).layoutX);
             edgeGUI.endY.bind(nodes.get(edge.destination).layoutY);
 
-            edgeGUI.gui.setOnMouseEntered(event -> edgeGUI.setHighlighted(true));
-            edgeGUI.gui.setOnMouseExited(event -> edgeGUI.setHighlighted(false));
+            edgeGUI.getGUI().setOnMouseEntered(event -> edgeGUI.setHighlighted(true));
+            edgeGUI.getGUI().setOnMouseExited(event -> edgeGUI.setHighlighted(false));
 
             root.getChildren().addAll(edgeGUI.getAllNodes());
             edges.put(edge, edgeGUI);
@@ -412,313 +423,5 @@ public class MapViewController {
         return root;
     }
 
-    private class SelectionBox extends Rectangle {
 
-        public Point2D rootPosition;
-
-        public SelectionBox(Point2D root) {
-            super();
-
-            rootPosition = root;
-
-            setFill(new Color(0, 0, 1, 0.1));
-            setStroke(Color.BLUE);
-            setStrokeWidth(2);
-        }
-
-        public void mouseDrag(Point2D mousePosition) {
-            if(mousePosition.getX() < rootPosition.getX()) {
-                setLayoutX(mousePosition.getX());
-                setWidth(rootPosition.getX() - mousePosition.getX());
-            } else {
-                setLayoutX(rootPosition.getX());
-                setWidth(mousePosition.getX() - rootPosition.getX());
-            }
-
-            if(mousePosition.getY() < rootPosition.getY()) {
-                setLayoutY(mousePosition.getY());
-                setHeight(rootPosition.getY() - mousePosition.getY());
-            } else {
-                setLayoutY(rootPosition.getY());
-                setHeight(mousePosition.getY() - rootPosition.getY());
-            }
-        }
-    }
-
-    private class Selector {
-        private Map<NodeGUI, Point2D> selectedNodes = new HashMap<>();
-        private Collection<EdgeGUI> selectedEdges = new ArrayList<>();
-
-        private Collection<Highlightable> selected = new ArrayList<>();
-
-        public Collection<NodeGUI> getNodes() {
-            return selectedNodes.keySet();
-        }
-
-        public Collection<EdgeGUI> getEdges() {
-            return List.copyOf(selectedEdges);
-        }
-
-        public Point2D getNodePosition(NodeGUI nodeGUI) {
-            return selectedNodes.get(nodeGUI);
-        }
-
-        public void setNodePosition(NodeGUI nodeGUI, Point2D position) {
-            selectedNodes.replace(nodeGUI, position);
-        }
-
-        public void add(Highlightable newItem) {
-            if (newItem.getClass().equals(NodeGUI.class))
-                selectedNodes.put((NodeGUI) newItem, null);
-            else if (newItem.getClass().equals(EdgeGUI.class))
-                selectedEdges.add((EdgeGUI) newItem);
-
-            selected.add(newItem);
-            newItem.setHighlighted(true);
-            newItem.selected = true;
-            newItem.gui.setCursor(Cursor.MOVE);
-        }
-
-        public void addAll(Highlightable... newItems) {
-            for (Highlightable item : newItems)
-                add(item);
-        }
-
-        public void remove(Highlightable item) {
-            try {
-                if (selected.contains(item)) {
-                    if (item.getClass().equals(NodeGUI.class))
-                        selectedNodes.remove(item);
-                    else if (item.getClass().equals(EdgeGUI.class))
-                        selectedEdges.remove(item);
-
-                    selected.remove(item);
-                    item.setHighlighted(false);
-                    item.selected = false;
-                    item.gui.setCursor(Cursor.DEFAULT);
-                } else {
-                    throw new IllegalArgumentException("Item to remove must be selected");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        public void removeAll(Highlightable... items) {
-            for (Highlightable item : items)
-                remove(item);
-        }
-
-        public void clear() {
-            removeAll(selected.toArray(new Highlightable[selected.size()]));
-        }
-
-        public boolean contains(Highlightable item) {
-            return selected.contains(item);
-        }
-    }
-
-    private abstract class Highlightable {
-        public Shape gui;
-        private boolean selected;
-
-        private void init() {
-            gui.setOnMouseEntered(event -> {
-                setHighlighted(true);
-                onSelectable = true;
-            });
-            gui.setOnMouseExited(event -> {
-                if (!selected)
-                    setHighlighted(false);
-                onSelectable = false;
-            });
-        }
-
-        public abstract void setHighlighted(boolean newHighlighted);
-
-        public abstract void setHighlightRadius(double radius);
-
-        public abstract void setHighlightColor(Paint newColor);
-
-        public abstract boolean getHighlighted();
-
-        public abstract double getHighlightRadius();
-
-        public boolean getSelected() {
-            return selected;
-        }
-
-        public abstract Paint getHighlightColor();
-
-        public abstract Collection<javafx.scene.Node> getAllNodes();
-
-        private Shape getGUI() {
-            return gui;
-        }
-    }
-
-    private class NodeGUI extends Highlightable {
-        public Circle gui = new Circle();
-
-        public SimpleDoubleProperty layoutX = new SimpleDoubleProperty();
-        public SimpleDoubleProperty layoutY = new SimpleDoubleProperty();
-
-        private boolean highlighted;
-        private double highlightRadius;
-
-        private Node node;
-        private Label nameLabel = new Label();
-
-        public NodeGUI(Node initNode) {
-            super();
-            node = initNode;
-
-            // Set initial x and y position
-            setLayoutPos(node.position);
-
-            gui.centerXProperty().bindBidirectional(layoutX);
-            gui.centerYProperty().bindBidirectional(layoutY);
-
-            nameLabel.setText(node.getName());
-            nameLabel.layoutXProperty().bindBidirectional(layoutX);
-            nameLabel.layoutYProperty().bindBidirectional(layoutY);
-
-            setHighlighted(false);
-
-            super.gui = gui;
-
-            // Replacement super constructor
-            initialize();
-        }
-
-        public void setLayoutPos(Point2D newPos) {
-            layoutX.set(newPos.getX());
-            layoutY.set(newPos.getY());
-        }
-
-        public void setHighlighted(boolean newHighlighted) {
-            highlighted = newHighlighted;
-
-            if (highlighted) gui.setStrokeWidth(highlightRadius);
-            else gui.setStrokeWidth(0);
-        }
-
-        public void setHighlightRadius(double radius) {
-            highlightRadius = radius;
-        }
-
-        public void setHighlightColor(Paint newColor) {
-            gui.setStroke(newColor);
-        }
-
-        public Point2D getLayoutPos() {
-            return new Point2D(layoutX.get(), layoutY.get());
-        }
-
-        public boolean getHighlighted() {
-            return highlighted;
-        }
-
-        public Collection<javafx.scene.Node> getAllNodes() {
-            Collection<javafx.scene.Node> retList = new ArrayList<>(1);
-            retList.add(gui);
-            retList.add(nameLabel);
-            return retList;
-        }
-
-        public double getHighlightRadius() {
-            return highlightRadius;
-        }
-
-        public Paint getHighlightColor() {
-            return gui.getStroke();
-        }
-    }
-
-    private class EdgeGUI extends Highlightable {
-        public Line gui = new Line();
-        Line highlightGui = new Line();
-
-        public SimpleDoubleProperty startX = new SimpleDoubleProperty();
-        public SimpleDoubleProperty startY = new SimpleDoubleProperty();
-        public SimpleDoubleProperty endX = new SimpleDoubleProperty();
-        public SimpleDoubleProperty endY = new SimpleDoubleProperty();
-
-        private Edge edge;
-
-        public EdgeGUI(Edge initEdge) {
-            super();
-            edge = initEdge;
-
-            // Set start position of the line to the source node
-            setStartPos(edge.getSource().position);
-
-            // Set end position of the line to the destination node
-            setEndPos(edge.destination.position);
-
-            gui.startXProperty().bindBidirectional(startX);
-            gui.startYProperty().bindBidirectional(startY);
-            gui.endXProperty().bindBidirectional(endX);
-            gui.endYProperty().bindBidirectional(endY);
-
-            highlightGui.startXProperty().bindBidirectional(startX);
-            highlightGui.startYProperty().bindBidirectional(startY);
-            highlightGui.endXProperty().bindBidirectional(endX);
-            highlightGui.endYProperty().bindBidirectional(endY);
-
-            setHighlighted(false);
-
-            super.gui = gui;
-
-            // Replacement super constructor
-            initialize();
-        }
-
-        public EdgeGUI(Edge initEdge, int lineWidth) {
-            this(initEdge);
-
-            gui.setStrokeWidth(lineWidth);
-        }
-
-        public void setStartPos(Point2D newPos) {
-            startX.set(newPos.getX());
-            startY.set(newPos.getY());
-        }
-
-        public void setEndPos(Point2D newPos) {
-            endX.set(newPos.getX());
-            endY.set(newPos.getY());
-        }
-
-        public void setHighlighted(boolean newHighlighted) {
-            highlightGui.setVisible(newHighlighted);
-        }
-
-        public void setHighlightRadius(double radius) {
-            highlightGui.setStrokeWidth(gui.getStrokeWidth() + (radius * 2));
-        }
-
-        public void setHighlightColor(Paint newColor) {
-            highlightGui.setStroke(newColor);
-        }
-
-        public boolean getHighlighted() {
-            return highlightGui.isVisible();
-        }
-
-        public Collection<javafx.scene.Node> getAllNodes() {
-            Collection<javafx.scene.Node> retList = new ArrayList<>(2);
-            retList.add(highlightGui);
-            retList.add(gui);
-            return retList;
-        }
-
-        public double getHighlightRadius() {
-            return (highlightGui.getStrokeWidth() - gui.getStrokeWidth()) / 2;
-        }
-
-        public Paint getHighlightColor() {
-            return highlightGui.getStroke();
-        }
-    }
 }
