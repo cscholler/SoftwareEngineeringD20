@@ -276,6 +276,11 @@ public class MapViewController {
         setPaneFromGraph(graph);
     }
 
+    @FXML
+    private void insertNode() {
+
+    }
+
     private void setPaneFromGraph(Graph graph) {
         if (graph != null) {
             // Set names so they are simpler to test (temporary)
@@ -287,14 +292,16 @@ public class MapViewController {
 
             body.getChildren().clear();
             body.getChildren().addAll(paneFromGraph(graph).getChildren());
+        } else {
+            throw new RuntimeException("Graph is null, cannot convert to a pane");
         }
     }
 
-    @FXML
-    private void insertNode() {
-
-    }
-
+    /**
+     * Generates a string to display information about the cameras current location and zoom.
+     *
+     * @return A string containing the zoom level and the H and V values of the scrollbar.
+     */
     private String positionInfo() {
         return "+" + round(getZoomLevel(), 3) + "\n(" +
                 round(scroller.getHvalue(), 3) +
@@ -382,20 +389,20 @@ public class MapViewController {
         // Add lines to the scene
         for (Edge edge : graph.getEdges()) {
             EdgeGUI edgeGUI = new EdgeGUI(edge);
-            edgeGUI.getGUI().strokeProperty().setValue(nodeColor);
+            edgeGUI.strokeProperty().setValue(nodeColor);
             edgeGUI.setHighlightColor(highLightColor);
             edgeGUI.setHighlightRadius(highlightThickness);
 
             // Set start position of the line to the source node
-            edgeGUI.startX.bind(nodes.get(edge.getSource()).layoutX);
-            edgeGUI.startY.bind(nodes.get(edge.getSource()).layoutY);
+            edgeGUI.startXProperty().bind(nodes.get(edge.getSource()).layoutX);
+            edgeGUI.startYProperty().bind(nodes.get(edge.getSource()).layoutY);
 
             // Set end position of the line to the destination node
-            edgeGUI.endX.bind(nodes.get(edge.destination).layoutX);
-            edgeGUI.endY.bind(nodes.get(edge.destination).layoutY);
+            edgeGUI.endXProperty().bind(nodes.get(edge.destination).layoutX);
+            edgeGUI.endYProperty().bind(nodes.get(edge.destination).layoutY);
 
-            edgeGUI.getGUI().setOnMouseEntered(event -> edgeGUI.setHighlighted(true));
-            edgeGUI.getGUI().setOnMouseExited(event -> edgeGUI.setHighlighted(false));
+            edgeGUI.setOnMouseEntered(event -> edgeGUI.setHighlighted(true));
+            edgeGUI.setOnMouseExited(event -> edgeGUI.setHighlighted(false));
 
             root.getChildren().addAll(edgeGUI.getAllNodes());
             edges.put(edge, edgeGUI);

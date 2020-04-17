@@ -10,13 +10,8 @@ import javafx.scene.shape.Line;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class EdgeGUI implements Highlightable {
-    public SimpleDoubleProperty startX = new SimpleDoubleProperty();
-    public SimpleDoubleProperty startY = new SimpleDoubleProperty();
-    public SimpleDoubleProperty endX = new SimpleDoubleProperty();
-    public SimpleDoubleProperty endY = new SimpleDoubleProperty();
+public class EdgeGUI extends Line implements Highlightable {
 
-    private Line gui = new Line();
     private Line highlightGui = new Line();
     private Edge edge;
     private boolean selected = false;
@@ -30,15 +25,10 @@ public class EdgeGUI implements Highlightable {
         // Set end position of the line to the destination node
         setEndPos(edge.destination.position);
 
-        gui.startXProperty().bindBidirectional(startX);
-        gui.startYProperty().bindBidirectional(startY);
-        gui.endXProperty().bindBidirectional(endX);
-        gui.endYProperty().bindBidirectional(endY);
-
-        highlightGui.startXProperty().bindBidirectional(startX);
-        highlightGui.startYProperty().bindBidirectional(startY);
-        highlightGui.endXProperty().bindBidirectional(endX);
-        highlightGui.endYProperty().bindBidirectional(endY);
+        highlightGui.startXProperty().bindBidirectional(startXProperty());
+        highlightGui.startYProperty().bindBidirectional(startYProperty());
+        highlightGui.endXProperty().bindBidirectional(endXProperty());
+        highlightGui.endYProperty().bindBidirectional(endYProperty());
 
         setHighlighted(false);
     }
@@ -46,17 +36,17 @@ public class EdgeGUI implements Highlightable {
     public EdgeGUI(Edge initEdge, int lineWidth) {
         this(initEdge);
 
-        gui.setStrokeWidth(lineWidth);
+        setStrokeWidth(lineWidth);
     }
 
     public void setStartPos(Point2D newPos) {
-        startX.set(newPos.getX());
-        startY.set(newPos.getY());
+        startXProperty().setValue(newPos.getX());
+        startYProperty().setValue(newPos.getY());
     }
 
     public void setEndPos(Point2D newPos) {
-        endX.set(newPos.getX());
-        endY.set(newPos.getY());
+        endXProperty().setValue(newPos.getX());
+        endYProperty().setValue(newPos.getY());
     }
 
     public void setHighlighted(boolean newHighlighted) {
@@ -64,7 +54,7 @@ public class EdgeGUI implements Highlightable {
     }
 
     public void setHighlightRadius(double radius) {
-        highlightGui.setStrokeWidth(gui.getStrokeWidth() + (radius * 2));
+        highlightGui.setStrokeWidth(getStrokeWidth() + (radius * 2));
     }
 
     public void setHighlightColor(Paint newColor) {
@@ -82,16 +72,16 @@ public class EdgeGUI implements Highlightable {
     public Collection<Node> getAllNodes() {
         Collection<javafx.scene.Node> retList = new ArrayList<>(2);
         retList.add(highlightGui);
-        retList.add(gui);
+        retList.add(this);
         return retList;
     }
 
     public Line getGUI() {
-        return gui;
+        return this;
     }
 
     public double getHighlightRadius() {
-        return (highlightGui.getStrokeWidth() - gui.getStrokeWidth()) / 2;
+        return (highlightGui.getStrokeWidth() - getStrokeWidth()) / 2;
     }
 
     public boolean getSelected() {
