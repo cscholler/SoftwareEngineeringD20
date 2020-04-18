@@ -4,6 +4,8 @@ import com.jfoenix.controls.JFXAutoCompletePopup;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.events.JFXAutoCompleteEvent;
+import edu.wpi.cs3733.d20.teamL.services.navSearch.SearchFields;
+import edu.wpi.cs3733.d20.teamL.util.io.CSVReader;
 import edu.wpi.cs3733.d20.teamL.util.io.DBCache;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,18 +39,12 @@ public class NavigationController {
         }
     }
     public void inputHandler() {
+        SearchFields sf = SearchFields.getSearchFields();
+        sf.populateSearchFields();
 
-        ArrayList<String> suggestions = new ArrayList<String>();
-        //DBCache dbCache = DBCache.getCache();
-        for(ArrayList<String> nodes: dbCache.getNodeCache()) {
-            suggestions.add(nodes.get(6));
-            System.out.println("Nodes: " + nodes.get(6));
-        }
         JFXAutoCompletePopup<String> autoCompletePopup = new JFXAutoCompletePopup<>();
-        autoCompletePopup.getSuggestions().addAll(suggestions);
-        autoCompletePopup.setSelectionHandler(event -> {
-            searchBox.setText(event.getObject());
-        });
+        autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
+        autoCompletePopup.setSelectionHandler(event -> searchBox.setText(event.getObject()));
         searchBox.textProperty().addListener(observable -> {
             autoCompletePopup.filter(string ->
                     string.toLowerCase().contains(searchBox.getText().toLowerCase()));

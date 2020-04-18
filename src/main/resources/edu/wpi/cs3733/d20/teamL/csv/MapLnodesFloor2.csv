@@ -1,4 +1,4 @@
-nodeID,xcoord,ycoord,floor,building,nodeTypeongName,shortName
+nodeID,xcoord,ycoord,floor,building,nodeType,LongName,shortName
 LDEPT00102,757,1122,2,Faulkner,DEPT,Biomedical Engineering,DEPT L2001
 LDEPT00302,737,840,2,Faulkner,DEPT,Morgue,DEPT L2003
 LDEPT00402,1450,1066,2,Faulkner,DEPT,Occupational Therapy,DEPT L2004

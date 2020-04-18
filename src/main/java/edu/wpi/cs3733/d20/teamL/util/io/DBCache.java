@@ -8,36 +8,57 @@ import java.util.ArrayList;
 
 public class DBCache {
     private static DBCache cache;
-    private DBCache(){}
+
+    private DBCache() {
+    }
+
+    //Tables that can be cached
     private ArrayList<ArrayList<String>> nodeCache;
-    DatabaseService db = new DatabaseService();
+    private ArrayList<ArrayList<String>> edgeCache;
 
-    /**
-     * cacheNode: Populates the node cache with nodes from the Database
-     *
-     */
-    public void cacheNode() {
-        ResultSet resSet = db.executeQuery(DBConstants.selectAllNodes);
-        nodeCache = db.getTableFromResultSet(resSet);
+    DatabaseService db = new DatabaseService(); //this should be changes eventually
 
+    private static class singletonHelper {
+        private static final DBCache cache = new DBCache();
+    }
+
+    public static DBCache getCache() {
+        return singletonHelper.cache;
     }
 
     /**
-     * clearNodeCache: Clears the cache
-     *
+     * cacheNode: Populates the node cache with nodes from the Database
+     */
+    public void cacheNodes() {
+        ResultSet resSet = db.executeQuery(DBConstants.selectAllNodes);
+        clearEdgeCache();
+        nodeCache = db.getTableFromResultSet(resSet);
+    }
+
+    /**
+     * clearNodeCache: Clears the Nodes cache
      */
     public void clearNodeCache() {
         nodeCache.clear();
     }
 
-    public ArrayList<ArrayList<String>> getNodeCache(){
+    public ArrayList<ArrayList<String>> getNodeCache() {
         return nodeCache;
     }
-    private static class singletonHelper{
-        private static final DBCache cache = new DBCache();
+
+    /**
+     * cacheEdges: Populates the edge cache with edges from the Database
+     */
+    public void cacheEdges() {
+        ResultSet resSet = db.executeQuery(DBConstants.selectAllEdges);
+        clearEdgeCache();
+        edgeCache = db.getTableFromResultSet(resSet);
     }
 
-    public static DBCache getCache(){
-        return singletonHelper.cache;
+    /**
+     * clearEdgeCache: Clears the Edges cache
+     */
+    public void clearEdgeCache() {
+        edgeCache.clear();
     }
 }

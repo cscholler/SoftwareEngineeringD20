@@ -16,7 +16,7 @@
          </children>
       </HBox>
       <Label layoutX="229.0" layoutY="102.0" text="Where do you want to go?" />
-      <JFXTextField fx:id="searchBox" layoutX="233.0" layoutY="142.0" onAction="#inputHandler" promptText="Seach" />
+      <JFXTextField fx:id="searchBox" layoutX="233.0" layoutY="142.0" onKeyReleased="#inputHandler" promptText="Search" />
       <JFXButton fx:id="btnHelp" layoutX="522.0" layoutY="14.0" onAction="#handleButtonAction" text="Call For Help" />
    </children>
 </AnchorPane>
