@@ -15,6 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Line;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ public class MapPane extends StackPane {
     private boolean onSelectable = false;
     private boolean draggingNode = false;
     private boolean dragSelecting = false;
+    private boolean addingEdge = false;
 
     private int circleRadius = 12;
     private Color nodeColor = Color.ORANGE;
@@ -80,18 +82,18 @@ public class MapPane extends StackPane {
             }
         });
 
-        // Deselect all nodes when clicked off
-        body.setOnMouseClicked(event -> {
-            if (event.getButton().equals(MouseButton.PRIMARY) && !onSelectable) {
-                selector.clear();
-            }
-        });
-
         // Delete selected nodes when delete key is pressed
         scroller.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.DELETE)) {
                 for (NodeGUI nodeGUI : selector.getNodes())
                     removeNode(nodeGUI);
+            }
+        });
+
+        // Deselect all nodes when clicked off
+        body.setOnMouseClicked(event -> {
+            if (event.getButton().equals(MouseButton.PRIMARY) && !onSelectable) {
+                selector.clear();
             }
         });
 
@@ -105,14 +107,16 @@ public class MapPane extends StackPane {
 
         // Change the position of all the selected nodes as the mouse is being dragged keeping their offset
         body.setOnMouseDragged(event -> {
-            if (draggingNode) {
-                for (NodeGUI gui : selector.getNodes()) {
-                    gui.setLayoutPos(selector.getNodePosition(gui).add(new Point2D(event.getX(), event.getY())));
+            if(event.isPrimaryButtonDown()) {
+                if (draggingNode) {
+                    for (NodeGUI gui : selector.getNodes()) {
+                        gui.setLayoutPos(selector.getNodePosition(gui).add(new Point2D(event.getX(), event.getY())));
+                    }
+                } else if (dragSelecting) {
+                    selectionBox.mouseDrag(new Point2D(event.getX(), event.getY()), event.isShiftDown());
                 }
-            } else if (dragSelecting) {
-                selectionBox.mouseDrag(new Point2D(event.getX(), event.getY()), event.isShiftDown());
+                position.setText(positionInfo());
             }
-            position.setText(positionInfo());
         });
 
         body.setOnMouseReleased(event -> {
@@ -244,45 +248,68 @@ public class MapPane extends StackPane {
 
         // Features involving selection and drag-and-drop only happen if this map is editable
         if (isEditable()) {
-            // -----------Handle selection-----------
+            nodeGUI.setOnMousePressed(event -> {
+                if(event.isPrimaryButtonDown() && !addingEdge) {
+                    // -----------Handle selection-----------
+                    if (event.isShiftDown()) {
+                        if (!selector.contains(nodeGUI))
+                            selector.add(nodeGUI);
+                    } else if (event.isControlDown()) {
+                        if (selector.contains(nodeGUI))
+                            selector.remove(nodeGUI);
+                        else
+                            selector.add(nodeGUI);
+                    } else {
+                        selector.add(nodeGUI);
+                    }
 
-            // Different selection methods based on what shortcut is being held
-            nodeGUI.setOnMouseClicked(event -> {
-                if (event.isShiftDown()) {
-                    if (!selector.contains(nodeGUI))
-                        selector.add(nodeGUI);
-                } else if (event.isControlDown()) {
-                    if (selector.contains(nodeGUI))
-                        selector.remove(nodeGUI);
-                    else
-                        selector.add(nodeGUI);
-                } else {
+                    // -----------Handle moving the nodes-----------
+                    if (selector.contains(nodeGUI) && event.isPrimaryButtonDown()) {
+                        for (NodeGUI gui : selector.getNodes()) {
+                            selector.setNodePosition(gui, gui.getLayoutPos().subtract(body.sceneToLocal(new Point2D(event.getSceneX(), event.getSceneY()))));
+                        }
+                    }
+                }
+            });
+
+            //Dragging
+            nodeGUI.setOnMouseDragged(event -> {
+                if(event.isPrimaryButtonDown()) draggingNode = true;
+            });
+
+            //Handles the case where you just want to select 1 node and deselect the rest
+            nodeGUI.setOnMouseReleased(event -> {
+                if (!draggingNode) {
                     selector.clear();
                     selector.add(nodeGUI);
                 }
             });
 
-            // -----------Handle moving the nodes-----------
-
-            // Start dragging the selected nodes
-            nodeGUI.setOnMousePressed(event -> {
-                if (selector.contains(nodeGUI) && event.isPrimaryButtonDown()) {
-                    for (NodeGUI gui : selector.getNodes()) {
-                        selector.setNodePosition(gui, gui.getLayoutPos().subtract(body.sceneToLocal(new Point2D(event.getSceneX(), event.getSceneY()))));
-                    }
-
-                    draggingNode = true;
-                }
-            });
-
             // Done dragging
-            nodeGUI.setOnMouseReleased(event -> {
-                for (NodeGUI gui : selector.getNodes()) {
-                    gui.getNode().position = gui.getLayoutPos().multiply(1 / zoomLevel);
-                    selector.setNodePosition(gui, gui.getLayoutPos().subtract(new Point2D(event.getX(), event.getY())));
+            nodeGUI.setOnMouseClicked(event -> {
+                if(!addingEdge) {
+                    for (NodeGUI gui : selector.getNodes()) {
+                        gui.getNode().position = gui.getLayoutPos().multiply(1 / zoomLevel);
+                        selector.setNodePosition(gui, gui.getLayoutPos().subtract(new Point2D(event.getX(), event.getY())));
+                    }
+                    draggingNode = false;
                 }
-                draggingNode = false;
             });
+
+            // -----------Handle adding the edge-----------
+           /* nodeGUI.setOnMousePressed(event -> {
+                if(event.isSecondaryButtonDown() && !draggingNode && !dragSelecting) {
+                    Line tempEdge = new Line();
+                    tempEdge.setStartX(nodeGUI.getCenterX());
+                    tempEdge.setEndY(nodeGUI.getCenterY());
+                    tempEdge.setEndX(event.getX());
+                    tempEdge.setEndY(event.getY());
+                    tempEdge.setMouseTransparent(true);
+
+                    addingEdge = true;
+                }
+            });*/
+
         }
 
         if(!graph.getNodes().contains(node))
@@ -337,7 +364,7 @@ public class MapPane extends StackPane {
         edges.put(edge, edgeGUI);
         edge.data.put("GUI", edgeGUI);
 
-        body.getChildren().addAll(edgeGUI.getAllNodes());
+        body.getChildren().addAll(0, edgeGUI.getAllNodes());
     }
 
     public NodeGUI getNodeGUI(Node node) {

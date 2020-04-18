@@ -29,6 +29,7 @@ public class EdgeGUI extends Line implements Highlightable {
         highlightGui.startYProperty().bindBidirectional(startYProperty());
         highlightGui.endXProperty().bindBidirectional(endXProperty());
         highlightGui.endYProperty().bindBidirectional(endYProperty());
+        highlightGui.setMouseTransparent(true);
 
         setHighlighted(false);
     }

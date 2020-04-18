@@ -30,6 +30,7 @@ public class NodeGUI extends Circle implements Highlightable {
         nameLabel.setText(node.getID());
         nameLabel.layoutXProperty().bindBidirectional(layoutXProperty());
         nameLabel.layoutYProperty().bindBidirectional(layoutYProperty());
+        nameLabel.setMouseTransparent(true);
 
         setHighlighted(false);
     }

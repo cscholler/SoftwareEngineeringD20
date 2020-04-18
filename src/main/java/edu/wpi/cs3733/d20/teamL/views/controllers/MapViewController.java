@@ -139,7 +139,10 @@ public class MapViewController {
 
     @FXML
     private void insertNode() {
+        Node node = new Node("1");
+        node.setPosition(new Point2D(100,100));
 
+        map.addNode(node);
     }
 
 
