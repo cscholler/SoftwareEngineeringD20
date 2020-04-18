@@ -10,6 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import edu.wpi.cs3733.d20.teamL.util.io.CSVReader;
 import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.cs3733.d20.teamL.services.Service;
@@ -38,6 +39,9 @@ public class DatabaseService extends Service {
 			connect(props);
 		}
 		buildDatabase();
+		// TODO: put somewhere better and drop table before populating
+		populateFromCSV("MapLnodesFloor2", DBConstants.addNode);
+		populateFromCSV("MapLedgesFloor2", DBConstants.addEdge);
 	}
 
 	@Override
@@ -174,16 +178,30 @@ public class DatabaseService extends Service {
 
 	private void buildDatabase() {
 		ArrayList<String> createTables = new ArrayList<>();
-		dropTables();
+
 		createTables.add(DBConstants.createNodeTable);
 		createTables.add(DBConstants.createEdgeTable);
 		createTables.add(DBConstants.createDoctorTable);
 		createTables.add(DBConstants.createPatientTable);
 		createTables.add(DBConstants.createMedicationRequestTable);
 		createTables.add(DBConstants.createUserTable);
-
+		dropTables();
 		executeUpdates(createTables);
 	}
+
+	public void populateFromCSV(String csvFile, String update) {
+		ArrayList<String> rowsToAdd = new ArrayList<>();
+		ArrayList<ArrayList<String>> rowData = new ArrayList<>();
+		CSVReader csvReader = new CSVReader();
+		
+		for (ArrayList<String> row : csvReader.readCSVFile(csvFile, true)) {
+			rowsToAdd.add(update);
+			rowData.add(new ArrayList<>(row));
+		}
+
+		executeUpdates(rowsToAdd, rowData);
+	}
+
 
 	private void dropTables() {
 		ResultSet resSet;

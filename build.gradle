@@ -23,7 +23,7 @@ dependencies {
             // You may comment out the database dependency you do not use
             'org.xerial:sqlite-jdbc:3.30.1',
             'org.apache.derby:derby:10.14.2.0',
-
+            'org.apache.commons:commons-csv:1.8',
             'org.slf4j:slf4j-api:1.7.30',
             'org.slf4j:slf4j-simple:1.7.30',
             'com.google.inject:guice:4.2.2',
@@ -34,13 +34,13 @@ dependencies {
             'org.testfx:testfx-junit5:4.0.16-alpha',
     )
     testRuntimeOnly(
-            'org.testfx:openjfx-monocle:jdk-11+26',
+            'org.testfx:openjfx-monocle:jdk-11.+26',
     )
     implementation 'org.jetbrains:annotations:15.0'
 }
 
 javafx {
-    version = "11"
+    version = "11.0.1"
     modules = ['javafx.controls', 'javafx.fxml']
 }
 

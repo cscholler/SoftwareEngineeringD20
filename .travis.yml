@@ -3,12 +3,9 @@ jdk: openjdk11
 os: linux
 services:
     - xvfb
-<<<<<<< HEAD
-=======
 
 before_install:
   - chmod +x gradlew
->>>>>>> 3cc2f019ab4de685a8b1eedc3c2e306b1459d904
 
 script:
   - ./gradlew check
