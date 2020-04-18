@@ -11,9 +11,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class NodeGUI extends Circle implements Highlightable {
-    public SimpleDoubleProperty layoutX = new SimpleDoubleProperty();
-    public SimpleDoubleProperty layoutY = new SimpleDoubleProperty();
-
     private boolean highlighted;
 
     private double highlightRadius;
@@ -30,19 +27,19 @@ public class NodeGUI extends Circle implements Highlightable {
         // Set initial x and y position
         setLayoutPos(node.position);
 
-        centerXProperty().bindBidirectional(layoutX);
-        centerYProperty().bindBidirectional(layoutY);
+        centerXProperty().bindBidirectional(layoutXProperty());
+        centerYProperty().bindBidirectional(layoutYProperty());
 
         nameLabel.setText(node.getID());
-        nameLabel.layoutXProperty().bindBidirectional(layoutX);
-        nameLabel.layoutYProperty().bindBidirectional(layoutY);
+        nameLabel.layoutXProperty().bindBidirectional(layoutXProperty());
+        nameLabel.layoutYProperty().bindBidirectional(layoutYProperty());
 
         setHighlighted(false);
     }
 
     public void setLayoutPos(Point2D newPos) {
-        layoutX.set(newPos.getX());
-        layoutY.set(newPos.getY());
+        layoutXProperty().set(newPos.getX());
+        layoutYProperty().set(newPos.getY());
     }
 
     public void setHighlighted(boolean highlighted) {
@@ -65,7 +62,7 @@ public class NodeGUI extends Circle implements Highlightable {
     }
 
     public Point2D getLayoutPos() {
-        return new Point2D(layoutX.get(), layoutY.get());
+        return new Point2D(layoutXProperty().get(), layoutYProperty().get());
     }
 
     public boolean getHighlighted() {

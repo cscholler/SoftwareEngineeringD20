@@ -91,6 +91,7 @@ public class MapViewController {
     @FXML
     public void initialize() {
         scene = body.getScene();
+        body.setFocusTraversable(true);
 
         coreShortcuts();
 
@@ -118,7 +119,7 @@ public class MapViewController {
         });
 
         // Delete selected nodes when delete key is pressed
-        body.setOnKeyPressed(event -> {
+        root.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.DELETE)) {
                 for (NodeGUI nodeGUI : mapSelector.getNodes())
                     removeNode(nodeGUI);
