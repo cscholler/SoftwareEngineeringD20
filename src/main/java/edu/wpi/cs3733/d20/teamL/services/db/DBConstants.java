@@ -99,11 +99,6 @@ public class DBConstants {
 			"INSERT INTO Nodes(id, x_pos, y_pos, floor, building, node_type, l_name, s_name)" +
 					"VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 
-	public static final String updateNodeVisibility =
-			"UPDATE Nodes " +
-					"SET visible = ? " +
-					"WHERE id = ?";
-
 	public static final String addEdge =
 			"INSERT INTO Edges(id, node_start, node_end)" +
 					"VALUES(?, ?, ?)";
