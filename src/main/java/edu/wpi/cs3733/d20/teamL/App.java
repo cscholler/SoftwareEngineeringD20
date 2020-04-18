@@ -27,7 +27,7 @@ public class App extends Application {
 		Scene scene = new Scene(root);
 
 		stage.setScene(scene);
-		stage.setTitle("Genuine Coder Login");
+		stage.setTitle("Employee/Administrator Login");
 		stage.show();
 	}
 
