@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.NavigationController">
+   <children>
+      <HBox layoutX="43.0" layoutY="323.0" prefHeight="53.0" prefWidth="533.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="40.0">
+         <children>
+            <JFXButton fx:id="btnMap" onAction="#handleButtonAction" text="Login" />
+            <JFXButton />
+            <JFXButton text="Services" />
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
