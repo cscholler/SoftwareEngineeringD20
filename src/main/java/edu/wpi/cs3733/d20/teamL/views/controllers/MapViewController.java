@@ -211,7 +211,7 @@ public class MapViewController {
         Point2D prevScroll = new Point2D(scroller.getHvalue(), scroller.getVvalue());
 
         for (NodeGUI nodeGUI : nodes.values()) {
-            Point2D prevPos = new Point2D(nodeGUI.layoutX.get(), nodeGUI.layoutY.get());
+            Point2D prevPos = new Point2D(nodeGUI.layoutXProperty().get(), nodeGUI.layoutYProperty().get());
             Point2D newPos = prevPos.multiply(newZoomLevel / zoomLevel);
             nodeGUI.setLayoutPos(newPos);
         }
@@ -331,7 +331,7 @@ public class MapViewController {
             nodeGUI.setHighlightColor(highLightColor);
             nodeGUI.setHighlightRadius(highlightThickness);
 
-            Point2D zoomedPos = new Point2D(nodeGUI.layoutX.get() * zoomLevel, nodeGUI.layoutY.get() * zoomLevel);
+            Point2D zoomedPos = new Point2D(nodeGUI.layoutXProperty().get() * zoomLevel, nodeGUI.layoutYProperty().get() * zoomLevel);
             nodeGUI.setLayoutPos(zoomedPos);
 
             nodeGUI.setOnMouseEntered(event -> {
@@ -395,12 +395,12 @@ public class MapViewController {
             edgeGUI.setHighlightRadius(highlightThickness);
 
             // Set start position of the line to the source node
-            edgeGUI.startXProperty().bind(nodes.get(edge.getSource()).layoutX);
-            edgeGUI.startYProperty().bind(nodes.get(edge.getSource()).layoutY);
+            edgeGUI.startXProperty().bind(nodes.get(edge.getSource()).layoutXProperty());
+            edgeGUI.startYProperty().bind(nodes.get(edge.getSource()).layoutYProperty());
 
             // Set end position of the line to the destination node
-            edgeGUI.endXProperty().bind(nodes.get(edge.destination).layoutX);
-            edgeGUI.endYProperty().bind(nodes.get(edge.destination).layoutY);
+            edgeGUI.endXProperty().bind(nodes.get(edge.destination).layoutXProperty());
+            edgeGUI.endYProperty().bind(nodes.get(edge.destination).layoutYProperty());
 
             edgeGUI.setOnMouseEntered(event -> edgeGUI.setHighlighted(true));
             edgeGUI.setOnMouseExited(event -> edgeGUI.setHighlighted(false));
