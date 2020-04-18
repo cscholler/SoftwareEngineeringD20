@@ -7,13 +7,17 @@ import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 
 public class LoginController implements Initializable {
@@ -28,12 +32,23 @@ public class LoginController implements Initializable {
     @FXML
     private JFXButton login, btnCancel;
 
+    @FXML
+    private Text incorrectText;
+
 
     @FXML
     private String handleLogin(ActionEvent e) throws IOException {
         String user = username.getText();
         String password = pass.getText();
+        incorrectText.setVisible(false);
         String status = "Incorrect username or password";
+
+        //set up flashing text
+        FadeTransition fadeTransition = new FadeTransition(Duration.millis(200), incorrectText);
+        fadeTransition.setFromValue(0.0);
+        fadeTransition.setToValue(1.0);
+        fadeTransition.setCycleCount(3);
+
 
         if (user.equals("Doctor") && password.equals("Doctor")) {
             System.out.println("Doctor");
@@ -44,6 +59,10 @@ public class LoginController implements Initializable {
         } else if (user.equals("Admin") && password.equals("Admin")) {
             System.out.println("Admin");
             status = "Admin";
+        }
+        else {
+            incorrectText.setVisible(true);
+            fadeTransition.play();
         }
         System.out.println(status);
         pass.clear();
