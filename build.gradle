@@ -40,7 +40,8 @@ dependencies {
 }
 
 javafx {
-    version = "11.0.1"
+    version = "11"
+
     modules = ['javafx.controls', 'javafx.fxml']
 }
 
