@@ -64,8 +64,7 @@ public class MapParser {
             while ((row = nodeReader.readLine()) != null) {
                 String[] data = row.split(",");
 
-                Node newNode = new Node(data[0]);
-                newNode.setPosition(new Point2D(Double.parseDouble(data[1]), Double.parseDouble(data[2])));
+                Node newNode = new Node(data[0], new Point2D(Double.parseDouble(data[1]), Double.parseDouble(data[2])));
                 newNode.data.put(DATA_LABELS.NODE_TYPE, data[5]);
                 newNode.data.put(DATA_LABELS.LONG_NAME, data[6]);
                 newNode.data.put(DATA_LABELS.SHORT_NAME, data[7]);

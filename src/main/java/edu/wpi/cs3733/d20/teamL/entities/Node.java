@@ -32,8 +32,9 @@ public class Node {
         this.shortName = shortName;
     }
 
-    public Node(String id) {
+    public Node(String id, Point2D position) {
         this.id = id;
+        this.position = position;
     }
 
     public Graph getGraph() {

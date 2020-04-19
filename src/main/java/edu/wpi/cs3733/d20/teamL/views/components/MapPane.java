@@ -100,8 +100,7 @@ public class MapPane extends StackPane {
             }
             if (addingEdge && !onSelectable) {
                 if (event.getButton().equals(MouseButton.PRIMARY)) {
-                    Node dest = new Node("new_node");
-                    dest.setPosition(new Point2D(event.getX(), event.getY()).multiply(1 / zoomLevel));
+                    Node dest = new Node("new_node", new Point2D(event.getX(), event.getY()).multiply(1 / zoomLevel));
 
                     addNode(dest);
 
