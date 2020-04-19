@@ -7,6 +7,8 @@ import edu.wpi.cs3733.d20.teamL.views.dialogues.DataDialogue;
 import edu.wpi.cs3733.d20.teamL.services.graph.MapParser;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -41,6 +43,9 @@ public class MapViewController {
 
     @FXML
     ToggleGroup tools;
+
+    @FXML
+    ToggleButton mouse, eraser;
 
     @FXML
     BorderPane root;
@@ -145,5 +150,13 @@ public class MapViewController {
         map.addNode(node);
     }
 
+    @FXML
+    private void handleTools(ActionEvent event) {
+        if(event.getSource() == eraser) {
+            map.setErasing(true);
+        } else {
+            map.setErasing(false);
+        }
+    }
 
 }
