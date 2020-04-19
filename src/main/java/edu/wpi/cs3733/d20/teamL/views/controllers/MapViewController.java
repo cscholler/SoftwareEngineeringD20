@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers;
 
+import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
 import edu.wpi.cs3733.d20.teamL.services.graph.Path;
 import edu.wpi.cs3733.d20.teamL.services.graph.PathFinder;
 import edu.wpi.cs3733.d20.teamL.views.components.*;
@@ -8,20 +9,14 @@ import edu.wpi.cs3733.d20.teamL.services.graph.MapParser;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 
 import javafx.geometry.Point2D;
 
-import edu.wpi.cs3733.d20.teamL.entities.Edge;
-import edu.wpi.cs3733.d20.teamL.services.graph.Graph;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import java.util.*;
 
@@ -54,6 +49,7 @@ public class MapViewController {
 
     private double zoomLevel = 1;
     private Scene scene;
+    private DBCache dbCache = new DBCache();
 
     @FXML
     public void initialize() {
@@ -85,6 +81,9 @@ public class MapViewController {
 			map.getSelector().add(nodeGUI);
 			nodeGUI.setHighlighted(true);
 		});
+
+        dbCache.cacheNodes();
+        dbCache.cacheEdges();
 	}
 
     private void coreShortcuts() {
@@ -139,7 +138,7 @@ public class MapViewController {
 
     @FXML
     void openFromDB() {
-        map.setGraph(MapParser.getGraphFromDatabase());
+        map.setGraph(MapParser.getGraphFromCache(dbCache.getNodeCache()));
     }
 
     @FXML

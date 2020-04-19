@@ -14,8 +14,8 @@ public class PathFinder {
     class NodeEntry {
         public Node node;
         public Node parent;
-        public int shortestPath = Integer.MAX_VALUE;
-        public int distFromDest = 0;
+        public double shortestPath = Integer.MAX_VALUE;
+        public double distFromDest = 0;
 
         public NodeEntry(Node p_node) {
             node = p_node;
@@ -26,7 +26,7 @@ public class PathFinder {
             shortestPath = p_shortestPath;
         }
 
-        public int absoluteDist() {
+        public double absoluteDist() {
             if (Integer.MAX_VALUE - shortestPath < distFromDest) return Integer.MAX_VALUE;
 
             return shortestPath + distFromDest;
@@ -99,12 +99,12 @@ public class PathFinder {
             }
 
             for (Edge edge : currentNode.node.getEdges()) {
-                Node otherNode = edge.destination;
+                Node otherNode = edge.getDestination();
 
                 // Set otherNode NodeEntry shortestPath to currentNode.shortestPath + edge.length
                 NodeEntry otherNodeEntry = priorityQueueKey.get(otherNode);
-                if (currentNode.shortestPath + edge.length < otherNodeEntry.shortestPath) {
-                    setShortestPath(otherNodeEntry, currentNode.shortestPath + edge.length);
+                if (currentNode.shortestPath + edge.getLength() < otherNodeEntry.shortestPath) {
+                    setShortestPath(otherNodeEntry, currentNode.shortestPath + edge.getLength());
                     otherNodeEntry.parent = currentNode.node;
                 }
             }
@@ -148,7 +148,7 @@ public class PathFinder {
         priorityQueueKey.remove(node);
     }
 
-    private void setShortestPath(NodeEntry nodeEntry, int newShortestPath) {
+    private void setShortestPath(NodeEntry nodeEntry, double newShortestPath) {
         priorityQueue.remove(nodeEntry);
         nodeEntry.shortestPath = newShortestPath;
         priorityQueue.add(nodeEntry);

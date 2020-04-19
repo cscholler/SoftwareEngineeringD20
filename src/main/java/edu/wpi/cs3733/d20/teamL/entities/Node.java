@@ -9,27 +9,31 @@ import java.util.HashMap;
 
 public class Node {
 
-    //TODO make private & getters/setters
     private Graph graph;
     private Point2D position;
-    private String ID;
+    private String id;
     private String shortName;
     private String longName;
     private String building;
     private String type;
     private int floor;
 
-    public HashMap<String, Object> data = new HashMap<>(); //TODO remove Hashmap
+    public HashMap<String, Object> data = new HashMap<>(); //TODO remove Hashmap and add NodeGUI field
 
     private Collection<Edge> edges = new ArrayList<>();
 
-    public Node(String p_name) {
-        ID = p_name;
+    public Node(String id, Point2D position, int floor, String building, String type, String longName, String shortName) {
+        this.id = id;
+        this.position = position;
+        this.floor = floor;
+        this.building = building;
+        this.type = type;
+        this.longName = longName;
+        this.shortName = shortName;
     }
 
-    public Node(String p_name, Collection<Edge> p_edges) {
-        ID = p_name;
-        edges = p_edges;
+    public Node(String id) {
+        this.id = id;
     }
 
     public Graph getGraph() {
@@ -57,7 +61,7 @@ public class Node {
      */
     public Edge getEdge(Node otherNode) {
         for (Edge edge : edges) {
-            if (edge.destination.equals(otherNode)) return edge;
+            if (edge.getDestination().equals(otherNode)) return edge;
         }
         return null;
     }
@@ -71,7 +75,7 @@ public class Node {
         Collection<Node> neighbors = new ArrayList<>();
 
         for (Edge edge : edges) {
-            neighbors.add(edge.destination);
+            neighbors.add(edge.getDestination());
         }
 
         return neighbors;
@@ -82,11 +86,11 @@ public class Node {
      *
      * @param newName String containing the new name
      */
-    public void setID(String newName) {
+    public void setId(String newName) {
         // Remove and re-add the node so its hash is updated in the graph
         if (graph != null) graph.removeNode(this);
 
-        ID = newName;
+        id = newName;
 
         if (graph != null) graph.addNode(this);
     }
@@ -95,7 +99,7 @@ public class Node {
      * @return String of the name of this node
      */
     public String getID() {
-        return ID;
+        return id;
     }
 
     /**
@@ -104,8 +108,7 @@ public class Node {
      * @param newEdge The edge to add
      */
     public void addEdge(Edge newEdge) {
-        edges.add(newEdge);
-        newEdge.source = this;
+        newEdge.setSource(this);
     }
 
     /**
@@ -116,9 +119,9 @@ public class Node {
     public void addEdgeTwoWay(Edge newEdge) {
         addEdge(newEdge);
 
-        Edge otherEdge = new Edge(this, newEdge.length);
+        Edge otherEdge = new Edge(newEdge.getId(), newEdge.getDestination(), this);
 
-        newEdge.destination.addEdge(otherEdge);
+        newEdge.getDestination().addEdge(otherEdge);
     }
 
     /**
@@ -139,7 +142,7 @@ public class Node {
      */
     public void removeEdge(Edge toRemove) {
         edges.remove(toRemove);
-        toRemove.source = null;
+        toRemove.setSource(null);
     }
 
     /**
@@ -150,7 +153,7 @@ public class Node {
     public Edge edgeFromDest(Node otherNode) {
         Edge result = null;
         for (Edge edge : edges) {
-            if (edge.destination.equals(otherNode)) result = edge;
+            if (edge.getDestination().equals(otherNode)) result = edge;
         }
         return result;
     }

@@ -33,7 +33,7 @@ public class EdgeGUI extends Line implements Highlightable {
         setStartPos(edge.getSource().getPosition());
 
         // Set end position of the line to the destination node
-        setEndPos(edge.destination.getPosition());
+        setEndPos(edge.getDestination().getPosition());
 
         highlightGui.startXProperty().bindBidirectional(startXProperty());
         highlightGui.startYProperty().bindBidirectional(startYProperty());

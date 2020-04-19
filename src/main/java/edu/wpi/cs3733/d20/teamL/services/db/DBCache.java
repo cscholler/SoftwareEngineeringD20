@@ -1,5 +1,10 @@
 package edu.wpi.cs3733.d20.teamL.services.db;
 
+import edu.wpi.cs3733.d20.teamL.entities.Edge;
+import edu.wpi.cs3733.d20.teamL.entities.Node;
+import edu.wpi.cs3733.d20.teamL.services.graph.Graph;
+import javafx.geometry.Point2D;
+
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
@@ -12,8 +17,9 @@ public class DBCache {
     }
 
     //Tables that can be cached
-    private ArrayList<ArrayList<String>> nodeCache = new ArrayList<>();
-    private ArrayList<ArrayList<String>> edgeCache = new ArrayList<>();
+    private Graph graphCache = new Graph();
+    private ArrayList<Node> nodeCache = new ArrayList<>();
+    private ArrayList<Edge> edgeCache = new ArrayList<>();
 
     DatabaseService db = new DatabaseService(); //this should be changes eventually
 
@@ -23,8 +29,14 @@ public class DBCache {
      */
     public void cacheNodes() {
         ResultSet resSet = db.executeQuery(DBConstants.selectAllNodes);
-        clearEdgeCache();
-        nodeCache = db.getTableFromResultSet(resSet);
+        clearNodeCache();
+        ArrayList<ArrayList<String>> nodeData = db.getTableFromResultSet(resSet);
+
+        for(ArrayList<String> row : nodeData) {
+            nodeCache.add(new Node(row.get(0),
+                    new Point2D(Double.parseDouble(row.get(1)), Double.parseDouble(row.get(2))),
+                    Integer.parseInt(row.get(3)), row.get(4), row.get(5), row.get(6), row.get(7)));
+        }
     }
 
     /**
@@ -34,7 +46,7 @@ public class DBCache {
         nodeCache.clear();
     }
 
-    public ArrayList<ArrayList<String>> getNodeCache() {
+    public ArrayList<Node> getNodeCache() {
         return nodeCache;
     }
 
@@ -44,7 +56,25 @@ public class DBCache {
     public void cacheEdges() {
         ResultSet resSet = db.executeQuery(DBConstants.selectAllEdges);
         clearEdgeCache();
-        edgeCache = db.getTableFromResultSet(resSet);
+        ArrayList<ArrayList<String>> edgeData = db.getTableFromResultSet(resSet);
+
+        for (ArrayList<String> row : edgeData) {
+            edgeCache.add(new Edge(row.get(0), searchNodeCache(row.get(1)), searchNodeCache(row.get(2))));
+        }
+    }
+
+    /**
+     * Searches the nodeCache for a node with a particular nodeID.
+     *
+     * @param nodeID The nodeID to search for.
+     * @return The node with the associated nodeID. {null} If the nodeID is not found.
+     */
+    public Node searchNodeCache(String nodeID) {
+        for (Node node : nodeCache) {
+            if (node.getID() == nodeID) return node;
+        }
+
+        return null;
     }
 
     /**

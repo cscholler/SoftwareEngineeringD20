@@ -27,15 +27,15 @@ class PathFinderTest {
     Node n8 = new Node("n8");
     Node n9 = new Node("n9");
 
-    n1.position = new Point2D(1,2);
-    n2.position = new Point2D(2,1);
-    n3.position = new Point2D(2,-1);
-    n4.position = new Point2D(1,-2);
-    n5.position = new Point2D(-1,-2);
-    n6.position = new Point2D(-2,-1);
-    n7.position = new Point2D(-2,1);
-    n8.position = new Point2D(-1,2);
-    n9.position = new Point2D(0,0);
+    n1.setPosition(new Point2D(1,2));
+    n2.setPosition(new Point2D(2,1));
+    n3.setPosition(new Point2D(2,-1));
+    n4.setPosition(new Point2D(1,-2));
+    n5.setPosition(new Point2D(-1,-2));
+    n6.setPosition(new Point2D(-2,-1));
+    n7.setPosition(new Point2D(-2,1));
+    n8.setPosition(new Point2D(-1,2));
+    n9.setPosition(new Point2D(0,0));
 
     newGraph.addNode(n1);
     newGraph.addNode(n2);

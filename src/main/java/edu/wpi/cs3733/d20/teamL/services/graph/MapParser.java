@@ -1,9 +1,11 @@
 package edu.wpi.cs3733.d20.teamL.services.graph;
 
 import edu.wpi.cs3733.d20.teamL.entities.Node;
+import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.DatabaseService;
 import edu.wpi.cs3733.d20.teamL.entities.Edge;
+import edu.wpi.cs3733.d20.teamL.views.controllers.NavigationController;
 import javafx.geometry.Point2D;
 
 import java.io.*;
@@ -85,7 +87,7 @@ public class MapParser {
 
                     int length = (int) Math.round(Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
 
-                    source.addEdgeTwoWay(new Edge(destination, length));
+                    source.addEdgeTwoWay(new Edge(data[0], source, destination));
                 }
             }
 
@@ -119,43 +121,10 @@ public class MapParser {
         return parseMapToGraph(nodesFile, edgesFile);
     }
 
-    public static Graph getGraphFromDatabase() {
-        DatabaseService db = new DatabaseService();
-        ResultSet rs = db.executeQuery(DBConstants.selectAllNodes);
-
+    public static Graph getGraphFromCache(ArrayList<Node> nodes) {
         Graph newGraph = new Graph();
 
-        try {
-            while (rs.next()) {
-                Node newNode = new Node(rs.getString(1));
-                newNode.setPosition(new Point2D(Double.parseDouble(rs.getString(2)), Double.parseDouble(rs.getString(3))));
-                newNode.data.put(MapParser.DATA_LABELS.NODE_TYPE, rs.getString(6));
-                newNode.data.put(MapParser.DATA_LABELS.LONG_NAME, rs.getString(7));
-                newNode.data.put(MapParser.DATA_LABELS.SHORT_NAME, rs.getString(8));
-
-                newGraph.addNode(newNode);
-            }
-
-            rs = db.executeQuery(DBConstants.selectAllEdges);
-
-            while (rs.next()) {
-                Node source = newGraph.getNode(rs.getString(2));
-                Node destination = newGraph.getNode(rs.getString(3));
-
-                if (source != null && destination != null) {
-                    double x1 = source.getPosition().getX();
-                    double y1 = source.getPosition().getY();
-                    double x2 = destination.getPosition().getX();
-                    double y2 = destination.getPosition().getY();
-
-                    int length = (int) Math.round(Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
-
-                    source.addEdgeTwoWay(new Edge(destination, length));
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        newGraph.addAllNodes(nodes);
 
         return newGraph;
     }

@@ -1,7 +1,6 @@
 package edu.wpi.cs3733.d20.teamL.views.components;
 
 import edu.wpi.cs3733.d20.teamL.entities.Node;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Paint;

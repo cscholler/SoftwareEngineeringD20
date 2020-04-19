@@ -106,9 +106,8 @@ public class MapPane extends StackPane {
                     addNode(dest);
 
                     Node source = tempEdge.getSource().getNode();
-                    int length = (int)source.getPosition().distance(dest.getPosition());
 
-                    Edge edge = new Edge(dest, length);
+                    Edge edge = new Edge("new_edge", source, dest);
                     source.addEdgeTwoWay(edge);
 
                     addEdge(edge);
@@ -332,7 +331,7 @@ public class MapPane extends StackPane {
                     Node dest = nodeGUI.getNode();
                     int length = (int)source.getPosition().distance(dest.getPosition());
 
-                    Edge edge = new Edge(dest, length);
+                    Edge edge = new Edge("new_edge", source, dest);
                     source.addEdgeTwoWay(edge);
 
                     addEdge(edge);
@@ -412,8 +411,8 @@ public class MapPane extends StackPane {
         edgeGUI.startYProperty().bind(getNodeGUI(edge.getSource()).layoutYProperty());
 
         // Set end position of the line to the destination node
-        edgeGUI.endXProperty().bind(getNodeGUI(edge.destination).layoutXProperty());
-        edgeGUI.endYProperty().bind(getNodeGUI(edge.destination).layoutYProperty());
+        edgeGUI.endXProperty().bind(getNodeGUI(edge.getDestination()).layoutXProperty());
+        edgeGUI.endYProperty().bind(getNodeGUI(edge.getDestination()).layoutYProperty());
 
         edgeGUI.setOnMouseDragOver(event -> {
             if (event.isPrimaryButtonDown() && erasing) {
