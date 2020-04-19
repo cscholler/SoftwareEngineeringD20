@@ -23,7 +23,7 @@ public class EdgeGUI extends Line implements Highlightable {
         this.setHighlightColor(highLightColor);
         this.setHighlightRadius(highlightThickness);
         highlightGui.setMouseTransparent(true);
-        setMouseTransparent(true);
+        //setMouseTransparent(true);
     }
 
     public EdgeGUI(Edge initEdge) {
@@ -40,7 +40,7 @@ public class EdgeGUI extends Line implements Highlightable {
         highlightGui.endXProperty().bindBidirectional(endXProperty());
         highlightGui.endYProperty().bindBidirectional(endYProperty());
         highlightGui.setMouseTransparent(true);
-        setMouseTransparent(true);
+        //setMouseTransparent(true);
 
         setHighlighted(false);
     }
@@ -110,5 +110,23 @@ public class EdgeGUI extends Line implements Highlightable {
 
     public Paint getHighlightColor() {
         return highlightGui.getStroke();
+    }
+
+    public boolean contains(Point2D point) {
+        double deltaX = this.getEndX() - this.getStartX();
+        double deltaY;
+
+        deltaY = this.getEndY() - this.getStartY();
+
+        if (deltaX == 0) deltaX = .00001;
+        else deltaX = Math.abs(deltaX);
+
+        double slope = deltaY / deltaX;
+        double b = this.getStartY() - slope * this.getStartX();
+
+        boolean inBounds = this.getStartX() < point.getX() && this.getEndX() > point.getX();
+
+        System.out.println((slope * point.getX() - 5 + b) + " < " + point.getY() + " < " + (slope * point.getX() + 5 + b));
+        return ((slope * point.getX() - 5 + b) < point.getY()) && (point.getY() < (slope * point.getX() + 5 + b)) && inBounds;
     }
 }

@@ -71,7 +71,7 @@
                                     <graphic>
                                         <ImageView fitHeight="20.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
                                             <image>
-                                                <Image url="@../assets/Eraser_Placeholder.png" />
+                                                <Image url="@../assets/Hand_Placeholder.png" />
                                             </image>
                                         </ImageView>
                                     </graphic>
