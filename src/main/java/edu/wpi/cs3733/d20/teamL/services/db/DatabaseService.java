@@ -8,6 +8,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Properties;
 
 import edu.wpi.cs3733.d20.teamL.util.io.CSVReader;
@@ -21,6 +22,7 @@ public class DatabaseService extends Service {
 	private Properties props = null;
 	private ArrayList<ResultSet> usedResSets = new ArrayList<>();
 	private ArrayList<Statement> usedStmts = new ArrayList<>();
+	private boolean firstTime = false;
 
 	public DatabaseService(Properties props) {
 		super();
@@ -28,9 +30,11 @@ public class DatabaseService extends Service {
 		this.props = props;
 	}
 
-	public DatabaseService() {
-		super();
+	public DatabaseService(boolean firstTime) {
+		//super();
 		this.serviceName = DBConstants.SERVICE_NAME;
+		this.firstTime = firstTime;
+		startService();
 	}
 
 	@Override
@@ -38,10 +42,10 @@ public class DatabaseService extends Service {
 		if (connection == null) {
 			connect(props);
 		}
-		buildDatabase();
-		// TODO: put somewhere better and drop table before populating
-		populateFromCSV("MapLnodesFloor2", DBConstants.addNode);
-		populateFromCSV("MapLedgesFloor2", DBConstants.addEdge);
+		// TODO: use dependency injection and put somewhere better
+		if (firstTime) {
+			buildDatabase();
+		}
 	}
 
 	@Override
@@ -177,16 +181,20 @@ public class DatabaseService extends Service {
 	}
 
 	private void buildDatabase() {
-		ArrayList<String> createTables = new ArrayList<>();
-
-		createTables.add(DBConstants.createNodeTable);
-		createTables.add(DBConstants.createEdgeTable);
-		createTables.add(DBConstants.createDoctorTable);
-		createTables.add(DBConstants.createPatientTable);
-		createTables.add(DBConstants.createMedicationRequestTable);
-		createTables.add(DBConstants.createUserTable);
 		dropTables();
-		executeUpdates(createTables);
+		executeUpdates(new ArrayList<>(Arrays.asList(DBConstants.createNodeTable, DBConstants.createEdgeTable,
+				DBConstants.createDoctorTable, DBConstants.createPatientTable, DBConstants.createMedicationRequestTable,
+				DBConstants.createUserTable)));
+
+		populateFromCSV("MapLnodesFloor2", DBConstants.addNode);
+		populateFromCSV("MapLedgesFloor2", DBConstants.addEdge);
+
+		// Doctor and Patient test data for Medication Request
+		ArrayList<String> updates = new ArrayList<>(Arrays.asList(DBConstants.addDoctor, DBConstants.addPatient));
+		ArrayList<ArrayList<String>> valuesList = new ArrayList<>();
+		valuesList.add(new ArrayList<>(Arrays.asList("123", "Bob", "Jones", "bjones@ex.com", "LDEPT00102")));
+		valuesList.add(new ArrayList<>(Arrays.asList("456", "John", "Smith", "123", "LHALL00102")));
+		executeUpdates(updates, valuesList);
 	}
 
 	public void populateFromCSV(String csvFile, String update) {
@@ -201,7 +209,6 @@ public class DatabaseService extends Service {
 
 		executeUpdates(rowsToAdd, rowData);
 	}
-
 
 	private void dropTables() {
 		ResultSet resSet;
