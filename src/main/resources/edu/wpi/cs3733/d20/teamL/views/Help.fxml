@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="1049.0" prefWidth="1920.0" style="-fx-background-color: c3212d;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.NavigationController">
-   <children>
-      <Label fx:id="helpLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="754.0" layoutY="426.0" prefHeight="64.0" prefWidth="411.0" text="Help is on the way">
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #e30800;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </top>
+   <left>
+      <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </left>
+   <bottom>
+      <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </bottom>
+   <right>
+      <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </right>
+   <center>
+      <Label text="Please Standby&#10;&#10;Help is on the way" textAlignment="CENTER" textFill="WHITE" BorderPane.alignment="CENTER">
          <font>
-            <Font name="Calibri" size="48.0" />
+            <Font size="45.0" />
          </font>
       </Label>
-      <Label fx:id="standbyLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="784.0" layoutY="273.0" prefHeight="72.0" prefWidth="351.0" text="Please Standby">
-         <font>
-            <Font size="48.0" />
-         </font>
-      </Label>
-      <ImageView fitHeight="172.0" fitWidth="195.0" layoutX="863.0" layoutY="567.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="310.93182373046875">
-         <image>
-            <Image url="@../../../../../../../../../../../Pictures/point.png" />
-         </image>
-      </ImageView>
-   </children>
-</AnchorPane>
+   </center>
+</BorderPane>

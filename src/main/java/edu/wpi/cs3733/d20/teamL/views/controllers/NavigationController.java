@@ -41,7 +41,6 @@ public class NavigationController implements Initializable {
 		sf.populateSearchFields();
 		autoCompletePopup = new JFXAutoCompletePopup<>();
 		autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
-
 	}
 
 	public ArrayList<Node> getNodeCache() {
@@ -56,8 +55,8 @@ public class NavigationController implements Initializable {
      */
     public void handleButtonAction(ActionEvent actionEvent) throws IOException {
 
-        Stage stage = null;
-        Parent root = null;
+        Stage stage;
+        Parent root;
 
         //Goes to the Login Page
         if (actionEvent.getSource() == btnLogin) {
@@ -66,8 +65,9 @@ public class NavigationController implements Initializable {
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initOwner(btnHelp.getScene().getWindow());
-            stage.showAndWait();
+            stage.initOwner(btnLogin.getScene().getWindow());
+            stage.show();
+
         //Displays the map of the hospital
         } else if (actionEvent.getSource() == btnMap) {
             stage = (Stage) btnMap.getScene().getWindow();
@@ -75,19 +75,21 @@ public class NavigationController implements Initializable {
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
+
         //Displays a popup window that help is on the way
         } else if (actionEvent.getSource() == btnHelp) {
+
             stage = new Stage();
             root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/Help.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initOwner(btnHelp.getScene().getWindow());
-            stage.showAndWait();
+            stage.show();
+
         //Goes to Service display screen
         }
     }
-
 
     /**
      * Supports autocompletion for user when typing in a specific word

@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -47,6 +48,9 @@ public class LoginController implements Initializable {
         Stage stage;
         Parent root;
 
+        Stage stage1;
+        Parent root1;
+
         String user = username.getText();
         String password = pass.getText();
         incorrectText.setVisible(false);
@@ -66,19 +70,38 @@ public class LoginController implements Initializable {
             if (user.equals("Doctor") && password.equals("Doctor")) {
                 System.out.println("Doctor");
                 status = "Doctor";
+
                 stage = (Stage) login.getScene().getWindow();
-                stage.close();
-            } else if (user.equals("Nurse") && password.equals("Nurse")) {
+                //stage = new Stage();
+                root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/StaffView.fxml"));
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+                stage.setFullScreen(true);
+                stage.show();
+
+            }
+            else if (user.equals("Nurse") && password.equals("Nurse")) {
                 System.out.println("Nurse");
                 status = "Nurse";
                 stage = (Stage) login.getScene().getWindow();
-                stage.close();
-            } else if (user.equals("Admin") && password.equals("Admin")) {
+                root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/StaffView.fxml"));
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+                stage.setFullScreen(true);
+                stage.show();
+            }
+
+            else if (user.equals("Admin") && password.equals("Admin")) {
                 System.out.println("Admin");
                 status = "Admin";
-                stage = (Stage) login.getScene().getWindow();
-                stage.close();
-            } else {
+                /*stage = (Stage) login.getScene().getWindow();
+                root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/StaffView.fxml"));
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+                stage.setFullScreen(true);
+                stage.show();*/
+            }
+            else {
                 incorrectText.setVisible(true);
                 //fadeTransition.play();
             }

@@ -11,11 +11,6 @@ import java.util.ArrayList;
 public class DBCache {
     private static DBCache cache;
 
-    public DBCache() {
-        cacheNodes();
-        cacheEdges();
-    }
-
     //Tables that can be cached
     private Graph graphCache = new Graph();
     private ArrayList<Node> nodeCache = new ArrayList<>();
