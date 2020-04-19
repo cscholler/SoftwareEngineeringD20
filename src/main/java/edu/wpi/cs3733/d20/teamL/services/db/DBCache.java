@@ -1,7 +1,4 @@
-package edu.wpi.cs3733.d20.teamL.util.io;
-
-import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
-import edu.wpi.cs3733.d20.teamL.services.db.DatabaseService;
+package edu.wpi.cs3733.d20.teamL.services.db;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -15,8 +12,8 @@ public class DBCache {
     }
 
     //Tables that can be cached
-    private ArrayList<ArrayList<String>> nodeCache;
-    private ArrayList<ArrayList<String>> edgeCache;
+    private ArrayList<ArrayList<String>> nodeCache = new ArrayList<>();
+    private ArrayList<ArrayList<String>> edgeCache = new ArrayList<>();
 
     DatabaseService db = new DatabaseService(); //this should be changes eventually
 
