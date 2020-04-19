@@ -113,4 +113,18 @@ public class Graph {
         nodes.remove(name);
     }
 
+    public String getUniqueNodeID() {
+        String id = "new_node1";
+        Integer curr = 1;
+        boolean unique = false;
+        while(!unique) {
+            if(this.getNode(id) == null) unique = true;
+            else {
+                curr ++;
+                id = "new_node" + curr.toString();
+            }
+        }
+        return id;
+    }
+
 }
