@@ -360,7 +360,7 @@ public class MapPane extends StackPane {
             nodeGUI.setOnMouseClicked(event -> {
                 if(!addingEdge) {
                     for (NodeGUI gui : selector.getNodes()) {
-                        gui.getNode().position = gui.getLayoutPos().multiply(1 / zoomLevel);
+                        gui.getNode().setPosition(gui.getLayoutPos().multiply(1 / zoomLevel));
                         selector.setNodePosition(gui, gui.getLayoutPos().subtract(new Point2D(event.getX(), event.getY())));
                     }
                     draggingNode = false;

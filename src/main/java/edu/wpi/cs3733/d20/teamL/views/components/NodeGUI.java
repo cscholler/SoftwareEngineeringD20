@@ -25,7 +25,7 @@ public class NodeGUI extends Circle implements Highlightable {
         node = initNode;
 
         // Set initial x and y position
-        setLayoutPos(node.position);
+        setLayoutPos(node.getPosition());
 
         nameLabel.setText(node.getID());
         nameLabel.layoutXProperty().bindBidirectional(layoutXProperty());
