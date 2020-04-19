@@ -9,7 +9,9 @@ import java.util.ArrayList;
 public class DBCache {
     private static DBCache cache;
 
-    private DBCache() {
+    public DBCache() {
+        cacheNodes();
+        cacheEdges();
     }
 
     //Tables that can be cached
@@ -18,13 +20,6 @@ public class DBCache {
 
     DatabaseService db = new DatabaseService(); //this should be changes eventually
 
-    private static class singletonHelper {
-        private static final DBCache cache = new DBCache();
-    }
-
-    public static DBCache getCache() {
-        return singletonHelper.cache;
-    }
 
     /**
      * cacheNode: Populates the node cache with nodes from the Database
