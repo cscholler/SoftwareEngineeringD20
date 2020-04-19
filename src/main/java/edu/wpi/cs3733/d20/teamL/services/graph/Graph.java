@@ -26,10 +26,13 @@ public class Graph {
      */
     public List<Edge> getEdges() {
         ArrayList<Edge> edges = new ArrayList<>();
+        ArrayList<Edge> blackList = new ArrayList<>();
 
         for (Node node : getNodes()) {
             for (Edge edge : node.getEdges()) {
-                if (!edges.contains(edge)) edges.add(edge);
+                if (!edges.contains(edge) && blackList.contains(edge)) edges.add(edge);
+                if (edge.getDestination().getNeighbors().contains(node))
+                    blackList.add(edge.getDestination().getEdge(node));
             }
         }
 
@@ -72,10 +75,10 @@ public class Graph {
     /**
      * Gets a node within this graph based on its name
      *
-     * @param nodeName
+     * @param nodeID
      */
-    public Node getNode(String nodeName) {
-        return nodes.get(nodeName);
+    public Node getNode(String nodeID) {
+        return nodes.get(nodeID);
     }
 
     /**

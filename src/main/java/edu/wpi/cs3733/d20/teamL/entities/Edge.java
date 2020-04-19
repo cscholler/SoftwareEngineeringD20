@@ -1,5 +1,7 @@
 package edu.wpi.cs3733.d20.teamL.entities;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class Edge {
@@ -30,7 +32,7 @@ public class Edge {
         this.destination = destination;
     }
 
-    public String getId() {
+    public String getID() {
         return id;
     }
 
@@ -56,5 +58,30 @@ public class Edge {
         if (source != null) source.getEdges().remove(this);
         if (newSource != null) newSource.getEdges().add(this);
         source = newSource;
+    }
+
+    public ArrayList<String> toArrayList() {
+        return new ArrayList<>(Arrays.asList(getID(), getSource().getID(), getDestination().getID()));
+    }
+
+    /**
+     * Checks if all the fields of this edge are the same as the other edge.
+     *
+     * @param obj
+     * @return
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Edge) {
+            Edge otherEdge = (Edge) obj;
+
+            if (!getID().equals(otherEdge.getID())) return false;
+            if (!getSource().equals(otherEdge.getSource())) return false;
+            if (!getDestination().equals(otherEdge.getDestination())) return false;
+            
+            return true;
+        } else  {
+            throw new IllegalArgumentException("'equals()' must compare this with another Edge.");
+        }
     }
 }
