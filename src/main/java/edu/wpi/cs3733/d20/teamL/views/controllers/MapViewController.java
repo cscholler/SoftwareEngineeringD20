@@ -155,7 +155,7 @@ public class MapViewController {
 
     @FXML
     private void insertNode() {
-        Node node = new Node("1", new Point2D(100,100));
+        Node node = new Node("1", new Point2D(100,100)); //TODO CHANGE TO UNIQUE ID
 
         map.addNode(node);
     }

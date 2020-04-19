@@ -133,6 +133,22 @@ public class EdgeGUI extends Line implements Highlightable {
         double distanceFromLine = pointDirection.subtract(projection).magnitude();
         double distanceAlongLine = projection.magnitude();
 
-        return distanceFromLine < 5 && distanceAlongLine < getLengthOnScreen();
+        return (distanceFromLine < 5 && distanceAlongLine < getLengthOnScreen()) && checkBounds(point.getX(), point.getY());
+    }
+
+    private boolean checkBounds(double x, double y) {
+        double sX = getStartX();
+        double eX = getEndX();
+        double sY = getStartY();
+        double eY = getEndY();
+        boolean withinX, withinY;
+
+        if(sX < eX) withinX = x > sX && x < eX;
+        else withinX = x < sX && x > eX;
+
+        if(sY < eY) withinY = y > sY && y < eY;
+        else withinY = y < sY && y > eY;
+
+        return withinX && withinY;
     }
 }
