@@ -33,7 +33,7 @@
                 <Font size="42.0" />
             </font>
         </Label>
-        <JFXTextField fx:id="searchBox" focusColor="#0d2e57" layoutX="661.0" layoutY="552.0" onAction="#inputHandler" opacity="0.5" prefHeight="50.0" prefWidth="538.0" promptText="Search" unFocusColor="BLACK">
+        <JFXTextField fx:id="searchBox" focusColor="#0d2e57" layoutX="661.0" layoutY="552.0" onKeyTyped="#inputHandler" opacity="0.5" prefHeight="50.0" prefWidth="538.0" promptText="Search" unFocusColor="BLACK">
             <font>
                 <Font size="30.0" />
             </font>
