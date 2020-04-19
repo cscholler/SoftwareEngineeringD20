@@ -53,7 +53,7 @@ public class Edge {
      * @param newSource The Node that is to be the new source Node for this Edge
      */
     public void setSource(Node newSource) {
-        if (source != null) source.removeEdge(this);
+        if (source != null) source.getEdges().remove(this);
         if (newSource != null) newSource.getEdges().add(this);
         source = newSource;
     }

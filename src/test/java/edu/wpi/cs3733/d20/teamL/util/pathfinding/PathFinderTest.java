@@ -5,12 +5,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.graph.Graph;
+import edu.wpi.cs3733.d20.teamL.services.graph.Path;
 import edu.wpi.cs3733.d20.teamL.services.graph.PathFinder;
 import javafx.geometry.Point2D;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 class PathFinderTest {
     @Test
@@ -53,10 +55,10 @@ class PathFinderTest {
         assertEquals(newGraph.getNode("n2").getNeighbors(), new ArrayList<Node>(Arrays.asList(n9)));
         assertEquals(newGraph.getNode("n9").getNeighbors(), new ArrayList<Node>(Arrays.asList(n1, n2, n4)));
 
-        assertEquals(3, pathfinder.aStarPathFind(newGraph, n8, n1).getLength());
+        assertEquals(2, pathfinder.aStarPathFind(newGraph, n8, n1).getLength());
         assertEquals(new ArrayList<Node>(Arrays.asList(n8, n1)), pathfinder.aStarPathFind(newGraph, n8, n1).getPathNodes());
 
-        assertEquals(7, pathfinder.aStarPathFind(newGraph, n6, n1).getLength());
-        assertEquals(new ArrayList<Node>(Arrays.asList(n6, n7, n8, n1)), pathfinder.aStarPathFind(newGraph, n6, n1).getPathNodes());
+        assertEquals(4, pathfinder.aStarPathFind(newGraph, n6, n1).getLength());
+        assertEquals(new ArrayList<>(Arrays.asList(n6, n9, n1)), pathfinder.aStarPathFind(newGraph, n6, n1).getPathNodes());
     }
 }
