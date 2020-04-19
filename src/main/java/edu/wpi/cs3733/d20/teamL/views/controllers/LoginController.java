@@ -60,7 +60,6 @@ public class LoginController implements Initializable {
         if (e.getSource() == btnCancel) {
             System.out.println("Cancel");
             stage = (Stage) btnCancel.getScene().getWindow();
-            //root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/Home.fxml"));
             stage.close();
         } else if (e.getSource() == login) {
 
@@ -68,19 +67,16 @@ public class LoginController implements Initializable {
                 System.out.println("Doctor");
                 status = "Doctor";
                 stage = (Stage) login.getScene().getWindow();
-                //root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/Home.fxml"));
                 stage.close();
             } else if (user.equals("Nurse") && password.equals("Nurse")) {
                 System.out.println("Nurse");
                 status = "Nurse";
                 stage = (Stage) login.getScene().getWindow();
-                //root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/Home.fxml"));
                 stage.close();
             } else if (user.equals("Admin") && password.equals("Admin")) {
                 System.out.println("Admin");
                 status = "Admin";
                 stage = (Stage) login.getScene().getWindow();
-                //root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/Home.fxml"));
                 stage.close();
             } else {
                 incorrectText.setVisible(true);
