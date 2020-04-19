@@ -63,7 +63,7 @@ public class MapParser {
                 String[] data = row.split(",");
 
                 Node newNode = new Node(data[0]);
-                newNode.position = new Point2D(Double.parseDouble(data[1]), Double.parseDouble(data[2]));
+                newNode.setPosition(new Point2D(Double.parseDouble(data[1]), Double.parseDouble(data[2])));
                 newNode.data.put(DATA_LABELS.NODE_TYPE, data[5]);
                 newNode.data.put(DATA_LABELS.LONG_NAME, data[6]);
                 newNode.data.put(DATA_LABELS.SHORT_NAME, data[7]);
@@ -78,10 +78,10 @@ public class MapParser {
                 Node destination = newGraph.getNode(data[2]);
 
                 if (source != null && destination != null) {
-                    double x1 = source.position.getX();
-                    double y1 = source.position.getY();
-                    double x2 = destination.position.getX();
-                    double y2 = destination.position.getY();
+                    double x1 = source.getPosition().getX();
+                    double y1 = source.getPosition().getY();
+                    double x2 = destination.getPosition().getX();
+                    double y2 = destination.getPosition().getY();
 
                     int length = (int) Math.round(Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
 
@@ -128,7 +128,7 @@ public class MapParser {
         try {
             while (rs.next()) {
                 Node newNode = new Node(rs.getString(1));
-                newNode.position = new Point2D(Double.parseDouble(rs.getString(2)), Double.parseDouble(rs.getString(3)));
+                newNode.setPosition(new Point2D(Double.parseDouble(rs.getString(2)), Double.parseDouble(rs.getString(3))));
                 newNode.data.put(MapParser.DATA_LABELS.NODE_TYPE, rs.getString(6));
                 newNode.data.put(MapParser.DATA_LABELS.LONG_NAME, rs.getString(7));
                 newNode.data.put(MapParser.DATA_LABELS.SHORT_NAME, rs.getString(8));
@@ -143,10 +143,10 @@ public class MapParser {
                 Node destination = newGraph.getNode(rs.getString(3));
 
                 if (source != null && destination != null) {
-                    double x1 = source.position.getX();
-                    double y1 = source.position.getY();
-                    double x2 = destination.position.getX();
-                    double y2 = destination.position.getY();
+                    double x1 = source.getPosition().getX();
+                    double y1 = source.getPosition().getY();
+                    double x2 = destination.getPosition().getX();
+                    double y2 = destination.getPosition().getY();
 
                     int length = (int) Math.round(Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
 
