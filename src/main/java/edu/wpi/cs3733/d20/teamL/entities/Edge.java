@@ -14,7 +14,7 @@ public class Edge {
 
     public Edge(String id, Node source, Node destination) {
         this.id = id;
-        this.source = source;
+        setSource(source);
         this.destination = destination;
     }
 

@@ -80,7 +80,7 @@ public class LoginController implements Initializable {
                 stage.close();
             } else {
                 incorrectText.setVisible(true);
-                fadeTransition.play();
+                //fadeTransition.play();
             }
             System.out.println(status);
             pass.clear();

@@ -22,7 +22,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class NavigationController {
+public class NavigationController implements Initializable {
 
     @FXML private JFXButton btnLogin;
     @FXML private JFXButton btnMap;
@@ -31,14 +31,17 @@ public class NavigationController {
     @FXML private JFXTextField searchBox;
 	private DBCache cache;
 	private SearchFields sf;
+	private JFXAutoCompletePopup<String> autoCompletePopup;
 
 	@FXML
 	public void initialize(URL location, ResourceBundle resources) {
 		cache = new DBCache();
-		cache.cacheNodes();
-		cache.cacheEdges();
+		cache.cacheAll();
 		sf = new SearchFields(getNodeCache());
 		sf.populateSearchFields();
+		autoCompletePopup = new JFXAutoCompletePopup<>();
+		autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
+
 	}
 
 	public ArrayList<Node> getNodeCache() {
@@ -53,46 +56,30 @@ public class NavigationController {
      */
     public void handleButtonAction(ActionEvent actionEvent) throws IOException {
 
-        Stage stage;
-        Parent root;
+        Stage stage = null;
+        Parent root = null;
 
         //Goes to the Login Page
         if (actionEvent.getSource() == btnLogin) {
-
             stage = new Stage();
             root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/LoginPage.fxml"));
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initOwner(btnLogin.getScene().getWindow());
-            stage.showAndWait();
-
         //Displays the map of the hospital
         } else if (actionEvent.getSource() == btnMap) {
-
             stage = (Stage) btnMap.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/MapViewer.fxml"));
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-
         //Displays a popup window that help is on the way
         } else if (actionEvent.getSource() == btnHelp) {
-
             stage = new Stage();
             root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/Help.fxml"));
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initOwner(btnHelp.getScene().getWindow());
-            stage.showAndWait();
-
         //Goes to Service display screen
-        } else {
-
-
         }
-
+		assert root != null;
+		Scene scene = new Scene(root);
+		assert stage != null;
+		stage.setScene(scene);
+		//stage.initModality(Modality.APPLICATION_MODAL);
+		stage.initOwner(btnHelp.getScene().getWindow());
+		stage.showAndWait();
     }
 
 
@@ -101,9 +88,7 @@ public class NavigationController {
      *
      */
     public void inputHandler() {
-        JFXAutoCompletePopup<String> autoCompletePopup = new JFXAutoCompletePopup<>();
-        autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
-        autoCompletePopup.setSelectionHandler(event -> searchBox.setText(event.getObject()));
+		autoCompletePopup.setSelectionHandler(event -> searchBox.setText(event.getObject()));
         searchBox.textProperty().addListener(observable -> {
             autoCompletePopup.filter(string ->
                     string.toLowerCase().contains(searchBox.getText().toLowerCase()));
