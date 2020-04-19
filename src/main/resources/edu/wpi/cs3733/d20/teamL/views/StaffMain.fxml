@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
@@ -11,7 +12,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
-
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #0D2E57;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <top>
@@ -30,6 +30,12 @@
                   <Font name="Segoe UI" size="18.0" />
                </font>
             </Label>
+            <Label prefHeight="17.0" prefWidth="385.0" />
+            <JFXButton text="LOG OUT" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </JFXButton>
          </children>
          <padding>
             <Insets left="10.0" top="10.0" />
@@ -59,10 +65,10 @@
             <Circle fill="#ffffffe9" radius="66.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" />
             <Circle fill="#ffffffe9" radius="66.0" stroke="BLACK" strokeType="INSIDE" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
             <Circle fill="#ffffffe9" radius="66.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <Circle fill="WHITE" radius="66.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Circle fill="#f9f9f9" radius="66.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
             <ImageView fitHeight="96.0" fitWidth="95.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                <image>
-                  <Image url="@../../../../../../../../../../../../Pictures/New%20folder/Map-2-icon.png" />
+                  <Image url="@../assets/Map-icon.png" />
                </image>
                <GridPane.margin>
                   <Insets bottom="10.0" right="20.0" />
@@ -114,7 +120,7 @@
             </Label>
             <ImageView fitHeight="97.0" fitWidth="100.0" GridPane.columnIndex="2">
                <image>
-                  <Image url="@../../../../../../../../../../../../Pictures/New%20folder/active-search.png" />
+                  <Image url="@../assets/active-search.png" />
                </image>
                <GridPane.margin>
                   <Insets left="15.0" />
@@ -122,7 +128,7 @@
             </ImageView>
             <ImageView fitHeight="88.0" fitWidth="80.0" GridPane.halignment="RIGHT">
                <image>
-                  <Image url="@../../../../../../../../../../../../Pictures/New%20folder/369-3699390_notification-png-notification-icon-png-free-clipart.png" />
+                  <Image url="@../assets/notification-icon.png" />
                </image>
                <GridPane.margin>
                   <Insets right="26.0" />
@@ -130,12 +136,12 @@
             </ImageView>
             <ImageView fitHeight="102.0" fitWidth="96.0" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                <image>
-                  <Image url="@../../../../../../../../../../../../Pictures/New%20folder/medicine-icon-5.png" />
+                  <Image url="@../assets/medicine-icon.png" />
                </image>
             </ImageView>
             <ImageView fitHeight="98.0" fitWidth="97.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                <image>
-                  <Image url="@../../../../../../../../../../../../Pictures/New%20folder/room-1321215624862401144.png" />
+                  <Image url="@../assets/Room-icon.png" />
                </image>
                <GridPane.margin>
                   <Insets left="15.0" />
@@ -143,7 +149,7 @@
             </ImageView>
             <ImageView fitHeight="91.0" fitWidth="94.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                <image>
-                  <Image url="@../../../../../../../../../../../../Pictures/New%20folder/9-92148_maintenance-icon-free-download-png-and-vector-.png" />
+                  <Image url="@../assets/Maintenance-icon.png" />
                </image>
             </ImageView>
             <ImageView fitHeight="45.0" fitWidth="45.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="TOP">
