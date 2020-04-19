@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers;
 
+import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
 import edu.wpi.cs3733.d20.teamL.services.graph.Path;
 import edu.wpi.cs3733.d20.teamL.services.graph.PathFinder;
@@ -10,6 +11,8 @@ import edu.wpi.cs3733.d20.teamL.services.graph.MapParser;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
@@ -18,6 +21,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.geometry.Point2D;
 
 import edu.wpi.cs3733.d20.teamL.entities.Node;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
 import java.util.*;
 
 public class MapViewController {
@@ -82,8 +88,11 @@ public class MapViewController {
 			nodeGUI.setHighlighted(true);
 		});
 
-        dbCache.cacheNodes();
-        dbCache.cacheEdges();
+        dbCache.cacheAllFromDB();
+
+        openFromDB();
+
+        map.setZoomLevel(0.6);
 	}
 
     private void coreShortcuts() {
@@ -110,16 +119,19 @@ public class MapViewController {
 
     @FXML
     void quit() {
+        dbCache.updateDB();
         Platform.exit();
     }
 
     @FXML
     void save() {
-        Alert saveAlert = new Alert(Alert.AlertType.WARNING);
-        saveAlert.setTitle("Cannot complete operation");
-        saveAlert.setContentText("Nothing to save");
+        ArrayList<Node> nodes = new ArrayList<>(map.getGraph().getNodes());
+        ArrayList<Edge> edges = new ArrayList<>(map.getGraph().getEdges());
 
-        saveAlert.showAndWait();
+        dbCache.cacheNodes(nodes);
+        dbCache.cacheEdges(edges);
+
+        dbCache.updateDB();
     }
 
     @FXML
@@ -155,6 +167,12 @@ public class MapViewController {
         } else {
             map.setErasing(false);
         }
+    }
+
+    @FXML
+    private void backToMain() {
+        Stage stage = (Stage) root.getScene().getWindow();
+        stage.close();
     }
 
 }
