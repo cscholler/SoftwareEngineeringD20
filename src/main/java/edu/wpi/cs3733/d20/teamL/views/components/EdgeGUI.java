@@ -51,9 +51,17 @@ public class EdgeGUI extends Line implements Highlightable {
         setStrokeWidth(lineWidth);
     }
 
+    public Point2D getStartPos() {
+        return new Point2D(getStartX(), getStartY());
+    }
+
     public void setStartPos(Point2D newPos) {
         startXProperty().setValue(newPos.getX());
         startYProperty().setValue(newPos.getY());
+    }
+
+    public Point2D getEndPos() {
+        return new Point2D(getEndX(), getEndY());
     }
 
     public void setEndPos(Point2D newPos) {
@@ -112,21 +120,19 @@ public class EdgeGUI extends Line implements Highlightable {
         return highlightGui.getStroke();
     }
 
+    public double getLengthOnScreen() {
+        return getEndPos().subtract(getStartPos()).magnitude();
+    }
+
     public boolean contains(Point2D point) {
-        double deltaX = this.getEndX() - this.getStartX();
-        double deltaY;
+        Point2D lineDirection = getEndPos().subtract(getStartPos());
+        Point2D pointDirection = point.subtract(getStartPos());
 
-        deltaY = this.getEndY() - this.getStartY();
+        Point2D projection = lineDirection.multiply((lineDirection.dotProduct(pointDirection)) / (lineDirection.dotProduct(lineDirection)));
 
-        if (deltaX == 0) deltaX = .00001;
-        else deltaX = Math.abs(deltaX);
+        double distanceFromLine = pointDirection.subtract(projection).magnitude();
+        double distanceAlongLine = projection.magnitude();
 
-        double slope = deltaY / deltaX;
-        double b = this.getStartY() - slope * this.getStartX();
-
-        boolean inBounds = this.getStartX() < point.getX() && this.getEndX() > point.getX();
-
-        System.out.println((slope * point.getX() - 5 + b) + " < " + point.getY() + " < " + (slope * point.getX() + 5 + b));
-        return ((slope * point.getX() - 5 + b) < point.getY()) && (point.getY() < (slope * point.getX() + 5 + b)) && inBounds;
+        return distanceFromLine < 5 && distanceAlongLine < getLengthOnScreen();
     }
 }
