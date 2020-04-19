@@ -6,9 +6,16 @@ import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.navSearch.SearchFields;
 import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.TextField;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -24,40 +31,64 @@ public class NavigationController implements Initializable {
     @FXML private JFXTextField searchBox;
 	private DBCache cache;
 	private SearchFields sf;
+	private JFXAutoCompletePopup<String> autoCompletePopup;
 
 	@FXML
 	public void initialize(URL location, ResourceBundle resources) {
 		cache = new DBCache();
-		cache.cacheNodes();
-		cache.cacheEdges();
+		cache.cacheAll();
 		sf = new SearchFields(getNodeCache());
 		sf.populateSearchFields();
+		autoCompletePopup = new JFXAutoCompletePopup<>();
+		autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
+
 	}
 
 	public ArrayList<Node> getNodeCache() {
 		return cache.getNodeCache();
 	}
 
+    /**
+     * Handles the user's action when pressing on a specific button and goes to a new page
+     *
+     * @param actionEvent The action taken by the user (pressing the button)
+     * @throws IOException
+     */
     public void handleButtonAction(ActionEvent actionEvent) throws IOException {
 
+        Stage stage = null;
+        Parent root = null;
+
+        //Goes to the Login Page
         if (actionEvent.getSource() == btnLogin) {
-
-
+            stage = new Stage();
+            root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/LoginPage.fxml"));
+        //Displays the map of the hospital
         } else if (actionEvent.getSource() == btnMap) {
-
-
+            stage = (Stage) btnMap.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/MapViewer.fxml"));
+        //Displays a popup window that help is on the way
         } else if (actionEvent.getSource() == btnHelp) {
-
-        } else {
-
-
+            stage = new Stage();
+            root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/Help.fxml"));
+        //Goes to Service display screen
         }
+		assert root != null;
+		Scene scene = new Scene(root);
+		assert stage != null;
+		stage.setScene(scene);
+		//stage.initModality(Modality.APPLICATION_MODAL);
+		stage.initOwner(btnHelp.getScene().getWindow());
+		stage.showAndWait();
     }
 
+
+    /**
+     * Supports autocompletion for user when typing in a specific word
+     *
+     */
     public void inputHandler() {
-        JFXAutoCompletePopup<String> autoCompletePopup = new JFXAutoCompletePopup<>();
-        autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
-        autoCompletePopup.setSelectionHandler(event -> searchBox.setText(event.getObject()));
+		autoCompletePopup.setSelectionHandler(event -> searchBox.setText(event.getObject()));
         searchBox.textProperty().addListener(observable -> {
             autoCompletePopup.filter(string ->
                     string.toLowerCase().contains(searchBox.getText().toLowerCase()));

@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamL.services.navSearch;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class SearchFields {
 	private ArrayList<Node> nodeCache;
@@ -22,6 +23,7 @@ public class SearchFields {
             suggestions.add(node.getLongName());
             suggestions.add(node.getShortName());
         }
+        Collections.sort(suggestions);
     }
 
     /**

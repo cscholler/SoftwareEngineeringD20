@@ -23,6 +23,11 @@ public class DBCache {
 
     DatabaseService db = new DatabaseService(); //this should be changes eventually
 
+	public void cacheAll() {
+		cacheNodes();
+		cacheEdges();
+		disconnectDB();
+	}
 
     /**
      * cacheNode: Populates the node cache with nodes from the Database
@@ -83,4 +88,8 @@ public class DBCache {
     public void clearEdgeCache() {
         edgeCache.clear();
     }
+
+	public void disconnectDB() {
+		db.stopService();
+	}
 }
