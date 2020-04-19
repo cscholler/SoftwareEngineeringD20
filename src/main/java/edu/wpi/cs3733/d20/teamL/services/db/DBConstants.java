@@ -22,7 +22,6 @@ public class DBConstants {
 					"node_type CHAR(4), " +
 					"l_name VARCHAR(32), " +
 					"s_name VARCHAR(32), " +
-					"team CHAR(1), " +
 					"PRIMARY KEY (id))";
 
 	public static final String updateNode =
@@ -97,13 +96,8 @@ public class DBConstants {
 			"DROP TABLE Users";
 
 	public static final String addNode =
-			"INSERT INTO Nodes(id, x_pos, y_pos, floor, building, node_type, l_name, s_name, team)" +
-					"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-	public static final String updateNodeVisibility =
-			"UPDATE Nodes " +
-					"SET visible = ? " +
-					"WHERE id = ?";
+			"INSERT INTO Nodes(id, x_pos, y_pos, floor, building, node_type, l_name, s_name)" +
+					"VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 
 	public static final String addEdge =
 			"INSERT INTO Edges(id, node_start, node_end)" +
