@@ -14,7 +14,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #0D2E57;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.StaffViewController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #0D2E57;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.AdminViewController">
     <center>
         <GridPane prefHeight="322.0" prefWidth="599.0" BorderPane.alignment="CENTER">
             <columnConstraints>
@@ -55,7 +55,7 @@
                         <Insets right="27.0" />
                     </GridPane.margin>
                 </Label>
-                <Label text="Medication Request" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                <Label text="Add Doctor" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
                     <font>
                         <Font name="Segoe UI" size="14.0" />
                     </font>
@@ -126,7 +126,7 @@
                     </image>
                 </ImageView>
                 <JFXButton fx:id="btnNotif" onAction="#handleCircleButton" opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.halignment="RIGHT" />
-                <JFXButton fx:id="btnMeds" onAction="#handleCircleButton" opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                <JFXButton fx:id="btnAddDoctor" onAction="#handleCircleButton" opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.columnIndex="1" GridPane.halignment="CENTER" />
                 <JFXButton fx:id="btnMap" onAction="#handleCircleButton" opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
                 <JFXButton opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.columnIndex="2" />
                 <JFXButton opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
