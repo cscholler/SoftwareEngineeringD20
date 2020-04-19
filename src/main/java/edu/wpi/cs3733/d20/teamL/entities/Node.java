@@ -10,10 +10,9 @@ import java.util.HashMap;
 public class Node {
 
     //TODO make private & getters/setters
-    public Graph graph;
-    public Point2D position;
-    public String ID;
-
+    private Graph graph;
+    private Point2D position;
+    private String ID;
     private String shortName;
     private String longName;
     private String building;
@@ -31,6 +30,18 @@ public class Node {
     public Node(String p_name, Collection<Edge> p_edges) {
         ID = p_name;
         edges = p_edges;
+    }
+
+    public Graph getGraph() {
+        return graph;
+    }
+
+    public void setGraph(Graph graph) {
+        this.graph = graph;
+    }
+
+    public void setEdges(Collection<Edge> edges) {
+        this.edges = edges;
     }
 
     public Collection<Edge> getEdges() {
