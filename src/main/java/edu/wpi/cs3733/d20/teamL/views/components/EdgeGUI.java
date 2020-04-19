@@ -23,7 +23,7 @@ public class EdgeGUI extends Line implements Highlightable {
         this.setHighlightColor(highLightColor);
         this.setHighlightRadius(highlightThickness);
         highlightGui.setMouseTransparent(true);
-        setMouseTransparent(true);
+        //setMouseTransparent(true);
     }
 
     public EdgeGUI(Edge initEdge) {
@@ -40,7 +40,7 @@ public class EdgeGUI extends Line implements Highlightable {
         highlightGui.endXProperty().bindBidirectional(endXProperty());
         highlightGui.endYProperty().bindBidirectional(endYProperty());
         highlightGui.setMouseTransparent(true);
-        setMouseTransparent(true);
+        //setMouseTransparent(true);
 
         setHighlighted(false);
     }
@@ -51,9 +51,17 @@ public class EdgeGUI extends Line implements Highlightable {
         setStrokeWidth(lineWidth);
     }
 
+    public Point2D getStartPos() {
+        return new Point2D(getStartX(), getStartY());
+    }
+
     public void setStartPos(Point2D newPos) {
         startXProperty().setValue(newPos.getX());
         startYProperty().setValue(newPos.getY());
+    }
+
+    public Point2D getEndPos() {
+        return new Point2D(getEndX(), getEndY());
     }
 
     public void setEndPos(Point2D newPos) {
@@ -110,5 +118,21 @@ public class EdgeGUI extends Line implements Highlightable {
 
     public Paint getHighlightColor() {
         return highlightGui.getStroke();
+    }
+
+    public double getLengthOnScreen() {
+        return getEndPos().subtract(getStartPos()).magnitude();
+    }
+
+    public boolean contains(Point2D point) {
+        Point2D lineDirection = getEndPos().subtract(getStartPos());
+        Point2D pointDirection = point.subtract(getStartPos());
+
+        Point2D projection = lineDirection.multiply((lineDirection.dotProduct(pointDirection)) / (lineDirection.dotProduct(lineDirection)));
+
+        double distanceFromLine = pointDirection.subtract(projection).magnitude();
+        double distanceAlongLine = projection.magnitude();
+
+        return distanceFromLine < 5 && distanceAlongLine < getLengthOnScreen();
     }
 }
