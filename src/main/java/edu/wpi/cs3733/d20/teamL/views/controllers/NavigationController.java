@@ -45,7 +45,7 @@ public class NavigationController {
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initOwner(btnLogin.getScene().getWindow());
-            stage.showAndWait();
+            stage.show();
 
         //Displays the map of the hospital
         } else if (actionEvent.getSource() == btnMap) {
@@ -54,6 +54,7 @@ public class NavigationController {
             root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/MapViewer.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);
+            stage.setFullScreen(true);
             stage.show();
 
         //Displays a popup window that help is on the way
