@@ -35,6 +35,8 @@ public class LoginController implements Initializable {
     @FXML
     private Text incorrectText;
 
+    @FXML AnchorPane anchorPane;
+
     /**
      * Controls the login feature setting
      * @param e Tracks which button is pressed
@@ -48,8 +50,8 @@ public class LoginController implements Initializable {
         String status = "Incorrect username or password";
 
         //set up flashing text
-        FadeTransition fadeTransition = new FadeTransition(Duration.millis(200), incorrectText);
-        fadeTransition.setFromValue(0.0);
+        FadeTransition fadeTransition = new FadeTransition(Duration.millis(200), anchorPane);
+        fadeTransition.setFromValue(0.5);
         fadeTransition.setToValue(1.0);
         fadeTransition.setCycleCount(3);
         if (e.getSource() == btnCancel) {
