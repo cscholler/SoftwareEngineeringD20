@@ -76,8 +76,9 @@ public class DBCache {
      */
     public Node searchNodeCache(String nodeID) {
         for (Node node : nodeCache) {
-            if (node.getID() == nodeID) return node;
+            if (node.getID().equals(nodeID)) return node;
         }
+        System.out.println("Did not find node");
 
         return null;
     }

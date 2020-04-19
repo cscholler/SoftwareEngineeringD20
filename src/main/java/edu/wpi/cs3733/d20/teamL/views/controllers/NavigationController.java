@@ -63,23 +63,29 @@ public class NavigationController implements Initializable {
         if (actionEvent.getSource() == btnLogin) {
             stage = new Stage();
             root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/LoginPage.fxml"));
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(btnHelp.getScene().getWindow());
+            stage.showAndWait();
         //Displays the map of the hospital
         } else if (actionEvent.getSource() == btnMap) {
             stage = (Stage) btnMap.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/MapViewer.fxml"));
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
         //Displays a popup window that help is on the way
         } else if (actionEvent.getSource() == btnHelp) {
             stage = new Stage();
             root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/Help.fxml"));
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(btnHelp.getScene().getWindow());
+            stage.showAndWait();
         //Goes to Service display screen
         }
-		assert root != null;
-		Scene scene = new Scene(root);
-		assert stage != null;
-		stage.setScene(scene);
-		//stage.initModality(Modality.APPLICATION_MODAL);
-		stage.initOwner(btnHelp.getScene().getWindow());
-		stage.showAndWait();
     }
 
 

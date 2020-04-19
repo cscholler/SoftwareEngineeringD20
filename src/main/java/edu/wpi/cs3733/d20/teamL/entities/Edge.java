@@ -54,7 +54,7 @@ public class Edge {
      */
     public void setSource(Node newSource) {
         if (source != null) source.removeEdge(this);
-        if (newSource != null) newSource.addEdge(this);
+        if (newSource != null) newSource.getEdges().add(this);
         source = newSource;
     }
 }
