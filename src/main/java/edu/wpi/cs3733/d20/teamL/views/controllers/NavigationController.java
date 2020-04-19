@@ -13,7 +13,6 @@ import javafx.fxml.Initializable;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -36,7 +35,7 @@ public class NavigationController implements Initializable {
 	@FXML
 	public void initialize(URL location, ResourceBundle resources) {
 		cache = new DBCache();
-		cache.cacheAll();
+		cache.cacheAllFromDB();
 		sf = new SearchFields(getNodeCache());
 		sf.populateSearchFields();
 		autoCompletePopup = new JFXAutoCompletePopup<>();

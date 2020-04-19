@@ -33,6 +33,7 @@ public class MapParser {
 
     /**
      * Writes a graph to two csv files and returns an array containing both of them.
+     *
      * @param graph
      * @return
      */
