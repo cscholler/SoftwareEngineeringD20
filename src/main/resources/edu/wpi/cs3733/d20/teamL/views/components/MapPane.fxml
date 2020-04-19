@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+
+<fx:root prefHeight="250.0" prefWidth="400.0" type="javafx.scene.layout.StackPane" BorderPane.alignment="CENTER"
+         xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <ScrollPane fx:id="scroller">
+            <content>
+                <AnchorPane fx:id="body">
+                    <padding>
+                        <Insets bottom="100.0" right="100.0"/>
+                    </padding>
+                </AnchorPane>
+            </content>
+        </ScrollPane>
+        <Label fx:id="position" alignment="BOTTOM_LEFT" StackPane.alignment="BOTTOM_LEFT">
+            <StackPane.margin>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+            </StackPane.margin>
+        </Label>
+    </children>
+</fx:root>
