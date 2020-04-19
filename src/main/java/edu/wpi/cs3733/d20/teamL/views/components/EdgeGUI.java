@@ -22,6 +22,8 @@ public class EdgeGUI extends Line implements Highlightable {
         this.strokeProperty().setValue(nodeColor);
         this.setHighlightColor(highLightColor);
         this.setHighlightRadius(highlightThickness);
+        highlightGui.setMouseTransparent(true);
+        setMouseTransparent(true);
     }
 
     public EdgeGUI(Edge initEdge) {
@@ -38,6 +40,7 @@ public class EdgeGUI extends Line implements Highlightable {
         highlightGui.endXProperty().bindBidirectional(endXProperty());
         highlightGui.endYProperty().bindBidirectional(endYProperty());
         highlightGui.setMouseTransparent(true);
+        setMouseTransparent(true);
 
         setHighlighted(false);
     }

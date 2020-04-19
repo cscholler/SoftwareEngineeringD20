@@ -6,6 +6,7 @@ import edu.wpi.cs3733.d20.teamL.services.graph.Graph;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
+import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
@@ -48,6 +49,7 @@ public class MapPane extends StackPane {
     private boolean draggingNode = false;
     private boolean dragSelecting = false;
     private boolean addingEdge = false;
+    private boolean erasing = false;
 
     private EdgeGUI tempEdge;
     private int circleRadius = 12;
@@ -91,15 +93,36 @@ public class MapPane extends StackPane {
             }
         });
 
-        // Deselect all nodes when clicked off
+        // Deselect all nodes when clicked off, add new node if a new edge is clicked in empty space
         body.setOnMouseClicked(event -> {
             if (event.getButton().equals(MouseButton.PRIMARY) && !onSelectable) {
                 selector.clear();
             }
+            if (addingEdge && !onSelectable) {
+                if (event.getButton().equals(MouseButton.PRIMARY)) {
+                    Node dest = new Node("new_node");
+                    dest.setPosition(new Point2D(event.getX(), event.getY()).multiply(1 / zoomLevel));
+
+                    addNode(dest);
+
+                    Node source = tempEdge.getSource().getNode();
+                    int length = (int)source.getPosition().distance(dest.getPosition());
+
+                    Edge edge = new Edge(dest, length);
+                    source.addEdgeTwoWay(edge);
+
+                    addEdge(edge);
+
+                    body.getChildren().remove(tempEdge);
+                } else if (event.getButton().equals(MouseButton.SECONDARY)) {
+                    body.getChildren().remove(tempEdge);
+                }
+                addingEdge = false;
+            }
         });
 
         body.setOnMousePressed(event -> {
-            if (!draggingNode && !onSelectable && event.isPrimaryButtonDown()) {
+            if (!addingEdge && !draggingNode && !onSelectable && event.isPrimaryButtonDown()) {
                 dragSelecting = true;
                 selectionBox.setRootPosition(new Point2D(event.getX(), event.getY()));
                 body.getChildren().add(selectionBox);
@@ -138,6 +161,14 @@ public class MapPane extends StackPane {
     }
 
     //---------- Getters/Setters ----------//
+
+    public boolean isErasing() {
+        return erasing;
+    }
+
+    public void setErasing(boolean erasing) {
+        this.erasing = erasing;
+    }
 
     public Collection<NodeGUI> getNodes() {
         return nodes.values();
@@ -232,7 +263,7 @@ public class MapPane extends StackPane {
      *
      * @param node The Node to be added.
      */
-    public void addNode(Node node) {
+    public NodeGUI addNode(Node node) {
         NodeGUI nodeGUI = new NodeGUI(node);
 
         nodeGUI.setRadius(circleRadius);
@@ -249,13 +280,14 @@ public class MapPane extends StackPane {
             onSelectable = true;
         });
         nodeGUI.setOnMouseExited(event -> {
-            if (!selector.contains(nodeGUI) && isEditable())
+            if (!selector.contains(nodeGUI))
                 nodeGUI.setHighlighted(false);
             onSelectable = false;
         });
 
         // Features involving selection and drag-and-drop only happen if this map is editable
         if (isEditable()) {
+            nodeGUI.setCursor(Cursor.MOVE);
             nodeGUI.setOnMousePressed(event -> {
                 if(event.isPrimaryButtonDown() && !addingEdge) {
                     // -----------Handle selection-----------
@@ -267,7 +299,8 @@ public class MapPane extends StackPane {
                             selector.remove(nodeGUI);
                         else
                             selector.add(nodeGUI);
-                    } else {
+                    } else if (!selector.contains(nodeGUI)){
+                        selector.clear();
                         selector.add(nodeGUI);
                     }
 
@@ -281,11 +314,11 @@ public class MapPane extends StackPane {
 
                 // -----------Handle adding the edge-----------
                 if(event.isSecondaryButtonDown() && !draggingNode && !dragSelecting) {
-                    tempEdge = new EdgeGUI(circleRadius / 2, nodeColor, highLightColor, highlightThickness);
+                    tempEdge = new EdgeGUI(circleRadius / 4, nodeColor, highLightColor, highlightThickness);
                     tempEdge.startXProperty().bind(nodeGUI.layoutXProperty());
                     tempEdge.startYProperty().bind(nodeGUI.layoutYProperty());
-                    tempEdge.setEndX(event.getX());
-                    tempEdge.setEndY(event.getY());
+                    tempEdge.setEndX(tempEdge.getStartX());
+                    tempEdge.setEndY(tempEdge.getStartY());
                     tempEdge.setMouseTransparent(true);
                     tempEdge.setSource(nodeGUI);
 
@@ -342,6 +375,8 @@ public class MapPane extends StackPane {
         node.data.put("GUI", nodeGUI);
 
         body.getChildren().addAll(nodeGUI.getAllNodes());
+
+        return nodeGUI;
     }
 
     private void removeNode(NodeGUI nodeGUI) {
@@ -380,10 +415,20 @@ public class MapPane extends StackPane {
         edgeGUI.endXProperty().bind(getNodeGUI(edge.destination).layoutXProperty());
         edgeGUI.endYProperty().bind(getNodeGUI(edge.destination).layoutYProperty());
 
+        edgeGUI.setOnMouseDragOver(event -> {
+            if (event.isPrimaryButtonDown() && erasing) {
+
+            }
+        });
+
         edges.put(edge, edgeGUI);
         edge.data.put("GUI", edgeGUI);
 
         body.getChildren().addAll(edgeGUI.getAllNodes());
+    }
+
+    public void removeEdge(EdgeGUI edgeGUI) {
+
     }
 
     public NodeGUI getNodeGUI(Node node) {

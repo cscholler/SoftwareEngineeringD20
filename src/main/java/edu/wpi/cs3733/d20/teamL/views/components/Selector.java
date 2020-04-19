@@ -36,7 +36,6 @@ public class Selector {
         selected.add(newItem);
         newItem.setHighlighted(true);
         newItem.setSelected(true);
-        newItem.getGUI().setCursor(Cursor.MOVE);
     }
 
     public void addAll(Highlightable... newItems) {
@@ -55,7 +54,6 @@ public class Selector {
                 selected.remove(item);
                 item.setHighlighted(false);
                 item.setSelected(false);
-                item.getGUI().setCursor(Cursor.DEFAULT);
             } else {
                 throw new IllegalArgumentException("Item to remove must be selected");
             }
