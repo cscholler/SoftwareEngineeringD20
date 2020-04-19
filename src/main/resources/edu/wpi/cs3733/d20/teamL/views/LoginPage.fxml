@@ -19,7 +19,7 @@
                         <Font name="System Bold" size="12.0" />
                     </font></JFXButton>
                 <JFXPasswordField fx:id="pass" focusColor="#001540" layoutX="76.0" layoutY="84.0" maxWidth="232.0" minWidth="214.0" prefHeight="40.0" prefWidth="232.0" promptText="Password" unFocusColor="#4d4d4dda" />
-                <JFXButton fx:id="btnCancel" buttonType="RAISED" defaultButton="true" layoutX="222.0" layoutY="156.0" prefHeight="32.0" prefWidth="86.0" ripplerFill="WHITE" style="-fx-background-color: #001540;" text="Cancel" textAlignment="CENTER" textFill="WHITE">
+                <JFXButton fx:id="btnCancel" buttonType="RAISED" defaultButton="true" layoutX="222.0" layoutY="156.0" onAction="#handleLogin" prefHeight="32.0" prefWidth="86.0" ripplerFill="WHITE" style="-fx-background-color: #001540;" text="Cancel" textAlignment="CENTER" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="12.0" />
                     </font>
