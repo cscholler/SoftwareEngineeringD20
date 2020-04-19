@@ -43,7 +43,7 @@ public class MedicationReqController implements Initializable {
         Stage stage = null;
         Parent root;
 
-        if(e.getSource() == btnCancel){
+        if (e.getSource() == btnCancel){
             stage = (Stage) btnCancel.getScene().getWindow();
             //stage = new Stage();
             root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/StaffView.fxml"));
@@ -60,17 +60,19 @@ public class MedicationReqController implements Initializable {
             String roomNum = roomNumText.getText();
             String additionalInfo = addInfoText.getText();
 
-            //TODO: update cache
-			
+            // TODO: Use cache instead of dealing with db directly
+
+			// Adds request info to database
 			String doctorFName = doctorName.substring(0, doctorName.indexOf(" "));
 			String doctorLName = doctorName.substring(doctorName.indexOf(" ") + 1);
 			String doctorID = db.getTableFromResultSet(db.executeQuery(DBConstants.getDoctorID, new ArrayList<>(Arrays.asList(doctorFName, doctorLName)))).get(0).get(0);
 			String patientFName = patientName.substring(0, patientName.indexOf(" "));
 			String patientLName = patientName.substring(patientName.indexOf(" ") + 1);
 			String patientID = db.getTableFromResultSet(db.executeQuery(DBConstants.getPatientID, new ArrayList<>(Arrays.asList(patientFName, patientLName)))).get(0).get(0);
-
 			db.executeUpdate(DBConstants.addMedicationRequest, new ArrayList<>(Arrays.asList(doctorID, patientID, "Placeholder nurse name", dose, medType, additionalInfo)));
 			formatter.reportQueryResults(db.executeQuery(DBConstants.selectAllMedicationRequests));
+
+			// TODO: Check if any info is invalid before sending request
         }
     }
 }
