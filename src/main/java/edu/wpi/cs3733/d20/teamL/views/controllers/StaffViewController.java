@@ -22,45 +22,45 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
-
 public class StaffViewController {
 
     @FXML
-    private ImageView iLogout;
+    private JFXButton btnLogout;
     @FXML
-    private ImageView iNotif;
+    private JFXButton btnNotif;
     @FXML
-    private ImageView iMeds;
+    private JFXButton btnMeds;
     @FXML
-    private ImageView iFindOpen;
+    private JFXButton btnFindOpen;
     @FXML
-    private ImageView iMR;
+    private JFXButton btnMR;
     @FXML
-    private ImageView iChangeR;
+    private JFXButton btnChangeR;
     @FXML
-    private ImageView iMap;
+    private JFXButton btnMap;
     @FXML
     private Label lblName;
 
 
     @FXML
-    public void handleCircles(MouseEvent event) throws IOException {
+    public void handleCircleButton(ActionEvent event) throws IOException {
         Stage stage;
         Parent root;
-        if (event.getSource() == iNotif) {
 
+        //open notifications
+        if (event.getSource() == btnNotif) {
 
-        } else if (event.getSource() == iMeds) {
-            /*stage = new Stage();
-            root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/AHHHHHHH.fxml"));
+        //opens med request
+        } else if (event.getSource() == btnMeds) {
+            stage = (Stage) btnMeds.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("/resources/edu/wpi/cs3733/d20/teamL/views/MedicationRequest.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.show();*/
+            stage.show();
 
-
-        } else if (event.getSource() == iMap) {
-            stage = new Stage();
+        //opens mapView
+        } else if (event.getSource() == btnMap) {
+            stage = (Stage) btnMap.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/MapViewer.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);

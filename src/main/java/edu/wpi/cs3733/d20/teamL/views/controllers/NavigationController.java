@@ -65,7 +65,8 @@ public class NavigationController {
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initOwner(btnHelp.getScene().getWindow());
-            stage.showAndWait();
+            stage.setFullScreen(true);
+            stage.show();
 
         //Goes to Service display screen
         } else {

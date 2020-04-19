@@ -9,51 +9,24 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #0D2E57;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.StaffViewController">
-   <top>
-      <HBox prefHeight="50.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label alignment="TOP_LEFT" text="Hello, " textFill="WHITE">
-               <font>
-                  <Font name="Century Gothic Bold" size="18.0" />
-               </font>
-               <opaqueInsets>
-                  <Insets left="20.0" />
-               </opaqueInsets>
-            </Label>
-            <Label alignment="TOP_LEFT" text="World " textFill="WHITE">
-               <font>
-                  <Font name="Segoe UI" size="18.0" />
-               </font>
-            </Label>
-            <Label prefHeight="17.0" prefWidth="385.0" />
-            <JFXButton text="LOG OUT" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </JFXButton>
-         </children>
-         <padding>
-            <Insets left="10.0" top="10.0" />
-         </padding>
-      </HBox>
-   </top>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #0D2E57;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.StaffViewController">
    <center>
-      <GridPane BorderPane.alignment="CENTER">
+      <GridPane prefHeight="322.0" prefWidth="599.0" BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints maxHeight="169.20000000000002" minHeight="0.0" prefHeight="142.8" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="169.20000000000002" minHeight="0.0" prefHeight="29.00001220703126" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="211.20001831054688" minHeight="10.0" prefHeight="140.00001220703126" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="182.3999481201172" minHeight="10.0" prefHeight="39.19998779296873" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="177.40000610351564" minHeight="0.0" prefHeight="161.40000610351564" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="169.20000000000002" minHeight="0.0" prefHeight="74.33332519531248" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="211.20001831054688" minHeight="10.0" prefHeight="162.86668701171874" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="182.3999481201172" minHeight="0.0" prefHeight="145.13331298828126" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Circle fill="#ffffffe9" radius="66.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
@@ -95,12 +68,12 @@
                   <Insets left="12.0" />
                </GridPane.margin>
             </Label>
-            <Label text="Map" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
+            <Label text="Map" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="TOP">
                <font>
                   <Font name="Segoe UI" size="14.0" />
                </font>
                <GridPane.margin>
-                  <Insets left="60.0" />
+                  <Insets right="51.0" />
                </GridPane.margin>
             </Label>
             <Label text="Change Room Status" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="3" GridPane.valignment="TOP">
@@ -152,15 +125,64 @@
                   <Image url="@../assets/Maintenance-icon.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="45.0" fitWidth="45.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="TOP">
-               <image>
-                  <Image url="@../../../../../../../../../../../../Pictures/New%20folder/37134.png" />
-               </image>
-               <GridPane.margin>
-                  <Insets right="37.0" top="25.0" />
-               </GridPane.margin>
-            </ImageView>
+            <JFXButton onAction="#handleCircleButton" opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.halignment="RIGHT" />
+            <JFXButton fx:id="btnMeds" onAction="#handleCircleButton" opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+            <JFXButton opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+            <JFXButton opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.columnIndex="2" />
+            <JFXButton opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <JFXButton opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.columnIndex="2" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </center>
+   <top>
+      <GridPane prefHeight="173.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label alignment="TOP_LEFT" text="Hello, " textFill="WHITE">
+                     <font>
+                        <Font name="Century Gothic Bold" size="24.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets left="20.0" />
+                     </opaqueInsets>
+                  </Label>
+                  <Label alignment="TOP_LEFT" text="World " textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+               <GridPane.margin>
+                  <Insets left="10.0" top="10.0" />
+               </GridPane.margin>
+               <padding>
+                  <Insets left="20.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+               <children>
+                  <JFXButton text="LOG OUT" textFill="WHITE">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+               <padding>
+                  <Insets right="10.0" top="10.0" />
+               </padding>
+            </HBox>
+         </children>
+      </GridPane>
+   </top>
+   <bottom>
+      <Pane prefHeight="116.0" prefWidth="1280.0" BorderPane.alignment="CENTER" />
+   </bottom>
 </BorderPane>
