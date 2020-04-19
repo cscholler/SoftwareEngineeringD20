@@ -75,6 +75,7 @@ public class DBConstants {
 					"username VARCHAR(32), " +
 					"password VARCHAR(32), " +
 					"acct_type CHAR(1), " +
+					"last_login DATE, " +
 					"PRIMARY KEY (id))";
 
 	public static final String dropNodeTable =
@@ -116,8 +117,8 @@ public class DBConstants {
 					"VALUES(?, ?, ?, ?, ?, ?)";
 
 	public static final String addUser =
-			"INSERT INTO Users(id, username, password, acct_type)" +
-					"VALUES(?, ?, ?, ?)";
+			"INSERT INTO Users(id, username, password, acct_type, last_login)" +
+					"VALUES(?, ?, ?, ?, ?)";
 
 	public static final String selectAllNodes =
 			"SELECT * " +
@@ -135,11 +136,21 @@ public class DBConstants {
 			"SELECT * " +
 					"FROM Patients";
 
-	public static final String selectAllMedication_Requests =
+	public static final String selectAllMedicationRequests =
 			"SELECT * " +
 					"FROM Medication_Requests";
 
 	public static final String selectAllUsers =
 			"SELECT * " +
 					"FROM Users";
+
+	public static final String getDoctorID =
+			"SELECT id " +
+					"FROM Doctors " +
+					"WHERE f_name = ? AND l_name = ?";
+
+	public static final String getPatientID =
+			"SELECT id " +
+					"FROM Patients " +
+					"WHERE f_name = ? AND l_name = ?";
 }
