@@ -14,21 +14,7 @@ import java.io.IOException;
 public class StaffViewController {
 
     @FXML
-    private JFXButton btnLogout;
-    @FXML
-    private JFXButton btnNotif;
-    @FXML
-    private JFXButton btnMeds;
-    @FXML
-    private JFXButton btnFindOpen;
-    @FXML
-    private JFXButton btnMR;
-    @FXML
-    private JFXButton btnChangeR;
-    @FXML
-    private JFXButton btnMap;
-    @FXML
-    private JFXButton btnAddPatient;
+    private JFXButton btnLogout, btnNotif, btnMe, btnMR, btnChangeR, btnMap, btnAddPatient;
     @FXML
     private Label lblName;
 
