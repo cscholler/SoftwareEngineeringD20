@@ -133,6 +133,8 @@ public class MapPane extends StackPane {
             if (!addingEdge && !draggingNode && !onSelectable && event.isPrimaryButtonDown() && !erasing) {
                 dragSelecting = true;
                 selectionBox.setRootPosition(new Point2D(event.getX(), event.getY()));
+                selectedNode = null;
+                onActionProperty().get().handle(event);
                 body.getChildren().add(selectionBox);
             }
         });
