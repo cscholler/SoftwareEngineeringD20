@@ -19,10 +19,8 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class MapPane extends StackPane {
     @FXML
@@ -32,8 +30,8 @@ public class MapPane extends StackPane {
     @FXML
     private ScrollPane scroller;
 
-    private Map<Node, NodeGUI> nodes = new HashMap<>();
-    private Map<Edge, EdgeGUI> edges = new HashMap<>();
+    private Map<Node, NodeGUI> nodes = new ConcurrentHashMap<>();
+    private Map<Edge, EdgeGUI> edges = new ConcurrentHashMap<>();
 
     private Selector selector = new Selector();
 
@@ -56,6 +54,8 @@ public class MapPane extends StackPane {
     private Color nodeColor = Color.ORANGE;
     private Paint highLightColor = Color.CYAN;
     private double highlightThickness = 2;
+
+    private ArrayList<Node> editedNodes = new ArrayList<>();
 
     public MapPane() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MapPane.fxml"));
@@ -100,14 +100,14 @@ public class MapPane extends StackPane {
             }
             if (addingEdge && !onSelectable && !erasing) {
                 if (event.getButton().equals(MouseButton.PRIMARY)) {
-                    Node dest = new Node("new_node", new Point2D(event.getX(), event.getY()).multiply(1 / zoomLevel));
+
+                    Node dest = new Node(graph.getUniqueNodeID(), new Point2D(event.getX(), event.getY()).multiply(1 / zoomLevel));
 
                     addNode(dest);
 
                     Node source = tempEdge.getSource().getNode();
-                    int length = (int) source.getPosition().distance(dest.getPosition());
 
-                    Edge edge = new Edge("new_edge", source, dest);
+                    Edge edge = new Edge(source, dest);
                     source.addEdgeTwoWay(edge);
 
                     addEdge(edge);
@@ -130,10 +130,11 @@ public class MapPane extends StackPane {
 
         // Change the position of all the selected nodes as the mouse is being dragged keeping their offset
         body.setOnMouseDragged(event -> {
-            if (event.isPrimaryButtonDown() && !erasing) {
+            if (event.isPrimaryButtonDown() && !erasing && !addingEdge) {
                 if (draggingNode) {
                     for (NodeGUI gui : selector.getNodes()) {
-                        gui.setLayoutPos(selector.getNodePosition(gui).add(new Point2D(event.getX(), event.getY())));
+                        Point2D temp = selector.getNodePosition(gui);
+                        if(temp != null) gui.setLayoutPos(temp.add(new Point2D(event.getX(), event.getY())));
                     }
                 } else if (dragSelecting) {
                     selectionBox.mouseDrag(new Point2D(event.getX(), event.getY()), event.isShiftDown());
@@ -174,6 +175,11 @@ public class MapPane extends StackPane {
     }
 
     //---------- Getters/Setters ----------//
+
+
+    public ArrayList<Node> getEditedNodes() {
+        return editedNodes;
+    }
 
     public boolean isErasing() {
         return erasing;
@@ -348,7 +354,7 @@ public class MapPane extends StackPane {
                     Node dest = nodeGUI.getNode();
                     int length = (int) source.getPosition().distance(dest.getPosition());
 
-                    Edge edge = new Edge("new_edge", source, dest);
+                    Edge edge = new Edge(source, dest);
                     source.addEdgeTwoWay(edge);
 
                     addEdge(edge);
@@ -374,9 +380,10 @@ public class MapPane extends StackPane {
 
             // Done dragging
             nodeGUI.setOnMouseClicked(event -> {
-                if (!addingEdge && !erasing) {
+                if (!addingEdge && !erasing && draggingNode) {
                     for (NodeGUI gui : selector.getNodes()) {
                         gui.getNode().setPosition(gui.getLayoutPos().multiply(1 / zoomLevel));
+                        editedNodes.add(gui.getNode());
                         selector.setNodePosition(gui, gui.getLayoutPos().subtract(new Point2D(event.getX(), event.getY())));
                     }
                     draggingNode = false;
@@ -402,12 +409,13 @@ public class MapPane extends StackPane {
             Edge edgeFromNode = nodeGUI.getNode().getEdge(neighbor);
             neighbor.removeEdge(edgeToNode);
             nodeGUI.getNode().removeEdge(edgeFromNode);
-            body.getChildren().removeAll(edges.get(edgeToNode).getAllNodes());
-            body.getChildren().removeAll(edges.get(edgeFromNode).getAllNodes());
+
+            if(edges.get(edgeToNode) != null) body.getChildren().removeAll(edges.get(edgeToNode).getAllNodes());
+            if(edges.get(edgeFromNode) != null) body.getChildren().removeAll(edges.get(edgeFromNode).getAllNodes());
         }
 
         // Remove the node from the graph and the nodeGUI from the Pane
-        nodes.remove(nodeGUI);
+        nodes.remove(nodeGUI.getNode());
         body.getChildren().removeAll(nodeGUI.getAllNodes());
         graph.removeNode(nodeGUI.getNode());
     }
@@ -434,7 +442,7 @@ public class MapPane extends StackPane {
         edges.put(edge, edgeGUI);
         edge.data.put("GUI", edgeGUI);
 
-        body.getChildren().addAll(edgeGUI.getAllNodes());
+        body.getChildren().addAll(0, edgeGUI.getAllNodes());
     }
 
     public void removeEdge(EdgeGUI edgeGUI) {

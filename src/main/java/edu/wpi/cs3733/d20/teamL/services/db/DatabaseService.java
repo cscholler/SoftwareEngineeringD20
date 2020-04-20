@@ -21,6 +21,7 @@ public class DatabaseService extends Service {
 	private Properties props = null;
 	private ArrayList<ResultSet> usedResSets = new ArrayList<>();
 	private ArrayList<Statement> usedStmts = new ArrayList<>();
+	private boolean firstTime = true;
 
 	public DatabaseService(Properties props) {
 		super();
@@ -28,8 +29,10 @@ public class DatabaseService extends Service {
 		this.props = props;
 	}
 
-	public DatabaseService() {
-		super();
+	public DatabaseService(boolean firstTime) {
+		//super();
+		this.firstTime = firstTime;
+		startService();
 		this.serviceName = DBConstants.SERVICE_NAME;
 	}
 
@@ -38,10 +41,13 @@ public class DatabaseService extends Service {
 		if (connection == null) {
 			connect(props);
 		}
-		buildDatabase();
-		// TODO: put somewhere better and drop table before populating
-		populateFromCSV("MapLnodesFloor2", DBConstants.addNode);
-		populateFromCSV("MapLedgesFloor2", DBConstants.addEdge);
+
+		if (firstTime) {
+			buildDatabase();
+			// TODO: put somewhere better and drop table before populating
+			populateFromCSV("MapLnodesFloor2", DBConstants.addNode);
+			populateFromCSV("MapLedgesFloor2", DBConstants.addEdge);
+		}
 	}
 
 	@Override

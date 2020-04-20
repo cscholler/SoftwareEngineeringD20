@@ -116,4 +116,18 @@ public class Graph {
         nodes.remove(name);
     }
 
+    public String getUniqueNodeID() { // TODO: require the user to put in a nodeID instead of generating it
+        String id = "new_node1";
+        Integer curr = 1;
+        boolean unique = false;
+        while(!unique) {
+            if(this.getNode(id) == null) unique = true;
+            else {
+                curr ++;
+                id = "new_node" + curr.toString();
+            }
+        }
+        return id;
+    }
+
 }
