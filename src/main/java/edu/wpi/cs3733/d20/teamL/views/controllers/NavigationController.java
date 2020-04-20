@@ -79,18 +79,16 @@ public class NavigationController implements Initializable {
         //Displays a popup window that help is on the way
         } else if (actionEvent.getSource() == btnHelp) {
 
-            stage = new Stage();
+            stage = (Stage) btnHelp.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/Help.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initOwner(btnHelp.getScene().getWindow());
-
             stage.setFullScreen(true);
-
             stage.show();
 
         //Goes to Service display screen
+        } else {
+
         }
     }
 
