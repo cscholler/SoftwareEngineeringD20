@@ -304,8 +304,8 @@ public class MapPane extends StackPane {
     public NodeGUI addNode(Node node) {
         NodeGUI nodeGUI = new NodeGUI(node);
 
-        nodeGUI.getGUI().setRadius(circleRadius);
-        nodeGUI.getGUI().fillProperty().setValue(nodeColor);
+        nodeGUI.getCircle().setRadius(circleRadius);
+        nodeGUI.getCircle().fillProperty().setValue(nodeColor);
         nodeGUI.setHighlightColor(highLightColor);
         nodeGUI.setHighlightRadius(highlightThickness);
 
@@ -313,13 +313,13 @@ public class MapPane extends StackPane {
         nodeGUI.setLayoutPos(zoomedPos);
 
         // Highlight and unhighlight as the node is moused over, set the cursor to arrows if it is movable
-        nodeGUI.getGUI().setOnMouseEntered(event -> {
+        nodeGUI.getCircle().setOnMouseEntered(event -> {
             if(!erasing) {
                 nodeGUI.setHighlighted(true);
                 onSelectable = true;
             }
         });
-        nodeGUI.getGUI().setOnMouseExited(event -> {
+        nodeGUI.getCircle().setOnMouseExited(event -> {
             if (!selector.contains(nodeGUI))
                 nodeGUI.setHighlighted(false);
             onSelectable = false;
@@ -327,9 +327,9 @@ public class MapPane extends StackPane {
 
         // Features involving selection and drag-and-drop only happen if this map is editable
         if (isEditable()) {
-            nodeGUI.getGUI().setCursor(Cursor.MOVE);
+            nodeGUI.getCircle().setCursor(Cursor.MOVE);
 
-            nodeGUI.getGUI().setOnMousePressed(event -> {
+            nodeGUI.getCircle().setOnMousePressed(event -> {
                 if (event.isPrimaryButtonDown() && !addingEdge && !erasing) {
                     // -----------Handle selection-----------
                     if (event.isShiftDown()) {
@@ -495,7 +495,6 @@ public class MapPane extends StackPane {
     double round(double num, int place) {
         return Math.round(num * Math.pow(10, place)) / Math.pow(10, place);
     }
-
 
     private ObjectProperty<EventHandler<MouseEvent>> propertyOnAction = new SimpleObjectProperty<>();
 

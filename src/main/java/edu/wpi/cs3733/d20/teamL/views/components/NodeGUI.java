@@ -133,8 +133,8 @@ public class NodeGUI extends StackPane implements Highlightable {
         return selected;
     }
 
-    public Circle getGUI() {
-        return getCircle();
+    public StackPane getGUI() {
+        return this;
     }
 
     public Node getNode() {
