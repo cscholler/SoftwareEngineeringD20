@@ -109,7 +109,7 @@ public class MapPane extends StackPane {
             if (event.getButton().equals(MouseButton.PRIMARY) && !onSelectable && !erasing) {
                 selector.clear();
                 selectedNode = null;
-                onActionProperty().get().handle(event); //TODO FIX
+                onActionProperty().get().handle(event);
             }
             if (addingEdge && !onSelectable && !erasing) {
                 if (event.getButton().equals(MouseButton.PRIMARY)) {
@@ -138,6 +138,8 @@ public class MapPane extends StackPane {
                 dragSelecting = true;
                 selectionBox.setRootPosition(new Point2D(event.getX(), event.getY()));
                 body.getChildren().add(selectionBox);
+                selectedNode = null;
+                onActionProperty().get().handle(event);
             }
         });
 
@@ -247,6 +249,10 @@ public class MapPane extends StackPane {
         }
     }
 
+    public void recalculatePositions() {
+        setZoomLevel(getZoomLevel());
+    }
+
     public double getZoomLevel() {
         return zoomLevel;
     }
@@ -256,7 +262,7 @@ public class MapPane extends StackPane {
         zoomLevel = Math.max(zoomLevel, 0.01);
 
         for (NodeGUI nodeGUI : nodes.values()) {
-            Point2D prevPos = new Point2D(nodeGUI.layoutXProperty().get(), nodeGUI.layoutYProperty().get());
+            Point2D prevPos = new Point2D(nodeGUI.getXProperty().get(), nodeGUI.getYProperty().get());
             Point2D newPos = prevPos.multiply(zoomLevel / this.zoomLevel);
             nodeGUI.setLayoutPos(newPos);
         }
@@ -298,22 +304,22 @@ public class MapPane extends StackPane {
     public NodeGUI addNode(Node node) {
         NodeGUI nodeGUI = new NodeGUI(node);
 
-        nodeGUI.setRadius(circleRadius);
-        nodeGUI.fillProperty().setValue(nodeColor);
+        nodeGUI.getGUI().setRadius(circleRadius);
+        nodeGUI.getGUI().fillProperty().setValue(nodeColor);
         nodeGUI.setHighlightColor(highLightColor);
         nodeGUI.setHighlightRadius(highlightThickness);
 
-        Point2D zoomedPos = new Point2D(nodeGUI.layoutXProperty().get() * zoomLevel, nodeGUI.layoutYProperty().get() * zoomLevel);
+        Point2D zoomedPos = new Point2D(nodeGUI.getXProperty().get() * zoomLevel, nodeGUI.getYProperty().get() * zoomLevel);
         nodeGUI.setLayoutPos(zoomedPos);
 
         // Highlight and unhighlight as the node is moused over, set the cursor to arrows if it is movable
-        nodeGUI.setOnMouseEntered(event -> {
+        nodeGUI.getGUI().setOnMouseEntered(event -> {
             if(!erasing) {
                 nodeGUI.setHighlighted(true);
                 onSelectable = true;
             }
         });
-        nodeGUI.setOnMouseExited(event -> {
+        nodeGUI.getGUI().setOnMouseExited(event -> {
             if (!selector.contains(nodeGUI))
                 nodeGUI.setHighlighted(false);
             onSelectable = false;
@@ -321,9 +327,9 @@ public class MapPane extends StackPane {
 
         // Features involving selection and drag-and-drop only happen if this map is editable
         if (isEditable()) {
-            nodeGUI.setCursor(Cursor.MOVE);
+            nodeGUI.getGUI().setCursor(Cursor.MOVE);
 
-            nodeGUI.setOnMousePressed(event -> {
+            nodeGUI.getGUI().setOnMousePressed(event -> {
                 if (event.isPrimaryButtonDown() && !addingEdge && !erasing) {
                     // -----------Handle selection-----------
                     if (event.isShiftDown()) {
@@ -350,8 +356,8 @@ public class MapPane extends StackPane {
                 // -----------Handle adding the edge-----------
                 if (event.isSecondaryButtonDown() && !draggingNode && !dragSelecting && !erasing) {
                     tempEdge = new EdgeGUI(circleRadius / 4, nodeColor, highLightColor, highlightThickness);
-                    tempEdge.startXProperty().bind(nodeGUI.layoutXProperty());
-                    tempEdge.startYProperty().bind(nodeGUI.layoutYProperty());
+                    tempEdge.startXProperty().bind(nodeGUI.getXProperty());
+                    tempEdge.startYProperty().bind(nodeGUI.getYProperty());
                     tempEdge.setEndX(tempEdge.getStartX());
                     tempEdge.setEndY(tempEdge.getStartY());
                     tempEdge.setMouseTransparent(true);
@@ -415,7 +421,7 @@ public class MapPane extends StackPane {
         nodes.put(node, nodeGUI);
         node.data.put("GUI", nodeGUI);
 
-        body.getChildren().addAll(nodeGUI.getAllNodes());
+        body.getChildren().add(nodeGUI);
 
         return nodeGUI;
     }
@@ -450,12 +456,12 @@ public class MapPane extends StackPane {
         edgeGUI.setHighlightRadius(highlightThickness);
 
         // Set start position of the line to the source node
-        edgeGUI.startXProperty().bind(getNodeGUI(edge.getSource()).layoutXProperty());
-        edgeGUI.startYProperty().bind(getNodeGUI(edge.getSource()).layoutYProperty());
+        edgeGUI.startXProperty().bind(getNodeGUI(edge.getSource()).getXProperty());
+        edgeGUI.startYProperty().bind(getNodeGUI(edge.getSource()).getYProperty());
 
         // Set end position of the line to the destination node
-        edgeGUI.endXProperty().bind(getNodeGUI(edge.getDestination()).layoutXProperty());
-        edgeGUI.endYProperty().bind(getNodeGUI(edge.getDestination()).layoutYProperty());
+        edgeGUI.endXProperty().bind(getNodeGUI(edge.getDestination()).getXProperty());
+        edgeGUI.endYProperty().bind(getNodeGUI(edge.getDestination()).getYProperty());
 
         edges.put(edge, edgeGUI);
         edge.data.put("GUI", edgeGUI);
