@@ -28,8 +28,8 @@
                     <menus>
                         <Menu text="File">
                             <items>
-                                <MenuItem fx:id="save" onAction="#save" text="Save"/>
-                                <MenuItem fx:id="saveAs" onAction="#saveAs" text="Save As"/>
+                                <MenuItem fx:id="saveToDB" onAction="#saveToDB" text="Save to DB"/>
+                                <MenuItem fx:id="saveToCSV" onAction="#saveToCSV" text="Save to CSV"/>
                                 <MenuItem fx:id="open" onAction="#open" text="Open"/>
                                 <MenuItem fx:id="openDB" onAction="#openFromDB" text="Open From Database"/>
                                 <MenuItem fx:id="quit" onAction="#quit" text="Quit"/>

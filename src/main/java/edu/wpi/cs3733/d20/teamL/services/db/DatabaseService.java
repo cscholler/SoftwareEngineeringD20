@@ -10,7 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import edu.wpi.cs3733.d20.teamL.util.io.CSVReader;
+import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
 import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.cs3733.d20.teamL.services.Service;
@@ -198,7 +198,7 @@ public class DatabaseService extends Service {
 	public void populateFromCSV(String csvFile, String update) {
 		ArrayList<String> rowsToAdd = new ArrayList<>();
 		ArrayList<ArrayList<String>> rowData = new ArrayList<>();
-		CSVReader csvReader = new CSVReader();
+		CSVHelper csvReader = new CSVHelper();
 		
 		for (ArrayList<String> row : csvReader.readCSVFile(csvFile, true)) {
 			rowsToAdd.add(update);

@@ -87,7 +87,6 @@ public class NavigationController implements Initializable {
         }
     }
 
-
     /**
      * Supports autocompletion for user when typing in a specific word
      *
