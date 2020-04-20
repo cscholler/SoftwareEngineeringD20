@@ -8,11 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Graph {
 
-    private Map<String, Node> nodes;
-
-    public Graph() {
-        nodes = new ConcurrentHashMap<String, Node>();
-    }
+    private Map<String, Node> nodes = new ConcurrentHashMap<>();
 
     /**
      * Gets the collection of Nodes contained in this graph.
@@ -92,7 +88,7 @@ public class Graph {
         Collection<Edge> pointingEdges = new ArrayList<>();
 
         for (Edge edge : getEdges()) {
-            if (edge.destination.equals(node))
+            if (edge.getDestination().equals(node))
                 pointingEdges.add(edge);
         }
 
@@ -116,4 +112,5 @@ public class Graph {
     public void removeNode(String name) {
         nodes.remove(name);
     }
+
 }

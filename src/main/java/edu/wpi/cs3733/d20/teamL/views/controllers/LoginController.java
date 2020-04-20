@@ -94,16 +94,16 @@ public class LoginController implements Initializable {
             else if (user.equals("Admin") && password.equals("Admin")) {
                 System.out.println("Admin");
                 status = "Admin";
-                /*stage = (Stage) login.getScene().getWindow();
-                root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/StaffView.fxml"));
+                stage = (Stage) login.getScene().getWindow();
+                root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/AdminView.fxml"));
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
                 stage.setFullScreen(true);
-                stage.show();*/
+                stage.show();
             }
             else {
                 incorrectText.setVisible(true);
-                fadeTransition.play();
+                //fadeTransition.play();
             }
             System.out.println(status);
             pass.clear();
