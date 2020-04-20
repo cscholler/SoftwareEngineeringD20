@@ -109,9 +109,6 @@
             </children>
         </VBox>
     </top>
-    <center>
-
-    </center>
    <right>
       <VBox alignment="CENTER_LEFT" prefHeight="650.0" prefWidth="200.0" style="-fx-background-color: #0D2E57 #0D2E57;" BorderPane.alignment="CENTER">
          <children>

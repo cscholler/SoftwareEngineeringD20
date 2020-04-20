@@ -181,4 +181,21 @@ public class MapViewController {
         stage.close();
     }
 
+    @FXML
+    private void myCustomAction(MouseEvent event) {
+        Node selectedNode = map.getSelectedNode();
+
+        if(selectedNode == null) {
+            System.out.println("Close panel");
+            //TODO hide panel
+        } else {
+            System.out.println("Open panel");
+        }
+    }
+
+    @FXML
+    private void updateNode() {
+
+    }
+
 }

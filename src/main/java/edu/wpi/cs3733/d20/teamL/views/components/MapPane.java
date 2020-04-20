@@ -3,6 +3,11 @@ package edu.wpi.cs3733.d20.teamL.views.components;
 import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.graph.Graph;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
@@ -41,6 +46,7 @@ public class MapPane extends StackPane {
     private SelectionBox selectionBox = new SelectionBox(new Point2D(0, 0), selector, (Collection<Highlightable>) (Collection<?>) nodes.values());
 
     private Graph graph = new Graph();
+    private Node selectedNode = null;
 
     private double zoomLevel = 1;
 
@@ -98,6 +104,8 @@ public class MapPane extends StackPane {
         body.setOnMouseClicked(event -> {
             if (event.getButton().equals(MouseButton.PRIMARY) && !onSelectable && !erasing) {
                 selector.clear();
+                selectedNode = null;
+                onActionProperty().get().handle(event); //TODO FIX
             }
             if (addingEdge && !onSelectable && !erasing) {
                 if (event.getButton().equals(MouseButton.PRIMARY)) {
@@ -377,6 +385,10 @@ public class MapPane extends StackPane {
 
             // Done dragging
             nodeGUI.setOnMouseClicked(event -> {
+                if(selector.getNodes().size() == 1) {
+                    selectedNode = nodeGUI.getNode();
+                    onActionProperty().get().handle(event);
+                }
                 if (!addingEdge && !erasing) {
                     for (NodeGUI gui : selector.getNodes()) {
                         gui.getNode().setPosition(gui.getLayoutPos().multiply(1 / zoomLevel));
@@ -468,4 +480,23 @@ public class MapPane extends StackPane {
         return Math.round(num * Math.pow(10, place)) / Math.pow(10, place);
     }
 
+
+    private ObjectProperty<EventHandler<MouseEvent>> propertyOnAction = new SimpleObjectProperty<>();
+
+    public final ObjectProperty<EventHandler<MouseEvent>> onActionProperty() {
+        return propertyOnAction;
+    }
+
+    public final void setOnAction(EventHandler<MouseEvent> handler) {
+        propertyOnAction.set(handler);
+    }
+
+    public final EventHandler<MouseEvent> getOnAction() {
+        return propertyOnAction.get();
+
+    }
+
+    public Node getSelectedNode() {
+        return selectedNode;
+    }
 }
