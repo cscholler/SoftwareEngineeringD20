@@ -129,7 +129,7 @@ public class DBCache {
             valuesList.add(new ArrayList<>(Arrays.asList(nodeString.get(0))));
         }
 
-        db.executeUpdates(updates, valuesList);
+        db.executeUpdates(updates, valuesList); // TODO: Fix SQL error by preventing from adding duplicate nodes
 
         addedEdges.clear();
         addedEdges.clear();
