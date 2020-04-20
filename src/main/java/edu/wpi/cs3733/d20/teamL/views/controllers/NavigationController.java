@@ -11,10 +11,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -24,6 +27,7 @@ import java.util.ResourceBundle;
 
 public class NavigationController implements Initializable {
 
+    @FXML private ImageView iHome;
     @FXML private JFXButton btnLogin;
     @FXML private JFXButton btnMap;
     @FXML private JFXButton btnServices;
@@ -41,6 +45,11 @@ public class NavigationController implements Initializable {
 		sf.populateSearchFields();
 		autoCompletePopup = new JFXAutoCompletePopup<>();
 		autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
+		//sets picture on home
+		Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+		iHome.setFitHeight(screenBounds.getHeight());
+        iHome.setFitWidth(screenBounds.getWidth());
+
 	}
 
 	public ArrayList<Node> getNodeCache() {
