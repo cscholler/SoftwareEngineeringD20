@@ -34,7 +34,7 @@ public class NavigationController implements Initializable {
 
 	@FXML
 	public void initialize(URL location, ResourceBundle resources) {
-		cache = new DBCache();
+		cache = new DBCache(true);
 		cache.cacheAllFromDB();
 		sf = new SearchFields(getNodeCache());
 		sf.populateSearchFields();

@@ -13,11 +13,10 @@ public class Edge {
 
     public HashMap<String, Object> data = new HashMap<>();
 
-
-    public Edge(String id, Node source, Node destination) {
-        this.id = id;
+    public Edge(Node source, Node destination) {
         setSource(source);
         this.destination = destination;
+        this.id = getSource().getID() + "_" + getDestination().getID();
     }
 
     public double getLength() {
@@ -70,7 +69,7 @@ public class Edge {
      * @param obj
      * @return
      */
-    @Override
+    /*@Override
     public boolean equals(Object obj) {
         if (obj instanceof Edge) {
             Edge otherEdge = (Edge) obj;
@@ -83,5 +82,5 @@ public class Edge {
         } else  {
             throw new IllegalArgumentException("'equals()' must compare this with another Edge.");
         }
-    }
+    }*/
 }

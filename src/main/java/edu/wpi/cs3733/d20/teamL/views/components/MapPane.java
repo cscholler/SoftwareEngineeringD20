@@ -19,6 +19,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -57,6 +58,8 @@ public class MapPane extends StackPane {
     private Color nodeColor = Color.ORANGE;
     private Paint highLightColor = Color.CYAN;
     private double highlightThickness = 2;
+
+    private ArrayList<Node> editedNodes = new ArrayList<>();
 
     public MapPane() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MapPane.fxml"));
@@ -107,9 +110,8 @@ public class MapPane extends StackPane {
                     addNode(dest);
 
                     Node source = tempEdge.getSource().getNode();
-                    int length = (int) source.getPosition().distance(dest.getPosition());
 
-                    Edge edge = new Edge("new_edge", source, dest);
+                    Edge edge = new Edge(source, dest);
                     source.addEdgeTwoWay(edge);
 
                     addEdge(edge);
@@ -177,6 +179,11 @@ public class MapPane extends StackPane {
     }
 
     //---------- Getters/Setters ----------//
+
+
+    public ArrayList<Node> getEditedNodes() {
+        return editedNodes;
+    }
 
     public boolean isErasing() {
         return erasing;
@@ -351,7 +358,7 @@ public class MapPane extends StackPane {
                     Node dest = nodeGUI.getNode();
                     int length = (int) source.getPosition().distance(dest.getPosition());
 
-                    Edge edge = new Edge("new_edge", source, dest);
+                    Edge edge = new Edge(source, dest);
                     source.addEdgeTwoWay(edge);
 
                     addEdge(edge);
@@ -377,9 +384,10 @@ public class MapPane extends StackPane {
 
             // Done dragging
             nodeGUI.setOnMouseClicked(event -> {
-                if (!addingEdge && !erasing) {
+                if (!addingEdge && !erasing && draggingNode) {
                     for (NodeGUI gui : selector.getNodes()) {
                         gui.getNode().setPosition(gui.getLayoutPos().multiply(1 / zoomLevel));
+                        editedNodes.add(gui.getNode());
                         selector.setNodePosition(gui, gui.getLayoutPos().subtract(new Point2D(event.getX(), event.getY())));
                     }
                     draggingNode = false;

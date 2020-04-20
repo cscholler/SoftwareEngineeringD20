@@ -55,7 +55,7 @@ public class MapViewController {
 
     private double zoomLevel = 1;
     private Scene scene;
-    private DBCache dbCache = new DBCache();
+    private DBCache dbCache = new DBCache(false);
 
     @FXML
     public void initialize() {
@@ -128,10 +128,12 @@ public class MapViewController {
         ArrayList<Node> nodes = new ArrayList<>(map.getGraph().getNodes());
         ArrayList<Edge> edges = new ArrayList<>(map.getGraph().getEdges());
 
-        dbCache.cacheNodes(nodes);
+        dbCache.cacheNodes(nodes, map.getEditedNodes());
         dbCache.cacheEdges(edges);
 
         dbCache.updateDB();
+
+        map.getEditedNodes().clear();
     }
 
     @FXML
@@ -150,6 +152,7 @@ public class MapViewController {
 
     @FXML
     void openFromDB() {
+        dbCache.cacheAllFromDB();
         map.setGraph(MapParser.getGraphFromCache(dbCache.getNodeCache()));
     }
 

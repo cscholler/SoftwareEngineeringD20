@@ -3,19 +3,20 @@ package edu.wpi.cs3733.d20.teamL.services.db;
 import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.graph.Graph;
+import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
 import javafx.geometry.Point2D;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 public class DBCache {
     private static DBCache cache;
 
-    public DBCache() {
-        cacheNodesFromDB();
-        cacheEdgesFromDB();
+    public DBCache(boolean firstTime) {
+        db = new DatabaseService(firstTime);
     }
 
     //Tables that can be cached
@@ -24,7 +25,6 @@ public class DBCache {
     private ArrayList<Edge> edgeCache = new ArrayList<>();
 
     private ArrayList<Node> editedNodes = new ArrayList<>();
-    private ArrayList<Edge> editedEdges = new ArrayList<>();
 
     private ArrayList<Node> addedNodes = new ArrayList<>();
     private ArrayList<Edge> addedEdges = new ArrayList<>();
@@ -32,58 +32,54 @@ public class DBCache {
     private ArrayList<Node> deletedNodes = new ArrayList<>();
     private ArrayList<Edge> deletedEdges = new ArrayList<>();
 
-    DatabaseService db = new DatabaseService(); //this should be changes eventually
+    DatabaseService db; //this should be changes eventually
 
 	public void cacheAllFromDB() {
 		cacheNodesFromDB();
 		cacheEdgesFromDB();
-		disconnectDB();
+		//disconnectDB();
 	}
 
     /**
      * Sets the nodes cache to the given ArrayList of nodes. This will overwrite the cache and eventually overwrite the database, use this when you are sure you want to make changes to the map.
      *
-     * @param nodes A new list of nodes to set the nodes cache to.
+     * @param newNodes A new list of nodes to set the nodes cache to.
      */
-	public void cacheNodes(ArrayList<Node> nodes) {
-        for (Node node : nodes) {
+	public void cacheNodes(ArrayList<Node> newNodes, ArrayList<Node> editedNodes) {
+        for (Node node : newNodes) {
             if (!nodeCache.contains(node)) addedNodes.add(node);
-            else {
-                for (Node prevNode : nodeCache) {
-                    if (node.getID().equals(prevNode.getID()) && !node.equals(prevNode)) {
-                        editedNodes.add(node);
-                        break;
-                    }
-                }
-            }
         }
 
-        for (Node node : nodeCache) if (!nodes.contains(node)) deletedNodes.add(node);
+        for (Node node : nodeCache) {
+            if (!newNodes.contains(node)) deletedNodes.add(node);
+        }
+
+        Iterator<Node> iterator = editedNodes.iterator();
+        while (iterator.hasNext()) {
+            Node node = iterator.next();
+            if (deletedNodes.contains(node)) iterator.remove();
+        }
+
+        this.editedNodes = editedNodes;
 	    
-	    this.nodeCache = nodes;
+	    this.nodeCache = newNodes;
     }
 
     /**
      * Sets the edges cache to the given ArrayList of edges. This will overwrite the cache and eventually overwrite the database, use this when you are sure you want to make changes to the map.
      *
-     * @param edges A new list of edges to set the edges cache to.
+     * @param newEdges A new list of edges to set the edges cache to.
      */
-    public void cacheEdges(ArrayList<Edge> edges) {
-        for (Edge edge : edges) {
-            if (!edgeCache.contains(edge)) addedEdges.add(edge);
-            else {
-                for (Edge prevEdge : edgeCache) {
-                    if (edge.getID().equals(prevEdge.getID()) && !edge.equals(prevEdge)) {
-                        editedEdges.add(edge);
-                        break;
-                    }
-                }
+    public void cacheEdges(ArrayList<Edge> newEdges) {
+        for (Edge edge : newEdges) {
+            if (!edgeCache.contains(edge)) {
+                addedEdges.add(edge);
             }
         }
 
-        for (Edge edge : edgeCache) if (!edges.contains(edge)) deletedEdges.add(edge);
+        for (Edge edge : edgeCache) if (!newEdges.contains(edge)) deletedEdges.add(edge);
 
-        this.edgeCache = edges;
+        this.edgeCache = newEdges;
     }
 
     /**
@@ -95,45 +91,51 @@ public class DBCache {
         // Concatenate the node and edges lists for one update on the cache
         ArrayList<ArrayList<String>> valuesList = new ArrayList<>();
 
+        // Add nodes
         ArrayList<ArrayList<String>> addValues = convertNodesToValuesList(addedNodes);
-        ArrayList<ArrayList<String>> editValues = convertNodesToValuesList(editedNodes);
-        ArrayList<ArrayList<String>> deleteValues = convertNodesToValuesList(deletedNodes);
-
         for (ArrayList<String> nodeString : addValues) {
             updates.add(DBConstants.addNode);
         }
         valuesList.addAll(addValues);
 
-        for (ArrayList<String> nodeString : editValues) {
-            updates.add(DBConstants.updateNode);
-        }
-        valuesList.addAll(editValues);
-
-        for (ArrayList<String> nodeString : deleteValues) {
-            updates.add(DBConstants.removeNode);
-            valuesList.add(new ArrayList<>(Arrays.asList(nodeString.get(0))));
-        }
-
+        // Add edges
         addValues = convertEdgesToValuesList(addedEdges);
-        editValues = convertEdgesToValuesList(editedEdges);
-        deleteValues = convertEdgesToValuesList(deletedEdges);
-
         for (ArrayList<String> edgeString : addValues) {
             updates.add(DBConstants.addEdge);
         }
         valuesList.addAll(addValues);
 
-        for (ArrayList<String> edgeString : editValues) {
-            updates.add(DBConstants.updateEdge);
-        }
-        valuesList.addAll(editValues);
-
-        for (ArrayList<String> edgeString : deleteValues) {
+        // Delete edges
+        for (Edge edge : deletedEdges) {
             updates.add(DBConstants.removeEdge);
-            valuesList.add(new ArrayList<>(Arrays.asList(edgeString.get(0))));
+            valuesList.add(new ArrayList<>(Arrays.asList(edge.getID())));
         }
 
-        db.executeUpdates(updates, valuesList);
+        // Edit nodes
+        ArrayList<ArrayList<String>> editValues = convertNodesToValuesList(editedNodes);
+        for (int i = 0; i < editValues.size(); i++) {
+            updates.add(DBConstants.updateNode);
+            ArrayList<String> currentNode = editValues.get(i);
+            String nodeID = currentNode.get(0);
+            currentNode.remove(0);
+            currentNode.add(nodeID);
+            valuesList.add(currentNode);
+        }
+
+        // Delete nodes
+        ArrayList<ArrayList<String>> deleteValues = convertNodesToValuesList(deletedNodes);
+        for (ArrayList<String> nodeString : deleteValues) {
+            updates.add(DBConstants.removeNode);
+            valuesList.add(new ArrayList<>(Arrays.asList(nodeString.get(0))));
+        }
+
+        db.executeUpdates(updates, valuesList); // TODO: Fix SQL error by preventing from adding duplicate nodes
+
+        addedEdges.clear();
+        addedEdges.clear();
+        editedNodes.clear();
+        deletedEdges.clear();
+        deletedNodes.clear();
     }
 
     private ArrayList<ArrayList<String>> convertNodesToValuesList(List<Node> nodes) {
@@ -191,7 +193,7 @@ public class DBCache {
         ArrayList<ArrayList<String>> edgeData = db.getTableFromResultSet(resSet);
 
         for (ArrayList<String> row : edgeData) {
-            Edge newEdge = new Edge(row.get(0), searchNodeCache(row.get(1)), searchNodeCache(row.get(2)));
+            Edge newEdge = new Edge(searchNodeCache(row.get(1)), searchNodeCache(row.get(2)));
             newEdge.getSource().addEdgeTwoWay(newEdge);
             edgeCache.add(newEdge);
         }

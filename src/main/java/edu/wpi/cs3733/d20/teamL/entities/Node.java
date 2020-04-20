@@ -13,10 +13,10 @@ public class Node {
     private Graph graph;
     private Point2D position;
     private String id;
-    private String shortName = "";
-    private String longName = "";
-    private String building = "";
-    private String type = "";
+    private String shortName = "foo";
+    private String longName = "foo";
+    private String building = "foo";
+    private String type = "fooo";
     private int floor = 0;
 
     public HashMap<String, Object> data = new HashMap<>(); //TODO remove Hashmap and add NodeGUI field
@@ -140,7 +140,7 @@ public class Node {
     public void addEdgeTwoWay(Edge newEdge) {
         addEdge(newEdge);
 
-        Edge otherEdge = new Edge(newEdge.getID(), newEdge.getDestination(), this);
+        Edge otherEdge = new Edge(newEdge.getDestination(), this);
 
         newEdge.getDestination().addEdge(otherEdge);
     }
@@ -208,7 +208,7 @@ public class Node {
     }
 
     public ArrayList<String> toArrayList() {
-        return new ArrayList<>(Arrays.asList(getID(), String.valueOf(getPosition().getX()), String.valueOf(getPosition().getX()),
+        return new ArrayList<>(Arrays.asList(getID(), String.valueOf(getPosition().getX()), String.valueOf(getPosition().getY()),
                 String.valueOf(getFloor()), getBuilding(), getType(), getLongName(), getShortName()));
     }
 
@@ -218,7 +218,7 @@ public class Node {
      * @param obj
      * @return
      */
-    @Override
+    /*@Override
     public boolean equals(Object obj) {
         if (obj instanceof Node) {
             Node otherNode = (Node) obj;
@@ -235,5 +235,5 @@ public class Node {
         } else  {
             throw new IllegalArgumentException("'equals()' must compare this with another Node.");
         }
-    }
+    }*/
 }
