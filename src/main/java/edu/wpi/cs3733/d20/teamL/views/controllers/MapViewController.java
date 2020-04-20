@@ -171,8 +171,15 @@ public class MapViewController {
 
     @FXML
     private void backToMain() {
-        Stage stage = (Stage) root.getScene().getWindow();
-        stage.close();
+        try {
+            Stage stage = (Stage) pathFind.getScene().getWindow();
+            Parent newRoot = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/Home.fxml"));
+            Scene newScene = new Scene(newRoot);
+            stage.setScene(newScene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
