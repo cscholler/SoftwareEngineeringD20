@@ -8,6 +8,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Properties;
 
 import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
@@ -31,9 +32,9 @@ public class DatabaseService extends Service {
 
 	public DatabaseService(boolean firstTime) {
 		//super();
+		this.serviceName = DBConstants.SERVICE_NAME;
 		this.firstTime = firstTime;
 		startService();
-		this.serviceName = DBConstants.SERVICE_NAME;
 	}
 
 	@Override
@@ -207,7 +208,6 @@ public class DatabaseService extends Service {
 
 		executeUpdates(rowsToAdd, rowData);
 	}
-
 
 	private void dropTables() {
 		ResultSet resSet;

@@ -11,9 +11,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -23,6 +27,7 @@ import java.util.ResourceBundle;
 
 public class NavigationController implements Initializable {
 
+    @FXML private ImageView iHome;
     @FXML private JFXButton btnLogin;
     @FXML private JFXButton btnMap;
     @FXML private JFXButton btnServices;
@@ -40,6 +45,10 @@ public class NavigationController implements Initializable {
 		sf.populateSearchFields();
 		autoCompletePopup = new JFXAutoCompletePopup<>();
 		autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
+		//sets picture on home
+		Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+		iHome.setFitHeight(screenBounds.getHeight());
+        iHome.setFitWidth(screenBounds.getWidth());
 
 	}
 
@@ -55,8 +64,8 @@ public class NavigationController implements Initializable {
      */
     public void handleButtonAction(ActionEvent actionEvent) throws IOException {
 
-        Stage stage = null;
-        Parent root = null;
+        Stage stage;
+        Parent root;
 
         //Goes to the Login Page
         if (actionEvent.getSource() == btnLogin) {
@@ -65,8 +74,9 @@ public class NavigationController implements Initializable {
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initOwner(btnHelp.getScene().getWindow());
+            stage.initOwner(btnLogin.getScene().getWindow());
             stage.showAndWait();
+
         //Displays the map of the hospital
         } else if (actionEvent.getSource() == btnMap) {
             stage = (Stage) btnMap.getScene().getWindow();
@@ -74,16 +84,19 @@ public class NavigationController implements Initializable {
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
+
         //Displays a popup window that help is on the way
         } else if (actionEvent.getSource() == btnHelp) {
-            stage = new Stage();
+
+            stage = (Stage) btnHelp.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/Help.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initOwner(btnHelp.getScene().getWindow());
-            stage.showAndWait();
+            stage.show();
+
         //Goes to Service display screen
+        } else {
+
         }
     }
 

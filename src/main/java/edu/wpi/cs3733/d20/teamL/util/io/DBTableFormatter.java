@@ -4,9 +4,6 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
-import com.google.inject.Inject;
-
-import edu.wpi.cs3733.d20.teamL.services.db.DatabaseService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
