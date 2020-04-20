@@ -58,7 +58,7 @@ public class NotificationsPageController implements Initializable {
             System.out.println("Nothing");
         } else {
             reqMessage.setWrapText(true);
-            reqMessage.setText(req.getNurseName() + " requests " + req.getDose() + " of " + req.getMedType() + " for " + req.getPatientName() + "(" + req.getPatientID() +")" + " in room" + req.getRoomNum() );
+            reqMessage.setText(req.getNurseName() + " requests " + req.getDose() + " of " + req.getMedType() + " for " + req.getPatientName() + "(" + req.getPatientID() +")" + " in room " + req.getRoomNum() );
             addInfo.setWrapText(true);
             addInfo.setText(req.getAddInfo());
             System.out.println(message);
