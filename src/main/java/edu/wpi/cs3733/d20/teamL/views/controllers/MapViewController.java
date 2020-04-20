@@ -5,6 +5,7 @@ import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
 import edu.wpi.cs3733.d20.teamL.services.graph.Path;
 import edu.wpi.cs3733.d20.teamL.services.graph.PathFinder;
+import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
 import edu.wpi.cs3733.d20.teamL.views.components.*;
 import edu.wpi.cs3733.d20.teamL.views.dialogues.DataDialogue;
 import edu.wpi.cs3733.d20.teamL.services.graph.MapParser;
@@ -26,11 +27,12 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.util.*;
 
 public class MapViewController {
     @FXML
-    MenuItem save, saveAs, open, quit;
+    MenuItem saveToDB, saveToCSV, open, quit;
 
     @FXML
     MenuItem undo, redo;
@@ -65,7 +67,7 @@ public class MapViewController {
 
     private double zoomLevel = 1;
     private Scene scene;
-    private DBCache dbCache = new DBCache();
+    private DBCache dbCache = new DBCache(false);
 
     @FXML
     public void initialize() {
@@ -120,8 +122,8 @@ public class MapViewController {
 
         // Add shortcut prompts to buttons
         quit.setAccelerator(cq);
-        save.setAccelerator(cs);
-        saveAs.setAccelerator(css);
+        saveToDB.setAccelerator(cs);
+        saveToCSV.setAccelerator(css);
         undo.setAccelerator(cz);
         redo.setAccelerator(cy);
         open.setAccelerator(co);
@@ -138,45 +140,63 @@ public class MapViewController {
     }
 
     @FXML
-    void save() {
+    void saveToDB() {
         ArrayList<Node> nodes = new ArrayList<>(map.getGraph().getNodes());
         ArrayList<Edge> edges = new ArrayList<>(map.getGraph().getEdges());
 
-        dbCache.cacheNodes(nodes);
+        dbCache.cacheNodes(nodes, map.getEditedNodes());
         dbCache.cacheEdges(edges);
-
         dbCache.updateDB();
+
+        map.getEditedNodes().clear();
     }
 
     @FXML
-    public void saveAs() {
-        save();
+    public void saveToCSV() {
+    	DataDialogue data = new DataDialogue();
+    	data.setSaving(true);
+    	data.showDialogue(pathFind.getScene().getWindow());
+    	String nodeFilePath = data.getNodeFile().getAbsolutePath();
+		String edgeFilePath = data.getEdgeFile().getAbsolutePath();
+		CSVHelper csvHelper = new CSVHelper();
+		ArrayList<ArrayList<String>> nodeTable = new ArrayList<>();
+		ArrayList<ArrayList<String>> edgeTable = new ArrayList<>();
+		ArrayList<Node> nodes = new ArrayList<>(map.getGraph().getNodes());
+		ArrayList<Edge> edges = new ArrayList<>(map.getGraph().getEdges());
+		nodeTable.add(new ArrayList<>(Arrays.asList("nodeID", "xCoord", "yCoord", "floor", "building", "nodeType", "longName", "shortName")));
+		for (Node node : nodes) {
+			nodeTable.add(node.toArrayList());
+		}
+		edgeTable.add(new ArrayList<>(Arrays.asList("edgeID", "startNode", "endNode")));
+		for (Edge edge : edges) {
+			edgeTable.add(edge.toArrayList());
+		}
+		csvHelper.writeToCSV(nodeFilePath, nodeTable);
+		csvHelper.writeToCSV(edgeFilePath, edgeTable);
     }
 
     @FXML
     public void open() {
         DataDialogue data = new DataDialogue();
-
         data.showDialogue(pathFind.getScene().getWindow());
-
         map.setGraph(MapParser.parseMapToGraph(data.getNodeFile(), data.getEdgeFile()));
     }
 
     @FXML
     void openFromDB() {
+        dbCache.cacheAllFromDB();
         map.setGraph(MapParser.getGraphFromCache(dbCache.getNodeCache()));
     }
 
     @FXML
     private void insertNode() {
         Node node = new Node("1", new Point2D(100,100)); //TODO CHANGE TO UNIQUE ID
-
         map.addNode(node);
     }
 
     @FXML
     private void handleTools(ActionEvent event) {
-        if(event.getSource() == eraser) {
+        if (event.getSource() == eraser) {
             map.setErasing(true);
         } else {
             map.setErasing(false);
@@ -185,8 +205,15 @@ public class MapViewController {
 
     @FXML
     private void backToMain() {
-        Stage stage = (Stage) root.getScene().getWindow();
-        stage.close();
+        try {
+            Stage stage = (Stage) pathFind.getScene().getWindow();
+            Parent newRoot = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/Home.fxml"));
+            Scene newScene = new Scene(newRoot);
+            stage.setScene(newScene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

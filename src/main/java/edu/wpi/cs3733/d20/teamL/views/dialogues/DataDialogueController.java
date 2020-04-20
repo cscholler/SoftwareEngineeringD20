@@ -10,11 +10,14 @@ import javafx.stage.FileChooser;
 public class DataDialogueController {
 
     DataDialogue owner;
+	private boolean isSaving = false;
 
     @FXML
     private TextField nodeField;
     @FXML
     private TextField edgeField;
+    @FXML
+	private Button confirmBtn;
 
     private final FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("CSV files .csv", "*.csv");
 
@@ -44,9 +47,25 @@ public class DataDialogueController {
         FileChooser chooser = new FileChooser();
         chooser.getExtensionFilters().add(filter);
         chooser.setSelectedExtensionFilter(filter);
-
-        File chosenFile = chooser.showOpenDialog(owner.stage);
-        if(chosenFile != null) field.setText(chosenFile.getPath());
+		File chosenFile;
+        if (!isSaving()) {
+        	chosenFile = chooser.showOpenDialog(owner.stage);
+		} else {
+			chosenFile = chooser.showSaveDialog(owner.stage);
+		}
+        if (chosenFile != null) field.setText(chosenFile.getPath());
     }
 
+	public boolean isSaving() {
+		return isSaving;
+	}
+
+	public void setSaving(boolean saving) {
+    	if (saving) {
+    		confirmBtn.setText("Save");
+		} else {
+			confirmBtn.setText("Open");
+		}
+		isSaving = saving;
+	}
 }

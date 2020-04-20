@@ -10,7 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import edu.wpi.cs3733.d20.teamL.util.io.CSVReader;
+import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
 import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.cs3733.d20.teamL.services.Service;
@@ -21,6 +21,7 @@ public class DatabaseService extends Service {
 	private Properties props = null;
 	private ArrayList<ResultSet> usedResSets = new ArrayList<>();
 	private ArrayList<Statement> usedStmts = new ArrayList<>();
+	private boolean firstTime = true;
 
 	public DatabaseService(Properties props) {
 		super();
@@ -28,8 +29,10 @@ public class DatabaseService extends Service {
 		this.props = props;
 	}
 
-	public DatabaseService() {
-		super();
+	public DatabaseService(boolean firstTime) {
+		//super();
+		this.firstTime = firstTime;
+		startService();
 		this.serviceName = DBConstants.SERVICE_NAME;
 	}
 
@@ -38,10 +41,13 @@ public class DatabaseService extends Service {
 		if (connection == null) {
 			connect(props);
 		}
-		buildDatabase();
-		// TODO: put somewhere better and drop table before populating
-		populateFromCSV("MapLnodesFloor2", DBConstants.addNode);
-		populateFromCSV("MapLedgesFloor2", DBConstants.addEdge);
+
+		if (firstTime) {
+			buildDatabase();
+			// TODO: put somewhere better and drop table before populating
+			populateFromCSV("MapLnodesFloor2", DBConstants.addNode);
+			populateFromCSV("MapLedgesFloor2", DBConstants.addEdge);
+		}
 	}
 
 	@Override
@@ -192,7 +198,7 @@ public class DatabaseService extends Service {
 	public void populateFromCSV(String csvFile, String update) {
 		ArrayList<String> rowsToAdd = new ArrayList<>();
 		ArrayList<ArrayList<String>> rowData = new ArrayList<>();
-		CSVReader csvReader = new CSVReader();
+		CSVHelper csvReader = new CSVHelper();
 		
 		for (ArrayList<String> row : csvReader.readCSVFile(csvFile, true)) {
 			rowsToAdd.add(update);

@@ -12,7 +12,7 @@ import javafx.stage.Window;
 public class DataDialogue {
 
     public DataDialogueController controller;
-
+    private boolean isSaving = false;
     Parent root;
     Scene scene;
     Stage stage;
@@ -89,6 +89,7 @@ public class DataDialogue {
         stage.initModality(Modality.APPLICATION_MODAL);
         controller = fxmlLoader.getController();
         controller.owner = this;
+		controller.setSaving(isSaving());
 
         hasInit = true;
     }
@@ -97,4 +98,11 @@ public class DataDialogue {
         stage.initOwner(owner);
     }
 
+	public boolean isSaving() {
+		return this.isSaving;
+	}
+
+	public void setSaving(boolean isSaving) {
+		this.isSaving = isSaving;
+	}
 }

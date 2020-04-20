@@ -34,7 +34,7 @@ public class NavigationController implements Initializable {
 
 	@FXML
 	public void initialize(URL location, ResourceBundle resources) {
-		cache = new DBCache();
+		cache = new DBCache(true);
 		cache.cacheAllFromDB();
 		sf = new SearchFields(getNodeCache());
 		sf.populateSearchFields();
@@ -86,7 +86,6 @@ public class NavigationController implements Initializable {
         //Goes to Service display screen
         }
     }
-
 
     /**
      * Supports autocompletion for user when typing in a specific word

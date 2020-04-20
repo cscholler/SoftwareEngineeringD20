@@ -1,8 +1,6 @@
 package edu.wpi.cs3733.d20.teamL.util.io;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +10,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 @Slf4j
-public class CSVReader {
+public class CSVHelper {
 	public static final String ROOT_DIR = "/edu/wpi/cs3733/d20/teamL/csv/";
 
 	public ArrayList<ArrayList<String>> readCSVFile(String fileName) {
@@ -48,6 +46,22 @@ public class CSVReader {
 				System.out.print(row.get(i) + (i != row.size() - 1 ? ", " : ""));
 			}
 			System.out.print("\n");
+		}
+	}
+
+	public void writeToCSV(String filePath, ArrayList<ArrayList<String>> table) {
+		try {
+			FileWriter csvWriter = new FileWriter(filePath, false);
+			for (int i = 0; i < table.size(); i++) {
+				for (int j = 0; j < table.get(i).size(); j++) {
+					csvWriter.append(table.get(i).get(j)).append(j != table.get(i).size() - 1 ? "," : "");
+				}
+				csvWriter.append(i != table.size() - 1 ? "\n" : "");
+			}
+			csvWriter.flush();
+			csvWriter.close();
+		} catch (IOException ex) {
+			log.error("Encountered IOException", ex);
 		}
 	}
 }

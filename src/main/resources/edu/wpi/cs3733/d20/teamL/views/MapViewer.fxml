@@ -16,9 +16,12 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-
 <?import edu.wpi.cs3733.d20.teamL.views.components.MapPane?>
-<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.MapViewController">
+
+<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="600" prefWidth="800" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.MapViewController">
     <top>
         <VBox prefWidth="100.0" BorderPane.alignment="CENTER">
             <children>
@@ -26,11 +29,11 @@
                     <menus>
                         <Menu text="File">
                             <items>
-                                <MenuItem fx:id="save" onAction="#save" text="Save" />
-                                <MenuItem fx:id="saveAs" onAction="#saveAs" text="Save As" />
-                                <MenuItem fx:id="open" onAction="#open" text="Open" />
-                                <MenuItem fx:id="openDB" onAction="#openFromDB" text="Open From Database" />
-                                <MenuItem fx:id="quit" onAction="#quit" text="Quit" />
+                                <MenuItem fx:id="saveToDB" onAction="#saveToDB" text="Save to DB"/>
+                                <MenuItem fx:id="saveToCSV" onAction="#saveToCSV" text="Save to CSV"/>
+                                <MenuItem fx:id="open" onAction="#open" text="Open"/>
+                                <MenuItem fx:id="openDB" onAction="#openFromDB" text="Open From Database"/>
+                                <MenuItem fx:id="quit" onAction="#quit" text="Quit"/>
                             </items>
                         </Menu>
                         <Menu text="Edit">
@@ -52,60 +55,62 @@
                         </Menu>
                     </menus>
                 </MenuBar>
-                  <ToolBar>
-                      <items>
-                  <HBox spacing="20.0">
-                     <children>
-                        <Button mnemonicParsing="false" onAction="#backToMain" text="Back" />
-                        <HBox spacing="10.0">
-                           <children>
-                                      <ToggleButton fx:id="mouse" onAction="#handleTools" selected="true">
-                                          <toggleGroup>
-                                              <ToggleGroup fx:id="tools" />
-                                          </toggleGroup>
-                                          <graphic>
-                                              <ImageView fitHeight="20.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
-                                                  <image>
-                                                      <Image url="@../assets/Cursor_placeholder.png" />
-                                                  </image>
-                                              </ImageView>
-                                          </graphic>
-                                      </ToggleButton>
-                                      <ToggleButton fx:id="eraser" onAction="#handleTools" toggleGroup="$tools">
-                                          <graphic>
-                                              <ImageView fitHeight="20.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
-                                                  <image>
-                                                      <Image url="@../assets/Eraser_Placeholder.png" />
-                                                  </image>
-                                              </ImageView>
-                                          </graphic>
-                                      </ToggleButton>
-                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
-                                        <children>
-                                            <HBox alignment="CENTER_LEFT" spacing="5.0">
-                                                <children>
-                                                    <Label text="Start Node:" />
-                                                    <TextField fx:id="startNode" />
-                                                </children>
-                                            </HBox>
-                                            <HBox alignment="CENTER_LEFT" spacing="5.0">
-                                                <children>
-                                                    <Label text="End Node" />
-                                                    <TextField fx:id="endNode" />
-                                                </children>
-                                            </HBox>
-                                            <Button fx:id="pathFind" mnemonicParsing="false" text="Path Find" />
-                                        </children>
-                                        <padding>
-                                            <Insets left="10.0" right="10.0" />
-                                        </padding>
-                                    </HBox>
-                           </children>
+                <ToolBar>
+                    <items>
+                        <HBox spacing="20.0">
+                            <children>
+                                <Button mnemonicParsing="false" text="Back" onAction="#backToMain"/>
+                                <HBox spacing="10.0">
+                                    <children>
+                                        <ToggleButton fx:id="mouse" onAction="#handleTools" selected="true">
+                                            <toggleGroup>
+                                                <ToggleGroup fx:id="tools"/>
+                                            </toggleGroup>
+                                            <graphic>
+                                                <ImageView fitHeight="20.0" fitWidth="17.0" pickOnBounds="true"
+                                                           preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../assets/Cursor_placeholder.png"/>
+                                                    </image>
+                                                </ImageView>
+                                            </graphic>
+                                        </ToggleButton>
+                                        <ToggleButton fx:id="eraser" onAction="#handleTools" toggleGroup="$tools">
+                                            <graphic>
+                                                <ImageView fitHeight="20.0" fitWidth="21.0" pickOnBounds="true"
+                                                           preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../assets/Eraser_Placeholder.png"/>
+                                                    </image>
+                                                </ImageView>
+                                            </graphic>
+                                        </ToggleButton>
+                                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                            <children>
+                                                <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                                    <children>
+                                                        <Label text="Start Node:"/>
+                                                        <TextField fx:id="startNode"/>
+                                                    </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                                    <children>
+                                                        <Label text="End Node"/>
+                                                        <TextField fx:id="endNode"/>
+                                                    </children>
+                                                </HBox>
+                                                <Button fx:id="pathFind" mnemonicParsing="false" text="Path Find"/>
+                                            </children>
+                                            <padding>
+                                                <Insets left="10.0" right="10.0"/>
+                                            </padding>
+                                        </HBox>
+                                    </children>
+                                </HBox>
+                            </children>
                         </HBox>
-                     </children>
-                  </HBox>
-                      </items>
-                  </ToolBar>
+                    </items>
+                </ToolBar>
             </children>
         </VBox>
     </top>
