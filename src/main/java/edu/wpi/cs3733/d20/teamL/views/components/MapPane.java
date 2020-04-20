@@ -5,8 +5,6 @@ import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.graph.Graph;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,17 +16,14 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Line;
 
 import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -138,8 +133,6 @@ public class MapPane extends StackPane {
             if (!addingEdge && !draggingNode && !onSelectable && event.isPrimaryButtonDown() && !erasing) {
                 dragSelecting = true;
                 selectionBox.setRootPosition(new Point2D(event.getX(), event.getY()));
-                selectedNode = null;
-                onActionProperty().get().handle(event);
                 body.getChildren().add(selectionBox);
             }
         });
@@ -314,6 +307,9 @@ public class MapPane extends StackPane {
         nodeGUI.setHighlightColor(highLightColor);
         nodeGUI.setHighlightRadius(highlightThickness);
 
+        Point2D zoomedPos = new Point2D(nodeGUI.layoutXProperty().get() * zoomLevel, nodeGUI.layoutYProperty().get() * zoomLevel);
+        nodeGUI.setLayoutPos(zoomedPos);
+
         // Highlight and unhighlight as the node is moused over, set the cursor to arrows if it is movable
         nodeGUI.setOnMouseEntered(event -> {
             if(!erasing) {
@@ -373,7 +369,6 @@ public class MapPane extends StackPane {
                 if (event.isPrimaryButtonDown() && addingEdge && !erasing) {
                     Node source = tempEdge.getSource().getNode();
                     Node dest = nodeGUI.getNode();
-                    int length = (int) source.getPosition().distance(dest.getPosition());
 
                     Edge edge = new Edge(source, dest);
                     source.addEdgeTwoWay(edge);
@@ -424,10 +419,6 @@ public class MapPane extends StackPane {
         node.data.put("GUI", nodeGUI);
 
         body.getChildren().add(nodeGUI);
-        body.layout();
-
-        Point2D zoomedPos = nodeGUI.getLayoutPos().multiply(zoomLevel);
-        nodeGUI.setLayoutPos(zoomedPos);
 
         return nodeGUI;
     }
