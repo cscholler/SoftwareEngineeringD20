@@ -18,8 +18,11 @@
             <Insets bottom="10.0" top="10.0" />
          </BorderPane.margin></Label>
    </top>
-   <right>
-      <BorderPane prefHeight="678.0" prefWidth="602.0" BorderPane.alignment="CENTER">
+   <left>
+      <JFXListView fx:id="notifications" onMouseClicked="#displaySelected" prefHeight="678.0" prefWidth="428.0" BorderPane.alignment="CENTER" />
+   </left>
+   <center>
+      <BorderPane BorderPane.alignment="CENTER">
          <top>
             <Label fx:id="reqMessage" text="Nurse has requested a dosage of Medicine for patient (patientID) in room #" BorderPane.alignment="CENTER" />
          </top>
@@ -58,8 +61,5 @@
             <Insets />
          </BorderPane.margin>
       </BorderPane>
-   </right>
-   <left>
-      <JFXListView fx:id="notifications" onMouseClicked="#displaySelected" prefHeight="678.0" prefWidth="428.0" BorderPane.alignment="CENTER" />
-   </left>
+   </center>
 </BorderPane>
