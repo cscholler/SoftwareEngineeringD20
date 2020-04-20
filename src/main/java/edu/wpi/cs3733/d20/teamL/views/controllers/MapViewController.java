@@ -22,6 +22,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.geometry.Point2D;
 
 import edu.wpi.cs3733.d20.teamL.entities.Node;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -41,7 +42,7 @@ public class MapViewController {
     TextField startNode, endNode;
 
     @FXML
-    Button pathFind, btnCancel, btnSave, btnEditConnections;
+    Button pathFind, btnCancel, btnSave, btnEditConnections, btnOpenEditor;
 
     @FXML
     ToggleGroup tools;
@@ -56,6 +57,9 @@ public class MapViewController {
 
     @FXML
     JFXTextField nodeIDText, xCoordText, yCoordText, buildingText, nodeTypeText, shortNameText, longNameText;
+
+    @FXML
+    VBox editor;
 
 
 
@@ -99,6 +103,10 @@ public class MapViewController {
         openFromDB();
 
         map.setZoomLevel(0.6);
+
+        //Hides the node editor VBox
+        editor.setPrefWidth(0);
+        editor.setVisible(false);
 	}
 
     private void coreShortcuts() {
