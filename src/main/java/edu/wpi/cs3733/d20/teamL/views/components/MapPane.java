@@ -47,6 +47,7 @@ public class MapPane extends StackPane {
 
     private Graph graph = new Graph();
     private Node selectedNode = null;
+    private NodeGUI selectedNodeGUI = null;
 
     private double zoomLevel = 1;
 
@@ -117,7 +118,7 @@ public class MapPane extends StackPane {
                     Node source = tempEdge.getSource().getNode();
                     int length = (int) source.getPosition().distance(dest.getPosition());
 
-                    Edge edge = new Edge("new_edge", source, dest);
+                    Edge edge = new Edge(source, dest);
                     source.addEdgeTwoWay(edge);
 
                     addEdge(edge);
@@ -359,7 +360,7 @@ public class MapPane extends StackPane {
                     Node dest = nodeGUI.getNode();
                     int length = (int) source.getPosition().distance(dest.getPosition());
 
-                    Edge edge = new Edge("new_edge", source, dest);
+                    Edge edge = new Edge(source, dest);
                     source.addEdgeTwoWay(edge);
 
                     addEdge(edge);
@@ -385,16 +386,17 @@ public class MapPane extends StackPane {
 
             // Done dragging
             nodeGUI.setOnMouseClicked(event -> {
-                if(selector.getNodes().size() == 1) {
-                    selectedNode = nodeGUI.getNode();
-                    onActionProperty().get().handle(event);
-                }
                 if (!addingEdge && !erasing) {
                     for (NodeGUI gui : selector.getNodes()) {
                         gui.getNode().setPosition(gui.getLayoutPos().multiply(1 / zoomLevel));
                         selector.setNodePosition(gui, gui.getLayoutPos().subtract(new Point2D(event.getX(), event.getY())));
                     }
                     draggingNode = false;
+                }
+                if(selector.getNodes().size() == 1) {
+                    selectedNode = nodeGUI.getNode();
+                    selectedNodeGUI = nodeGUI;
+                    onActionProperty().get().handle(event);
                 }
             });
         }
@@ -410,7 +412,7 @@ public class MapPane extends StackPane {
         return nodeGUI;
     }
 
-    private void removeNode(NodeGUI nodeGUI) {
+    public void removeNode(NodeGUI nodeGUI) {
         // Remove all the Edges and EdgeGUIs going to and from the node
         for (Node neighbor : nodeGUI.getNode().getNeighbors()) {
             Edge edgeToNode = neighbor.edgeFromDest(nodeGUI.getNode());
@@ -433,7 +435,7 @@ public class MapPane extends StackPane {
      *
      * @param edge The edge to be added
      */
-    private void addEdge(Edge edge) {
+    public void addEdge(Edge edge) {
         EdgeGUI edgeGUI = new EdgeGUI(edge);
         edgeGUI.strokeProperty().setValue(nodeColor);
         edgeGUI.setHighlightColor(highLightColor);
@@ -499,4 +501,8 @@ public class MapPane extends StackPane {
     public Node getSelectedNode() {
         return selectedNode;
     }
+    public NodeGUI getSelectedNodeGUI() {
+        return selectedNodeGUI;
+    }
+
 }

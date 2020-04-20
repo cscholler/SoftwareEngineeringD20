@@ -20,6 +20,12 @@ public class Edge {
         this.destination = destination;
     }
 
+    public Edge(Node source, Node destination) {
+        this.id = source.getID() + "_" + destination.getID();
+        setSource(source);
+        this.destination = destination;
+    }
+
     public double getLength() {
         return source.getPosition().distance(destination.getPosition());
     }

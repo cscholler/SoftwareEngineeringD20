@@ -194,16 +194,46 @@ public class MapViewController {
         Node selectedNode = map.getSelectedNode();
 
         if(selectedNode == null) {
-            System.out.println("Close panel");
-            //TODO hide panel
+            editor.setPrefWidth(0);
+            editor.setVisible(false);
         } else {
-            System.out.println("Open panel");
+            editor.setPrefWidth(200);
+            editor.setVisible(true);
+
+            nodeIDText.setText(selectedNode.getID());
+            Double x = selectedNode.getPosition().getX();
+            Double y = selectedNode.getPosition().getY();
+            xCoordText.setText(x.toString());
+            yCoordText.setText(y.toString());
+            buildingText.setText(selectedNode.getBuilding());
+            nodeTypeText.setText(selectedNode.getType());
+            shortNameText.setText(selectedNode.getShortName());
+            longNameText.setText(selectedNode.getLongName());
         }
     }
 
     @FXML
     private void updateNode() {
+        Node selectedNode = map.getSelectedNode();
+        NodeGUI selectedNodeGUI = map.getNodeGUI(selectedNode);
+        Collection<Node> neighbors = selectedNode.getNeighbors();
 
+        selectedNode.setId(nodeIDText.getText());
+        double x = Double.parseDouble(xCoordText.getText());
+        double y = Double.parseDouble(yCoordText.getText());
+        selectedNode.setPosition(new Point2D(x, y));
+        selectedNode.setBuilding(buildingText.getText());
+        selectedNode.setType(nodeTypeText.getText());
+        selectedNode.setShortName(shortNameText.getText());
+        selectedNode.setLongName(longNameText.getText());
+
+        map.removeNode(selectedNodeGUI);
+        map.addNode(selectedNode);
+        for(Node neighbor : neighbors) {
+            Edge edge = new Edge(selectedNode, neighbor);
+            selectedNode.addEdgeTwoWay(edge);
+            map.addEdge(edge);
+        }
     }
 
 }
