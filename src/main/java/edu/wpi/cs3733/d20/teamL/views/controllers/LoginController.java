@@ -63,6 +63,7 @@ public class LoginController implements Initializable {
             System.out.println("Cancel");
             stage = (Stage) btnCancel.getScene().getWindow();
             stage.close();
+
         } else if (e.getSource() == login) {
 
             if (user.equals("Doctor") && password.equals("Doctor")) {
@@ -70,6 +71,10 @@ public class LoginController implements Initializable {
                 status = "Doctor";
 
                 stage = (Stage) login.getScene().getWindow();
+                stage.close();
+                stage = (Stage) stage.getOwner();
+
+                //stage.close();
                 root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/StaffView.fxml"));
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
@@ -81,6 +86,10 @@ public class LoginController implements Initializable {
                 System.out.println("Nurse");
                 status = "Nurse";
                 stage = (Stage) login.getScene().getWindow();
+
+                stage.close();
+                stage = (Stage) stage.getOwner();
+
                 root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/StaffView.fxml"));
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
@@ -92,6 +101,10 @@ public class LoginController implements Initializable {
                 System.out.println("Admin");
                 status = "Admin";
                 stage = (Stage) login.getScene().getWindow();
+
+                stage.close();
+                stage = (Stage) stage.getOwner();
+
                 root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/AdminView.fxml"));
                 Scene scene = new Scene(root);
                 stage.setScene(scene);

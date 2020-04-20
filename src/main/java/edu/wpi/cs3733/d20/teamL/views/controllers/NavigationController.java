@@ -75,7 +75,7 @@ public class NavigationController implements Initializable {
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initOwner(btnLogin.getScene().getWindow());
-            stage.show();
+            stage.showAndWait();
 
         //Displays the map of the hospital
         } else if (actionEvent.getSource() == btnMap) {
