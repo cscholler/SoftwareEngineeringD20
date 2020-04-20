@@ -25,5 +25,5 @@ public interface Highlightable {
 
     Collection<Node> getAllNodes();
 
-    Shape getGUI();
+    Node getGUI();
 }

@@ -18,6 +18,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -109,7 +110,7 @@ public class MapPane extends StackPane {
             if (event.getButton().equals(MouseButton.PRIMARY) && !onSelectable && !erasing) {
                 selector.clear();
                 selectedNode = null;
-                onActionProperty().get().handle(event); //TODO FIX
+                onActionProperty().get().handle(event);
             }
             if (addingEdge && !onSelectable && !erasing) {
                 if (event.getButton().equals(MouseButton.PRIMARY)) {
@@ -137,6 +138,8 @@ public class MapPane extends StackPane {
             if (!addingEdge && !draggingNode && !onSelectable && event.isPrimaryButtonDown() && !erasing) {
                 dragSelecting = true;
                 selectionBox.setRootPosition(new Point2D(event.getX(), event.getY()));
+                selectedNode = null;
+                onActionProperty().get().handle(event);
                 body.getChildren().add(selectionBox);
             }
         });
@@ -214,10 +217,6 @@ public class MapPane extends StackPane {
         return selector;
     }
 
-    public void setSelector(Selector selector) {
-        this.selector = selector;
-    }
-
     public SelectionBox getSelectionBox() {
         return selectionBox;
     }
@@ -230,6 +229,10 @@ public class MapPane extends StackPane {
         return graph;
     }
 
+    /**
+     * Adds every node and edge in the given graph to the database
+     * @param graph
+     */
     public void setGraph(Graph graph) {
         this.graph = graph;
         nodes.clear();
@@ -251,17 +254,25 @@ public class MapPane extends StackPane {
         return zoomLevel;
     }
 
-    // Sets the zoom level by changing the spacing between all the nodes
+    /**
+     * Sets the zoom level by changing the spacing between all the nodes. If a zoom level of less than 0.01 is given, the zoom is set to 0.01.
+     *
+     * @param zoomLevel the new zoom level, 1.0 is default which scales the node to their pixel position stored in the database.
+     */
     public void setZoomLevel(double zoomLevel) {
         zoomLevel = Math.max(zoomLevel, 0.01);
 
         for (NodeGUI nodeGUI : nodes.values()) {
-            Point2D prevPos = new Point2D(nodeGUI.layoutXProperty().get(), nodeGUI.layoutYProperty().get());
+            Point2D prevPos = nodeGUI.getLayoutPos();
             Point2D newPos = prevPos.multiply(zoomLevel / this.zoomLevel);
             nodeGUI.setLayoutPos(newPos);
         }
 
         this.zoomLevel = zoomLevel;
+    }
+
+    public void recalculateNodePositions() {
+        setZoomLevel(getZoomLevel());
     }
 
     /**
@@ -298,13 +309,10 @@ public class MapPane extends StackPane {
     public NodeGUI addNode(Node node) {
         NodeGUI nodeGUI = new NodeGUI(node);
 
-        nodeGUI.setRadius(circleRadius);
-        nodeGUI.fillProperty().setValue(nodeColor);
+        nodeGUI.getCircle().setRadius(circleRadius);
+        nodeGUI.getCircle().fillProperty().setValue(nodeColor);
         nodeGUI.setHighlightColor(highLightColor);
         nodeGUI.setHighlightRadius(highlightThickness);
-
-        Point2D zoomedPos = new Point2D(nodeGUI.layoutXProperty().get() * zoomLevel, nodeGUI.layoutYProperty().get() * zoomLevel);
-        nodeGUI.setLayoutPos(zoomedPos);
 
         // Highlight and unhighlight as the node is moused over, set the cursor to arrows if it is movable
         nodeGUI.setOnMouseEntered(event -> {
@@ -350,8 +358,8 @@ public class MapPane extends StackPane {
                 // -----------Handle adding the edge-----------
                 if (event.isSecondaryButtonDown() && !draggingNode && !dragSelecting && !erasing) {
                     tempEdge = new EdgeGUI(circleRadius / 4, nodeColor, highLightColor, highlightThickness);
-                    tempEdge.startXProperty().bind(nodeGUI.layoutXProperty());
-                    tempEdge.startYProperty().bind(nodeGUI.layoutYProperty());
+                    tempEdge.startXProperty().bind(nodeGUI.getXProperty());
+                    tempEdge.startYProperty().bind(nodeGUI.getYProperty());
                     tempEdge.setEndX(tempEdge.getStartX());
                     tempEdge.setEndY(tempEdge.getStartY());
                     tempEdge.setMouseTransparent(true);
@@ -415,7 +423,11 @@ public class MapPane extends StackPane {
         nodes.put(node, nodeGUI);
         node.data.put("GUI", nodeGUI);
 
-        body.getChildren().addAll(nodeGUI.getAllNodes());
+        body.getChildren().add(nodeGUI);
+        body.layout();
+
+        Point2D zoomedPos = nodeGUI.getLayoutPos().multiply(zoomLevel);
+        nodeGUI.setLayoutPos(zoomedPos);
 
         return nodeGUI;
     }
@@ -434,7 +446,7 @@ public class MapPane extends StackPane {
 
         // Remove the node from the graph and the nodeGUI from the Pane
         nodes.remove(nodeGUI.getNode());
-        body.getChildren().removeAll(nodeGUI.getAllNodes());
+        body.getChildren().remove(nodeGUI);
         graph.removeNode(nodeGUI.getNode());
     }
 
@@ -450,12 +462,12 @@ public class MapPane extends StackPane {
         edgeGUI.setHighlightRadius(highlightThickness);
 
         // Set start position of the line to the source node
-        edgeGUI.startXProperty().bind(getNodeGUI(edge.getSource()).layoutXProperty());
-        edgeGUI.startYProperty().bind(getNodeGUI(edge.getSource()).layoutYProperty());
+        edgeGUI.startXProperty().bind(getNodeGUI(edge.getSource()).getXProperty());
+        edgeGUI.startYProperty().bind(getNodeGUI(edge.getSource()).getYProperty());
 
         // Set end position of the line to the destination node
-        edgeGUI.endXProperty().bind(getNodeGUI(edge.getDestination()).layoutXProperty());
-        edgeGUI.endYProperty().bind(getNodeGUI(edge.getDestination()).layoutYProperty());
+        edgeGUI.endXProperty().bind(getNodeGUI(edge.getDestination()).getXProperty());
+        edgeGUI.endYProperty().bind(getNodeGUI(edge.getDestination()).getYProperty());
 
         edges.put(edge, edgeGUI);
         edge.data.put("GUI", edgeGUI);
