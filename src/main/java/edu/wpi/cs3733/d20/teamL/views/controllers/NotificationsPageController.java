@@ -26,7 +26,7 @@ public class NotificationsPageController {
             root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/StaffView.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.setFullScreen(true);
+            stage.setMaximized(true);
             stage.show();
         }
     }

@@ -49,7 +49,7 @@ public class StaffViewController {
             root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/NotificationsPage.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.setFullScreen(true);
+            stage.setMaximized(true);
             stage.show();
             //opens med request
         } else if (event.getSource() == btnMeds) {
@@ -57,7 +57,8 @@ public class StaffViewController {
             root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/MedicationRequest.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.setFullScreen(true);
+            stage.hide();
+            stage.isMaximized();
             stage.show();
             //opens mapView
         } else if (event.getSource() == btnMap) {
@@ -65,21 +66,26 @@ public class StaffViewController {
             root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/MapViewer.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.setFullScreen(true);
+            stage.hide();
+            stage.setMaximized(true);
             stage.show();
+            //returns back to home
         } else if (event.getSource() == btnLogout) {
             stage = (Stage) btnLogout.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/Home.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.setFullScreen(true);
+            stage.hide();
+            stage.setMaximized(true);
             stage.show();
+            //adds a patient
         } else if (event.getSource() == btnAddPatient) {
             stage = (Stage) btnAddPatient.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/AddPatient.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.setFullScreen(true);
+            stage.hide();
+            stage.setMaximized(true);
             stage.show();
         }
     }

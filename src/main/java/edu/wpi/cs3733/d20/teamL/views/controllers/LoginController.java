@@ -48,9 +48,6 @@ public class LoginController implements Initializable {
         Stage stage;
         Parent root;
 
-        Stage stage1;
-        Parent root1;
-
         String user = username.getText();
         String password = pass.getText();
         incorrectText.setVisible(false);
@@ -61,6 +58,7 @@ public class LoginController implements Initializable {
         fadeTransition.setFromValue(0.5);
         fadeTransition.setToValue(1.0);
         fadeTransition.setCycleCount(3);
+
         if (e.getSource() == btnCancel) {
             System.out.println("Cancel");
             stage = (Stage) btnCancel.getScene().getWindow();
@@ -72,11 +70,10 @@ public class LoginController implements Initializable {
                 status = "Doctor";
 
                 stage = (Stage) login.getScene().getWindow();
-                //stage = new Stage();
                 root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/StaffView.fxml"));
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
-                stage.setFullScreen(true);
+                stage.setMaximized(true);
                 stage.show();
 
             }
@@ -87,7 +84,7 @@ public class LoginController implements Initializable {
                 root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/StaffView.fxml"));
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
-                stage.setFullScreen(true);
+                stage.setMaximized(true);
                 stage.show();
             }
 
@@ -98,12 +95,12 @@ public class LoginController implements Initializable {
                 root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/AdminView.fxml"));
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
-                stage.setFullScreen(true);
+                stage.setMaximized(true);
                 stage.show();
             }
             else {
                 incorrectText.setVisible(true);
-                //fadeTransition.play();
+                fadeTransition.play();
             }
             System.out.println(status);
             pass.clear();

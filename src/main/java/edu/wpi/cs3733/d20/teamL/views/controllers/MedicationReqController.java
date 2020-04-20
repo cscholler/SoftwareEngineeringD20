@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.DatabaseService;
@@ -11,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -24,10 +26,11 @@ public class MedicationReqController implements Initializable {
 	DBTableFormatter formatter = new DBTableFormatter();
 
     @FXML
-    JFXButton btnCancel, btnSubmit;
+    private JFXButton btnCancel, btnSubmit;
 
     @FXML
-    JFXTextField doctorNameText, medTypeText, doseText, patientText, roomNumText, addInfoText;
+    private JFXTextField doctorNameText, medTypeText, doseText, patientText, roomNumText, addInfoText;
+
 
 	@FXML
 	public void initialize(URL location, ResourceBundle resources) {
@@ -49,7 +52,7 @@ public class MedicationReqController implements Initializable {
             root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/StaffView.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.setFullScreen(true);
+            stage.setMaximized(true);
             stage.show();
 
         } else if (e.getSource() == btnSubmit){

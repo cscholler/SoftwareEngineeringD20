@@ -86,7 +86,7 @@ public class NavigationController implements Initializable {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initOwner(btnHelp.getScene().getWindow());
 
-            stage.setFullScreen(true);
+            stage.setMaximized(true);
 
             stage.show();
 
