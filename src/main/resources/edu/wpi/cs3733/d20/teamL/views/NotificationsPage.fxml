@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXListView?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 
-<AnchorPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.NotificationsPageController">
-   <children>
-      <Label layoutX="286.0" layoutY="101.0" prefHeight="108.0" prefWidth="132.0" text="Notifications" />
-      <JFXButton fx:id="btnBack" layoutX="241.0" layoutY="209.0" onAction="#handleButtonAction" text="Back" />
-   </children>
-</AnchorPane>
+<BorderPane prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.NotificationsPageController">
+   <center>
+      <JFXListView fx:id="notifications" onMouseClicked="#displaySelected" prefHeight="223.0" prefWidth="604.0" BorderPane.alignment="CENTER" />
+   </center>
+   <bottom>
+      <JFXButton fx:id="btnBack" onAction="#handleButtonAction" text="Back" BorderPane.alignment="CENTER" />
+   </bottom>
+   <top>
+      <Label text="Notification" BorderPane.alignment="CENTER" />
+   </top>
+</BorderPane>
