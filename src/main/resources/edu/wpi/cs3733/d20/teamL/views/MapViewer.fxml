@@ -16,8 +16,8 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import edu.wpi.cs3733.d20.teamL.views.components.MapPane?>
 
+<?import edu.wpi.cs3733.d20.teamL.views.components.MapPane?>
 <BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.MapViewController">
     <top>
         <VBox prefWidth="100.0" BorderPane.alignment="CENTER">
@@ -109,15 +109,18 @@
             </children>
         </VBox>
     </top>
+    <center>
+        <MapPane prefHeight="150.0" prefWidth="200.0" fx:id="map"/>
+    </center>
    <right>
-      <VBox alignment="CENTER_LEFT" prefHeight="650.0" prefWidth="200.0" style="-fx-background-color: #0D2E57 #0D2E57;" BorderPane.alignment="CENTER">
+      <VBox fx:id="editor" alignment="CENTER_LEFT" minWidth="-Infinity" prefHeight="650.0" prefWidth="200.0" style="-fx-background-color: #0D2E57 #0D2E57;" BorderPane.alignment="CENTER">
          <children>
             <Label text="NodeID:" textFill="WHITE">
                <VBox.margin>
                   <Insets left="10.0" top="20.0" />
                </VBox.margin>
             </Label>
-            <JFXTextField fx:id="nodeIDText" focusColor="WHITE" promptText="Enter new ID...">
+            <JFXTextField fx:id="nodeIDText" focusColor="WHITE" promptText="Enter new ID..." style="-fx-text-inner-color: #ffffff;">
                <VBox.margin>
                   <Insets left="10.0" right="10.0" />
                </VBox.margin>
@@ -127,7 +130,7 @@
                   <Insets left="10.0" top="20.0" />
                </VBox.margin>
             </Label>
-            <JFXTextField focusColor="WHITE" layoutX="10.0" layoutY="37.0" promptText="Enter new X coordinate..." fx:id="xCoordText">
+            <JFXTextField focusColor="WHITE" layoutX="10.0" layoutY="37.0" promptText="Enter new X coordinate..." style="-fx-text-inner-color-fx-text-inner-color: #ffffff;" fx:id="xCoordText">
                <VBox.margin>
                   <Insets left="10.0" right="10.0" />
                </VBox.margin>
@@ -137,7 +140,7 @@
                   <Insets left="10.0" top="20.0" />
                </VBox.margin>
             </Label>
-            <JFXTextField fx:id="yCoordText" focusColor="WHITE" promptText="Enter new Y coordinate...">
+            <JFXTextField fx:id="yCoordText" focusColor="WHITE" promptText="Enter new Y coordinate..." style="-fx-text-inner-color-fx-text-inner-color: #ffffff;">
                <VBox.margin>
                   <Insets left="10.0" right="10.0" />
                </VBox.margin>
@@ -147,7 +150,7 @@
                   <Insets left="10.0" top="20.0" />
                </VBox.margin>
             </Label>
-            <JFXTextField fx:id="buildingText" focusColor="WHITE" promptText="Enter new building...">
+            <JFXTextField fx:id="buildingText" focusColor="WHITE" promptText="Enter new building..." style="-fx-text-inner-color-fx-text-inner-color: #ffffff;">
                <VBox.margin>
                   <Insets left="10.0" right="10.0" />
                </VBox.margin>
@@ -157,7 +160,7 @@
                   <Insets left="10.0" top="20.0" />
                </VBox.margin>
             </Label>
-            <JFXTextField fx:id="nodeTypeText" focusColor="WHITE" promptText="Enter new node type...">
+            <JFXTextField fx:id="nodeTypeText" focusColor="WHITE" promptText="Enter new node type..." style="-fx-text-inner-color-fx-text-inner-color: #ffffff;">
                <VBox.margin>
                   <Insets left="10.0" right="10.0" />
                </VBox.margin>
@@ -167,7 +170,7 @@
                   <Insets left="10.0" top="20.0" />
                </VBox.margin>
             </Label>
-            <JFXTextField fx:id="longNameText" focusColor="WHITE" promptText="Enter new long name...">
+            <JFXTextField fx:id="longNameText" focusColor="WHITE" promptText="Enter new long name..." style="-fx-text-inner-color-fx-text-inner-color: #ffffff;">
                <VBox.margin>
                   <Insets left="10.0" right="10.0" />
                </VBox.margin>
@@ -177,7 +180,7 @@
                   <Insets left="10.0" top="20.0" />
                </VBox.margin>
             </Label>
-            <JFXTextField fx:id="shortNameText" focusColor="WHITE" promptText="Enter new short name...">
+            <JFXTextField fx:id="shortNameText" focusColor="WHITE" promptText="Enter new short name..." style="-fx-text-inner-color-fx-text-inner-color: #ffffff;">
                <VBox.margin>
                   <Insets left="10.0" right="10.0" />
                </VBox.margin>
@@ -204,7 +207,4 @@
          </children>
       </VBox>
    </right>
-    <center>
-        <MapPane prefHeight="150.0" prefWidth="200.0" fx:id="map"/>
-    </center>
 </BorderPane>
