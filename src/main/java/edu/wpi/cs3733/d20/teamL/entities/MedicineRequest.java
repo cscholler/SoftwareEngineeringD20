@@ -8,14 +8,16 @@ public class MedicineRequest {
     String medType;
     String dose;
     String roomNum;
+    String addInfo;
 
-    public MedicineRequest(String patientName, String patientID, String nurseName, String medType, String dose, String roomNum) {
+    public MedicineRequest(String patientName, String patientID, String nurseName, String medType, String dose, String roomNum, String addInfo) {
         this.patientName = patientName;
         this.patientID = patientID;
         this.nurseName = nurseName;
         this.medType = medType;
         this.dose = dose;
         this.roomNum = roomNum;
+        this.addInfo = addInfo;
     }
 
     public String getPatientName() {
@@ -64,5 +66,13 @@ public class MedicineRequest {
 
     public void setRoomNum(String roomNum) {
         this.roomNum = roomNum;
+    }
+
+    public String getAddInfo() {
+        return addInfo;
+    }
+
+    public void setAddInfo(String addInfo) {
+        this.addInfo = addInfo;
     }
 }
