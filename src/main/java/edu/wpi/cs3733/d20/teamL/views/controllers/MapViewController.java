@@ -176,8 +176,10 @@ public class MapViewController {
     @FXML
     public void open() {
         DataDialogue data = new DataDialogue();
-        data.showDialogue(pathFind.getScene().getWindow());
-        map.setGraph(MapParser.parseMapToGraph(data.getNodeFile(), data.getEdgeFile()));
+        boolean confirmed = data.showDialogue(pathFind.getScene().getWindow());
+        if(confirmed)
+            map.setGraph(MapParser.parseMapToGraph(data.getNodeFile(), data.getEdgeFile()));
+
     }
 
     @FXML

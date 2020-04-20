@@ -31,7 +31,7 @@
                             <items>
                                 <MenuItem fx:id="saveToDB" onAction="#saveToDB" text="Save to DB"/>
                                 <MenuItem fx:id="saveToCSV" onAction="#saveToCSV" text="Save to CSV"/>
-                                <MenuItem fx:id="open" onAction="#open" text="Open"/>
+                                <MenuItem fx:id="open" onAction="#open" text="Open From CSV"/>
                                 <MenuItem fx:id="openDB" onAction="#openFromDB" text="Open From Database"/>
                                 <MenuItem fx:id="quit" onAction="#quit" text="Quit"/>
                             </items>

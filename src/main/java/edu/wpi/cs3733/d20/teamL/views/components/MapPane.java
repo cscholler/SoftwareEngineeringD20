@@ -247,6 +247,8 @@ public class MapPane extends StackPane {
         for (Edge edge : graph.getEdges()) {
             addEdge(edge);
         }
+
+        recalculatePositions();
     }
 
     public void recalculatePositions() {
