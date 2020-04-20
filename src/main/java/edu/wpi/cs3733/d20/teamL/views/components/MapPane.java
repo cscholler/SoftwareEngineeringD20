@@ -108,8 +108,6 @@ public class MapPane extends StackPane {
         body.setOnMouseClicked(event -> {
             if (event.getButton().equals(MouseButton.PRIMARY) && !onSelectable && !erasing) {
                 selector.clear();
-                selectedNode = null;
-                onActionProperty().get().handle(event); //TODO FIX
             }
             if (addingEdge && !onSelectable && !erasing) {
                 if (event.getButton().equals(MouseButton.PRIMARY)) {
@@ -172,6 +170,10 @@ public class MapPane extends StackPane {
         body.setOnMouseReleased(event -> {
             dragSelecting = false;
             body.getChildren().remove(selectionBox);
+            if(selector.getNodes().size() == 0) {
+                selectedNode = null;
+                onActionProperty().get().handle(event); //TODO FIX
+            }
         });
 
         body.setOnMouseMoved(event -> {
