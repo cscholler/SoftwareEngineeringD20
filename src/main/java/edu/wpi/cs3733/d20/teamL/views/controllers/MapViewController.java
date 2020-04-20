@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers;
 
+import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
 import edu.wpi.cs3733.d20.teamL.services.graph.Path;
@@ -22,6 +23,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.geometry.Point2D;
 
 import edu.wpi.cs3733.d20.teamL.entities.Node;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -42,7 +44,7 @@ public class MapViewController {
     TextField startNode, endNode;
 
     @FXML
-    Button pathFind;
+    Button pathFind, btnCancel, btnSave, btnEditConnections, btnOpenEditor;
 
     @FXML
     ToggleGroup tools;
@@ -54,6 +56,14 @@ public class MapViewController {
     BorderPane root;
     @FXML
     MapPane map;
+
+    @FXML
+    JFXTextField nodeIDText, xCoordText, yCoordText, buildingText, nodeTypeText, shortNameText, longNameText;
+
+    @FXML
+    VBox editor;
+
+
 
     private double zoomLevel = 1;
     private Scene scene;
@@ -95,6 +105,10 @@ public class MapViewController {
         openFromDB();
 
         map.setZoomLevel(0.6);
+
+        //Hides the node editor VBox
+        editor.setPrefWidth(0);
+        editor.setVisible(false);
 	}
 
     private void coreShortcuts() {
@@ -199,6 +213,53 @@ public class MapViewController {
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void myCustomAction(MouseEvent event) {
+        Node selectedNode = map.getSelectedNode();
+
+        if(selectedNode == null) {
+            editor.setPrefWidth(0);
+            editor.setVisible(false);
+        } else {
+            editor.setPrefWidth(200);
+            editor.setVisible(true);
+
+            nodeIDText.setText(selectedNode.getID());
+            Double x = selectedNode.getPosition().getX();
+            Double y = selectedNode.getPosition().getY();
+            xCoordText.setText(x.toString());
+            yCoordText.setText(y.toString());
+            buildingText.setText(selectedNode.getBuilding());
+            nodeTypeText.setText(selectedNode.getType());
+            shortNameText.setText(selectedNode.getShortName());
+            longNameText.setText(selectedNode.getLongName());
+        }
+    }
+
+    @FXML
+    private void updateNode() {
+        Node selectedNode = map.getSelectedNode();
+        NodeGUI selectedNodeGUI = map.getNodeGUI(selectedNode);
+        Collection<Node> neighbors = selectedNode.getNeighbors();
+
+        selectedNode.setId(nodeIDText.getText());
+        double x = Double.parseDouble(xCoordText.getText());
+        double y = Double.parseDouble(yCoordText.getText());
+        selectedNode.setPosition(new Point2D(x, y));
+        selectedNode.setBuilding(buildingText.getText());
+        selectedNode.setType(nodeTypeText.getText());
+        selectedNode.setShortName(shortNameText.getText());
+        selectedNode.setLongName(longNameText.getText());
+
+        map.removeNode(selectedNodeGUI);
+        map.addNode(selectedNode);
+        for(Node neighbor : neighbors) {
+            Edge edge = new Edge(selectedNode, neighbor);
+            selectedNode.addEdgeTwoWay(edge);
+            map.addEdge(edge);
         }
     }
 

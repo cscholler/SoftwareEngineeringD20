@@ -14,9 +14,9 @@ public class Edge {
     public HashMap<String, Object> data = new HashMap<>();
 
     public Edge(Node source, Node destination) {
+        this.id = source.getID() + "_" + destination.getID();
         setSource(source);
         this.destination = destination;
-        this.id = getSource().getID() + "_" + getDestination().getID();
     }
 
     public double getLength() {
