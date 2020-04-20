@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers;
 
+import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
 import edu.wpi.cs3733.d20.teamL.services.graph.Path;
@@ -40,7 +41,7 @@ public class MapViewController {
     TextField startNode, endNode;
 
     @FXML
-    Button pathFind;
+    Button pathFind, btnCancel, btnSave, btnEditConnections;
 
     @FXML
     ToggleGroup tools;
@@ -52,6 +53,11 @@ public class MapViewController {
     BorderPane root;
     @FXML
     MapPane map;
+
+    @FXML
+    JFXTextField nodeIDText, xCoordText, yCoordText, buildingText, nodeTypeText, shortNameText, longNameText;
+
+
 
     private double zoomLevel = 1;
     private Scene scene;
