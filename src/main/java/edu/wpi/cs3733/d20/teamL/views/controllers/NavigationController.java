@@ -83,7 +83,6 @@ public class NavigationController implements Initializable {
             root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/Help.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.setFullScreen(true);
             stage.show();
 
         //Goes to Service display screen

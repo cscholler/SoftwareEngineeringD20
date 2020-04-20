@@ -3,32 +3,24 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
-<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="255.0" prefWidth="427.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.LoginController">
+<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="255.0" prefWidth="427.0" style="-fx-effect: drop shadow; -fx-background-color: e8e8e8;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.LoginController">
     <children>
-        <Pane layoutX="25.0" layoutY="20.0" prefHeight="216.0" prefWidth="377.0" style="-fx-background-color: #DADEDF;">
-            <children>
-                <JFXTextField fx:id="username" focusColor="#001540" labelFloat="true" layoutX="76.0" layoutY="28.0" maxWidth="232.0" minWidth="232.0" prefHeight="40.0" prefWidth="232.0" promptText="Username" unFocusColor="#4d4d4dd8" />
-                <JFXButton fx:id="login" buttonType="RAISED" defaultButton="true" layoutX="76.0" layoutY="156.0" onAction="#handleLogin" prefHeight="32.0" prefWidth="86.0" ripplerFill="WHITE" style="-fx-background-color: #001540;" text="Login" textAlignment="CENTER" textFill="WHITE">
-                    <font>
-                        <Font name="System Bold" size="12.0" />
-                    </font></JFXButton>
-                <JFXPasswordField fx:id="pass" focusColor="#001540" layoutX="76.0" layoutY="84.0" maxWidth="232.0" minWidth="214.0" prefHeight="40.0" prefWidth="232.0" promptText="Password" unFocusColor="#4d4d4dda" />
-                <JFXButton fx:id="btnCancel" buttonType="RAISED" defaultButton="true" layoutX="222.0" layoutY="156.0" onAction="#handleLogin" prefHeight="32.0" prefWidth="86.0" ripplerFill="WHITE" style="-fx-background-color: #001540;" text="Cancel" textAlignment="CENTER" textFill="WHITE">
-                    <font>
-                        <Font name="System Bold" size="12.0" />
-                    </font>
-                </JFXButton>
-                <Text fx:id="incorrectText" fill="#c94031" layoutX="76.0" layoutY="144.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username or password is incorrect." visible="false" wrappingWidth="232.0" />
-            </children>
-            <effect>
-                <DropShadow blurType="GAUSSIAN" />
-            </effect>
-        </Pane>
+          <JFXTextField fx:id="username" focusColor="#001540" labelFloat="true" layoutX="101.0" layoutY="48.0" maxWidth="232.0" minWidth="232.0" prefHeight="40.0" prefWidth="232.0" promptText="Username" unFocusColor="#4d4d4dd8" />
+          <JFXButton fx:id="login" buttonType="RAISED" defaultButton="true" layoutX="101.0" layoutY="176.0" onAction="#handleLogin" prefHeight="32.0" prefWidth="86.0" ripplerFill="WHITE" style="-fx-background-color: #001540;" text="Login" textAlignment="CENTER" textFill="WHITE">
+              <font>
+                  <Font name="System Bold" size="12.0" />
+              </font>
+      </JFXButton>
+          <JFXPasswordField fx:id="pass" focusColor="#001540" layoutX="101.0" layoutY="104.0" maxWidth="232.0" minWidth="214.0" prefHeight="40.0" prefWidth="232.0" promptText="Password" unFocusColor="#4d4d4dda" />
+          <JFXButton fx:id="btnCancel" buttonType="RAISED" defaultButton="true" layoutX="247.0" layoutY="176.0" onAction="#handleLogin" prefHeight="32.0" prefWidth="86.0" ripplerFill="WHITE" style="-fx-background-color: #001540;" text="Cancel" textAlignment="CENTER" textFill="WHITE">
+              <font>
+                  <Font name="System Bold" size="12.0" />
+              </font>
+          </JFXButton>
+          <Text fx:id="incorrectText" fill="#c94031" layoutX="101.0" layoutY="164.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username or password is incorrect." visible="false" wrappingWidth="232.0" />
     </children>
 </AnchorPane>
