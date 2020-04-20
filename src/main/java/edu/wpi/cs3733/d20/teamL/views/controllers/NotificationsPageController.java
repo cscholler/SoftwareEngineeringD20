@@ -31,7 +31,9 @@ public class NotificationsPageController implements Initializable {
     @FXML
     Label reqMessage, addInfo;
 
-
+    /**
+     * Loads data to the list view in the form of MedicineRequest Objects
+     */
     @FXML
     private void loadData() {
         list.removeAll(list);
@@ -50,8 +52,11 @@ public class NotificationsPageController implements Initializable {
 
     }
 
+    /**
+     * Checks for anyone clicking on the listView of notifications and opens them in the pane to the right
+     */
     @FXML
-    private void displaySelected(MouseEvent e) {
+    private void displaySelected() {
         MedicineRequest req = notifications.getSelectionModel().getSelectedItem();
         String message = notifications.getSelectionModel().getSelectedItem().getPatientName();
         if (message == null || message.isEmpty()) {
@@ -65,6 +70,11 @@ public class NotificationsPageController implements Initializable {
         }
     }
 
+    /**
+     * Handles buttons pressed on the notification screen back, decline, approve
+     * @param e tracks which button is pressed
+     * @throws IOException
+     */
     @FXML
     public void handleButtonAction(ActionEvent e) throws IOException {
         Stage stage;
@@ -81,7 +91,11 @@ public class NotificationsPageController implements Initializable {
         }
     }
 
-
+    /**
+     * Calls loadData and sets up the cellFactory
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 

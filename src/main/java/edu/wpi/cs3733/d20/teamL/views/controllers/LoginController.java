@@ -72,7 +72,7 @@ public class LoginController implements Initializable {
 
                 stage = (Stage) login.getScene().getWindow();
                 stage.close();
-                stage = (Stage) stage.getOwner();
+                stage = (Stage) stage.getOwner(); //Gets the owner of the popup (AKA our homescreen) in order to set that as the stage
 
                 //stage.close();
                 root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/StaffView.fxml"));
