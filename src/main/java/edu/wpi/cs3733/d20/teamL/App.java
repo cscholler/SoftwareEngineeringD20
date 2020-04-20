@@ -23,11 +23,11 @@ public class App extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws IOException {
+
 		root = FXMLLoader.load(getClass().getClassLoader().getResource("edu/wpi/cs3733/d20/teamL/views/Home.fxml"));
-		primaryStage.setFullScreen(true);
 		primaryStage.setTitle("Home");
 		primaryStage.setScene(new Scene(root));
-		//primaryStage.setFullScreen(true);
+		primaryStage.setMaximized(true);
 		primaryStage.show();
 	}
 

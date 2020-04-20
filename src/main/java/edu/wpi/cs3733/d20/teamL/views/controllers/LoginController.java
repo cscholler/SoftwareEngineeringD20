@@ -72,11 +72,9 @@ public class LoginController implements Initializable {
                 status = "Doctor";
 
                 stage = (Stage) login.getScene().getWindow();
-                //stage = new Stage();
                 root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/StaffView.fxml"));
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
-                stage.setFullScreen(true);
                 stage.show();
 
             }
@@ -87,7 +85,6 @@ public class LoginController implements Initializable {
                 root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/StaffView.fxml"));
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
-                stage.setFullScreen(true);
                 stage.show();
             }
 
