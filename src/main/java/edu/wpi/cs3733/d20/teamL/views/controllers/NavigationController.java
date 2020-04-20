@@ -3,13 +3,10 @@ package edu.wpi.cs3733.d20.teamL.views.controllers;
 import com.jfoenix.controls.JFXAutoCompletePopup;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import edu.wpi.cs3733.d20.teamL.entities.Node;
-import edu.wpi.cs3733.d20.teamL.services.navSearch.SearchFields;
-import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
+import edu.wpi.cs3733.d20.teamL.util.io.DBCache;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -18,34 +15,15 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
-public class NavigationController implements Initializable {
+public class NavigationController {
 
     @FXML private JFXButton btnLogin;
     @FXML private JFXButton btnMap;
     @FXML private JFXButton btnServices;
     @FXML private JFXButton btnHelp;
     @FXML private JFXTextField searchBox;
-	private DBCache cache;
-	private SearchFields sf;
-	private JFXAutoCompletePopup<String> autoCompletePopup;
-
-	@FXML
-	public void initialize(URL location, ResourceBundle resources) {
-		cache = new DBCache();
-		cache.cacheAll();
-		sf = new SearchFields(getNodeCache());
-		sf.populateSearchFields();
-		autoCompletePopup = new JFXAutoCompletePopup<>();
-		autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
-	}
-
-	public ArrayList<Node> getNodeCache() {
-		return cache.getNodeCache();
-	}
 
     /**
      * Handles the user's action when pressing on a specific button and goes to a new page
@@ -60,6 +38,7 @@ public class NavigationController implements Initializable {
 
         //Goes to the Login Page
         if (actionEvent.getSource() == btnLogin) {
+
             stage = new Stage();
             root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/LoginPage.fxml"));
             Scene scene = new Scene(root);
@@ -70,10 +49,12 @@ public class NavigationController implements Initializable {
 
         //Displays the map of the hospital
         } else if (actionEvent.getSource() == btnMap) {
+
             stage = (Stage) btnMap.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/MapViewer.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);
+            stage.setFullScreen(true);
             stage.show();
 
         //Displays a popup window that help is on the way
@@ -86,7 +67,11 @@ public class NavigationController implements Initializable {
             stage.show();
 
         //Goes to Service display screen
+        } else {
+
+
         }
+
     }
 
     /**
@@ -94,7 +79,18 @@ public class NavigationController implements Initializable {
      *
      */
     public void inputHandler() {
-		autoCompletePopup.setSelectionHandler(event -> searchBox.setText(event.getObject()));
+
+        ArrayList<String> suggestions = new ArrayList<String>();
+        DBCache dbCache = DBCache.getCache();
+        for(ArrayList<String> nodes: dbCache.getNodeCache()) {
+            suggestions.add(nodes.get(6));
+            System.out.println("Nodes: " + nodes.get(6));
+        }
+        JFXAutoCompletePopup<String> autoCompletePopup = new JFXAutoCompletePopup<>();
+        autoCompletePopup.getSuggestions().addAll(suggestions);
+        autoCompletePopup.setSelectionHandler(event -> {
+            searchBox.setText(event.getObject());
+        });
         searchBox.textProperty().addListener(observable -> {
             autoCompletePopup.filter(string ->
                     string.toLowerCase().contains(searchBox.getText().toLowerCase()));
