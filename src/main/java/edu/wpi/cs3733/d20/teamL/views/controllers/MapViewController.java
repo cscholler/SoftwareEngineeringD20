@@ -44,7 +44,7 @@ public class MapViewController {
     TextField startNode, endNode;
 
     @FXML
-    Button btnCancel, btnSave, btnEditConnections, btnOpenEditor;
+    Button pathFind, btnCancel, btnSave, btnEditConnections, btnOpenEditor;
 
     @FXML
     ToggleGroup tools;
@@ -63,24 +63,53 @@ public class MapViewController {
     @FXML
     VBox editor;
 
+
+
+    private double zoomLevel = 1;
     private Scene scene;
     private DBCache dbCache = new DBCache(false);
 
     @FXML
     public void initialize() {
+        scene = root.getScene();
+
         coreShortcuts();
 
+        pathFind.setOnAction(event -> {
+            Path path = PathFinder.aStarPathFind(map.getGraph(), map.getGraph().getNode(startNode.getText()), map.getGraph().getNode(endNode.getText()));
+            System.out.println(path.generateTextMessage());
+
+            Iterator<Node> nodeIterator = path.iterator();
+
+            // Loop through each node in the path and select it as well as the edge pointing to the next node
+            Node currentNode = nodeIterator.next();
+            Node nextNode;
+            while (nodeIterator.hasNext()) {
+                nextNode = nodeIterator.next();
+
+                NodeGUI nodeGUI = map.getNodeGUI(currentNode);
+                EdgeGUI edgeGUI = map.getEdgeGUI(currentNode.getEdge(nextNode));
+
+                map.getSelector().add(nodeGUI);
+                map.getSelector().add(edgeGUI);
+
+				currentNode = nextNode;
+			}
+			// The above loop does not highlight the last node, this does that
+			NodeGUI nodeGUI = map.getNodeGUI(currentNode);
+			map.getSelector().add(nodeGUI);
+			nodeGUI.setHighlighted(true);
+		});
+
         dbCache.cacheAllFromDB();
+
+        openFromDB();
 
         map.setZoomLevel(0.6);
 
         //Hides the node editor VBox
         editor.setPrefWidth(0);
         editor.setVisible(false);
-
-        openFromDB();
-
-        scene = mouse.getScene();
 	}
 
     private void coreShortcuts() {
@@ -101,8 +130,8 @@ public class MapViewController {
         open.setAccelerator(co);
     }
 
-    public MapPane getMap() {
-        return map;
+    public double getZoomLevel() {
+        return zoomLevel;
     }
 
     @FXML
@@ -124,36 +153,10 @@ public class MapViewController {
     }
 
     @FXML
-    private void pathFind() {
-        Path path = PathFinder.aStarPathFind(map.getGraph(), map.getGraph().getNode(startNode.getText()), map.getGraph().getNode(endNode.getText()));
-
-        Iterator<Node> nodeIterator = path.iterator();
-
-        // Loop through each node in the path and select it as well as the edge pointing to the next node
-        Node currentNode = nodeIterator.next();
-        Node nextNode;
-        while (nodeIterator.hasNext()) {
-            nextNode = nodeIterator.next();
-
-            NodeGUI nodeGUI = map.getNodeGUI(currentNode);
-            EdgeGUI edgeGUI = map.getEdgeGUI(currentNode.getEdge(nextNode));
-
-            map.getSelector().add(nodeGUI);
-            map.getSelector().add(edgeGUI);
-
-            currentNode = nextNode;
-        }
-        // The above loop does not highlight the last node, this does that
-        NodeGUI nodeGUI = map.getNodeGUI(currentNode);
-        map.getSelector().add(nodeGUI);
-        nodeGUI.setHighlighted(true);
-    }
-
-    @FXML
     public void saveToCSV() {
     	DataDialogue data = new DataDialogue();
     	data.setSaving(true);
-    	data.showDialogue(mouse.getScene().getWindow());
+    	data.showDialogue(pathFind.getScene().getWindow());
     	String nodeFilePath = data.getNodeFile().getAbsolutePath();
 		String edgeFilePath = data.getEdgeFile().getAbsolutePath();
 		CSVHelper csvHelper = new CSVHelper();
@@ -176,7 +179,7 @@ public class MapViewController {
     @FXML
     public void open() {
         DataDialogue data = new DataDialogue();
-        data.showDialogue(mouse.getScene().getWindow());
+        data.showDialogue(pathFind.getScene().getWindow());
         map.setGraph(MapParser.parseMapToGraph(data.getNodeFile(), data.getEdgeFile()));
     }
 
@@ -204,7 +207,7 @@ public class MapViewController {
     @FXML
     private void backToMain() {
         try {
-            Stage stage = (Stage) mouse.getScene().getWindow();
+            Stage stage = (Stage) pathFind.getScene().getWindow();
             Parent newRoot = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/Home.fxml"));
             Scene newScene = new Scene(newRoot);
             stage.setScene(newScene);

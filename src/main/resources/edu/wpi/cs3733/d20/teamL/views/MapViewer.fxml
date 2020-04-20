@@ -18,7 +18,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import edu.wpi.cs3733.d20.teamL.views.components.MapPane?>
 
-<?import com.jfoenix.controls.JFXButton?>
 <BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
             prefHeight="600" prefWidth="800" xmlns="http://javafx.com/javafx/11.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
@@ -60,7 +59,7 @@
                     <items>
                         <HBox spacing="20.0">
                             <children>
-                                <JFXButton text="Back" onAction="#backToMain"/>
+                                <Button mnemonicParsing="false" text="Back" onAction="#backToMain"/>
                                 <HBox spacing="10.0">
                                     <children>
                                         <ToggleButton fx:id="mouse" onAction="#handleTools" selected="true">
@@ -100,7 +99,7 @@
                                                         <TextField fx:id="endNode"/>
                                                     </children>
                                                 </HBox>
-                                                <JFXButton text="Path Find" onAction="#pathFind"/>
+                                                <Button fx:id="pathFind" mnemonicParsing="false" text="Path Find"/>
                                             </children>
                                             <padding>
                                                 <Insets left="10.0" right="10.0"/>
