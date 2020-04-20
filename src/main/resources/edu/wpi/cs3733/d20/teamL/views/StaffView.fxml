@@ -129,8 +129,12 @@
             <JFXButton fx:id="btnMeds" onAction="#handleCircleButton" opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.columnIndex="1" GridPane.halignment="CENTER" />
             <JFXButton fx:id="btnMap" onAction="#handleCircleButton" opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
             <JFXButton opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.columnIndex="2" />
-            <JFXButton opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
             <JFXButton opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <JFXButton fx:id="btnAddPatient" alignment="CENTER_RIGHT" onAction="#handleCircleButton" style="-fx-background-color: #000000;" text="Add Patient" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </JFXButton>
          </children>
       </GridPane>
    </center>

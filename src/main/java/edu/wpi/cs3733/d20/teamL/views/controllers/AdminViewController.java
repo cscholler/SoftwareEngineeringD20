@@ -11,14 +11,14 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class StaffViewController {
+public class AdminViewController {
 
     @FXML
     private JFXButton btnLogout;
     @FXML
     private JFXButton btnNotif;
     @FXML
-    private JFXButton btnMeds;
+    private JFXButton btnAddDoctor;
     @FXML
     private JFXButton btnFindOpen;
     @FXML
@@ -52,9 +52,9 @@ public class StaffViewController {
             stage.setFullScreen(true);
             stage.show();
             //opens med request
-        } else if (event.getSource() == btnMeds) {
-            stage = (Stage) btnMeds.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/MedicationRequest.fxml"));
+        } else if (event.getSource() == btnAddDoctor) {
+            stage = (Stage) btnAddDoctor.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/AddDoctor.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.setFullScreen(true);

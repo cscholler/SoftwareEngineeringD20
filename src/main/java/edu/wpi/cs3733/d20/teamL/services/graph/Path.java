@@ -34,7 +34,7 @@ public class Path implements Iterable<Node> {
 
         while (iterator.hasNext()) {
             Node next = iterator.next();
-            retLength += current.getEdge(next).length;
+            retLength += current.getEdge(next).getLength();
             current = next;
         }
 
@@ -52,7 +52,7 @@ public class Path implements Iterable<Node> {
         Edge lastEdge = null;
         if (pathNodes.size() > 0) {
             lastEdge = pathNodes.get(pathNodes.size() - 1).getEdge(node);
-            length += lastEdge.length;
+            length += lastEdge.getLength();
         }
 
         if (pathNodes.size() == 0 || lastEdge != null) {
@@ -74,7 +74,7 @@ public class Path implements Iterable<Node> {
 
         if (pathNodes.size() == 0 || firstEdge != null) {
             pathNodes.add(node);
-            length += firstEdge.length;
+            length += firstEdge.getLength();
         } else {
             throw new IllegalArgumentException(
                     "Given node does not have an edge pointing to the previous first node");

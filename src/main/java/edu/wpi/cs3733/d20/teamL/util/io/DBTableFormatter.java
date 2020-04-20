@@ -4,17 +4,12 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
-import com.google.inject.Inject;
-
-import edu.wpi.cs3733.d20.teamL.services.db.DatabaseService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class DBTableFormatter {
-	@Inject
-    DatabaseService db;
 
-	private void reportQueryResults(ResultSet resSet) {
+	public void reportQueryResults(ResultSet resSet) {
 		try {
 			StringBuilder sb = new StringBuilder();
 			ResultSetMetaData resSetMD = resSet.getMetaData();
@@ -38,7 +33,6 @@ public class DBTableFormatter {
 				}
 				sb.append("|\n");
 			}
-			db.collectUsedResultSet(resSet);
 			System.out.println("\n" + getHorizontalLine(colCounts) + sb.toString());
 		} catch (SQLException ex) {
 			log.error("Encountered SQLException.", ex);

@@ -75,7 +75,7 @@ public class DataDialogue {
     }
 
     public void init() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DataDialogue.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("edu/wpi/cs3733/d20/teamL/views/DataDialogue.fxml"));
         try {
             root = fxmlLoader.load();
         } catch (Exception e) {
