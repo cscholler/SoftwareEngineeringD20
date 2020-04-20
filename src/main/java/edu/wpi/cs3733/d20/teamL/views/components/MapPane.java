@@ -152,7 +152,6 @@ public class MapPane extends StackPane {
                 }
                 for(EdgeGUI edge : getEdges()) {
                     if (edge.contains(mousePos)) {
-                        System.out.println("deleting edge");
                         body.getChildren().removeAll(edge.getAllNodes());
                     }
                 }
