@@ -55,10 +55,14 @@ class PathFinderTest {
         assertEquals(newGraph.getNode("n2").getNeighbors(), new ArrayList<Node>(Arrays.asList(n9)));
         assertEquals(newGraph.getNode("n9").getNeighbors(), new ArrayList<Node>(Arrays.asList(n1, n2, n4)));
 
-        assertEquals(2, pathfinder.aStarPathFind(newGraph, n8, n1).getLength());
-        assertEquals(new ArrayList<Node>(Arrays.asList(n8, n1)), pathfinder.aStarPathFind(newGraph, n8, n1).getPathNodes());
+        Path path1 = pathfinder.aStarPathFind(newGraph, n8, n1);
+        assertEquals(2, path1.getLength());
+        assertEquals(new ArrayList<Node>(Arrays.asList(n8, n1)), path1.getPathNodes());
+        System.out.println(path1.generateTextMessage());
 
-        assertEquals(4, pathfinder.aStarPathFind(newGraph, n6, n1).getLength());
-        assertEquals(new ArrayList<>(Arrays.asList(n6, n9, n1)), pathfinder.aStarPathFind(newGraph, n6, n1).getPathNodes());
+        Path path2 = pathfinder.aStarPathFind(newGraph, n6, n1);
+        assertEquals(4, path2.getLength());
+        assertEquals(new ArrayList<>(Arrays.asList(n6, n9, n1)), path2.getPathNodes());
+        System.out.println(path2.generateTextMessage());
     }
 }

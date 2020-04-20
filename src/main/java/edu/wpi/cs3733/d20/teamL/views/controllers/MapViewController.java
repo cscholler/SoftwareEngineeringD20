@@ -77,6 +77,7 @@ public class MapViewController {
 
         pathFind.setOnAction(event -> {
             Path path = PathFinder.aStarPathFind(map.getGraph(), map.getGraph().getNode(startNode.getText()), map.getGraph().getNode(endNode.getText()));
+            System.out.println(path.generateTextMessage());
 
             Iterator<Node> nodeIterator = path.iterator();
 
