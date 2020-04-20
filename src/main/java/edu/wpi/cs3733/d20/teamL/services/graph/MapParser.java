@@ -33,6 +33,7 @@ public class MapParser {
 
     /**
      * Writes a graph to two csv files and returns an array containing both of them.
+     *
      * @param graph
      * @return
      */
@@ -86,7 +87,7 @@ public class MapParser {
 
                     int length = (int) Math.round(Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
 
-                    source.addEdgeTwoWay(new Edge(data[0], source, destination));
+                    source.addEdgeTwoWay(new Edge(source, destination));
                 }
             }
 

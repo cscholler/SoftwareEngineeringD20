@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -18,7 +19,7 @@
 <?import edu.wpi.cs3733.d20.teamL.views.components.MapPane?>
 
 <BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="545.0" prefWidth="1014.0" xmlns="http://javafx.com/javafx/11.0.1"
+            prefHeight="600" prefWidth="800" xmlns="http://javafx.com/javafx/11.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.MapViewController">
     <top>
@@ -28,8 +29,8 @@
                     <menus>
                         <Menu text="File">
                             <items>
-                                <MenuItem fx:id="save" onAction="#save" text="Save"/>
-                                <MenuItem fx:id="saveAs" onAction="#saveAs" text="Save As"/>
+                                <MenuItem fx:id="saveToDB" onAction="#saveToDB" text="Save to DB"/>
+                                <MenuItem fx:id="saveToCSV" onAction="#saveToCSV" text="Save to CSV"/>
                                 <MenuItem fx:id="open" onAction="#open" text="Open"/>
                                 <MenuItem fx:id="openDB" onAction="#openFromDB" text="Open From Database"/>
                                 <MenuItem fx:id="quit" onAction="#quit" text="Quit"/>
@@ -37,79 +38,178 @@
                         </Menu>
                         <Menu text="Edit">
                             <items>
-                                <MenuItem fx:id="undo" text="Undo"/>
-                                <MenuItem fx:id="redo" text="Redo"/>
+                                <MenuItem fx:id="undo" text="Undo" />
+                                <MenuItem fx:id="redo" text="Redo" />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Insert">
                             <items>
-                                <MenuItem fx:id="node" onAction="#insertNode" text="Node"/>
-                                <MenuItem fx:id="edge" text="Edge"/>
+                                <MenuItem fx:id="node" onAction="#insertNode" text="Node" />
+                                <MenuItem fx:id="edge" text="Edge" />
                             </items>
                         </Menu>
                         <Menu text="Help">
                             <items>
-                                <MenuItem text="About"/>
+                                <MenuItem text="About" />
                             </items>
                         </Menu>
                     </menus>
                 </MenuBar>
-                <HBox>
-                    <children>
-                        <ToolBar>
-                            <items>
-                                <ToggleButton selected="true" onAction="#handleTools" fx:id="mouse">
-                                    <toggleGroup>
-                                        <ToggleGroup fx:id="tools"/>
-                                    </toggleGroup>
-                                    <graphic>
-                                        <ImageView fitHeight="20.0" fitWidth="17.0" pickOnBounds="true"
-                                                   preserveRatio="true">
-                                            <image>
-                                                <Image url="@../assets/Cursor_placeholder.png"/>
-                                            </image>
-                                        </ImageView>
-                                    </graphic>
-                                </ToggleButton>
-                                <ToggleButton prefHeight="32.0" toggleGroup="$tools" onAction="#handleTools"
-                                              fx:id="eraser">
-                                    <graphic>
-                                        <ImageView fitHeight="20.0" fitWidth="21.0" pickOnBounds="true"
-                                                   preserveRatio="true">
-                                            <image>
-                                                <Image url="@../assets/Eraser_Placeholder.png"/>
-                                            </image>
-                                        </ImageView>
-                                    </graphic>
-                                </ToggleButton>
-                            </items>
-                        </ToolBar>
-                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                <ToolBar>
+                    <items>
+                        <HBox spacing="20.0">
                             <children>
-                                <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                <Button mnemonicParsing="false" text="Back" onAction="#backToMain"/>
+                                <HBox spacing="10.0">
                                     <children>
-                                        <Label text="Start Node:"/>
-                                        <TextField fx:id="startNode"/>
+                                        <ToggleButton fx:id="mouse" onAction="#handleTools" selected="true">
+                                            <toggleGroup>
+                                                <ToggleGroup fx:id="tools"/>
+                                            </toggleGroup>
+                                            <graphic>
+                                                <ImageView fitHeight="20.0" fitWidth="17.0" pickOnBounds="true"
+                                                           preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../assets/Cursor_placeholder.png"/>
+                                                    </image>
+                                                </ImageView>
+                                            </graphic>
+                                        </ToggleButton>
+                                        <ToggleButton fx:id="eraser" onAction="#handleTools" toggleGroup="$tools">
+                                            <graphic>
+                                                <ImageView fitHeight="20.0" fitWidth="21.0" pickOnBounds="true"
+                                                           preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../assets/Eraser_Placeholder.png"/>
+                                                    </image>
+                                                </ImageView>
+                                            </graphic>
+                                        </ToggleButton>
+                                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                            <children>
+                                                <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                                    <children>
+                                                        <Label text="Start Node:"/>
+                                                        <TextField fx:id="startNode"/>
+                                                    </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                                    <children>
+                                                        <Label text="End Node"/>
+                                                        <TextField fx:id="endNode"/>
+                                                    </children>
+                                                </HBox>
+                                                <Button fx:id="pathFind" mnemonicParsing="false" text="Path Find"/>
+                                            </children>
+                                            <padding>
+                                                <Insets left="10.0" right="10.0"/>
+                                            </padding>
+                                        </HBox>
                                     </children>
                                 </HBox>
-                                <HBox alignment="CENTER_LEFT" spacing="5.0">
-                                    <children>
-                                        <Label text="EndNode"/>
-                                        <TextField fx:id="endNode"/>
-                                    </children>
-                                </HBox>
-                                <Button fx:id="pathFind" mnemonicParsing="false" text="Path Find"/>
                             </children>
-                            <padding>
-                                <Insets left="10.0" right="10.0"/>
-                            </padding>
                         </HBox>
-                    </children>
-                </HBox>
+                    </items>
+                </ToolBar>
             </children>
         </VBox>
     </top>
     <center>
-        <MapPane prefHeight="150.0" prefWidth="200.0" fx:id="map"/>
+        <MapPane prefHeight="150.0" prefWidth="200.0" fx:id="map" onAction="#myCustomAction"/>
     </center>
+   <right>
+      <VBox fx:id="editor" alignment="CENTER_LEFT" minWidth="-Infinity" prefHeight="650.0" prefWidth="200.0" style="-fx-background-color: #0D2E57 #0D2E57;" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="NodeID:" textFill="WHITE">
+               <VBox.margin>
+                  <Insets left="10.0" top="20.0" />
+               </VBox.margin>
+            </Label>
+            <JFXTextField fx:id="nodeIDText" focusColor="WHITE" promptText="Enter new ID..." style="-fx-text-inner-color: #ffffff;">
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </VBox.margin>
+            </JFXTextField>
+            <Label layoutX="30.0" layoutY="20.0" text="X Coordinate:" textFill="WHITE">
+               <VBox.margin>
+                  <Insets left="10.0" top="20.0" />
+               </VBox.margin>
+            </Label>
+            <JFXTextField focusColor="WHITE" layoutX="10.0" layoutY="37.0" promptText="Enter new X coordinate..." style="-fx-text-inner-color: #ffffff;" fx:id="xCoordText">
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </VBox.margin>
+            </JFXTextField>
+            <Label text="Y Coordinate:" textFill="WHITE">
+               <VBox.margin>
+                  <Insets left="10.0" top="20.0" />
+               </VBox.margin>
+            </Label>
+            <JFXTextField fx:id="yCoordText" focusColor="WHITE" promptText="Enter new Y coordinate..." style="-fx-text-inner-color: #ffffff;">
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </VBox.margin>
+            </JFXTextField>
+            <Label text="Building:" textFill="WHITE">
+               <VBox.margin>
+                  <Insets left="10.0" top="20.0" />
+               </VBox.margin>
+            </Label>
+            <JFXTextField fx:id="buildingText" focusColor="WHITE" promptText="Enter new building..." style="-fx-text-inner-color: #ffffff;">
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </VBox.margin>
+            </JFXTextField>
+            <Label text="Node Type:" textFill="WHITE">
+               <VBox.margin>
+                  <Insets left="10.0" top="20.0" />
+               </VBox.margin>
+            </Label>
+            <JFXTextField fx:id="nodeTypeText" focusColor="WHITE" promptText="Enter new node type..." style="-fx-text-inner-color: #ffffff;">
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </VBox.margin>
+            </JFXTextField>
+            <Label text="Long Name:" textFill="WHITE">
+               <VBox.margin>
+                  <Insets left="10.0" top="20.0" />
+               </VBox.margin>
+            </Label>
+            <JFXTextField fx:id="longNameText" focusColor="WHITE" promptText="Enter new long name..." style="-fx-text-inner-color: #ffffff;">
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </VBox.margin>
+            </JFXTextField>
+            <Label text="Short Name:" textFill="WHITE">
+               <VBox.margin>
+                  <Insets left="10.0" top="20.0" />
+               </VBox.margin>
+            </Label>
+            <JFXTextField fx:id="shortNameText" focusColor="WHITE" promptText="Enter new short name..." style="-fx-text-inner-color: #ffffff;">
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </VBox.margin>
+            </JFXTextField>
+            <Button fx:id="btnEditConnections" mnemonicParsing="false" text="Edit Connections">
+               <VBox.margin>
+                  <Insets left="10.0" top="20.0" />
+               </VBox.margin>
+            </Button>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="btnCancel" mnemonicParsing="false" prefWidth="70.0" text="Cancel">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="btnSave" mnemonicParsing="false" prefWidth="70.0" text="Save" onAction="#updateNode">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </right>
 </BorderPane>

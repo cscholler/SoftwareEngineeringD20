@@ -39,8 +39,8 @@ public class NavigationController implements Initializable {
 
 	@FXML
 	public void initialize(URL location, ResourceBundle resources) {
-		cache = new DBCache();
-		cache.cacheAll();
+		cache = new DBCache(true);
+		cache.cacheAllFromDB();
 		sf = new SearchFields(getNodeCache());
 		sf.populateSearchFields();
 		autoCompletePopup = new JFXAutoCompletePopup<>();

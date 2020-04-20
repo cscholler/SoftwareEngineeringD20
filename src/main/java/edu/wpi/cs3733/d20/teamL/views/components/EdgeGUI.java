@@ -125,6 +125,8 @@ public class EdgeGUI extends Line implements Highlightable {
     }
 
     public boolean contains(Point2D point) {
+        if(getStartX()-getEndX()==0 || getStartY()-getEndY()==0) return checkBounds(point.getX(), point.getY(),3);
+
         Point2D lineDirection = getEndPos().subtract(getStartPos());
         Point2D pointDirection = point.subtract(getStartPos());
 
@@ -133,6 +135,22 @@ public class EdgeGUI extends Line implements Highlightable {
         double distanceFromLine = pointDirection.subtract(projection).magnitude();
         double distanceAlongLine = projection.magnitude();
 
-        return distanceFromLine < 5 && distanceAlongLine < getLengthOnScreen();
+        return (distanceFromLine < 5 && distanceAlongLine < getLengthOnScreen()) && checkBounds(point.getX(), point.getY(),0);
+    }
+
+    private boolean checkBounds(double x, double y, double off) {
+        double sX = getStartX();
+        double eX = getEndX();
+        double sY = getStartY();
+        double eY = getEndY();
+        boolean withinX, withinY;
+
+        if(sX < eX) withinX = x > sX-off && x < eX+off;
+        else withinX = x < sX+off && x > eX-off;
+
+        if(sY < eY) withinY = y > sY-off && y < eY+off;
+        else withinY = y < sY+off && y > eY-off;
+
+        return withinX && withinY;
     }
 }

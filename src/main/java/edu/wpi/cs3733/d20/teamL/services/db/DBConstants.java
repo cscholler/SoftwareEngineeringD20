@@ -15,8 +15,8 @@ public class DBConstants {
 	public static final String createNodeTable =
 			"CREATE TABLE Nodes(" +
 					"id VARCHAR(10), " +
-					"x_pos INT, " +
-					"y_pos INT, " +
+					"x_pos VARCHAR(32), " +
+					"y_pos VARCHAR(32), " +
 					"floor CHAR(1), " +
 					"building VARCHAR(64), " +
 					"node_type CHAR(4), " +
@@ -26,7 +26,11 @@ public class DBConstants {
 
 	public static final String updateNode =
 			"UPDATE Nodes " +
-					"SET x_pos = ?, y_pos = ?" +
+					"SET x_pos = ?, y_pos = ?, floor = ?, building = ?, node_type = ?, l_name = ?, s_name = ? " +
+					"WHERE id = ?";
+
+	public static final String removeNode =
+			"DELETE FROM Nodes " +
 					"WHERE id = ?";
 
 	public static final String createEdgeTable =
@@ -36,9 +40,14 @@ public class DBConstants {
 					"node_end VARCHAR(10) REFERENCES Nodes(id), " +
 					"PRIMARY KEY (id))";
 
+	public static final String updateEdge =
+			"UPDATE Edges " +
+					"SET node_start = ?, node_end = ? " +
+					"WHERE id = ?";
+
 	public static final String removeEdge =
 			"DELETE FROM Edges " +
-					"WHERE Edges (id) = ?";
+					"WHERE id = ?";
 
 	public static final String createDoctorTable =
 			"CREATE TABLE Doctors(" +

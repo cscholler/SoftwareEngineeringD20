@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Properties;
 
-import edu.wpi.cs3733.d20.teamL.util.io.CSVReader;
+import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
 import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.cs3733.d20.teamL.services.Service;
@@ -22,7 +22,7 @@ public class DatabaseService extends Service {
 	private Properties props = null;
 	private ArrayList<ResultSet> usedResSets = new ArrayList<>();
 	private ArrayList<Statement> usedStmts = new ArrayList<>();
-	private boolean firstTime = false;
+	private boolean firstTime = true;
 
 	public DatabaseService(Properties props) {
 		super();
@@ -42,9 +42,12 @@ public class DatabaseService extends Service {
 		if (connection == null) {
 			connect(props);
 		}
-		// TODO: use dependency injection and put somewhere better
+
 		if (firstTime) {
 			buildDatabase();
+			// TODO: put somewhere better and drop table before populating
+			populateFromCSV("MapLnodesFloor2", DBConstants.addNode);
+			populateFromCSV("MapLedgesFloor2", DBConstants.addEdge);
 		}
 	}
 
@@ -181,26 +184,22 @@ public class DatabaseService extends Service {
 	}
 
 	private void buildDatabase() {
+		ArrayList<String> createTables = new ArrayList<>();
+
+		createTables.add(DBConstants.createNodeTable);
+		createTables.add(DBConstants.createEdgeTable);
+		createTables.add(DBConstants.createDoctorTable);
+		createTables.add(DBConstants.createPatientTable);
+		createTables.add(DBConstants.createMedicationRequestTable);
+		createTables.add(DBConstants.createUserTable);
 		dropTables();
-		executeUpdates(new ArrayList<>(Arrays.asList(DBConstants.createNodeTable, DBConstants.createEdgeTable,
-				DBConstants.createDoctorTable, DBConstants.createPatientTable, DBConstants.createMedicationRequestTable,
-				DBConstants.createUserTable)));
-
-		populateFromCSV("MapLnodesFloor2", DBConstants.addNode);
-		populateFromCSV("MapLedgesFloor2", DBConstants.addEdge);
-
-		// Doctor and Patient test data for Medication Request
-		ArrayList<String> updates = new ArrayList<>(Arrays.asList(DBConstants.addDoctor, DBConstants.addPatient));
-		ArrayList<ArrayList<String>> valuesList = new ArrayList<>();
-		valuesList.add(new ArrayList<>(Arrays.asList("123", "Bob", "Jones", "bjones@ex.com", "LDEPT00102")));
-		valuesList.add(new ArrayList<>(Arrays.asList("456", "John", "Smith", "123", "LHALL00102")));
-		executeUpdates(updates, valuesList);
+		executeUpdates(createTables);
 	}
 
 	public void populateFromCSV(String csvFile, String update) {
 		ArrayList<String> rowsToAdd = new ArrayList<>();
 		ArrayList<ArrayList<String>> rowData = new ArrayList<>();
-		CSVReader csvReader = new CSVReader();
+		CSVHelper csvReader = new CSVHelper();
 		
 		for (ArrayList<String> row : csvReader.readCSVFile(csvFile, true)) {
 			rowsToAdd.add(update);
