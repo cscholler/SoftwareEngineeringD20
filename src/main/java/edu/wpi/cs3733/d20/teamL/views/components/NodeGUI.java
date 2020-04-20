@@ -1,21 +1,50 @@
 package edu.wpi.cs3733.d20.teamL.views.components;
 
 import edu.wpi.cs3733.d20.teamL.entities.Node;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.DoublePropertyBase;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class NodeGUI extends Circle implements Highlightable {
+public class NodeGUI extends StackPane implements Highlightable {
     private boolean highlighted;
 
     private double highlightRadius;
 
+    private DoubleProperty xProperty = new DoublePropertyBase() {
+        @Override
+        public Object getBean() {
+            return this;
+        }
+
+        @Override
+        public String getName() {
+            return "xPosition";
+        }
+    };
+
+    private DoubleProperty yProperty = new DoublePropertyBase() {
+        @Override
+        public Object getBean() {
+            return this;
+        }
+
+        @Override
+        public String getName() {
+            return "yPosition";
+        }
+    };
+
     private Node node;
 
+    private Circle circle = new Circle();
     private Label nameLabel = new Label();
 
     private boolean selected = false;
@@ -27,14 +56,33 @@ public class NodeGUI extends Circle implements Highlightable {
         setLayoutPos(node.getPosition());
 
         nameLabel.setText(node.getID());
-        nameLabel.layoutXProperty().bindBidirectional(layoutXProperty());
-        nameLabel.layoutYProperty().bindBidirectional(layoutYProperty());
         nameLabel.setMouseTransparent(true);
 
         setHighlighted(false);
+
+        setAlignment(Pos.CENTER);
+
+        getChildren().addAll(circle, nameLabel);
+    }
+
+    public Circle getCircle() {
+        return circle;
+    }
+
+    public DoubleProperty getXProperty() {
+        return xProperty;
+    }
+
+    public DoubleProperty getYProperty() {
+        return yProperty;
     }
 
     public void setLayoutPos(Point2D newPos) {
+        getXProperty().set(newPos.getX());
+        getYProperty().set(newPos.getY());
+
+        newPos = new Point2D(newPos.getX() - getWidth()/2, newPos.getY() - getHeight()/2);
+
         layoutXProperty().set(newPos.getX());
         layoutYProperty().set(newPos.getY());
     }
@@ -42,8 +90,8 @@ public class NodeGUI extends Circle implements Highlightable {
     public void setHighlighted(boolean highlighted) {
         this.highlighted = highlighted;
 
-        if (this.highlighted) setStrokeWidth(highlightRadius);
-        else setStrokeWidth(0);
+        if (this.highlighted) getCircle().setStrokeWidth(highlightRadius);
+        else getCircle().setStrokeWidth(0);
     }
 
     public void setHighlightRadius(double highlightRadius) {
@@ -51,7 +99,7 @@ public class NodeGUI extends Circle implements Highlightable {
     }
 
     public void setHighlightColor(Paint color) {
-        setStroke(color);
+        getCircle().setStroke(color);
     }
 
     public void setSelected(boolean selected) {
@@ -59,7 +107,7 @@ public class NodeGUI extends Circle implements Highlightable {
     }
 
     public Point2D getLayoutPos() {
-        return new Point2D(layoutXProperty().get(), layoutYProperty().get());
+        return new Point2D(getXProperty().get(), getYProperty().get());
     }
 
     public boolean getHighlighted() {
@@ -78,7 +126,7 @@ public class NodeGUI extends Circle implements Highlightable {
     }
 
     public Paint getHighlightColor() {
-        return getStroke();
+        return getCircle().getStroke();
     }
 
     public boolean getSelected() {
@@ -86,7 +134,7 @@ public class NodeGUI extends Circle implements Highlightable {
     }
 
     public Circle getGUI() {
-        return this;
+        return getCircle();
     }
 
     public Node getNode() {

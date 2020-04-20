@@ -63,9 +63,6 @@ public class MapViewController {
     @FXML
     VBox editor;
 
-
-
-    private double zoomLevel = 1;
     private Scene scene;
     private DBCache dbCache = new DBCache(false);
 
@@ -130,8 +127,8 @@ public class MapViewController {
         open.setAccelerator(co);
     }
 
-    public double getZoomLevel() {
-        return zoomLevel;
+    public MapPane getMap() {
+        return map;
     }
 
     @FXML

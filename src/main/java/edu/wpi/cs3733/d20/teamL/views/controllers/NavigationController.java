@@ -70,10 +70,13 @@ public class NavigationController implements Initializable {
         //Displays the map of the hospital
         } else if (actionEvent.getSource() == btnMap) {
             stage = (Stage) btnMap.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/MapViewer.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/MapViewer.fxml"));
+            root = fxmlLoader.load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
+            MapViewController controller = fxmlLoader.getController();
+            controller.getMap().recalculatePositions();
         //Displays a popup window that help is on the way
         } else if (actionEvent.getSource() == btnHelp) {
             stage = new Stage();
