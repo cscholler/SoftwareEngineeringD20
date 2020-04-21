@@ -20,7 +20,7 @@
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
-                  <JFXTextField fx:id="patientText" labelFloat="true" minHeight="40.0" minWidth="300.0" prefHeight="40.0" prefWidth="300.0" promptText="  Name" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
+                  <JFXTextField fx:id="patFNameText" labelFloat="true" minHeight="40.0" minWidth="300.0" prefHeight="40.0" prefWidth="300.0" promptText="Patient First Name" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -31,12 +31,7 @@
                         <Insets right="5.0" />
                      </padding>
                   </JFXTextField>
-                  <JFXTextField fx:id="roomNumText1" labelFloat="true" prefHeight="40.0" prefWidth="300.0" promptText="  DOB" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </JFXTextField>
-                  <JFXTextField fx:id="roomNumText11" labelFloat="true" prefHeight="40.0" prefWidth="300.0" promptText="  ID" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
+                  <JFXTextField fx:id="patLNameText" labelFloat="true" prefHeight="40.0" prefWidth="300.0" promptText="Patient Last Name" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -45,6 +40,14 @@
                      <font>
                         <Font size="14.0" />
                      </font>
+                  </JFXTextField>
+                  <JFXTextField fx:id="addInfoText" alignment="TOP_LEFT" prefHeight="149.0" prefWidth="380.0" promptText="  Additonal Information" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
                   </JFXTextField>
                </children>
             </VBox>
@@ -55,7 +58,12 @@
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
-                  <JFXTextField fx:id="doctorNameText" labelFloat="true" prefHeight="40.0" prefWidth="356.0" promptText="  Doctor's Name" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
+                  <JFXTextField fx:id="docFNameText" labelFloat="true" prefHeight="40.0" prefWidth="356.0" promptText="  Doctor First Name" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </JFXTextField>
+                  <JFXTextField fx:id="docLNameText" labelFloat="true" prefHeight="40.0" prefWidth="300.0" promptText="Doctor Last Name" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -69,14 +77,6 @@
                      <font>
                         <Font size="14.0" />
                      </font>
-                  </JFXTextField>
-                  <JFXTextField fx:id="addInfoText" alignment="TOP_LEFT" prefHeight="149.0" prefWidth="380.0" promptText="  Additonal Information" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
                   </JFXTextField>
                </children>
             </VBox>
