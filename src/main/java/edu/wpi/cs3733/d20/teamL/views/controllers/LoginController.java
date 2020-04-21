@@ -13,6 +13,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -31,6 +33,26 @@ public class LoginController {
 
     @FXML
     AnchorPane anchorPane;
+
+    /**
+     * logs the user in when the enter key is pressed
+     * @param e Tracks which key is pressed
+     */
+    @FXML
+    private void enterHandle(KeyEvent e) {
+        if(e.getCode() == KeyCode.ENTER) {
+            //"presses" the login button
+            login.fire();
+        }
+    }
+
+    /**
+     * Dummy function to allow enter to be pressed from the password box
+     * @param e the key that is pressed
+     * @throws IOException
+     */
+    @FXML
+    private void bugfix(ActionEvent e) throws IOException {}
 
     /**
      * Controls the login feature setting
