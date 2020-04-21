@@ -29,7 +29,7 @@ public class DataDialogueController {
     @FXML
     private void confirm(ActionEvent event) {
         owner.nodeFile = new File(nodeField.getText());
-        owner.edgeFile = new File(edgeField.getText());
+        if(edgeField.getText().length() > 0) owner.edgeFile = new File(edgeField.getText());
         owner.stage.close();
     }
 

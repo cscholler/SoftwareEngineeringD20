@@ -44,15 +44,14 @@ public class MapParser {
     }
 
     public static Graph parseMapToGraph(File nodesFile, File edgesFile) {
-        if (nodesFile == null || edgesFile == null) return null;
+        if (nodesFile == null) return null;
 
         try {
+            // Parse nodes
             BufferedReader nodeReader = new BufferedReader(new FileReader(nodesFile));
-            BufferedReader edgeReader = new BufferedReader(new FileReader(edgesFile));
 
             // Skip to the second row, the first row is just the labels for the data fields
             nodeReader.readLine();
-            edgeReader.readLine();
 
             Graph newGraph = new Graph();
 
@@ -61,28 +60,37 @@ public class MapParser {
                 String[] data = row.split(",");
 
                 Node newNode = new Node(data[0], new Point2D(Double.parseDouble(data[1]), Double.parseDouble(data[2])));
-                newNode.data.put(DATA_LABELS.NODE_TYPE, data[5]);
-                newNode.data.put(DATA_LABELS.LONG_NAME, data[6]);
-                newNode.data.put(DATA_LABELS.SHORT_NAME, data[7]);
+                newNode.setType(data[5]);
+                newNode.setLongName(data[6]);
+                newNode.setShortName(data[7]);
+                newNode.setFloor(Integer.parseInt(data[3]));
+                newNode.setBuilding(data[4]);
 
                 newGraph.addNode(newNode);
             }
 
-            while ((row = edgeReader.readLine()) != null) {
-                String[] data = row.split(",");
+            // Parse edges
+            if (edgesFile != null) {
+                BufferedReader edgeReader = new BufferedReader(new FileReader(edgesFile));
+                // Skip the first row
+                edgeReader.readLine();
 
-                Node source = newGraph.getNode(data[1]);
-                Node destination = newGraph.getNode(data[2]);
+                while ((row = edgeReader.readLine()) != null) {
+                    String[] data = row.split(",");
 
-                if (source != null && destination != null) {
-                    double x1 = source.getPosition().getX();
-                    double y1 = source.getPosition().getY();
-                    double x2 = destination.getPosition().getX();
-                    double y2 = destination.getPosition().getY();
+                    Node source = newGraph.getNode(data[1]);
+                    Node destination = newGraph.getNode(data[2]);
 
-                    int length = (int) Math.round(Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
+                    if (source != null && destination != null) {
+                        double x1 = source.getPosition().getX();
+                        double y1 = source.getPosition().getY();
+                        double x2 = destination.getPosition().getX();
+                        double y2 = destination.getPosition().getY();
 
-                    source.addEdgeTwoWay(new Edge(source, destination));
+                        int length = (int) Math.round(Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
+
+                        source.addEdgeTwoWay(new Edge(source, destination));
+                    }
                 }
             }
 
