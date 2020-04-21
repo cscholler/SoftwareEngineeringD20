@@ -30,8 +30,8 @@ public class EmergencyController {
             root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/Home.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.setFullScreen(true);
-            stage.show();
+
+
 
         }
     }
