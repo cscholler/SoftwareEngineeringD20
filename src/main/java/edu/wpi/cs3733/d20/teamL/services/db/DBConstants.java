@@ -76,7 +76,19 @@ public class DBConstants {
 					"dose VARCHAR(64), " +
 					"type VARCHAR(64), " +
 					"notes VARCHAR(512), " +
+					"status CHAR(1), " +
+					"date_and_time CHAR(19), " +
 					"PRIMARY KEY (id))";
+
+	public static final String updateMedicationRequest =
+			"UPDATE Medication_Requests " +
+					"SET doctor_id = ?, patient_id = ?, nurse_name = ?, dose = ?, type = ?, notes = ?, status = ?, date_and_time = ? " +
+					"WHERE id = ?";
+
+	public static final String updateMedicationRequestStatus =
+			"UPDATE Medication_Requests " +
+					"SET status = ? " +
+					"WHERE id = ?";
 
 	public static final String createUserTable =
 			"CREATE TABLE Users(" +
@@ -84,7 +96,7 @@ public class DBConstants {
 					"username VARCHAR(32), " +
 					"password VARCHAR(32), " +
 					"acct_type CHAR(1), " +
-					"last_login DATE, " +
+					"last_login CHAR(19), " +
 					"PRIMARY KEY (id))";
 
 	public static final String dropNodeTable =
@@ -122,8 +134,8 @@ public class DBConstants {
 					"VALUES(?, ?, ?, ?, ?)";
 
 	public static final String addMedicationRequest =
-			"INSERT INTO Medication_Requests(doctor_id, patient_id, nurse_name, dose, type, notes)" +
-					"VALUES(?, ?, ?, ?, ?, ?)";
+			"INSERT INTO Medication_Requests(doctor_id, patient_id, nurse_name, dose, type, notes, status, date_and_time)" +
+					"VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 
 	public static final String addUser =
 			"INSERT INTO Users(id, username, password, acct_type, last_login)" +
@@ -158,8 +170,24 @@ public class DBConstants {
 					"FROM Doctors " +
 					"WHERE f_name = ? AND l_name = ?";
 
+	public static final String getDoctorName =
+			"SELECT f_name, l_name " +
+					"FROM Doctors " +
+					"WHERE id = ?";
+
 	public static final String getPatientID =
 			"SELECT id " +
 					"FROM Patients " +
 					"WHERE f_name = ? AND l_name = ?";
+
+	public static final String getPatientName =
+			"SELECT f_name, l_name " +
+					"FROM Patients " +
+					"WHERE id = ?";
+
+	public static final String getPatientRoom =
+			"SELECT room_id " +
+					"FROM Patients " +
+					"WHERE id = ?";
+
 }
