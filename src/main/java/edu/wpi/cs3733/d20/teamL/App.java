@@ -33,6 +33,8 @@ public class App extends Application {
 		primaryStage.setMaximized(true);
 		primaryStage.show();
 
+
+
 	}
 
 
