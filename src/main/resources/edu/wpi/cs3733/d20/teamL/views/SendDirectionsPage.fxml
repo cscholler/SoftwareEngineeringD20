@@ -2,54 +2,82 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="297.0" maxWidth="432.0" minHeight="221.0" minWidth="432.0" prefHeight="297.0" prefWidth="433.0" styleClass="modalback" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.c20.teamS.SendTextDirectionsController">
+<AnchorPane maxHeight="297.0" maxWidth="432.0" minHeight="221.0" minWidth="432.0" prefHeight="297.0" prefWidth="433.0" styleClass="modalback" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.SendTextDirectionsController">
     <children>
-        <Label fx:id="sendDirectionsLabel" alignment="CENTER" contentDisplay="TOP" focusTraversable="false" layoutX="87.0" layoutY="14.0" prefHeight="29.0" prefWidth="260.0" text="Send Directions">
-            <font>
-                <Font name="System Bold" size="18.0" />
-            </font>
-        </Label>
-      <Label fx:id="descLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="71.0" layoutY="43.0" text="Enter your email or phone number to recieve directions." textAlignment="CENTER" />
-        <JFXButton id="secondaryButtons" fx:id="cancelButton" alignment="CENTER" buttonType="RAISED" cancelButton="true" layoutX="177.0" layoutY="234.0" onAction="#onDoneClicked" prefHeight="36.0" prefWidth="80.0" ripplerFill="BLACK" styleClass="secondaryButtons" text="Done" textAlignment="CENTER" AnchorPane.bottomAnchor="27.0" AnchorPane.leftAnchor="177.0">
-            <font>
-                <Font size="13.0" />
-            </font>
-            <cursor>
-                <Cursor fx:constant="HAND" />
-            </cursor>
-        </JFXButton>
-      <MenuButton fx:id="carrierSelector" layoutX="129.0" layoutY="189.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="175.0" text="Select Carrier for Number">
-         <items>
-            <MenuItem mnemonicParsing="false" onAction="#onVerizonClicked" text="Verizon" />
-            <MenuItem mnemonicParsing="false" onAction="#onATTClicked" text="AT&amp;T" />
-            <MenuItem mnemonicParsing="false" onAction="#OnTMobileClicked" text="T-Mobile" />
-            <MenuItem mnemonicParsing="false" onAction="#OnSprintClicked" text="Sprint" />
-         </items>
-      </MenuButton>
-      <JFXButton id="buttons" fx:id="sendEmailButton" alignment="CENTER" buttonType="RAISED" layoutX="283.0" layoutY="80.0" onAction="#onSendEmailClicked" prefHeight="36.0" prefWidth="110.0" ripplerFill="BLACK" text="Send Email" textAlignment="CENTER" textFill="WHITE">
-         <font>
-            <Font size="13.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </JFXButton>
-      <JFXButton id="buttons" fx:id="sendTextButton" alignment="CENTER" buttonType="RAISED" layoutX="283.0" layoutY="134.0" onAction="#onSendTextClicked" pickOnBounds="false" prefHeight="36.0" prefWidth="110.0" ripplerFill="BLACK" text="Send Text" textAlignment="CENTER" textFill="WHITE">
-         <font>
-            <Font size="13.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </JFXButton>
-      <JFXTextField fx:id="emailField" layoutX="82.0" layoutY="84.0" prefHeight="29.0" prefWidth="183.0" promptText="Enter Email" />
-      <JFXTextField fx:id="phoneNumberField" layoutX="82.0" layoutY="134.0" prefHeight="29.0" prefWidth="183.0" promptText="Enter Phone Number" />
+      <BorderPane prefHeight="297.0" prefWidth="432.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <VBox alignment="CENTER" prefHeight="60.0" prefWidth="432.0" BorderPane.alignment="CENTER">
+               <children>
+                    <Label fx:id="sendDirectionsLabel" alignment="CENTER" contentDisplay="TOP" focusTraversable="false" prefHeight="29.0" prefWidth="260.0" text="Send Directions">
+                        <font>
+                            <Font name="System Bold" size="18.0" />
+                        </font>
+                    </Label>
+                  <Label fx:id="descLabel" alignment="CENTER" contentDisplay="CENTER" text="Enter your email or phone number to recieve directions." textAlignment="CENTER" />
+               </children>
+            </VBox>
+         </top>
+         <center>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                     <children>
+                        <JFXTextField fx:id="emailField" prefHeight="29.0" prefWidth="183.0" promptText="Enter Email" />
+                        <JFXButton id="buttons" fx:id="btnEmail" alignment="CENTER" buttonType="RAISED" prefHeight="36.0" prefWidth="110.0" ripplerFill="BLACK" style="-fx-background-color: #ed2d43;" text="Send Email" textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </JFXButton>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                     <children>
+                        <JFXTextField fx:id="phoneNumberField" prefHeight="29.0" prefWidth="183.0" promptText="Enter Phone Number" />
+                        <JFXButton id="buttons" fx:id="btnText" alignment="CENTER" buttonType="RAISED" onAction="#handleSend" pickOnBounds="false" prefHeight="36.0" prefWidth="110.0" ripplerFill="BLACK" style="-fx-background-color: #ed2d43;" text="Send Text" textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </JFXButton>
+                     </children>
+                  </HBox>
+                  <MenuButton fx:id="carrierSelector" mnemonicParsing="false" prefHeight="25.0" prefWidth="175.0" text="Select Carrier for Number">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#onVerizon" text="Verizon" />
+                        <MenuItem mnemonicParsing="false" onAction="#onATT" text="AT&amp;T" />
+                        <MenuItem mnemonicParsing="false" onAction="#onTMobile" text="T-Mobile" />
+                        <MenuItem mnemonicParsing="false" onAction="#onSprint" text="Sprint" />
+                     </items>
+                  </MenuButton>
+               </children>
+               <padding>
+                  <Insets bottom="20.0" />
+               </padding>
+            </VBox>
+         </center>
+         <bottom>
+            <JFXButton fx:id="btnCancel" onAction="#handleButtonCancel" prefHeight="36.0" prefWidth="100.0" text="Cancel" BorderPane.alignment="CENTER">
+               <padding>
+                  <Insets bottom="20.0" top="20.0" />
+               </padding>
+            </JFXButton>
+         </bottom>
+      </BorderPane>
     </children>
 </AnchorPane>

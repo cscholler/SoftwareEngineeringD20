@@ -17,9 +17,9 @@ public class SendTextDirectionsController {
 
     List<String> directions;
 
-    public SendTextDirectionsController(List<String> directions){
-        this.directions = directions;
-    }
+//    public SendTextDirectionsController(List<String> directions){
+//        this.directions = directions;
+//    }
 
     @FXML
     private Label sendDirectionsLabel;
@@ -31,7 +31,7 @@ public class SendTextDirectionsController {
     private JFXTextField emailField;
 
     @FXML
-    private JFXButton cancelButton;
+    private JFXButton btnCancel;
 
     @FXML
     private MenuButton carrierSelector;
@@ -40,29 +40,29 @@ public class SendTextDirectionsController {
     private JFXTextField phoneNumberField;
 
     @FXML
-    private JFXButton sendEmailButton;
+    private JFXButton btnEmail;
 
     @FXML
-    private JFXButton sendTextButton;
+    private JFXButton btnSendText;
 
     @FXML
-    void OnSprintClicked(ActionEvent event) {
+    void onSprint(ActionEvent event) {
         carrierSelector.setText("Sprint");
     }
 
     @FXML
-    void OnTMobileClicked(ActionEvent event) {
+    void onTMobile(ActionEvent event) {
         carrierSelector.setText("T-Mobile");
     }
 
     @FXML
-    void onATTClicked(ActionEvent event) {
+    void onATT(ActionEvent event) {
         carrierSelector.setText("AT&T");
     }
 
     @FXML
-    void onDoneClicked(ActionEvent event) {
-        Stage stage = (Stage) descLabel.getScene().getWindow();
+    void handleButtonCancel(ActionEvent event) {
+        Stage stage = (Stage) btnCancel.getScene().getWindow();
         stage.close();
     }
 
@@ -80,19 +80,19 @@ public class SendTextDirectionsController {
 //    }
 
     @FXML
-    void onSendTextClicked(ActionEvent event) {
+    void handleSend(ActionEvent event) {
         if(carrierSelector.getText().equals("Select Carrier for Number")){
             return;
         }else{
             String carrier = carrierSelector.getText();
             String number = phoneNumberField.getText();
-            SendTextDirections STDT = new SendTextDirections(this.directions,number,carrier);
+            SendTextDirections STDT = new SendTextDirections("This way",number,carrier);
             STDT.start();
         }
     }
 
     @FXML
-    void onVerizonClicked(ActionEvent event) {
+    void onVerizon(ActionEvent event) {
         carrierSelector.setText("Verizon");
     }
 

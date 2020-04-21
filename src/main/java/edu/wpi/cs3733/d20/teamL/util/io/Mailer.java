@@ -36,7 +36,8 @@ public class Mailer {
         String to = emailAddress;
 
         // Sender's email ID needs to be mentioned
-        String from = "FaulknerHospitalC2020@gmail.com";
+        //String from = "FaulknerHospitalC2020@gmail.com";
+        String from = "jdhoy1999@gmail.com";
 
         // Assuming you are sending email from through gmails smtp
         String host = "smtp.gmail.com";
