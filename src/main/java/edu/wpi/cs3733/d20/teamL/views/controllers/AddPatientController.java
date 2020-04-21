@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.jfoenix.controls.JFXAutoCompletePopup;
+import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
@@ -75,8 +76,12 @@ public class AddPatientController {
             root = loaderHelper.getFXMLLoader("StaffView").load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
+            stage.hide();
             stage.setMaximized(true);
             stage.show();
+            stage.setWidth(App.SCREEN_WIDTH);
+            stage.setHeight(App.SCREEN_HEIGHT);
+
         } else if (e.getSource() == btnSubmit){
 			String patID = IDText.getText();
             String fName = fNameText.getText();

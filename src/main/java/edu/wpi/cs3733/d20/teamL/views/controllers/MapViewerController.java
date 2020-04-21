@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers;
 import com.jfoenix.controls.JFXAutoCompletePopup;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
 import edu.wpi.cs3733.d20.teamL.services.graph.MapParser;
@@ -128,7 +129,13 @@ public class MapViewerController {
             Parent newRoot = loaderHelper.getFXMLLoader("Home").load();
             Scene newScene = new Scene(newRoot);
             stage.setScene(newScene);
+            stage.hide();
+            stage.setMaximized(true);
             stage.show();
+
+            stage.setWidth(App.SCREEN_WIDTH);
+            stage.setHeight(App.SCREEN_HEIGHT);
+
         } catch (Exception ex) {
             log.error("Encountered Exception.", ex);
         }
@@ -149,7 +156,6 @@ public class MapViewerController {
             NodeGUI nodeGUI = map.getNodeGUI(currentNode);
             EdgeGUI edgeGUI = map.getEdgeGUI(currentNode.getEdge(nextNode));
 
-            //map.getSelector().add(nodeGUI);
             map.getSelector().add(edgeGUI);
 
             currentNode = nextNode;

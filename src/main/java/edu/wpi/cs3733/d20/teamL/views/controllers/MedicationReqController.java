@@ -2,6 +2,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.DatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
@@ -60,6 +61,8 @@ public class MedicationReqController implements Initializable {
             stage.hide();
             stage.setMaximized(true);
             stage.show();
+            stage.setWidth(App.SCREEN_WIDTH);
+            stage.setHeight(App.SCREEN_HEIGHT);
 
         } else if (e.getSource() == btnSubmit){
             String doctorFName = docFNameText.getText();

@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers;
 
 import com.jfoenix.controls.JFXButton;
+import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -29,8 +30,12 @@ public class EmergencyController {
             root = loaderHelper.getFXMLLoader("Home").load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.setFullScreen(true);
+            stage.hide();
+            stage.setMaximized(true);
             stage.show();
+            stage.setWidth(App.SCREEN_WIDTH);
+            stage.setHeight(App.SCREEN_HEIGHT);
+
         }
     }
 }

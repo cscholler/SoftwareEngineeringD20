@@ -130,7 +130,7 @@ public class NavigationController implements Initializable {
             Scene scene = new Scene(root);
             stage.setScene(scene);
 
-            stage.hide();
+            //stage.hide();
 
             stage.setMaximized(true);
             stage.show();
@@ -139,13 +139,13 @@ public class NavigationController implements Initializable {
 
             stage.setWidth(App.SCREEN_WIDTH);
             stage.setHeight(App.SCREEN_HEIGHT);
+
         //Displays a popup window that help is on the way
         } else if (actionEvent.getSource() == btnHelp) {
             stage = (Stage) btnHelp.getScene().getWindow();
 			root = loaderHelper.getFXMLLoader("Help").load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.hide();
             stage.setMaximized(true);
             stage.show();
 
