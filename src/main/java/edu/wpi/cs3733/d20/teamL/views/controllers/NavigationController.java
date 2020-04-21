@@ -74,7 +74,7 @@ public class NavigationController implements Initializable {
         //Goes to the Login Page
         if (actionEvent.getSource() == btnLogin) {
             stage = new Stage();
-			root = loaderHelper.getFXMLLoader("SendDirectionsPage").load();
+			root = loaderHelper.getFXMLLoader("LoginPage").load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
