@@ -4,7 +4,6 @@ import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -12,7 +11,8 @@ import java.io.IOException;
 
 public class EmergencyController {
 	FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
-    @FXML private JFXButton btnCancel;
+    @FXML
+	private JFXButton btnCancel;
 
     /**
      * Goes back to the Home page when user clicks Cancel

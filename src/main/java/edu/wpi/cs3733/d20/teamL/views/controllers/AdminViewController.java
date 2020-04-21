@@ -1,16 +1,17 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers;
 
-import com.jfoenix.controls.JFXButton;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import java.io.IOException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-import java.io.IOException;
+import com.jfoenix.controls.JFXButton;
+
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 
 public class AdminViewController {
 
