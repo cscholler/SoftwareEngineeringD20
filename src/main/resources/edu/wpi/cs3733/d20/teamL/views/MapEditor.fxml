@@ -21,7 +21,7 @@
 <BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
             prefHeight="600" prefWidth="800" xmlns="http://javafx.com/javafx/11.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.MapViewController">
+            fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.MapEditorController">
     <top>
         <VBox prefWidth="100.0" BorderPane.alignment="CENTER">
             <children>

@@ -45,7 +45,7 @@ public class NodeGUI extends StackPane implements Highlightable {
     private Node node;
 
     private Circle circle = new Circle();
-    private Label nameLabel = new Label();
+    //private Label nameLabel = new Label();
 
     private boolean selected = false;
 
@@ -55,14 +55,14 @@ public class NodeGUI extends StackPane implements Highlightable {
         // Set initial x and y position
         setLayoutPos(node.getPosition());
 
-        nameLabel.setText(node.getID());
-        nameLabel.setMouseTransparent(true);
+        //nameLabel.setText(node.getID());
+        //nameLabel.setMouseTransparent(true);
 
         setHighlighted(false);
 
         setAlignment(Pos.CENTER);
 
-        getChildren().addAll(circle, nameLabel);
+        getChildren().addAll(circle);
     }
 
     public Circle getCircle() {
@@ -117,7 +117,7 @@ public class NodeGUI extends StackPane implements Highlightable {
     public Collection<javafx.scene.Node> getAllNodes() {
         Collection<javafx.scene.Node> retList = new ArrayList<>(1);
         retList.add(this);
-        retList.add(nameLabel);
+        //retList.add(nameLabel);
         return retList;
     }
 

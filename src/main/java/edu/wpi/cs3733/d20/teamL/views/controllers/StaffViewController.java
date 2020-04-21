@@ -49,7 +49,7 @@ public class StaffViewController {
             //opens mapView
         } else if (event.getSource() == btnMap) {
             stage = (Stage) btnMap.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/MapViewer.fxml"));
+            root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/MapEditor.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.hide();

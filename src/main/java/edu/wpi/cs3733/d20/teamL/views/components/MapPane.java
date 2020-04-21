@@ -5,8 +5,6 @@ import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.graph.Graph;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +12,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -21,7 +20,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Line;
 
 import java.io.IOException;
 
@@ -38,6 +36,8 @@ public class MapPane extends StackPane {
     private AnchorPane body;
     @FXML
     private ScrollPane scroller;
+    @FXML
+    private ImageView mapImage;
 
     private Map<Node, NodeGUI> nodes = new ConcurrentHashMap<>();
     private Map<Edge, EdgeGUI> edges = new ConcurrentHashMap<>();
@@ -62,7 +62,7 @@ public class MapPane extends StackPane {
 
     private EdgeGUI tempEdge;
     private int circleRadius = 12;
-    private Color nodeColor = Color.ORANGE;
+    private Color nodeColor = Color.DARKBLUE;
     private Paint highLightColor = Color.CYAN;
     private double highlightThickness = 2;
 
@@ -269,6 +269,9 @@ public class MapPane extends StackPane {
             nodeGUI.setLayoutPos(newPos);
         }
 
+        mapImage.setFitWidth(mapImage.getFitWidth() * (zoomLevel / this.zoomLevel));
+        mapImage.setFitHeight(mapImage.getFitHeight() * (zoomLevel / this.zoomLevel));
+
         this.zoomLevel = zoomLevel;
     }
 
@@ -469,6 +472,9 @@ public class MapPane extends StackPane {
         edge.data.put("GUI", edgeGUI);
 
         body.getChildren().addAll(0, edgeGUI.getAllNodes());
+
+        if(!isEditable())
+            edgeGUI.setVisible(false);
     }
 
     public void removeEdge(EdgeGUI edgeGUI) {

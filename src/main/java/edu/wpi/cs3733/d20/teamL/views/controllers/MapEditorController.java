@@ -30,7 +30,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.util.*;
 
-public class MapViewController {
+public class MapEditorController {
     @FXML
     MenuItem saveToDB, saveToCSV, open, quit;
 
@@ -100,9 +100,11 @@ public class MapViewController {
 
         dbCache.cacheAllFromDB();
 
+        map.setEditable(false);
+
         openFromDB();
 
-        map.setZoomLevel(0.6);
+        map.setZoomLevel(1);
 
         //Hides the node editor VBox
         editor.setPrefWidth(0);

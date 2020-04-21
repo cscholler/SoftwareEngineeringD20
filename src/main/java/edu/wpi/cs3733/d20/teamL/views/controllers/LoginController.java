@@ -124,7 +124,7 @@ public class LoginController implements Initializable {
     }
 //    private void handleCancel(ActionEvent e) throws IOException {
 //        Stage stage = (Stage) btnCancel.getScene().getWindow();
-//        Parent root = FXMLLoader.load(getClass().getResource("edu/wpi/cs3733/d20/teamL/views/MapViewer.fxml"));
+//        Parent root = FXMLLoader.load(getClass().getResource("edu/wpi/cs3733/d20/teamL/views/MapEditor.fxml"));
 //        stage.close();
 //    }
 
