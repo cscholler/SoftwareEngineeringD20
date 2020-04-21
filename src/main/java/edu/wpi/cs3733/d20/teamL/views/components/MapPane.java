@@ -95,7 +95,9 @@ public class MapPane extends StackPane {
                 position.setText(positionInfo());
             }
         });*/
+    }
 
+    public void init() {
         if (isEditable()) {
             // Delete selected nodes when delete key is pressed
             scroller.setOnKeyPressed(event -> {
@@ -193,7 +195,7 @@ public class MapPane extends StackPane {
                 if (event.getButton().equals(MouseButton.PRIMARY) && !onSelectable) {
                     selector.clear();
                     selectedNode = null;
-                    onActionProperty().get().handle(event);
+                    //onActionProperty().get().handle(event);
                 }
             });
         }
@@ -201,6 +203,10 @@ public class MapPane extends StackPane {
 
     //---------- Getters/Setters ----------//
 
+
+    public ScrollPane getScroller() {
+        return scroller;
+    }
 
     public ArrayList<Node> getEditedNodes() {
         return editedNodes;

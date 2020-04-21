@@ -19,7 +19,7 @@ public class Node {
     private String type = "fooo";
     private int floor = 0;
 
-    public HashMap<String, Object> data = new HashMap<>(); //TODO remove Hashmap and add NodeGUI field
+    public HashMap<String, Object> data = new HashMap<>(); //TODO remove Hashmap and add NodeGUI Field
 
     private Collection<Edge> edges = new ArrayList<>();
 

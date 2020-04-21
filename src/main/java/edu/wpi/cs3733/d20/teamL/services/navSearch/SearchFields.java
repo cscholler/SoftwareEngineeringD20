@@ -3,15 +3,25 @@ package edu.wpi.cs3733.d20.teamL.services.navSearch;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class SearchFields {
 	private ArrayList<Node> nodeCache;
 	private ArrayList<String> suggestions;
 
+	public enum Field { nodeID, longName, shortName, building }
+
+	private List<Field> fields = new ArrayList<>(Arrays.asList(Field.longName, Field.shortName));
+
 	public SearchFields(ArrayList<Node> nodeCache) {
 		this.nodeCache = nodeCache;
 	}
+
+    public List<Field> getFields() {
+        return fields;
+    }
 
     /**
      * populates search arrayList to be searched by navigation bar.
@@ -20,8 +30,24 @@ public class SearchFields {
         // TODO: Don't let non-visible nodes show-up
         if (suggestions == null) suggestions = new ArrayList<>();
         for(Node node: nodeCache) {
-            suggestions.add(node.getLongName());
-            suggestions.add(node.getShortName());
+            for (Field field : fields) {
+                switch (field) {
+                    case nodeID:
+                        suggestions.add(node.getID());
+                        break;
+                    case building:
+                        suggestions.add(node.getBuilding());
+                        break;
+                    case longName:
+                        suggestions.add(node.getLongName());
+                        break;
+                    case shortName:
+                        suggestions.add(node.getShortName());
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
         Collections.sort(suggestions);
     }
