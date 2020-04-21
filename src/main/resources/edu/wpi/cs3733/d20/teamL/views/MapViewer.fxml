@@ -44,6 +44,6 @@
       </VBox>
    </left>
     <center>
-        <MapPane prefHeight="150.0" prefWidth="200.0" fx:id="map"/>
+        <MapPane fx:id="map"/>
     </center>
 </BorderPane>

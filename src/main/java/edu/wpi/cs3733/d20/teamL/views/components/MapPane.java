@@ -63,7 +63,7 @@ public class MapPane extends StackPane {
     private EdgeGUI tempEdge;
     private int circleRadius = 12;
     private Color nodeColor = Color.DARKBLUE;
-    private Paint highLightColor = Color.CYAN;
+    private Paint highLightColor = Color.rgb(20, 194, 247);
     private double highlightThickness = 2;
 
     private ArrayList<Node> editedNodes = new ArrayList<>();

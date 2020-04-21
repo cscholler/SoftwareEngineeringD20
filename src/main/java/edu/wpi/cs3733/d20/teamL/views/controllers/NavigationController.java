@@ -86,10 +86,10 @@ public class NavigationController implements Initializable {
 			root = loader.load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.setMaximized(true);
             stage.show();
             MapViewerController controller = loader.getController();
             controller.getMap().recalculatePositions();
+            stage.setMaximized(true);
         //Displays a popup window that help is on the way
         } else if (actionEvent.getSource() == btnHelp) {
             stage = (Stage) btnHelp.getScene().getWindow();
