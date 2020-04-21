@@ -204,6 +204,10 @@ public class MapPane extends StackPane {
     //---------- Getters/Setters ----------//
 
 
+    public ScrollPane getScroller() {
+        return scroller;
+    }
+
     public ArrayList<Node> getEditedNodes() {
         return editedNodes;
     }
