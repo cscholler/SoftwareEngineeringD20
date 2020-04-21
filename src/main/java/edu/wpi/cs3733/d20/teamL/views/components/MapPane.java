@@ -444,6 +444,8 @@ public class MapPane extends StackPane {
                     onActionProperty().get().handle(event);
                 }
             });
+
+            nodeGUI.setVisible(false);
         }
         if(!graph.getNodes().contains(node))
             graph.addNode(node);
