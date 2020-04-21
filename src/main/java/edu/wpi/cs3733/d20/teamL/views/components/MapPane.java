@@ -195,7 +195,7 @@ public class MapPane extends StackPane {
                 if (event.getButton().equals(MouseButton.PRIMARY) && !onSelectable) {
                     selector.clear();
                     selectedNode = null;
-                    onActionProperty().get().handle(event);
+                    //onActionProperty().get().handle(event);
                 }
             });
         }
