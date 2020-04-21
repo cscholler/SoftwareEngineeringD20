@@ -28,8 +28,9 @@ public class LoginController {
     private JFXButton login, btnCancel;
     @FXML
     private Text incorrectText;
+
     @FXML
-	AnchorPane anchorPane;
+    AnchorPane anchorPane;
 
     /**
      * Controls the login feature setting
@@ -71,6 +72,7 @@ public class LoginController {
                 root = loaderHelper.getFXMLLoader("StaffView").load();
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
+                stage.hide();
                 stage.setMaximized(true);
                 stage.show();
 
@@ -88,6 +90,7 @@ public class LoginController {
 				root = loaderHelper.getFXMLLoader("StaffView").load();
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
+                stage.hide();
                 stage.setMaximized(true);
                 stage.show();
 
