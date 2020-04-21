@@ -49,12 +49,15 @@ public class StaffViewController {
             //opens mapView
         } else if (event.getSource() == btnMap) {
             stage = (Stage) btnMap.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/MapEditor.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/MapEditor.fxml"));
+            root = fxmlLoader.load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.hide();
             stage.setMaximized(true);
             stage.show();
+
+            MapEditorController controller = fxmlLoader.getController();
+            controller.getMap().recalculatePositions();
             //returns back to home
         } else if (event.getSource() == btnLogout) {
             stage = (Stage) btnLogout.getScene().getWindow();

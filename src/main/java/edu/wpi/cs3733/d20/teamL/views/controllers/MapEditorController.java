@@ -28,6 +28,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class MapEditorController {
@@ -100,7 +101,7 @@ public class MapEditorController {
 
         dbCache.cacheAllFromDB();
 
-        map.setEditable(false);
+        map.setEditable(true);
 
         openFromDB();
 
@@ -142,10 +143,19 @@ public class MapEditorController {
     @FXML
     void saveToDB() {
         ArrayList<Node> nodes = new ArrayList<>(map.getGraph().getNodes());
-        ArrayList<Edge> edges = new ArrayList<>(map.getGraph().getEdges());
+        ArrayList<Edge> blackList = new ArrayList<>();
+        ArrayList<Edge> newEdges = new ArrayList<>();
+
+        for (Node node : nodes) {
+            for (Edge edge : node.getEdges()) {
+                if (!newEdges.contains(edge) && blackList.contains(edge)) newEdges.add(edge);
+                if (edge.getDestination().getNeighbors().contains(node))
+                    blackList.add(edge.getDestination().getEdge(node));
+            }
+        }
 
         dbCache.cacheNodes(nodes, map.getEditedNodes());
-        dbCache.cacheEdges(edges);
+        dbCache.cacheEdges(newEdges);
         dbCache.updateDB();
 
         map.getEditedNodes().clear();
@@ -209,7 +219,7 @@ public class MapEditorController {
     private void backToMain() {
         try {
             Stage stage = (Stage) pathFind.getScene().getWindow();
-            Parent newRoot = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/Home.fxml"));
+            Parent newRoot = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/StaffView.fxml"));
             Scene newScene = new Scene(newRoot);
             stage.setScene(newScene);
             stage.show();

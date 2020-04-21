@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.BorderPane?>
+
+
+<?import edu.wpi.cs3733.d20.teamL.views.components.MapPane?>
+<BorderPane minHeight="-Infinity" minWidth="-Infinity"
+            xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.MapViewerController">
+    <top>
+        <ToolBar prefHeight="61.0" prefWidth="1920.0" BorderPane.alignment="CENTER">
+            <items>
+                <Button mnemonicParsing="false" text="Back"/>
+            </items>
+        </ToolBar>
+    </top>
+    <center>
+        <MapPane prefHeight="150.0" prefWidth="200.0" fx:id="map" onAction="#nodePressed"/>
+    </center>
+</BorderPane>

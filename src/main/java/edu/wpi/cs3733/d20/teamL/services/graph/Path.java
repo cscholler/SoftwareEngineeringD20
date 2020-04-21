@@ -129,8 +129,6 @@ public class Path implements Iterable<Node> {
             end = new Point2D(next.getPosition().getX() - curr.getPosition().getX(), next.getPosition().getY() - curr.getPosition().getY());
             angle = start.angle(end);
 
-            System.out.println(angle);
-
             sign = determineDirection(start, end);
 
             if(angle > 10) {
