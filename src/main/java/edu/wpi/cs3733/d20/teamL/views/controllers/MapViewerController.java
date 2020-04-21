@@ -121,6 +121,8 @@ public class MapViewerController {
     }
 
     private String highlightSourceToDestination(Node source, Node destination) {
+        map.getSelector().clear();
+
         Path path = PathFinder.aStarPathFind(map.getGraph(), source, destination);
         Iterator<Node> nodeIterator = path.iterator();
 
