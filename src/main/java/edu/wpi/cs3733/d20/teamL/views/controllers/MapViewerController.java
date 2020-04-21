@@ -52,7 +52,6 @@ public class MapViewerController {
 
         map.setEditable(false);
 
-        dbCache.cacheAllFromDB();
         map.setGraph(MapParser.getGraphFromCache(dbCache.getNodeCache()));
 
         map.setZoomLevel(1);
