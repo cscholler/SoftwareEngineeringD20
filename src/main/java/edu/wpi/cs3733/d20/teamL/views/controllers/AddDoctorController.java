@@ -2,6 +2,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +19,8 @@ public class AddDoctorController {
     @FXML
     JFXTextField fNameText, lNameText, emailText, doctorIDText, officeNumText, addInfoText;
 
+    FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+
     @FXML
     public void handleButtonAction(ActionEvent e) throws IOException {
         Stage stage;
@@ -26,7 +29,7 @@ public class AddDoctorController {
         if(e.getSource() == btnCancel){
             stage = (Stage) btnCancel.getScene().getWindow();
             //stage = new Stage();
-            root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/AdminView.fxml"));
+            root = loaderHelper.getFXMLLoader("AdminView").load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.setMaximized(true);
