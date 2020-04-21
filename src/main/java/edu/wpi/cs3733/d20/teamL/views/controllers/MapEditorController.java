@@ -37,7 +37,7 @@ import edu.wpi.cs3733.d20.teamL.entities.Node;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class MapViewController {
+public class MapEditorController {
     @FXML
     MenuItem saveToDB, saveToCSV, open, quit;
     @FXML
@@ -62,6 +62,7 @@ public class MapViewController {
     VBox editor;
 	@Inject
 	private IDBCache cache;
+
     private Scene scene;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 
@@ -98,13 +99,17 @@ public class MapViewController {
 		});
 
         cache.cacheAllFromDB();
+
+        map.setEditable(true);
         openFromDB();
 
-        map.setZoomLevel(0.6);
+        map.setZoomLevel(1);
 
         //Hides the node editor VBox
         editor.setPrefWidth(0);
         editor.setVisible(false);
+
+        map.recalculatePositions();
 	}
 
     private void coreShortcuts() {
@@ -138,10 +143,19 @@ public class MapViewController {
     @FXML
     void saveToDB() {
         ArrayList<Node> nodes = new ArrayList<>(map.getGraph().getNodes());
-        ArrayList<Edge> edges = new ArrayList<>(map.getGraph().getEdges());
+        ArrayList<Edge> blackList = new ArrayList<>();
+        ArrayList<Edge> newEdges = new ArrayList<>();
+
+        for (Node node : nodes) {
+            for (Edge edge : node.getEdges()) {
+                if (!newEdges.contains(edge) && blackList.contains(edge)) newEdges.add(edge);
+                if (edge.getDestination().getNeighbors().contains(node))
+                    blackList.add(edge.getDestination().getEdge(node));
+            }
+        }
 
         cache.cacheNodes(nodes, map.getEditedNodes());
-        cache.cacheEdges(edges);
+        cache.cacheEdges(newEdges);
         cache.updateDB();
 
         map.getEditedNodes().clear();
@@ -205,7 +219,7 @@ public class MapViewController {
     private void backToMain() {
         try {
             Stage stage = (Stage) pathFind.getScene().getWindow();
-			Parent newRoot = loaderHelper.getFXMLLoader("Home").load();
+			Parent newRoot = loaderHelper.getFXMLLoader("AdminView").load();
             Scene newScene = new Scene(newRoot);
             stage.setScene(newScene);
             stage.show();

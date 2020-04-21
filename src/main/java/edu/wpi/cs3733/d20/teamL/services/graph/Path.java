@@ -129,13 +129,11 @@ public class Path implements Iterable<Node> {
             end = new Point2D(next.getPosition().getX() - curr.getPosition().getX(), next.getPosition().getY() - curr.getPosition().getY());
             angle = start.angle(end);
 
-            System.out.println(angle);
-
             sign = determineDirection(start, end);
 
             if(angle > 10) {
                 if (empty) {
-                    message.append("Head towards " + curr.getLongName() + ".\n");
+                    message.append("Head towards " + curr.getLongName() + ".\n\n");
                     empty = false;
                 }
                 message.append("Once you reach " + curr.getLongName() + ", ");
@@ -144,10 +142,10 @@ public class Path implements Iterable<Node> {
                 else if (angle > 95) message.append("take a sharp ");
                 else message.append("turn ");
 
-                if(next.getType().equals("HALL")) message.append(sign + " and continue down the hall.\n");
-                else message.append(sign + " towards " + next.getLongName() + ".\n");
+                if(next.getType().equals("HALL")) message.append(sign + " and continue down the hall.\n\n");
+                else message.append(sign + " towards " + next.getLongName() + ".\n\n");
             } else if(angle <= 10 && !curr.getType().equals("HALL")) {
-                message.append("Pass straight though the " + curr.getLongName() + ".\n");
+                message.append("Pass straight though the " + curr.getLongName() + ".\n\n");
             }
         }
 
