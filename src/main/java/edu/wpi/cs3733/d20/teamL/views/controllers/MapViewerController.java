@@ -116,7 +116,6 @@ public class MapViewerController {
             instructions.getChildren().clear();
             instructions.getChildren().add(directionsLabel);
             instructions.setVisible(true);
-            btnTextMe.setText("Text Me Directions");
             btnTextMe.setDisable(false);
             btnTextMe.setVisible(true);
         }
