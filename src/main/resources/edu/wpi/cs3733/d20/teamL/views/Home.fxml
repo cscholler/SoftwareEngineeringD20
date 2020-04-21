@@ -146,7 +146,7 @@
                         <Font name="System Bold" size="28.0"/>
                     </font>
                 </JFXButton>
-                <Label text="3:03PM" textFill="WHITE">
+                <Label fx:id="timeLabel" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="48.0"/>
                     </font>
