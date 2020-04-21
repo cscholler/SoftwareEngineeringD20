@@ -41,6 +41,10 @@ public class MapViewerController {
     private void nodePressed(MouseEvent event) {
         Node destination = map.getSelectedNode();
 
+        sourceToDestination(source, destination);
+    }
+
+    private void sourceToDestination(Node source, Node destination) {
         Path path = PathFinder.aStarPathFind(map.getGraph(), source, destination);
         System.out.println(path.generateTextMessage());
 
@@ -54,7 +58,7 @@ public class MapViewerController {
 
             NodeGUI nodeGUI = map.getNodeGUI(currentNode);
             EdgeGUI edgeGUI = map.getEdgeGUI(currentNode.getEdge(nextNode));
-            map.getSelector().add(nodeGUI);
+            //map.getSelector().add(nodeGUI);
             map.getSelector().add(edgeGUI);
 
             currentNode = nextNode;
