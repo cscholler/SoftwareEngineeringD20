@@ -101,6 +101,7 @@ public class MapEditorController {
         cache.cacheAllFromDB();
 
         map.setEditable(true);
+        map.init();
         openFromDB();
 
         map.setZoomLevel(1);
