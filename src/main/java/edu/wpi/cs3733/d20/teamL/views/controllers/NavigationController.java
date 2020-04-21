@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers;
 import com.jfoenix.controls.JFXAutoCompletePopup;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.navSearch.SearchFields;
 import edu.wpi.cs3733.d20.teamL.services.db.IDBCache;
@@ -82,7 +83,6 @@ public class NavigationController implements Initializable {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initOwner(btnLogin.getScene().getWindow());
             stage.showAndWait();
-
         //Displays the map of the hospital
         } else if (actionEvent.getSource() == btnMap) {
             stage = (Stage) btnMap.getScene().getWindow();
@@ -90,17 +90,29 @@ public class NavigationController implements Initializable {
 			root = loader.load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
+
+            stage.hide();
+
             stage.setMaximized(true);
             stage.show();
-            MapViewController controller = loader.getController();
+            MapViewerController controller = loader.getController();
             controller.getMap().recalculatePositions();
+
+            stage.setWidth(App.SCREEN_WIDTH);
+            stage.setHeight(App.SCREEN_HEIGHT);
         //Displays a popup window that help is on the way
         } else if (actionEvent.getSource() == btnHelp) {
             stage = (Stage) btnHelp.getScene().getWindow();
 			root = loaderHelper.getFXMLLoader("Help").load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
+            stage.hide();
+            stage.setMaximized(true);
             stage.show();
+
+            stage.setWidth(App.SCREEN_WIDTH);
+            stage.setHeight(App.SCREEN_HEIGHT);
+
         //Goes to Service display screen
         }
     }

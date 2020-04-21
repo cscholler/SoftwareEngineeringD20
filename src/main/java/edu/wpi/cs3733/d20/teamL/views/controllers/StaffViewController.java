@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers;
 
 import com.jfoenix.controls.JFXButton;
+import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -39,6 +40,9 @@ public class StaffViewController {
             stage.setScene(scene);
             stage.setMaximized(true);
             stage.show();
+
+            stage.setWidth(App.SCREEN_WIDTH);
+            stage.setHeight(App.SCREEN_HEIGHT);
             //opens med request
         } else if (event.getSource() == btnMeds) {
             stage = (Stage) btnMeds.getScene().getWindow();
@@ -48,15 +52,24 @@ public class StaffViewController {
             stage.hide();
             stage.isMaximized();
             stage.show();
+
+            stage.setWidth(App.SCREEN_WIDTH);
+            stage.setHeight(App.SCREEN_HEIGHT);
             //opens mapView
         } else if (event.getSource() == btnMap) {
             stage = (Stage) btnMap.getScene().getWindow();
-            root = loaderHelper.getFXMLLoader("MapViewer").load();
+            FXMLLoader fxmlLoader = loaderHelper.getFXMLLoader("MapViewer");
+            root = fxmlLoader.load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.hide();
             stage.setMaximized(true);
             stage.show();
+
+            MapViewerController controller = fxmlLoader.getController();
+            controller.getMap().recalculatePositions();
+
+            stage.setWidth(App.SCREEN_WIDTH);
+            stage.setHeight(App.SCREEN_HEIGHT);
             //returns back to home
         } else if (event.getSource() == btnLogout) {
             stage = (Stage) btnLogout.getScene().getWindow();
@@ -75,6 +88,9 @@ public class StaffViewController {
             stage.hide();
             stage.setMaximized(true);
             stage.show();
+
+            stage.setWidth(App.SCREEN_WIDTH);
+            stage.setHeight(App.SCREEN_HEIGHT);
         }
     }
 }

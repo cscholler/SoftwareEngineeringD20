@@ -13,7 +13,7 @@ import javafx.scene.shape.Circle;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class NodeGUI extends StackPane implements Highlightable {
+public class NodeGUI extends Circle implements Highlightable {
     private boolean highlighted;
 
     private double highlightRadius;
@@ -44,8 +44,7 @@ public class NodeGUI extends StackPane implements Highlightable {
 
     private Node node;
 
-    private Circle circle = new Circle();
-    private Label nameLabel = new Label();
+    //private Label nameLabel = new Label();
 
     private boolean selected = false;
 
@@ -55,18 +54,14 @@ public class NodeGUI extends StackPane implements Highlightable {
         // Set initial x and y position
         setLayoutPos(node.getPosition());
 
-        nameLabel.setText(node.getID());
-        nameLabel.setMouseTransparent(true);
+        //nameLabel.setText(node.getID());
+        //nameLabel.setMouseTransparent(true);
 
         setHighlighted(false);
-
-        setAlignment(Pos.CENTER);
-
-        getChildren().addAll(circle, nameLabel);
     }
 
     public Circle getCircle() {
-        return circle;
+        return this;
     }
 
     public DoubleProperty getXProperty() {
@@ -80,8 +75,6 @@ public class NodeGUI extends StackPane implements Highlightable {
     public void setLayoutPos(Point2D newPos) {
         getXProperty().set(newPos.getX());
         getYProperty().set(newPos.getY());
-
-        newPos = new Point2D(newPos.getX() - getWidth()/2, newPos.getY() - getHeight()/2);
 
         layoutXProperty().set(newPos.getX());
         layoutYProperty().set(newPos.getY());
@@ -117,7 +110,7 @@ public class NodeGUI extends StackPane implements Highlightable {
     public Collection<javafx.scene.Node> getAllNodes() {
         Collection<javafx.scene.Node> retList = new ArrayList<>(1);
         retList.add(this);
-        retList.add(nameLabel);
+        //retList.add(nameLabel);
         return retList;
     }
 
@@ -133,7 +126,7 @@ public class NodeGUI extends StackPane implements Highlightable {
         return selected;
     }
 
-    public StackPane getGUI() {
+    public Circle getGUI() {
         return this;
     }
 
