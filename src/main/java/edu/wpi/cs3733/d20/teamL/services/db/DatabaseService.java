@@ -8,7 +8,6 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Properties;
 
 import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
@@ -17,12 +16,11 @@ import lombok.extern.slf4j.Slf4j;
 import edu.wpi.cs3733.d20.teamL.services.Service;
 
 @Slf4j
-public class DatabaseService extends Service {
+public class DatabaseService extends Service implements IDatabaseService {
 	private Connection connection;
 	private Properties props = null;
 	private ArrayList<ResultSet> usedResSets = new ArrayList<>();
 	private ArrayList<Statement> usedStmts = new ArrayList<>();
-	private boolean firstTime = true;
 
 	public DatabaseService(Properties props) {
 		super();
@@ -30,11 +28,9 @@ public class DatabaseService extends Service {
 		this.props = props;
 	}
 
-	public DatabaseService(boolean firstTime) {
-		//super();
+	public DatabaseService() {
+		super();
 		this.serviceName = DBConstants.SERVICE_NAME;
-		this.firstTime = firstTime;
-		startService();
 	}
 
 	@Override
@@ -42,13 +38,8 @@ public class DatabaseService extends Service {
 		if (connection == null) {
 			connect(props);
 		}
-
-		if (firstTime) {
-			buildDatabase();
-			// TODO: put somewhere better and drop table before populating
-			populateFromCSV("MapLnodesFloor2", DBConstants.addNode);
-			populateFromCSV("MapLedgesFloor2", DBConstants.addEdge);
-		}
+		// TODO: put somewhere better
+		buildDatabase();
 	}
 
 	@Override
@@ -56,7 +47,8 @@ public class DatabaseService extends Service {
 		disconnect();
 	}
 
-	private void connect(Properties props) {
+	@Override
+	public void connect(Properties props) {
 		try {
 			Class.forName(DBConstants.DB_DRIVER);
 		} catch (ClassNotFoundException ex) {
@@ -76,7 +68,8 @@ public class DatabaseService extends Service {
 		}
 	}
 
-	private void disconnect() {
+	@Override
+	public void disconnect() {
 		try {
 			for (ResultSet resSet : usedResSets) {
 				resSet.close();
@@ -95,6 +88,7 @@ public class DatabaseService extends Service {
 		}
 	}
 
+	@Override
 	public ResultSet executeQuery(String query, ArrayList<String> values) {
 		ResultSet resSet = null;
 		try {
@@ -112,10 +106,12 @@ public class DatabaseService extends Service {
 		return resSet;
 	}
 
+	@Override
 	public ResultSet executeQuery(String query) {
 		return executeQuery(query, new ArrayList<>());
 	}
 
+	@Override
 	public ArrayList<ResultSet> executeQueries(ArrayList<String> queries, ArrayList<ArrayList<String>> valuesList) {
 		ArrayList<ResultSet> resSets = new ArrayList<>();
 		boolean isPreparedStmt = !valuesList.isEmpty();
@@ -129,10 +125,12 @@ public class DatabaseService extends Service {
 		return resSets;
 	}
 
+	@Override
 	public ArrayList<ResultSet> executeQueries(ArrayList<String> queries) {
 		return executeQueries(queries, new ArrayList<>());
 	}
 
+	@Override
 	public int executeUpdate(String update, ArrayList<String> values) {
 		int rows = 0;
 		try {
@@ -150,10 +148,12 @@ public class DatabaseService extends Service {
 		return rows;
 	}
 
+	@Override
 	public int executeUpdate(String update) {
 		return executeUpdate(update, new ArrayList<>());
 	}
 
+	@Override
 	public int executeUpdates(ArrayList<String> updates, ArrayList<ArrayList<String>> valuesList) {
 		int totalRows = 0;
 		boolean isPreparedStmt = !valuesList.isEmpty();
@@ -166,10 +166,12 @@ public class DatabaseService extends Service {
 		return totalRows;
 	}
 
+	@Override
 	public int executeUpdates(ArrayList<String> updates) {
 		return executeUpdates(updates, new ArrayList<>());
 	}
 
+	@Override
 	public PreparedStatement fillPreparedStatement(String query, ArrayList<String> values) {
 		PreparedStatement pStmt = null;
 		try {
@@ -183,9 +185,9 @@ public class DatabaseService extends Service {
 		return pStmt;
 	}
 
-	private void buildDatabase() {
+	@Override
+	public void buildDatabase() {
 		ArrayList<String> createTables = new ArrayList<>();
-
 		createTables.add(DBConstants.createNodeTable);
 		createTables.add(DBConstants.createEdgeTable);
 		createTables.add(DBConstants.createDoctorTable);
@@ -194,8 +196,11 @@ public class DatabaseService extends Service {
 		createTables.add(DBConstants.createUserTable);
 		dropTables();
 		executeUpdates(createTables);
+		populateFromCSV("MapLnodesFloor2", DBConstants.addNode);
+		populateFromCSV("MapLedgesFloor2", DBConstants.addEdge);
 	}
 
+	@Override
 	public void populateFromCSV(String csvFile, String update) {
 		ArrayList<String> rowsToAdd = new ArrayList<>();
 		ArrayList<ArrayList<String>> rowData = new ArrayList<>();
@@ -209,7 +214,8 @@ public class DatabaseService extends Service {
 		executeUpdates(rowsToAdd, rowData);
 	}
 
-	private void dropTables() {
+	@Override
+	public void dropTables() {
 		ResultSet resSet;
 		ArrayList<String> droppableTables = new ArrayList<>();
 		ArrayList<String> tablesToDrop = new ArrayList<>();
@@ -233,6 +239,7 @@ public class DatabaseService extends Service {
 	}
 
 
+	@Override
 	public ArrayList<String> getColumnNames(ResultSet resSet) {
 		ArrayList<String> colLabels = new ArrayList<>();
 		try {
@@ -247,6 +254,7 @@ public class DatabaseService extends Service {
 		return colLabels;
 	}
 
+	@Override
 	public ArrayList<ArrayList<String>> getTableFromResultSet(ResultSet resSet) {
 		ArrayList<ArrayList<String>> table = new ArrayList<>();
 		try {
@@ -265,18 +273,22 @@ public class DatabaseService extends Service {
 		return table;
 	}
 
+	@Override
 	public void collectUsedResultSet(ResultSet resSet) {
 		usedResSets.add(resSet);
 	}
 
+	@Override
 	public void collectUsedResultSets(ArrayList<ResultSet> resSets) {
 		usedResSets.addAll(resSets);
 	}
 
+	@Override
 	public void collectUsedStatement(Statement stmt) {
 		usedStmts.add(stmt);
 	}
 
+	@Override
 	public void collectUsedStatements(ArrayList<Statement> stmt) {
 		usedStmts.addAll(stmt);
 	}

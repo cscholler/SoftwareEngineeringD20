@@ -5,8 +5,9 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.navSearch.SearchFields;
-import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
+import edu.wpi.cs3733.d20.teamL.services.db.IDBCache;
 
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,12 +15,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -33,13 +34,14 @@ public class NavigationController implements Initializable {
     @FXML private JFXButton btnServices;
     @FXML private JFXButton btnHelp;
     @FXML private JFXTextField searchBox;
-	private DBCache cache;
+    @Inject
+	private IDBCache cache;
+    private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 	private SearchFields sf;
 	private JFXAutoCompletePopup<String> autoCompletePopup;
 
 	@FXML
 	public void initialize(URL location, ResourceBundle resources) {
-		cache = new DBCache(true);
 		cache.cacheAllFromDB();
 		sf = new SearchFields(getNodeCache());
 		sf.populateSearchFields();
@@ -70,7 +72,7 @@ public class NavigationController implements Initializable {
         //Goes to the Login Page
         if (actionEvent.getSource() == btnLogin) {
             stage = new Stage();
-            root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/LoginPage.fxml"));
+			root = loaderHelper.getFXMLLoader("/edu/wpi/cs3733/d20/teamL/views/LoginPage.fxml").load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -80,27 +82,22 @@ public class NavigationController implements Initializable {
         //Displays the map of the hospital
         } else if (actionEvent.getSource() == btnMap) {
             stage = (Stage) btnMap.getScene().getWindow();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/MapViewer.fxml"));
-            root = fxmlLoader.load();
+			FXMLLoader loader = loaderHelper.getFXMLLoader("/edu/wpi/cs3733/d20/teamL/views/MapViewer.fxml");
+			root = loader.load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.setMaximized(true);
             stage.show();
-
-            MapViewController controller = fxmlLoader.getController();
+            MapViewController controller = loader.getController();
             controller.getMap().recalculatePositions();
         //Displays a popup window that help is on the way
         } else if (actionEvent.getSource() == btnHelp) {
-
             stage = (Stage) btnHelp.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/Help.fxml"));
+			root = loaderHelper.getFXMLLoader("/edu/wpi/cs3733/d20/teamL/views/Help.fxml").load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-
         //Goes to Service display screen
-        } else {
-
         }
     }
 
