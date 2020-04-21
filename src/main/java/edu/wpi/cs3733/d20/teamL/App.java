@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class App extends Application {
+	FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 	Scene scene;
 	Parent root;
 
@@ -26,11 +28,7 @@ public class App extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws IOException {
-		//root = FXMLLoader.load(getClass().getClassLoader().getResource("edu/wpi/cs3733/d20/teamL/views/Home.fxml"));
-		Injector injector = Guice.createInjector(new PathfinderModule());
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/Home.fxml"));
-		fxmlLoader.setControllerFactory(injector::getInstance);
-		root = fxmlLoader.load();
+		root = loaderHelper.getFXMLLoader("Home").load();
 		primaryStage.setTitle("Home");
 		primaryStage.setScene(new Scene(root));
 		primaryStage.setMaximized(true);
