@@ -86,6 +86,9 @@ public class NavigationController implements Initializable {
 			root = loader.load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
+
+            stage.hide();
+
             stage.setMaximized(true);
             stage.show();
             MapViewerController controller = loader.getController();
@@ -99,10 +102,13 @@ public class NavigationController implements Initializable {
 			root = loaderHelper.getFXMLLoader("Help").load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
+            stage.hide();
+            stage.setMaximized(true);
             stage.show();
 
             stage.setWidth(App.SCREEN_WIDTH);
             stage.setHeight(App.SCREEN_HEIGHT);
+
         //Goes to Service display screen
         }
     }
