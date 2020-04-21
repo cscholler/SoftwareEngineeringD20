@@ -2,6 +2,8 @@ package edu.wpi.cs3733.d20.teamL;
 
 import java.io.IOException;
 import java.util.Stack;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -36,7 +38,6 @@ public class App extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws IOException {
-
 		root = loaderHelper.getFXMLLoader("Home").load();
 		primaryStage.setTitle("Team L");
 		primaryStage.setScene(new Scene(root));

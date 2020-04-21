@@ -9,7 +9,7 @@ import edu.wpi.cs3733.d20.teamL.services.navSearch.SearchFields;
 import edu.wpi.cs3733.d20.teamL.services.db.IDBCache;
 
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
-import edu.wpi.cs3733.d20.teamL.util.io.SMSSender;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Modality;
@@ -26,8 +27,8 @@ import javafx.stage.Stage;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class NavigationController implements Initializable {
 
@@ -38,6 +39,7 @@ public class NavigationController implements Initializable {
     @FXML private JFXButton btnHelp;
     @FXML private JFXTextField searchBox;
     @FXML private JFXButton btnSearch;
+    @FXML private Label timeLabel;
     @Inject
 	private IDBCache cache;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
@@ -45,7 +47,16 @@ public class NavigationController implements Initializable {
 	private JFXAutoCompletePopup<String> autoCompletePopup;
 
 	@FXML
+
 	public void initialize(URL location, ResourceBundle resources) {
+		Timer timer = new Timer();
+		timer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("h:mm aa").format(new Date())));
+			}
+		}, 0, 1000);
+
 		cache.cacheAllFromDB();
 		sf = new SearchFields(getNodeCache());
 		sf.populateSearchFields();
@@ -162,4 +173,12 @@ public class NavigationController implements Initializable {
             }
         });
     }
+
+	public Label getTimeLabel() {
+		return timeLabel;
+	}
+
+	public void setTimeLabel(Label timeLabel) {
+		this.timeLabel = timeLabel;
+	}
 }
