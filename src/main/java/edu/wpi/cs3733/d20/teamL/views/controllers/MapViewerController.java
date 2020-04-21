@@ -19,10 +19,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
+import java.io.IOException;
 import java.util.Iterator;
 
 @Slf4j
@@ -149,5 +151,15 @@ public class MapViewerController {
 
     public MapPane getMap() {
         return map;
+    }
+
+    public void handleText() throws IOException {
+        Stage stage = new Stage();
+        Parent root = loaderHelper.getFXMLLoader("SendDirectionsPage").load();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(textMe.getScene().getWindow());
+        stage.showAndWait();
     }
 }
