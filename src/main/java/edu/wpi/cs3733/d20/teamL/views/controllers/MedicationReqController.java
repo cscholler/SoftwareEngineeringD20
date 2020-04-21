@@ -32,7 +32,7 @@ public class MedicationReqController implements Initializable {
     private JFXButton btnCancel, btnSubmit;
 
     @FXML
-    private JFXTextField doctorNameText, medTypeText, doseText, patientText, roomNumText, addInfoText;
+    private JFXTextField docFNameText, docLNameText, medTypeText, doseText, patFNameText, patLNameText, roomNumText, addInfoText;
 
 
 	@FXML
@@ -60,21 +60,23 @@ public class MedicationReqController implements Initializable {
             stage.show();
 
         } else if (e.getSource() == btnSubmit){
-            String doctorName = doctorNameText.getText();
+            String doctorFName = docFNameText.getText();
+            String doctorLName = docLNameText.getText();
             String medType = medTypeText.getText();
             String dose = doseText.getText();
-            String patientName = patientText.getText();
+            String patientFName = patFNameText.getText();
+            String patientLName = patLNameText.getText();
             String roomNum = roomNumText.getText();
             String additionalInfo = addInfoText.getText();
 
             // TODO: Use cache instead of dealing with db directly
 
 			// Adds request info to database
-			String doctorFName = doctorName.substring(0, doctorName.indexOf(" "));
-			String doctorLName = doctorName.substring(doctorName.indexOf(" ") + 1);
+			//String doctorFName = doctorName.substring(0, doctorName.indexOf(" "));
+			//String doctorLName = doctorName.substring(doctorName.indexOf(" ") + 1);
 			String doctorID = db.getTableFromResultSet(db.executeQuery(DBConstants.getDoctorID, new ArrayList<>(Arrays.asList(doctorFName, doctorLName)))).get(0).get(0);
-			String patientFName = patientName.substring(0, patientName.indexOf(" "));
-			String patientLName = patientName.substring(patientName.indexOf(" ") + 1);
+			//String patientFName = patientName.substring(0, patientName.indexOf(" "));
+			//String patientLName = patientName.substring(patientName.indexOf(" ") + 1);
 			String patientID = db.getTableFromResultSet(db.executeQuery(DBConstants.getPatientID, new ArrayList<>(Arrays.asList(patientFName, patientLName)))).get(0).get(0);
 			db.executeUpdate(DBConstants.addMedicationRequest, new ArrayList<>(Arrays.asList(doctorID, patientID, "Placeholder nurse name", dose, medType, additionalInfo)));
 			formatter.reportQueryResults(db.executeQuery(DBConstants.selectAllMedicationRequests));
