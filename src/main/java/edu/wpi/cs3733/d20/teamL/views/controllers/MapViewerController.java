@@ -107,7 +107,7 @@ public class MapViewerController {
         Node destNode = sf.getNode(destination.getText());
 
         if (startNode != null && destNode != null) {
-        	directions = highlightSourceToDestination(startNode, destNode);
+            directions = highlightSourceToDestination(startNode, destNode);
             Label directionsLabel = new Label();
             directionsLabel.setText(directions);
             directionsLabel.setTextFill(Color.WHITE);
@@ -116,8 +116,8 @@ public class MapViewerController {
             instructions.getChildren().clear();
             instructions.getChildren().add(directionsLabel);
             instructions.setVisible(true);
-			btnTextMe.setText("Text Me Directions");
-			btnTextMe.setDisable(false);
+            btnTextMe.setText("Text Me Directions");
+            btnTextMe.setDisable(false);
             btnTextMe.setVisible(true);
         }
     }
@@ -169,15 +169,14 @@ public class MapViewerController {
         return path.generateTextMessage();
     }
 
-	public void handleButtonAction(ActionEvent event) {
-		if (event.getSource() == btnTextMe) {
-			SMSSender sender = new SMSSender();
-			// Temporarily hard-coded as Luke's phone number
-			sender.sendMessage(directions, "2073186779");
-			btnTextMe.setText("Sent!");
-			btnTextMe.setDisable(true);
-		}
-	}
+    @FXML
+    public void textMe() {
+        SMSSender sender = new SMSSender();
+        // Temporarily hard-coded as Luke's phone number
+        sender.sendMessage(directions, "2073186779");
+        btnTextMe.setText("Sent!");
+        btnTextMe.setDisable(true);
+    }
 
     public MapPane getMap() {
         return map;
