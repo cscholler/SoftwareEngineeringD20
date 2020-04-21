@@ -16,7 +16,9 @@ import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 
 public class AdminViewController {
 
-    @FXML
+	@FXML
+	private Label userLabel;
+	@FXML
     private JFXButton btnLogout;
     @FXML
     private JFXButton btnNotif;
@@ -92,4 +94,12 @@ public class AdminViewController {
             stage.show();
         }
     }
+
+	public Label getUserLabel() {
+		return userLabel;
+	}
+
+	public void setUserLabel(Label userLabel) {
+		this.userLabel = userLabel;
+	}
 }

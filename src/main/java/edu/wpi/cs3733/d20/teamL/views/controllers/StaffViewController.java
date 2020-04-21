@@ -14,8 +14,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class StaffViewController {
-
-    @FXML
+	@FXML
+	private Label userLabel;
+	@FXML
     private JFXButton btnLogout, btnNotif,btnMeds ,btnMe, btnMR, btnChangeR, btnMap, btnAddPatient;
     @FXML
     private Label lblName;
@@ -93,4 +94,12 @@ public class StaffViewController {
             stage.setHeight(App.SCREEN_HEIGHT);
         }
     }
+
+	public Label getUserLabel() {
+		return userLabel;
+	}
+
+	public void setUserLabel(Label userLabel) {
+		this.userLabel = userLabel;
+	}
 }
