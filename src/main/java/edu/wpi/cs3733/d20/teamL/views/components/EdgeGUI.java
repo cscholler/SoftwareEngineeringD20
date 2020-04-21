@@ -153,4 +153,8 @@ public class EdgeGUI extends Line implements Highlightable {
 
         return withinX && withinY;
     }
+
+    public Edge getEdge() {
+        return edge;
+    }
 }

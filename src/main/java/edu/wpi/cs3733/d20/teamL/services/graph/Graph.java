@@ -26,13 +26,10 @@ public class Graph {
      */
     public List<Edge> getEdges() {
         ArrayList<Edge> edges = new ArrayList<>();
-        ArrayList<Edge> blackList = new ArrayList<>();
 
         for (Node node : getNodes()) {
             for (Edge edge : node.getEdges()) {
-                if (!edges.contains(edge) && blackList.contains(edge)) edges.add(edge);
-                if (edge.getDestination().getNeighbors().contains(node))
-                    blackList.add(edge.getDestination().getEdge(node));
+                if (!edges.contains(edge)) edges.add(edge);
             }
         }
 

@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXTextField;
 
 import java.io.IOException;
 
+import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
@@ -27,8 +28,9 @@ public class LoginController {
     private JFXButton login, btnCancel;
     @FXML
     private Text incorrectText;
+
     @FXML
-	AnchorPane anchorPane;
+    AnchorPane anchorPane;
 
     /**
      * Controls the login feature setting
@@ -70,9 +72,12 @@ public class LoginController {
                 root = loaderHelper.getFXMLLoader("StaffView").load();
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
+                stage.hide();
                 stage.setMaximized(true);
                 stage.show();
 
+                stage.setWidth(App.SCREEN_WIDTH);
+                stage.setHeight(App.SCREEN_HEIGHT);
             }
             else if (user.equals("Nurse") && password.equals("Nurse")) {
                 System.out.println("Nurse");
@@ -85,8 +90,12 @@ public class LoginController {
 				root = loaderHelper.getFXMLLoader("StaffView").load();
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
+                stage.hide();
                 stage.setMaximized(true);
                 stage.show();
+
+                stage.setWidth(App.SCREEN_WIDTH);
+                stage.setHeight(App.SCREEN_HEIGHT);
             }
 
             else if (user.equals("Admin") && password.equals("Admin")) {
@@ -102,6 +111,9 @@ public class LoginController {
                 stage.setScene(scene);
                 stage.setMaximized(true);
                 stage.show();
+
+                stage.setWidth(App.SCREEN_WIDTH);
+                stage.setHeight(App.SCREEN_HEIGHT);
             }
             else {
                 incorrectText.setVisible(true);
