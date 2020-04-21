@@ -55,7 +55,6 @@ public class MapViewerController {
 
         map.setEditable(false);
 
-        dbCache.cacheAllFromDB();
         map.setGraph(MapParser.getGraphFromCache(dbCache.getNodeCache()));
 
         map.setZoomLevel(1);
@@ -126,6 +125,8 @@ public class MapViewerController {
     }
 
     private String highlightSourceToDestination(Node source, Node destination) {
+        map.getSelector().clear();
+
         Path path = PathFinder.aStarPathFind(map.getGraph(), source, destination);
         Iterator<Node> nodeIterator = path.iterator();
 

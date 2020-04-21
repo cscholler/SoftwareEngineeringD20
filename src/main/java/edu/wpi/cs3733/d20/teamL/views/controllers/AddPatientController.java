@@ -4,8 +4,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.jfoenix.controls.JFXAutoCompletePopup;
+import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
+import edu.wpi.cs3733.d20.teamL.services.navSearch.SearchFields;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -27,6 +30,40 @@ public class AddPatientController {
     JFXTextField fNameText, lNameText, IDText, doctorIDText, roomNumText, addInfoText;
     @Inject
 	IDatabaseService db;
+
+    @Inject
+    private DBCache dbCache;
+
+    private SearchFields sf;
+    private JFXAutoCompletePopup<String> autoCompletePopup;
+
+    @FXML
+    private void initialize() {
+        dbCache.cacheAllFromDB();
+
+        sf = new SearchFields(dbCache.getNodeCache());
+        sf.getFields().clear();
+        sf.getFields().add(SearchFields.Field.nodeID);
+        sf.populateSearchFields();
+        autoCompletePopup = new JFXAutoCompletePopup<>();
+        autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
+    }
+
+    @FXML
+    private void autocomplete() {
+        System.out.println("Autocompleting...");
+        autoCompletePopup.setSelectionHandler(event -> roomNumText.setText(event.getObject()));
+        roomNumText.textProperty().addListener(observable -> {
+            autoCompletePopup.filter(string ->
+                    string.toLowerCase().contains(roomNumText.getText().toLowerCase()));
+            if (autoCompletePopup.getFilteredSuggestions().isEmpty() ||
+                    roomNumText.getText().isEmpty()) {
+                autoCompletePopup.hide();
+            } else {
+                autoCompletePopup.show(roomNumText);
+            }
+        });
+    }
 
     @FXML
     public void handleButtonAction(ActionEvent e) throws IOException {
