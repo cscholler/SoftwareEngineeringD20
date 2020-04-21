@@ -260,5 +260,4 @@ public class MapViewController {
             map.addEdge(edge);
         }
     }
-
 }
