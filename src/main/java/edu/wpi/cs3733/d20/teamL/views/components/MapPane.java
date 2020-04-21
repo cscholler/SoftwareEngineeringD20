@@ -190,14 +190,6 @@ public class MapPane extends StackPane {
             body.addEventHandler(MouseEvent.ANY, event -> {
                 if (event.getButton() != MouseButton.MIDDLE) event.consume();
             });
-        } else {
-            body.setOnMouseClicked(event -> {
-                if (event.getButton().equals(MouseButton.PRIMARY) && !onSelectable) {
-                    selector.clear();
-                    selectedNode = null;
-                    //onActionProperty().get().handle(event);
-                }
-            });
         }
     }
 
