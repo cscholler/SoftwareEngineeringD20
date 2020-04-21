@@ -1,20 +1,22 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTextField;
+import java.io.IOException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
+
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 
 public class AddPatientController {
+	FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
     @FXML
     JFXButton btnCancel, btnSubmit;
-
     @FXML
     JFXTextField fNameText, lNameText, IDText, doctorIDText, roomNumText, addInfoText;
 
@@ -25,8 +27,7 @@ public class AddPatientController {
 
         if(e.getSource() == btnCancel){
             stage = (Stage) btnCancel.getScene().getWindow();
-            //stage = new Stage();
-            root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/StaffView.fxml"));
+            root = loaderHelper.getFXMLLoader("StaffView").load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.setMaximized(true);
