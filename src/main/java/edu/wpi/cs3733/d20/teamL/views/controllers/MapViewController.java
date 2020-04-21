@@ -205,7 +205,7 @@ public class MapViewController {
     private void backToMain() {
         try {
             Stage stage = (Stage) pathFind.getScene().getWindow();
-			Parent newRoot = loaderHelper.getFXMLLoader("/edu/wpi/cs3733/d20/teamL/views/Home.fxml").load();
+			Parent newRoot = loaderHelper.getFXMLLoader("Home").load();
             Scene newScene = new Scene(newRoot);
             stage.setScene(newScene);
             stage.show();

@@ -72,7 +72,7 @@ public class NavigationController implements Initializable {
         //Goes to the Login Page
         if (actionEvent.getSource() == btnLogin) {
             stage = new Stage();
-			root = loaderHelper.getFXMLLoader("/edu/wpi/cs3733/d20/teamL/views/LoginPage.fxml").load();
+			root = loaderHelper.getFXMLLoader("LoginPage").load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -82,7 +82,7 @@ public class NavigationController implements Initializable {
         //Displays the map of the hospital
         } else if (actionEvent.getSource() == btnMap) {
             stage = (Stage) btnMap.getScene().getWindow();
-			FXMLLoader loader = loaderHelper.getFXMLLoader("/edu/wpi/cs3733/d20/teamL/views/MapViewer.fxml");
+			FXMLLoader loader = loaderHelper.getFXMLLoader("MapViewer");
 			root = loader.load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
@@ -93,7 +93,7 @@ public class NavigationController implements Initializable {
         //Displays a popup window that help is on the way
         } else if (actionEvent.getSource() == btnHelp) {
             stage = (Stage) btnHelp.getScene().getWindow();
-			root = loaderHelper.getFXMLLoader("/edu/wpi/cs3733/d20/teamL/views/Help.fxml").load();
+			root = loaderHelper.getFXMLLoader("Help").load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();

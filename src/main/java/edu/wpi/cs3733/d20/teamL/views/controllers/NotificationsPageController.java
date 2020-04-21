@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import edu.wpi.cs3733.d20.teamL.entities.MedicineRequest;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -30,6 +31,7 @@ public class NotificationsPageController implements Initializable {
     JFXListView<MedicineRequest> notifications;
     @FXML
     Label reqMessage, addInfo;
+    private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 
     /**
      * Loads data to the list view in the form of MedicineRequest Objects
@@ -83,7 +85,7 @@ public class NotificationsPageController implements Initializable {
         if (e.getSource() == btnBack) {
             stage = (Stage) btnBack.getScene().getWindow();
             //stage = new Stage();
-            root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/StaffView.fxml"));
+            root = loaderHelper.getFXMLLoader("StaffView").load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.setMaximized(true);

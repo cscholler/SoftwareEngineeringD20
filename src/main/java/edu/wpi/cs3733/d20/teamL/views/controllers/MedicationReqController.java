@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.DatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,6 +26,7 @@ public class MedicationReqController implements Initializable {
 	@Inject
 	IDatabaseService db;
 	DBTableFormatter formatter = new DBTableFormatter();
+    private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 
     @FXML
     private JFXButton btnCancel, btnSubmit;
@@ -50,7 +52,7 @@ public class MedicationReqController implements Initializable {
         if (e.getSource() == btnCancel){
             stage = (Stage) btnCancel.getScene().getWindow();
             //stage = new Stage();
-            root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/StaffView.fxml"));
+            root = loaderHelper.getFXMLLoader("StaffView").load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.hide();
