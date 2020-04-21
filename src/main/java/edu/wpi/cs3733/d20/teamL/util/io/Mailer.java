@@ -37,7 +37,7 @@ public class Mailer {
 
         // Sender's email ID needs to be mentioned
         //String from = "FaulknerHospitalC2020@gmail.com";
-        String from = "jdhoy1999@gmail.com";
+        String from = "bwhmappath@gmail.com";
 
         // Assuming you are sending email from through gmails smtp
         String host = "smtp.gmail.com";
@@ -57,14 +57,14 @@ public class Mailer {
 
             protected PasswordAuthentication getPasswordAuthentication() {
 
-                return new PasswordAuthentication("FaulknerHospitalC2020@gmail.com", "SquishySquidwardKiosk2020");
+                return new PasswordAuthentication("bwhmappath@gmail.com", "LinLevi1");
 
             }
 
         });
 
         // Used to debug SMTP issues
-        session.setDebug(false);
+        session.setDebug(true);
 
         try {
             // Create a default MimeMessage object.
