@@ -103,7 +103,6 @@ public class NotificationsPageController implements Initializable {
 			System.out.println(row.get(0));
 			list.add(new MedicineRequest(row.get(0), patientName, patientID, doctorName, row.get(3), row.get(4), row.get(5), roomID, row.get(6), row.get(7), row.get(8)));
 		}
-		notifications.getItems().clear();
         notifications.getItems().addAll(list);
     }
 
@@ -154,8 +153,7 @@ public class NotificationsPageController implements Initializable {
         		status = "2";
 			}
 			db.executeUpdate(DBConstants.updateMedicationRequestStatus, new ArrayList<>(Arrays.asList(status, getCurrentRequest().getID())));
-        	loadData();
-			//getCurrentRequest().setStatus(status);
+			getCurrentRequest().setStatus(status);
 			System.out.println(getCurrentRequest().getStatus());
 		}
     }
