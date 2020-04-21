@@ -3,8 +3,10 @@ package edu.wpi.cs3733.d20.teamL.views.controllers;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
+import edu.wpi.cs3733.d20.teamL.services.db.IDBCache;
 import edu.wpi.cs3733.d20.teamL.services.graph.Path;
 import edu.wpi.cs3733.d20.teamL.services.graph.PathFinder;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
 import edu.wpi.cs3733.d20.teamL.views.components.*;
 import edu.wpi.cs3733.d20.teamL.views.dialogues.DataDialogue;
@@ -22,50 +24,47 @@ import javafx.scene.layout.BorderPane;
 
 import javafx.geometry.Point2D;
 
-import edu.wpi.cs3733.d20.teamL.entities.Node;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import javax.inject.Inject;
+
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.lang.reflect.Array;
-import java.util.*;
+import edu.wpi.cs3733.d20.teamL.entities.Node;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class MapEditorController {
     @FXML
     MenuItem saveToDB, saveToCSV, open, quit;
-
     @FXML
     MenuItem undo, redo;
-
     @FXML
     MenuItem node, edge;
-
     @FXML
     TextField startNode, endNode;
-
     @FXML
     Button pathFind, btnCancel, btnSave, btnEditConnections, btnOpenEditor;
-
     @FXML
     ToggleGroup tools;
-
     @FXML
     ToggleButton mouse, eraser;
-
     @FXML
     BorderPane root;
     @FXML
     MapPane map;
-
     @FXML
     JFXTextField nodeIDText, xCoordText, yCoordText, buildingText, nodeTypeText, shortNameText, longNameText;
-
     @FXML
     VBox editor;
+	@Inject
+	private IDBCache cache;
 
     private Scene scene;
-    private DBCache dbCache = new DBCache(false);
+    private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 
     @FXML
     public void initialize() {
@@ -99,10 +98,9 @@ public class MapEditorController {
 			nodeGUI.setHighlighted(true);
 		});
 
-        dbCache.cacheAllFromDB();
+        cache.cacheAllFromDB();
 
         map.setEditable(true);
-
         openFromDB();
 
         map.setZoomLevel(1);
@@ -136,7 +134,7 @@ public class MapEditorController {
 
     @FXML
     void quit() {
-        dbCache.updateDB();
+        cache.updateDB();
         Platform.exit();
     }
 
@@ -154,9 +152,9 @@ public class MapEditorController {
             }
         }
 
-        dbCache.cacheNodes(nodes, map.getEditedNodes());
-        dbCache.cacheEdges(newEdges);
-        dbCache.updateDB();
+        cache.cacheNodes(nodes, map.getEditedNodes());
+        cache.cacheEdges(newEdges);
+        cache.updateDB();
 
         map.getEditedNodes().clear();
     }
@@ -189,15 +187,15 @@ public class MapEditorController {
     public void open() {
         DataDialogue data = new DataDialogue();
         boolean confirmed = data.showDialogue(pathFind.getScene().getWindow());
-        if(confirmed)
+        if (confirmed)
             map.setGraph(MapParser.parseMapToGraph(data.getNodeFile(), data.getEdgeFile()));
 
     }
 
     @FXML
     void openFromDB() {
-        dbCache.cacheAllFromDB();
-        map.setGraph(MapParser.getGraphFromCache(dbCache.getNodeCache()));
+        cache.cacheAllFromDB();
+        map.setGraph(MapParser.getGraphFromCache(cache.getNodeCache()));
     }
 
     @FXML
@@ -219,12 +217,12 @@ public class MapEditorController {
     private void backToMain() {
         try {
             Stage stage = (Stage) pathFind.getScene().getWindow();
-            Parent newRoot = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/StaffView.fxml"));
+			Parent newRoot = loaderHelper.getFXMLLoader("AdminView").load();
             Scene newScene = new Scene(newRoot);
             stage.setScene(newScene);
             stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            log.error("Encountered Exception.", ex);
         }
     }
 
@@ -274,5 +272,4 @@ public class MapEditorController {
             map.addEdge(edge);
         }
     }
-
 }

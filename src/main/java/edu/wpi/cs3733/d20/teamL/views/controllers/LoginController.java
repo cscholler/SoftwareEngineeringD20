@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,23 +21,18 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-
-public class LoginController implements Initializable {
-
-
+public class LoginController {
+	FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
     @FXML
     private JFXTextField username;
-
     @FXML
     private JFXPasswordField pass;
-
     @FXML
     private JFXButton login, btnCancel;
-
     @FXML
     private Text incorrectText;
-
-    @FXML AnchorPane anchorPane;
+    @FXML
+	AnchorPane anchorPane;
 
     /**
      * Controls the login feature setting
@@ -75,7 +71,7 @@ public class LoginController implements Initializable {
                 stage = (Stage) stage.getOwner(); //Gets the owner of the popup (AKA our homescreen) in order to set that as the stage
 
                 //stage.close();
-                root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/StaffView.fxml"));
+                root = loaderHelper.getFXMLLoader("StaffView").load();
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
                 stage.setMaximized(true);
@@ -90,7 +86,7 @@ public class LoginController implements Initializable {
                 stage.close();
                 stage = (Stage) stage.getOwner();
 
-                root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/StaffView.fxml"));
+				root = loaderHelper.getFXMLLoader("StaffView").load();
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
                 stage.setMaximized(true);
@@ -105,7 +101,7 @@ public class LoginController implements Initializable {
                 stage.close();
                 stage = (Stage) stage.getOwner();
 
-                root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/AdminView.fxml"));
+				root = loaderHelper.getFXMLLoader("AdminView").load();
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
                 stage.setMaximized(true);
@@ -122,14 +118,4 @@ public class LoginController implements Initializable {
             //return status;
         }
     }
-//    private void handleCancel(ActionEvent e) throws IOException {
-//        Stage stage = (Stage) btnCancel.getScene().getWindow();
-//        Parent root = FXMLLoader.load(getClass().getResource("edu/wpi/cs3733/d20/teamL/views/MapEditor.fxml"));
-//        stage.close();
-//    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-    }
-
 }

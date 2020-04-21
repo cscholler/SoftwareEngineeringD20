@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers;
 
-import com.jfoenix.controls.JFXButton;
+import java.io.IOException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,7 +10,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-import java.io.IOException;
+import com.jfoenix.controls.JFXButton;
+
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 
 public class AdminViewController {
 
@@ -32,6 +35,8 @@ public class AdminViewController {
     @FXML
     private Label lblName;
 
+    FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+
     /**
      * Controls staff view page after they log in
      *
@@ -46,7 +51,7 @@ public class AdminViewController {
         //open notifications
         if (event.getSource() == btnNotif) {
             stage = (Stage) btnNotif.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/NotificationsPage.fxml"));
+            root = loaderHelper.getFXMLLoader("NotificationsPage").load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.setMaximized(true);
@@ -54,7 +59,7 @@ public class AdminViewController {
             //opens med request
         } else if (event.getSource() == btnAddDoctor) {
             stage = (Stage) btnAddDoctor.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/AddDoctor.fxml"));
+            root = loaderHelper.getFXMLLoader("AddDoctor").load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.setMaximized(true);
@@ -62,21 +67,25 @@ public class AdminViewController {
             //opens mapView
         } else if (event.getSource() == btnMap) {
             stage = (Stage) btnMap.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/MapEditor.fxml"));
+            FXMLLoader fxmlLoader = loaderHelper.getFXMLLoader("MapEditor");
+            root = fxmlLoader.load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.setMaximized(true);
             stage.show();
+
+            MapEditorController controller = fxmlLoader.getController();
+            controller.getMap().recalculatePositions();
         } else if (event.getSource() == btnLogout) {
             stage = (Stage) btnLogout.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/Home.fxml"));
+			root = loaderHelper.getFXMLLoader("Home").load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.setMaximized(true);
             stage.show();
         } else if (event.getSource() == btnAddPatient) {
             stage = (Stage) btnAddPatient.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/AddPatient.fxml"));
+			root = loaderHelper.getFXMLLoader("AddPatient").load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.setMaximized(true);

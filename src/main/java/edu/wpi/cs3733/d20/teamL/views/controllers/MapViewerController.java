@@ -12,13 +12,15 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 
+import javax.inject.Inject;
 import java.util.Iterator;
 
 public class MapViewerController {
     @FXML
     MapPane map;
 
-    private DBCache dbCache = new DBCache(false);
+    @Inject
+    private DBCache dbCache;
 
     Node source;
 

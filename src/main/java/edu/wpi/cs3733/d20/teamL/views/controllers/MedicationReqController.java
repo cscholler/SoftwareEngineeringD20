@@ -1,10 +1,11 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.DatabaseService;
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,9 +13,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -22,8 +23,10 @@ import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class MedicationReqController implements Initializable {
-	DatabaseService db = new DatabaseService(false);
+	@Inject
+	IDatabaseService db;
 	DBTableFormatter formatter = new DBTableFormatter();
+    private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 
     @FXML
     private JFXButton btnCancel, btnSubmit;
@@ -49,7 +52,7 @@ public class MedicationReqController implements Initializable {
         if (e.getSource() == btnCancel){
             stage = (Stage) btnCancel.getScene().getWindow();
             //stage = new Stage();
-            root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/StaffView.fxml"));
+            root = loaderHelper.getFXMLLoader("StaffView").load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.hide();
