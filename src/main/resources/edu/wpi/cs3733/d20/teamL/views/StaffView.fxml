@@ -165,9 +165,9 @@
                   <Insets left="20.0" />
                </padding>
             </HBox>
-            <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="28.0" GridPane.columnIndex="1">
+            <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" GridPane.columnIndex="1">
                <children>
-                  <JFXButton fx:id="btnNotif" onAction="#handleCircleAction" text="Notifications" textFill="WHITE">
+                  <JFXButton fx:id="btnNotif" onAction="#handleCircleButton" text="Notifications" textFill="WHITE">
                      <font>
                         <Font size="24.0" />
                      </font>

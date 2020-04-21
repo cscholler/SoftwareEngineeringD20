@@ -36,7 +36,8 @@ public class LoginController implements Initializable {
     @FXML
     private Text incorrectText;
 
-    @FXML AnchorPane anchorPane;
+    @FXML
+    AnchorPane anchorPane;
 
     /**
      * Controls the login feature setting
