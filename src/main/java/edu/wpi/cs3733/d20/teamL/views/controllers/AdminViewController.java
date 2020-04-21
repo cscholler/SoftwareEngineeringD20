@@ -14,6 +14,8 @@ import com.jfoenix.controls.JFXButton;
 
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 
+import javax.inject.Inject;
+
 public class AdminViewController {
 
 	@FXML
@@ -36,7 +38,8 @@ public class AdminViewController {
     private JFXButton btnAddPatient;
     @FXML
     private Label lblName;
-
+	@Inject
+	LoginController loginController;
     FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 
     /**

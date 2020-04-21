@@ -2,7 +2,6 @@ package edu.wpi.cs3733.d20.teamL.services.db;
 
 import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
-import edu.wpi.cs3733.d20.teamL.services.graph.Graph;
 import javafx.geometry.Point2D;
 
 import javax.inject.Inject;
@@ -12,7 +11,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-public class DBCache implements IDBCache {
+public class DatabaseCache implements IDatabaseCache {
     private ArrayList<Node> nodeCache = new ArrayList<>();
     private ArrayList<Edge> edgeCache = new ArrayList<>();
 

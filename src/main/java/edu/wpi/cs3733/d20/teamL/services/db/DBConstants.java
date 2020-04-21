@@ -14,90 +14,67 @@ public class DBConstants {
 
 	public static final String createNodeTable =
 			"CREATE TABLE Nodes(" +
-					"id VARCHAR(10), " +
-					"x_pos VARCHAR(32), " +
-					"y_pos VARCHAR(32), " +
-					"floor CHAR(1), " +
-					"building VARCHAR(64), " +
-					"node_type CHAR(4), " +
-					"l_name VARCHAR(32), " +
-					"s_name VARCHAR(32), " +
+					"id VARCHAR(10) NOT NULL, " +
+					"x_pos VARCHAR(32) NOT NULL, " +
+					"y_pos VARCHAR(32) NOT NULL, " +
+					"floor CHAR(1) NOT NULL, " +
+					"building VARCHAR(64) NOT NULL, " +
+					"node_type CHAR(4) NOT NULL, " +
+					"l_name VARCHAR(32) NOT NULL, " +
+					"s_name VARCHAR(32) NOT NULL, " +
 					"PRIMARY KEY (id))";
-
-	public static final String updateNode =
-			"UPDATE Nodes " +
-					"SET x_pos = ?, y_pos = ?, floor = ?, building = ?, node_type = ?, l_name = ?, s_name = ? " +
-					"WHERE id = ?";
-
-	public static final String removeNode =
-			"DELETE FROM Nodes " +
-					"WHERE id = ?";
 
 	public static final String createEdgeTable =
 			"CREATE TABLE Edges(" +
-					"id VARCHAR(21), " +
-					"node_start VARCHAR(10) REFERENCES Nodes(id), " +
-					"node_end VARCHAR(10) REFERENCES Nodes(id), " +
+					"id VARCHAR(21) NOT NULL, " +
+					"node_start VARCHAR(10) NOT NULL REFERENCES Nodes(id), " +
+					"node_end VARCHAR(10) NOT NULL REFERENCES Nodes(id), " +
 					"PRIMARY KEY (id))";
-
-	public static final String updateEdge =
-			"UPDATE Edges " +
-					"SET node_start = ?, node_end = ? " +
-					"WHERE id = ?";
-
-	public static final String removeEdge =
-			"DELETE FROM Edges " +
-					"WHERE id = ?";
 
 	public static final String createDoctorTable =
 			"CREATE TABLE Doctors(" +
-					"id INT, " +
-					"f_name VARCHAR(32), " +
-					"l_name VARCHAR(32), " +
+					"id INT NOT NULL, " +
+					"f_name VARCHAR(32) NOT NULL, " +
+					"l_name VARCHAR(32) NOT NULL, " +
 					"email VARCHAR(32), " +
 					"office_id VARCHAR(10) REFERENCES Nodes(id), " +
+					"addl_info VARCHAR(256), " +
 					"PRIMARY KEY (id))";
 
 	public static final String createPatientTable =
 			"CREATE TABLE Patients(" +
-					"id INT, " +
-					"f_name VARCHAR(32), " +
-					"l_name VARCHAR(32), " +
+					"id INT NOT NULL, " +
+					"f_name VARCHAR(32) NOT NULL, " +
+					"l_name VARCHAR(32) NOT NULL, " +
 					"doctor_id INT REFERENCES Doctors(id), " +
 					"room_id VARCHAR(10) REFERENCES Nodes(id), " +
+					"addl_info VARCHAR(256), " +
 					"PRIMARY KEY (id))";
 
 	public static final String createMedicationRequestTable =
 			"CREATE TABLE Medication_Requests(" +
 					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
-					"doctor_id INT REFERENCES Doctors(id), " +
-					"patient_id INT REFERENCES Patients(id), " +
-					"nurse_name VARCHAR(64), " +
-					"dose VARCHAR(64), " +
-					"type VARCHAR(64), " +
-					"notes VARCHAR(512), " +
-					"status CHAR(1), " +
-					"date_and_time CHAR(19), " +
+					"doctor_id NOT NULL INT REFERENCES Doctors(id), " +
+					"patient_id INT NOT NULL REFERENCES Patients(id), " +
+					"nurse_name VARCHAR(64) NOT NULL, " +
+					"dose VARCHAR(64) NOT NULL, " +
+					"type VARCHAR(64) NOT NULL, " +
+					"notes VARCHAR(256), " +
+					"status CHAR(1) NOT NULL, " +
+					"date_and_time CHAR(19) NOT NULL, " +
 					"PRIMARY KEY (id))";
 
-	public static final String updateMedicationRequest =
-			"UPDATE Medication_Requests " +
-					"SET doctor_id = ?, patient_id = ?, nurse_name = ?, dose = ?, type = ?, notes = ?, status = ?, date_and_time = ? " +
-					"WHERE id = ?";
-
-	public static final String updateMedicationRequestStatus =
-			"UPDATE Medication_Requests " +
-					"SET status = ? " +
-					"WHERE id = ?";
-
+	// Consider making id PK and username unique
 	public static final String createUserTable =
 			"CREATE TABLE Users(" +
-					"id INT, " +
-					"username VARCHAR(32), " +
-					"password VARCHAR(32), " +
-					"acct_type CHAR(1), " +
+					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
+					"f_name VARCHAR(32) NOT NULL, " +
+					"l_name VARCHAR(32) NOT NULL, " +
+					"username VARCHAR(32) NOT NULL, " +
+					"password VARCHAR(128) NOT NULL, " +
+					"acct_type CHAR(1) NOT NULL, " +
 					"last_login CHAR(19), " +
-					"PRIMARY KEY (id))";
+					"PRIMARY KEY (username))";
 
 	public static final String dropNodeTable =
 			"DROP TABLE Nodes";
@@ -165,6 +142,16 @@ public class DBConstants {
 			"SELECT * " +
 					"FROM Users";
 
+	public static final String getUser =
+			"SELECT id, username, f_name, l_name, acct_type " +
+					"FROM Users " +
+					"WHERE username = ? AND password = ?";
+
+	public static final String getUserByID =
+			"SELECT id, username, f_name, l_name, acct_type " +
+					"FROM Users " +
+					"WHERE id = ?";
+
 	public static final String getDoctorID =
 			"SELECT id " +
 					"FROM Doctors " +
@@ -188,6 +175,54 @@ public class DBConstants {
 	public static final String getPatientRoom =
 			"SELECT room_id " +
 					"FROM Patients " +
+					"WHERE id = ?";
+
+	public static final String updateNode =
+			"UPDATE Nodes " +
+					"SET x_pos = ?, y_pos = ?, floor = ?, building = ?, node_type = ?, l_name = ?, s_name = ? " +
+					"WHERE id = ?";
+
+	public static final String updateEdge =
+			"UPDATE Edges " +
+					"SET node_start = ?, node_end = ? " +
+					"WHERE id = ?";
+
+	public static final String updateMedicationRequest =
+			"UPDATE Medication_Requests " +
+					"SET doctor_id = ?, patient_id = ?, nurse_name = ?, dose = ?, type = ?, notes = ?, status = ?, date_and_time = ? " +
+					"WHERE id = ?";
+
+	public static final String updateMedicationRequestStatus =
+			"UPDATE Medication_Requests " +
+					"SET status = ? " +
+					"WHERE id = ?";
+
+	public static final String updateUserName =
+			"UPDATE Users " +
+					"SET f_name = ?, l_name = ? " +
+					"WHERE id = ?";
+
+	public static final String updateUserPassword =
+			"UPDATE Users " +
+					"SET password = ? " +
+					"WHERE id = ?";
+
+	public static final String updateUserAcctType =
+			"UPDATE Users " +
+					"SET acct_type = ? " +
+					"WHERE id = ?";
+
+	public static final String updateLastUserLogin =
+			"UPDATE Users " +
+					"SET last_login = ? " +
+					"WHERE id = ?";
+
+	public static final String removeNode =
+			"DELETE FROM Nodes " +
+					"WHERE id = ?";
+
+	public static final String removeEdge =
+			"DELETE FROM Edges " +
 					"WHERE id = ?";
 
 }

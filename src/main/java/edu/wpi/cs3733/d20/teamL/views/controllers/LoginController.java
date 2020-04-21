@@ -7,6 +7,7 @@ import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
 
 import edu.wpi.cs3733.d20.teamL.App;
+import edu.wpi.cs3733.d20.teamL.services.users.LoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
@@ -20,6 +21,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import javax.inject.Inject;
+
 public class LoginController {
 	FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
     @FXML
@@ -30,9 +33,10 @@ public class LoginController {
     private JFXButton login, btnCancel;
     @FXML
     private Text incorrectText;
-
     @FXML
     AnchorPane anchorPane;
+    @Inject
+	LoginManager loginManager;
 
     /**
      * logs the user in when the enter key is pressed

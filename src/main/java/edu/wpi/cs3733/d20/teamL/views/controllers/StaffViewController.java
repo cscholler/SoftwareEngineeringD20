@@ -2,6 +2,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733.d20.teamL.App;
+import edu.wpi.cs3733.d20.teamL.services.users.LoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
+import javax.inject.Inject;
 import java.io.IOException;
 
 public class StaffViewController {
@@ -20,6 +22,8 @@ public class StaffViewController {
     private JFXButton btnLogout, btnNotif,btnMeds ,btnMe, btnMR, btnChangeR, btnMap, btnAddPatient;
     @FXML
     private Label lblName;
+	@Inject
+	LoginManager loginManager;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 
     /**

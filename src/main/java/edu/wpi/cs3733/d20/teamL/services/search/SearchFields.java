@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamL.services.navSearch;
+package edu.wpi.cs3733.d20.teamL.services.search;
 
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 

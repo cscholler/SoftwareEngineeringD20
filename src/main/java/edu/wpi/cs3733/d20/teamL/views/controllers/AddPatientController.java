@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.jfoenix.controls.JFXAutoCompletePopup;
-import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
+import edu.wpi.cs3733.d20.teamL.services.db.DatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
-import edu.wpi.cs3733.d20.teamL.services.navSearch.SearchFields;
+import edu.wpi.cs3733.d20.teamL.services.search.SearchFields;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -32,7 +32,7 @@ public class AddPatientController {
 	IDatabaseService db;
 
     @Inject
-    private DBCache dbCache;
+    private DatabaseCache dbCache;
 
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;

@@ -4,11 +4,11 @@ import com.jfoenix.controls.JFXAutoCompletePopup;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
-import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
+import edu.wpi.cs3733.d20.teamL.services.db.DatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.graph.MapParser;
 import edu.wpi.cs3733.d20.teamL.services.graph.Path;
 import edu.wpi.cs3733.d20.teamL.services.graph.PathFinder;
-import edu.wpi.cs3733.d20.teamL.services.navSearch.SearchFields;
+import edu.wpi.cs3733.d20.teamL.services.search.SearchFields;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.io.SMSSender;
 import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
@@ -42,7 +42,7 @@ public class MapViewerController {
     JFXButton btnTextMe;
 
     @Inject
-    private DBCache dbCache;
+    private DatabaseCache dbCache;
 
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;

@@ -5,8 +5,8 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
-import edu.wpi.cs3733.d20.teamL.services.navSearch.SearchFields;
-import edu.wpi.cs3733.d20.teamL.services.db.IDBCache;
+import edu.wpi.cs3733.d20.teamL.services.search.SearchFields;
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import javafx.application.Platform;
@@ -41,7 +41,7 @@ public class NavigationController implements Initializable {
     @FXML private JFXButton btnSearch;
     @FXML private Label timeLabel;
     @Inject
-	private IDBCache cache;
+	private IDatabaseCache cache;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 	private SearchFields sf;
 	private JFXAutoCompletePopup<String> autoCompletePopup;
