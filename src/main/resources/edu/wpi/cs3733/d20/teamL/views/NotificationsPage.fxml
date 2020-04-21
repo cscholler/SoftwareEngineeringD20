@@ -28,7 +28,9 @@
          <bottom>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
                <children>
+
                   <JFXButton fx:id="btnDecline" prefHeight="38.0" prefWidth="175.0" style="-fx-background-color: gray;" text="Decline" textFill="WHITE">
+
                      <font>
                         <Font size="26.0" />
                      </font>
@@ -36,7 +38,9 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </JFXButton>
+
                   <JFXButton fx:id="btnCompleted" prefHeight="47.0" prefWidth="175.0" style="-fx-background-color: #0D2E57;" text="Approve" textFill="WHITE">
+
                      <font>
                         <Font size="26.0" />
                      </font>

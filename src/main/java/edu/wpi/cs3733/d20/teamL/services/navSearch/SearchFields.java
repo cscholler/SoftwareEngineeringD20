@@ -38,11 +38,11 @@ public class SearchFields {
      * Provides nodeID to locate database row with query keyword.
      *
      * @param query The keyword you're searching by.
-     * @return  If keyword is found it'll return that nodeID, otherwise null if your node isn't found.
+     * @return  If keyword is found it'll return that node, otherwise null if your node isn't found.
      */
-    public String getNodeID(String query) {
+    public Node getNode(String query) {
         for (Node node : nodeCache) {
-            if (query.equals(node.getShortName()) || query.equals(node.getLongName())) return node.getID();
+            if (query.equals(node.getShortName()) || query.equals(node.getLongName())) return node;
         }
         return null;
     }

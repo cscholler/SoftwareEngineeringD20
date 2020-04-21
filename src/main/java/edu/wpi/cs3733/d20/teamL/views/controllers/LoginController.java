@@ -5,14 +5,12 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
+import edu.wpi.cs3733.d20.teamL.App;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -20,19 +18,14 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-
-public class LoginController implements Initializable {
-
-
+public class LoginController {
+	FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
     @FXML
     private JFXTextField username;
-
     @FXML
     private JFXPasswordField pass;
-
     @FXML
     private JFXButton login, btnCancel;
-
     @FXML
     private Text incorrectText;
 
@@ -76,13 +69,15 @@ public class LoginController implements Initializable {
                 stage = (Stage) stage.getOwner(); //Gets the owner of the popup (AKA our homescreen) in order to set that as the stage
 
                 //stage.close();
-                root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/StaffView.fxml"));
+                root = loaderHelper.getFXMLLoader("StaffView").load();
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
                 stage.hide();
                 stage.setMaximized(true);
                 stage.show();
 
+                stage.setWidth(App.SCREEN_WIDTH);
+                stage.setHeight(App.SCREEN_HEIGHT);
             }
             else if (user.equals("Nurse") && password.equals("Nurse")) {
                 System.out.println("Nurse");
@@ -92,12 +87,15 @@ public class LoginController implements Initializable {
                 stage.close();
                 stage = (Stage) stage.getOwner();
 
-                root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/StaffView.fxml"));
+				root = loaderHelper.getFXMLLoader("StaffView").load();
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
                 stage.hide();
                 stage.setMaximized(true);
                 stage.show();
+
+                stage.setWidth(App.SCREEN_WIDTH);
+                stage.setHeight(App.SCREEN_HEIGHT);
             }
 
             else if (user.equals("Admin") && password.equals("Admin")) {
@@ -108,11 +106,14 @@ public class LoginController implements Initializable {
                 stage.close();
                 stage = (Stage) stage.getOwner();
 
-                root = FXMLLoader.load(getClass().getResource("/edu/wpi/cs3733/d20/teamL/views/AdminView.fxml"));
+				root = loaderHelper.getFXMLLoader("AdminView").load();
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
                 stage.setMaximized(true);
                 stage.show();
+
+                stage.setWidth(App.SCREEN_WIDTH);
+                stage.setHeight(App.SCREEN_HEIGHT);
             }
             else {
                 incorrectText.setVisible(true);
@@ -125,14 +126,4 @@ public class LoginController implements Initializable {
             //return status;
         }
     }
-//    private void handleCancel(ActionEvent e) throws IOException {
-//        Stage stage = (Stage) btnCancel.getScene().getWindow();
-//        Parent root = FXMLLoader.load(getClass().getResource("edu/wpi/cs3733/d20/teamL/views/MapViewer.fxml"));
-//        stage.close();
-//    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-    }
-
 }

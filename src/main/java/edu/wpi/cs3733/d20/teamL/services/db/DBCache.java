@@ -3,24 +3,16 @@ package edu.wpi.cs3733.d20.teamL.services.db;
 import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.graph.Graph;
-import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
 import javafx.geometry.Point2D;
 
+import javax.inject.Inject;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-public class DBCache {
-    private static DBCache cache;
-
-    public DBCache(boolean firstTime) {
-        db = new DatabaseService(firstTime);
-    }
-
-    //Tables that can be cached
-    private Graph graphCache = new Graph();
+public class DBCache implements IDBCache {
     private ArrayList<Node> nodeCache = new ArrayList<>();
     private ArrayList<Edge> edgeCache = new ArrayList<>();
 
@@ -32,12 +24,13 @@ public class DBCache {
     private ArrayList<Node> deletedNodes = new ArrayList<>();
     private ArrayList<Edge> deletedEdges = new ArrayList<>();
 
-    DatabaseService db; //this should be changes eventually
+    @Inject
+    IDatabaseService db;
 
+	@Override
 	public void cacheAllFromDB() {
 		cacheNodesFromDB();
 		cacheEdgesFromDB();
-		//disconnectDB();
 	}
 
     /**
@@ -45,6 +38,7 @@ public class DBCache {
      *
      * @param newNodes A new list of nodes to set the nodes cache to.
      */
+	@Override
 	public void cacheNodes(ArrayList<Node> newNodes, ArrayList<Node> editedNodes) {
         for (Node node : newNodes) {
             if (!nodeCache.contains(node)) addedNodes.add(node);
@@ -70,7 +64,8 @@ public class DBCache {
      *
      * @param newEdges A new list of edges to set the edges cache to.
      */
-    public void cacheEdges(ArrayList<Edge> newEdges) {
+    @Override
+	public void cacheEdges(ArrayList<Edge> newEdges) {
         for (Edge edge : newEdges) {
             if (!edgeCache.contains(edge)) {
                 addedEdges.add(edge);
@@ -85,7 +80,8 @@ public class DBCache {
     /**
      * Pushes all caches to the database.
      */
-    public void updateDB() {
+    @Override
+	public void updateDB() {
         ArrayList<String> updates = new ArrayList<>();
 
         // Concatenate the node and edges lists for one update on the cache
@@ -138,7 +134,8 @@ public class DBCache {
         deletedNodes.clear();
     }
 
-    private ArrayList<ArrayList<String>> convertNodesToValuesList(List<Node> nodes) {
+    @Override
+	public ArrayList<ArrayList<String>> convertNodesToValuesList(List<Node> nodes) {
         ArrayList<ArrayList<String>> valuesList = new ArrayList<>();
 
         for (Node node : nodes) {
@@ -148,7 +145,8 @@ public class DBCache {
         return valuesList;
     }
 
-    private ArrayList<ArrayList<String>> convertEdgesToValuesList(List<Edge> edges) {
+    @Override
+	public ArrayList<ArrayList<String>> convertEdgesToValuesList(List<Edge> edges) {
         ArrayList<ArrayList<String>> valuesList = new ArrayList<>();
 
         for (Edge edge : edges) {
@@ -161,7 +159,8 @@ public class DBCache {
     /**
      * cacheNode: Populates the node cache with nodes from the Database
      */
-    public void cacheNodesFromDB() {
+    @Override
+	public void cacheNodesFromDB() {
         ResultSet resSet = db.executeQuery(DBConstants.selectAllNodes);
         clearNodeCache();
         ArrayList<ArrayList<String>> nodeData = db.getTableFromResultSet(resSet);
@@ -176,18 +175,21 @@ public class DBCache {
     /**
      * clearNodeCache: Clears the Nodes cache
      */
-    public void clearNodeCache() {
+    @Override
+	public void clearNodeCache() {
         nodeCache.clear();
     }
 
-    public ArrayList<Node> getNodeCache() {
+    @Override
+	public ArrayList<Node> getNodeCache() {
         return nodeCache;
     }
 
     /**
      * cacheEdgesFromDB: Populates the edge cache with edges from the Database
      */
-    public void cacheEdgesFromDB() {
+    @Override
+	public void cacheEdgesFromDB() {
         ResultSet resSet = db.executeQuery(DBConstants.selectAllEdges);
         clearEdgeCache();
         ArrayList<ArrayList<String>> edgeData = db.getTableFromResultSet(resSet);
@@ -205,22 +207,24 @@ public class DBCache {
      * @param nodeID The nodeID to search for.
      * @return The node with the associated nodeID. {null} If the nodeID is not found.
      */
-    public Node searchNodeCache(String nodeID) {
+    @Override
+	public Node searchNodeCache(String nodeID) {
         for (Node node : nodeCache) {
             if (node.getID().equals(nodeID)) return node;
         }
         System.out.println("Did not find node");
-
         return null;
     }
 
     /**
      * clearEdgeCache: Clears the Edges cache
      */
-    public void clearEdgeCache() {
+    @Override
+	public void clearEdgeCache() {
         edgeCache.clear();
     }
 
+	@Override
 	public void disconnectDB() {
 		db.stopService();
 	}
