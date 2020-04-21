@@ -59,6 +59,8 @@ public class MapViewerController {
 
         map.setZoomLevel(1);
         map.init();
+        map.getScroller().setVvalue(0.5);
+        map.getScroller().setHvalue(0.5);
 
         sf = new SearchFields(dbCache.getNodeCache());
         sf.populateSearchFields();
@@ -90,8 +92,16 @@ public class MapViewerController {
         });
     }
 
+    public void setStartingPoint(String startingPoint) {
+        this.startingPoint.setText(startingPoint);
+    }
+
+    public void setDestination(String destination) {
+        this.destination.setText(destination);
+    }
+
     @FXML
-    private void navigate() {
+    public void navigate() {
         Node startNode = sf.getNode(startingPoint.getText());
         Node destNode = sf.getNode(destination.getText());
 
