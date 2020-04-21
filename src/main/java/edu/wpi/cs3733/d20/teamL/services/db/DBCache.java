@@ -13,7 +13,6 @@ import java.util.Iterator;
 import java.util.List;
 
 public class DBCache implements IDBCache {
-    private Graph graphCache = new Graph();
     private ArrayList<Node> nodeCache = new ArrayList<>();
     private ArrayList<Edge> edgeCache = new ArrayList<>();
 

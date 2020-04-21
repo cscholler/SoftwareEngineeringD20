@@ -1,23 +1,32 @@
 package edu.wpi.cs3733.d20.teamL.entities;
 
+import java.util.Date;
+
 public class MedicineRequest {
+	private String id;
+    private String patientName;
+    private String patientID;
+    private String doctorName;
+    private String nurseName;
+    private String medType;
+    private String dose;
+    private String roomNum;
+    private String addInfo;
+    private String status;
+    private String dateAndTime;
 
-    String patientName;
-    String patientID;
-    String nurseName;
-    String medType;
-    String dose;
-    String roomNum;
-    String addInfo;
-
-    public MedicineRequest(String patientName, String patientID, String nurseName, String medType, String dose, String roomNum, String addInfo) {
+    public MedicineRequest(String id, String patientName, String patientID, String doctorName, String nurseName, String dose, String medType, String roomNum, String addInfo, String status, String dateAndTime) {
+    	this.id = id;
         this.patientName = patientName;
         this.patientID = patientID;
+        this.doctorName = doctorName;
         this.nurseName = nurseName;
+		this.dose = dose;
         this.medType = medType;
-        this.dose = dose;
         this.roomNum = roomNum;
         this.addInfo = addInfo;
+        this.status = status;
+        this.dateAndTime = dateAndTime;
     }
 
     public String getPatientName() {
@@ -75,4 +84,36 @@ public class MedicineRequest {
     public void setAddInfo(String addInfo) {
         this.addInfo = addInfo;
     }
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getDateAndTime() {
+		return dateAndTime;
+	}
+
+	public void setDateAndTime(String dateAndTime) {
+		this.dateAndTime = dateAndTime;
+	}
+
+	public String getDoctorName() {
+		return doctorName;
+	}
+
+	public void setDoctorName(String doctorName) {
+		this.doctorName = doctorName;
+	}
+
+	public String getID() {
+		return id;
+	}
+
+	public void setID(String id) {
+		this.id = id;
+	}
 }
