@@ -10,9 +10,11 @@ import edu.wpi.cs3733.d20.teamL.services.graph.Path;
 import edu.wpi.cs3733.d20.teamL.services.graph.PathFinder;
 import edu.wpi.cs3733.d20.teamL.services.navSearch.SearchFields;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import edu.wpi.cs3733.d20.teamL.util.io.SMSSender;
 import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
 import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
 import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -37,7 +39,7 @@ public class MapViewerController {
     VBox instructions;
 
     @FXML
-    JFXButton textMe;
+    JFXButton btnTextMe;
 
     @Inject
     private DBCache dbCache;
@@ -45,6 +47,7 @@ public class MapViewerController {
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    private String directions;
 
     @FXML
     public void initialize() {
@@ -93,8 +96,8 @@ public class MapViewerController {
         Node startNode = sf.getNode(startingPoint.getText());
         Node destNode = sf.getNode(destination.getText());
 
-        if(startNode != null && destNode != null) {
-            String directions = highlightSourceToDestination(startNode, destNode);
+        if (startNode != null && destNode != null) {
+        	directions = highlightSourceToDestination(startNode, destNode);
             Label directionsLabel = new Label();
             directionsLabel.setText(directions);
             directionsLabel.setTextFill(Color.WHITE);
@@ -103,7 +106,9 @@ public class MapViewerController {
             instructions.getChildren().clear();
             instructions.getChildren().add(directionsLabel);
             instructions.setVisible(true);
-            textMe.setVisible(true);
+			btnTextMe.setText("Text Me Directions");
+			btnTextMe.setDisable(false);
+            btnTextMe.setVisible(true);
         }
     }
 
@@ -146,6 +151,16 @@ public class MapViewerController {
 
         return path.generateTextMessage();
     }
+
+	public void handleButtonAction(ActionEvent event) {
+		if (event.getSource() == btnTextMe) {
+			SMSSender sender = new SMSSender();
+			// Temporarily hard-coded as Luke's phone number
+			sender.sendMessage(directions, "2073186779");
+			btnTextMe.setText("Sent!");
+			btnTextMe.setDisable(true);
+		}
+	}
 
     public MapPane getMap() {
         return map;

@@ -44,9 +44,6 @@ public class NavigationController implements Initializable {
 
 	@FXML
 	public void initialize(URL location, ResourceBundle resources) {
-		//SMSSender sender = new SMSSender();
-		//sender.sendMessage();
-
 		cache.cacheAllFromDB();
 		sf = new SearchFields(getNodeCache());
 		sf.populateSearchFields();
