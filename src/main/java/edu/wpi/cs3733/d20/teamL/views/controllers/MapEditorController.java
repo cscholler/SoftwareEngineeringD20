@@ -108,6 +108,8 @@ public class MapEditorController {
         //Hides the node editor VBox
         editor.setPrefWidth(0);
         editor.setVisible(false);
+
+        map.recalculatePositions();
 	}
 
     private void coreShortcuts() {

@@ -7,8 +7,10 @@ import com.google.inject.Injector;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +20,9 @@ import lombok.extern.slf4j.Slf4j;
 public class App extends Application {
 	Scene scene;
 	Parent root;
+
+	public static final double SCREEN_WIDTH = Screen.getPrimary().getVisualBounds().getWidth();
+	public static final double SCREEN_HEIGHT = Screen.getPrimary().getVisualBounds().getHeight();
 
 	@Override
 	public void init() {
@@ -35,7 +40,6 @@ public class App extends Application {
 		primaryStage.setScene(new Scene(root));
 		primaryStage.setMaximized(true);
 		primaryStage.show();
-
 	}
 
 	@Override

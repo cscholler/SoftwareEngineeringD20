@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
@@ -77,6 +78,8 @@ public class LoginController {
                 stage.setMaximized(true);
                 stage.show();
 
+                stage.setWidth(App.SCREEN_WIDTH);
+                stage.setHeight(App.SCREEN_HEIGHT);
             }
             else if (user.equals("Nurse") && password.equals("Nurse")) {
                 System.out.println("Nurse");
@@ -91,6 +94,9 @@ public class LoginController {
                 stage.setScene(scene);
                 stage.setMaximized(true);
                 stage.show();
+
+                stage.setWidth(App.SCREEN_WIDTH);
+                stage.setHeight(App.SCREEN_HEIGHT);
             }
 
             else if (user.equals("Admin") && password.equals("Admin")) {
@@ -106,6 +112,9 @@ public class LoginController {
                 stage.setScene(scene);
                 stage.setMaximized(true);
                 stage.show();
+
+                stage.setWidth(App.SCREEN_WIDTH);
+                stage.setHeight(App.SCREEN_HEIGHT);
             }
             else {
                 incorrectText.setVisible(true);
