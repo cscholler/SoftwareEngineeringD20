@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import edu.wpi.cs3733.d20.teamL.util.SendEmailDirections;
 import edu.wpi.cs3733.d20.teamL.util.SendTextDirections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -43,7 +44,7 @@ public class SendTextDirectionsController {
     private JFXButton btnEmail;
 
     @FXML
-    private JFXButton btnSendText;
+    private JFXButton btnText;
 
     @FXML
     void onSprint(ActionEvent event) {
@@ -81,13 +82,25 @@ public class SendTextDirectionsController {
 
     @FXML
     void handleSend(ActionEvent event) {
-        if(carrierSelector.getText().equals("Select Carrier for Number")){
+        if(event.getSource() == btnText){
+            System.out.println("YUH");
+            if(carrierSelector.getText().equals("Select Carrier for Number")){
+                return;
+            }else{
+                String carrier = carrierSelector.getText();
+                String number = phoneNumberField.getText();
+                SendTextDirections STDT = new SendTextDirections("This way",number,carrier);
+                STDT.start();
+            }
+        }else if(event.getSource() == btnEmail){
+            if(emailField.getText().equals("")){
             return;
         }else{
-            String carrier = carrierSelector.getText();
-            String number = phoneNumberField.getText();
-            SendTextDirections STDT = new SendTextDirections("This way",number,carrier);
-            STDT.start();
+            String email = emailField.getText();
+            SendEmailDirections SEDT = new SendEmailDirections("Heyo Baller",email);
+            SEDT.start();
+
+        }
         }
     }
 

@@ -38,7 +38,7 @@ public class SendTextDirections extends Thread {
 //    }
 @Override
 public void run() {
-    String allDirections = "Go that way";
+    String allDirections = "Whats up baller";
 
     Mailer.sendTextToCarrier(allDirections,"Directions from Faulkner Hospital",number,carrier);
 
