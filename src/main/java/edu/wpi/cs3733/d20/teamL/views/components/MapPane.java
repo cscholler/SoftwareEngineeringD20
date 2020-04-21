@@ -95,7 +95,9 @@ public class MapPane extends StackPane {
                 position.setText(positionInfo());
             }
         });*/
+    }
 
+    public void init() {
         if (isEditable()) {
             // Delete selected nodes when delete key is pressed
             scroller.setOnKeyPressed(event -> {

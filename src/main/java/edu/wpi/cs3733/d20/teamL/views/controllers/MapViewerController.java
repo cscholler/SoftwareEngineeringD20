@@ -56,6 +56,7 @@ public class MapViewerController {
         map.setGraph(MapParser.getGraphFromCache(dbCache.getNodeCache()));
 
         map.setZoomLevel(1);
+        map.init();
 
         sf = new SearchFields(dbCache.getNodeCache());
         sf.populateSearchFields();
