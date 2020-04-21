@@ -30,7 +30,6 @@ public class DatabaseService extends Service implements IDatabaseService {
 
 	public DatabaseService() {
 		super();
-		log.info("Got to constructor");
 		this.serviceName = DBConstants.SERVICE_NAME;
 	}
 
@@ -39,7 +38,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 		if (connection == null) {
 			connect(props);
 		}
-		// TODO: put somewhere better
+		// Uncomment if database needs to be rebuilt
 		//buildDatabase();
 	}
 
