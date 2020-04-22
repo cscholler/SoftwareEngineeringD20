@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers;
 import com.jfoenix.controls.JFXAutoCompletePopup;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
 import edu.wpi.cs3733.d20.teamL.services.graph.MapParser;
@@ -106,7 +107,7 @@ public class MapViewerController {
         Node destNode = sf.getNode(destination.getText());
 
         if (startNode != null && destNode != null) {
-        	directions = highlightSourceToDestination(startNode, destNode);
+            directions = highlightSourceToDestination(startNode, destNode);
             Label directionsLabel = new Label();
             directionsLabel.setText(directions);
             directionsLabel.setTextFill(Color.WHITE);
@@ -115,8 +116,7 @@ public class MapViewerController {
             instructions.getChildren().clear();
             instructions.getChildren().add(directionsLabel);
             instructions.setVisible(true);
-			btnTextMe.setText("Text Me Directions");
-			btnTextMe.setDisable(false);
+            btnTextMe.setDisable(false);
             btnTextMe.setVisible(true);
         }
     }
@@ -128,7 +128,13 @@ public class MapViewerController {
             Parent newRoot = loaderHelper.getFXMLLoader("Home").load();
             Scene newScene = new Scene(newRoot);
             stage.setScene(newScene);
+            stage.hide();
+            stage.setMaximized(true);
             stage.show();
+
+            stage.setWidth(App.SCREEN_WIDTH);
+            stage.setHeight(App.SCREEN_HEIGHT);
+
         } catch (Exception ex) {
             log.error("Encountered Exception.", ex);
         }
@@ -149,7 +155,6 @@ public class MapViewerController {
             NodeGUI nodeGUI = map.getNodeGUI(currentNode);
             EdgeGUI edgeGUI = map.getEdgeGUI(currentNode.getEdge(nextNode));
 
-            //map.getSelector().add(nodeGUI);
             map.getSelector().add(edgeGUI);
 
             currentNode = nextNode;
@@ -163,15 +168,14 @@ public class MapViewerController {
         return path.generateTextMessage();
     }
 
-	public void handleButtonAction(ActionEvent event) {
-		if (event.getSource() == btnTextMe) {
-			SMSSender sender = new SMSSender();
-			// Temporarily hard-coded as Luke's phone number
-			sender.sendMessage(directions, "2073186779");
-			btnTextMe.setText("Sent!");
-			btnTextMe.setDisable(true);
-		}
-	}
+    @FXML
+    public void textMe() {
+        SMSSender sender = new SMSSender();
+        // Temporarily hard-coded as Luke's phone number
+        sender.sendMessage(directions, "2073186779");
+        btnTextMe.setText("Sent!");
+        btnTextMe.setDisable(true);
+    }
 
     public MapPane getMap() {
         return map;

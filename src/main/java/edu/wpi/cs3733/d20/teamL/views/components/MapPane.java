@@ -12,6 +12,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -25,7 +26,6 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -190,14 +190,6 @@ public class MapPane extends StackPane {
             body.addEventHandler(MouseEvent.ANY, event -> {
                 if (event.getButton() != MouseButton.MIDDLE) event.consume();
             });
-        } else {
-            body.setOnMouseClicked(event -> {
-                if (event.getButton().equals(MouseButton.PRIMARY) && !onSelectable) {
-                    selector.clear();
-                    selectedNode = null;
-                    //onActionProperty().get().handle(event);
-                }
-            });
         }
     }
 
@@ -262,6 +254,29 @@ public class MapPane extends StackPane {
         // Add lines to the scene
         for (Edge edge : graph.getEdges()) {
             addEdge(edge);
+        }
+        
+        ArrayList<Node> nodeList = new ArrayList<>(nodes.keySet());
+        int floor = nodeList.get(0).getFloor();
+
+        switch (floor) {
+            case 1:
+                mapImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/Floor1LM.png"));
+                break;
+            case 2:
+                mapImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/Floor2LM.png"));
+                break;
+            case 3:
+                mapImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/Floor3LM.png"));
+                break;
+            case 4:
+                mapImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/Floor4LM.png"));
+                break;
+            case 5:
+                mapImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/Floor5LM.png"));
+                break;
+            default:
+                break;
         }
 
         recalculatePositions();

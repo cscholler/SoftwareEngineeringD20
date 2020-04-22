@@ -2,18 +2,21 @@ package edu.wpi.cs3733.d20.teamL.views.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
-import edu.wpi.cs3733.d20.teamL.services.db.DatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
+import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -29,6 +32,9 @@ public class MedicationReqController implements Initializable {
 	IDatabaseService db;
 	DBTableFormatter formatter = new DBTableFormatter();
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+
+    @FXML
+    private Label confirmation;
 
     @FXML
     private JFXButton btnCancel, btnSubmit;
@@ -60,6 +66,8 @@ public class MedicationReqController implements Initializable {
             stage.hide();
             stage.setMaximized(true);
             stage.show();
+            stage.setWidth(App.SCREEN_WIDTH);
+            stage.setHeight(App.SCREEN_HEIGHT);
 
         } else if (e.getSource() == btnSubmit){
             String doctorFName = docFNameText.getText();
@@ -78,9 +86,38 @@ public class MedicationReqController implements Initializable {
 			String doctorID = db.getTableFromResultSet(db.executeQuery(DBConstants.getDoctorID, new ArrayList<>(Arrays.asList(doctorFName, doctorLName)))).get(0).get(0);
 			String patientID = db.getTableFromResultSet(db.executeQuery(DBConstants.getPatientID, new ArrayList<>(Arrays.asList(patientFName, patientLName)))).get(0).get(0);
 			// TODO: Get name of nurse from current user
-			db.executeUpdate(DBConstants.addMedicationRequest, new ArrayList<>(Arrays.asList(doctorID, patientID, "Nurse", dose, medType, additionalInfo, status, dateAndTime)));
+			int rows = db.executeUpdate(DBConstants.addMedicationRequest, new ArrayList<>(Arrays.asList(doctorID, patientID, "Nurse", dose, medType, additionalInfo, status, dateAndTime)));
 			formatter.reportQueryResults(db.executeQuery(DBConstants.selectAllMedicationRequests));
 			// TODO: Check if any info is invalid before sending request
+
+            if (rows == 0) {
+                confirmation.setTextFill(Color.RED);
+                confirmation.setText("Submission failed      ");
+            } else {
+                confirmation.setTextFill(Color.BLACK);
+                confirmation.setText("Medication Request Sent");
+
+                docFNameText.setText("");
+                docLNameText.setText("");
+                medTypeText.setText("");
+                doseText.setText("");
+                patFNameText.setText("");
+                patLNameText.setText("");
+                roomNumText.setText("");
+                addInfoText.setText("");
+            }
+
+            confirmation.setVisible(true);
+
+            FadeTransition fadeTransition = new FadeTransition(Duration.millis(2000), confirmation);
+            fadeTransition.setDelay(Duration.millis(2000));
+            fadeTransition.setFromValue(1.0);
+            fadeTransition.setToValue(0.0);
+            fadeTransition.setCycleCount(1);
+
+            fadeTransition.play();
         }
     }
+
+
 }

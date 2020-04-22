@@ -190,8 +190,9 @@ public class MapEditorController {
     public void open() {
         DataDialogue data = new DataDialogue();
         boolean confirmed = data.showDialogue(pathFind.getScene().getWindow());
-        if (confirmed)
+        if (confirmed) {
             map.setGraph(MapParser.parseMapToGraph(data.getNodeFile(), data.getEdgeFile()));
+        }
 
     }
 
