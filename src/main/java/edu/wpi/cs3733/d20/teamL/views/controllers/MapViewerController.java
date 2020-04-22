@@ -175,19 +175,11 @@ public class MapViewerController {
         return path.generateTextMessage();
     }
 
-    @FXML
-    public void textMe() {
-        SMSSender sender = new SMSSender();
-        // Temporarily hard-coded as Luke's phone number
-        sender.sendMessage(directions, "2073186779");
-        btnTextMe.setText("Sent!");
-        btnTextMe.setDisable(true);
-    }
-
     public MapPane getMap() {
         return map;
     }
 
+    @FXML
     public void handleText() throws IOException {
         Stage stage = new Stage();
         Parent root = loaderHelper.getFXMLLoader("SendDirectionsPage").load();

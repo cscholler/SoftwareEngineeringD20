@@ -57,12 +57,14 @@ public class MailerService implements IMailerService {
 			message.setSubject(getSubject());
 			if (isText) {
 				String currentMessage = "";
+				int i = 1;
 				for (char c : getDirections().toCharArray()) {
 					currentMessage += c;
 					if (c == '.') {
-						message.setText(currentMessage);
+						message.setText(i + ". " + currentMessage);
 						Transport.send(message);
 						currentMessage = "";
+						i++;
 					}
 				}
 			} else {
