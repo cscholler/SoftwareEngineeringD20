@@ -34,7 +34,7 @@
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                      <children>
                         <JFXTextField fx:id="emailField" prefHeight="29.0" prefWidth="183.0" promptText="Enter Email" />
-                        <JFXButton id="buttons" fx:id="btnEmail" alignment="CENTER" buttonType="RAISED" prefHeight="36.0" prefWidth="110.0" ripplerFill="BLACK" style="-fx-background-color: #ed2d43;" text="Send Email" textAlignment="CENTER" textFill="WHITE">
+                        <JFXButton id="buttons" fx:id="btnEmail" alignment="CENTER" buttonType="RAISED" onAction="#handleSend" prefHeight="36.0" prefWidth="110.0" ripplerFill="BLACK" style="-fx-background-color: #ed2d43;" text="Send Email" textAlignment="CENTER" textFill="WHITE">
                            <font>
                               <Font size="13.0" />
                            </font>

@@ -43,7 +43,7 @@
                             </font>
                         </JFXTextField>
                         <JFXTextField fx:id="roomNumText" labelFloat="true" prefHeight="40.0" prefWidth="300.0"
-                                      promptText="  Room Number"
+                                      promptText="  Room Number" onKeyTyped="#autocomplete"
                                       style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
                             <font>
                                 <Font size="14.0"/>
@@ -124,7 +124,7 @@
                         <Font name="Segoe UI" size="24.0"/>
                     </font>
                 </JFXButton>
-                <Label text="Medication Request Sent" fx:id="confirmation" visible="false">
+                <Label fx:id="confirmation" text="Medication Request Sent" visible="false">
                     <font>
                         <Font size="16.0"/>
                     </font>

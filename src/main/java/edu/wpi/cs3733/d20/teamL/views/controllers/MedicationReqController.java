@@ -1,10 +1,13 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers;
 
+import com.jfoenix.controls.JFXAutoCompletePopup;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.App;
+import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
+import edu.wpi.cs3733.d20.teamL.services.navSearch.SearchFields;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
 import javafx.animation.FadeTransition;
@@ -42,15 +45,44 @@ public class MedicationReqController implements Initializable {
     @FXML
     private JFXTextField docFNameText, docLNameText, medTypeText, doseText, patFNameText, patLNameText, roomNumText, addInfoText;
 
+    @Inject
+    private DBCache dbCache;
+
+    private SearchFields sf;
+    private JFXAutoCompletePopup<String> autoCompletePopup;
 
 	@FXML
 	public void initialize(URL location, ResourceBundle resources) {
 		// Print test data before request is made
-		formatter.reportQueryResults(db.executeQuery(DBConstants.selectAllDoctors));
+		/*formatter.reportQueryResults(db.executeQuery(DBConstants.selectAllDoctors));
 		System.out.print("\n");
 		formatter.reportQueryResults(db.executeQuery(DBConstants.selectAllPatients));
-		formatter.reportQueryResults(db.executeQuery(DBConstants.selectAllMedicationRequests));
+		formatter.reportQueryResults(db.executeQuery(DBConstants.selectAllMedicationRequests));*/
+
+        dbCache.cacheAllFromDB();
+
+        sf = new SearchFields(dbCache.getNodeCache());
+        sf.getFields().clear();
+        sf.getFields().add(SearchFields.Field.nodeID);
+        sf.populateSearchFields();
+        autoCompletePopup = new JFXAutoCompletePopup<>();
+        autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
 	}
+
+    @FXML
+    private void autocomplete() {
+        autoCompletePopup.setSelectionHandler(event -> roomNumText.setText(event.getObject()));
+        roomNumText.textProperty().addListener(observable -> {
+            autoCompletePopup.filter(string ->
+                    string.toLowerCase().contains(roomNumText.getText().toLowerCase()));
+            if (autoCompletePopup.getFilteredSuggestions().isEmpty() ||
+                    roomNumText.getText().isEmpty()) {
+                autoCompletePopup.hide();
+            } else {
+                autoCompletePopup.show(roomNumText);
+            }
+        });
+    }
 
     @FXML
     public void handleButtonAction(ActionEvent e) throws IOException {
@@ -87,7 +119,7 @@ public class MedicationReqController implements Initializable {
 			String patientID = db.getTableFromResultSet(db.executeQuery(DBConstants.getPatientID, new ArrayList<>(Arrays.asList(patientFName, patientLName)))).get(0).get(0);
 			// TODO: Get name of nurse from current user
 			int rows = db.executeUpdate(DBConstants.addMedicationRequest, new ArrayList<>(Arrays.asList(doctorID, patientID, "Nurse", dose, medType, additionalInfo, status, dateAndTime)));
-			formatter.reportQueryResults(db.executeQuery(DBConstants.selectAllMedicationRequests));
+			//formatter.reportQueryResults(db.executeQuery(DBConstants.selectAllMedicationRequests));
 			// TODO: Check if any info is invalid before sending request
 
             if (rows == 0) {

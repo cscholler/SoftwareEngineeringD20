@@ -6,9 +6,11 @@ import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
+import edu.wpi.cs3733.d20.teamL.services.db.IDBCache;
 import edu.wpi.cs3733.d20.teamL.services.graph.MapParser;
 import edu.wpi.cs3733.d20.teamL.services.graph.Path;
 import edu.wpi.cs3733.d20.teamL.services.graph.PathFinder;
+import edu.wpi.cs3733.d20.teamL.services.mail.IMailerService;
 import edu.wpi.cs3733.d20.teamL.services.navSearch.SearchFields;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.io.SMSSender;
@@ -22,10 +24,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
+import java.io.IOException;
 import java.util.Iterator;
 
 @Slf4j
@@ -43,7 +47,9 @@ public class MapViewerController {
     JFXButton btnTextMe;
 
     @Inject
-    private DBCache dbCache;
+    private IDBCache dbCache;
+    @Inject
+	private IMailerService mailer;
 
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
@@ -108,6 +114,7 @@ public class MapViewerController {
 
         if (startNode != null && destNode != null) {
             directions = highlightSourceToDestination(startNode, destNode);
+            mailer.setDirections(directions);
             Label directionsLabel = new Label();
             directionsLabel.setText(directions);
             directionsLabel.setTextFill(Color.WHITE);
@@ -168,16 +175,18 @@ public class MapViewerController {
         return path.generateTextMessage();
     }
 
-    @FXML
-    public void textMe() {
-        SMSSender sender = new SMSSender();
-        // Temporarily hard-coded as Luke's phone number
-        sender.sendMessage(directions, "2073186779");
-        btnTextMe.setText("Sent!");
-        btnTextMe.setDisable(true);
-    }
-
     public MapPane getMap() {
         return map;
+    }
+
+    @FXML
+    public void handleText() throws IOException {
+        Stage stage = new Stage();
+        Parent root = loaderHelper.getFXMLLoader("SendDirectionsPage").load();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(btnTextMe.getScene().getWindow());
+        stage.showAndWait();
     }
 }
