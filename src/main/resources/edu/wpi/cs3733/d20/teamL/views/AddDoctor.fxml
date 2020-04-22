@@ -40,10 +40,18 @@
                         <Font size="40.0"/>
                     </font>
                 </JFXButton>
+                <Label fx:id="confirmation" text="Doctor Added" visible="false">
+                    <font>
+                        <Font size="16.0"/>
+                    </font>
+                </Label>
             </children>
             <BorderPane.margin>
                 <Insets/>
             </BorderPane.margin>
+            <padding>
+                <Insets left="200.0"/>
+            </padding>
         </HBox>
     </bottom>
     <center>
@@ -111,7 +119,7 @@
                                 <Font size="24.0"/>
                             </font>
                         </Label>
-                        <JFXTextField fx:id="officeNumText" prefHeight="50.0" onKeyTyped="#autocomplete"
+                        <JFXTextField fx:id="officeNumText" onKeyTyped="#autocomplete" prefHeight="50.0"
                                       style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;"/>
                     </items>
                     <padding>
