@@ -2,6 +2,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
+import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.entities.MedicineRequest;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
@@ -143,8 +144,11 @@ public class NotificationsPageController implements Initializable {
             root = loaderHelper.getFXMLLoader("StaffView").load();
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.setMaximized(true);
-            stage.show();
+			stage.hide();
+			stage.setMaximized(true);
+			stage.show();
+			stage.setWidth(App.SCREEN_WIDTH);
+			stage.setHeight(App.SCREEN_HEIGHT);
         } else {
         	String status = "0";
         	if (e.getSource() == btnCompleted) {

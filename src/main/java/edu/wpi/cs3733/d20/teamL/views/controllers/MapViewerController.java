@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers;
 import com.jfoenix.controls.JFXAutoCompletePopup;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDBCache;
@@ -12,9 +13,11 @@ import edu.wpi.cs3733.d20.teamL.services.graph.PathFinder;
 import edu.wpi.cs3733.d20.teamL.services.mail.IMailerService;
 import edu.wpi.cs3733.d20.teamL.services.navSearch.SearchFields;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import edu.wpi.cs3733.d20.teamL.util.io.SMSSender;
 import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
 import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
 import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -41,7 +44,7 @@ public class MapViewerController {
     VBox instructions;
 
     @FXML
-    JFXButton textMe;
+    JFXButton btnTextMe;
 
     @Inject
     private IDBCache dbCache;
@@ -51,6 +54,7 @@ public class MapViewerController {
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    private String directions;
 
     @FXML
     public void initialize() {
@@ -58,11 +62,12 @@ public class MapViewerController {
 
         map.setEditable(false);
 
-        dbCache.cacheAllFromDB();
         map.setGraph(MapParser.getGraphFromCache(dbCache.getNodeCache()));
 
         map.setZoomLevel(1);
         map.init();
+        map.getScroller().setVvalue(0.5);
+        map.getScroller().setHvalue(0.5);
 
         sf = new SearchFields(dbCache.getNodeCache());
         sf.populateSearchFields();
@@ -94,13 +99,21 @@ public class MapViewerController {
         });
     }
 
+    public void setStartingPoint(String startingPoint) {
+        this.startingPoint.setText(startingPoint);
+    }
+
+    public void setDestination(String destination) {
+        this.destination.setText(destination);
+    }
+
     @FXML
-    private void navigate() {
+    public void navigate() {
         Node startNode = sf.getNode(startingPoint.getText());
         Node destNode = sf.getNode(destination.getText());
 
-        if(startNode != null && destNode != null) {
-            String directions = highlightSourceToDestination(startNode, destNode);
+        if (startNode != null && destNode != null) {
+            directions = highlightSourceToDestination(startNode, destNode);
             mailer.setDirections(directions);
             Label directionsLabel = new Label();
             directionsLabel.setText(directions);
@@ -110,7 +123,8 @@ public class MapViewerController {
             instructions.getChildren().clear();
             instructions.getChildren().add(directionsLabel);
             instructions.setVisible(true);
-            textMe.setVisible(true);
+            btnTextMe.setDisable(false);
+            btnTextMe.setVisible(true);
         }
     }
 
@@ -121,13 +135,21 @@ public class MapViewerController {
             Parent newRoot = loaderHelper.getFXMLLoader("Home").load();
             Scene newScene = new Scene(newRoot);
             stage.setScene(newScene);
+            stage.hide();
+            stage.setMaximized(true);
             stage.show();
+
+            stage.setWidth(App.SCREEN_WIDTH);
+            stage.setHeight(App.SCREEN_HEIGHT);
+
         } catch (Exception ex) {
             log.error("Encountered Exception.", ex);
         }
     }
 
     private String highlightSourceToDestination(Node source, Node destination) {
+        map.getSelector().clear();
+
         Path path = PathFinder.aStarPathFind(map.getGraph(), source, destination);
         Iterator<Node> nodeIterator = path.iterator();
 
@@ -140,7 +162,6 @@ public class MapViewerController {
             NodeGUI nodeGUI = map.getNodeGUI(currentNode);
             EdgeGUI edgeGUI = map.getEdgeGUI(currentNode.getEdge(nextNode));
 
-            //map.getSelector().add(nodeGUI);
             map.getSelector().add(edgeGUI);
 
             currentNode = nextNode;
@@ -154,6 +175,15 @@ public class MapViewerController {
         return path.generateTextMessage();
     }
 
+    @FXML
+    public void textMe() {
+        SMSSender sender = new SMSSender();
+        // Temporarily hard-coded as Luke's phone number
+        sender.sendMessage(directions, "2073186779");
+        btnTextMe.setText("Sent!");
+        btnTextMe.setDisable(true);
+    }
+
     public MapPane getMap() {
         return map;
     }
@@ -164,7 +194,7 @@ public class MapViewerController {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(textMe.getScene().getWindow());
+        stage.initOwner(btnTextMe.getScene().getWindow());
         stage.showAndWait();
     }
 }
