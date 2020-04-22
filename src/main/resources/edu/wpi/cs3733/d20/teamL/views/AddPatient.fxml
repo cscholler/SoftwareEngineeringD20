@@ -23,31 +23,20 @@
     <bottom>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0" BorderPane.alignment="CENTER">
             <children>
-                <JFXButton fx:id="btnCancel" buttonType="RAISED" maxWidth="200.0" onAction="#handleButtonAction" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #dfdfdc;" text="Back" textAlignment="CENTER">
+                <JFXButton fx:id="btnCancel" buttonType="RAISED" maxWidth="200.0" onAction="#handleButtonAction" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #dfdfdc;" text="Cancel" textAlignment="CENTER">
                     <font>
                         <Font size="24.0" />
                     </font>
-               <HBox.margin>
-                  <Insets left="240.0" />
-               </HBox.margin>
                 </JFXButton>
                 <JFXButton fx:id="btnSubmit" buttonType="RAISED" maxWidth="200.0" onAction="#handleButtonAction" prefHeight="31.0" prefWidth="200.0" style="-fx-background-color: #0d2e57;" text="Submit" textAlignment="CENTER" textFill="WHITE">
                     <font>
                         <Font size="24.0" />
                     </font>
                 </JFXButton>
-            <Label fx:id="lblsubmitted" text="Patient Submitted!">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
             </children>
             <BorderPane.margin>
                 <Insets />
             </BorderPane.margin>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
         </HBox>
     </bottom>
     <center>
@@ -140,7 +129,7 @@
                                 <Insets left="30.0" />
                             </VBox.margin>
                         </Label>
-                        <JFXTextField fx:id="addInfoText" prefHeight="116.0" prefWidth="480.0" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
+                        <JFXTextField fx:id="addInfoText" alignment="TOP_LEFT" prefHeight="116.0" prefWidth="480.0" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
                             <padding>
                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                             </padding>
