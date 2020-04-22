@@ -4,52 +4,41 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
 <?import edu.wpi.cs3733.d20.teamL.views.components.MapPane?>
-<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0"
-            xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.MapViewerController">
+
+<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.MapViewerController">
     <left>
         <VBox prefWidth="333.0" style="-fx-background-color: #0d2e57;" BorderPane.alignment="CENTER">
             <children>
-                <JFXButton buttonType="RAISED" onAction="#backToMain" prefHeight="48.0" prefWidth="53.0"
-                           style="-fx-background-color: #4d4d4d;" text="🏠" textFill="WHITE">
+                <JFXButton buttonType="RAISED" onAction="#backToMain" prefHeight="48.0" prefWidth="53.0" style="-fx-background-color: #4d4d4d;" text="🏠" textFill="WHITE">
                     <font>
-                        <Font size="22.0"/>
+                        <Font size="22.0" />
                     </font>
                 </JFXButton>
                 <VBox alignment="TOP_CENTER" spacing="20.0" style="-fx-background-color: #0d2e57;">
                     <children>
-                        <JFXTextField fx:id="startingPoint" focusColor="WHITE" onKeyTyped="#startingPointAutocomplete"
-                                      promptText="Starting Point" labelFloat="true"
-                                      style="-fx-text-inner-color: white; -fx-prompt-text-fill: #d0d0d0;"
-                                      text="Hallway Intersection 14 Level 2"/>
-                        <JFXTextField fx:id="destination" focusColor="WHITE" onKeyTyped="#destinationAutocomplete"
-                                      promptText="Destination" labelFloat="true"
-                                      style="-fx-text-inner-color: white; -fx-prompt-text-fill: #d0d0d0;"/>
-                        <JFXButton buttonType="RAISED" onAction="#navigate" prefHeight="32.0" prefWidth="79.0"
-                                   style="-fx-background-color: #4d4d4d;" text="Navigate" textFill="WHITE"/>
-                        <VBox fx:id="instructions" alignment="TOP_CENTER" spacing="10.0"
-                              style="-fx-border-color: white; -fx-border-radius: 5px;" visible="false">
+                        <JFXTextField fx:id="startingPoint" focusColor="WHITE" labelFloat="true" onKeyTyped="#startingPointAutocomplete" promptText="Starting Point" style="-fx-text-inner-color: white; -fx-prompt-text-fill: #d0d0d0;" text="Hallway Intersection 14 Level 2" />
+                        <JFXTextField fx:id="destination" focusColor="WHITE" labelFloat="true" onKeyTyped="#destinationAutocomplete" promptText="Destination" style="-fx-text-inner-color: white; -fx-prompt-text-fill: #d0d0d0;" />
+                        <JFXButton buttonType="RAISED" onAction="#navigate" prefHeight="32.0" prefWidth="79.0" style="-fx-background-color: #4d4d4d;" text="Navigate" textFill="WHITE" />
+                        <VBox fx:id="instructions" alignment="TOP_CENTER" spacing="10.0" style="-fx-border-color: white; -fx-border-radius: 5px;" visible="false">
                             <padding>
-                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                             </padding>
                         </VBox>
-                        <JFXButton fx:id="btnTextMe" onAction="#handleButtonAction" buttonType="RAISED" prefHeight="32.0" prefWidth="121.0" style="-fx-background-color: #4d4d4d;" text="Text Me Directions" textFill="WHITE" visible="false" />
+                        <JFXButton fx:id="btnTextMe" buttonType="RAISED" onAction="#handleButtonAction" prefHeight="32.0" prefWidth="140.0" style="-fx-background-color: #4d4d4d;" text="Text Me Directions" textFill="WHITE" />
                     </children>
                     <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                     </padding>
                     <VBox.margin>
-                        <Insets top="30.0"/>
+                        <Insets top="30.0" />
                     </VBox.margin>
                 </VBox>
             </children>
             <padding>
-                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </padding>
         </VBox>
     </left>
