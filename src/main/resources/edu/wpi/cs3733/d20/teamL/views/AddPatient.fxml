@@ -23,7 +23,7 @@
     <bottom>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0" BorderPane.alignment="CENTER">
             <children>
-                <JFXButton fx:id="btnCancel" buttonType="RAISED" maxWidth="200.0" onAction="#handleButtonAction" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #dfdfdc;" text="Cancel" textAlignment="CENTER">
+                <JFXButton fx:id="btnCancel" buttonType="RAISED" maxWidth="200.0" onAction="#handleButtonAction" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #dfdfdc;" text="Back" textAlignment="CENTER">
                     <font>
                         <Font size="24.0" />
                     </font>
