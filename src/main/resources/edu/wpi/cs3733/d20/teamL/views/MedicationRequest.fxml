@@ -113,7 +113,7 @@
         <HBox alignment="CENTER" spacing="100.0" BorderPane.alignment="CENTER">
             <children>
                 <JFXButton fx:id="btnCancel" maxWidth="201.0" onAction="#handleButtonAction" prefHeight="34.0"
-                           prefWidth="146.0" style="-fx-background-color: #dfdfdc;" text="Cancel">
+                           prefWidth="146.0" style="-fx-background-color: #dfdfdc;" text="Back">
                     <font>
                         <Font size="24.0"/>
                     </font>
