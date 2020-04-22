@@ -5,9 +5,11 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
+import edu.wpi.cs3733.d20.teamL.services.db.IDBCache;
 import edu.wpi.cs3733.d20.teamL.services.graph.MapParser;
 import edu.wpi.cs3733.d20.teamL.services.graph.Path;
 import edu.wpi.cs3733.d20.teamL.services.graph.PathFinder;
+import edu.wpi.cs3733.d20.teamL.services.mail.IMailerService;
 import edu.wpi.cs3733.d20.teamL.services.navSearch.SearchFields;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
@@ -42,7 +44,9 @@ public class MapViewerController {
     JFXButton textMe;
 
     @Inject
-    private DBCache dbCache;
+    private IDBCache dbCache;
+    @Inject
+	private IMailerService mailer;
 
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
@@ -97,6 +101,7 @@ public class MapViewerController {
 
         if(startNode != null && destNode != null) {
             String directions = highlightSourceToDestination(startNode, destNode);
+            mailer.setDirections(directions);
             Label directionsLabel = new Label();
             directionsLabel.setText(directions);
             directionsLabel.setTextFill(Color.WHITE);
