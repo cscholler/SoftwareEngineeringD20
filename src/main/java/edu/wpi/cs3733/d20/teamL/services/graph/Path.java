@@ -149,7 +149,7 @@ public class Path implements Iterable<Node> {
             }
         }
 
-        message.append("Continue straight until your destination at " + pathNodes.get(pathNodes.size()-1).getLongName());
+        message.append("Continue straight until your destination at " + pathNodes.get(pathNodes.size()-1).getLongName() + ".");
 
         return message.toString();
     }

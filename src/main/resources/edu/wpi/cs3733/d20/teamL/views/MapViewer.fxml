@@ -39,7 +39,7 @@
                             </padding>
                         </VBox>
                         <JFXButton fx:id="btnTextMe" onAction="#textMe" buttonType="RAISED"
-                                   prefHeight="32.0" prefWidth="121.0" style="-fx-background-color: #4d4d4d;"
+                                   prefHeight="32.0" prefWidth="140.0" style="-fx-background-color: #4d4d4d;"
                                    text="Text Me Directions" textFill="WHITE" visible="false"/>
                     </children>
                     <padding>
