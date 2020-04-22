@@ -1,10 +1,13 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers;
 
+import com.jfoenix.controls.JFXAutoCompletePopup;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.App;
+import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
+import edu.wpi.cs3733.d20.teamL.services.navSearch.SearchFields;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
 import javafx.animation.FadeTransition;
@@ -42,6 +45,11 @@ public class MedicationReqController implements Initializable {
     @FXML
     private JFXTextField docFNameText, docLNameText, medTypeText, doseText, patFNameText, patLNameText, roomNumText, addInfoText;
 
+    @Inject
+    private DBCache dbCache;
+
+    private SearchFields sf;
+    private JFXAutoCompletePopup<String> autoCompletePopup;
 
 	@FXML
 	public void initialize(URL location, ResourceBundle resources) {
@@ -50,7 +58,31 @@ public class MedicationReqController implements Initializable {
 		System.out.print("\n");
 		formatter.reportQueryResults(db.executeQuery(DBConstants.selectAllPatients));
 		formatter.reportQueryResults(db.executeQuery(DBConstants.selectAllMedicationRequests));
+
+        dbCache.cacheAllFromDB();
+
+        sf = new SearchFields(dbCache.getNodeCache());
+        sf.getFields().clear();
+        sf.getFields().add(SearchFields.Field.nodeID);
+        sf.populateSearchFields();
+        autoCompletePopup = new JFXAutoCompletePopup<>();
+        autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
 	}
+
+    @FXML
+    private void autocomplete() {
+        autoCompletePopup.setSelectionHandler(event -> roomNumText.setText(event.getObject()));
+        roomNumText.textProperty().addListener(observable -> {
+            autoCompletePopup.filter(string ->
+                    string.toLowerCase().contains(roomNumText.getText().toLowerCase()));
+            if (autoCompletePopup.getFilteredSuggestions().isEmpty() ||
+                    roomNumText.getText().isEmpty()) {
+                autoCompletePopup.hide();
+            } else {
+                autoCompletePopup.show(roomNumText);
+            }
+        });
+    }
 
     @FXML
     public void handleButtonAction(ActionEvent e) throws IOException {
