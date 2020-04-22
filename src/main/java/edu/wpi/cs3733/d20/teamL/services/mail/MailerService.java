@@ -22,7 +22,7 @@ public class MailerService implements IMailerService {
 	private boolean isText;
 
     @Override
-	public void sendMail() {
+	public synchronized void sendMail() {
 		System.out.println("Got to sendMail");
         // Recipient's email ID needs to be mentioned.
         String to = emailAddress;
@@ -34,7 +34,10 @@ public class MailerService implements IMailerService {
         Properties properties = System.getProperties();
         // Setup mail server
         properties.put("mail.smtp.host", host);
-        properties.put("mail.smtp.port", "587");
+        // Use port 465 for running as a JAR:
+		properties.put("mail.smtp.port", "465");
+		// Use port 587 running in IntelliJ:
+        //properties.put("mail.smtp.port", "587");
         properties.put("mail.smtp.ssl.enable", "true");
         properties.put("mail.smtp.starttls.enable", "true");
         properties.put("mail.smtp.auth", "true");
@@ -70,11 +73,11 @@ public class MailerService implements IMailerService {
 			} else {
 				// Now set the actual message
 				message.setText(getDirections());
-				System.out.println("Sending...");
+				log.info("Sending message.");
 				// Send message
 				Transport.send(message);
 			}
-            System.out.println("Sent message successfully....");
+			log.info("Message sent successfully.");
         } catch (MessagingException ex) {
             log.error("Encountered MessagingException.", ex);
         }
@@ -82,7 +85,6 @@ public class MailerService implements IMailerService {
 
 	@Override
 	public void sendTextToCarrier() {
-    	System.out.println("Got to sendTextToCarrier");
 		HashMap<String, String> carrierMap = buildCarrierMap();
 		setEmailAddress(getPhoneNumber() + "@" + carrierMap.get(getCarrier()));
 		sendMail();

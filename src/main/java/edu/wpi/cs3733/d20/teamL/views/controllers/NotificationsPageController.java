@@ -35,7 +35,6 @@ import java.util.ResourceBundle;
 public class NotificationsPageController implements Initializable {
    	private ObservableList<MedicineRequest> list = FXCollections.observableArrayList();
 	private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
-	private DBTableFormatter formatter = new DBTableFormatter();
 	private MedicineRequest currentRequest;
 	@Inject
 	IDatabaseService db;

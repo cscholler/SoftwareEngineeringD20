@@ -119,7 +119,7 @@ public class MedicationReqController implements Initializable {
 			String patientID = db.getTableFromResultSet(db.executeQuery(DBConstants.getPatientID, new ArrayList<>(Arrays.asList(patientFName, patientLName)))).get(0).get(0);
 			// TODO: Get name of nurse from current user
 			int rows = db.executeUpdate(DBConstants.addMedicationRequest, new ArrayList<>(Arrays.asList(doctorID, patientID, "Nurse", dose, medType, additionalInfo, status, dateAndTime)));
-			formatter.reportQueryResults(db.executeQuery(DBConstants.selectAllMedicationRequests));
+			//formatter.reportQueryResults(db.executeQuery(DBConstants.selectAllMedicationRequests));
 			// TODO: Check if any info is invalid before sending request
 
             if (rows == 0) {

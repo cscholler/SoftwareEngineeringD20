@@ -142,7 +142,7 @@ public class Path implements Iterable<Node> {
                 else if (angle > 95) message.append("take a sharp ");
                 else message.append("turn ");
 
-                if(next.getType().equals("HALL")) message.append(sign + " and continue down the hall.\n\n");
+                if( next.getType().equals("HALL")) message.append(sign + " and continue down the hall.\n\n");
                 else message.append(sign + " towards " + next.getLongName() + ".\n\n");
             } else if(angle <= 10 && !curr.getType().equals("HALL")) {
                 message.append("Pass straight though the " + curr.getLongName() + ".\n\n");
