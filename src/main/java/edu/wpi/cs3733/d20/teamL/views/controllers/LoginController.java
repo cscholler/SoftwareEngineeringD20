@@ -76,14 +76,10 @@ public class LoginController {
         fadeTransition.setCycleCount(3);
 
         if (e.getSource() == btnCancel) {
-            System.out.println("Cancel");
             stage = (Stage) btnCancel.getScene().getWindow();
             stage.close();
-
         } else if (e.getSource() == login) {
-
             if (user.equals("Doctor") && password.equals("Doctor")) {
-                System.out.println("Doctor");
                 status = "Doctor";
 
                 stage = (Stage) login.getScene().getWindow();
@@ -100,9 +96,7 @@ public class LoginController {
 
                 stage.setWidth(App.SCREEN_WIDTH);
                 stage.setHeight(App.SCREEN_HEIGHT);
-            }
-            else if (user.equals("Nurse") && password.equals("Nurse")) {
-                System.out.println("Nurse");
+            } else if (user.equals("Nurse") && password.equals("Nurse")) {
                 status = "Nurse";
                 stage = (Stage) login.getScene().getWindow();
 
@@ -118,10 +112,7 @@ public class LoginController {
 
                 stage.setWidth(App.SCREEN_WIDTH);
                 stage.setHeight(App.SCREEN_HEIGHT);
-            }
-
-            else if (user.equals("Admin") && password.equals("Admin")) {
-                System.out.println("Admin");
+            } else if (user.equals("Admin") && password.equals("Admin")) {
                 status = "Admin";
                 stage = (Stage) login.getScene().getWindow();
 
@@ -136,16 +127,13 @@ public class LoginController {
 
                 stage.setWidth(App.SCREEN_WIDTH);
                 stage.setHeight(App.SCREEN_HEIGHT);
-            }
-            else {
+            } else {
                 incorrectText.setVisible(true);
                 fadeTransition.play();
             }
             System.out.println(status);
             pass.clear();
             username.clear();
-
-            //return status;
         }
     }
 }

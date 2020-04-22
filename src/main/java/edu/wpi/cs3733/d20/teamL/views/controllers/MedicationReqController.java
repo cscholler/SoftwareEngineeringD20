@@ -54,10 +54,10 @@ public class MedicationReqController implements Initializable {
 	@FXML
 	public void initialize(URL location, ResourceBundle resources) {
 		// Print test data before request is made
-		formatter.reportQueryResults(db.executeQuery(DBConstants.selectAllDoctors));
+		/*formatter.reportQueryResults(db.executeQuery(DBConstants.selectAllDoctors));
 		System.out.print("\n");
 		formatter.reportQueryResults(db.executeQuery(DBConstants.selectAllPatients));
-		formatter.reportQueryResults(db.executeQuery(DBConstants.selectAllMedicationRequests));
+		formatter.reportQueryResults(db.executeQuery(DBConstants.selectAllMedicationRequests));*/
 
         dbCache.cacheAllFromDB();
 
