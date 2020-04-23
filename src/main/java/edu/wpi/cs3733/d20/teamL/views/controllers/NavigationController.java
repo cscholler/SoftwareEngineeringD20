@@ -9,6 +9,7 @@ import edu.wpi.cs3733.d20.teamL.services.navSearch.SearchFields;
 import edu.wpi.cs3733.d20.teamL.services.db.IDBCache;
 
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import edu.wpi.cs3733.d20.teamL.views.controllers.map.MapViewerController;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,50 +33,58 @@ import java.util.*;
 
 public class NavigationController implements Initializable {
 
-    @FXML private ImageView iHome;
-    @FXML private JFXButton btnLogin;
-    @FXML private JFXButton btnMap;
-    @FXML private JFXButton btnServices;
-    @FXML private JFXButton btnHelp;
-    @FXML private JFXTextField searchBox;
-    @FXML private JFXButton btnSearch;
-    @FXML private Label timeLabel;
+    @FXML
+    private ImageView iHome;
+    @FXML
+    private JFXButton btnLogin;
+    @FXML
+    private JFXButton btnMap;
+    @FXML
+    private JFXButton btnServices;
+    @FXML
+    private JFXButton btnHelp;
+    @FXML
+    private JFXTextField searchBox;
+    @FXML
+    private JFXButton btnSearch;
+    @FXML
+    private Label timeLabel;
     @Inject
-	private IDBCache cache;
+    private IDBCache cache;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
-	private SearchFields sf;
-	private JFXAutoCompletePopup<String> autoCompletePopup;
+    private SearchFields sf;
+    private JFXAutoCompletePopup<String> autoCompletePopup;
 
-	@FXML
+    @FXML
 
-	public void initialize(URL location, ResourceBundle resources) {
-		Timer timer = new Timer();
-		timer.scheduleAtFixedRate(new TimerTask() {
-			@Override
-			public void run() {
-				Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("h:mm aa").format(new Date())));
-			}
-		}, 0, 1000);
+    public void initialize(URL location, ResourceBundle resources) {
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("h:mm aa").format(new Date())));
+            }
+        }, 0, 1000);
 
-		cache.cacheAllFromDB();
-		sf = new SearchFields(getNodeCache());
-		sf.populateSearchFields();
-		autoCompletePopup = new JFXAutoCompletePopup<>();
-		autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
-		//sets picture on home
-		Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-		iHome.setFitHeight(screenBounds.getHeight());
+        cache.cacheAllFromDB();
+        sf = new SearchFields(getNodeCache());
+        sf.populateSearchFields();
+        autoCompletePopup = new JFXAutoCompletePopup<>();
+        autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
+        //sets picture on home
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        iHome.setFitHeight(screenBounds.getHeight());
         iHome.setFitWidth(screenBounds.getWidth());
 
         searchBox.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER))
                 searchMap();
         });
-	}
+    }
 
-	@FXML
-    private void searchMap(){
-	    try {
+    @FXML
+    private void searchMap() {
+        try {
             Stage stage = (Stage) btnMap.getScene().getWindow();
             FXMLLoader loader = loaderHelper.getFXMLLoader("MapViewer");
             Parent root = loader.load();
@@ -94,79 +103,43 @@ public class NavigationController implements Initializable {
             stage.setWidth(App.SCREEN_WIDTH);
             stage.setHeight(App.SCREEN_HEIGHT);
         } catch (IOException e) {
-	        e.printStackTrace();
+            e.printStackTrace();
         }
     }
 
-	public ArrayList<Node> getNodeCache() {
-		return cache.getNodeCache();
-	}
+    public ArrayList<Node> getNodeCache() {
+        return cache.getNodeCache();
+    }
 
-    /**
-     * Handles the user's action when pressing on a specific button and goes to a new page
-     *
-     * @param actionEvent The action taken by the user (pressing the button)
-     * @throws IOException
-     */
-    public void handleButtonAction(ActionEvent actionEvent) throws IOException {
 
-        Stage stage;
-        Parent root;
+    @FXML
+    private void loginBtnClicked() {
+        Parent root = loaderHelper.getFXMLLoader("LoginPage").load();
+        loaderHelper.setupPopup(new Stage(), new Scene(root));
+    }
 
-        //Goes to the Login Page
-        if (actionEvent.getSource() == btnLogin) {
-            stage = new Stage();
-			root = loaderHelper.getFXMLLoader("LoginPage").load();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initOwner(btnLogin.getScene().getWindow());
-            stage.showAndWait();
-        //Displays the map of the hospital
-        } else if (actionEvent.getSource() == btnMap) {
-            stage = (Stage) btnMap.getScene().getWindow();
-			FXMLLoader loader = loaderHelper.getFXMLLoader("MapViewer");
-			root = loader.load();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
+    @FXML
+    private void mapBtnClicked() {
+        Parent root = loaderHelper.getFXMLLoader("MapViewer").load();
+        loaderHelper.setupScene(new Scene(root));
+    }
 
-            //stage.hide();
-
-            stage.setMaximized(true);
-            stage.show();
-            MapViewerController controller = loader.getController();
-            controller.getMap().recalculatePositions();
-
-            stage.setWidth(App.SCREEN_WIDTH);
-            stage.setHeight(App.SCREEN_HEIGHT);
-
-        //Displays a popup window that help is on the way
-        } else if (actionEvent.getSource() == btnHelp) {
-            stage = (Stage) btnHelp.getScene().getWindow();
-			root = loaderHelper.getFXMLLoader("Help").load();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setMaximized(true);
-            stage.show();
-
-            stage.setWidth(App.SCREEN_WIDTH);
-            stage.setHeight(App.SCREEN_HEIGHT);
-
-        //Goes to Service display screen
-        }
+    @FXML
+    private void helpBtnClicked() {
+        Parent root = loaderHelper.getFXMLLoader("Help").load();
+        loaderHelper.setupScene(new Scene(root));
     }
 
     /**
      * Supports autocompletion for user when typing in a specific word
-     *
      */
     public void inputHandler() {
-		autoCompletePopup.setSelectionHandler(event -> searchBox.setText(event.getObject()));
+        autoCompletePopup.setSelectionHandler(event -> searchBox.setText(event.getObject()));
         searchBox.textProperty().addListener(observable -> {
             autoCompletePopup.filter(string ->
                     string.toLowerCase().contains(searchBox.getText().toLowerCase()));
             if (autoCompletePopup.getFilteredSuggestions().isEmpty() ||
-            searchBox.getText().isEmpty()) {
+                    searchBox.getText().isEmpty()) {
                 autoCompletePopup.hide();
             } else {
                 autoCompletePopup.show(searchBox);
@@ -174,11 +147,11 @@ public class NavigationController implements Initializable {
         });
     }
 
-	public Label getTimeLabel() {
-		return timeLabel;
-	}
+    public Label getTimeLabel() {
+        return timeLabel;
+    }
 
-	public void setTimeLabel(Label timeLabel) {
-		this.timeLabel = timeLabel;
-	}
+    public void setTimeLabel(Label timeLabel) {
+        this.timeLabel = timeLabel;
+    }
 }

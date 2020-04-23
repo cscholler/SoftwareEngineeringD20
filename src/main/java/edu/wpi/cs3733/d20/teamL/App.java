@@ -26,7 +26,7 @@ public class App extends Application {
 	FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 	Scene scene;
 	Parent root;
-	Stage primaryStage;
+	public static Stage stage;
 
 	public static final double SCREEN_WIDTH = Screen.getPrimary().getVisualBounds().getWidth();
 	public static final double SCREEN_HEIGHT = Screen.getPrimary().getVisualBounds().getHeight();
@@ -43,6 +43,8 @@ public class App extends Application {
 		primaryStage.setScene(new Scene(root));
 		primaryStage.setMaximized(true);
 		primaryStage.show();
+
+		stage = primaryStage;
 	}
 
 

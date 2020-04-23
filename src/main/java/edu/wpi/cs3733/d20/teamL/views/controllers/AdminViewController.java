@@ -2,6 +2,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers;
 
 import java.io.IOException;
 
+import edu.wpi.cs3733.d20.teamL.views.controllers.map.MapEditorController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -75,7 +76,6 @@ public class AdminViewController {
             stage.show();
 
             MapEditorController controller = fxmlLoader.getController();
-            controller.getMap().recalculatePositions();
         } else if (event.getSource() == btnLogout) {
             stage = (Stage) btnLogout.getScene().getWindow();
 			root = loaderHelper.getFXMLLoader("Home").load();

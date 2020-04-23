@@ -1,21 +1,19 @@
-package edu.wpi.cs3733.d20.teamL.views.controllers;
+package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.entities.Edge;
-import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDBCache;
 import edu.wpi.cs3733.d20.teamL.services.graph.Path;
 import edu.wpi.cs3733.d20.teamL.services.graph.PathFinder;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
 import edu.wpi.cs3733.d20.teamL.views.components.*;
-import edu.wpi.cs3733.d20.teamL.views.dialogues.DataDialogue;
+import edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.DataDialogue;
 import edu.wpi.cs3733.d20.teamL.services.graph.MapParser;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;

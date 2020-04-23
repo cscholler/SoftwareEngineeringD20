@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamL.views.controllers;
+package edu.wpi.cs3733.d20.teamL.views.controllers.dialogues;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
