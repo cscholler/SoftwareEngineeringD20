@@ -1,9 +1,10 @@
 package edu.wpi.cs3733.d20.teamL.services.navSearch;
 
+import com.jfoenix.controls.JFXAutoCompletePopup;
+import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,7 +14,7 @@ public class SearchFields {
 
 	public enum Field { nodeID, longName, shortName, building }
 
-	private List<Field> fields = new ArrayList<>(Arrays.asList(Field.longName, Field.shortName));
+	private List<Field> fields = new ArrayList<>();
 
 	public SearchFields(ArrayList<Node> nodeCache) {
 		this.nodeCache = nodeCache;
@@ -50,6 +51,20 @@ public class SearchFields {
             }
         }
         Collections.sort(suggestions);
+    }
+
+    public void applyAutocomplete(JFXTextField textField, JFXAutoCompletePopup<String> autoCompletePopup) {
+        autoCompletePopup.setSelectionHandler(event -> textField.setText(event.getObject()));
+        textField.textProperty().addListener(observable -> {
+            autoCompletePopup.filter(string ->
+                    string.toLowerCase().contains(textField.getText().toLowerCase()));
+            if (autoCompletePopup.getFilteredSuggestions().isEmpty() ||
+                    textField.getText().isEmpty()) {
+                autoCompletePopup.hide();
+            } else {
+                autoCompletePopup.show(textField);
+            }
+        });
     }
 
     /**

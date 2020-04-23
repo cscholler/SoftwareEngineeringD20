@@ -28,7 +28,7 @@ import javafx.util.Duration;
 import javax.inject.Inject;
 
 public class AddPatientController {
-	FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+	private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
     @FXML
     JFXButton btnCancel, btnSubmit;
     @FXML
@@ -50,7 +50,6 @@ public class AddPatientController {
         lblsubmitted.setVisible(false);
 
         sf = new SearchFields(dbCache.getNodeCache());
-        sf.getFields().clear();
         sf.getFields().add(SearchFields.Field.nodeID);
         sf.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
@@ -59,18 +58,7 @@ public class AddPatientController {
 
     @FXML
     private void autocomplete() {
-        System.out.println("Autocompleting...");
-        autoCompletePopup.setSelectionHandler(event -> roomNumText.setText(event.getObject()));
-        roomNumText.textProperty().addListener(observable -> {
-            autoCompletePopup.filter(string ->
-                    string.toLowerCase().contains(roomNumText.getText().toLowerCase()));
-            if (autoCompletePopup.getFilteredSuggestions().isEmpty() ||
-                    roomNumText.getText().isEmpty()) {
-                autoCompletePopup.hide();
-            } else {
-                autoCompletePopup.show(roomNumText);
-            }
-        });
+        sf.applyAutocomplete(roomNumText, autoCompletePopup);
     }
 
     @FXML

@@ -11,7 +11,7 @@
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="720.0" prefWidth="1080.0"
             xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.MedicationReqController">
+            fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.MedicationRequestController">
     <center>
         <HBox alignment="CENTER" prefHeight="568.0" prefWidth="1080.0" spacing="200.0">
             <children>

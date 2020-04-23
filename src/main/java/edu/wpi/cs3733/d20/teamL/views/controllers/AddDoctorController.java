@@ -10,7 +10,6 @@ import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.navSearch.SearchFields;
 import javafx.animation.FadeTransition;
-import javafx.animation.Transition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -28,7 +27,7 @@ import javafx.util.Duration;
 import javax.inject.Inject;
 
 public class AddDoctorController {
-	FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+	private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 	@FXML
     private Label confirmation;
     @FXML
@@ -49,7 +48,6 @@ public class AddDoctorController {
         dbCache.cacheAllFromDB();
 
         sf = new SearchFields(dbCache.getNodeCache());
-        sf.getFields().clear();
         sf.getFields().add(SearchFields.Field.nodeID);
         sf.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
@@ -58,17 +56,7 @@ public class AddDoctorController {
 
     @FXML
     private void autocomplete() {
-        autoCompletePopup.setSelectionHandler(event -> officeNumText.setText(event.getObject()));
-        officeNumText.textProperty().addListener(observable -> {
-            autoCompletePopup.filter(string ->
-                    string.toLowerCase().contains(officeNumText.getText().toLowerCase()));
-            if (autoCompletePopup.getFilteredSuggestions().isEmpty() ||
-                    officeNumText.getText().isEmpty()) {
-                autoCompletePopup.hide();
-            } else {
-                autoCompletePopup.show(officeNumText);
-            }
-        });
+        sf.applyAutocomplete(officeNumText, autoCompletePopup);
     }
 
     @FXML

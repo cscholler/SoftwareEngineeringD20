@@ -30,7 +30,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-public class MedicationReqController implements Initializable {
+public class MedicationRequestController implements Initializable {
 	@Inject
 	IDatabaseService db;
 	DBTableFormatter formatter = new DBTableFormatter();
@@ -62,7 +62,6 @@ public class MedicationReqController implements Initializable {
         dbCache.cacheAllFromDB();
 
         sf = new SearchFields(dbCache.getNodeCache());
-        sf.getFields().clear();
         sf.getFields().add(SearchFields.Field.nodeID);
         sf.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
@@ -71,17 +70,7 @@ public class MedicationReqController implements Initializable {
 
     @FXML
     private void autocomplete() {
-        autoCompletePopup.setSelectionHandler(event -> roomNumText.setText(event.getObject()));
-        roomNumText.textProperty().addListener(observable -> {
-            autoCompletePopup.filter(string ->
-                    string.toLowerCase().contains(roomNumText.getText().toLowerCase()));
-            if (autoCompletePopup.getFilteredSuggestions().isEmpty() ||
-                    roomNumText.getText().isEmpty()) {
-                autoCompletePopup.hide();
-            } else {
-                autoCompletePopup.show(roomNumText);
-            }
-        });
+        sf.applyAutocomplete(roomNumText, autoCompletePopup);
     }
 
     @FXML

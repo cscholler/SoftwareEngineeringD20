@@ -5,7 +5,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
-import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDBCache;
 import edu.wpi.cs3733.d20.teamL.services.graph.MapParser;
 import edu.wpi.cs3733.d20.teamL.services.graph.Path;
@@ -13,11 +12,9 @@ import edu.wpi.cs3733.d20.teamL.services.graph.PathFinder;
 import edu.wpi.cs3733.d20.teamL.services.mail.IMailerService;
 import edu.wpi.cs3733.d20.teamL.services.navSearch.SearchFields;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
-import edu.wpi.cs3733.d20.teamL.util.io.SMSSender;
 import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
 import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
 import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -30,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Iterator;
 
 @Slf4j
@@ -54,7 +52,6 @@ public class MapViewerController {
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
-    private String directions;
 
     @FXML
     public void initialize() {
@@ -70,6 +67,7 @@ public class MapViewerController {
         map.getScroller().setHvalue(0.5);
 
         sf = new SearchFields(dbCache.getNodeCache());
+        sf.getFields().addAll(Arrays.asList(SearchFields.Field.shortName, SearchFields.Field.longName));
         sf.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
@@ -77,26 +75,12 @@ public class MapViewerController {
 
     @FXML
     private void startingPointAutocomplete() {
-        autocomplete(startingPoint);
+        sf.applyAutocomplete(startingPoint, autoCompletePopup);
     }
 
     @FXML
     private void destinationAutocomplete() {
-        autocomplete(destination);
-    }
-
-    private void autocomplete(JFXTextField field) {
-        autoCompletePopup.setSelectionHandler(event -> field.setText(event.getObject()));
-        field.textProperty().addListener(observable -> {
-            autoCompletePopup.filter(string ->
-                    string.toLowerCase().contains(field.getText().toLowerCase()));
-            if (autoCompletePopup.getFilteredSuggestions().isEmpty() ||
-                    field.getText().isEmpty()) {
-                autoCompletePopup.hide();
-            } else {
-                autoCompletePopup.show(field);
-            }
-        });
+        sf.applyAutocomplete(destination, autoCompletePopup);
     }
 
     public void setStartingPoint(String startingPoint) {
@@ -113,7 +97,7 @@ public class MapViewerController {
         Node destNode = sf.getNode(destination.getText());
 
         if (startNode != null && destNode != null) {
-            directions = highlightSourceToDestination(startNode, destNode);
+            String directions = highlightSourceToDestination(startNode, destNode);
             mailer.setDirections(directions);
             Label directionsLabel = new Label();
             directionsLabel.setText(directions);
