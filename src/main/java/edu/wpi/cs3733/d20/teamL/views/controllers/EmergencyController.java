@@ -1,41 +1,32 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers;
 
-import com.jfoenix.controls.JFXButton;
-import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 
+@Slf4j
 public class EmergencyController {
-	FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
-    @FXML
-	private JFXButton btnCancel;
+    FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 
     /**
      * Goes back to the Home page when user clicks Cancel
-     *
-     * @param actionEvent The action taken by the user (pressing the button)
      * @throws IOException
      */
-    public void handleCancel(ActionEvent actionEvent) throws IOException {
-        Stage stage;
-        Parent root;
-        //Goes back to the Home page
-        if (actionEvent.getSource() == btnCancel) {
-            stage = (Stage) btnCancel.getScene().getWindow();
-            root = loaderHelper.getFXMLLoader("Home").load();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.hide();
-            stage.setMaximized(true);
-            stage.show();
-            stage.setWidth(App.SCREEN_WIDTH);
-            stage.setHeight(App.SCREEN_HEIGHT);
 
+    @FXML
+    private void cancelClicked() {
+        try {
+            Parent root = loaderHelper.getFXMLLoader("Home").load();
+            loaderHelper.setupScene(new Scene(root));
+        } catch (IOException e) {
+            log.error("Encountered IOException", e);
         }
+
     }
+
 }
+
