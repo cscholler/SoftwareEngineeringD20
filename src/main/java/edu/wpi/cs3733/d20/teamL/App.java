@@ -24,7 +24,6 @@ import lombok.extern.slf4j.Slf4j;
 public class App extends Application {
 
 	FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
-	Scene scene;
 	Parent root;
 	public static Stage stage;
 
@@ -40,11 +39,16 @@ public class App extends Application {
 	public void start(Stage primaryStage) throws IOException {
 		root = loaderHelper.getFXMLLoader("Home").load();
 		primaryStage.setTitle("Team L");
-		primaryStage.setScene(new Scene(root));
+		Scene homeScene = new Scene(root);
+		primaryStage.setScene(homeScene);
 		primaryStage.setMaximized(true);
 		primaryStage.show();
 
+		primaryStage.setWidth(SCREEN_WIDTH);
+		primaryStage.setHeight(SCREEN_HEIGHT);
+
 		stage = primaryStage;
+		FXMLLoaderHelper.getHistory().push(homeScene);
 	}
 
 

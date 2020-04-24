@@ -55,9 +55,8 @@ public class AdminViewController {
     @FXML
     private void logoutClicked() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("Home").load();
-            loaderHelper.setupScene(new Scene(root));
-        } catch (IOException e) {
+            loaderHelper.goBack();
+        } catch (Exception e) {
             log.error("Encountered IOException", e);
         }
 

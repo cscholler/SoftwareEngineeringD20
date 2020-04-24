@@ -226,8 +226,7 @@ public class MapEditorController {
     @FXML
     private void backToMain() {
         try {
-			Parent root = loaderHelper.getFXMLLoader("AdminView").load();
-            loaderHelper.setupScene(new Scene(root));
+			loaderHelper.goBack();
         } catch (Exception ex) {
             log.error("Encountered Exception.", ex);
         }

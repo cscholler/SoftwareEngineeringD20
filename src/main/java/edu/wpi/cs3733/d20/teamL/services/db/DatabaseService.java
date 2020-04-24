@@ -39,7 +39,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 			connect(props);
 		}
 		// Uncomment if database needs to be rebuilt
-		buildDatabase();
+		// buildDatabase();
 	}
 
 	@Override

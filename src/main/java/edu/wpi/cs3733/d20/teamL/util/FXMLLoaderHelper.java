@@ -8,15 +8,24 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import edu.wpi.cs3733.d20.teamL.services.ServiceProvider;
+import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.util.Stack;
+
 public class FXMLLoaderHelper {
 	private static final String ROOT_DIR = "/edu/wpi/cs3733/d20/teamL/views/";
 	private static Injector injector = Guice.createInjector(new ServiceProvider());
+
+	private static Stack<Scene> history = new Stack<>();
+
+	public static Stack<Scene> getHistory() {
+		return history;
+	}
 
 	/**
 	 * Loads the fxml file based on its name from the views package in resources.
@@ -37,11 +46,13 @@ public class FXMLLoaderHelper {
 	 */
 	public void setupScene(Scene scene) {
 		App.stage.setScene(scene);
-		App.stage.setMaximized(true);
+		//App.stage.setMaximized(true);
+		Point2D prevDimensions = new Point2D(App.stage.getWidth(), App.stage.getHeight());
 		App.stage.show();
 
-		App.stage.setWidth(App.SCREEN_WIDTH);
-		App.stage.setHeight(App.SCREEN_HEIGHT);
+		App.stage.setWidth(prevDimensions.getX());
+		App.stage.setHeight(prevDimensions.getY());
+		history.push(scene);
 	}
 
 	/**
@@ -55,6 +66,14 @@ public class FXMLLoaderHelper {
 		stage.initModality(Modality.APPLICATION_MODAL);
 		stage.initOwner(App.stage);
 		stage.showAndWait();
+	}
+
+	/**
+	 * Loads the previous page that the user was on.
+	 */
+	public void goBack() {
+		history.pop();
+		setupScene(history.pop());
 	}
 
 	/**

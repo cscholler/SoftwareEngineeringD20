@@ -115,8 +115,7 @@ public class MapViewerController {
     @FXML
     private void backToMain() {
         try {
-            Parent newRoot = loaderHelper.getFXMLLoader("Home").load();
-            loaderHelper.setupScene(new Scene(newRoot));
+            loaderHelper.goBack();
         } catch (Exception ex) {
             log.error("Encountered Exception.", ex);
         }
