@@ -59,6 +59,9 @@ public class AddPatientController {
         sf.applyAutocomplete(roomNumText, autoCompletePopup);
     }
 
+    /**
+     * goes back to staff view page when back button is clicked
+     */
     @FXML
     private void backClicked() {
         try {
@@ -69,6 +72,9 @@ public class AddPatientController {
         }
     }
 
+    /**
+     * Handles UI portion of submit being clicked giving confirmation when it succeeds
+     */
     @FXML
     private void submitClicked() {
         String patID = IDText.getText();

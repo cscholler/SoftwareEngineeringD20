@@ -17,57 +17,48 @@ public class SendTextDirectionsController {
     List<String> directions;
 
     @FXML
-    private Label sendDirectionsLabel;
-
-    @FXML
-    private Label descLabel;
-
-    @FXML
     private JFXTextField emailField;
-
     @FXML
-    private JFXButton btnCancel;
-
+    private JFXButton btnCancel, btnEmail, btnText;
     @FXML
     private MenuButton carrierSelector;
-
     @FXML
     private JFXTextField phoneNumberField;
-
-    @FXML
-    private JFXButton btnEmail;
-
-    @FXML
-    private JFXButton btnText;
-
-    @Inject
-	IMailerService mailer;
-
     @FXML
     void onSprint(ActionEvent event) {
         carrierSelector.setText("Sprint");
     }
-
     @FXML
     void onTMobile(ActionEvent event) {
         carrierSelector.setText("T-Mobile");
     }
-
     @FXML
     void onATT(ActionEvent event) {
         carrierSelector.setText("AT&T");
     }
+    @FXML
+    void onVerizon(ActionEvent event) { carrierSelector.setText("Verizon");}
+    @Inject
+    IMailerService mailer;
 
+    /**
+     * closes text directions window
+     * @param event tracks when button is clicked
+     */
     @FXML
     void handleButtonCancel(ActionEvent event) {
         Stage stage = (Stage) btnCancel.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * sends either a text or an email
+     * @param event tracks which button is clicked
+     */
 	@FXML
 	void handleSend(ActionEvent event) {
+	    //sends text
 		if (event.getSource() == btnText) {
-			System.out.println("YUH");
 			if (!carrierSelector.getText().equals("Select Carrier for Number")) {
 				String carrier = carrierSelector.getText();
 				String number = phoneNumberField.getText();
@@ -76,6 +67,7 @@ public class SendTextDirectionsController {
 				mailer.setIsText(true);
 				mailer.sendTextToCarrier();
 			}
+		// sends email
 		} else if (event.getSource() == btnEmail) {
 			if (!emailField.getText().equals("")) {
 				String email = emailField.getText();
@@ -85,9 +77,4 @@ public class SendTextDirectionsController {
 			}
 		}
 	}
-
-    @FXML
-    void onVerizon(ActionEvent event) {
-        carrierSelector.setText("Verizon");
-    }
 }

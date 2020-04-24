@@ -155,13 +155,12 @@ public class MapViewerController {
     }
 
     @FXML
-    public void handleText() throws IOException {
-        Stage stage = new Stage();
-        Parent root = loaderHelper.getFXMLLoader("SendDirectionsPage").load();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(btnTextMe.getScene().getWindow());
-        stage.showAndWait();
+    public void handleText(){
+        try {
+            Parent root = loaderHelper.getFXMLLoader("SendDirectionsPage").load();
+            loaderHelper.setupPopup(new Stage(), new Scene(root));
+        } catch (IOException e) {
+            log.error("Encountered IOException", e);
+        }
     }
 }

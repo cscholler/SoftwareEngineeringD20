@@ -53,6 +53,9 @@ public class AddDoctorController {
         sf.applyAutocomplete(officeNumText, autoCompletePopup);
     }
 
+    /**
+     * goes back to admin view page when back button is clicked 
+     */
     @FXML
     public void backClicked() {
         try {

@@ -112,6 +112,9 @@ public class MapEditorController {
         map.recalculatePositions();
 	}
 
+    /**
+     * Creates and allows keyboard shortcuts on the map Editor
+     */
     private void coreShortcuts() {
         // Instantiate key combinations with ancronyms as naming convention (cv --> Ctrl-V)
         KeyCombination cq = new KeyCodeCombination(KeyCode.Q, KeyCombination.CONTROL_DOWN);
@@ -130,9 +133,13 @@ public class MapEditorController {
         open.setAccelerator(co);
     }
 
+    /**
+     * @return a map pane that is used for both map editor and map viewer
+     */
     public MapPane getMap() {
         return map;
     }
+
 
     @FXML
     void quit() {

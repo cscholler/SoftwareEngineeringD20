@@ -16,7 +16,6 @@ public class EmergencyController {
      * Goes back to the Home page when user clicks Cancel
      * @throws IOException
      */
-
     @FXML
     private void cancelClicked() {
         try {

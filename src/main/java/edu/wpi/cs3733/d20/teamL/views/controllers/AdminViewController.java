@@ -22,11 +22,8 @@ public class AdminViewController {
     FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 
     /**
-     * Controls staff view page after they log in
-     *
-     * @throws IOException
+     * goes to notifications page when notifications button is clicked
      */
-
     @FXML
     private void notificationsClicked() {
         try {
@@ -35,9 +32,12 @@ public class AdminViewController {
         } catch (IOException e) {
             log.error("Encountered IOException", e);
         }
-        //opens med request
+
     }
 
+    /**
+     * goes to add doctor page when button is clicked
+     */
     @FXML
     private void addDoctorClicked() {
         try {
@@ -49,6 +49,9 @@ public class AdminViewController {
 
     }
 
+    /**
+     * goes back to home screen when logout is clicked
+     */
     @FXML
     private void logoutClicked() {
         try {
@@ -60,6 +63,9 @@ public class AdminViewController {
 
     }
 
+    /**
+     * goes to map editor when button is clicked
+     */
     @FXML
     private void mapEditorClicked() {
         try {

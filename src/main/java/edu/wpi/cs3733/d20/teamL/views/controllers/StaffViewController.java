@@ -14,49 +14,66 @@ public class StaffViewController {
 
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 
+    /**
+     * goes to notifications page when button is clicked
+     */
     @FXML
     private void notifsClicked(){
         try {
             Parent root = loaderHelper.getFXMLLoader("NotificationsPage").load();
-            loaderHelper.setupPopup(new Stage(), new Scene(root));
+            loaderHelper.setupScene(new Scene(root));
         } catch (IOException e) {
             log.error("Encountered IOException", e);
         }
     }
+
+    /**
+     * goes to medication request page when button is clicked
+     */
     @FXML
     private void medsClicked(){
         try {
             Parent root = loaderHelper.getFXMLLoader("MedicationRequest").load();
-            loaderHelper.setupPopup(new Stage(), new Scene(root));
+            loaderHelper.setupScene(new Scene(root));
         } catch (IOException e) {
             log.error("Encountered IOException", e);
         }
     }
+
+    /**
+     * goes to map viewer when map butno is clicked
+     */
     @FXML
     private void mapClicked(){
         try {
             Parent root = loaderHelper.getFXMLLoader("MapViewer").load();
-            loaderHelper.setupPopup(new Stage(), new Scene(root));
+            loaderHelper.setupScene(new Scene(root));
         } catch (IOException e) {
             log.error("Encountered IOException", e);
         }
     }
 
+    /**
+     * goes back to homepage when logout button is clicked
+     */
     @FXML
     private void logoutClicked(){
         try {
             Parent root = loaderHelper.getFXMLLoader("Home").load();
-            loaderHelper.setupPopup(new Stage(), new Scene(root));
+            loaderHelper.setupScene(new Scene(root));
         } catch (IOException e) {
             log.error("Encountered IOException", e);
         }
     }
 
+    /**
+     * goes to add patient page when button is clicked
+     */
     @FXML
     private void addPatientClicked(){
         try {
             Parent root = loaderHelper.getFXMLLoader("AddPatient").load();
-            loaderHelper.setupPopup(new Stage(), new Scene(root));
+            loaderHelper.setupScene(new Scene(root));
         } catch (IOException e) {
             log.error("Encountered IOException", e);
         }

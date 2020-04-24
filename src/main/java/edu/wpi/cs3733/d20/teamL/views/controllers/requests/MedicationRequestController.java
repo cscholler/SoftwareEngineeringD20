@@ -62,16 +62,27 @@ public class MedicationRequestController implements Initializable {
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
 	}
 
+    /**
+     * shows autocomplete options when searching for a room
+     */
     @FXML
     private void autocomplete() {
         sf.applyAutocomplete(roomNumText, autoCompletePopup);
     }
 
+    /**
+     * handles buttons "cancel" and "submit" when clicked in a medication service request
+     * @param e tracks when button is pressed
+     * @throws IOException
+     */
     @FXML
     public void handleButtonAction(ActionEvent e) throws IOException {
+        //goe back to Staff View
         if (e.getSource() == btnCancel) {
             Parent root = loaderHelper.getFXMLLoader("StaffView").load();
             loaderHelper.setupScene(new Scene(root));
+
+        //sumbits request
         } else if (e.getSource() == btnSubmit){
             String doctorFName = docFNameText.getText();
             String doctorLName = docLNameText.getText();
@@ -81,6 +92,7 @@ public class MedicationRequestController implements Initializable {
             String patientLName = patLNameText.getText();
             String roomNum = roomNumText.getText();
             String additionalInfo = addInfoText.getText();
+
             // Status codes-- 0: pending, 1: approved, 2: denied
             String status = "0";
             String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());

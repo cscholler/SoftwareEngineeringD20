@@ -1,10 +1,7 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers;
 
 import com.jfoenix.controls.JFXAutoCompletePopup;
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import edu.wpi.cs3733.d20.teamL.App;
-import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.navSearch.SearchFields;
 import edu.wpi.cs3733.d20.teamL.services.db.IDBCache;
 
@@ -73,6 +70,9 @@ public class NavigationController implements Initializable {
         });
     }
 
+    /**
+     * goes to map viewer page when a room is searched in the search bar
+     */
     @FXML
     private void searchMap() {
         try {
@@ -86,7 +86,9 @@ public class NavigationController implements Initializable {
         }
     }
 
-
+    /**
+     * login pops up when login button is clicked
+     */
     @FXML
     private void loginBtnClicked() {
         try {
@@ -97,6 +99,9 @@ public class NavigationController implements Initializable {
         }
     }
 
+    /**
+     * goes to map viewer when map button is clicked
+     */
     @FXML
     private void mapBtnClicked() {
         try {
@@ -107,6 +112,9 @@ public class NavigationController implements Initializable {
         }
     }
 
+    /**
+     * goes to emergency page when button is clicked
+     */
     @FXML
     private void helpBtnClicked() {
         try {
@@ -117,6 +125,9 @@ public class NavigationController implements Initializable {
         }
     }
 
+    /**
+     * goes to a service page when services button is clicked
+     */
     @FXML
     private void servicesBtnClicked() {
         /*try {
