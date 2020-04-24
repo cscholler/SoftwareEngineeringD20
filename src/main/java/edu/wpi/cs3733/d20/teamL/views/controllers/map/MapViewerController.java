@@ -115,17 +115,18 @@ public class MapViewerController {
     @FXML
     private void backToMain() {
         try {
-            Stage stage = (Stage) startingPoint.getScene().getWindow();
-            Parent newRoot = loaderHelper.getFXMLLoader("Home").load();
-            Scene newScene = new Scene(newRoot);
-            stage.setScene(newScene);
-            stage.hide();
-            stage.setMaximized(true);
-            stage.show();
-
-            stage.setWidth(App.SCREEN_WIDTH);
-            stage.setHeight(App.SCREEN_HEIGHT);
-
+//            Stage stage = (Stage) startingPoint.getScene().getWindow();
+//            Parent newRoot = loaderHelper.getFXMLLoader("Home").load();
+//            Scene newScene = new Scene(newRoot);
+//            stage.setScene(newScene);
+//            stage.hide();
+//            stage.setMaximized(true);
+//            stage.show();
+//
+//            stage.setWidth(App.SCREEN_WIDTH);
+//            stage.setHeight(App.SCREEN_HEIGHT);
+            Parent newRoot = loaderHelper.getFXMLLoader("AdminView").load();
+            loaderHelper.setupScene(new Scene(newRoot));
         } catch (Exception ex) {
             log.error("Encountered Exception.", ex);
         }

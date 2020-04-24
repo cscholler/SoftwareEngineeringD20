@@ -19,16 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AdminViewController {
 
-    private JFXButton btnLogout;
-    private JFXButton btnNotif;
-    private JFXButton btnAddDoctor;
-    private JFXButton btnFindOpen;
-    private JFXButton btnMR;
-    private JFXButton btnChangeR;
-    private JFXButton btnMap;
-    private JFXButton btnAddPatient;
-    private Label lblName;
-
     FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 
     /**

@@ -36,8 +36,6 @@ public class NavigationController implements Initializable {
     @FXML
     private ImageView iHome;
     @FXML
-    private JFXButton btnMap;
-    @FXML
     private JFXTextField searchBox;
     @FXML
     private Label timeLabel;
@@ -78,21 +76,11 @@ public class NavigationController implements Initializable {
     @FXML
     private void searchMap() {
         try {
-            Stage stage = (Stage) btnMap.getScene().getWindow();
             FXMLLoader loader = loaderHelper.getFXMLLoader("MapViewer");
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-
-            stage.setScene(scene);
-            stage.setMaximized(true);
-            stage.show();
+            loaderHelper.setupScene(new Scene(loader.load()));
             MapViewerController controller = loader.getController();
-            controller.getMap().recalculatePositions();
             controller.setDestination(searchBox.getText());
             controller.navigate();
-
-            stage.setWidth(App.SCREEN_WIDTH);
-            stage.setHeight(App.SCREEN_HEIGHT);
         } catch (IOException e) {
             e.printStackTrace();
         }
