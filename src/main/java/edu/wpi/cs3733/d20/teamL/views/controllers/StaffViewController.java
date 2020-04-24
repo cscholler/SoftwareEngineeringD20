@@ -57,7 +57,12 @@ public class StaffViewController {
      */
     @FXML
     private void logoutClicked(){
-        loaderHelper.goBack();
+        try {
+            Parent root = loaderHelper.getFXMLLoader("Home").load();
+            loaderHelper.setupScene(new Scene(root));
+        } catch (IOException e) {
+            log.error("Encountered IOException", e);
+        }
     }
 
     /**

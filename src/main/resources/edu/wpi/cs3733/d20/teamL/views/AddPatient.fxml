@@ -8,20 +8,21 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.AddPatientController">
     <top>
-        <Label contentDisplay="CENTER" prefHeight="73.0" prefWidth="299.0" text="Add Patient" textFill="#0d2e57" BorderPane.alignment="CENTER">
+        <Label contentDisplay="CENTER" prefHeight="115.0" prefWidth="299.0" text="Add Patient" textFill="#0d2e57" BorderPane.alignment="CENTER">
             <font>
                 <Font name="System Bold" size="50.0" />
             </font>
         </Label>
     </top>
     <bottom>
-        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0" BorderPane.alignment="CENTER">
+        <HBox alignment="CENTER" prefHeight="142.0" prefWidth="1080.0" spacing="100.0" BorderPane.alignment="CENTER">
             <children>
                 <JFXButton fx:id="btnCancel" buttonType="RAISED" maxWidth="200.0" onAction="#backClicked" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #dfdfdc;" text="Back" textAlignment="CENTER">
                     <font>
@@ -66,13 +67,13 @@
                     <children>
                         <Label text="Patient ID">
                             <font>
-                                <Font size="24.0" />
+                                <Font size="18.0" />
                             </font>
                             <VBox.margin>
                                 <Insets left="30.0" />
                             </VBox.margin>
                         </Label>
-                        <JFXTextField fx:id="IDText" prefHeight="50.0" prefWidth="300.0" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
+                        <JFXTextField fx:id="IDText" prefHeight="40.0" prefWidth="300.0" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
                             <VBox.margin>
                                 <Insets left="30.0" right="30.0" />
                             </VBox.margin>
@@ -83,13 +84,13 @@
                     <children>
                         <Label text="Doctor ID">
                             <font>
-                                <Font size="24.0" />
+                                <Font size="18.0" />
                             </font>
                             <VBox.margin>
                                 <Insets left="30.0" right="30.0" />
                             </VBox.margin>
                         </Label>
-                        <JFXTextField fx:id="doctorIDText" prefHeight="50.0" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
+                        <JFXTextField fx:id="doctorIDText" prefHeight="40.0" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
                             <VBox.margin>
                                 <Insets left="30.0" right="30.0" />
                             </VBox.margin>
@@ -100,13 +101,13 @@
                     <children>
                         <Label text="Patient Last Name ">
                             <font>
-                                <Font size="24.0" />
+                                <Font size="18.0" />
                             </font>
                             <VBox.margin>
                                 <Insets left="30.0" />
                             </VBox.margin>
                         </Label>
-                        <JFXTextField fx:id="lNameText" prefHeight="50.0" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
+                        <JFXTextField fx:id="lNameText" prefHeight="40.0" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
                             <VBox.margin>
                                 <Insets left="30.0" right="30.0" />
                             </VBox.margin>
@@ -117,13 +118,13 @@
                     <children>
                         <Label text="Room Number">
                             <font>
-                                <Font size="24.0" />
+                                <Font size="18.0" />
                             </font>
                             <VBox.margin>
                                 <Insets left="30.0" right="30.0" />
                             </VBox.margin>
                         </Label>
-                        <JFXTextField fx:id="roomNumText" onKeyTyped="#autocomplete" prefHeight="50.0" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
+                        <JFXTextField fx:id="roomNumText" onKeyTyped="#autocomplete" prefHeight="40.0" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
                             <VBox.margin>
                                 <Insets left="30.0" right="30.0" />
                             </VBox.margin>
@@ -134,7 +135,7 @@
                     <children>
                         <Label text="Additional Information">
                             <font>
-                                <Font size="24.0" />
+                                <Font size="18.0" />
                             </font>
                             <VBox.margin>
                                 <Insets left="30.0" />
@@ -154,13 +155,13 @@
                     <children>
                         <Label alignment="CENTER" text="Patient First Name">
                             <font>
-                                <Font size="24.0" />
+                                <Font size="18.0" />
                             </font>
                             <VBox.margin>
                                 <Insets left="30.0" />
                             </VBox.margin>
                         </Label>
-                        <JFXTextField fx:id="fNameText" prefHeight="50.0" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
+                        <JFXTextField fx:id="fNameText" prefHeight="40.0" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
                             <VBox.margin>
                                 <Insets left="30.0" right="30.0" />
                             </VBox.margin>
@@ -170,4 +171,10 @@
             </children>
         </GridPane>
     </center>
+   <left>
+      <Pane prefHeight="547.0" prefWidth="114.0" BorderPane.alignment="CENTER" />
+   </left>
+   <right>
+      <Pane prefHeight="547.0" prefWidth="113.0" BorderPane.alignment="CENTER" />
+   </right>
 </BorderPane>

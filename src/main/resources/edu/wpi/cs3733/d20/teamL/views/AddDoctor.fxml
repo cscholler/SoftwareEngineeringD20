@@ -4,33 +4,34 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.AddDoctorController">
     <top>
-        <Label contentDisplay="CENTER" prefHeight="73.0" prefWidth="299.0" text="Add Doctor" textFill="#0d2e57" BorderPane.alignment="CENTER">
+        <Label contentDisplay="CENTER" prefHeight="111.0" prefWidth="437.0" text="Add a New Doctor" textFill="#0d2e57" BorderPane.alignment="CENTER">
             <font>
                 <Font name="System Bold" size="50.0" />
             </font>
         </Label>
     </top>
     <bottom>
-        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0" BorderPane.alignment="CENTER">
+        <HBox alignment="CENTER" prefHeight="136.0" prefWidth="1080.0" spacing="100.0" BorderPane.alignment="CENTER">
             <children>
-                <JFXButton fx:id="btnCancel" buttonType="RAISED" maxWidth="200.0" onAction="#backClicked" prefHeight="75.0" prefWidth="200.0" style="-fx-background-color: #dfdfdc;" text="Back" textAlignment="CENTER">
+                <JFXButton fx:id="btnCancel" buttonType="RAISED" maxWidth="200.0" onAction="#backClicked" prefHeight="22.0" prefWidth="200.0" style="-fx-background-color: #dfdfdc;" text="Back" textAlignment="CENTER">
                     <font>
-                        <Font size="40.0" />
+                        <Font size="24.0" />
                     </font>
                 </JFXButton>
-                <JFXButton fx:id="btnSubmit" buttonType="RAISED" maxWidth="200.0" onAction="#submitClicked" prefHeight="75.0" prefWidth="200.0" style="-fx-background-color: #0d2e57;" text="Submit" textAlignment="CENTER" textFill="WHITE">
+                <JFXButton fx:id="btnSubmit" buttonType="RAISED" maxWidth="200.0" onAction="#submitClicked" prefHeight="55.0" prefWidth="200.0" style="-fx-background-color: #0d2e57;" text="Submit" textAlignment="CENTER" textFill="WHITE">
                     <font>
-                        <Font size="40.0" />
+                        <Font size="24.0" />
                     </font>
                 </JFXButton>
                 <Label fx:id="confirmation" text="Doctor Added" visible="false">
@@ -48,100 +49,126 @@
         </HBox>
     </bottom>
     <center>
-        <GridPane BorderPane.alignment="CENTER">
+        <GridPane prefHeight="476.0" prefWidth="857.0" BorderPane.alignment="CENTER">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="248.3999786376953" minHeight="10.0" prefHeight="162.0000213623047" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="315.99998779296874" minHeight="10.0" prefHeight="145.4" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="381.59995727539064" minHeight="10.0" prefHeight="177.8" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" GridPane.rowIndex="2">
-                    <items>
+            <VBox GridPane.rowIndex="2">
+               <children>
                         <Label text="Email">
                             <font>
-                                <Font size="24.0" />
+                                <Font size="18.0" />
                             </font>
                         </Label>
-                        <JFXTextField fx:id="emailText" prefHeight="50.0" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;" />
-                    </items>
-                    <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                    </padding>
-                </SplitPane>
-                <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" GridPane.columnIndex="1">
-                    <items>
+                        <JFXTextField fx:id="emailText" prefHeight="40.0" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </JFXTextField>
+               </children>
+               <padding>
+                  <Insets left="30.0" right="30.0" />
+               </padding>
+            </VBox>
+            <VBox GridPane.columnIndex="1">
+               <children>
                         <Label text="Doctor ID">
                             <font>
-                                <Font size="24.0" />
+                                <Font size="18.0" />
                             </font>
                         </Label>
-                        <JFXTextField fx:id="doctorIDText" prefHeight="50.0" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;" />
-                    </items>
-                    <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                    </padding>
-                </SplitPane>
-                <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" GridPane.rowIndex="1">
-                    <items>
+                        <JFXTextField fx:id="doctorIDText" prefHeight="40.0" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </JFXTextField>
+               </children>
+               <padding>
+                  <Insets left="30.0" right="30.0" />
+               </padding>
+            </VBox>
+            <VBox GridPane.rowIndex="1">
+               <children>
                         <Label text="Doctor Last Name ">
                             <font>
-                                <Font size="24.0" />
+                                <Font size="18.0" />
                             </font>
                         </Label>
-                        <JFXTextField fx:id="lNameText" prefHeight="50.0" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;" />
-                    </items>
-                    <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                    </padding>
-                </SplitPane>
-                <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                    <items>
+                        <JFXTextField fx:id="lNameText" prefHeight="40.0" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </JFXTextField>
+               </children>
+               <padding>
+                  <Insets left="30.0" right="30.0" />
+               </padding>
+            </VBox>
+            <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
                         <Label text="Office Number">
                             <font>
-                                <Font size="24.0" />
+                                <Font size="18.0" />
                             </font>
                         </Label>
-                        <JFXTextField fx:id="officeNumText" onKeyTyped="#autocomplete" prefHeight="50.0" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;" />
-                    </items>
-                    <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                    </padding>
-                </SplitPane>
-                <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                    <items>
+                        <JFXTextField fx:id="officeNumText" onKeyTyped="#autocomplete" prefHeight="40.0" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </JFXTextField>
+               </children>
+               <padding>
+                  <Insets left="30.0" right="30.0" />
+               </padding>
+            </VBox>
+            <VBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
                         <Label text="Additional Information">
                             <font>
-                                <Font size="24.0" />
+                                <Font size="18.0" />
                             </font>
                         </Label>
-                        <JFXTextField fx:id="addInfoText" prefHeight="50.0" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
+                        <JFXTextField fx:id="addInfoText" alignment="TOP_LEFT" prefHeight="139.0" prefWidth="368.0" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
                             <padding>
                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                             </padding>
                         </JFXTextField>
-                    </items>
-                    <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                    </padding>
-                </SplitPane>
-                <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
-                    <items>
+               </children>
+               <padding>
+                  <Insets left="30.0" right="30.0" />
+               </padding>
+            </VBox>
+            <VBox>
+               <children>
                         <Label text="Doctor First Name">
                             <font>
-                                <Font size="24.0" />
+                                <Font size="18.0" />
                             </font>
                         </Label>
-                        <JFXTextField fx:id="fNameText" prefHeight="50.0" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;" />
-                    </items>
-                    <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                    </padding>
-                </SplitPane>
+                        <JFXTextField fx:id="fNameText" prefHeight="40.0" prefWidth="480.0" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </JFXTextField>
+               </children>
+               <padding>
+                  <Insets left="30.0" right="30.0" />
+               </padding>
+            </VBox>
             </children>
         </GridPane>
     </center>
+   <left>
+      <Pane prefHeight="547.0" prefWidth="121.0" BorderPane.alignment="CENTER" />
+   </left>
+   <right>
+      <Pane prefHeight="547.0" prefWidth="102.0" BorderPane.alignment="CENTER" />
+   </right>
 </BorderPane>
