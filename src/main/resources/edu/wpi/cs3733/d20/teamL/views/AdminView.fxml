@@ -125,9 +125,9 @@
                         <Image url="@../assets/Maintenance-icon.png" />
                     </image>
                 </ImageView>
-                <JFXButton fx:id="btnNotif" onAction="#handleCircleButton" opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.halignment="RIGHT" />
-                <JFXButton fx:id="btnAddDoctor" onAction="#handleCircleButton" opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                <JFXButton fx:id="btnMap" onAction="#handleCircleButton" opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                <JFXButton fx:id="btnNotif" onAction="#notificationsClicked" opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.halignment="RIGHT" />
+                <JFXButton fx:id="btnAddDoctor" onAction="#addDoctorClicked" opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                <JFXButton fx:id="btnMap" onAction="#mapEditorClicked" opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
                 <JFXButton opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.columnIndex="2" />
                 <JFXButton opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                 <JFXButton opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.columnIndex="2" GridPane.rowIndex="2" />
@@ -169,7 +169,7 @@
                 </HBox>
                 <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                     <children>
-                        <JFXButton fx:id="btnLogout" onAction="#handleCircleButton" text="LOG OUT" textFill="WHITE">
+                        <JFXButton fx:id="btnLogout" onAction="#logoutClicked" text="LOG OUT" textFill="WHITE">
                             <font>
                                 <Font size="24.0" />
                             </font>
