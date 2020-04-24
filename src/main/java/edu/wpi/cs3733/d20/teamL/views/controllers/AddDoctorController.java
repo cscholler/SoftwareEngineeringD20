@@ -10,28 +10,26 @@ import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.navSearch.SearchFields;
 import javafx.animation.FadeTransition;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import javafx.util.Duration;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
-
+@Slf4j
 public class AddDoctorController {
 	private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 	@FXML
     private Label confirmation;
-    @FXML
-    private JFXButton btnCancel, btnSubmit;
+    //private JFXButton btnCancel, btnSubmit used to submit and go back to admin page
     @FXML
     JFXTextField fNameText, lNameText, emailText, doctorIDText, officeNumText, addInfoText;
     @Inject
@@ -60,19 +58,19 @@ public class AddDoctorController {
     }
 
     @FXML
-    public void handleButtonAction(ActionEvent e) throws IOException {
-        Stage stage;
-        Parent root;
+    public void backClicked() {
+        try {
+            Parent root = loaderHelper.getFXMLLoader("AdminView").load();
+            loaderHelper.setupScene(new Scene(root));
+        } catch (IOException e) {
+            log.error("Encountered IOException", e);
+        }
+    }
 
-        if (e.getSource() == btnCancel){
-            stage = (Stage) btnCancel.getScene().getWindow();
-            root = loaderHelper.getFXMLLoader("AdminView").load();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setMaximized(true);
-            stage.show();
-
-        } else if (e.getSource() == btnSubmit){
+    /**
+     * Handles UI portion of submit being clicked giving confirmation when it succeeds
+     */
+    public void submitClicked(){
 			String docID = doctorIDText.getText();
             String fName = fNameText.getText();
             String lName = lNameText.getText();
@@ -96,17 +94,9 @@ public class AddDoctorController {
                 addInfoText.setText("");
             }
 
-			confirmation.setVisible(true);
-
-            FadeTransition fadeTransition = new FadeTransition(Duration.millis(2000), confirmation);
-            fadeTransition.setDelay(Duration.millis(2000));
-            fadeTransition.setFromValue(1.0);
-            fadeTransition.setToValue(0.0);
-            fadeTransition.setCycleCount(1);
-
-            fadeTransition.play();
+			loaderHelper.showAndFade(confirmation);//Shows given label and then fades
         }
     }
-}
+
 
 
