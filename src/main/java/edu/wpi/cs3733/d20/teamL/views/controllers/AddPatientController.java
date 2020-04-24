@@ -10,23 +10,21 @@ import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.navSearch.SearchFields;
-import javafx.animation.FadeTransition;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
-import javafx.util.Duration;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
 
+@Slf4j
 public class AddPatientController {
 	private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
     @FXML
@@ -62,56 +60,45 @@ public class AddPatientController {
     }
 
     @FXML
-    public void handleButtonAction(ActionEvent e) throws IOException {
-        Stage stage;
-        Parent root;
-
-        if (e.getSource() == btnCancel){
-            stage = (Stage) btnCancel.getScene().getWindow();
-            root = loaderHelper.getFXMLLoader("StaffView").load();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.hide();
-            stage.setMaximized(true);
-            stage.show();
-            stage.setWidth(App.SCREEN_WIDTH);
-            stage.setHeight(App.SCREEN_HEIGHT);
-
-        } else if (e.getSource() == btnSubmit){
-			String patID = IDText.getText();
-            String fName = fNameText.getText();
-            String lName = lNameText.getText();
-            String docID = doctorIDText.getText();
-            String roomNum = roomNumText.getText();
-            //String additionalInfo = addInfoText.getText();
-
-			if (db.executeUpdate(DBConstants.addPatient, new ArrayList<>(Arrays.asList(patID, fName, lName, docID, roomNum))) == 0) {
-			    lblsubmitted.setText("Submission failed!");
-			    lblsubmitted.setTextFill(Color.RED);
-
-            }
-			else {
-
-                //show the submitted label and clear the fields
-                lblsubmitted.setText("Patient Submitted!");
-                lblsubmitted.setTextFill(Color.BLACK);
-                IDText.setText("");
-                fNameText.setText("");
-                lNameText.setText("");
-                doctorIDText.setText("");
-                roomNumText.setText("");
-            }
-
-            lblsubmitted.setVisible(true);
-
-			//fade the label out
-            FadeTransition fadeTransition = new FadeTransition(Duration.millis(2000), lblsubmitted);
-            fadeTransition.setDelay(Duration.millis(2000));
-            fadeTransition.setFromValue(1.0);
-            fadeTransition.setToValue(0.0);
-            fadeTransition.setCycleCount(1);
-            fadeTransition.play();
+    private void backClicked() {
+        try {
+            Parent root = loaderHelper.getFXMLLoader("StaffView").load();
+            loaderHelper.setupScene(new Scene(root));
+        } catch (IOException e) {
+            log.error("Encountered IOException", e);
         }
+    }
+
+    @FXML
+    private void submitClicked() {
+        String patID = IDText.getText();
+        String fName = fNameText.getText();
+        String lName = lNameText.getText();
+        String docID = doctorIDText.getText();
+        String roomNum = roomNumText.getText();
+        //String additionalInfo = addInfoText.getText();
+
+        if (db.executeUpdate(DBConstants.addPatient, new ArrayList<>(Arrays.asList(patID, fName, lName, docID, roomNum))) == 0) {
+            lblsubmitted.setText("Submission failed!");
+            lblsubmitted.setTextFill(Color.RED);
+
+        } else {
+
+            //show the submitted label and clear the fields
+            lblsubmitted.setText("Patient Submitted!");
+            lblsubmitted.setTextFill(Color.BLACK);
+            IDText.setText("");
+            fNameText.setText("");
+            lNameText.setText("");
+            doctorIDText.setText("");
+            roomNumText.setText("");
+        }
+
+        lblsubmitted.setVisible(true);
+
+        //fade the label out
+        loaderHelper.showAndFade(lblsubmitted);
+
     }
 }
 
