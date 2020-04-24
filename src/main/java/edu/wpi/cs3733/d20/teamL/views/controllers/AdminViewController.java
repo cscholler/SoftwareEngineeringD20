@@ -14,82 +14,60 @@ import javafx.stage.Stage;
 import com.jfoenix.controls.JFXButton;
 
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class AdminViewController {
-
-    @FXML
-    private JFXButton btnLogout;
-    @FXML
-    private JFXButton btnNotif;
-    @FXML
-    private JFXButton btnAddDoctor;
-    @FXML
-    private JFXButton btnFindOpen;
-    @FXML
-    private JFXButton btnMR;
-    @FXML
-    private JFXButton btnChangeR;
-    @FXML
-    private JFXButton btnMap;
-    @FXML
-    private JFXButton btnAddPatient;
-    @FXML
-    private Label lblName;
 
     FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 
     /**
      * Controls staff view page after they log in
      *
-     * @param event tracks which button was pressed
      * @throws IOException
      */
+
     @FXML
-    public void handleCircleButton(ActionEvent event) throws IOException {
-        Stage stage;
-        Parent root;
-
-        //open notifications
-        if (event.getSource() == btnNotif) {
-            stage = (Stage) btnNotif.getScene().getWindow();
-            root = loaderHelper.getFXMLLoader("NotificationsPage").load();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setMaximized(true);
-            stage.show();
-            //opens med request
-        } else if (event.getSource() == btnAddDoctor) {
-            stage = (Stage) btnAddDoctor.getScene().getWindow();
-            root = loaderHelper.getFXMLLoader("AddDoctor").load();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setMaximized(true);
-            stage.show();
-            //opens mapView
-        } else if (event.getSource() == btnMap) {
-            stage = (Stage) btnMap.getScene().getWindow();
-            FXMLLoader fxmlLoader = loaderHelper.getFXMLLoader("MapEditor");
-            root = fxmlLoader.load();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setMaximized(true);
-            stage.show();
-
-            MapEditorController controller = fxmlLoader.getController();
-        } else if (event.getSource() == btnLogout) {
-            stage = (Stage) btnLogout.getScene().getWindow();
-			root = loaderHelper.getFXMLLoader("Home").load();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setMaximized(true);
-            stage.show();
-        } else if (event.getSource() == btnAddPatient) {
-            stage = (Stage) btnAddPatient.getScene().getWindow();
-			root = loaderHelper.getFXMLLoader("AddPatient").load();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setMaximized(true);
-            stage.show();
+    private void notificationsClicked() {
+        try {
+            Parent root = loaderHelper.getFXMLLoader("NotificationsPage").load();
+            loaderHelper.setupScene(new Scene(root));
+        } catch (IOException e) {
+            log.error("Encountered IOException", e);
         }
+        //opens med request
+    }
+
+    @FXML
+    private void addDoctorClicked() {
+        try {
+            Parent root = loaderHelper.getFXMLLoader("AddDoctor").load();
+            loaderHelper.setupScene(new Scene(root));
+        } catch (IOException e) {
+            log.error("Encountered IOException", e);
+        }
+
+    }
+
+    @FXML
+    private void logoutClicked() {
+        try {
+            Parent root = loaderHelper.getFXMLLoader("Home").load();
+            loaderHelper.setupScene(new Scene(root));
+        } catch (IOException e) {
+            log.error("Encountered IOException", e);
+        }
+
+    }
+
+    @FXML
+    private void mapEditorClicked() {
+        try {
+            Parent root = loaderHelper.getFXMLLoader("MapEditor").load();
+            loaderHelper.setupScene(new Scene(root));
+        } catch (IOException e) {
+            log.error("Encountered IOException", e);
+        }
+
     }
 }

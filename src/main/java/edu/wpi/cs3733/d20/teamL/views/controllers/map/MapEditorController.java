@@ -22,6 +22,7 @@ import javafx.scene.layout.BorderPane;
 
 import javafx.geometry.Point2D;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -29,7 +30,7 @@ import java.util.Iterator;
 import javax.inject.Inject;
 
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
+
 
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import lombok.extern.slf4j.Slf4j;
@@ -218,11 +219,8 @@ public class MapEditorController {
     @FXML
     private void backToMain() {
         try {
-            Stage stage = (Stage) pathFind.getScene().getWindow();
 			Parent newRoot = loaderHelper.getFXMLLoader("AdminView").load();
-            Scene newScene = new Scene(newRoot);
-            stage.setScene(newScene);
-            stage.show();
+            loaderHelper.setupScene(new Scene(root));
         } catch (Exception ex) {
             log.error("Encountered Exception.", ex);
         }

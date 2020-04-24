@@ -9,18 +9,15 @@ import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.navSearch.SearchFields;
-import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
-import javafx.util.Duration;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
@@ -29,7 +26,6 @@ public class AddDoctorController {
 	private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 	@FXML
     private Label confirmation;
-    //private JFXButton btnCancel, btnSubmit used to submit and go back to admin page
     @FXML
     JFXTextField fNameText, lNameText, emailText, doctorIDText, officeNumText, addInfoText;
     @Inject
@@ -76,7 +72,7 @@ public class AddDoctorController {
             String lName = lNameText.getText();
             String email = emailText.getText();
             String roomNum = officeNumText.getText();
-            //String additionalInfo = addInfoText.getText();
+            //String additionalInfo = addInfoText.getText(); We should add this to the database
 			int rows = db.executeUpdate(DBConstants.addDoctor, new ArrayList<>(Arrays.asList(docID, fName, lName, email, roomNum)));
 
 			if (rows == 0) {
