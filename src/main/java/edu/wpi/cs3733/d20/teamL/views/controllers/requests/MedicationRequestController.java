@@ -53,12 +53,6 @@ public class MedicationRequestController implements Initializable {
 
 	@FXML
 	public void initialize(URL location, ResourceBundle resources) {
-		// Print test data before request is made
-		/*formatter.reportQueryResults(db.executeQuery(DBConstants.selectAllDoctors));
-		System.out.print("\n");
-		formatter.reportQueryResults(db.executeQuery(DBConstants.selectAllPatients));
-		formatter.reportQueryResults(db.executeQuery(DBConstants.selectAllMedicationRequests));*/
-
         dbCache.cacheAllFromDB();
 
         sf = new SearchFields(dbCache.getNodeCache());
@@ -75,21 +69,9 @@ public class MedicationRequestController implements Initializable {
 
     @FXML
     public void handleButtonAction(ActionEvent e) throws IOException {
-        Stage stage = null;
-        Parent root;
-
-        if (e.getSource() == btnCancel){
-            stage = (Stage) btnCancel.getScene().getWindow();
-            //stage = new Stage();
-            root = loaderHelper.getFXMLLoader("StaffView").load();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.hide();
-            stage.setMaximized(true);
-            stage.show();
-            stage.setWidth(App.SCREEN_WIDTH);
-            stage.setHeight(App.SCREEN_HEIGHT);
-
+        if (e.getSource() == btnCancel) {
+            Parent root = loaderHelper.getFXMLLoader("StaffView").load();
+            loaderHelper.setupScene(new Scene(root));
         } else if (e.getSource() == btnSubmit){
             String doctorFName = docFNameText.getText();
             String doctorLName = docLNameText.getText();
@@ -128,15 +110,7 @@ public class MedicationRequestController implements Initializable {
                 addInfoText.setText("");
             }
 
-            confirmation.setVisible(true);
-
-            FadeTransition fadeTransition = new FadeTransition(Duration.millis(2000), confirmation);
-            fadeTransition.setDelay(Duration.millis(2000));
-            fadeTransition.setFromValue(1.0);
-            fadeTransition.setToValue(0.0);
-            fadeTransition.setCycleCount(1);
-
-            fadeTransition.play();
+            loaderHelper.showAndFade(confirmation);
         }
     }
 

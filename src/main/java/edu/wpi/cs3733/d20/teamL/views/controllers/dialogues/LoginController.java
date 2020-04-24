@@ -103,6 +103,8 @@ public class LoginController {
                 stage.close();
                 stage = (Stage) stage.getOwner();
 
+                System.out.println("Logging in to Nurse...");
+
 				root = loaderHelper.getFXMLLoader("StaffView").load();
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
