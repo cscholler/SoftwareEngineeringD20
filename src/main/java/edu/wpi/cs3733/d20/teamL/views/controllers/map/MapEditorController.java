@@ -205,12 +205,12 @@ public class MapEditorController {
     @FXML
     void openFromDB() {
         cache.cacheAllFromDB();
-        map.setGraph(MapParser.getGraphFromCache(cache.getNodeCache()));
+        map.setGraph(MapParser.getGraphFromCache());
     }
 
     @FXML
     private void insertNode() {
-        Node node = new Node("1", new Point2D(100,100)); //TODO CHANGE TO UNIQUE ID
+        Node node = new Node(map.getGraph().getUniqueNodeID(), new Point2D(100,100), map.getCurrentFloor(), map.getCurrentBuilding()); //TODO CHANGE TO UNIQUE ID
         map.addNode(node);
     }
 

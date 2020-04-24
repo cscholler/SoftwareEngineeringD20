@@ -65,6 +65,8 @@ public class MapPane extends StackPane {
     private Color nodeColor = Color.DARKBLUE;
     private Paint highLightColor = Color.rgb(20, 194, 247);
     private double highlightThickness = 2;
+    private int currentFloor = 1;
+    private String currentBuilding;
 
     private ArrayList<Node> editedNodes = new ArrayList<>();
 
@@ -117,7 +119,7 @@ public class MapPane extends StackPane {
                 if (addingEdge && !onSelectable && !erasing) {
                     if (event.getButton().equals(MouseButton.PRIMARY)) {
 
-                        Node dest = new Node(graph.getUniqueNodeID(), new Point2D(event.getX(), event.getY()).multiply(1 / zoomLevel));
+                        Node dest = new Node(graph.getUniqueNodeID(), new Point2D(event.getX(), event.getY()).multiply(1 / zoomLevel), currentFloor, currentBuilding);
 
                         addNode(dest);
 
@@ -257,9 +259,10 @@ public class MapPane extends StackPane {
         }
         
         ArrayList<Node> nodeList = new ArrayList<>(nodes.keySet());
-        int floor = nodeList.get(0).getFloor();
+        currentFloor = nodeList.get(0).getFloor();
+        currentBuilding = nodeList.get(0).getBuilding();
 
-        switch (floor) {
+        switch (currentFloor) {
             case 1:
                 mapImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/Floor1LM.png"));
                 break;
@@ -472,7 +475,7 @@ public class MapPane extends StackPane {
             graph.addNode(node);
 
         nodes.put(node, nodeGUI);
-        node.data.put("GUI", nodeGUI);
+        node.getData().put("GUI", nodeGUI);
 
         body.getChildren().add(nodeGUI);
 
@@ -518,7 +521,7 @@ public class MapPane extends StackPane {
         edgeGUI.endYProperty().bind(getNodeGUI(edge.getDestination()).getYProperty());
 
         edges.put(edge, edgeGUI);
-        edge.data.put("GUI", edgeGUI);
+        edge.getData().put("GUI", edgeGUI);
 
         body.getChildren().addAll(0, edgeGUI.getAllNodes());
 
@@ -575,4 +578,11 @@ public class MapPane extends StackPane {
         return selectedNodeGUI;
     }
 
+    public int getCurrentFloor() {
+        return currentFloor;
+    }
+
+    public String getCurrentBuilding() {
+        return currentBuilding;
+    }
 }
