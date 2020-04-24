@@ -88,14 +88,8 @@ public class LoginController {
 
                 //stage.close();
                 root = loaderHelper.getFXMLLoader("StaffView").load();
-                Scene scene = new Scene(root);
-                stage.setScene(scene);
-                stage.hide();
-                stage.setMaximized(true);
-                stage.show();
+                loaderHelper.setupScene(new Scene(root));
 
-                stage.setWidth(App.SCREEN_WIDTH);
-                stage.setHeight(App.SCREEN_HEIGHT);
             } else if (user.equals("Nurse") && password.equals("Nurse")) {
                 status = "Nurse";
                 stage = (Stage) login.getScene().getWindow();
@@ -103,17 +97,10 @@ public class LoginController {
                 stage.close();
                 stage = (Stage) stage.getOwner();
 
-                System.out.println("Logging in to Nurse...");
+                root = loaderHelper.getFXMLLoader("StaffView").load();
+                loaderHelper.setupScene(new Scene(root));
 
-				root = loaderHelper.getFXMLLoader("StaffView").load();
-                Scene scene = new Scene(root);
-                stage.setScene(scene);
-                stage.hide();
-                stage.setMaximized(true);
-                stage.show();
 
-                stage.setWidth(App.SCREEN_WIDTH);
-                stage.setHeight(App.SCREEN_HEIGHT);
             } else if (user.equals("Admin") && password.equals("Admin")) {
                 status = "Admin";
                 stage = (Stage) login.getScene().getWindow();
@@ -121,14 +108,8 @@ public class LoginController {
                 stage.close();
                 stage = (Stage) stage.getOwner();
 
-				root = loaderHelper.getFXMLLoader("AdminView").load();
-                Scene scene = new Scene(root);
-                stage.setScene(scene);
-                stage.setMaximized(true);
-                stage.show();
-
-                stage.setWidth(App.SCREEN_WIDTH);
-                stage.setHeight(App.SCREEN_HEIGHT);
+                root = loaderHelper.getFXMLLoader("AdminView").load();
+                loaderHelper.setupScene(new Scene(root));
             } else {
                 incorrectText.setVisible(true);
                 fadeTransition.play();

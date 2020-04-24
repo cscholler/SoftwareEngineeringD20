@@ -134,14 +134,14 @@
                         <Insets right="20.0"/>
                     </GridPane.margin>
                 </ImageView>
-                <JFXButton fx:id="btnMeds" onAction="#handleCircleButton" opacity="0.0" prefHeight="130.0"
+                <JFXButton fx:id="btnMeds" onAction="#medsClicked" opacity="0.0" prefHeight="130.0"
                            prefWidth="135.0" text=" " GridPane.columnIndex="1" GridPane.halignment="CENTER"/>
-                <JFXButton fx:id="btnMap" onAction="#handleCircleButton" opacity="0.0" prefHeight="130.0"
+                <JFXButton fx:id="btnMap" onAction="#mapClicked" opacity="0.0" prefHeight="130.0"
                            prefWidth="135.0" text=" " GridPane.halignment="RIGHT" GridPane.rowIndex="2"/>
                 <JFXButton opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.columnIndex="2"/>
                 <JFXButton opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.columnIndex="2"
                            GridPane.rowIndex="2"/>
-                <JFXButton fx:id="btnAddPatient" onAction="#handleCircleButton" opacity="0.0" prefHeight="130.0"
+                <JFXButton fx:id="btnAddPatient" onAction="#addPatientClicked" opacity="0.0" prefHeight="130.0"
                            prefWidth="135.0" text=" " GridPane.halignment="RIGHT"/>
                 <ImageView GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                     <image>
@@ -190,7 +190,7 @@
                 <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0"
                       GridPane.columnIndex="1">
                     <children>
-                        <JFXButton fx:id="btnNotif" onAction="#handleCircleButton" text="Notifications"
+                        <JFXButton fx:id="btnNotif" onAction="#notifsClicked" text="Notifications"
                                    textFill="WHITE">
                             <font>
                                 <Font size="24.0"/>
@@ -203,7 +203,7 @@
                                 </ImageView>
                             </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="btnLogout" onAction="#handleCircleButton" prefHeight="53.0" prefWidth="147.0"
+                        <JFXButton fx:id="btnLogout" onAction="#logoutClicked" prefHeight="53.0" prefWidth="147.0"
                                    text="LOG OUT" textAlignment="CENTER" textFill="WHITE" underline="true">
                             <font>
                                 <Font size="24.0"/>
