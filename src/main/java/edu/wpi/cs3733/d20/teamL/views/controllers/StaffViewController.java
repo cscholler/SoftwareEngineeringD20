@@ -17,9 +17,8 @@ import java.io.IOException;
 
 @Slf4j
 public class StaffViewController {
-    
-    private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 
+    private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 
     @FXML
     private void notifsClicked(){

@@ -136,18 +136,11 @@ public class NotificationsPageController implements Initializable {
      */
     @FXML
     public void handleButtonAction(ActionEvent e) throws IOException {
-        Stage stage;
-        Parent root;
+
         if (e.getSource() == btnBack) {
-            stage = (Stage) btnBack.getScene().getWindow();
-            root = loaderHelper.getFXMLLoader("StaffView").load();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-			stage.hide();
-			stage.setMaximized(true);
-			stage.show();
-			stage.setWidth(App.SCREEN_WIDTH);
-			stage.setHeight(App.SCREEN_HEIGHT);
+			Parent root = loaderHelper.getFXMLLoader("AdminView").load();
+			loaderHelper.setupScene(new Scene(root));
+			
         } else {
         	String status = "0";
         	if (e.getSource() == btnCompleted) {
