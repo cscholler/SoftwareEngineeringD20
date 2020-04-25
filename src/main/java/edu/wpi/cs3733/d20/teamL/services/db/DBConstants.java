@@ -8,7 +8,7 @@ public class DBConstants {
 	public static final String DB_URL = "jdbc:derby:myDB;create=true";
 	public static final String SERVICE_NAME = "derby-db-embedded-01";
 
-	public static ArrayList<String> getTableNames() {
+	public static ArrayList<String> GET_TABLE_NAMES() {
 		return new ArrayList<>(Arrays.asList("Nodes", "Edges", "Doctors", "Patients", "Medication_Requests", "Users"));
 	}
 

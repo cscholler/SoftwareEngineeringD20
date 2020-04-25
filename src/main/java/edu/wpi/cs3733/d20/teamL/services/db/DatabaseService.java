@@ -19,8 +19,6 @@ import edu.wpi.cs3733.d20.teamL.services.Service;
 public class DatabaseService extends Service implements IDatabaseService {
 	private Connection connection;
 	private Properties props = null;
-	private ArrayList<ResultSet> usedResSets = new ArrayList<>();
-	private ArrayList<Statement> usedStmts = new ArrayList<>();
 
 	public DatabaseService(Properties props) {
 		super();
@@ -34,12 +32,12 @@ public class DatabaseService extends Service implements IDatabaseService {
 	}
 
 	@Override
-	public void startService() {
+	protected void startService() {
 		if (connection == null) {
 			connect(props);
 		}
 		// Uncomment if database needs to be rebuilt
-		// buildDatabase();
+		rebuildDatabase();
 	}
 
 	@Override
@@ -55,7 +53,6 @@ public class DatabaseService extends Service implements IDatabaseService {
 			log.error("ClassNotFoundException", ex);
 			return;
 		}
-
 		try {
 			if (props != null) {
 				connection = DriverManager.getConnection(DBConstants.DB_URL, props);
@@ -68,15 +65,8 @@ public class DatabaseService extends Service implements IDatabaseService {
 		}
 	}
 
-	@Override
-	public void disconnect() {
+	protected void disconnect() {
 		try {
-			for (ResultSet resSet : usedResSets) {
-				resSet.close();
-			}
-			for (Statement stmt : usedStmts) {
-				stmt.close();
-			}
 			if (connection != null) {
 				connection.commit();
 				connection.close();
@@ -89,15 +79,15 @@ public class DatabaseService extends Service implements IDatabaseService {
 	}
 
 	@Override
-	public ResultSet executeQuery(String query, ArrayList<String> values) {
+	public ResultSet executeQuery(SQLEntry query) {
 		ResultSet resSet = null;
 		try {
-			if (values.size() == 0) {
+			if (query.getValues().size() == 0) {
 				Statement stmt;
 				stmt = connection.createStatement();
-				resSet = stmt.executeQuery(query);
+				resSet = stmt.executeQuery(query.getStatement());
 			} else {
-				PreparedStatement pStmt = fillPreparedStatement(query, values);
+				PreparedStatement pStmt = fillPreparedStatement(query);
 				resSet = pStmt.executeQuery();
 			}
 		} catch (SQLException ex) {
@@ -107,77 +97,49 @@ public class DatabaseService extends Service implements IDatabaseService {
 	}
 
 	@Override
-	public ResultSet executeQuery(String query) {
-		return executeQuery(query, new ArrayList<>());
-	}
-
-	@Override
-	public ArrayList<ResultSet> executeQueries(ArrayList<String> queries, ArrayList<ArrayList<String>> valuesList) {
+	public ArrayList<ResultSet> executeQueries(ArrayList<SQLEntry> queries) {
 		ArrayList<ResultSet> resSets = new ArrayList<>();
-		boolean isPreparedStmt = !valuesList.isEmpty();
-
-		if (isPreparedStmt && queries.size() != valuesList.size()) {
-			throw new IllegalArgumentException();
-		}
-		for (int i = 0; i < queries.size() + 1; i++) {
-			resSets.add(executeQuery(queries.get(i), valuesList.get(i)));
+		for (SQLEntry query : queries) {
+			resSets.add(executeQuery(query));
 		}
 		return resSets;
 	}
 
 	@Override
-	public ArrayList<ResultSet> executeQueries(ArrayList<String> queries) {
-		return executeQueries(queries, new ArrayList<>());
-	}
-
-	@Override
-	public int executeUpdate(String update, ArrayList<String> values) {
-		int rows = 0;
+	public int executeUpdate(SQLEntry update) {
+		int numRowsAffected = 0;
 		try {
-			if (values.size() == 0) {
+			if (update.getValues().size() == 0) {
 				Statement stmt;
 				stmt = connection.createStatement();
-				rows = stmt.executeUpdate(update);
+				numRowsAffected = stmt.executeUpdate(update.getStatement());
 			} else {
-				PreparedStatement pStmt = fillPreparedStatement(update, values);
-				rows = pStmt.executeUpdate();
+				PreparedStatement pStmt = fillPreparedStatement(update);
+				System.out.println(update.getStatement() + "\n" + update.getValues());
+				numRowsAffected = pStmt.executeUpdate();
 			}
 		} catch (SQLException ex) {
 			log.error("Encountered SQLException.", ex);
 		}
-		return rows;
+		return numRowsAffected;
 	}
 
 	@Override
-	public int executeUpdate(String update) {
-		return executeUpdate(update, new ArrayList<>());
-	}
-
-	@Override
-	public int executeUpdates(ArrayList<String> updates, ArrayList<ArrayList<String>> valuesList) {
-		int totalRows = 0;
-		boolean isPreparedStmt = !valuesList.isEmpty();
-		if (isPreparedStmt && updates.size() != valuesList.size()) {
-			throw new IllegalArgumentException();
+	public ArrayList<Integer> executeUpdates(ArrayList<SQLEntry> updates) {
+		ArrayList<Integer> affectedRows = new ArrayList<>();
+		for (SQLEntry update : updates) {
+			affectedRows.add(executeUpdate(update));
 		}
-		for (int i = 0; i < updates.size(); i++) {
-			totalRows += executeUpdate(updates.get(i), isPreparedStmt ? valuesList.get(i) : new ArrayList<>());
-		}
-		return totalRows;
+		return affectedRows;
 	}
 
 	@Override
-	public int executeUpdates(ArrayList<String> updates) {
-		return executeUpdates(updates, new ArrayList<>());
-	}
-
-	@Override
-	public PreparedStatement fillPreparedStatement(String query, ArrayList<String> values) {
+	public PreparedStatement fillPreparedStatement(SQLEntry entry) {
 		PreparedStatement pStmt = null;
 		try {
-			pStmt = connection.prepareStatement(query);
-			for (int i = 0; i < values.size(); i++) {
-				pStmt.setString(i + 1, values.get(i));
+			pStmt = connection.prepareStatement(entry.getStatement());
+			for (int i = 0; i < entry.getValues().size(); i++) {
+				pStmt.setString(i + 1, entry.getValues().get(i));
 			}
 		} catch (SQLException ex) {
 			log.error("Encountered SQLException.", ex);
@@ -186,53 +148,53 @@ public class DatabaseService extends Service implements IDatabaseService {
 	}
 
 	@Override
-	public void buildDatabase() {
-		ArrayList<String> createTables = new ArrayList<>();
-		createTables.add(DBConstants.createNodeTable);
-		createTables.add(DBConstants.createEdgeTable);
-		createTables.add(DBConstants.createDoctorTable);
-		createTables.add(DBConstants.createPatientTable);
-		createTables.add(DBConstants.createMedicationRequestTable);
-		createTables.add(DBConstants.createUserTable);
+	public void rebuildDatabase() {
+		ArrayList<SQLEntry> updates = new ArrayList<>();
+		updates.add(new SQLEntry(DBConstants.createNodeTable, new ArrayList<>()));
+		updates.add(new SQLEntry(DBConstants.createEdgeTable, new ArrayList<>()));
+		updates.add(new SQLEntry(DBConstants.createDoctorTable, new ArrayList<>()));
+		updates.add(new SQLEntry(DBConstants.createPatientTable, new ArrayList<>()));
+		updates.add(new SQLEntry(DBConstants.createMedicationRequestTable, new ArrayList<>()));
+		updates.add(new SQLEntry(DBConstants.createUserTable, new ArrayList<>()));
+		executeUpdates(updates);
 		dropTables();
-		executeUpdates(createTables);
 		populateFromCSV("MapLnodesFloor2", DBConstants.addNode);
 		populateFromCSV("MapLedgesFloor2", DBConstants.addEdge);
 	}
 
 	@Override
-	public void populateFromCSV(String csvFile, String update) {
-		ArrayList<String> rowsToAdd = new ArrayList<>();
-		ArrayList<ArrayList<String>> rowData = new ArrayList<>();
+	public void populateFromCSV(String csvFile, String statement) {
+		ArrayList<SQLEntry> updates = new ArrayList<>();
 		CSVHelper csvReader = new CSVHelper();
-		
 		for (ArrayList<String> row : csvReader.readCSVFile(csvFile, true)) {
-			rowsToAdd.add(update);
-			rowData.add(new ArrayList<>(row));
+			updates.add(new SQLEntry(statement, new ArrayList<>(row)));
 		}
-
-		executeUpdates(rowsToAdd, rowData);
+		executeUpdates(updates);
 	}
 
 	@Override
 	public void dropTables() {
 		ResultSet resSet;
-		ArrayList<String> droppableTables = new ArrayList<>();
+		ArrayList<String> dropTableUpdates = new ArrayList<>();
 		ArrayList<String> tablesToDrop = new ArrayList<>();
-		droppableTables.add(DBConstants.dropNodeTable);
-		droppableTables.add(DBConstants.dropEdgeTable);
-		droppableTables.add(DBConstants.dropDoctorTable);
-		droppableTables.add(DBConstants.dropPatientTable);
-		droppableTables.add(DBConstants.dropMedicationRequestTable);
-		droppableTables.add(DBConstants.dropUserTable);
+		ArrayList<SQLEntry> updates = new ArrayList<>();
+		dropTableUpdates.add(DBConstants.dropNodeTable);
+		dropTableUpdates.add(DBConstants.dropEdgeTable);
+		dropTableUpdates.add(DBConstants.dropDoctorTable);
+		dropTableUpdates.add(DBConstants.dropPatientTable);
+		dropTableUpdates.add(DBConstants.dropMedicationRequestTable);
+		dropTableUpdates.add(DBConstants.dropUserTable);
 		try {
-			for (int i = 0; i < DBConstants.getTableNames().size(); i++) {
-				resSet = connection.getMetaData().getTables(null, "APP", DBConstants.getTableNames().get(i).toUpperCase(), null);
+			for (int i = 0; i < DBConstants.GET_TABLE_NAMES().size(); i++) {
+				resSet = connection.getMetaData().getTables(null, "APP", DBConstants.GET_TABLE_NAMES().get(i).toUpperCase(), null);
 				if (resSet.next()) {
-					tablesToDrop.add(droppableTables.get((droppableTables.size() - 1) - i));
+					tablesToDrop.add(dropTableUpdates.get((dropTableUpdates.size() - 1) - i));
 				}
 			}
-			executeUpdates(tablesToDrop, new ArrayList<>());
+			for (String entry : tablesToDrop) {
+				updates.add(new SQLEntry(entry));
+			}
+			executeUpdates(updates);
 		} catch (SQLException ex) {
 			log.error("Encountered SQLException.", ex);
 		}
@@ -244,8 +206,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 		ArrayList<String> colLabels = new ArrayList<>();
 		try {
 			ResultSetMetaData resSetMD = resSet.getMetaData();
-			int totalCols = resSetMD.getColumnCount();
-			for (int i = 0; i < totalCols; i++) {
+			for (int i = 0; i < resSetMD.getColumnCount(); i++) {
 				colLabels.set(i, resSetMD.getColumnLabel(i + 1));
 			}
 		} catch (SQLException ex) {
@@ -271,25 +232,5 @@ public class DatabaseService extends Service implements IDatabaseService {
 			log.error("Encountered SQLException.", ex);
 		}
 		return table;
-	}
-
-	@Override
-	public void collectUsedResultSet(ResultSet resSet) {
-		usedResSets.add(resSet);
-	}
-
-	@Override
-	public void collectUsedResultSets(ArrayList<ResultSet> resSets) {
-		usedResSets.addAll(resSets);
-	}
-
-	@Override
-	public void collectUsedStatement(Statement stmt) {
-		usedStmts.add(stmt);
-	}
-
-	@Override
-	public void collectUsedStatements(ArrayList<Statement> stmt) {
-		usedStmts.addAll(stmt);
 	}
 }
