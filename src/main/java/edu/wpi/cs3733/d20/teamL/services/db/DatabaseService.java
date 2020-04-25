@@ -19,8 +19,6 @@ import edu.wpi.cs3733.d20.teamL.services.Service;
 public class DatabaseService extends Service implements IDatabaseService {
 	private Connection connection;
 	private Properties props = null;
-	private ArrayList<ResultSet> usedResSets = new ArrayList<>();
-	private ArrayList<Statement> usedStmts = new ArrayList<>();
 
 	public DatabaseService(Properties props) {
 		super();
@@ -33,20 +31,31 @@ public class DatabaseService extends Service implements IDatabaseService {
 		this.serviceName = DBConstants.SERVICE_NAME;
 	}
 
+	/**
+	 * Starts the database service
+	 */
 	@Override
-	public void startService() {
+	protected void startService() {
 		if (connection == null) {
 			connect(props);
 		}
 		// Uncomment if database needs to be rebuilt
-		// buildDatabase();
+		//rebuildDatabase();
 	}
 
+	/**
+	 * Stops the database service
+	 */
 	@Override
 	public void stopService() {
 		disconnect();
 	}
 
+	/**
+	 * Connects to the database with optional username and password
+	 *
+	 * @param props Username and password properties
+	 */
 	@Override
 	public void connect(Properties props) {
 		try {
@@ -55,7 +64,6 @@ public class DatabaseService extends Service implements IDatabaseService {
 			log.error("ClassNotFoundException", ex);
 			return;
 		}
-
 		try {
 			if (props != null) {
 				connection = DriverManager.getConnection(DBConstants.DB_URL, props);
@@ -68,15 +76,11 @@ public class DatabaseService extends Service implements IDatabaseService {
 		}
 	}
 
-	@Override
-	public void disconnect() {
+	/**
+	 * Disconnects from the database if currently connected
+	 */
+	protected void disconnect() {
 		try {
-			for (ResultSet resSet : usedResSets) {
-				resSet.close();
-			}
-			for (Statement stmt : usedStmts) {
-				stmt.close();
-			}
 			if (connection != null) {
 				connection.commit();
 				connection.close();
@@ -88,16 +92,22 @@ public class DatabaseService extends Service implements IDatabaseService {
 		}
 	}
 
+	/**
+	 * Executes an SQL query
+	 *
+	 * @param query The query to be executed, including its values if the query is a prepared statement
+	 * @return A result set containing the results of the query
+	 */
 	@Override
-	public ResultSet executeQuery(String query, ArrayList<String> values) {
+	public ResultSet executeQuery(SQLEntry query) {
 		ResultSet resSet = null;
 		try {
-			if (values.size() == 0) {
+			if (query.getValues().size() == 0) {
 				Statement stmt;
 				stmt = connection.createStatement();
-				resSet = stmt.executeQuery(query);
+				resSet = stmt.executeQuery(query.getStatement());
 			} else {
-				PreparedStatement pStmt = fillPreparedStatement(query, values);
+				PreparedStatement pStmt = fillPreparedStatement(query);
 				resSet = pStmt.executeQuery();
 			}
 		} catch (SQLException ex) {
@@ -106,78 +116,78 @@ public class DatabaseService extends Service implements IDatabaseService {
 		return resSet;
 	}
 
+	/**
+	 * Executes a list of SQL queries
+	 *
+	 * @param queries A list of queries to be executed, including their values if they are prepared statements
+	 * @return A list of result sets containing the results of each query
+	 */
 	@Override
-	public ResultSet executeQuery(String query) {
-		return executeQuery(query, new ArrayList<>());
-	}
-
-	@Override
-	public ArrayList<ResultSet> executeQueries(ArrayList<String> queries, ArrayList<ArrayList<String>> valuesList) {
+	public ArrayList<ResultSet> executeQueries(ArrayList<SQLEntry> queries) {
 		ArrayList<ResultSet> resSets = new ArrayList<>();
-		boolean isPreparedStmt = !valuesList.isEmpty();
-
-		if (isPreparedStmt && queries.size() != valuesList.size()) {
-			throw new IllegalArgumentException();
-		}
-		for (int i = 0; i < queries.size() + 1; i++) {
-			resSets.add(executeQuery(queries.get(i), valuesList.get(i)));
+		for (SQLEntry query : queries) {
+			resSets.add(executeQuery(query));
 		}
 		return resSets;
 	}
 
+	/**
+	 * Executes an SQL update
+	 *
+	 * @param update The update to be executed, including its values if the update is a prepared statement
+	 * @return The number of rows affected by the update
+	 */
 	@Override
-	public ArrayList<ResultSet> executeQueries(ArrayList<String> queries) {
-		return executeQueries(queries, new ArrayList<>());
-	}
-
-	@Override
-	public int executeUpdate(String update, ArrayList<String> values) {
-		int rows = 0;
+	public int executeUpdate(SQLEntry update) {
+		int numRowsAffected = 0;
 		try {
-			if (values.size() == 0) {
+			if (update.getValues().size() == 0) {
 				Statement stmt;
 				stmt = connection.createStatement();
-				rows = stmt.executeUpdate(update);
+				numRowsAffected = stmt.executeUpdate(update.getStatement());
 			} else {
-				PreparedStatement pStmt = fillPreparedStatement(update, values);
-				rows = pStmt.executeUpdate();
+				PreparedStatement pStmt = fillPreparedStatement(update);
+				System.out.println(update.getStatement() + "\n" + update.getValues());
+				numRowsAffected = pStmt.executeUpdate();
 			}
 		} catch (SQLException ex) {
 			log.error("Encountered SQLException.", ex);
 		}
-		return rows;
+		return numRowsAffected;
 	}
 
+	/**
+	 * Executes a list of SQL updates
+	 *
+	 * @param updates A list of updates to be executed, including their values if they are prepared statements
+	 * @return A list of the number of rows affected by each update in the list
+	 */
 	@Override
-	public int executeUpdate(String update) {
-		return executeUpdate(update, new ArrayList<>());
+	public ArrayList<Integer> executeUpdates(ArrayList<SQLEntry> updates) {
+		ArrayList<Integer> affectedRows = new ArrayList<>();
+		for (SQLEntry update : updates) {
+			affectedRows.add(executeUpdate(update));
+		}
+		return affectedRows;
 	}
 
+	/**
+	 * Fills a prepared statement with the supplied values
+	 *
+	 * @param command The SQL command to be processed
+	 * @return A fully processed prepared statement ready to be executed
+	 */
 	@Override
-	public int executeUpdates(ArrayList<String> updates, ArrayList<ArrayList<String>> valuesList) {
-		int totalRows = 0;
-		boolean isPreparedStmt = !valuesList.isEmpty();
-		if (isPreparedStmt && updates.size() != valuesList.size()) {
+	public PreparedStatement fillPreparedStatement(SQLEntry command) {
+		PreparedStatement pStmt = null;
+		if (command.getValues().size() == 0) {
+			// TODO: replace with custom exception
 			throw new IllegalArgumentException();
 		}
-		for (int i = 0; i < updates.size(); i++) {
-			totalRows += executeUpdate(updates.get(i), isPreparedStmt ? valuesList.get(i) : new ArrayList<>());
-		}
-		return totalRows;
-	}
-
-	@Override
-	public int executeUpdates(ArrayList<String> updates) {
-		return executeUpdates(updates, new ArrayList<>());
-	}
-
-	@Override
-	public PreparedStatement fillPreparedStatement(String query, ArrayList<String> values) {
-		PreparedStatement pStmt = null;
 		try {
-			pStmt = connection.prepareStatement(query);
-			for (int i = 0; i < values.size(); i++) {
-				pStmt.setString(i + 1, values.get(i));
+			pStmt = connection.prepareStatement(command.getStatement());
+			for (int i = 0; i < command.getValues().size(); i++) {
+				pStmt.setString(i + 1, command.getValues().get(i));
 			}
 		} catch (SQLException ex) {
 			log.error("Encountered SQLException.", ex);
@@ -185,67 +195,77 @@ public class DatabaseService extends Service implements IDatabaseService {
 		return pStmt;
 	}
 
+	/**
+	 * Rebuilds the database by dropping and re-creating all tables then adding the default nodes and edges from CSV files
+	 */
 	@Override
-	public void buildDatabase() {
-		ArrayList<String> createTables = new ArrayList<>();
-		createTables.add(DBConstants.createNodeTable);
-		createTables.add(DBConstants.createEdgeTable);
-		createTables.add(DBConstants.createDoctorTable);
-		createTables.add(DBConstants.createPatientTable);
-		createTables.add(DBConstants.createMedicationRequestTable);
-		createTables.add(DBConstants.createUserTable);
+	public void rebuildDatabase() {
+		ArrayList<SQLEntry> updates = new ArrayList<>();
+		updates.add(new SQLEntry(DBConstants.CREATE_NODE_TABLE, new ArrayList<>()));
+		updates.add(new SQLEntry(DBConstants.CREATE_EDGE_TABLE, new ArrayList<>()));
+		updates.add(new SQLEntry(DBConstants.CREATE_DOCTOR_TABLE, new ArrayList<>()));
+		updates.add(new SQLEntry(DBConstants.CREATE_PATIENT_TABLE, new ArrayList<>()));
+		updates.add(new SQLEntry(DBConstants.CREATE_MEDICATION_REQUEST_TABLE, new ArrayList<>()));
+		updates.add(new SQLEntry(DBConstants.CREATE_USER_TABLE, new ArrayList<>()));
 		dropTables();
-		executeUpdates(createTables);
-		populateFromCSV("MapLnodesFloor2", DBConstants.addNode);
-		populateFromCSV("MapLedgesFloor2", DBConstants.addEdge);
+		executeUpdates(updates);
+		populateFromCSV("MapLnodesFloor2", DBConstants.ADD_NODE);
+		populateFromCSV("MapLedgesFloor2", DBConstants.ADD_EDGE);
 	}
 
 	@Override
-	public void populateFromCSV(String csvFile, String update) {
-		ArrayList<String> rowsToAdd = new ArrayList<>();
-		ArrayList<ArrayList<String>> rowData = new ArrayList<>();
+	public void populateFromCSV(String csvFile, String statement) {
+		ArrayList<SQLEntry> updates = new ArrayList<>();
 		CSVHelper csvReader = new CSVHelper();
-		
 		for (ArrayList<String> row : csvReader.readCSVFile(csvFile, true)) {
-			rowsToAdd.add(update);
-			rowData.add(new ArrayList<>(row));
+			updates.add(new SQLEntry(statement, new ArrayList<>(row)));
 		}
-
-		executeUpdates(rowsToAdd, rowData);
+		executeUpdates(updates);
 	}
 
+	/**
+	 * Drops all the tables in the database if they currently exist
+	 */
 	@Override
 	public void dropTables() {
 		ResultSet resSet;
-		ArrayList<String> droppableTables = new ArrayList<>();
+		ArrayList<String> dropTableUpdates = new ArrayList<>();
 		ArrayList<String> tablesToDrop = new ArrayList<>();
-		droppableTables.add(DBConstants.dropNodeTable);
-		droppableTables.add(DBConstants.dropEdgeTable);
-		droppableTables.add(DBConstants.dropDoctorTable);
-		droppableTables.add(DBConstants.dropPatientTable);
-		droppableTables.add(DBConstants.dropMedicationRequestTable);
-		droppableTables.add(DBConstants.dropUserTable);
+		ArrayList<SQLEntry> updates = new ArrayList<>();
+		dropTableUpdates.add(DBConstants.DROP_NODE_TABLE);
+		dropTableUpdates.add(DBConstants.DROP_EDGE_TABLE);
+		dropTableUpdates.add(DBConstants.DROP_DOCTOR_TABLE);
+		dropTableUpdates.add(DBConstants.DROP_PATIENT_TABLE);
+		dropTableUpdates.add(DBConstants.DROP_MEDICATION_REQUEST_TABLE);
+		dropTableUpdates.add(DBConstants.DROP_USER_TABLE);
 		try {
-			for (int i = 0; i < DBConstants.getTableNames().size(); i++) {
-				resSet = connection.getMetaData().getTables(null, "APP", DBConstants.getTableNames().get(i).toUpperCase(), null);
+			for (int i = 0; i < DBConstants.GET_TABLE_NAMES().size(); i++) {
+				resSet = connection.getMetaData().getTables(null, "APP", DBConstants.GET_TABLE_NAMES().get(i).toUpperCase(), null);
 				if (resSet.next()) {
-					tablesToDrop.add(droppableTables.get((droppableTables.size() - 1) - i));
+					tablesToDrop.add(dropTableUpdates.get((dropTableUpdates.size() - 1) - i));
 				}
 			}
-			executeUpdates(tablesToDrop, new ArrayList<>());
+			for (String entry : tablesToDrop) {
+				updates.add(new SQLEntry(entry));
+			}
+			executeUpdates(updates);
 		} catch (SQLException ex) {
 			log.error("Encountered SQLException.", ex);
 		}
 	}
 
-
+	/**
+	 * Determines the titles of the columns of a table based on a result set
+	 *
+	 * @param resSet The result set that determines the table to find the column titles of
+	 * @return A list of the titles of the columns in the table
+	 */
 	@Override
 	public ArrayList<String> getColumnNames(ResultSet resSet) {
 		ArrayList<String> colLabels = new ArrayList<>();
 		try {
 			ResultSetMetaData resSetMD = resSet.getMetaData();
-			int totalCols = resSetMD.getColumnCount();
-			for (int i = 0; i < totalCols; i++) {
+			for (int i = 0; i < resSetMD.getColumnCount(); i++) {
 				colLabels.set(i, resSetMD.getColumnLabel(i + 1));
 			}
 		} catch (SQLException ex) {
@@ -254,6 +274,12 @@ public class DatabaseService extends Service implements IDatabaseService {
 		return colLabels;
 	}
 
+	/**
+	 * Converts a result set into a table
+	 *
+	 * @param resSet The result set to build the table from
+	 * @return The table represented by a list of lists of strings
+	 */
 	@Override
 	public ArrayList<ArrayList<String>> getTableFromResultSet(ResultSet resSet) {
 		ArrayList<ArrayList<String>> table = new ArrayList<>();
@@ -271,25 +297,5 @@ public class DatabaseService extends Service implements IDatabaseService {
 			log.error("Encountered SQLException.", ex);
 		}
 		return table;
-	}
-
-	@Override
-	public void collectUsedResultSet(ResultSet resSet) {
-		usedResSets.add(resSet);
-	}
-
-	@Override
-	public void collectUsedResultSets(ArrayList<ResultSet> resSets) {
-		usedResSets.addAll(resSets);
-	}
-
-	@Override
-	public void collectUsedStatement(Statement stmt) {
-		usedStmts.add(stmt);
-	}
-
-	@Override
-	public void collectUsedStatements(ArrayList<Statement> stmt) {
-		usedStmts.addAll(stmt);
 	}
 }
