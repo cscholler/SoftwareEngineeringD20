@@ -29,6 +29,8 @@
     -fx-padding: 5;
     -fx-background-color: #0d2e57;
     -fx-text-fill: white;
+    -fx-pref-width: 40;
+    -fx-pref-height: 40;
 }
 .circle-button {
     -fx-background-radius: 40;
