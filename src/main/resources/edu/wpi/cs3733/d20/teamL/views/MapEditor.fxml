@@ -17,6 +17,7 @@
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -26,6 +27,7 @@
 <?import javafx.scene.text.Font?>
 
 <?import edu.wpi.cs3733.d20.teamL.views.components.MapPane?>
+
 <BorderPane fx:id="root" prefHeight="720" prefWidth="1280" stylesheets="@../css/MapStyles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.map.MapEditorController">
     <top>
         <VBox prefWidth="100.0" BorderPane.alignment="CENTER">
@@ -265,30 +267,63 @@
                      <children>
                         <JFXNodesList fx:id="saveNodesList" rotate="270.0" spacing="10.0">
                            <children>
-                              <JFXButton fx:id="saveOptions" buttonType="RAISED" styleClass="nodeListButton" text=" " />
-                              <JFXButton fx:id="saveDBButton" styleClass="nodeListButton" />
-                              <JFXButton fx:id="saveDBButton1" layoutX="10.0" layoutY="70.0" styleClass="nodeListButton" />
+                              <JFXButton fx:id="saveOptions" buttonType="RAISED" styleClass="nodeListButton" text=" ">
+                                 <tooltip>
+                                    <Tooltip autoHide="true" contentDisplay="RIGHT" text="Save Options" />
+                                 </tooltip></JFXButton>
+                              <JFXButton fx:id="saveDBButton" styleClass="nodeListButton">
+                                 <tooltip>
+                                    <Tooltip text="Save to Database" />
+                                 </tooltip></JFXButton>
+                              <JFXButton fx:id="saveDBButton1" layoutX="10.0" layoutY="70.0" styleClass="nodeListButton">
+                                 <tooltip>
+                                    <Tooltip text="Save to CSV" />
+                                 </tooltip></JFXButton>
                            </children>
                         </JFXNodesList>
                         <JFXNodesList fx:id="loadNodesList" rotate="270.0" spacing="10.0">
                            <children>
-                              <JFXButton fx:id="loadOptions" buttonType="RAISED" styleClass="nodeListButton" text=" " />
-                              <JFXButton fx:id="loadOptions1" buttonType="RAISED" layoutX="10.0" layoutY="10.0" styleClass="nodeListButton" text=" " />
-                              <JFXButton fx:id="loadOptions11" buttonType="RAISED" layoutX="10.0" layoutY="60.0" styleClass="nodeListButton" text=" " />
+                              <JFXButton fx:id="loadOptions" buttonType="RAISED" styleClass="nodeListButton" text=" ">
+                                 <tooltip>
+                                    <Tooltip text="Load Options" />
+                                 </tooltip></JFXButton>
+                              <JFXButton fx:id="loadOptions1" buttonType="RAISED" layoutX="10.0" layoutY="10.0" styleClass="nodeListButton" text=" ">
+                                 <tooltip>
+                                    <Tooltip text="Load from Databse" />
+                                 </tooltip></JFXButton>
+                              <JFXButton fx:id="loadOptions11" buttonType="RAISED" layoutX="10.0" layoutY="60.0" styleClass="nodeListButton" text=" ">
+                                 <tooltip>
+                                    <Tooltip text="Load from CSV" />
+                                 </tooltip></JFXButton>
                            </children>
                         </JFXNodesList>
                         <JFXNodesList fx:id="pathNodesList" alignment="TOP_CENTER" prefHeight="16.0" prefWidth="10.0" rotate="270.0" spacing="10.0">
                            <children>
-                              <JFXButton fx:id="pathfindingOptions" buttonType="RAISED" styleClass="nodeListButton" text=" " />
-                              <JFXButton fx:id="pathfindingOptions1" buttonType="RAISED" layoutX="10.0" layoutY="10.0" styleClass="nodeListButton" text=" " />
-                              <JFXButton fx:id="pathfindingOptions11" buttonType="RAISED" layoutX="10.0" layoutY="60.0" styleClass="nodeListButton" text=" " />
-                              <JFXButton fx:id="pathfindingOptions111" buttonType="RAISED" layoutX="10.0" layoutY="110.0" styleClass="nodeListButton" text=" " />
+                              <JFXButton fx:id="pathfindingOptions" buttonType="RAISED" styleClass="nodeListButton" text=" ">
+                                 <tooltip>
+                                    <Tooltip text="Switch Pathfinding Algorithm" />
+                                 </tooltip></JFXButton>
+                              <JFXButton fx:id="pathfindingOptions1" buttonType="RAISED" layoutX="10.0" layoutY="10.0" styleClass="nodeListButton" text=" ">
+                                 <tooltip>
+                                    <Tooltip text="A*" />
+                                 </tooltip></JFXButton>
+                              <JFXButton fx:id="pathfindingOptions11" buttonType="RAISED" layoutX="10.0" layoutY="60.0" styleClass="nodeListButton" text=" ">
+                                 <tooltip>
+                                    <Tooltip text="Depth First" />
+                                 </tooltip></JFXButton>
+                              <JFXButton fx:id="pathfindingOptions111" buttonType="RAISED" layoutX="10.0" layoutY="110.0" styleClass="nodeListButton" text=" ">
+                                 <tooltip>
+                                    <Tooltip text="Breadth First" />
+                                 </tooltip></JFXButton>
                            </children>
                         </JFXNodesList>
-                        <JFXToggleNode>
+                        <JFXToggleNode prefHeight="68.0" style="-fx-background-radius: 68;">
                            <graphic>
                               <JFXButton fx:id="pathfindingOptions112" buttonType="RAISED" styleClass="nodeListButton" text=" " />
                            </graphic>
+                           <tooltip>
+                              <Tooltip text="Eraser Tool (For removing nodes and edges)" />
+                           </tooltip>
                         </JFXToggleNode>
                      </children>
                      <BorderPane.margin>
@@ -305,18 +340,54 @@
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
+                                 <tooltip>
+                                    <Tooltip text="Add Node (click and drag to add node)" />
+                                 </tooltip>
                               </JFXButton>
-                              <JFXButton styleClass="nodeTypeButton" text=" " />
-                              <JFXButton layoutX="15.0" layoutY="70.0" styleClass="nodeTypeButton" text=" " />
-                              <JFXButton layoutX="15.0" layoutY="123.0" styleClass="nodeTypeButton" text=" " />
-                              <JFXButton layoutX="15.0" layoutY="176.0" styleClass="nodeTypeButton" text=" " />
-                              <JFXButton layoutX="15.0" layoutY="230.0" styleClass="nodeTypeButton" text=" " />
-                              <JFXButton layoutX="15.0" layoutY="283.0" styleClass="nodeTypeButton" text=" " />
-                              <JFXButton layoutX="15.0" layoutY="336.0" styleClass="nodeTypeButton" text=" " />
-                              <JFXButton layoutX="15.0" layoutY="389.0" styleClass="nodeTypeButton" text=" " />
-                              <JFXButton layoutX="15.0" layoutY="442.0" styleClass="nodeTypeButton" text=" " />
-                              <JFXButton layoutX="15.0" layoutY="496.0" styleClass="nodeTypeButton" text=" " />
-                              <JFXButton layoutX="15.0" layoutY="549.0" styleClass="nodeTypeButton" text=" " />
+                              <JFXButton styleClass="nodeTypeButton" text=" ">
+                                 <tooltip>
+                                    <Tooltip text="HALL (Hallway)" />
+                                 </tooltip></JFXButton>
+                              <JFXButton layoutX="15.0" layoutY="70.0" styleClass="nodeTypeButton" text=" ">
+                                 <tooltip>
+                                    <Tooltip text="ELEV (Elevator)" />
+                                 </tooltip></JFXButton>
+                              <JFXButton layoutX="15.0" layoutY="123.0" styleClass="nodeTypeButton" text=" ">
+                                 <tooltip>
+                                    <Tooltip text="REST (Restroom)" />
+                                 </tooltip></JFXButton>
+                              <JFXButton layoutX="15.0" layoutY="176.0" styleClass="nodeTypeButton" text=" ">
+                                 <tooltip>
+                                    <Tooltip text="STAI (Stairwell)" />
+                                 </tooltip></JFXButton>
+                              <JFXButton layoutX="15.0" layoutY="230.0" styleClass="nodeTypeButton" text=" ">
+                                 <tooltip>
+                                    <Tooltip text="DEPT (Medical departments, Clinics, Waiting Areas)" />
+                                 </tooltip></JFXButton>
+                              <JFXButton layoutX="15.0" layoutY="549.0" styleClass="nodeTypeButton" text=" ">
+                                 <tooltip>
+                                    <Tooltip text="LABS (Labs, Imaging Centers, Medical Testing Areas)" />
+                                 </tooltip></JFXButton>
+                              <JFXButton layoutX="15.0" layoutY="283.0" styleClass="nodeTypeButton" text=" ">
+                                 <tooltip>
+                                    <Tooltip text="INFO (Information, Security, Lost &amp; Found)" />
+                                 </tooltip></JFXButton>
+                              <JFXButton layoutX="15.0" layoutY="336.0" styleClass="nodeTypeButton" text=" ">
+                                 <tooltip>
+                                    <Tooltip text="CONF (Conference Rooms)" />
+                                 </tooltip></JFXButton>
+                              <JFXButton layoutX="15.0" layoutY="389.0" styleClass="nodeTypeButton" text=" ">
+                                 <tooltip>
+                                    <Tooltip text="EXIT (Exit/Entrance)" />
+                                 </tooltip></JFXButton>
+                              <JFXButton layoutX="15.0" layoutY="442.0" styleClass="nodeTypeButton" text=" ">
+                                 <tooltip>
+                                    <Tooltip text="RETL (Shops, Food, Payphone, etc.)" />
+                                 </tooltip></JFXButton>
+                              <JFXButton layoutX="15.0" layoutY="496.0" styleClass="nodeTypeButton" text=" ">
+                                 <tooltip>
+                                    <Tooltip text="SERV (Hospital Non-Medical Services, Interpreters, Shuttles, Library, etc.)" />
+                                 </tooltip></JFXButton>
                            </children>
                            <HBox.margin>
                               <Insets bottom="10.0" />
@@ -361,6 +432,9 @@
                      </BorderPane.margin>
                   </HBox>
                </top>
+               <StackPane.margin>
+                  <Insets />
+               </StackPane.margin>
             </BorderPane>
          </children>
       </StackPane>
