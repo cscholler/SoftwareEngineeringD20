@@ -80,7 +80,7 @@ public class AddPatientController {
         String docID = doctorIDText.getText();
         String roomNum = roomNumText.getText();
         String additionalInfo = addInfoText.getText();
-        if (db.executeUpdate(new SQLEntry(DBConstants.addPatient, new ArrayList<>(Arrays.asList(patID, fName, lName, docID, roomNum)))) == 0) {
+        if (db.executeUpdate(new SQLEntry(DBConstants.ADD_PATIENT, new ArrayList<>(Arrays.asList(patID, fName, lName, docID, roomNum)))) == 0) {
             lblsubmitted.setText("Submission failed!");
             lblsubmitted.setTextFill(Color.RED);
         } else {

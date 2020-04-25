@@ -74,26 +74,26 @@ public class DBCache implements IDBCache {
     	ArrayList<SQLEntry> updates = new ArrayList<>();
 		// Add nodes
         for (ArrayList<String> nodeInfo : convertNodesToValuesList(addedNodes)) {
-            updates.add(new SQLEntry(DBConstants.addNode, nodeInfo));
+            updates.add(new SQLEntry(DBConstants.ADD_NODE, nodeInfo));
         }
         // Add edges
         for (ArrayList<String> edgeInfo : convertEdgesToValuesList(addedEdges)) {
-        	updates.add(new SQLEntry(DBConstants.addEdge, edgeInfo));
+        	updates.add(new SQLEntry(DBConstants.ADD_EDGE, edgeInfo));
         }
         // Delete edges
         for (Edge edge : deletedEdges) {
-        	updates.add(new SQLEntry(DBConstants.removeEdge, new ArrayList<>(Collections.singletonList(edge.getID()))));
+        	updates.add(new SQLEntry(DBConstants.REMOVE_EDGE, new ArrayList<>(Collections.singletonList(edge.getID()))));
         }
         // Edit nodes
 		for (ArrayList<String> currentNode : convertNodesToValuesList(editedNodes)) {
 			String nodeID = currentNode.get(0);
 			currentNode.remove(0);
 			currentNode.add(nodeID);
-			updates.add(new SQLEntry(DBConstants.updateNode, currentNode));
+			updates.add(new SQLEntry(DBConstants.UPDATE_NODE, currentNode));
 		}
         // Delete nodes
         for (ArrayList<String> currentNode : convertNodesToValuesList(deletedNodes)) {
-        	updates.add(new SQLEntry(DBConstants.removeNode, new ArrayList<>(Collections.singletonList(currentNode.get(0)))));
+        	updates.add(new SQLEntry(DBConstants.REMOVE_NODE, new ArrayList<>(Collections.singletonList(currentNode.get(0)))));
         }
         db.executeUpdates(updates); // TODO: Fix SQL error by preventing from adding duplicate nodes
 		// Clear added, edited, and deleted nodes from cache
@@ -142,7 +142,7 @@ public class DBCache implements IDBCache {
      */
     @Override
 	public void cacheNodesFromDB() {
-        ResultSet resSet = db.executeQuery(new SQLEntry(DBConstants.selectAllNodes));
+        ResultSet resSet = db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_NODES));
         clearNodeCache();
         ArrayList<ArrayList<String>> nodeData = db.getTableFromResultSet(resSet);
 
@@ -171,7 +171,7 @@ public class DBCache implements IDBCache {
      */
     @Override
 	public void cacheEdgesFromDB() {
-        ResultSet resSet = db.executeQuery(new SQLEntry(DBConstants.selectAllEdges));
+        ResultSet resSet = db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_EDGES));
         clearEdgeCache();
         ArrayList<ArrayList<String>> edgeData = db.getTableFromResultSet(resSet);
 

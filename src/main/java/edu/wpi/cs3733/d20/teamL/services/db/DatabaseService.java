@@ -201,16 +201,16 @@ public class DatabaseService extends Service implements IDatabaseService {
 	@Override
 	public void rebuildDatabase() {
 		ArrayList<SQLEntry> updates = new ArrayList<>();
-		updates.add(new SQLEntry(DBConstants.createNodeTable, new ArrayList<>()));
-		updates.add(new SQLEntry(DBConstants.createEdgeTable, new ArrayList<>()));
-		updates.add(new SQLEntry(DBConstants.createDoctorTable, new ArrayList<>()));
-		updates.add(new SQLEntry(DBConstants.createPatientTable, new ArrayList<>()));
-		updates.add(new SQLEntry(DBConstants.createMedicationRequestTable, new ArrayList<>()));
-		updates.add(new SQLEntry(DBConstants.createUserTable, new ArrayList<>()));
+		updates.add(new SQLEntry(DBConstants.CREATE_NODE_TABLE, new ArrayList<>()));
+		updates.add(new SQLEntry(DBConstants.CREATE_EDGE_TABLE, new ArrayList<>()));
+		updates.add(new SQLEntry(DBConstants.CREATE_DOCTOR_TABLE, new ArrayList<>()));
+		updates.add(new SQLEntry(DBConstants.CREATE_PATIENT_TABLE, new ArrayList<>()));
+		updates.add(new SQLEntry(DBConstants.CREATE_MEDICATION_REQUEST_TABLE, new ArrayList<>()));
+		updates.add(new SQLEntry(DBConstants.CREATE_USER_TABLE, new ArrayList<>()));
 		dropTables();
 		executeUpdates(updates);
-		populateFromCSV("MapLnodesFloor2", DBConstants.addNode);
-		populateFromCSV("MapLedgesFloor2", DBConstants.addEdge);
+		populateFromCSV("MapLnodesFloor2", DBConstants.ADD_NODE);
+		populateFromCSV("MapLedgesFloor2", DBConstants.ADD_EDGE);
 	}
 
 	@Override
@@ -232,12 +232,12 @@ public class DatabaseService extends Service implements IDatabaseService {
 		ArrayList<String> dropTableUpdates = new ArrayList<>();
 		ArrayList<String> tablesToDrop = new ArrayList<>();
 		ArrayList<SQLEntry> updates = new ArrayList<>();
-		dropTableUpdates.add(DBConstants.dropNodeTable);
-		dropTableUpdates.add(DBConstants.dropEdgeTable);
-		dropTableUpdates.add(DBConstants.dropDoctorTable);
-		dropTableUpdates.add(DBConstants.dropPatientTable);
-		dropTableUpdates.add(DBConstants.dropMedicationRequestTable);
-		dropTableUpdates.add(DBConstants.dropUserTable);
+		dropTableUpdates.add(DBConstants.DROP_NODE_TABLE);
+		dropTableUpdates.add(DBConstants.DROP_EDGE_TABLE);
+		dropTableUpdates.add(DBConstants.DROP_DOCTOR_TABLE);
+		dropTableUpdates.add(DBConstants.DROP_PATIENT_TABLE);
+		dropTableUpdates.add(DBConstants.DROP_MEDICATION_REQUEST_TABLE);
+		dropTableUpdates.add(DBConstants.DROP_USER_TABLE);
 		try {
 			for (int i = 0; i < DBConstants.GET_TABLE_NAMES().size(); i++) {
 				resSet = connection.getMetaData().getTables(null, "APP", DBConstants.GET_TABLE_NAMES().get(i).toUpperCase(), null);

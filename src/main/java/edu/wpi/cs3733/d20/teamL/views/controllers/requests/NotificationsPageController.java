@@ -84,7 +84,7 @@ public class NotificationsPageController implements Initializable {
     @FXML
     private void loadData() {
         list.removeAll();
-		ArrayList<ArrayList<String>> medRequests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.selectAllMedicationRequests)));
+		ArrayList<ArrayList<String>> medRequests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_MEDICATION_REQUESTS)));
 		String patientID;
 		String patientName;
 		String doctorID;
@@ -93,11 +93,11 @@ public class NotificationsPageController implements Initializable {
 		for (ArrayList<String> row : medRequests) {
 			doctorID = row.get(1);
 			patientID = row.get(2);
-			ArrayList<String> name = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.getDoctorName, new ArrayList<>(Collections.singletonList(doctorID))))).get(0);
+			ArrayList<String> name = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_DOCTOR_NAME, new ArrayList<>(Collections.singletonList(doctorID))))).get(0);
 			doctorName = name.get(0) + " " + name.get(1);
-			name = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.getPatientName, new ArrayList<>(Collections.singletonList(patientID))))).get(0);
+			name = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_NAME, new ArrayList<>(Collections.singletonList(patientID))))).get(0);
 			patientName = name.get(0) + " " + name.get(1);
-			roomID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.getPatientRoom, new ArrayList<>(Collections.singletonList(patientID))))).get(0).get(0);
+			roomID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ROOM, new ArrayList<>(Collections.singletonList(patientID))))).get(0).get(0);
 			System.out.println(row.get(0));
 			list.add(new MedicineRequest(row.get(0), patientName, patientID, doctorName, row.get(3), row.get(4), row.get(5), roomID, row.get(6), row.get(7), row.get(8)));
 		}
@@ -146,7 +146,7 @@ public class NotificationsPageController implements Initializable {
 			} else if (e.getSource() == btnDecline) {
         		status = "2";
 			}
-			db.executeUpdate(new SQLEntry(DBConstants.updateMedicationRequestStatus, new ArrayList<>(Arrays.asList(status, getCurrentRequest().getID()))));
+			db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_STATUS, new ArrayList<>(Arrays.asList(status, getCurrentRequest().getID()))));
 			getCurrentRequest().setStatus(status);
 			System.out.println(getCurrentRequest().getStatus());
 		}

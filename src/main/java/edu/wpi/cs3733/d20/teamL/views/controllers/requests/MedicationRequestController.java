@@ -98,10 +98,10 @@ public class MedicationRequestController implements Initializable {
             String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
 
 			// Adds request info to database
-			String doctorID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.getDoctorID, new ArrayList<>(Arrays.asList(doctorFName, doctorLName))))).get(0).get(0);
-			String patientID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.getPatientID, new ArrayList<>(Arrays.asList(patientFName, patientLName))))).get(0).get(0);
+			String doctorID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_DOCTOR_ID, new ArrayList<>(Arrays.asList(doctorFName, doctorLName))))).get(0).get(0);
+			String patientID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ID, new ArrayList<>(Arrays.asList(patientFName, patientLName))))).get(0).get(0);
 			// TODO: Get name of nurse from current user
-			int rows = db.executeUpdate(new SQLEntry(DBConstants.addMedicationRequest, new ArrayList<>(Arrays.asList(doctorID, patientID, "Nurse", dose, medType, additionalInfo, status, dateAndTime))));
+			int rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_MEDICATION_REQUEST, new ArrayList<>(Arrays.asList(doctorID, patientID, "Nurse", dose, medType, additionalInfo, status, dateAndTime))));
 			//formatter.reportQueryResults(db.executeQuery(DBConstants.selectAllMedicationRequests));
 			// TODO: Check if any info is invalid before sending request
 

@@ -78,7 +78,7 @@ public class AddDoctorController {
             String email = emailText.getText();
             String roomNum = officeNumText.getText();
             String additionalInfo = addInfoText.getText(); //We should add this to the database
-			int rows = db.executeUpdate(new SQLEntry(DBConstants.addDoctor, new ArrayList<>(Arrays.asList(docID, fName, lName, email, roomNum))));
+			int rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_DOCTOR, new ArrayList<>(Arrays.asList(docID, fName, lName, email, roomNum))));
 			if (rows == 0) {
 			    confirmation.setTextFill(Color.RED);
 			    confirmation.setText("Submission failed");
