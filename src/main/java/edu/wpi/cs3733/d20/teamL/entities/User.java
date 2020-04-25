@@ -5,17 +5,17 @@ import java.util.List;
 
 public class User {
 	private String id;
-	private String username;
 	private String fName;
 	private String lName;
+	private String username;
 	private String acctType;
 	private List<String> services;
 
-	public User(String id, String username, String fName, String lName, String acctType, String services) {
+	public User(String id, String fName, String lName, String username, String acctType, String services) {
 		this.id = id;
-		this.username = username;
 		this.fName = fName;
 		this.lName = lName;
+		this.username = username;
 		this.acctType = acctType;
 		this.services = Arrays.asList(services.split(","));
 	}

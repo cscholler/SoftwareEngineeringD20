@@ -6,7 +6,6 @@ import com.jfoenix.controls.JFXTextField;
 
 import java.io.IOException;
 
-import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.services.users.LoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import javafx.animation.FadeTransition;
@@ -26,9 +25,9 @@ import javax.inject.Inject;
 public class LoginController {
 	FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
     @FXML
-    private JFXTextField username;
+    private JFXTextField usernameField;
     @FXML
-    private JFXPasswordField pass;
+    private JFXPasswordField passwordField;
     @FXML
     private JFXButton login, btnCancel;
     @FXML
@@ -66,65 +65,45 @@ public class LoginController {
     @FXML
     private void handleLogin(ActionEvent event) throws IOException {
         Stage stage;
-        Parent root;
 
-        String user = username.getText();
-        String password = pass.getText();
+        String username = usernameField.getText();
+        String password = passwordField.getText();
         incorrectText.setVisible(false);
-        String status = "Incorrect username or password";
 
         //set up flashing text
         FadeTransition fadeTransition = new FadeTransition(Duration.millis(200), anchorPane);
         fadeTransition.setFromValue(0.5);
         fadeTransition.setToValue(1.0);
-        fadeTransition.setCycleCount(3);
+        fadeTransition.setCycleCount(1);
 
         //closes login popup
         if (event.getSource() == btnCancel) {
             stage = (Stage) btnCancel.getScene().getWindow();
             stage.close();
-
-        //login as Doctor
         } else if (event.getSource() == login) {
-            if (user.equals("Doctor") && password.equals("Doctor")) {
-                status = "Doctor";
-
-                stage = (Stage) login.getScene().getWindow();
-                stage.close();
-                stage = (Stage) stage.getOwner(); //Gets the owner of the popup (AKA our homescreen) in order to set that as the stage
-
-                //stage.close();
-                root = loaderHelper.getFXMLLoader("StaffView").load();
-                loaderHelper.setupScene(new Scene(root));
-
-            //login as nurse
-            } else if (user.equals("Nurse") && password.equals("Nurse")) {
-                status = "Nurse";
-                stage = (Stage) login.getScene().getWindow();
-
-                stage.close();
-                stage = (Stage) stage.getOwner();
-
-                root = loaderHelper.getFXMLLoader("StaffView").load();
-                loaderHelper.setupScene(new Scene(root));
-
-            //login  as Admin
-            } else if (user.equals("Admin") && password.equals("Admin")) {
-                status = "Admin";
-                stage = (Stage) login.getScene().getWindow();
-
-                stage.close();
-                stage = (Stage) stage.getOwner();
-
-                root = loaderHelper.getFXMLLoader("AdminView").load();
-                loaderHelper.setupScene(new Scene(root));
-            } else {
-                incorrectText.setVisible(true);
-                fadeTransition.play();
-            }
-            System.out.println(status);
-            pass.clear();
-            username.clear();
+            loginManager.logIn(username, password);
+            if (loginManager.isAuthenticated()) {
+				((Stage) login.getScene().getWindow()).close();
+				String view;
+            	switch (loginManager.getCurrentUser().getAcctType()) {
+					default:
+					case "0":
+					case "1":
+					case "2": {
+						view = "StaffView";
+					}
+					break;
+					case "3": {
+						view = "AdminView";
+					}
+				}
+				loaderHelper.setupScene(new Scene(loaderHelper.getFXMLLoader(view).load()));
+			} else {
+				incorrectText.setVisible(true);
+				fadeTransition.play();
+			}
+            usernameField.clear();
+			passwordField.clear();
         }
     }
 }
