@@ -7,33 +7,19 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 public interface IDatabaseService {
-	void startService();
-
-	void stopService();
-
 	void connect(Properties props);
 
-	void disconnect();
+	ResultSet executeQuery(SQLEntry query);
 
-	ResultSet executeQuery(String query, ArrayList<String> values);
+	ArrayList<ResultSet> executeQueries(ArrayList<SQLEntry> queries);
 
-	ResultSet executeQuery(String query);
+	int executeUpdate(SQLEntry update);
 
-	ArrayList<ResultSet> executeQueries(ArrayList<String> queries, ArrayList<ArrayList<String>> valuesList);
+	ArrayList<Integer> executeUpdates(ArrayList<SQLEntry> updates);
 
-	ArrayList<ResultSet> executeQueries(ArrayList<String> queries);
+	PreparedStatement fillPreparedStatement(SQLEntry entry);
 
-	int executeUpdate(String update, ArrayList<String> values);
-
-	int executeUpdate(String update);
-
-	int executeUpdates(ArrayList<String> updates, ArrayList<ArrayList<String>> valuesList);
-
-	int executeUpdates(ArrayList<String> updates);
-
-	PreparedStatement fillPreparedStatement(String query, ArrayList<String> values);
-
-	void buildDatabase();
+	void rebuildDatabase();
 
 	void populateFromCSV(String csvFile, String update);
 
@@ -42,12 +28,4 @@ public interface IDatabaseService {
 	ArrayList<String> getColumnNames(ResultSet resSet);
 
 	ArrayList<ArrayList<String>> getTableFromResultSet(ResultSet resSet);
-
-	void collectUsedResultSet(ResultSet resSet);
-
-	void collectUsedResultSets(ArrayList<ResultSet> resSets);
-
-	void collectUsedStatement(Statement stmt);
-
-	void collectUsedStatements(ArrayList<Statement> stmt);
 }

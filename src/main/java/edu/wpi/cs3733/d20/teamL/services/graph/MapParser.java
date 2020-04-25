@@ -106,17 +106,4 @@ public class MapParser {
 
         return null;
     }
-
-    /**
-     * Gets all nodes from the cache and converts it into a graph
-     *
-     * @return a graph containing all node from cache
-     */
-    public static Graph getGraphFromCache() {
-        Graph newGraph = new Graph();
-
-        newGraph.addAllNodes(dbCache.getNodeCache());
-
-        return newGraph;
-    }
 }

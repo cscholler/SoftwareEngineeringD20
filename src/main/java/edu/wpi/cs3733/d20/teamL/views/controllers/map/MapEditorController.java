@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.services.db.IDBCache;
+import edu.wpi.cs3733.d20.teamL.services.graph.Graph;
 import edu.wpi.cs3733.d20.teamL.services.graph.Path;
 import edu.wpi.cs3733.d20.teamL.services.graph.PathFinder;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
@@ -142,13 +143,13 @@ public class MapEditorController {
 
 
     @FXML
-    void quit() {
+    private void quit() {
         cache.updateDB();
         Platform.exit();
     }
 
     @FXML
-    void saveToDB() {
+    private void saveToDB() {
         ArrayList<Node> nodes = new ArrayList<>(map.getGraph().getNodes());
         ArrayList<Edge> blackList = new ArrayList<>();
         ArrayList<Edge> newEdges = new ArrayList<>();
@@ -203,9 +204,11 @@ public class MapEditorController {
     }
 
     @FXML
-    void openFromDB() {
+    private void openFromDB() {
         cache.cacheAllFromDB();
-        map.setGraph(MapParser.getGraphFromCache());
+        Graph newGraph = new Graph();
+        newGraph.addAllNodes(cache.getNodeCache());
+        map.setGraph(newGraph);
     }
 
     @FXML

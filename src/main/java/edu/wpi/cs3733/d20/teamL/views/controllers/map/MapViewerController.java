@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.db.IDBCache;
+import edu.wpi.cs3733.d20.teamL.services.graph.Graph;
 import edu.wpi.cs3733.d20.teamL.services.graph.MapParser;
 import edu.wpi.cs3733.d20.teamL.services.graph.Path;
 import edu.wpi.cs3733.d20.teamL.services.graph.PathFinder;
@@ -59,7 +60,9 @@ public class MapViewerController {
 
         map.setEditable(false);
 
-        map.setGraph(MapParser.getGraphFromCache());
+        Graph newGraph = new Graph();
+        newGraph.addAllNodes(dbCache.getNodeCache());
+        map.setGraph(newGraph);
 
         map.setZoomLevel(1);
         map.init();

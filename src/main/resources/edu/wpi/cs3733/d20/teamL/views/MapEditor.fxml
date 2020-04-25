@@ -70,7 +70,7 @@
                                                 <ImageView fitHeight="20.0" fitWidth="17.0" pickOnBounds="true"
                                                            preserveRatio="true">
                                                     <image>
-                                                        <Image url="@../assets/Cursor_placeholder.png"/>
+                                                        <Image url="@../assets/map icons/Cursor_placeholder.png"/>
                                                     </image>
                                                 </ImageView>
                                             </graphic>
@@ -80,7 +80,7 @@
                                                 <ImageView fitHeight="20.0" fitWidth="21.0" pickOnBounds="true"
                                                            preserveRatio="true">
                                                     <image>
-                                                        <Image url="@../assets/Eraser_Placeholder.png"/>
+                                                        <Image url="@../assets/map icons/Eraser_Placeholder.png"/>
                                                     </image>
                                                 </ImageView>
                                             </graphic>
