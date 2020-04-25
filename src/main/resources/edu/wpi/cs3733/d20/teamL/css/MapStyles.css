@@ -7,3 +7,8 @@
     -fx-padding: 10;
     -fx-background-color: grey;
 }
+
+
+.editorPaneVbox {
+    -fx-pref-height: 90px;
+}
