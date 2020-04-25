@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -29,7 +31,7 @@
    <center>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox alignment="TOP_CENTER" prefHeight="617.0" prefWidth="451.0">
+            <VBox alignment="CENTER" prefHeight="617.0" prefWidth="451.0">
                <children>
                   <GridPane vgap="15.0">
                     <columnConstraints>
@@ -49,15 +51,21 @@
                               <Font size="30.0" />
                            </font>
                         </Label>
-                        <JFXTextField prefWidth="200.0" promptText="Type Service Subject" GridPane.columnIndex="1">
+                        <JFXTextField prefWidth="200.0" promptText="Brief summary of the request" GridPane.columnIndex="1">
                            <padding>
                               <Insets left="10.0" />
                            </padding>
+                           <font>
+                              <Font size="15.0" />
+                           </font>
                         </JFXTextField>
                         <JFXTextField prefWidth="200.0" promptText="Room/Closest Room" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <padding>
                               <Insets left="10.0" />
                            </padding>
+                           <font>
+                              <Font size="15.0" />
+                           </font>
                         </JFXTextField>
                         <Label text="Location:" textFill="WHITE" GridPane.rowIndex="1">
                            <font>
@@ -75,12 +83,50 @@
                               <Insets left="10.0" />
                            </padding>
                         </JFXComboBox>
-                        <Label text="Label" GridPane.rowIndex="4" />
                      </children>
                      <padding>
                         <Insets top="15.0" />
                      </padding>
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin>
                   </GridPane>
+                  <Label prefHeight="45.0" prefWidth="253.0" text="Additional Notes:" textFill="WHITE" />
+                  <JFXTextArea prefHeight="192.0" prefWidth="451.0" promptText="Write additional important details here" styleClass="text-field">
+                     <padding>
+                        <Insets left="10.0" top="10.0" />
+                     </padding>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </JFXTextArea>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <JFXButton buttonType="RAISED" prefHeight="40.0" prefWidth="100.0" text="Back" textFill="WHITE">
+                                 <HBox.margin>
+                                    <Insets right="50.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </JFXButton>
+                              <JFXButton buttonType="RAISED" prefHeight="40.0" prefWidth="100.0" text="Submit" textFill="WHITE">
+                                 <HBox.margin>
+                                    <Insets left="50.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </JFXButton>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                  </VBox>
                </children>
             </VBox>
          </children>

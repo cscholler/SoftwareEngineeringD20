@@ -24,3 +24,8 @@
     -fx-pref-height: 40px;
 }
 
+.text-area {
+    -fx-background-color: white;
+    -fx-pref-height: 150px;
+}
+
