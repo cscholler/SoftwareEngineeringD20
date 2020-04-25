@@ -144,8 +144,8 @@ public class DBConstants {
 					"VALUES(?, ?, ?)";
 
 	public static final String ADD_USER =
-			"INSERT INTO Employees(id, username, password, acct_type, last_login)" +
-					"VALUES(?, ?, ?, ?, ?)";
+			"INSERT INTO Users(f_name, l_name, username, password, acct_type, services)" +
+					"VALUES(?, ?, ?, ?, ?, ?)";
 
 	public static final String ADD_DOCTOR =
 			"INSERT INTO Doctors(id, f_name, l_name, email, office_id)" +
@@ -181,16 +181,16 @@ public class DBConstants {
 
 	public static final String SELECT_ALL_USERS =
 			"SELECT * " +
-					"FROM Employees";
+					"FROM Users";
 
 	public static final String GET_USER =
-			"SELECT id, username, f_name, l_name, acct_type " +
-					"FROM Employees " +
+			"SELECT id, f_name, l_name, username, acct_type, services " +
+					"FROM Users " +
 					"WHERE username = ? AND password = ?";
 
 	public static final String GET_USER_BY_ID =
 			"SELECT id, username, f_name, l_name, acct_type " +
-					"FROM Employees " +
+					"FROM Users " +
 					"WHERE id = ?";
 
 	public static final String GET_DOCTOR_ID =
@@ -239,22 +239,22 @@ public class DBConstants {
 					"WHERE id = ?";
 
 	public static final String UPDATE_USER_NAME =
-			"UPDATE Employees " +
+			"UPDATE Users " +
 					"SET f_name = ?, l_name = ? " +
 					"WHERE id = ?";
 
 	public static final String UPDATE_USER_PASSWORD =
-			"UPDATE Employees " +
+			"UPDATE Users " +
 					"SET password = ? " +
 					"WHERE id = ?";
 
 	public static final String UPDATE_USER_ACCT_TYPE =
-			"UPDATE Employees " +
+			"UPDATE Users " +
 					"SET acct_type = ? " +
 					"WHERE id = ?";
 
 	public static final String UPDATE_LAST_USER_LOGIN =
-			"UPDATE Employees " +
+			"UPDATE Users " +
 					"SET last_login = ? " +
 					"WHERE id = ?";
 

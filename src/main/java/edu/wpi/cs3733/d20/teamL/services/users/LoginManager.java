@@ -42,8 +42,8 @@ public class LoginManager extends Service implements ILoginManager {
 		if (results.size() == 1) {
 			ArrayList<String> userInfo = results.get(0);
 			currentUser = new User(userInfo.get(0), userInfo.get(1), userInfo.get(2), userInfo.get(3), userInfo.get(4), userInfo.get(5));
-			String currentDateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
-			db.executeUpdate(new SQLEntry(DBConstants.UPDATE_LAST_USER_LOGIN, new ArrayList<>(Arrays.asList(currentDateAndTime, currentUser.getID()))));
+			isAuthenticated = true;
+			log.info("Signed in as " + currentUser.getUsername());
 		} else {
 			// No user found
 			log.warn("No user found with the given username and password");
