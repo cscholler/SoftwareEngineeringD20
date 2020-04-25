@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamL.entities;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,7 +18,10 @@ public class User {
 		this.lName = lName;
 		this.username = username;
 		this.acctType = acctType;
-		this.services = Arrays.asList(services.split(","));
+		if(services != null)
+			this.services = Arrays.asList(services.split(","));
+		else
+			this.services = new ArrayList<>();
 	}
 
 	public String getID() {
