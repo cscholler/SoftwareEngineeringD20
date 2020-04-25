@@ -31,20 +31,31 @@ public class DatabaseService extends Service implements IDatabaseService {
 		this.serviceName = DBConstants.SERVICE_NAME;
 	}
 
+	/**
+	 * Starts the database service
+	 */
 	@Override
 	protected void startService() {
 		if (connection == null) {
 			connect(props);
 		}
 		// Uncomment if database needs to be rebuilt
-		rebuildDatabase();
+		//rebuildDatabase();
 	}
 
+	/**
+	 * Stops the database service
+	 */
 	@Override
 	public void stopService() {
 		disconnect();
 	}
 
+	/**
+	 * Connects to the database with optional username and password
+	 *
+	 * @param props Username and password properties
+	 */
 	@Override
 	public void connect(Properties props) {
 		try {
@@ -65,6 +76,9 @@ public class DatabaseService extends Service implements IDatabaseService {
 		}
 	}
 
+	/**
+	 * Disconnects from the database if currently connected
+	 */
 	protected void disconnect() {
 		try {
 			if (connection != null) {
@@ -78,6 +92,12 @@ public class DatabaseService extends Service implements IDatabaseService {
 		}
 	}
 
+	/**
+	 * Executes an SQL query
+	 *
+	 * @param query The query to be executed, including its values if the query is a prepared statement
+	 * @return A result set containing the results of the query
+	 */
 	@Override
 	public ResultSet executeQuery(SQLEntry query) {
 		ResultSet resSet = null;
@@ -96,6 +116,12 @@ public class DatabaseService extends Service implements IDatabaseService {
 		return resSet;
 	}
 
+	/**
+	 * Executes a list of SQL queries
+	 *
+	 * @param queries A list of queries to be executed, including their values if they are prepared statements
+	 * @return A list of result sets containing the results of each query
+	 */
 	@Override
 	public ArrayList<ResultSet> executeQueries(ArrayList<SQLEntry> queries) {
 		ArrayList<ResultSet> resSets = new ArrayList<>();
@@ -105,6 +131,12 @@ public class DatabaseService extends Service implements IDatabaseService {
 		return resSets;
 	}
 
+	/**
+	 * Executes an SQL update
+	 *
+	 * @param update The update to be executed, including its values if the update is a prepared statement
+	 * @return The number of rows affected by the update
+	 */
 	@Override
 	public int executeUpdate(SQLEntry update) {
 		int numRowsAffected = 0;
@@ -124,6 +156,12 @@ public class DatabaseService extends Service implements IDatabaseService {
 		return numRowsAffected;
 	}
 
+	/**
+	 * Executes a list of SQL updates
+	 *
+	 * @param updates A list of updates to be executed, including their values if they are prepared statements
+	 * @return A list of the number of rows affected by each update in the list
+	 */
 	@Override
 	public ArrayList<Integer> executeUpdates(ArrayList<SQLEntry> updates) {
 		ArrayList<Integer> affectedRows = new ArrayList<>();
@@ -133,13 +171,23 @@ public class DatabaseService extends Service implements IDatabaseService {
 		return affectedRows;
 	}
 
+	/**
+	 * Fills a prepared statement with the supplied values
+	 *
+	 * @param command The SQL command to be processed
+	 * @return A fully processed prepared statement ready to be executed
+	 */
 	@Override
-	public PreparedStatement fillPreparedStatement(SQLEntry entry) {
+	public PreparedStatement fillPreparedStatement(SQLEntry command) {
 		PreparedStatement pStmt = null;
+		if (command.getValues().size() == 0) {
+			// TODO: replace with custom exception
+			throw new IllegalArgumentException();
+		}
 		try {
-			pStmt = connection.prepareStatement(entry.getStatement());
-			for (int i = 0; i < entry.getValues().size(); i++) {
-				pStmt.setString(i + 1, entry.getValues().get(i));
+			pStmt = connection.prepareStatement(command.getStatement());
+			for (int i = 0; i < command.getValues().size(); i++) {
+				pStmt.setString(i + 1, command.getValues().get(i));
 			}
 		} catch (SQLException ex) {
 			log.error("Encountered SQLException.", ex);
@@ -147,6 +195,9 @@ public class DatabaseService extends Service implements IDatabaseService {
 		return pStmt;
 	}
 
+	/**
+	 * Rebuilds the database by dropping and re-creating all tables then adding the default nodes and edges from CSV files
+	 */
 	@Override
 	public void rebuildDatabase() {
 		ArrayList<SQLEntry> updates = new ArrayList<>();
@@ -156,8 +207,8 @@ public class DatabaseService extends Service implements IDatabaseService {
 		updates.add(new SQLEntry(DBConstants.createPatientTable, new ArrayList<>()));
 		updates.add(new SQLEntry(DBConstants.createMedicationRequestTable, new ArrayList<>()));
 		updates.add(new SQLEntry(DBConstants.createUserTable, new ArrayList<>()));
-		executeUpdates(updates);
 		dropTables();
+		executeUpdates(updates);
 		populateFromCSV("MapLnodesFloor2", DBConstants.addNode);
 		populateFromCSV("MapLedgesFloor2", DBConstants.addEdge);
 	}
@@ -172,6 +223,9 @@ public class DatabaseService extends Service implements IDatabaseService {
 		executeUpdates(updates);
 	}
 
+	/**
+	 * Drops all the tables in the database if they currently exist
+	 */
 	@Override
 	public void dropTables() {
 		ResultSet resSet;
@@ -200,7 +254,12 @@ public class DatabaseService extends Service implements IDatabaseService {
 		}
 	}
 
-
+	/**
+	 * Determines the titles of the columns of a table based on a result set
+	 *
+	 * @param resSet The result set that determines the table to find the column titles of
+	 * @return A list of the titles of the columns in the table
+	 */
 	@Override
 	public ArrayList<String> getColumnNames(ResultSet resSet) {
 		ArrayList<String> colLabels = new ArrayList<>();
@@ -215,6 +274,12 @@ public class DatabaseService extends Service implements IDatabaseService {
 		return colLabels;
 	}
 
+	/**
+	 * Converts a result set into a table
+	 *
+	 * @param resSet The result set to build the table from
+	 * @return The table represented by a list of lists of strings
+	 */
 	@Override
 	public ArrayList<ArrayList<String>> getTableFromResultSet(ResultSet resSet) {
 		ArrayList<ArrayList<String>> table = new ArrayList<>();
