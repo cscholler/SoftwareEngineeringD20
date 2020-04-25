@@ -2,6 +2,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import javafx.fxml.FXML;
@@ -26,8 +27,8 @@ import edu.wpi.cs3733.d20.teamL.services.graph.Graph;
 import edu.wpi.cs3733.d20.teamL.services.graph.Path;
 import edu.wpi.cs3733.d20.teamL.services.graph.PathFinder;
 import edu.wpi.cs3733.d20.teamL.services.mail.IMailerService;
-import edu.wpi.cs3733.d20.teamL.services.search.SearchFields;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import edu.wpi.cs3733.d20.teamL.services.search.SearchFields;
 import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
 import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
 import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
@@ -156,7 +157,14 @@ public class MapViewerController {
         map.getSelector().add(nodeGUI);
         nodeGUI.setHighlighted(true);
 
-        return path.generateTextMessage();
+        ArrayList<String> message = path.generateTextMessage();
+        StringBuilder builder = new StringBuilder();
+
+        for(String direction : message) {
+            builder.append(direction + "\n\n");
+        }
+
+        return builder.toString();
     }
 
     public MapPane getMap() {

@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamL.services.graph;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -111,47 +112,91 @@ public class Path implements Iterable<Node> {
         return newPath;
     }
 
-    public String generateTextMessage() {
-        StringBuilder message = new StringBuilder();
+    public ArrayList<String> generateTextMessage() {
+        ArrayList<String> message = new ArrayList<>();
         Point2D start, end;
         Node prev, curr, next;
+        Node goal = pathNodes.get(pathNodes.size()-1);
         double angle;
-        boolean wasStraight = true;
-        String sign = "right";
-        boolean empty = true;
+        String sign;
+        String lastRoom = null;
+        int lefts = 0;
+        int rights = 0;
+        boolean foundAdjRoom;
+        boolean lastStatement = true;
 
         for (int i = 1; i < pathNodes.size() - 1; i++) {
             prev = pathNodes.get(i-1);
             curr = pathNodes.get(i);
             next = pathNodes.get(i+1);
 
-            start = new Point2D(curr.getPosition().getX() - prev.getPosition().getX(), curr.getPosition().getY() - prev.getPosition().getY());
-            end = new Point2D(next.getPosition().getX() - curr.getPosition().getX(), next.getPosition().getY() - curr.getPosition().getY());
+            start = delta(prev, curr);
+            end = delta(curr, next);
             angle = start.angle(end);
 
-            sign = determineDirection(start, end);
-
             if(angle > 10) {
-                if (empty) {
-                    message.append("Head towards " + curr.getLongName() + ".\n\n");
-                    empty = false;
+                StringBuilder builder = new StringBuilder();
+                sign = determineDirection(start, end);
+
+                if(lastRoom != null) {
+                    builder.append("After you pass the " + parseLongName(lastRoom) + ", take ");
+                } else builder.append("Continue forward and take ");
+
+                if(lefts > 0 && sign.equals("left")) {
+                    builder.append("the " + enumCounter(lefts+1) + " left");
+                } else if (rights > 0 && sign.equals("right")) {
+                    builder.append("the " + enumCounter(rights+1) + " right");
+                } else {
+                    builder.append("the next " + turnAmount(angle) + sign);
                 }
-                message.append("Once you reach " + curr.getLongName() + ", ");
 
-                if(angle < 45) message.append("take a slight ");
-                else if (angle > 95) message.append("take a sharp ");
-                else message.append("turn ");
+                if (next.equals(goal)) {
+                    builder.append(" to the " + parseLongName(goal.getLongName()));
+                    lastStatement = false;
+                }
+                builder.append(".");
 
-                if( next.getType().equals("HALL")) message.append(sign + " and continue down the hall.\n\n");
-                else message.append(sign + " towards " + next.getLongName() + ".\n\n");
-            } else if(angle <= 10 && !curr.getType().equals("HALL")) {
-                message.append("Pass straight though the " + curr.getLongName() + ".\n\n");
+                lastRoom = null;
+                rights = 0;
+                lefts = 0;
+
+                message.add(builder.toString());
+
+            } else {
+                if(!curr.getType().equals("HALL")) {
+                    lefts = 0;
+                    rights = 0;
+                    message.add("Cut straight through the " + curr.getLongName() + ".");
+                }
+                else {
+                    foundAdjRoom = false;
+                    for (Node adj : curr.getNeighbors()) {
+                        if (!adj.equals(prev) && !adj.equals(next)) {
+                            if(adj.getType().equals("HALL")) {
+                                Point2D adjEnd = delta(curr, adj);
+                                String adjSign = determineDirection(start, adjEnd);
+                                if(adjSign.equals("right")) rights ++;
+                                else lefts ++;
+                            } else {
+                                lastRoom = adj.getLongName();
+                                foundAdjRoom = true;
+                            }
+                        }
+                    } if(foundAdjRoom) {
+                        lefts = 0;
+                        rights = 0;
+                    }
+                }
             }
         }
 
-        message.append("Continue straight until your destination at " + pathNodes.get(pathNodes.size()-1).getLongName() + ".");
+        if(lastStatement) message.add("Continue straight until your destination at " + goal.getLongName() + ".");
 
-        return message.toString();
+        return message;
+    }
+
+    private Point2D delta(Node curr, Node next) {
+        return new Point2D(next.getPosition().getX() - curr.getPosition().getX(), next.getPosition().getY() - curr.getPosition().getY());
     }
 
     private String determineDirection(Point2D start, Point2D end) {
@@ -160,4 +205,37 @@ public class Path implements Iterable<Node> {
         return "right";
     }
 
+    private String enumCounter(int num) {
+        switch (num) {
+            case 1: return "1st";
+            case 2: return "2nd";
+            case 3: return "3rd";
+            default: return num + "th";
+        }
+    }
+
+    private String turnAmount(double angle) {
+        if(angle < 45) return "slight ";
+        else if (angle > 95) return "sharp ";
+        else return "";
+    }
+
+    private String parseLongName(String name) {
+        for(int i = 0; i < name.length() - 1; i++) {
+            if(checkNumber(name.substring(i, i+1))) {
+                return name.substring(0, i-1).toLowerCase();
+            }
+        }
+
+        return name;
+    }
+
+    private boolean checkNumber(String s) {
+        try {
+            double test = Double.parseDouble(s);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return true;
+    }
 }
