@@ -20,6 +20,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -116,7 +117,7 @@
         </VBox>
     </top>
     <center>
-        <MapPane prefHeight="150.0" prefWidth="200.0" fx:id="map" onAction="#myCustomAction"/>
+
     </center>
    <right>
       <VBox fx:id="editor" minWidth="-Infinity" prefHeight="650.0" prefWidth="200.0" style="-fx-background-color: #0D2E57 #0D2E57;" BorderPane.alignment="CENTER">
@@ -253,28 +254,104 @@
          </children>
       </VBox>
    </right>
-   <left>
-      <VBox alignment="TOP_CENTER" prefHeight="648.0" prefWidth="70.0" spacing="15.0" BorderPane.alignment="CENTER">
+   <center>
+      <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <JFXNodesList fx:id="saveNodesList">
-               <children>
-                  <JFXButton fx:id="saveOptions" buttonType="RAISED" styleClass="nodeListButton" text=" " />
-                  <JFXButton fx:id="saveDBButton" styleClass="nodeListButton" />
-               </children>
-            </JFXNodesList>
-            <JFXNodesList fx:id="loadNodesList">
-               <children>
-                  <JFXButton fx:id="loadOptions" buttonType="RAISED" styleClass="nodeListButton" text=" " />
-               </children>
-            </JFXNodesList>
-            <JFXNodesList fx:id="pathNodesList" alignment="TOP_CENTER" prefHeight="16.0" prefWidth="10.0">
-               <children>
-                  <JFXButton fx:id="pathfindingOptions" buttonType="RAISED" styleClass="nodeListButton" text=" " />
-               </children>
-            </JFXNodesList>
+             <MapPane prefHeight="150.0" prefWidth="200.0" fx:id="map" onAction="#myCustomAction"/>
+            <BorderPane prefHeight="200.0" prefWidth="200.0">
+               <left>
+                  <VBox alignment="TOP_CENTER" prefHeight="648.0" prefWidth="70.0" spacing="15.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <JFXNodesList fx:id="saveNodesList" rotate="270.0" spacing="10.0">
+                           <children>
+                              <JFXButton fx:id="saveOptions" buttonType="RAISED" styleClass="nodeListButton" text=" " />
+                              <JFXButton fx:id="saveDBButton" styleClass="nodeListButton" />
+                              <JFXButton fx:id="saveDBButton1" layoutX="10.0" layoutY="70.0" styleClass="nodeListButton" />
+                           </children>
+                        </JFXNodesList>
+                        <JFXNodesList fx:id="loadNodesList" rotate="270.0" spacing="10.0">
+                           <children>
+                              <JFXButton fx:id="loadOptions" buttonType="RAISED" styleClass="nodeListButton" text=" " />
+                              <JFXButton fx:id="loadOptions1" buttonType="RAISED" layoutX="10.0" layoutY="10.0" styleClass="nodeListButton" text=" " />
+                              <JFXButton fx:id="loadOptions11" buttonType="RAISED" layoutX="10.0" layoutY="60.0" styleClass="nodeListButton" text=" " />
+                           </children>
+                        </JFXNodesList>
+                        <JFXNodesList fx:id="pathNodesList" alignment="TOP_CENTER" prefHeight="16.0" prefWidth="10.0" rotate="270.0" spacing="10.0">
+                           <children>
+                              <JFXButton fx:id="pathfindingOptions" buttonType="RAISED" styleClass="nodeListButton" text=" " />
+                              <JFXButton fx:id="pathfindingOptions1" buttonType="RAISED" layoutX="10.0" layoutY="10.0" styleClass="nodeListButton" text=" " />
+                              <JFXButton fx:id="pathfindingOptions11" buttonType="RAISED" layoutX="10.0" layoutY="60.0" styleClass="nodeListButton" text=" " />
+                              <JFXButton fx:id="pathfindingOptions111" buttonType="RAISED" layoutX="10.0" layoutY="110.0" styleClass="nodeListButton" text=" " />
+                           </children>
+                        </JFXNodesList>
+                        <JFXButton fx:id="pathfindingOptions112" buttonType="RAISED" styleClass="nodeListButton" text=" " />
+                     </children>
+                     <BorderPane.margin>
+                        <Insets top="10.0" />
+                     </BorderPane.margin>
+                  </VBox>
+               </left>
+               <bottom>
+                  <HBox spacing="10.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <JFXNodesList rotate="270.0" spacing="10.0">
+                           <children>
+                              <Button mnemonicParsing="false" styleClass="nodeListButton" text="+">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Button>
+                              <Button mnemonicParsing="false" styleClass="nodeTypeButton" text=" " />
+                              <Button layoutX="15.0" layoutY="60.0" mnemonicParsing="false" styleClass="nodeTypeButton" text=" " />
+                              <Button layoutX="15.0" layoutY="103.0" mnemonicParsing="false" styleClass="nodeTypeButton" text=" " />
+                              <Button layoutX="15.0" layoutY="146.0" mnemonicParsing="false" styleClass="nodeTypeButton" text=" " />
+                              <Button layoutX="15.0" layoutY="146.0" mnemonicParsing="false" styleClass="nodeTypeButton" text=" " />
+                              <Button layoutX="15.0" layoutY="233.0" mnemonicParsing="false" styleClass="nodeTypeButton" text=" " />
+                              <Button layoutX="15.0" layoutY="276.0" mnemonicParsing="false" styleClass="nodeTypeButton" text=" " />
+                              <Button layoutX="15.0" layoutY="319.0" mnemonicParsing="false" styleClass="nodeTypeButton" text=" " />
+                              <Button layoutX="15.0" layoutY="362.0" mnemonicParsing="false" styleClass="nodeTypeButton" text=" " />
+                              <Button layoutX="15.0" layoutY="406.0" mnemonicParsing="false" styleClass="nodeTypeButton" text=" " />
+                              <Button layoutX="15.0" layoutY="449.0" mnemonicParsing="false" styleClass="nodeTypeButton" text=" " />
+                           </children>
+                           <HBox.margin>
+                              <Insets bottom="10.0" />
+                           </HBox.margin>
+                        </JFXNodesList>
+                     </children>
+                     <BorderPane.margin>
+                        <Insets bottom="10.0" left="10.0" />
+                     </BorderPane.margin>
+                  </HBox>
+               </bottom>
+               <right>
+                  <VBox BorderPane.alignment="CENTER">
+                     <children>
+                        <JFXButton buttonType="RAISED" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 20 20 0 0;" styleClass="floorChangeButton" text="UP" textFill="WHITE" />
+                        <JFXButton buttonType="RAISED" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 0 0 20 20;" styleClass="floorChangeButton" text="DN" textFill="WHITE" />
+                     </children>
+                     <BorderPane.margin>
+                        <Insets right="20.0" top="5.0" />
+                     </BorderPane.margin>
+                  </VBox>
+               </right>
+               <top>
+                  <HBox alignment="TOP_CENTER" BorderPane.alignment="CENTER">
+                     <children>
+                        <JFXTextField focusColor="#0d2057" promptText="Starting Point" styleClass="text-field" unFocusColor="#ffffff00">
+                           <HBox.margin>
+                              <Insets right="25.0" />
+                           </HBox.margin>
+                        </JFXTextField>
+                        <JFXTextField focusColor="#0d2057" promptText="Destination" styleClass="text-field" unFocusColor="#ffffff00">
+                           <HBox.margin>
+                              <Insets left="25.0" />
+                           </HBox.margin>
+                        </JFXTextField>
+                     </children>
+                  </HBox>
+               </top>
+            </BorderPane>
          </children>
-         <BorderPane.margin>
-            <Insets top="10.0" />
-         </BorderPane.margin></VBox>
-   </left>
+      </StackPane>
+   </center>
 </BorderPane>

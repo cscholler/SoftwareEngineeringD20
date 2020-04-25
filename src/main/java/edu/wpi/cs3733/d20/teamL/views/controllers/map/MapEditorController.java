@@ -118,7 +118,7 @@ public class MapEditorController {
 
         map.recalculatePositions();
 
-        saveNodesList.addAnimatedNode(saveDBButton);
+        //saveNodesList.addAnimatedNode(saveDBButton);
 	}
 
     /**
