@@ -4,9 +4,10 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import javax.inject.Inject;
 
 import javafx.geometry.Point2D;
+
+import com.google.inject.Inject;
 
 import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
@@ -19,7 +20,6 @@ public class DatabaseCache implements IDatabaseCache {
     private ArrayList<Edge> addedEdges = new ArrayList<>();
     private ArrayList<Node> deletedNodes = new ArrayList<>();
     private ArrayList<Edge> deletedEdges = new ArrayList<>();
-
     @Inject
     private IDatabaseService db;
 

@@ -40,11 +40,11 @@ public class LoginController {
 
     /**
      * logs the user in when the enter key is pressed
-     * @param e Tracks which key is pressed
+     * @param event Tracks which key is pressed
      */
     @FXML
-    private void enterHandle(KeyEvent e) {
-        if(e.getCode() == KeyCode.ENTER) {
+    private void enterHandle(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
             //"presses" the login button
             login.fire();
         }
@@ -60,11 +60,11 @@ public class LoginController {
 
     /**
      * Controls the login feature setting usernames and passwords and only accepting correct usernames and passwords
-     * @param e Tracks which button is pressed
+     * @param event Tracks which button is pressed
      * @throws IOException
      */
     @FXML
-    private void handleLogin(ActionEvent e) throws IOException {
+    private void handleLogin(ActionEvent event) throws IOException {
         Stage stage;
         Parent root;
 
@@ -80,12 +80,12 @@ public class LoginController {
         fadeTransition.setCycleCount(3);
 
         //closes login popup
-        if (e.getSource() == btnCancel) {
+        if (event.getSource() == btnCancel) {
             stage = (Stage) btnCancel.getScene().getWindow();
             stage.close();
 
         //login as Doctor
-        } else if (e.getSource() == login) {
+        } else if (event.getSource() == login) {
             if (user.equals("Doctor") && password.equals("Doctor")) {
                 status = "Doctor";
 
