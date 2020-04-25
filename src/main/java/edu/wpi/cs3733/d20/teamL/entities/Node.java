@@ -37,9 +37,9 @@ public class Node {
         this.id = id;
         this.position = position;
         this.floor = floor;
-        this.shortName = "Temp Hall";
-        this.longName = "Temp Hallway Intersection X Level " + floor;
-        this.type = "HALL";
+        this.shortName = "Hall";
+        this.longName = "Hallway Intersection X Level " + floor;
+        this.type = "HALL L" + floor + "XXX";
         this.building = building;
     }
 

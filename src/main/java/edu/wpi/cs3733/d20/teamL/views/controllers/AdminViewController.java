@@ -2,19 +2,13 @@ package edu.wpi.cs3733.d20.teamL.views.controllers;
 
 import java.io.IOException;
 
-import edu.wpi.cs3733.d20.teamL.views.controllers.map.MapEditorController;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.stage.Stage;
 
-import com.jfoenix.controls.JFXButton;
+import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class AdminViewController {

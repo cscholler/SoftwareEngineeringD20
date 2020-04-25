@@ -1,12 +1,15 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers;
 
-import com.jfoenix.controls.JFXAutoCompletePopup;
-import com.jfoenix.controls.JFXTextField;
-import edu.wpi.cs3733.d20.teamL.services.navSearch.SearchFields;
-import edu.wpi.cs3733.d20.teamL.services.db.IDBCache;
+import java.io.IOException;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
+import javax.inject.Inject;
 
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
-import edu.wpi.cs3733.d20.teamL.views.controllers.map.MapViewerController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,13 +22,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+
+import com.jfoenix.controls.JFXAutoCompletePopup;
+import com.jfoenix.controls.JFXTextField;
+
 import lombok.extern.slf4j.Slf4j;
 
-import javax.inject.Inject;
-import java.io.IOException;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import edu.wpi.cs3733.d20.teamL.services.navSearch.SearchFields;
+import edu.wpi.cs3733.d20.teamL.services.db.IDBCache;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import edu.wpi.cs3733.d20.teamL.views.controllers.map.MapViewerController;
 
 @Slf4j
 public class NavigationController implements Initializable {

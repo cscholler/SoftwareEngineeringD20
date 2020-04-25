@@ -1,12 +1,14 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers;
 
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import java.io.IOException;
+
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 
 @Slf4j
 public class StaffViewController {
@@ -21,8 +23,8 @@ public class StaffViewController {
         try {
             Parent root = loaderHelper.getFXMLLoader("NotificationsPage").load();
             loaderHelper.setupScene(new Scene(root));
-        } catch (IOException e) {
-            log.error("Encountered IOException", e);
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
         }
     }
 

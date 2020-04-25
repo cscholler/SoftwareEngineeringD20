@@ -1,27 +1,5 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 
-import com.jfoenix.controls.JFXAutoCompletePopup;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTextField;
-import edu.wpi.cs3733.d20.teamL.App;
-import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
-import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
-import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
-import edu.wpi.cs3733.d20.teamL.services.navSearch.SearchFields;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
-import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
-import javafx.animation.FadeTransition;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import javafx.util.Duration;
-
-import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -29,6 +7,28 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.ResourceBundle;
+
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
+
+import com.google.inject.Inject;
+
+import com.jfoenix.controls.JFXAutoCompletePopup;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
+
+import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
+import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
+import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
+import edu.wpi.cs3733.d20.teamL.services.navSearch.SearchFields;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
 
 public class MedicationRequestController implements Initializable {
 	@Inject
@@ -98,10 +98,10 @@ public class MedicationRequestController implements Initializable {
             String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
 
 			// Adds request info to database
-			String doctorID = db.getTableFromResultSet(db.executeQuery(DBConstants.getDoctorID, new ArrayList<>(Arrays.asList(doctorFName, doctorLName)))).get(0).get(0);
-			String patientID = db.getTableFromResultSet(db.executeQuery(DBConstants.getPatientID, new ArrayList<>(Arrays.asList(patientFName, patientLName)))).get(0).get(0);
+			String doctorID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_DOCTOR_ID, new ArrayList<>(Arrays.asList(doctorFName, doctorLName))))).get(0).get(0);
+			String patientID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ID, new ArrayList<>(Arrays.asList(patientFName, patientLName))))).get(0).get(0);
 			// TODO: Get name of nurse from current user
-			int rows = db.executeUpdate(DBConstants.addMedicationRequest, new ArrayList<>(Arrays.asList(doctorID, patientID, "Nurse", dose, medType, additionalInfo, status, dateAndTime)));
+			int rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_MEDICATION_REQUEST, new ArrayList<>(Arrays.asList(doctorID, patientID, "Nurse", dose, medType, additionalInfo, status, dateAndTime))));
 			//formatter.reportQueryResults(db.executeQuery(DBConstants.selectAllMedicationRequests));
 			// TODO: Check if any info is invalid before sending request
 
@@ -125,6 +125,4 @@ public class MedicationRequestController implements Initializable {
             loaderHelper.showAndFade(confirmation);
         }
     }
-
-
 }
