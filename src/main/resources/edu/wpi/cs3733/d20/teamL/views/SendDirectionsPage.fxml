@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="297.0" maxWidth="432.0" minHeight="221.0" minWidth="432.0" prefHeight="297.0" prefWidth="433.0" styleClass="modalback" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.SendTextDirectionsController">
+<AnchorPane maxHeight="297.0" maxWidth="432.0" minHeight="221.0" minWidth="432.0" prefHeight="297.0" prefWidth="433.0" styleClass="modalback" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.SendTextDirectionsController">
     <children>
       <BorderPane prefHeight="297.0" prefWidth="432.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -34,7 +34,7 @@
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                      <children>
                         <JFXTextField fx:id="emailField" prefHeight="29.0" prefWidth="183.0" promptText="Enter Email" />
-                        <JFXButton id="buttons" fx:id="btnEmail" alignment="CENTER" buttonType="RAISED" prefHeight="36.0" prefWidth="110.0" ripplerFill="BLACK" style="-fx-background-color: #ed2d43;" text="Send Email" textAlignment="CENTER" textFill="WHITE">
+                        <JFXButton id="buttons" fx:id="btnEmail" alignment="CENTER" buttonType="RAISED" onAction="#handleSend" prefHeight="36.0" prefWidth="110.0" ripplerFill="BLACK" style="-fx-background-color: #ed2d43;" text="Send Email" textAlignment="CENTER" textFill="WHITE">
                            <font>
                               <Font size="13.0" />
                            </font>

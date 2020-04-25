@@ -11,7 +11,7 @@ public class Edge {
     private Node destination;
     private String id;
 
-    public HashMap<String, Object> data = new HashMap<>();
+    private HashMap<String, Object> data = new HashMap<>();
 
     public Edge(Node source, Node destination) {
         this.id = source.getID() + "_" + destination.getID();
@@ -61,6 +61,22 @@ public class Edge {
 
     public ArrayList<String> toArrayList() {
         return new ArrayList<>(Arrays.asList(getID(), getSource().getID(), getDestination().getID()));
+    }
+
+    /**
+     * Updates the edge ID to match new Node names
+     */
+    public void updateID() {
+        this.id = source.getID() + "_" + destination.getID();
+    }
+
+    /**
+     * Place to dump/get data where the Edge has no field for (ONLY fields not used in the Database)
+     *
+     * @return HashMap where key is the String of the object's name and the field is the object's value
+     */
+    public HashMap<String, Object> getData() {
+        return data;
     }
 
     /**

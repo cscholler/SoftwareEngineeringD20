@@ -12,6 +12,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -25,7 +26,6 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -65,6 +65,8 @@ public class MapPane extends StackPane {
     private Color nodeColor = Color.DARKBLUE;
     private Paint highLightColor = Color.rgb(20, 194, 247);
     private double highlightThickness = 2;
+    private int currentFloor = 1;
+    private String currentBuilding;
 
     private ArrayList<Node> editedNodes = new ArrayList<>();
 
@@ -117,7 +119,7 @@ public class MapPane extends StackPane {
                 if (addingEdge && !onSelectable && !erasing) {
                     if (event.getButton().equals(MouseButton.PRIMARY)) {
 
-                        Node dest = new Node(graph.getUniqueNodeID(), new Point2D(event.getX(), event.getY()).multiply(1 / zoomLevel));
+                        Node dest = new Node(graph.getUniqueNodeID(), new Point2D(event.getX(), event.getY()).multiply(1 / zoomLevel), currentFloor, currentBuilding);
 
                         addNode(dest);
 
@@ -190,14 +192,6 @@ public class MapPane extends StackPane {
             body.addEventHandler(MouseEvent.ANY, event -> {
                 if (event.getButton() != MouseButton.MIDDLE) event.consume();
             });
-        } else {
-            body.setOnMouseClicked(event -> {
-                if (event.getButton().equals(MouseButton.PRIMARY) && !onSelectable) {
-                    selector.clear();
-                    selectedNode = null;
-                    //onActionProperty().get().handle(event);
-                }
-            });
         }
     }
 
@@ -263,6 +257,12 @@ public class MapPane extends StackPane {
         for (Edge edge : graph.getEdges()) {
             addEdge(edge);
         }
+        
+        ArrayList<Node> nodeList = new ArrayList<>(nodes.keySet());
+        currentFloor = nodeList.get(0).getFloor();
+        currentBuilding = nodeList.get(0).getBuilding();
+
+        mapImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/Floor" + currentFloor + "LM.png"));
 
         recalculatePositions();
     }
@@ -457,7 +457,7 @@ public class MapPane extends StackPane {
             graph.addNode(node);
 
         nodes.put(node, nodeGUI);
-        node.data.put("GUI", nodeGUI);
+        node.getData().put("GUI", nodeGUI);
 
         body.getChildren().add(nodeGUI);
 
@@ -503,7 +503,7 @@ public class MapPane extends StackPane {
         edgeGUI.endYProperty().bind(getNodeGUI(edge.getDestination()).getYProperty());
 
         edges.put(edge, edgeGUI);
-        edge.data.put("GUI", edgeGUI);
+        edge.getData().put("GUI", edgeGUI);
 
         body.getChildren().addAll(0, edgeGUI.getAllNodes());
 
@@ -560,4 +560,11 @@ public class MapPane extends StackPane {
         return selectedNodeGUI;
     }
 
+    public int getCurrentFloor() {
+        return currentFloor;
+    }
+
+    public String getCurrentBuilding() {
+        return currentBuilding;
+    }
 }

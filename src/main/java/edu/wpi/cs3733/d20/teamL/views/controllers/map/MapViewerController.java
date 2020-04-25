@@ -1,20 +1,9 @@
-package edu.wpi.cs3733.d20.teamL.views.controllers;
+package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 
-import com.jfoenix.controls.JFXAutoCompletePopup;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTextField;
-import edu.wpi.cs3733.d20.teamL.entities.Node;
-import edu.wpi.cs3733.d20.teamL.services.db.DatabaseCache;
-import edu.wpi.cs3733.d20.teamL.services.graph.MapParser;
-import edu.wpi.cs3733.d20.teamL.services.graph.Path;
-import edu.wpi.cs3733.d20.teamL.services.graph.PathFinder;
-import edu.wpi.cs3733.d20.teamL.services.search.SearchFields;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
-import edu.wpi.cs3733.d20.teamL.util.io.SMSSender;
-import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
-import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
-import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
-import javafx.event.ActionEvent;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Iterator;
+
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -22,10 +11,26 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+import com.google.inject.Inject;
+
+import com.jfoenix.controls.JFXAutoCompletePopup;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
+
 import lombok.extern.slf4j.Slf4j;
 
-import javax.inject.Inject;
-import java.util.Iterator;
+import edu.wpi.cs3733.d20.teamL.entities.Node;
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
+import edu.wpi.cs3733.d20.teamL.services.graph.Graph;
+import edu.wpi.cs3733.d20.teamL.services.graph.Path;
+import edu.wpi.cs3733.d20.teamL.services.graph.PathFinder;
+import edu.wpi.cs3733.d20.teamL.services.mail.IMailerService;
+import edu.wpi.cs3733.d20.teamL.services.search.SearchFields;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
+import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
+import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
 
 @Slf4j
 public class MapViewerController {
@@ -42,27 +47,31 @@ public class MapViewerController {
     JFXButton btnTextMe;
 
     @Inject
-    private DatabaseCache dbCache;
+    private IDatabaseCache cache;
+    @Inject
+	private IMailerService mailer;
 
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
-    private String directions;
 
     @FXML
-    public void initialize() {
-        dbCache.cacheAllFromDB();
+    private void initialize() {
+        cache.cacheAllFromDB();
 
         map.setEditable(false);
 
-        map.setGraph(MapParser.getGraphFromCache(dbCache.getNodeCache()));
+        Graph newGraph = new Graph();
+        newGraph.addAllNodes(cache.getNodeCache());
+        map.setGraph(newGraph);
 
         map.setZoomLevel(1);
         map.init();
         map.getScroller().setVvalue(0.5);
         map.getScroller().setHvalue(0.5);
 
-        sf = new SearchFields(dbCache.getNodeCache());
+        sf = new SearchFields(cache.getNodeCache());
+        sf.getFields().addAll(Arrays.asList(SearchFields.Field.shortName, SearchFields.Field.longName));
         sf.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
@@ -70,26 +79,12 @@ public class MapViewerController {
 
     @FXML
     private void startingPointAutocomplete() {
-        autocomplete(startingPoint);
+        sf.applyAutocomplete(startingPoint, autoCompletePopup);
     }
 
     @FXML
     private void destinationAutocomplete() {
-        autocomplete(destination);
-    }
-
-    private void autocomplete(JFXTextField field) {
-        autoCompletePopup.setSelectionHandler(event -> field.setText(event.getObject()));
-        field.textProperty().addListener(observable -> {
-            autoCompletePopup.filter(string ->
-                    string.toLowerCase().contains(field.getText().toLowerCase()));
-            if (autoCompletePopup.getFilteredSuggestions().isEmpty() ||
-                    field.getText().isEmpty()) {
-                autoCompletePopup.hide();
-            } else {
-                autoCompletePopup.show(field);
-            }
-        });
+        sf.applyAutocomplete(destination, autoCompletePopup);
     }
 
     public void setStartingPoint(String startingPoint) {
@@ -100,13 +95,20 @@ public class MapViewerController {
         this.destination.setText(destination);
     }
 
+    /**
+     * Shows everything required for a navigations, includes:
+     * highlighting the path
+     * showing text directions
+     * showing 'text me directions' button
+     */
     @FXML
     public void navigate() {
         Node startNode = sf.getNode(startingPoint.getText());
         Node destNode = sf.getNode(destination.getText());
 
         if (startNode != null && destNode != null) {
-        	directions = highlightSourceToDestination(startNode, destNode);
+            String directions = highlightSourceToDestination(startNode, destNode);
+            mailer.setDirections(directions);
             Label directionsLabel = new Label();
             directionsLabel.setText(directions);
             directionsLabel.setTextFill(Color.WHITE);
@@ -115,8 +117,7 @@ public class MapViewerController {
             instructions.getChildren().clear();
             instructions.getChildren().add(directionsLabel);
             instructions.setVisible(true);
-			btnTextMe.setText("Text Me Directions");
-			btnTextMe.setDisable(false);
+            btnTextMe.setDisable(false);
             btnTextMe.setVisible(true);
         }
     }
@@ -124,11 +125,7 @@ public class MapViewerController {
     @FXML
     private void backToMain() {
         try {
-            Stage stage = (Stage) startingPoint.getScene().getWindow();
-            Parent newRoot = loaderHelper.getFXMLLoader("Home").load();
-            Scene newScene = new Scene(newRoot);
-            stage.setScene(newScene);
-            stage.show();
+            loaderHelper.goBack();
         } catch (Exception ex) {
             log.error("Encountered Exception.", ex);
         }
@@ -149,7 +146,6 @@ public class MapViewerController {
             NodeGUI nodeGUI = map.getNodeGUI(currentNode);
             EdgeGUI edgeGUI = map.getEdgeGUI(currentNode.getEdge(nextNode));
 
-            //map.getSelector().add(nodeGUI);
             map.getSelector().add(edgeGUI);
 
             currentNode = nextNode;
@@ -163,17 +159,17 @@ public class MapViewerController {
         return path.generateTextMessage();
     }
 
-	public void handleButtonAction(ActionEvent event) {
-		if (event.getSource() == btnTextMe) {
-			SMSSender sender = new SMSSender();
-			// Temporarily hard-coded as Luke's phone number
-			sender.sendMessage(directions, "2073186779");
-			btnTextMe.setText("Sent!");
-			btnTextMe.setDisable(true);
-		}
-	}
-
     public MapPane getMap() {
         return map;
+    }
+
+    @FXML
+    public void handleText(){
+        try {
+            Parent root = loaderHelper.getFXMLLoader("SendDirectionsPage").load();
+            loaderHelper.setupPopup(new Stage(), new Scene(root));
+        } catch (IOException e) {
+            log.error("Encountered IOException", e);
+        }
     }
 }

@@ -2,107 +2,71 @@ package edu.wpi.cs3733.d20.teamL.views.controllers;
 
 import java.io.IOException;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.stage.Stage;
 
-import com.jfoenix.controls.JFXButton;
+import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 
-import javax.inject.Inject;
-
+@Slf4j
 public class AdminViewController {
 
-	@FXML
-	private Label userLabel;
-	@FXML
-    private JFXButton btnLogout;
-    @FXML
-    private JFXButton btnNotif;
-    @FXML
-    private JFXButton btnAddDoctor;
-    @FXML
-    private JFXButton btnFindOpen;
-    @FXML
-    private JFXButton btnMR;
-    @FXML
-    private JFXButton btnChangeR;
-    @FXML
-    private JFXButton btnMap;
-    @FXML
-    private JFXButton btnAddPatient;
-    @FXML
-    private Label lblName;
-	@Inject
-	LoginController loginController;
     FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 
     /**
-     * Controls staff view page after they log in
-     *
-     * @param event tracks which button was pressed
-     * @throws IOException
+     * goes to notifications page when notifications button is clicked
      */
     @FXML
-    public void handleCircleButton(ActionEvent event) throws IOException {
-        Stage stage;
-        Parent root;
-
-        //open notifications
-        if (event.getSource() == btnNotif) {
-            stage = (Stage) btnNotif.getScene().getWindow();
-            root = loaderHelper.getFXMLLoader("NotificationsPage").load();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setMaximized(true);
-            stage.show();
-            //opens med request
-        } else if (event.getSource() == btnAddDoctor) {
-            stage = (Stage) btnAddDoctor.getScene().getWindow();
-            root = loaderHelper.getFXMLLoader("AddDoctor").load();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setMaximized(true);
-            stage.show();
-            //opens mapView
-        } else if (event.getSource() == btnMap) {
-            stage = (Stage) btnMap.getScene().getWindow();
-            FXMLLoader fxmlLoader = loaderHelper.getFXMLLoader("MapEditor");
-            root = fxmlLoader.load();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setMaximized(true);
-            stage.show();
-
-            MapEditorController controller = fxmlLoader.getController();
-            controller.getMap().recalculatePositions();
-        } else if (event.getSource() == btnLogout) {
-            stage = (Stage) btnLogout.getScene().getWindow();
-			root = loaderHelper.getFXMLLoader("Home").load();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setMaximized(true);
-            stage.show();
-        } else if (event.getSource() == btnAddPatient) {
-            stage = (Stage) btnAddPatient.getScene().getWindow();
-			root = loaderHelper.getFXMLLoader("AddPatient").load();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setMaximized(true);
-            stage.show();
+    private void notificationsClicked() {
+        try {
+            Parent root = loaderHelper.getFXMLLoader("NotificationsPage").load();
+            loaderHelper.setupScene(new Scene(root));
+        } catch (IOException e) {
+            log.error("Encountered IOException", e);
         }
+
     }
 
-	public Label getUserLabel() {
-		return userLabel;
-	}
+    /**
+     * Goes to add doctor page when button is clicked
+     */
+    @FXML
+    private void addDoctorClicked() {
+        try {
+            Parent root = loaderHelper.getFXMLLoader("AddDoctor").load();
+            loaderHelper.setupScene(new Scene(root));
+        } catch (IOException e) {
+            log.error("Encountered IOException", e);
+        }
 
-	public void setUserLabel(Label userLabel) {
-		this.userLabel = userLabel;
-	}
+    }
+
+    /**
+     * Goes back to home screen when logout is clicked
+     */
+    @FXML
+    private void logoutClicked() {
+        try {
+            loaderHelper.goBack();
+        } catch (Exception e) {
+            log.error("Encountered IOException", e);
+        }
+
+    }
+
+    /**
+     * Goes to map editor when button is clicked
+     */
+    @FXML
+    private void mapEditorClicked() {
+        try {
+            Parent root = loaderHelper.getFXMLLoader("MapEditor").load();
+            loaderHelper.setupScene(new Scene(root));
+        } catch (IOException e) {
+            log.error("Encountered IOException", e);
+        }
+
+    }
 }

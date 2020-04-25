@@ -1,30 +1,27 @@
 package edu.wpi.cs3733.d20.teamL.services.db;
 
-import edu.wpi.cs3733.d20.teamL.entities.Edge;
-import edu.wpi.cs3733.d20.teamL.entities.Node;
-import javafx.geometry.Point2D;
-
-import javax.inject.Inject;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
+import javax.inject.Inject;
+
+import javafx.geometry.Point2D;
+
+import edu.wpi.cs3733.d20.teamL.entities.Edge;
+import edu.wpi.cs3733.d20.teamL.entities.Node;
 
 public class DatabaseCache implements IDatabaseCache {
     private ArrayList<Node> nodeCache = new ArrayList<>();
     private ArrayList<Edge> edgeCache = new ArrayList<>();
-
     private ArrayList<Node> editedNodes = new ArrayList<>();
-
     private ArrayList<Node> addedNodes = new ArrayList<>();
     private ArrayList<Edge> addedEdges = new ArrayList<>();
-
     private ArrayList<Node> deletedNodes = new ArrayList<>();
     private ArrayList<Edge> deletedEdges = new ArrayList<>();
 
     @Inject
-    IDatabaseService db;
+    private IDatabaseService db;
 
 	@Override
 	public void cacheAllFromDB() {
@@ -42,19 +39,11 @@ public class DatabaseCache implements IDatabaseCache {
         for (Node node : newNodes) {
             if (!nodeCache.contains(node)) addedNodes.add(node);
         }
-
         for (Node node : nodeCache) {
             if (!newNodes.contains(node)) deletedNodes.add(node);
         }
-
-        Iterator<Node> iterator = editedNodes.iterator();
-        while (iterator.hasNext()) {
-            Node node = iterator.next();
-            if (deletedNodes.contains(node)) iterator.remove();
-        }
-
+		editedNodes.removeIf(node -> deletedNodes.contains(node));
         this.editedNodes = editedNodes;
-	    
 	    this.nodeCache = newNodes;
     }
 
@@ -81,70 +70,63 @@ public class DatabaseCache implements IDatabaseCache {
      */
     @Override
 	public void updateDB() {
-        ArrayList<String> updates = new ArrayList<>();
-
-        // Concatenate the node and edges lists for one update on the cache
-        ArrayList<ArrayList<String>> valuesList = new ArrayList<>();
-
-        // Add nodes
-        ArrayList<ArrayList<String>> addValues = convertNodesToValuesList(addedNodes);
-        for (ArrayList<String> nodeString : addValues) {
-            updates.add(DBConstants.addNode);
+		// Concatenate the node and edges lists for one update on the cache
+    	ArrayList<SQLEntry> updates = new ArrayList<>();
+		// Add nodes
+        for (ArrayList<String> nodeInfo : convertNodesToValuesList(addedNodes)) {
+            updates.add(new SQLEntry(DBConstants.ADD_NODE, nodeInfo));
         }
-        valuesList.addAll(addValues);
-
         // Add edges
-        addValues = convertEdgesToValuesList(addedEdges);
-        for (ArrayList<String> edgeString : addValues) {
-            updates.add(DBConstants.addEdge);
+        for (ArrayList<String> edgeInfo : convertEdgesToValuesList(addedEdges)) {
+        	updates.add(new SQLEntry(DBConstants.ADD_EDGE, edgeInfo));
         }
-        valuesList.addAll(addValues);
-
         // Delete edges
         for (Edge edge : deletedEdges) {
-            updates.add(DBConstants.removeEdge);
-            valuesList.add(new ArrayList<>(Arrays.asList(edge.getID())));
+        	updates.add(new SQLEntry(DBConstants.REMOVE_EDGE, new ArrayList<>(Collections.singletonList(edge.getID()))));
         }
-
         // Edit nodes
-        ArrayList<ArrayList<String>> editValues = convertNodesToValuesList(editedNodes);
-        for (int i = 0; i < editValues.size(); i++) {
-            updates.add(DBConstants.updateNode);
-            ArrayList<String> currentNode = editValues.get(i);
-            String nodeID = currentNode.get(0);
-            currentNode.remove(0);
-            currentNode.add(nodeID);
-            valuesList.add(currentNode);
-        }
-
+		for (ArrayList<String> currentNode : convertNodesToValuesList(editedNodes)) {
+			String nodeID = currentNode.get(0);
+			currentNode.remove(0);
+			currentNode.add(nodeID);
+			updates.add(new SQLEntry(DBConstants.UPDATE_NODE, currentNode));
+		}
         // Delete nodes
-        ArrayList<ArrayList<String>> deleteValues = convertNodesToValuesList(deletedNodes);
-        for (ArrayList<String> nodeString : deleteValues) {
-            updates.add(DBConstants.removeNode);
-            valuesList.add(new ArrayList<>(Arrays.asList(nodeString.get(0))));
+        for (ArrayList<String> currentNode : convertNodesToValuesList(deletedNodes)) {
+        	updates.add(new SQLEntry(DBConstants.REMOVE_NODE, new ArrayList<>(Collections.singletonList(currentNode.get(0)))));
         }
-
-        db.executeUpdates(updates, valuesList); // TODO: Fix SQL error by preventing from adding duplicate nodes
-
-        addedEdges.clear();
+        db.executeUpdates(updates); // TODO: Fix SQL error by preventing from adding duplicate nodes
+		// Clear added, edited, and deleted nodes from cache
+        addedNodes.clear();
         addedEdges.clear();
         editedNodes.clear();
         deletedEdges.clear();
         deletedNodes.clear();
     }
 
-    @Override
+	/**
+	 * Converts a list of nodes into a list of all the nodes' fields
+	 *
+	 * @param nodes This list of Nodes to be converted
+	 * @return A list of lists of entries representing individual nodes
+	 */
+	@Override
 	public ArrayList<ArrayList<String>> convertNodesToValuesList(List<Node> nodes) {
         ArrayList<ArrayList<String>> valuesList = new ArrayList<>();
-
         for (Node node : nodes) {
             valuesList.add(node.toArrayList());
         }
-
         return valuesList;
     }
 
-    @Override
+	/**
+	 * Converts a list of edges into a list of all the edges' fields
+	 *
+	 * @param edges The list of edges to be converted
+	 * @return A list of lists of entries representing individual edges
+	 */
+
+	@Override
 	public ArrayList<ArrayList<String>> convertEdgesToValuesList(List<Edge> edges) {
         ArrayList<ArrayList<String>> valuesList = new ArrayList<>();
 
@@ -160,7 +142,7 @@ public class DatabaseCache implements IDatabaseCache {
      */
     @Override
 	public void cacheNodesFromDB() {
-        ResultSet resSet = db.executeQuery(DBConstants.selectAllNodes);
+        ResultSet resSet = db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_NODES));
         clearNodeCache();
         ArrayList<ArrayList<String>> nodeData = db.getTableFromResultSet(resSet);
 
@@ -189,7 +171,7 @@ public class DatabaseCache implements IDatabaseCache {
      */
     @Override
 	public void cacheEdgesFromDB() {
-        ResultSet resSet = db.executeQuery(DBConstants.selectAllEdges);
+        ResultSet resSet = db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_EDGES));
         clearEdgeCache();
         ArrayList<ArrayList<String>> edgeData = db.getTableFromResultSet(resSet);
 
@@ -222,9 +204,4 @@ public class DatabaseCache implements IDatabaseCache {
 	public void clearEdgeCache() {
         edgeCache.clear();
     }
-
-	@Override
-	public void disconnectDB() {
-		db.stopService();
-	}
 }

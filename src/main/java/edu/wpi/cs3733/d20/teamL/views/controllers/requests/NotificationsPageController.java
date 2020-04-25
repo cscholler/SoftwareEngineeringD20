@@ -1,49 +1,47 @@
-package edu.wpi.cs3733.d20.teamL.views.controllers;
+package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXListView;
-import edu.wpi.cs3733.d20.teamL.entities.MedicineRequest;
-import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
-import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
-import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
-import lombok.extern.slf4j.Slf4j;
-
-import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.ResourceBundle;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+
+import com.google.inject.Inject;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXListView;
+
+import lombok.extern.slf4j.Slf4j;
+
+import edu.wpi.cs3733.d20.teamL.entities.MedicineRequest;
+import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
+import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+
 @Slf4j
 public class NotificationsPageController implements Initializable {
    	private ObservableList<MedicineRequest> list = FXCollections.observableArrayList();
 	private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
-	private DBTableFormatter formatter = new DBTableFormatter();
 	private MedicineRequest currentRequest;
 	@Inject
-	IDatabaseService db;
+	private IDatabaseService db;
 	@FXML
-    JFXButton btnBack, btnCompleted, btnDecline;
+    private JFXButton btnBack, btnCompleted, btnDecline;
     @FXML
-    JFXListView<MedicineRequest> notifications;
+    private JFXListView<MedicineRequest> notifications;
     @FXML
-    Label reqMessage, addInfo;
+    private Label reqMessage, addInfo;
 
 	/**
 	 * Calls loadData and sets up the cellFactory
@@ -86,7 +84,7 @@ public class NotificationsPageController implements Initializable {
     @FXML
     private void loadData() {
         list.removeAll();
-		ArrayList<ArrayList<String>> medRequests = db.getTableFromResultSet(db.executeQuery(DBConstants.selectAllMedicationRequests));
+		ArrayList<ArrayList<String>> medRequests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_MEDICATION_REQUESTS)));
 		String patientID;
 		String patientName;
 		String doctorID;
@@ -95,11 +93,11 @@ public class NotificationsPageController implements Initializable {
 		for (ArrayList<String> row : medRequests) {
 			doctorID = row.get(1);
 			patientID = row.get(2);
-			ArrayList<String> name = db.getTableFromResultSet(db.executeQuery(DBConstants.getDoctorName, new ArrayList<>(Collections.singletonList(doctorID)))).get(0);
+			ArrayList<String> name = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_DOCTOR_NAME, new ArrayList<>(Collections.singletonList(doctorID))))).get(0);
 			doctorName = name.get(0) + " " + name.get(1);
-			name = db.getTableFromResultSet(db.executeQuery(DBConstants.getPatientName, new ArrayList<>(Collections.singletonList(patientID)))).get(0);
+			name = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_NAME, new ArrayList<>(Collections.singletonList(patientID))))).get(0);
 			patientName = name.get(0) + " " + name.get(1);
-			roomID = db.getTableFromResultSet(db.executeQuery(DBConstants.getPatientRoom, new ArrayList<>(Collections.singletonList(patientID)))).get(0).get(0);
+			roomID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ROOM, new ArrayList<>(Collections.singletonList(patientID))))).get(0).get(0);
 			System.out.println(row.get(0));
 			list.add(new MedicineRequest(row.get(0), patientName, patientID, doctorName, row.get(3), row.get(4), row.get(5), roomID, row.get(6), row.get(7), row.get(8)));
 		}
@@ -136,15 +134,11 @@ public class NotificationsPageController implements Initializable {
      */
     @FXML
     public void handleButtonAction(ActionEvent e) throws IOException {
-        Stage stage;
-        Parent root;
+
         if (e.getSource() == btnBack) {
-            stage = (Stage) btnBack.getScene().getWindow();
-            root = loaderHelper.getFXMLLoader("StaffView").load();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setMaximized(true);
-            stage.show();
+			Parent root = loaderHelper.getFXMLLoader("AdminView").load();
+			loaderHelper.setupScene(new Scene(root));
+
         } else {
         	String status = "0";
         	if (e.getSource() == btnCompleted) {
@@ -152,7 +146,7 @@ public class NotificationsPageController implements Initializable {
 			} else if (e.getSource() == btnDecline) {
         		status = "2";
 			}
-			db.executeUpdate(DBConstants.updateMedicationRequestStatus, new ArrayList<>(Arrays.asList(status, getCurrentRequest().getID())));
+			db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_STATUS, new ArrayList<>(Arrays.asList(status, getCurrentRequest().getID()))));
 			getCurrentRequest().setStatus(status);
 			System.out.println(getCurrentRequest().getStatus());
 		}

@@ -1,13 +1,26 @@
 package edu.wpi.cs3733.d20.teamL.services.graph;
 
-import edu.wpi.cs3733.d20.teamL.entities.Node;
-import edu.wpi.cs3733.d20.teamL.entities.Edge;
-import javafx.geometry.Point2D;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
+import javafx.geometry.Point2D;
+
+import com.google.inject.Inject;
+
+import edu.wpi.cs3733.d20.teamL.entities.Node;
+import edu.wpi.cs3733.d20.teamL.entities.Edge;
+
+
 public class MapParser {
+
+    @Inject
+    static IDatabaseCache dbCache;
 
     public static class DATA_LABELS {
         public static String X = "x";
@@ -43,16 +56,15 @@ public class MapParser {
         return new ArrayList<>(2);
     }
 
-    public static Graph parseMapToGraph(File nodesFile, File edgesFile) {
-        if (nodesFile == null || edgesFile == null) return null;
+    public static Graph parseMapToGraph(File nodesFile, File edgesFile) { //TODO use csv parser
+        if (nodesFile == null) return null;
 
         try {
+            // Parse nodes
             BufferedReader nodeReader = new BufferedReader(new FileReader(nodesFile));
-            BufferedReader edgeReader = new BufferedReader(new FileReader(edgesFile));
 
             // Skip to the second row, the first row is just the labels for the data fields
             nodeReader.readLine();
-            edgeReader.readLine();
 
             Graph newGraph = new Graph();
 
@@ -60,29 +72,34 @@ public class MapParser {
             while ((row = nodeReader.readLine()) != null) {
                 String[] data = row.split(",");
 
-                Node newNode = new Node(data[0], new Point2D(Double.parseDouble(data[1]), Double.parseDouble(data[2])));
-                newNode.data.put(DATA_LABELS.NODE_TYPE, data[5]);
-                newNode.data.put(DATA_LABELS.LONG_NAME, data[6]);
-                newNode.data.put(DATA_LABELS.SHORT_NAME, data[7]);
+                Node newNode = new Node(data[0], new Point2D(Double.parseDouble(data[1]), Double.parseDouble(data[2])),
+                        Integer.parseInt(data[3]), data[4], data[5], data[6], data[7]);
 
                 newGraph.addNode(newNode);
             }
 
-            while ((row = edgeReader.readLine()) != null) {
-                String[] data = row.split(",");
+            // Parse edges
+            if (edgesFile != null) {
+                BufferedReader edgeReader = new BufferedReader(new FileReader(edgesFile));
+                // Skip the first row
+                edgeReader.readLine();
 
-                Node source = newGraph.getNode(data[1]);
-                Node destination = newGraph.getNode(data[2]);
+                while ((row = edgeReader.readLine()) != null) {
+                    String[] data = row.split(",");
 
-                if (source != null && destination != null) {
-                    double x1 = source.getPosition().getX();
-                    double y1 = source.getPosition().getY();
-                    double x2 = destination.getPosition().getX();
-                    double y2 = destination.getPosition().getY();
+                    Node source = newGraph.getNode(data[1]);
+                    Node destination = newGraph.getNode(data[2]);
 
-                    int length = (int) Math.round(Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
+                    if (source != null && destination != null) {
+                        double x1 = source.getPosition().getX();
+                        double y1 = source.getPosition().getY();
+                        double x2 = destination.getPosition().getX();
+                        double y2 = destination.getPosition().getY();
 
-                    source.addEdgeTwoWay(new Edge(source, destination));
+                        int length = (int) Math.round(Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
+
+                        source.addEdgeTwoWay(new Edge(source, destination));
+                    }
                 }
             }
 
@@ -95,32 +112,5 @@ public class MapParser {
         }
 
         return null;
-    }
-
-    public static Graph parseMapToGraph(String nodesPath, String edgesPath) {
-        File nodesFile = new File(nodesPath);
-        File edgesFile = new File(edgesPath);
-
-        return parseMapToGraph(nodesFile, edgesFile);
-    }
-
-    public static Graph parseMapToGraph(String nodesPath, File edgesFile) {
-        File nodesFile = new File(nodesPath);
-
-        return parseMapToGraph(nodesFile, edgesFile);
-    }
-
-    public static Graph parseMapToGraph(File nodesFile, String edgesPath) {
-        File edgesFile = new File(edgesPath);
-
-        return parseMapToGraph(nodesFile, edgesFile);
-    }
-
-    public static Graph getGraphFromCache(ArrayList<Node> nodes) {
-        Graph newGraph = new Graph();
-
-        newGraph.addAllNodes(nodes);
-
-        return newGraph;
     }
 }

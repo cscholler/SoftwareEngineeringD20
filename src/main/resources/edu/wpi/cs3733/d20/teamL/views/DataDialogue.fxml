@@ -10,7 +10,7 @@
 
 <BorderPane fx:id="root" minHeight="120.0" minWidth="470.0" prefHeight="150.0" prefWidth="500.0"
             xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="edu.wpi.cs3733.d20.teamL.views.dialogues.DataDialogueController">
+            fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.DataDialogueController">
     <bottom>
         <HBox alignment="BOTTOM_RIGHT" spacing="10.0" BorderPane.alignment="CENTER">
             <children>

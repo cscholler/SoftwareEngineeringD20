@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamL.views.controllers;
+package edu.wpi.cs3733.d20.teamL.views.controllers.dialogues;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
@@ -53,13 +53,13 @@ public class LoginController {
     /**
      * Dummy function to allow enter to be pressed from the password box
      * @param e the key that is pressed
-     * @throws IOException
+     * @throws
      */
     @FXML
-    private void bugfix(ActionEvent e) throws IOException {}
+    private void bugfix(ActionEvent e) {}
 
     /**
-     * Controls the login feature setting
+     * Controls the login feature setting usernames and passwords and only accepting correct usernames and passwords
      * @param e Tracks which button is pressed
      * @throws IOException
      */
@@ -79,15 +79,14 @@ public class LoginController {
         fadeTransition.setToValue(1.0);
         fadeTransition.setCycleCount(3);
 
+        //closes login popup
         if (e.getSource() == btnCancel) {
-            System.out.println("Cancel");
             stage = (Stage) btnCancel.getScene().getWindow();
             stage.close();
 
+        //login as Doctor
         } else if (e.getSource() == login) {
-
             if (user.equals("Doctor") && password.equals("Doctor")) {
-                System.out.println("Doctor");
                 status = "Doctor";
 
                 stage = (Stage) login.getScene().getWindow();
@@ -96,60 +95,36 @@ public class LoginController {
 
                 //stage.close();
                 root = loaderHelper.getFXMLLoader("StaffView").load();
-                Scene scene = new Scene(root);
-                stage.setScene(scene);
-                stage.hide();
-                stage.setMaximized(true);
-                stage.show();
+                loaderHelper.setupScene(new Scene(root));
 
-                stage.setWidth(App.SCREEN_WIDTH);
-                stage.setHeight(App.SCREEN_HEIGHT);
-            }
-            else if (user.equals("Nurse") && password.equals("Nurse")) {
-                System.out.println("Nurse");
+            //login as nurse
+            } else if (user.equals("Nurse") && password.equals("Nurse")) {
                 status = "Nurse";
                 stage = (Stage) login.getScene().getWindow();
 
                 stage.close();
                 stage = (Stage) stage.getOwner();
 
-				root = loaderHelper.getFXMLLoader("StaffView").load();
-                Scene scene = new Scene(root);
-                stage.setScene(scene);
-                stage.hide();
-                stage.setMaximized(true);
-                stage.show();
+                root = loaderHelper.getFXMLLoader("StaffView").load();
+                loaderHelper.setupScene(new Scene(root));
 
-                stage.setWidth(App.SCREEN_WIDTH);
-                stage.setHeight(App.SCREEN_HEIGHT);
-            }
-
-            else if (user.equals("Admin") && password.equals("Admin")) {
-                System.out.println("Admin");
+            //login  as Admin
+            } else if (user.equals("Admin") && password.equals("Admin")) {
                 status = "Admin";
                 stage = (Stage) login.getScene().getWindow();
 
                 stage.close();
                 stage = (Stage) stage.getOwner();
 
-				root = loaderHelper.getFXMLLoader("AdminView").load();
-                Scene scene = new Scene(root);
-                stage.setScene(scene);
-                stage.setMaximized(true);
-                stage.show();
-
-                stage.setWidth(App.SCREEN_WIDTH);
-                stage.setHeight(App.SCREEN_HEIGHT);
-            }
-            else {
+                root = loaderHelper.getFXMLLoader("AdminView").load();
+                loaderHelper.setupScene(new Scene(root));
+            } else {
                 incorrectText.setVisible(true);
                 fadeTransition.play();
             }
             System.out.println(status);
             pass.clear();
             username.clear();
-
-            //return status;
         }
     }
 }

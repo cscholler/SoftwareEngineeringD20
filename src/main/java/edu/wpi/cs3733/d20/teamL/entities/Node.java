@@ -13,13 +13,13 @@ public class Node {
     private Graph graph;
     private Point2D position;
     private String id;
-    private String shortName = "foo";
-    private String longName = "foo";
-    private String building = "foo";
-    private String type = "fooo";
+    private String shortName;
+    private String longName;
+    private String building;
+    private String type;
     private int floor = 0;
 
-    public HashMap<String, Object> data = new HashMap<>(); //TODO remove Hashmap and add NodeGUI Field
+    private HashMap<String, Object> data = new HashMap<>(); //TODO remove Hashmap and add NodeGUI Field
 
     private Collection<Edge> edges = new ArrayList<>();
 
@@ -33,9 +33,14 @@ public class Node {
         this.shortName = shortName;
     }
 
-    public Node(String id, Point2D position) {
+    public Node(String id, Point2D position, int floor, String building) {
         this.id = id;
         this.position = position;
+        this.floor = floor;
+        this.shortName = "Temp Hall";
+        this.longName = "Temp Hallway Intersection X Level " + floor;
+        this.type = "HALL";
+        this.building = building;
     }
 
     public Graph getGraph() {
@@ -207,9 +212,23 @@ public class Node {
         return neighbors;
     }
 
+    /**
+     * Converts the Node fields into an ArrayList to be added to the Database
+     *
+     * @return ArrayList of Strings representing Node fields
+     */
     public ArrayList<String> toArrayList() {
         return new ArrayList<>(Arrays.asList(getID(), String.valueOf(getPosition().getX()), String.valueOf(getPosition().getY()),
                 String.valueOf(getFloor()), getBuilding(), getType(), getLongName(), getShortName()));
+    }
+
+    /**
+     * Place to dump/get data where the Node has no field for (ONLY fields not used in the Database)
+     *
+     * @return HashMap where key is the String of the object's name and the field is the object's value
+     */
+    public HashMap<String, Object> getData() {
+        return data;
     }
 
     /**

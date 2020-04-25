@@ -1,23 +1,25 @@
 package edu.wpi.cs3733.d20.teamL.services.users;
 
-import edu.wpi.cs3733.d20.teamL.entities.User;
-import edu.wpi.cs3733.d20.teamL.services.Service;
-import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
-import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
-import lombok.extern.slf4j.Slf4j;
-
 import javax.inject.Inject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
+import lombok.extern.slf4j.Slf4j;
+
+import edu.wpi.cs3733.d20.teamL.entities.User;
+import edu.wpi.cs3733.d20.teamL.services.Service;
+import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
+import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
+
 @Slf4j
 public class LoginManager extends Service implements ILoginManager {
 	private User currentUser;
 	private boolean isAuthenticated;
 	@Inject
-	IDatabaseService db;
+	private IDatabaseService db;
 
 	public LoginManager() {
 		super();
@@ -36,13 +38,12 @@ public class LoginManager extends Service implements ILoginManager {
 
 	@Override
 	public void logIn(String username, String password) {
-		String hashedPassword = getHashedPassword(password);
-		ArrayList<ArrayList<String>> results = db.getTableFromResultSet(db.executeQuery(DBConstants.getUser, new ArrayList<>(Arrays.asList(username, hashedPassword))));
+		ArrayList<ArrayList<String>> results = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_USER, new ArrayList<>(Arrays.asList(username, getHashedPassword(password))))));
 		if (results.size() == 1) {
 			ArrayList<String> userInfo = results.get(0);
 			currentUser = new User(userInfo.get(0), userInfo.get(1), userInfo.get(2), userInfo.get(3), userInfo.get(4));
 			String currentDateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
-			db.executeUpdate(DBConstants.updateLastUserLogin, new ArrayList<>(Arrays.asList(currentDateAndTime, currentUser.getID())));
+			db.executeUpdate(new SQLEntry(DBConstants.UPDATE_LAST_USER_LOGIN, new ArrayList<>(Arrays.asList(currentDateAndTime, currentUser.getID()))));
 		} else {
 			// No user found
 			log.warn("No user found with the given username and password");
@@ -74,19 +75,19 @@ public class LoginManager extends Service implements ILoginManager {
 
 	@Override
 	public void updateName(String newName) {
-		db.executeUpdate(DBConstants.updateUserName, new ArrayList<>(Arrays.asList(currentUser.getFName(), currentUser.getLName(), currentUser.getID())));
+		db.executeUpdate(new SQLEntry(DBConstants.UPDATE_USER_NAME, new ArrayList<>(Arrays.asList(currentUser.getFName(), currentUser.getLName(), currentUser.getID()))));
 		currentUser.setFName(newName.substring(0, newName.indexOf(" ")));
 		currentUser.setLName(newName.substring(newName.indexOf(" ") + 1));
 	}
 
 	@Override
 	public void updatePassword(String newPassword) {
-		db.executeUpdate(DBConstants.updateUserPassword, new ArrayList<>(Arrays.asList(newPassword, currentUser.getID())));
+		db.executeUpdate(new SQLEntry(DBConstants.UPDATE_USER_PASSWORD, new ArrayList<>(Arrays.asList(newPassword, currentUser.getID()))));
 	}
 
 	@Override
 	public void updateAcctType(String newAcctType) {
-		db.executeUpdate(DBConstants.updateUserAcctType, new ArrayList<>(Arrays.asList(newAcctType, currentUser.getID())));
+		db.executeUpdate(new SQLEntry(DBConstants.UPDATE_USER_ACCT_TYPE, new ArrayList<>(Arrays.asList(newAcctType, currentUser.getID()))));
 		currentUser.setAcctType(newAcctType);
 	}
 

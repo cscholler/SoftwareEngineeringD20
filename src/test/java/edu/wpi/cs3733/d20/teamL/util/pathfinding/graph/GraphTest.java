@@ -12,8 +12,8 @@ class GraphTest {
   @Test
   public void createGraph() throws Exception {
     Graph newGraph = new Graph();
-    Node test_1 = new Node("test_1", new Point2D(0, 0));
-    Node test_2 = new Node("test_2", new Point2D(0, 0));
+    Node test_1 = new Node("test_1", new Point2D(0, 0), 1, "A");
+    Node test_2 = new Node("test_2", new Point2D(0, 0), 1, "A");
     newGraph.addNode(test_1);
     newGraph.addNode(test_2);
 

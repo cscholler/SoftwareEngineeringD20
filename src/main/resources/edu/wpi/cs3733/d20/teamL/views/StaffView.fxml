@@ -13,180 +13,205 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #0D2E57;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.StaffViewController">
-   <center>
-      <GridPane prefHeight="322.0" prefWidth="599.0" BorderPane.alignment="CENTER">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints maxHeight="177.40000610351564" minHeight="0.0" prefHeight="161.40000610351564" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="169.20000000000002" minHeight="0.0" prefHeight="74.33332519531248" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="211.20001831054688" minHeight="10.0" prefHeight="162.86668701171874" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="182.3999481201172" minHeight="0.0" prefHeight="145.13331298828126" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <Circle fill="#ffffffe9" radius="66.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            <Circle fill="#ffffffe9" radius="66.0" stroke="BLACK" strokeType="INSIDE" GridPane.halignment="RIGHT">
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
-            </Circle>
-            <Circle fill="#ffffffe9" radius="66.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" />
-            <Circle fill="#ffffffe9" radius="66.0" stroke="BLACK" strokeType="INSIDE" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-            <Circle fill="#ffffffe9" radius="66.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <Circle fill="#f9f9f9" radius="66.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-            <Label text="Add Patient" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP">
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-               <GridPane.margin>
-                  <Insets right="27.0" />
-               </GridPane.margin>
-            </Label>
-            <Label text="Medication Request" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-            </Label>
-            <Label text="Find Open Room" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.valignment="TOP">
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-               <GridPane.margin>
-                  <Insets left="12.0" />
-               </GridPane.margin>
-            </Label>
-            <Label text="Map" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="TOP">
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-               <GridPane.margin>
-                  <Insets right="51.0" />
-               </GridPane.margin>
-            </Label>
-            <Label text="Change Room Status" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="3" GridPane.valignment="TOP">
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-            </Label>
-            <Label textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="3">
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-            </Label>
-            <Label text="Maintenance Request" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
-               <font>
-                  <Font name="Segoe UI" size="14.0" />
-               </font>
-            </Label>
-            <ImageView fitHeight="97.0" fitWidth="100.0" GridPane.columnIndex="2">
-               <image>
-                  <Image url="@../assets/active-search.png" />
-               </image>
-               <GridPane.margin>
-                  <Insets left="15.0" />
-               </GridPane.margin>
-            </ImageView>
-            <ImageView fitHeight="102.0" fitWidth="96.0" GridPane.columnIndex="1" GridPane.halignment="CENTER">
-               <image>
-                  <Image url="@../assets/medicine-icon.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="98.0" fitWidth="97.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
-               <image>
-                  <Image url="@../assets/Room-icon.png" />
-               </image>
-               <GridPane.margin>
-                  <Insets left="15.0" />
-               </GridPane.margin>
-            </ImageView>
-            <ImageView fitHeight="91.0" fitWidth="94.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-               <image>
-                  <Image url="@../assets/Maintenance-icon.png" />
-               </image>
-            </ImageView>
-            <ImageView GridPane.halignment="RIGHT">
-               <image>
-                  <Image url="@../assets/outline_people_alt_black_48dp.png" />
-               </image>
-               <GridPane.margin>
-                  <Insets right="20.0" />
-               </GridPane.margin>
-            </ImageView>
-            <JFXButton fx:id="btnMeds" onAction="#handleCircleButton" opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            <JFXButton fx:id="btnMap" onAction="#handleCircleButton" opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-            <JFXButton opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.columnIndex="2" />
-            <JFXButton opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <JFXButton fx:id="btnAddPatient" onAction="#handleCircleButton" opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.halignment="RIGHT" />
-            <ImageView GridPane.halignment="RIGHT" GridPane.rowIndex="2">
-               <image>
-                  <Image url="@../assets/outline_explore_black_48dp.png" />
-               </image>
-               <GridPane.margin>
-                  <Insets right="19.0" />
-               </GridPane.margin>
-            </ImageView>
-         </children>
-      </GridPane>
-   </center>
-   <top>
-      <GridPane prefHeight="173.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <HBox prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Label alignment="TOP_LEFT" text="Hello, " textFill="WHITE">
-                     <font>
-                        <Font name="Century Gothic Bold" size="24.0" />
-                     </font>
-                     <opaqueInsets>
-                        <Insets left="20.0" />
-                     </opaqueInsets>
-                  </Label>
-                  <Label fx:id="userLabel" alignment="TOP_LEFT" text="User" textFill="WHITE">
-                     <font>
-                        <Font name="Segoe UI" size="24.0" />
-                     </font>
-                  </Label>
-               </children>
-               <GridPane.margin>
-                  <Insets left="10.0" top="10.0" />
-               </GridPane.margin>
-               <padding>
-                  <Insets left="20.0" />
-               </padding>
-            </HBox>
-            <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" GridPane.columnIndex="1">
-               <children>
-                  <JFXButton fx:id="btnNotif" onAction="#handleCircleButton" text="Notifications" textFill="WHITE">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                     <graphic>
-                        <ImageView fitHeight="30.0" fitWidth="36.0">
-                           <image>
-                              <Image url="@../assets/baseline_notifications_white_48dp.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </JFXButton>
-                  <JFXButton fx:id="btnLogout" onAction="#handleCircleButton" prefHeight="53.0" prefWidth="147.0" text="LOG OUT" textAlignment="CENTER" textFill="WHITE" underline="true">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </JFXButton>
-               </children>
-            </HBox>
-         </children>
-      </GridPane>
-   </top>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0"
+            prefWidth="1280.0" style="-fx-background-color: #0D2E57;" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.StaffViewController">
+    <center>
+        <GridPane prefHeight="322.0" prefWidth="599.0" BorderPane.alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="177.40000610351564" minHeight="0.0" prefHeight="161.40000610351564"
+                                vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="169.20000000000002" minHeight="0.0" prefHeight="74.33332519531248"
+                                vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="211.20001831054688" minHeight="10.0" prefHeight="162.86668701171874"
+                                vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="182.3999481201172" minHeight="0.0" prefHeight="145.13331298828126"
+                                vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <children>
+                <Circle fill="#ffffffe9" radius="66.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1"
+                        GridPane.halignment="CENTER"/>
+                <Circle fill="#ffffffe9" radius="66.0" stroke="BLACK" strokeType="INSIDE" GridPane.halignment="RIGHT">
+                    <GridPane.margin>
+                        <Insets/>
+                    </GridPane.margin>
+                </Circle>
+                <Circle fill="#ffffffe9" radius="66.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2"/>
+                <Circle fill="#ffffffe9" radius="66.0" stroke="BLACK" strokeType="INSIDE" GridPane.halignment="RIGHT"
+                        GridPane.rowIndex="2"/>
+                <Circle fill="#ffffffe9" radius="66.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2"
+                        GridPane.rowIndex="2"/>
+                <Circle fill="#f9f9f9" radius="66.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1"
+                        GridPane.halignment="CENTER" GridPane.rowIndex="2"/>
+                <Label text="Add Patient" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="1"
+                       GridPane.valignment="TOP">
+                    <font>
+                        <Font name="Segoe UI" size="14.0"/>
+                    </font>
+                    <GridPane.margin>
+                        <Insets right="27.0"/>
+                    </GridPane.margin>
+                </Label>
+                <Label text="Medication Request" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER"
+                       GridPane.rowIndex="1" GridPane.valignment="TOP">
+                    <font>
+                        <Font name="Segoe UI" size="14.0"/>
+                    </font>
+                </Label>
+                <Label text="Find Open Room" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="1"
+                       GridPane.valignment="TOP">
+                    <font>
+                        <Font name="Segoe UI" size="14.0"/>
+                    </font>
+                    <GridPane.margin>
+                        <Insets left="12.0"/>
+                    </GridPane.margin>
+                </Label>
+                <Label text="Map" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="3"
+                       GridPane.valignment="TOP">
+                    <font>
+                        <Font name="Segoe UI" size="14.0"/>
+                    </font>
+                    <GridPane.margin>
+                        <Insets right="51.0"/>
+                    </GridPane.margin>
+                </Label>
+                <Label text="Change Room Status" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="3"
+                       GridPane.valignment="TOP">
+                    <font>
+                        <Font name="Segoe UI" size="14.0"/>
+                    </font>
+                </Label>
+                <Label textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                    <font>
+                        <Font name="Segoe UI" size="14.0"/>
+                    </font>
+                </Label>
+                <Label text="Maintenance Request" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER"
+                       GridPane.rowIndex="3" GridPane.valignment="TOP">
+                    <font>
+                        <Font name="Segoe UI" size="14.0"/>
+                    </font>
+                </Label>
+                <ImageView fitHeight="97.0" fitWidth="100.0" GridPane.columnIndex="2">
+                    <image>
+                        <Image url="@../assets/active-search.png"/>
+                    </image>
+                    <GridPane.margin>
+                        <Insets left="15.0"/>
+                    </GridPane.margin>
+                </ImageView>
+                <ImageView fitHeight="102.0" fitWidth="96.0" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                    <image>
+                        <Image url="@../assets/medicine-icon.png"/>
+                    </image>
+                </ImageView>
+                <ImageView fitHeight="98.0" fitWidth="97.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                    <image>
+                        <Image url="@../assets/Room-icon.png"/>
+                    </image>
+                    <GridPane.margin>
+                        <Insets left="15.0"/>
+                    </GridPane.margin>
+                </ImageView>
+                <ImageView fitHeight="91.0" fitWidth="94.0" GridPane.columnIndex="1" GridPane.halignment="CENTER"
+                           GridPane.rowIndex="2">
+                    <image>
+                        <Image url="@../assets/Maintenance-icon.png"/>
+                    </image>
+                </ImageView>
+                <ImageView GridPane.halignment="RIGHT">
+                    <image>
+                        <Image url="@../assets/outline_people_alt_black_48dp.png"/>
+                    </image>
+                    <GridPane.margin>
+                        <Insets right="20.0"/>
+                    </GridPane.margin>
+                </ImageView>
+                <JFXButton fx:id="btnMeds" onAction="#medsClicked" opacity="0.0" prefHeight="130.0"
+                           prefWidth="135.0" text=" " GridPane.columnIndex="1" GridPane.halignment="CENTER"/>
+                <JFXButton fx:id="btnMap" onAction="#mapClicked" opacity="0.0" prefHeight="130.0"
+                           prefWidth="135.0" text=" " GridPane.halignment="RIGHT" GridPane.rowIndex="2"/>
+                <JFXButton opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.columnIndex="2"/>
+                <JFXButton opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.columnIndex="2"
+                           GridPane.rowIndex="2"/>
+                <JFXButton fx:id="btnAddPatient" onAction="#addPatientClicked" opacity="0.0" prefHeight="130.0"
+                           prefWidth="135.0" text=" " GridPane.halignment="RIGHT"/>
+                <ImageView GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                    <image>
+                        <Image url="@../assets/outline_explore_black_48dp.png"/>
+                    </image>
+                    <GridPane.margin>
+                        <Insets right="19.0"/>
+                    </GridPane.margin>
+                </ImageView>
+            </children>
+        </GridPane>
+    </center>
+    <top>
+        <GridPane prefHeight="173.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <children>
+                <HBox prefHeight="100.0" prefWidth="200.0">
+                    <children>
+                        <Label alignment="TOP_LEFT" text="Hello, " textFill="WHITE">
+                            <font>
+                                <Font name="Century Gothic Bold" size="24.0"/>
+                            </font>
+                            <opaqueInsets>
+                                <Insets left="20.0"/>
+                            </opaqueInsets>
+                        </Label>
+                        <Label alignment="TOP_LEFT" text="World " textFill="WHITE">
+                            <font>
+                                <Font name="Segoe UI" size="24.0"/>
+                            </font>
+                        </Label>
+                    </children>
+                    <GridPane.margin>
+                        <Insets left="10.0" top="10.0"/>
+                    </GridPane.margin>
+                    <padding>
+                        <Insets left="20.0"/>
+                    </padding>
+                </HBox>
+                <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0"
+                      GridPane.columnIndex="1">
+                    <children>
+                        <JFXButton fx:id="btnNotif" onAction="#notifsClicked" text="Notifications"
+                                   textFill="WHITE">
+                            <font>
+                                <Font size="24.0"/>
+                            </font>
+                            <graphic>
+                                <ImageView fitHeight="30.0" fitWidth="36.0">
+                                    <image>
+                                        <Image url="@../assets/baseline_notifications_white_48dp.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </JFXButton>
+                        <JFXButton fx:id="btnLogout" onAction="#logoutClicked" prefHeight="53.0" prefWidth="147.0"
+                                   text="LOG OUT" textAlignment="CENTER" textFill="WHITE" underline="true">
+                            <font>
+                                <Font size="24.0"/>
+                            </font>
+                        </JFXButton>
+                    </children>
+                </HBox>
+            </children>
+        </GridPane>
+    </top>
 </BorderPane>
