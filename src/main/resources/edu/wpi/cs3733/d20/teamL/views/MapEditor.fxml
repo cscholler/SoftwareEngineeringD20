@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -16,12 +18,10 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <?import edu.wpi.cs3733.d20.teamL.views.components.MapPane?>
-<BorderPane fx:id="root" prefWidth="1280" prefHeight="720"
-            xmlns="http://javafx.com/javafx/11.0.1"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.map.MapEditorController">
+<BorderPane fx:id="root" prefHeight="720" prefWidth="1280" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.map.MapEditorController">
     <top>
         <VBox prefWidth="100.0" BorderPane.alignment="CENTER">
             <children>
@@ -29,11 +29,11 @@
                     <menus>
                         <Menu text="File">
                             <items>
-                                <MenuItem fx:id="saveToDB" onAction="#saveToDB" text="Save to DB"/>
-                                <MenuItem fx:id="saveToCSV" onAction="#saveToCSV" text="Save to CSV"/>
-                                <MenuItem fx:id="open" onAction="#open" text="Open From CSV"/>
-                                <MenuItem fx:id="openDB" onAction="#openFromDB" text="Open From Database"/>
-                                <MenuItem fx:id="quit" onAction="#quit" text="Quit"/>
+                                <MenuItem fx:id="saveToDB" onAction="#saveToDB" text="Save to DB" />
+                                <MenuItem fx:id="saveToCSV" onAction="#saveToCSV" text="Save to CSV" />
+                                <MenuItem fx:id="open" onAction="#open" text="Open From CSV" />
+                                <MenuItem fx:id="openDB" onAction="#openFromDB" text="Open From Database" />
+                                <MenuItem fx:id="quit" onAction="#quit" text="Quit" />
                             </items>
                         </Menu>
                         <Menu text="Edit">
@@ -59,28 +59,26 @@
                     <items>
                         <HBox spacing="20.0">
                             <children>
-                                <Button mnemonicParsing="false" text="Back" onAction="#backToMain"/>
+                                <Button mnemonicParsing="false" onAction="#backToMain" text="Back" />
                                 <HBox spacing="10.0">
                                     <children>
                                         <ToggleButton fx:id="mouse" onAction="#handleTools" selected="true">
                                             <toggleGroup>
-                                                <ToggleGroup fx:id="tools"/>
+                                                <ToggleGroup fx:id="tools" />
                                             </toggleGroup>
                                             <graphic>
-                                                <ImageView fitHeight="20.0" fitWidth="17.0" pickOnBounds="true"
-                                                           preserveRatio="true">
+                                                <ImageView fitHeight="20.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
                                                     <image>
-                                                        <Image url="@../assets/Cursor_placeholder.png"/>
+                                                        <Image url="@../assets/Cursor_placeholder.png" />
                                                     </image>
                                                 </ImageView>
                                             </graphic>
                                         </ToggleButton>
                                         <ToggleButton fx:id="eraser" onAction="#handleTools" toggleGroup="$tools">
                                             <graphic>
-                                                <ImageView fitHeight="20.0" fitWidth="21.0" pickOnBounds="true"
-                                                           preserveRatio="true">
+                                                <ImageView fitHeight="20.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
                                                     <image>
-                                                        <Image url="@../assets/Eraser_Placeholder.png"/>
+                                                        <Image url="@../assets/Eraser_Placeholder.png" />
                                                     </image>
                                                 </ImageView>
                                             </graphic>
@@ -89,20 +87,20 @@
                                             <children>
                                                 <HBox alignment="CENTER_LEFT" spacing="5.0">
                                                     <children>
-                                                        <Label text="Start Node:"/>
-                                                        <TextField fx:id="startNode"/>
+                                                        <Label text="Start Node:" />
+                                                        <TextField fx:id="startNode" />
                                                     </children>
                                                 </HBox>
                                                 <HBox alignment="CENTER_LEFT" spacing="5.0">
                                                     <children>
-                                                        <Label text="End Node"/>
-                                                        <TextField fx:id="endNode"/>
+                                                        <Label text="End Node" />
+                                                        <TextField fx:id="endNode" />
                                                     </children>
                                                 </HBox>
-                                                <Button fx:id="pathFind" mnemonicParsing="false" text="Path Find"/>
+                                                <Button fx:id="pathFind" mnemonicParsing="false" text="Path Find" />
                                             </children>
                                             <padding>
-                                                <Insets left="10.0" right="10.0"/>
+                                                <Insets left="10.0" right="10.0" />
                                             </padding>
                                         </HBox>
                                     </children>
@@ -118,14 +116,28 @@
         <MapPane prefHeight="150.0" prefWidth="200.0" fx:id="map" onAction="#myCustomAction"/>
     </center>
    <right>
-      <VBox fx:id="editor" alignment="CENTER_LEFT" minWidth="-Infinity" prefHeight="650.0" prefWidth="200.0" style="-fx-background-color: #0D2E57 #0D2E57;" BorderPane.alignment="CENTER">
+      <VBox fx:id="editor" minWidth="-Infinity" prefHeight="650.0" prefWidth="200.0" style="-fx-background-color: #0D2E57 #0D2E57;" BorderPane.alignment="CENTER">
          <children>
-            <Label text="NodeID:" textFill="WHITE">
+            <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: #00032E;">
+               <children>
+                  <Label text="Node: LHALL00102" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <Label text="Node Type:" textFill="WHITE">
                <VBox.margin>
                   <Insets left="10.0" top="20.0" />
                </VBox.margin>
             </Label>
-            <JFXTextField fx:id="nodeIDText" focusColor="WHITE" promptText="Enter new ID..." style="-fx-text-inner-color: #ffffff;">
+            <ComboBox prefWidth="180.0" promptText="Enter new node type..." style="-fx-background-color: #ffffff;">
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </VBox.margin>
+            </ComboBox>
+            <JFXTextField fx:id="nodeTypeText" focusColor="WHITE" promptText="Enter new node type..." style="-fx-text-inner-color: #ffffff;">
                <VBox.margin>
                   <Insets left="10.0" right="10.0" />
                </VBox.margin>
@@ -135,7 +147,7 @@
                   <Insets left="10.0" top="20.0" />
                </VBox.margin>
             </Label>
-            <JFXTextField focusColor="WHITE" layoutX="10.0" layoutY="37.0" promptText="Enter new X coordinate..." style="-fx-text-inner-color: #ffffff;" fx:id="xCoordText">
+            <JFXTextField focusColor="#0d2e57" layoutX="10.0" layoutY="37.0" promptText="Enter new X coordinate..." style="-fx-background-color: #ffffff;" unFocusColor="#ffffff00" fx:id="xCoordText">
                <VBox.margin>
                   <Insets left="10.0" right="10.0" />
                </VBox.margin>
@@ -150,26 +162,6 @@
                   <Insets left="10.0" right="10.0" />
                </VBox.margin>
             </JFXTextField>
-            <Label text="Building:" textFill="WHITE">
-               <VBox.margin>
-                  <Insets left="10.0" top="20.0" />
-               </VBox.margin>
-            </Label>
-            <JFXTextField fx:id="buildingText" focusColor="WHITE" promptText="Enter new building..." style="-fx-text-inner-color: #ffffff;">
-               <VBox.margin>
-                  <Insets left="10.0" right="10.0" />
-               </VBox.margin>
-            </JFXTextField>
-            <Label text="Node Type:" textFill="WHITE">
-               <VBox.margin>
-                  <Insets left="10.0" top="20.0" />
-               </VBox.margin>
-            </Label>
-            <JFXTextField fx:id="nodeTypeText" focusColor="WHITE" promptText="Enter new node type..." style="-fx-text-inner-color: #ffffff;">
-               <VBox.margin>
-                  <Insets left="10.0" right="10.0" />
-               </VBox.margin>
-            </JFXTextField>
             <Label text="Long Name:" textFill="WHITE">
                <VBox.margin>
                   <Insets left="10.0" top="20.0" />
@@ -180,7 +172,7 @@
                   <Insets left="10.0" right="10.0" />
                </VBox.margin>
             </JFXTextField>
-            <Label text="Short Name:" textFill="WHITE">
+            <Label text="Nickname:" textFill="WHITE">
                <VBox.margin>
                   <Insets left="10.0" top="20.0" />
                </VBox.margin>
@@ -190,23 +182,18 @@
                   <Insets left="10.0" right="10.0" />
                </VBox.margin>
             </JFXTextField>
-            <Button fx:id="btnEditConnections" mnemonicParsing="false" text="Edit Connections">
-               <VBox.margin>
-                  <Insets left="10.0" top="20.0" />
-               </VBox.margin>
-            </Button>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER" prefHeight="27.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="btnCancel" mnemonicParsing="false" prefWidth="70.0" text="Cancel">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Button fx:id="btnSave" mnemonicParsing="false" prefWidth="70.0" text="Save" onAction="#updateNode">
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </Button>
+                  <JFXButton fx:id="btnEditConnectionsbtnEditConnections" buttonType="RAISED" defaultButton="true" prefWidth="145.0" ripplerFill="WHITE" style="-fx-background-color: #405784;" text="Edit Connections" textAlignment="CENTER" textFill="WHITE" />
+               </children>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="70.0" prefWidth="200.0" spacing="25.0">
+               <children>
+                  <JFXButton fx:id="btnCancel" buttonType="RAISED" ripplerFill="WHITE" style="-fx-background-color: #405784;" text="Cancel" textAlignment="CENTER" textFill="WHITE" />
+                  <JFXButton fx:id="btnSave" buttonType="RAISED" onAction="#updateNode" prefWidth="60.5" ripplerFill="WHITE" style="-fx-background-color: #405784;" text="Save" textFill="WHITE" />
                </children>
             </HBox>
          </children>
