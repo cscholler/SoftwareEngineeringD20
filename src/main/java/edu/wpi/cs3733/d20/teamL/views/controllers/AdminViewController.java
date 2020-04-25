@@ -36,7 +36,7 @@ public class AdminViewController {
     }
 
     /**
-     * goes to add doctor page when button is clicked
+     * Goes to add doctor page when button is clicked
      */
     @FXML
     private void addDoctorClicked() {
@@ -50,7 +50,7 @@ public class AdminViewController {
     }
 
     /**
-     * goes back to home screen when logout is clicked
+     * Goes back to home screen when logout is clicked
      */
     @FXML
     private void logoutClicked() {
@@ -63,7 +63,7 @@ public class AdminViewController {
     }
 
     /**
-     * goes to map editor when button is clicked
+     * Goes to map editor when button is clicked
      */
     @FXML
     private void mapEditorClicked() {

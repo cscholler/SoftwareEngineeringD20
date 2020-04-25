@@ -19,15 +19,15 @@ class PathFinderTest {
     public void createGraph() throws Exception {
         PathFinder pathfinder = new PathFinder();
         Graph newGraph = new Graph();
-        Node n1 = new Node("n1", new Point2D(1, 2));
-        Node n2 = new Node("n2", new Point2D(2, 1));
-        Node n3 = new Node("n3", new Point2D(2, -1));
-        Node n4 = new Node("n4", new Point2D(1, -2));
-        Node n5 = new Node("n5", new Point2D(-1, -2));
-        Node n6 = new Node("n6", new Point2D(-2, -1));
-        Node n7 = new Node("n7", new Point2D(-2, 1));
-        Node n8 = new Node("n8", new Point2D(-1, 2));
-        Node n9 = new Node("n9", new Point2D(0, 0));
+        Node n1 = new Node("n1", new Point2D(1, 2), 1, "A");
+        Node n2 = new Node("n2", new Point2D(2, 1), 1, "A");
+        Node n3 = new Node("n3", new Point2D(2, -1), 1, "A");
+        Node n4 = new Node("n4", new Point2D(1, -2), 1, "A");
+        Node n5 = new Node("n5", new Point2D(-1, -2), 1, "A");
+        Node n6 = new Node("n6", new Point2D(-2, -1), 1, "A");
+        Node n7 = new Node("n7", new Point2D(-2, 1), 1, "A");
+        Node n8 = new Node("n8", new Point2D(-1, 2), 1, "A");
+        Node n9 = new Node("n9", new Point2D(0, 0), 1, "A");
 
         newGraph.addNode(n1);
         newGraph.addNode(n2);

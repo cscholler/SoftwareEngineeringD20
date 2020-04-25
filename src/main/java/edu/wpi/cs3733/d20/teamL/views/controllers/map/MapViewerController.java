@@ -54,12 +54,12 @@ public class MapViewerController {
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 
     @FXML
-    public void initialize() {
+    private void initialize() {
         dbCache.cacheAllFromDB();
 
         map.setEditable(false);
 
-        map.setGraph(MapParser.getGraphFromCache(dbCache.getNodeCache()));
+        map.setGraph(MapParser.getGraphFromCache());
 
         map.setZoomLevel(1);
         map.init();
@@ -91,6 +91,12 @@ public class MapViewerController {
         this.destination.setText(destination);
     }
 
+    /**
+     * Shows everything required for a navigations, includes:
+     * highlighting the path
+     * showing text directions
+     * showing 'text me directions' button
+     */
     @FXML
     public void navigate() {
         Node startNode = sf.getNode(startingPoint.getText());

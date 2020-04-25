@@ -1,0 +1,13 @@
+
+.background {
+    -fx-background-color: #0d2e57;
+}
+
+.label {
+    -fx-font-family: "Roboto";
+}
+
+.button {
+    -fx-font-family: Roboto;
+    -fx-background-radius: 5px;
+}
