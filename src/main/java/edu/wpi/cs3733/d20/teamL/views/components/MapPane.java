@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamL.views.components;
 import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.graph.Graph;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.EventHandler;
@@ -39,6 +40,8 @@ public class MapPane extends StackPane {
     @FXML
     private ImageView mapImage;
 
+    FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+
     private Map<Node, NodeGUI> nodes = new ConcurrentHashMap<>();
     private Map<Edge, EdgeGUI> edges = new ConcurrentHashMap<>();
 
@@ -71,7 +74,7 @@ public class MapPane extends StackPane {
     private ArrayList<Node> editedNodes = new ArrayList<>();
 
     public MapPane() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MapPane.fxml"));
+        FXMLLoader fxmlLoader = loaderHelper.getFXMLLoader("components/MapPane");
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
 
