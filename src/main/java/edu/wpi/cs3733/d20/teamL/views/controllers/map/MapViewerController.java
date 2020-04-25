@@ -28,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -155,7 +156,14 @@ public class MapViewerController {
         map.getSelector().add(nodeGUI);
         nodeGUI.setHighlighted(true);
 
-        return path.generateTextMessage();
+        ArrayList<String> message = path.generateTextMessage();
+        StringBuilder builder = new StringBuilder();
+
+        for(String direction : message) {
+            builder.append(direction + "\n\n");
+        }
+
+        return builder.toString();
     }
 
     public MapPane getMap() {
