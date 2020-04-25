@@ -154,7 +154,7 @@
                                 <Insets left="20.0" />
                             </opaqueInsets>
                         </Label>
-                        <Label alignment="TOP_LEFT" text="World " textFill="WHITE">
+                        <Label fx:id="userLabel" alignment="TOP_LEFT" text="User" textFill="WHITE">
                             <font>
                                 <Font name="Segoe UI" size="24.0" />
                             </font>

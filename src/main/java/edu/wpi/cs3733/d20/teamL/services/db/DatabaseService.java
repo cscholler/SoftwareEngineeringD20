@@ -147,7 +147,6 @@ public class DatabaseService extends Service implements IDatabaseService {
 				numRowsAffected = stmt.executeUpdate(update.getStatement());
 			} else {
 				PreparedStatement pStmt = fillPreparedStatement(update);
-				System.out.println(update.getStatement() + "\n" + update.getValues());
 				numRowsAffected = pStmt.executeUpdate();
 			}
 		} catch (SQLException ex) {
@@ -200,14 +199,17 @@ public class DatabaseService extends Service implements IDatabaseService {
 	 */
 	@Override
 	public void rebuildDatabase() {
-		ArrayList<SQLEntry> updates = new ArrayList<>();
-		updates.add(new SQLEntry(DBConstants.CREATE_NODE_TABLE, new ArrayList<>()));
-		updates.add(new SQLEntry(DBConstants.CREATE_EDGE_TABLE, new ArrayList<>()));
-		updates.add(new SQLEntry(DBConstants.CREATE_DOCTOR_TABLE, new ArrayList<>()));
-		updates.add(new SQLEntry(DBConstants.CREATE_PATIENT_TABLE, new ArrayList<>()));
-		updates.add(new SQLEntry(DBConstants.CREATE_MEDICATION_REQUEST_TABLE, new ArrayList<>()));
-		updates.add(new SQLEntry(DBConstants.CREATE_USER_TABLE, new ArrayList<>()));
 		dropTables();
+		ArrayList<SQLEntry> updates = new ArrayList<>();
+		updates.add(new SQLEntry(DBConstants.CREATE_NODE_TABLE));
+		updates.add(new SQLEntry(DBConstants.CREATE_EDGE_TABLE));
+		updates.add(new SQLEntry(DBConstants.CREATE_USER_TABLE));
+		updates.add(new SQLEntry(DBConstants.CREATE_DOCTOR_TABLE));
+		updates.add(new SQLEntry(DBConstants.CREATE_PATIENT_TABLE));
+		updates.add(new SQLEntry(DBConstants.CREATE_GIFT_TABLE));
+		updates.add(new SQLEntry(DBConstants.CREATE_GIFT_DELIVERY_REQUEST_TABLE));
+		updates.add(new SQLEntry(DBConstants.CREATE_MEDICATION_REQUEST_TABLE));
+		updates.add(new SQLEntry(DBConstants.CREATE_SERVICE_REQUEST_TABLE));
 		executeUpdates(updates);
 		populateFromCSV("MapLnodesFloor2", DBConstants.ADD_NODE);
 		populateFromCSV("MapLedgesFloor2", DBConstants.ADD_EDGE);
@@ -234,10 +236,13 @@ public class DatabaseService extends Service implements IDatabaseService {
 		ArrayList<SQLEntry> updates = new ArrayList<>();
 		dropTableUpdates.add(DBConstants.DROP_NODE_TABLE);
 		dropTableUpdates.add(DBConstants.DROP_EDGE_TABLE);
+		dropTableUpdates.add(DBConstants.DROP_USER_TABLE);
 		dropTableUpdates.add(DBConstants.DROP_DOCTOR_TABLE);
 		dropTableUpdates.add(DBConstants.DROP_PATIENT_TABLE);
+		dropTableUpdates.add(DBConstants.DROP_GIFT_TABLE);
+		dropTableUpdates.add(DBConstants.DROP_GIFT_REQUEST_TABLE);
 		dropTableUpdates.add(DBConstants.DROP_MEDICATION_REQUEST_TABLE);
-		dropTableUpdates.add(DBConstants.DROP_USER_TABLE);
+		dropTableUpdates.add(DBConstants.DROP_SERVICE_REQUEST_TABLE);
 		try {
 			for (int i = 0; i < DBConstants.GET_TABLE_NAMES().size(); i++) {
 				resSet = connection.getMetaData().getTables(null, "APP", DBConstants.GET_TABLE_NAMES().get(i).toUpperCase(), null);

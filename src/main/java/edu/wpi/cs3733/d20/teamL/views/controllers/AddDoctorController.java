@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
+import edu.wpi.cs3733.d20.teamL.services.search.SearchFields;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,11 +18,9 @@ import com.jfoenix.controls.JFXTextField;
 
 import lombok.extern.slf4j.Slf4j;
 
-import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
-import edu.wpi.cs3733.d20.teamL.services.navSearch.SearchFields;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 
 import javax.inject.Inject;
@@ -33,7 +33,7 @@ public class AddDoctorController {
     @Inject
 	private IDatabaseService db;
     @Inject
-    private DBCache dbCache;
+    private IDatabaseCache cache;
 	@FXML
 	private Label confirmation;
 	@FXML
@@ -42,8 +42,8 @@ public class AddDoctorController {
 
     @FXML
     private void initialize() {
-        dbCache.cacheAllFromDB();
-        sf = new SearchFields(dbCache.getNodeCache());
+        cache.cacheAllFromDB();
+        sf = new SearchFields(cache.getNodeCache());
         sf.getFields().add(SearchFields.Field.nodeID);
         sf.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
