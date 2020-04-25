@@ -30,6 +30,4 @@ public interface IDBCache {
 	Node searchNodeCache(String nodeID);
 
 	void clearEdgeCache();
-
-	void disconnectDB();
 }

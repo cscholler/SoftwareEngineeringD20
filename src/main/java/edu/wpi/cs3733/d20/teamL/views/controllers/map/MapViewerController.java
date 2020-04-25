@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.db.IDBCache;
+import edu.wpi.cs3733.d20.teamL.services.graph.Graph;
 import edu.wpi.cs3733.d20.teamL.services.graph.MapParser;
 import edu.wpi.cs3733.d20.teamL.services.graph.Path;
 import edu.wpi.cs3733.d20.teamL.services.graph.PathFinder;
@@ -54,12 +55,14 @@ public class MapViewerController {
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 
     @FXML
-    public void initialize() {
+    private void initialize() {
         dbCache.cacheAllFromDB();
 
         map.setEditable(false);
 
-        map.setGraph(MapParser.getGraphFromCache(dbCache.getNodeCache()));
+        Graph newGraph = new Graph();
+        newGraph.addAllNodes(dbCache.getNodeCache());
+        map.setGraph(newGraph);
 
         map.setZoomLevel(1);
         map.init();
@@ -91,6 +94,12 @@ public class MapViewerController {
         this.destination.setText(destination);
     }
 
+    /**
+     * Shows everything required for a navigations, includes:
+     * highlighting the path
+     * showing text directions
+     * showing 'text me directions' button
+     */
     @FXML
     public void navigate() {
         Node startNode = sf.getNode(startingPoint.getText());

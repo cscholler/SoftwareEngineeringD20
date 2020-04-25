@@ -120,10 +120,22 @@ public class EdgeGUI extends Line implements Highlightable {
         return highlightGui.getStroke();
     }
 
+
+    /**
+     * Determines the length of the EdgeUI on the screen
+     *
+     * @return a double representing the length
+     */
     public double getLengthOnScreen() {
         return getEndPos().subtract(getStartPos()).magnitude();
     }
 
+    /**
+     * Checks to see if a given Point2D is located within the 'area' of the edge.
+     *
+     * @param point The Point2D to check
+     * @return true if point is within area
+     */
     public boolean contains(Point2D point) {
         if(getStartX()-getEndX()==0 || getStartY()-getEndY()==0) return checkBounds(point.getX(), point.getY(),3);
 

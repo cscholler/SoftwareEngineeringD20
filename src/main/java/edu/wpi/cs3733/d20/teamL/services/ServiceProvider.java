@@ -14,5 +14,5 @@ public class ServiceProvider extends AbstractModule {
 		bind(IDatabaseService.class).to(DatabaseService.class).asEagerSingleton();
 		bind(IDBCache.class).to(DBCache.class).asEagerSingleton();
 		bind(IMailerService.class).to(MailerService.class).asEagerSingleton();
-}
+	}
 }
