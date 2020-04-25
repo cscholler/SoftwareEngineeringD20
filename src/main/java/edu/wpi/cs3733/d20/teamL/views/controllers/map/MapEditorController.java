@@ -1,5 +1,7 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXNodesList;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.services.db.IDBCache;
@@ -59,7 +61,11 @@ public class MapEditorController {
     JFXTextField nodeIDText, xCoordText, yCoordText, buildingText, nodeTypeText, shortNameText, longNameText;
     @FXML
     VBox editor;
-	@Inject
+    @FXML
+    JFXButton saveOptions, loadOptions, pathfindingOptions, saveDBButton;
+	@FXML
+    JFXNodesList saveNodesList, loadNodesList, pathNodesList;
+    @Inject
 	private IDBCache cache;
 
     private Scene scene;
@@ -110,6 +116,8 @@ public class MapEditorController {
         editor.setVisible(false);
 
         map.recalculatePositions();
+
+        saveNodesList.addAnimatedNode(saveDBButton);
 	}
 
     /**
