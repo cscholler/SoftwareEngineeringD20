@@ -58,7 +58,7 @@
                                     <graphic>
                                         <ImageView fitHeight="47.0" fitWidth="46.0">
                                             <image>
-                                                <Image url="@../assets/Search-button-home.png" />
+                                                <Image url="@../assets/home page/Search-button-home.png" />
                                             </image>
                                         </ImageView>
                                     </graphic>
@@ -91,7 +91,7 @@
                     <graphic>
                         <ImageView fitHeight="48.0" fitWidth="52.0">
                             <image>
-                                <Image url="@../assets/outline_people_alt_white_48dp.png" />
+                                <Image url="@../assets/staff view/outline_people_alt_white_48dp.png" />
                             </image>
                         </ImageView>
                     </graphic>
@@ -103,7 +103,7 @@
                     <graphic>
                         <ImageView fitHeight="59.0" fitWidth="58.0">
                             <image>
-                                <Image url="@../assets/baseline_explore_white_48dp.png" />
+                                <Image url="@../assets/home page/baseline_explore_white_48dp.png" />
                             </image>
                         </ImageView>
                     </graphic>
@@ -118,7 +118,7 @@
                     <graphic>
                         <ImageView fitHeight="43.0" fitWidth="44.0">
                             <image>
-                                <Image url="@../assets/baseline_room_service_white_48dp.png" />
+                                <Image url="@../assets/home page/baseline_room_service_white_48dp.png" />
                             </image>
                         </ImageView>
                     </graphic>
