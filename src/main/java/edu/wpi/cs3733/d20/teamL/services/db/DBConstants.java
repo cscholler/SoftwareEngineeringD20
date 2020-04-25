@@ -9,14 +9,14 @@ public class DBConstants {
 	public static final String SERVICE_NAME = "derby-db-embedded-01";
 
 	public static ArrayList<String> GET_TABLE_NAMES() {
-		return new ArrayList<>(Arrays.asList("Nodes", "Edges", "Doctors", "Patients", "Medication_Requests", "Users"));
+		return new ArrayList<>(Arrays.asList("Nodes", "Edges", "Users", "Doctors", "Patients", "Gifts", "Gift_Delivery_Requests", "Medication_Requests", "Service_Requests"));
 	}
 
 	public static final String CREATE_NODE_TABLE =
 			"CREATE TABLE Nodes(" +
 					"id VARCHAR(10) NOT NULL, " +
-					"x_pos VARCHAR(32) NOT NULL, " +
-					"y_pos VARCHAR(32) NOT NULL, " +
+					"x_pos DOUBLE NOT NULL, " +
+					"y_pos DOUBLE NOT NULL, " +
 					"floor CHAR(1) NOT NULL, " +
 					"building VARCHAR(64) NOT NULL, " +
 					"node_type CHAR(4) NOT NULL, " +
@@ -31,11 +31,23 @@ public class DBConstants {
 					"node_end VARCHAR(10) NOT NULL REFERENCES Nodes(id), " +
 					"PRIMARY KEY (id))";
 
-	public static final String CREATE_DOCTOR_TABLE =
-			"id INT NOT NULL, " +
+	public static final String CREATE_USER_TABLE =
+			"CREATE TABLE Users(" +
+					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
 					"f_name VARCHAR(32) NOT NULL, " +
 					"l_name VARCHAR(32) NOT NULL, " +
-					"email VARCHAR(32), " +
+					"username VARCHAR(32) NOT NULL, " +
+					"password VARCHAR(128) NOT NULL, " +
+					"acct_type CHAR(1) NOT NULL, " +
+					"services VARCHAR(512), " +
+					"PRIMARY KEY (username))";
+
+	public static final String CREATE_DOCTOR_TABLE =
+			"CREATE TABLE Doctors(" +
+					"id INT NOT NULL, " +
+					"f_name VARCHAR(32) NOT NULL, " +
+					"l_name VARCHAR(32) NOT NULL, " +
+					"username VARCHAR(32) REFERENCES Users(username), " +
 					"office_id VARCHAR(10) REFERENCES Nodes(id), " +
 					"addl_info VARCHAR(256), " +
 					"PRIMARY KEY (id))";
@@ -50,10 +62,31 @@ public class DBConstants {
 					"addl_info VARCHAR(256), " +
 					"PRIMARY KEY (id))";
 
+	public static final String CREATE_GIFT_TABLE =
+			"CREATE TABLE Gifts(" +
+					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
+					"type VARCHAR(16) NOT NULL, " +
+					"description VARCHAR(128) NOT NULL, " +
+					"inventory INT NOT NULL, " +
+					"PRIMARY KEY (id))";
+
+	public static final String CREATE_GIFT_DELIVERY_REQUEST_TABLE =
+			"CREATE TABLE Gift_Delivery_Requests(" +
+					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
+					"patient_id INT NOT NULL REFERENCES Patients(id), " +
+					"nurse_name VARCHAR(64) NOT NULL, " +
+					"assignee VARCHAR(32) REFERENCES Users(username), " +
+					"gift_id INT NOT NULL REFERENCES Gifts(id), " +
+					"message VARCHAR(128), " +
+					"notes VARCHAR(256), " +
+					"status CHAR(1) NOT NULL, " +
+					"date_and_time CHAR(19) NOT NULL, " +
+					"PRIMARY KEY (id))";
+
 	public static final String CREATE_MEDICATION_REQUEST_TABLE =
 			"CREATE TABLE Medication_Requests(" +
 					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
-					"doctor_id NOT NULL INT REFERENCES Doctors(id), " +
+					"doctor_id INT NOT NULL REFERENCES Doctors(id), " +
 					"patient_id INT NOT NULL REFERENCES Patients(id), " +
 					"nurse_name VARCHAR(64) NOT NULL, " +
 					"dose VARCHAR(64) NOT NULL, " +
@@ -63,17 +96,17 @@ public class DBConstants {
 					"date_and_time CHAR(19) NOT NULL, " +
 					"PRIMARY KEY (id))";
 
-	// Consider making id PK and username unique
-	public static final String CREATE_USER_TABLE =
-			"CREATE TABLE Users(" +
+	public static final String CREATE_SERVICE_REQUEST_TABLE =
+			"CREATE TABLE Service_Requests(" +
 					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
-					"f_name VARCHAR(32) NOT NULL, " +
-					"l_name VARCHAR(32) NOT NULL, " +
-					"username VARCHAR(32) NOT NULL, " +
-					"password VARCHAR(128) NOT NULL, " +
-					"acct_type CHAR(1) NOT NULL, " +
-					"last_login CHAR(19), " +
-					"PRIMARY KEY (username))";
+					"patient_id INT NOT NULL REFERENCES Patients(id), " +
+					"nurse_name VARCHAR(64) NOT NULL, " +
+					"service VARCHAR(64) NOT NULL, " +
+					"assignee VARCHAR(32) NOT NULL REFERENCES Users(username), " +
+					"notes VARCHAR(256), " +
+					"status CHAR(1) NOT NULL, " +
+					"date_and_time CHAR(19) NOT NULL, " +
+					"PRIMARY KEY (id))";
 
 	public static final String DROP_NODE_TABLE =
 			"DROP TABLE Nodes";
@@ -81,17 +114,26 @@ public class DBConstants {
 	public static final String DROP_EDGE_TABLE =
 			"DROP TABLE Edges";
 
+	public static final String DROP_USER_TABLE =
+			"DROP TABLE Users";
+
 	public static final String DROP_DOCTOR_TABLE =
 			"DROP TABLE Doctors";
 
 	public static final String DROP_PATIENT_TABLE =
 			"DROP TABLE Patients";
 
+	public static final String DROP_GIFT_TABLE =
+			"DROP TABLE Gifts";
+
+	public static final String DROP_GIFT_REQUEST_TABLE =
+			"DROP TABLE Gift_Delivery_Requests";
+
 	public static final String DROP_MEDICATION_REQUEST_TABLE =
 			"DROP TABLE Medication_Requests";
 
-	public static final String DROP_USER_TABLE =
-			"DROP TABLE Users";
+	public static final String DROP_SERVICE_REQUEST_TABLE =
+			"DROP TABLE Service_Requests";
 
 	public static final String ADD_NODE =
 			"INSERT INTO Nodes(id, x_pos, y_pos, floor, building, node_type, l_name, s_name)" +
@@ -100,6 +142,10 @@ public class DBConstants {
 	public static final String ADD_EDGE =
 			"INSERT INTO Edges(id, node_start, node_end)" +
 					"VALUES(?, ?, ?)";
+
+	public static final String ADD_USER =
+			"INSERT INTO Employees(id, username, password, acct_type, last_login)" +
+					"VALUES(?, ?, ?, ?, ?)";
 
 	public static final String ADD_DOCTOR =
 			"INSERT INTO Doctors(id, f_name, l_name, email, office_id)" +
@@ -112,10 +158,6 @@ public class DBConstants {
 	public static final String ADD_MEDICATION_REQUEST =
 			"INSERT INTO Medication_Requests(doctor_id, patient_id, nurse_name, dose, type, notes, status, date_and_time)" +
 					"VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
-
-	public static final String ADD_USER =
-			"INSERT INTO Users(id, username, password, acct_type, last_login)" +
-					"VALUES(?, ?, ?, ?, ?)";
 
 	public static final String SELECT_ALL_NODES =
 			"SELECT * " +
@@ -139,16 +181,16 @@ public class DBConstants {
 
 	public static final String SELECT_ALL_USERS =
 			"SELECT * " +
-					"FROM Users";
+					"FROM Employees";
 
 	public static final String GET_USER =
 			"SELECT id, username, f_name, l_name, acct_type " +
-					"FROM Users " +
+					"FROM Employees " +
 					"WHERE username = ? AND password = ?";
 
 	public static final String GET_USER_BY_ID =
 			"SELECT id, username, f_name, l_name, acct_type " +
-					"FROM Users " +
+					"FROM Employees " +
 					"WHERE id = ?";
 
 	public static final String GET_DOCTOR_ID =
@@ -197,22 +239,22 @@ public class DBConstants {
 					"WHERE id = ?";
 
 	public static final String UPDATE_USER_NAME =
-			"UPDATE Users " +
+			"UPDATE Employees " +
 					"SET f_name = ?, l_name = ? " +
 					"WHERE id = ?";
 
 	public static final String UPDATE_USER_PASSWORD =
-			"UPDATE Users " +
+			"UPDATE Employees " +
 					"SET password = ? " +
 					"WHERE id = ?";
 
 	public static final String UPDATE_USER_ACCT_TYPE =
-			"UPDATE Users " +
+			"UPDATE Employees " +
 					"SET acct_type = ? " +
 					"WHERE id = ?";
 
 	public static final String UPDATE_LAST_USER_LOGIN =
-			"UPDATE Users " +
+			"UPDATE Employees " +
 					"SET last_login = ? " +
 					"WHERE id = ?";
 

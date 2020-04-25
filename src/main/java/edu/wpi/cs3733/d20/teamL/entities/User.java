@@ -1,18 +1,23 @@
 package edu.wpi.cs3733.d20.teamL.entities;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class User {
 	private String id;
 	private String username;
 	private String fName;
 	private String lName;
 	private String acctType;
+	private List<String> services;
 
-	public User(String id, String username, String fName, String lName, String acctType) {
+	public User(String id, String username, String fName, String lName, String acctType, String services) {
 		this.id = id;
 		this.username = username;
 		this.fName = fName;
 		this.lName = lName;
 		this.acctType = acctType;
+		this.services = Arrays.asList(services.split(","));
 	}
 
 	public String getID() {
@@ -53,5 +58,9 @@ public class User {
 
 	public void setAcctType(String acctType) {
 		this.acctType = acctType;
+	}
+
+	public List<String> getServices() {
+		return services;
 	}
 }
