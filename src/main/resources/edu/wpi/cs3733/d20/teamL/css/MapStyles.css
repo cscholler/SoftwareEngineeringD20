@@ -1,0 +1,9 @@
+
+.map-text {
+    -fx-font-size: 14;
+}
+
+.button {
+    -fx-padding: 10;
+    -fx-background-color: grey;
+}
