@@ -262,25 +262,7 @@ public class MapPane extends StackPane {
         currentFloor = nodeList.get(0).getFloor();
         currentBuilding = nodeList.get(0).getBuilding();
 
-        switch (currentFloor) {
-            case 1:
-                mapImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/Floor1LM.png"));
-                break;
-            case 2:
-                mapImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/Floor2LM.png"));
-                break;
-            case 3:
-                mapImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/Floor3LM.png"));
-                break;
-            case 4:
-                mapImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/Floor4LM.png"));
-                break;
-            case 5:
-                mapImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/Floor5LM.png"));
-                break;
-            default:
-                break;
-        }
+        mapImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/Floor" + currentFloor + "LM.png"));
 
         recalculatePositions();
     }
