@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamL.views.components;
 import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.graph.Graph;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.EventHandler;
@@ -39,6 +40,8 @@ public class MapPane extends StackPane {
     @FXML
     private ImageView mapImage;
 
+    FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+
     private Map<Node, NodeGUI> nodes = new ConcurrentHashMap<>();
     private Map<Edge, EdgeGUI> edges = new ConcurrentHashMap<>();
 
@@ -65,11 +68,13 @@ public class MapPane extends StackPane {
     private Color nodeColor = Color.DARKBLUE;
     private Paint highLightColor = Color.rgb(20, 194, 247);
     private double highlightThickness = 2;
+    private int currentFloor = 1;
+    private String currentBuilding;
 
     private ArrayList<Node> editedNodes = new ArrayList<>();
 
     public MapPane() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MapPane.fxml"));
+        FXMLLoader fxmlLoader = loaderHelper.getFXMLLoader("components/MapPane");
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
 
@@ -117,7 +122,7 @@ public class MapPane extends StackPane {
                 if (addingEdge && !onSelectable && !erasing) {
                     if (event.getButton().equals(MouseButton.PRIMARY)) {
 
-                        Node dest = new Node(graph.getUniqueNodeID(), new Point2D(event.getX(), event.getY()).multiply(1 / zoomLevel));
+                        Node dest = new Node(graph.getUniqueNodeID(), new Point2D(event.getX(), event.getY()).multiply(1 / zoomLevel), currentFloor, currentBuilding);
 
                         addNode(dest);
 
@@ -257,27 +262,10 @@ public class MapPane extends StackPane {
         }
         
         ArrayList<Node> nodeList = new ArrayList<>(nodes.keySet());
-        int floor = nodeList.get(0).getFloor();
+        currentFloor = nodeList.get(0).getFloor();
+        currentBuilding = nodeList.get(0).getBuilding();
 
-        switch (floor) {
-            case 1:
-                mapImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/Floor1LM.png"));
-                break;
-            case 2:
-                mapImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/Floor2LM.png"));
-                break;
-            case 3:
-                mapImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/Floor3LM.png"));
-                break;
-            case 4:
-                mapImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/Floor4LM.png"));
-                break;
-            case 5:
-                mapImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/Floor5LM.png"));
-                break;
-            default:
-                break;
-        }
+        mapImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/Floor" + currentFloor + "LM.png"));
 
         recalculatePositions();
     }
@@ -472,7 +460,7 @@ public class MapPane extends StackPane {
             graph.addNode(node);
 
         nodes.put(node, nodeGUI);
-        node.data.put("GUI", nodeGUI);
+        node.getData().put("GUI", nodeGUI);
 
         body.getChildren().add(nodeGUI);
 
@@ -518,7 +506,7 @@ public class MapPane extends StackPane {
         edgeGUI.endYProperty().bind(getNodeGUI(edge.getDestination()).getYProperty());
 
         edges.put(edge, edgeGUI);
-        edge.data.put("GUI", edgeGUI);
+        edge.getData().put("GUI", edgeGUI);
 
         body.getChildren().addAll(0, edgeGUI.getAllNodes());
 
@@ -575,4 +563,11 @@ public class MapPane extends StackPane {
         return selectedNodeGUI;
     }
 
+    public int getCurrentFloor() {
+        return currentFloor;
+    }
+
+    public String getCurrentBuilding() {
+        return currentBuilding;
+    }
 }

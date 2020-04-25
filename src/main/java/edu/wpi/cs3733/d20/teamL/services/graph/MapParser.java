@@ -2,12 +2,18 @@ package edu.wpi.cs3733.d20.teamL.services.graph;
 
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.entities.Edge;
+import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
+import edu.wpi.cs3733.d20.teamL.services.db.IDBCache;
 import javafx.geometry.Point2D;
 
+import javax.inject.Inject;
 import java.io.*;
 import java.util.ArrayList;
 
 public class MapParser {
+
+    @Inject
+    static IDBCache dbCache;
 
     public static class DATA_LABELS {
         public static String X = "x";
@@ -43,7 +49,7 @@ public class MapParser {
         return new ArrayList<>(2);
     }
 
-    public static Graph parseMapToGraph(File nodesFile, File edgesFile) {
+    public static Graph parseMapToGraph(File nodesFile, File edgesFile) { //TODO use csv parser
         if (nodesFile == null) return null;
 
         try {
@@ -59,12 +65,8 @@ public class MapParser {
             while ((row = nodeReader.readLine()) != null) {
                 String[] data = row.split(",");
 
-                Node newNode = new Node(data[0], new Point2D(Double.parseDouble(data[1]), Double.parseDouble(data[2])));
-                newNode.setType(data[5]);
-                newNode.setLongName(data[6]);
-                newNode.setShortName(data[7]);
-                newNode.setFloor(Integer.parseInt(data[3]));
-                newNode.setBuilding(data[4]);
+                Node newNode = new Node(data[0], new Point2D(Double.parseDouble(data[1]), Double.parseDouble(data[2])),
+                        Integer.parseInt(data[3]), data[4], data[5], data[6], data[7]);
 
                 newGraph.addNode(newNode);
             }
@@ -103,32 +105,5 @@ public class MapParser {
         }
 
         return null;
-    }
-
-    public static Graph parseMapToGraph(String nodesPath, String edgesPath) {
-        File nodesFile = new File(nodesPath);
-        File edgesFile = new File(edgesPath);
-
-        return parseMapToGraph(nodesFile, edgesFile);
-    }
-
-    public static Graph parseMapToGraph(String nodesPath, File edgesFile) {
-        File nodesFile = new File(nodesPath);
-
-        return parseMapToGraph(nodesFile, edgesFile);
-    }
-
-    public static Graph parseMapToGraph(File nodesFile, String edgesPath) {
-        File edgesFile = new File(edgesPath);
-
-        return parseMapToGraph(nodesFile, edgesFile);
-    }
-
-    public static Graph getGraphFromCache(ArrayList<Node> nodes) {
-        Graph newGraph = new Graph();
-
-        newGraph.addAllNodes(nodes);
-
-        return newGraph;
     }
 }
