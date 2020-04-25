@@ -1,0 +1,21 @@
+
+.text-field {
+    -fx-background-color: white;
+    -fx-pref-height: 40px;
+}
+
+.big-text-field {
+    -fx-pref-height: 120px;
+}
+
+.button {
+    -fx-font-size: 24;
+}
+
+.cancel {
+    -fx-background-color: #dfdfdc;
+}
+
+.confirm {
+    -fx-background-color: #0d2e57;
+}
