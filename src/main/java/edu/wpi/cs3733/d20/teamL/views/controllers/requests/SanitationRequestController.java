@@ -75,10 +75,10 @@ public class SanitationRequestController implements Initializable {
 
         String status = "0";
         String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
-        String concatenatedNotes = requestType + "\n" + location + "\n" + subject + "\n" + additionalNotes;
+        String concatenatedNotes = location + "\n" + subject + "\n" + additionalNotes;
         // TODO: Get name of nurse from current user
         int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
-                new ArrayList<>(Arrays.asList(null, "Nurse", "Sanitation Service Request", "SanitationManager", concatenatedNotes, status, dateAndTime)))));
+                new ArrayList<>(Arrays.asList(null, "Nurse", "Sanitation Service Request", requestType, "SanitationManager", concatenatedNotes, status, dateAndTime)))));
 
         if (rows == 0) sanitationConfirmation.setText("*Please fill out all above fields");
         if (rows == 1) {

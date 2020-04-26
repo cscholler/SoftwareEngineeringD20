@@ -161,8 +161,8 @@ public class DBConstants {
 					"VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 
 	public static final String ADD_SERVICE_REQUEST =
-			"INSERT INTO Service_Requests(patient_id, nurse_name, service, assignee, notes, status, date_and_time)" +
-					"VALUES(?,?,?,?,?,?,?)";
+			"INSERT INTO Service_Requests(patient_id, nurse_name, service, type, assignee, notes, status, date_and_time)" +
+					"VALUES(?,?,?,?,?,?,?,?)";
 
 	public static final String SELECT_ALL_NODES =
 			"SELECT * " +
@@ -244,7 +244,7 @@ public class DBConstants {
 
 	public static final String UPDATE_SERVICE_REQUEST =
 			"UPDATE Service_Requests " +
-					"SET patient_id = ?, nurse_name = ?, service = ?, assignee = ?, notes = ?, status = ?, date_and_time = ? " +
+					"SET patient_id = ?, nurse_name = ?, service = ?, type = ?, assignee = ?, notes = ?, status = ?, date_and_time = ? " +
 					"WHERE id = ?";
 
 	public static final String UPDATE_MEDICATION_REQUEST_STATUS =
