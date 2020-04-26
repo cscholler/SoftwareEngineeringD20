@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -47,12 +46,49 @@
          <children>
             <VBox alignment="CENTER" prefHeight="520.0" prefWidth="400.0" spacing="100.0">
                <children>
-                  <JFXTextField />
-                  <JFXTextField />
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label text="Patient ID:">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <JFXTextField promptText="Enter Patient Id..." />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label text="Location:">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <JFXTextField promptText="Enter Location..." />
+                     </children>
+                  </VBox>
                </children></VBox>
-            <VBox prefHeight="520.0" prefWidth="400.0">
+            <VBox alignment="CENTER" prefHeight="520.0" prefWidth="400.0" spacing="100.0">
                <children>
-                  <JFXTextArea />
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label text="Reason:">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <JFXTextField promptText="Enter Reason..." />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label text="Additional Notes:">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <JFXTextField promptText="Enter Additional Notes..." />
+                     </children>
+                  </VBox>
                </children></VBox>
          </children>
       </HBox>
