@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import edu.wpi.cs3733.d20.teamL.services.IMessengerService;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -30,7 +31,7 @@ import com.google.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
-import edu.wpi.cs3733.d20.teamL.services.search.SearchFields;
+import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.views.controllers.map.MapViewerController;
 
@@ -46,6 +47,7 @@ public class NavigationController implements Initializable {
     @Inject
     private IDatabaseCache cache;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    private IMessengerService messenger = new IMessengerService();
     private JFXAutoCompletePopup<String> autoCompletePopup;
     private SearchFields sf;
 
@@ -74,6 +76,8 @@ public class NavigationController implements Initializable {
             if (event.getCode().equals(KeyCode.ENTER))
                 searchMap();
         });
+        messenger.sendEmail("This is a test email.", "lukebodwell@gmail.com");
+        messenger.sendText("This is a test text.", "2073186779");
     }
 
     /**

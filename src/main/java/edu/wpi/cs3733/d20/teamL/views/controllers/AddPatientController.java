@@ -6,7 +6,7 @@ import java.util.Arrays;
 import javax.inject.Inject;
 
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
-import edu.wpi.cs3733.d20.teamL.services.search.SearchFields;
+import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
