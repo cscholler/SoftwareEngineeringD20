@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
@@ -15,8 +14,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" styleClass="background" stylesheets="@../css/ServiceRequestStyles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" styleClass="background" stylesheets="@../css/ServiceRequestStyles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.SanitationRequestController">
    <top>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #00032E;" BorderPane.alignment="CENTER">
          <children>
@@ -29,7 +29,7 @@
       </HBox>
    </top>
    <center>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <HBox fx:id="confirmation" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <VBox alignment="CENTER" prefHeight="617.0" prefWidth="451.0">
                <children>
@@ -41,7 +41,6 @@
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
@@ -51,7 +50,7 @@
                               <Font size="30.0" />
                            </font>
                         </Label>
-                        <JFXTextField prefWidth="200.0" promptText="Brief summary of the request" GridPane.columnIndex="1">
+                        <JFXTextField fx:id="subject" prefWidth="200.0" promptText="Brief summary of the request" GridPane.columnIndex="1">
                            <padding>
                               <Insets left="10.0" />
                            </padding>
@@ -59,7 +58,7 @@
                               <Font size="15.0" />
                            </font>
                         </JFXTextField>
-                        <JFXTextField prefWidth="200.0" promptText="Room/Closest Room" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <JFXTextField fx:id="location" prefWidth="200.0" promptText="Room or Hallway" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <padding>
                               <Insets left="10.0" />
                            </padding>
@@ -72,16 +71,19 @@
                               <Font size="30.0" />
                            </font>
                         </Label>
-                        <JFXCheckBox checkedColor="#405784" text="This is a Hallway" textFill="WHITE" unCheckedColor="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </JFXCheckBox>
-                        <Label text="Request Type:" textFill="WHITE" GridPane.rowIndex="3" />
-                        <JFXComboBox maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="244.0" promptText="Select Request Type" styleClass="text-field" unFocusColor="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                        <Label text="Request Type:" textFill="WHITE" GridPane.rowIndex="2" />
+                        <JFXComboBox fx:id="reqType" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="244.0" promptText="Select Request Type" styleClass="text-field" unFocusColor="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <padding>
                               <Insets left="10.0" />
                            </padding>
+                           <items>
+                              <FXCollections fx:factory = "observableArrayList">
+                                 <String fx:id = "bioHazard" fx:value="Bio Hazard"></String>
+                                 <String fx:id = "roomCleanUp" fx:value="Room Cleanup"></String>
+                                 <String fx:id = "spill" fx:value="Spill"></String>
+                                 <String fx:id = "nonUrgent" fx:value="Non-urgent Request"></String>
+                              </FXCollections>
+                           </items>
                         </JFXComboBox>
                      </children>
                      <padding>
@@ -92,7 +94,7 @@
                      </VBox.margin>
                   </GridPane>
                   <Label prefHeight="45.0" prefWidth="253.0" text="Additional Notes:" textFill="WHITE" />
-                  <JFXTextArea prefHeight="192.0" prefWidth="451.0" promptText="Write additional important details here" styleClass="text-field">
+                  <JFXTextArea fx:id="addNotes" prefHeight="192.0" prefWidth="451.0" promptText="Write additional important details here" styleClass="text-field">
                      <padding>
                         <Insets left="10.0" top="10.0" />
                      </padding>
@@ -102,9 +104,10 @@
                   </JFXTextArea>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
+                        <Label fx:id="sanitationIncomplete" textFill="WHITE" visible="false" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <JFXButton buttonType="RAISED" prefHeight="40.0" prefWidth="100.0" text="Back" textFill="WHITE">
+                              <JFXButton fx:id="btnBack" buttonType="RAISED" onAction="#handleBackButton" prefHeight="40.0" prefWidth="100.0" text="Back" textFill="WHITE">
                                  <HBox.margin>
                                     <Insets right="50.0" />
                                  </HBox.margin>
@@ -112,7 +115,7 @@
                                     <Font size="20.0" />
                                  </font>
                               </JFXButton>
-                              <JFXButton buttonType="RAISED" prefHeight="40.0" prefWidth="100.0" text="Submit" textFill="WHITE">
+                              <JFXButton fx:id="btnSubmit" buttonType="RAISED" onAction="#handleSubmitButton" prefHeight="40.0" prefWidth="100.0" text="Submit" textFill="WHITE">
                                  <HBox.margin>
                                     <Insets left="50.0" />
                                  </HBox.margin>
@@ -125,6 +128,14 @@
                               <Insets />
                            </VBox.margin>
                         </HBox>
+                        <Label fx:id="sanitationConfirmation" text="Request Sent" textFill="WHITE" visible="false">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <VBox.margin>
+                              <Insets bottom="15.0" />
+                           </VBox.margin>
+                        </Label>
                      </children>
                   </VBox>
                </children>

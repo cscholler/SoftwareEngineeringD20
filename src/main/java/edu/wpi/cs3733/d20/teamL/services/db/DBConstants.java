@@ -99,7 +99,7 @@ public class DBConstants {
 	public static final String CREATE_SERVICE_REQUEST_TABLE =
 			"CREATE TABLE Service_Requests(" +
 					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
-					"patient_id INT NOT NULL REFERENCES Patients(id), " +
+					"patient_id INT REFERENCES Patients(id), " +
 					"nurse_name VARCHAR(64) NOT NULL, " +
 					"service VARCHAR(64) NOT NULL, " +
 					"assignee VARCHAR(32) NOT NULL REFERENCES Users(username), " +
@@ -159,6 +159,10 @@ public class DBConstants {
 			"INSERT INTO Medication_Requests(doctor_id, patient_id, nurse_name, dose, type, notes, status, date_and_time)" +
 					"VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 
+	public static final String ADD_SERVICE_REQUEST =
+			"INSERT INTO Service_Requests(patient_id, nurse_name, service, assignee, notes, status, date_and_time)" +
+					"VALUES(?,?,?,?,?,?,?)";
+
 	public static final String SELECT_ALL_NODES =
 			"SELECT * " +
 					"FROM Nodes";
@@ -178,6 +182,10 @@ public class DBConstants {
 	public static final String SELECT_ALL_MEDICATION_REQUESTS =
 			"SELECT * " +
 					"FROM Medication_Requests";
+
+	public static final String SELECT_ALL_SERVICE_REQUESTS =
+			"SELECT * " +
+					"FROM Service_Requests";
 
 	public static final String SELECT_ALL_USERS =
 			"SELECT * " +
@@ -233,7 +241,17 @@ public class DBConstants {
 					"SET doctor_id = ?, patient_id = ?, nurse_name = ?, dose = ?, type = ?, notes = ?, status = ?, date_and_time = ? " +
 					"WHERE id = ?";
 
+	public static final String UPDATE_SERVICE_REQUEST =
+			"UPDATE Service_Requests " +
+					"SET patient_id = ?, nurse_name = ?, service = ?, assignee = ?, notes = ?, status = ?, date_and_time = ? " +
+					"WHERE id = ?";
+
 	public static final String UPDATE_MEDICATION_REQUEST_STATUS =
+			"UPDATE Medication_Requests " +
+					"SET status = ? " +
+					"WHERE id = ?";
+
+	public static final String UPDATE_SERVICE_REQUEST_STATUS =
 			"UPDATE Medication_Requests " +
 					"SET status = ? " +
 					"WHERE id = ?";
