@@ -6,7 +6,7 @@
 .button {
     -fx-padding: 10;
     -fx-background-color: #c3c3c3;
-    -fx-text-fill: black;
+    -fx-text-fill: white;
 }
 
 .clear {
@@ -37,4 +37,49 @@
     -fx-pref-width: 80;
     -fx-pref-height: 80;
     -fx-background-color: #c3c3c3;
+}
+
+.nodeListButton {
+    -fx-pref-width: 50px;
+    -fx-background-color: #0d2e57;
+    -fx-background-radius: 50px;
+    -fx-pref-height: 50px;
+    -fx-text-fill: white;
+    -fx-border-color: white;
+    -fx-border-radius: 50px;
+    -fx-border-width: 4px;
+}
+
+.nodeTypeButton {
+    -fx-pref-width: 40px;
+    -fx-background-color: #405784;
+    -fx-background-radius: 40px;
+    -fx-pref-height: 40px;
+    -fx-text-fill: white;
+    -fx-border-color: white;
+    -fx-border-radius: 40px;
+    -fx-border-width: 3px;
+    -fx-font-size: 3px;
+}
+
+.floorChangeButton{
+    -fx-pref-width: 40px;
+    -fx-pref-height: 40px;
+    -fx-background-color: #0D2E57;
+
+}
+
+.text-field {
+    -fx-background-color: white;
+    -fx-pref-height: 40px;
+}
+
+.editorPaneVbox {
+    -fx-pref-height: 90px;
+}
+
+.tooltip {
+    -fx-show-delay: 200ms;
+    -fx-show-duration: 10000ms;
+    -fx-font-size: 13px;
 }
