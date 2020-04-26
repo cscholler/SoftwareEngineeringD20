@@ -38,6 +38,7 @@ public class DBConstants {
 					"l_name VARCHAR(32) NOT NULL, " +
 					"username VARCHAR(32) NOT NULL, " +
 					"password VARCHAR(128) NOT NULL, " +
+					// 0: Staff member, 1: Nurse, 2: Doctor, 3: Admin
 					"acct_type CHAR(1) NOT NULL, " +
 					"services VARCHAR(512), " +
 					"PRIMARY KEY (username))";
@@ -74,8 +75,8 @@ public class DBConstants {
 			"CREATE TABLE Gift_Delivery_Requests(" +
 					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
 					"patient_id INT NOT NULL REFERENCES Patients(id), " +
-					"request_username VARCHAR(64) NOT NULL REFERENCES User(username), " +
-					"assignee_username VARCHAR(64) NOT NULL REFERENCES User(username), " +
+					"request_username VARCHAR(32) NOT NULL REFERENCES Users(username), " +
+					"assignee_username VARCHAR(32) NOT NULL REFERENCES Users(username), " +
 					"gift_id INT NOT NULL REFERENCES Gifts(id), " +
 					"message VARCHAR(128), " +
 					"notes VARCHAR(256), " +
@@ -88,8 +89,8 @@ public class DBConstants {
 					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
 					"doctor_id INT NOT NULL REFERENCES Doctors(id), " +
 					"patient_id INT NOT NULL REFERENCES Patients(id), " +
-					"nurse_username VARCHAR(64) NOT NULL REFERENCES User(username), " +
-					"deliverer_username VARCHAR(64) REFERENCES User(username), " +
+					"nurse_username VARCHAR(32) NOT NULL REFERENCES Users(username), " +
+					"deliverer_username VARCHAR(32) REFERENCES Users(username), " +
 					"dose VARCHAR(64) NOT NULL, " +
 					"type VARCHAR(64) NOT NULL, " +
 					"notes VARCHAR(256), " +
@@ -101,7 +102,7 @@ public class DBConstants {
 			"CREATE TABLE Service_Requests(" +
 					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
 					"patient_id INT REFERENCES Patients(id), " +
-					"request_username VARCHAR(32) REFERENCES Users(username)" +
+					"request_username VARCHAR(32) REFERENCES Users(username), " +
 					"assignee_username VARCHAR(32) NOT NULL REFERENCES Users(username), " +
 					"location VARCHAR(10) NOT NULL REFERENCES Nodes(id), " +
 					"service VARCHAR(64) NOT NULL, " +
@@ -151,12 +152,12 @@ public class DBConstants {
 					"VALUES(?, ?, ?, ?, ?, ?)";
 
 	public static final String ADD_DOCTOR =
-			"INSERT INTO Doctors(id, f_name, l_name, email, office_id)" +
-					"VALUES(?, ?, ?, ?, ?)";
+			"INSERT INTO Doctors(id, f_name, l_name, username, office_id, addl_info)" +
+					"VALUES(?, ?, ?, ?, ?, ?)";
 
 	public static final String ADD_PATIENT =
-			"INSERT INTO Patients(id, f_name, l_name, doctor_id, room_id)" +
-					"VALUES(?, ?, ?, ?, ?)";
+			"INSERT INTO Patients(id, f_name, l_name, doctor_id, room_id, addl_info)" +
+					"VALUES(?, ?, ?, ?, ?, ?)";
 
 	public static final String ADD_GIFT_DELIVERY_REQUEST =
 			"INSERT INTO Gift_Delivery_Requests(patient_id, request_username, assignee_username, gift_id, message, notes, status, date_and_time)" +
@@ -238,10 +239,10 @@ public class DBConstants {
 			"SELECT * " +
 					"FROM Medication_Requests";
 
-	public static final String SELECT_ALL_MEDICATION_REQUESTS_FOR_NURSE =
+	public static final String SELECT_ALL_MEDICATION_REQUESTS_FOR_DOCTOR =
 			"SELECT * " +
 					"FROM Medication_Requests " +
-					"WHERE nurse_username = ?";
+					"WHERE doctor_username = ?";
 
 	public static final String SELECT_ALL_MEDICATION_REQUESTS_FOR_DELIVERER =
 			"SELECT * " +

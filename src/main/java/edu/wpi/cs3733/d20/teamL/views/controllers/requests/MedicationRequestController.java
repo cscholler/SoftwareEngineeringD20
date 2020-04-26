@@ -3,12 +3,15 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.ResourceBundle;
 
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.search.SearchFields;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -19,7 +22,6 @@ import javafx.scene.paint.Color;
 import com.google.inject.Inject;
 
 import com.jfoenix.controls.JFXAutoCompletePopup;
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
@@ -28,8 +30,6 @@ import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
 import lombok.extern.slf4j.Slf4j;
-
-import javax.swing.*;
 
 @Slf4j
 public class MedicationRequestController implements Initializable {
@@ -44,9 +44,7 @@ public class MedicationRequestController implements Initializable {
 	@Inject
 	private ILoginManager loginManager;
     @FXML
-    private Label confirmation;
-    @FXML
-    private JFXButton btnCancel, btnSubmit;
+    private Label lblConfirmation;
     @FXML
     private JFXTextField docFNameText, docLNameText, medTypeText, doseText, patFNameText, patLNameText, roomNumText, addInfoText;
 
@@ -58,6 +56,8 @@ public class MedicationRequestController implements Initializable {
         sf.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
+		formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_DOCTORS)));
+		formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_PATIENTS)));
 	}
 
     /**
@@ -98,14 +98,13 @@ public class MedicationRequestController implements Initializable {
 		if (patientRoomNum.equals(roomNum)) {
 			rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_MEDICATION_REQUEST, new ArrayList<>(Arrays.asList(doctorID, patientID, nurseUsername, null, dose, medType, additionalInfo, status, dateAndTime))));
 		}
-		//formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_MEDICATION_REQUESTS)));
+		formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_MEDICATION_REQUESTS)));
 		if (rows == 0) {
-			confirmation.setTextFill(Color.RED);
-			confirmation.setText("Submission failed");
+			lblConfirmation.setTextFill(Color.RED);
+			lblConfirmation.setText("Submission failed");
 		} else if (rows == 1) {
-			confirmation.setTextFill(Color.BLACK);
-			confirmation.setText("Medication Request Sent");
-
+			lblConfirmation.setTextFill(Color.BLACK);
+			lblConfirmation.setText("Medication Request Sent");
 			docFNameText.setText("");
 			docLNameText.setText("");
 			medTypeText.setText("");
@@ -117,6 +116,6 @@ public class MedicationRequestController implements Initializable {
 		} else {
 			log.error("SQL update affected more than 1 row.");
 		}
-		loaderHelper.showAndFade(confirmation);
+		loaderHelper.showAndFade(lblConfirmation);
 	}
 }

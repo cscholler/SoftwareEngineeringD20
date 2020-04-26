@@ -124,7 +124,7 @@
                         <Font name="Segoe UI" size="24.0"/>
                     </font>
                 </JFXButton>
-                <Label fx:id="confirmation" text="Medication Request Sent" visible="false">
+                <Label fx:id="lblConfirmation" text="Medication Request Sent" visible="false">
                     <font>
                         <Font size="16.0"/>
                     </font>
