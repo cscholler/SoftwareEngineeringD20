@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXNodesList;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXToggleNode;
 import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.services.db.IDBCache;
 import edu.wpi.cs3733.d20.teamL.services.graph.Graph;
@@ -41,19 +42,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MapEditorController {
     @FXML
-    MenuItem saveToDB, saveToCSV, open, quit;
+    JFXTextField startNode, endNode;
     @FXML
-    MenuItem undo, redo;
+    JFXButton pathFind, btnCancel, btnSave, saveToDB, saveToCSV, open, node, saveOptions, loadOptions, pathfindingOptions;
     @FXML
-    MenuItem node, edge;
-    @FXML
-    TextField startNode, endNode;
-    @FXML
-    Button pathFind, btnCancel, btnSave, btnEditConnections, btnOpenEditor;
-    @FXML
-    ToggleGroup tools;
-    @FXML
-    ToggleButton mouse, eraser;
+    JFXToggleNode eraser;
     @FXML
     BorderPane root;
     @FXML
@@ -62,8 +55,6 @@ public class MapEditorController {
     JFXTextField nodeIDText, xCoordText, yCoordText, buildingText, nodeTypeText, shortNameText, longNameText;
     @FXML
     VBox editor;
-    @FXML
-    JFXButton saveOptions, loadOptions, pathfindingOptions, saveDBButton;
 	@FXML
     JFXNodesList saveNodesList, loadNodesList, pathNodesList;
     @Inject
@@ -133,13 +124,6 @@ public class MapEditorController {
         KeyCombination cy = new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_DOWN);
         KeyCombination co = new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN);
 
-        // Add shortcut prompts to buttons
-        quit.setAccelerator(cq);
-        saveToDB.setAccelerator(cs);
-        saveToCSV.setAccelerator(css);
-        undo.setAccelerator(cz);
-        redo.setAccelerator(cy);
-        open.setAccelerator(co);
     }
 
     /**
@@ -226,8 +210,8 @@ public class MapEditorController {
     }
 
     @FXML
-    private void handleTools(ActionEvent event) {
-        if (event.getSource() == eraser) {
+    private void handleTools() {
+        if (eraser.isSelected()) {
             map.setErasing(true);
         } else {
             map.setErasing(false);
