@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import javax.inject.Inject;
 
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
+import edu.wpi.cs3733.d20.teamL.services.search.SearchFields;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -17,11 +19,9 @@ import com.jfoenix.controls.JFXTextField;
 
 import lombok.extern.slf4j.Slf4j;
 
-import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
-import edu.wpi.cs3733.d20.teamL.services.navSearch.SearchFields;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 
 @Slf4j
@@ -38,7 +38,7 @@ public class AddPatientController {
     @Inject
 	private IDatabaseService db;
     @Inject
-    private DBCache dbCache;
+    private IDatabaseCache dbCache;
 
     @FXML
     private void initialize() {

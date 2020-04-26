@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
-import javax.inject.Inject;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -26,10 +25,12 @@ import javafx.stage.Stage;
 import com.jfoenix.controls.JFXAutoCompletePopup;
 import com.jfoenix.controls.JFXTextField;
 
+import com.google.inject.Inject;
+
 import lombok.extern.slf4j.Slf4j;
 
-import edu.wpi.cs3733.d20.teamL.services.navSearch.SearchFields;
-import edu.wpi.cs3733.d20.teamL.services.db.IDBCache;
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
+import edu.wpi.cs3733.d20.teamL.services.search.SearchFields;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.views.controllers.map.MapViewerController;
 
@@ -43,10 +44,9 @@ public class NavigationController implements Initializable {
     @FXML
     private Label timeLabel;
     @Inject
-    private IDBCache cache;
+    private IDatabaseCache cache;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
     private JFXAutoCompletePopup<String> autoCompletePopup;
-
     private SearchFields sf;
 
     @FXML

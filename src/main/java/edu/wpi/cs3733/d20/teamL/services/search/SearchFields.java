@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamL.services.navSearch;
+package edu.wpi.cs3733.d20.teamL.services.search;
 
 import com.jfoenix.controls.JFXAutoCompletePopup;
 import com.jfoenix.controls.JFXTextField;

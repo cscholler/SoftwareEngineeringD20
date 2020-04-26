@@ -1,40 +1,45 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 
-import com.jfoenix.controls.JFXTextField;
-import edu.wpi.cs3733.d20.teamL.entities.Edge;
-import edu.wpi.cs3733.d20.teamL.services.db.IDBCache;
-import edu.wpi.cs3733.d20.teamL.services.graph.Graph;
-import edu.wpi.cs3733.d20.teamL.services.graph.Path;
-import edu.wpi.cs3733.d20.teamL.services.graph.PathFinder;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
-import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
-import edu.wpi.cs3733.d20.teamL.views.components.*;
-import edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.DataDialogue;
-import edu.wpi.cs3733.d20.teamL.services.graph.MapParser;
-
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.input.*;
-import javafx.scene.layout.BorderPane;
-
-import javafx.geometry.Point2D;
-
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import javax.inject.Inject;
 
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
+import com.jfoenix.controls.JFXTextField;
 
-import edu.wpi.cs3733.d20.teamL.entities.Node;
 import lombok.extern.slf4j.Slf4j;
+
+import edu.wpi.cs3733.d20.teamL.entities.Edge;
+import edu.wpi.cs3733.d20.teamL.entities.Node;
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
+import edu.wpi.cs3733.d20.teamL.services.graph.Graph;
+import edu.wpi.cs3733.d20.teamL.services.graph.MapParser;
+import edu.wpi.cs3733.d20.teamL.services.graph.Path;
+import edu.wpi.cs3733.d20.teamL.services.graph.PathFinder;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
+import edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.DataDialogue;
+import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
+import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
+import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
 
 @Slf4j
 public class MapEditorController {
@@ -61,7 +66,7 @@ public class MapEditorController {
     @FXML
     VBox editor;
 	@Inject
-	private IDBCache cache;
+	private IDatabaseCache cache;
 
     private Scene scene;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
