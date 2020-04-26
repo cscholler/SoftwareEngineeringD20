@@ -62,7 +62,7 @@ public class PathfinderService implements IPathfinderService {
             case BFS:
                 return null;
             case DFS:
-                return null;
+                return depthFirstFind(graph, source, destination);
             default:
                 return aStarPathFind(graph, source, destination);
         }
@@ -128,6 +128,15 @@ public class PathfinderService implements IPathfinderService {
 
         // Return null if there is no path between source and destination.
         return null;
+    }
+
+    private Path depthFirstFind(Graph graph, Node source, Node destination) {
+
+        source.visit();
+        for (NodeEntry neighbor: priorityQueue) {
+
+        }
+
     }
 
     /**
