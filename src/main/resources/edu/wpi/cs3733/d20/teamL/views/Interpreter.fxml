@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<SplitPane dividerPositions="0.3364632237871675" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1">
+  <items>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+         <children>
+            <JFXListView layoutX="114.0" layoutY="49.0" prefHeight="718.0" prefWidth="427.2" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children></AnchorPane>
+      <BorderPane prefHeight="200.0" prefWidth="200.0">
+         <top>
+            <Label stylesheets="@../css/FormStyles.css" text="Request an Interpreter" textFill="WHITE" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="39.0" />
+               </font>
+               <BorderPane.margin>
+                  <Insets top="20.0" />
+               </BorderPane.margin>
+            </Label>
+         </top>
+         <center>
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="50.0" BorderPane.alignment="CENTER">
+               <children>
+                  <JFXTextField labelFloat="true" promptText="Interpreter Type ">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </JFXTextField>
+                  <JFXTextField labelFloat="true" promptText="Patient Name ">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </JFXTextField>
+                  <JFXTextField promptText="Patient Room Number ">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </JFXTextField>
+                  <JFXTextField labelFloat="true" promptText="Staff Member Name ">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </JFXTextField>
+                  <JFXTextField labelFloat="true" promptText="Assigned Staff Member ">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </JFXTextField>
+               </children>
+               <BorderPane.margin>
+                  <Insets left="40.0" right="40.0" top="50.0" />
+               </BorderPane.margin>
+            </VBox>
+         </center>
+      </BorderPane>
+  </items>
+   <stylesheets>
+      <URL value="@../css/GlobalStyles.css" />
+      <URL value="@../css/FormStyles.css" />
+   </stylesheets>
+</SplitPane>
