@@ -16,6 +16,7 @@ import edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.DataDialogue;
 import edu.wpi.cs3733.d20.teamL.util.pathfinding.MapParser;
 
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -27,10 +28,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.geometry.Point2D;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.*;
 import javax.inject.Inject;
 
 import javafx.scene.layout.VBox;
@@ -44,7 +42,7 @@ public class MapEditorController {
     @FXML
     JFXTextField startNode, endNode;
     @FXML
-    JFXButton pathFind, btnCancel, btnSave, saveToDB, saveToCSV, open, node, saveOptions, loadOptions, pathfindingOptions;
+    JFXButton pathFind, btnCancel, btnSave, saveToDB, saveToCSV, open, node, saveOptions, loadOptions, pathfindingOptions, floorUp, floorDown;
     @FXML
     JFXToggleNode eraser;
     @FXML
@@ -52,7 +50,11 @@ public class MapEditorController {
     @FXML
     MapPane map;
     @FXML
-    JFXTextField nodeIDText, xCoordText, yCoordText, buildingText, nodeTypeText, shortNameText, longNameText;
+    Label nodeIDText;
+    @FXML
+    JFXTextField numberText, xCoordText, yCoordText, buildingText, nodeTypeText, shortNameText, longNameText;
+    @FXML
+    ComboBox nodeTypeValue;
     @FXML
     VBox editor;
 	@FXML
@@ -62,6 +64,9 @@ public class MapEditorController {
 
     private Scene scene;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+
+    private final List<String> types = Arrays.asList("ELEV", "REST", "STAI", "DEPT", "LABS", "INFO", "CONF", "EXIT", "RETL", "SERV");
+    private int floor = 2;
 
     @FXML
     public void initialize() {
@@ -199,7 +204,10 @@ public class MapEditorController {
     private void openFromDB() {
         cache.cacheAllFromDB();
         Graph newGraph = new Graph();
-        newGraph.addAllNodes(cache.getNodeCache());
+        for (Node node : cache.getNodeCache()) {
+            if (node.getFloor() == floor)
+                newGraph.addNode(node);
+        }
         map.setGraph(newGraph);
     }
 
@@ -237,18 +245,17 @@ public class MapEditorController {
         } else {
             editor.setPrefWidth(200);
             editor.setVisible(true);
-
             nodeIDText.setText(selectedNode.getID());
             Double x = selectedNode.getPosition().getX();
             Double y = selectedNode.getPosition().getY();
             xCoordText.setText(x.toString());
             yCoordText.setText(y.toString());
-            buildingText.setText(selectedNode.getBuilding());
-            nodeTypeText.setText(selectedNode.getType());
+            nodeTypeValue.getSelectionModel().select(types.indexOf(selectedNode.getType())+1);
             shortNameText.setText(selectedNode.getShortName());
             longNameText.setText(selectedNode.getLongName());
         }
     }
+
 
     @FXML
     private void updateNode() {
@@ -260,8 +267,8 @@ public class MapEditorController {
         double x = Double.parseDouble(xCoordText.getText());
         double y = Double.parseDouble(yCoordText.getText());
         selectedNode.setPosition(new Point2D(x, y));
-        selectedNode.setBuilding(buildingText.getText());
-        selectedNode.setType(nodeTypeText.getText());
+        selectedNode.setBuilding(map.getCurrentBuilding());
+        selectedNode.setType(types.get(nodeTypeValue.getSelectionModel().getSelectedIndex()-1));
         selectedNode.setShortName(shortNameText.getText());
         selectedNode.setLongName(longNameText.getText());
 
@@ -271,6 +278,17 @@ public class MapEditorController {
             Edge edge = new Edge(selectedNode, neighbor);
             selectedNode.addEdgeTwoWay(edge);
             map.addEdge(edge);
+        }
+    }
+
+    @FXML
+    private void changeFloor(ActionEvent event) {
+        if(event.getSource() == floorUp && floor < 5) {
+            floor ++;
+            openFromDB();
+        } else if (event.getSource() == floorDown && floor > 1) {
+            floor --;
+            openFromDB();
         }
     }
 }
