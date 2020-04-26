@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.ResourceBundle;
 
-import edu.wpi.cs3733.d20.teamL.entities.GiftRequest;
+import edu.wpi.cs3733.d20.teamL.entities.GiftDeliveryRequest;
 import edu.wpi.cs3733.d20.teamL.entities.ServiceRequest;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import javafx.collections.FXCollections;
@@ -46,7 +46,7 @@ public class NotificationsPageController implements Initializable {
     @FXML
     private JFXListView<ServiceRequest> notifications;
     @FXML
-	private JFXListView<GiftRequest> giftReq;
+	private JFXListView<GiftDeliveryRequest> giftReq;
 	@FXML
     private JFXListView<MedicationRequest> medReq;
     @FXML
@@ -86,7 +86,7 @@ public class NotificationsPageController implements Initializable {
 		});
 		giftReq.setCellFactory(param -> new ListCell<>() {
 			@Override
-			protected void updateItem(GiftRequest giftReq, boolean empty) {
+			protected void updateItem(GiftDeliveryRequest giftReq, boolean empty) {
 				super.updateItem(giftReq, empty);
 				if (giftReq != null) {
 					String status;
