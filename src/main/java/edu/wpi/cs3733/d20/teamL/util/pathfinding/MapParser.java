@@ -1,19 +1,27 @@
-package edu.wpi.cs3733.d20.teamL.services.graph;
+package edu.wpi.cs3733.d20.teamL.util.pathfinding;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import edu.wpi.cs3733.d20.teamL.entities.Graph;
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
+import javafx.geometry.Point2D;
+
+import com.google.inject.Inject;
 
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.entities.Edge;
-import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
-import edu.wpi.cs3733.d20.teamL.services.db.IDBCache;
-import javafx.geometry.Point2D;
 
-import javax.inject.Inject;
-import java.io.*;
-import java.util.ArrayList;
 
 public class MapParser {
 
     @Inject
-    static IDBCache dbCache;
+    static IDatabaseCache dbCache;
 
     public static class DATA_LABELS {
         public static String X = "x";

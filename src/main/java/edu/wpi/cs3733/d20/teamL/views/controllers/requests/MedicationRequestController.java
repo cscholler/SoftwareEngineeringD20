@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
+import edu.wpi.cs3733.d20.teamL.services.search.SearchFields;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -22,34 +24,27 @@ import com.jfoenix.controls.JFXAutoCompletePopup;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
-import edu.wpi.cs3733.d20.teamL.services.db.DBCache;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
-import edu.wpi.cs3733.d20.teamL.services.navSearch.SearchFields;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
 
 public class MedicationRequestController implements Initializable {
-	@Inject
-	IDatabaseService db;
 	DBTableFormatter formatter = new DBTableFormatter();
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
-
+	private SearchFields sf;
+	private JFXAutoCompletePopup<String> autoCompletePopup;
+	@Inject
+	private IDatabaseService db;
+	@Inject
+	private IDatabaseCache dbCache;
     @FXML
     private Label confirmation;
-
     @FXML
     private JFXButton btnCancel, btnSubmit;
-
     @FXML
     private JFXTextField docFNameText, docLNameText, medTypeText, doseText, patFNameText, patLNameText, roomNumText, addInfoText;
-
-    @Inject
-    private DBCache dbCache;
-
-    private SearchFields sf;
-    private JFXAutoCompletePopup<String> autoCompletePopup;
 
 	@FXML
 	public void initialize(URL location, ResourceBundle resources) {

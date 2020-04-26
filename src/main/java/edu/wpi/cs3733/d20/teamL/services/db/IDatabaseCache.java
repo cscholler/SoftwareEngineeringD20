@@ -6,7 +6,7 @@ import edu.wpi.cs3733.d20.teamL.entities.Node;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface IDBCache {
+public interface IDatabaseCache {
 	void cacheAllFromDB();
 
 	void cacheNodes(ArrayList<Node> newNodes, ArrayList<Node> editedNodes);

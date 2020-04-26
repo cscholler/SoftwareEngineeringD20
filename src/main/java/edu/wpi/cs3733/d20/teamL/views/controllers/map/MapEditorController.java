@@ -5,15 +5,15 @@ import com.jfoenix.controls.JFXNodesList;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleNode;
 import edu.wpi.cs3733.d20.teamL.entities.Edge;
-import edu.wpi.cs3733.d20.teamL.services.db.IDBCache;
-import edu.wpi.cs3733.d20.teamL.services.graph.Graph;
-import edu.wpi.cs3733.d20.teamL.services.graph.Path;
-import edu.wpi.cs3733.d20.teamL.services.graph.PathFinder;
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
+import edu.wpi.cs3733.d20.teamL.entities.Graph;
+import edu.wpi.cs3733.d20.teamL.entities.Path;
+import edu.wpi.cs3733.d20.teamL.util.pathfinding.PathFinder;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
 import edu.wpi.cs3733.d20.teamL.views.components.*;
 import edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.DataDialogue;
-import edu.wpi.cs3733.d20.teamL.services.graph.MapParser;
+import edu.wpi.cs3733.d20.teamL.util.pathfinding.MapParser;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -58,7 +58,7 @@ public class MapEditorController {
 	@FXML
     JFXNodesList saveNodesList, loadNodesList, pathNodesList;
     @Inject
-	private IDBCache cache;
+	private IDatabaseCache cache;
 
     private Scene scene;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();

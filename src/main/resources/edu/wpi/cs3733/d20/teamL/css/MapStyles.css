@@ -5,7 +5,38 @@
 
 .button {
     -fx-padding: 10;
-    -fx-background-color: grey;
+    -fx-background-color: #c3c3c3;
+    -fx-text-fill: white;
+}
+
+.clear {
+    -fx-text-fill: white;
+    -fx-background-color: #0d2e57;
+    -fx-border-color: white;
+    -fx-border-width: 2px;
+    -fx-pref-height: 40;
+    -fx-border-radius: 0 5 5 0;
+}
+
+.text-field {
+    -fx-border-radius: 5 0 0 5;
+    -fx-background-color: white;
+    -fx-pref-height: 40px;
+    -fx-pref-width: 250;
+}
+
+.floor-buttons {
+    -fx-padding: 5;
+    -fx-background-color: #0d2e57;
+    -fx-text-fill: white;
+    -fx-pref-width: 40;
+    -fx-pref-height: 40;
+}
+.circle-button {
+    -fx-background-radius: 40;
+    -fx-pref-width: 80;
+    -fx-pref-height: 80;
+    -fx-background-color: #c3c3c3;
 }
 
 .nodeListButton {
@@ -34,7 +65,7 @@
 .floorChangeButton{
     -fx-pref-width: 40px;
     -fx-pref-height: 40px;
-    -fx-background-color: #405784;
+    -fx-background-color: #0D2E57;
 
 }
 

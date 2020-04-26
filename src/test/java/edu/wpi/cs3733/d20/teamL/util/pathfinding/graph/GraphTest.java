@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
-import edu.wpi.cs3733.d20.teamL.services.graph.Graph;
+import edu.wpi.cs3733.d20.teamL.entities.Graph;
 import javafx.geometry.Point2D;
 import org.junit.jupiter.api.Test;
 
