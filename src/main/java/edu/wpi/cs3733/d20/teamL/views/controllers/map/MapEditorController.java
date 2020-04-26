@@ -263,11 +263,11 @@ public class MapEditorController {
         Node selected = map.getSelectedNode();
 
         if(index == 1) {
-            numberlbl.setText("Elevator Connector Number:");
+            numberlbl.setText("Elevator Number:");
             multiFloorConnection.setVisible(true);
             numberText.setText(selected.getShaft());
         } else if (index == 3) {
-            numberlbl.setText("Stairwell Connector Number:");
+            numberlbl.setText("Stairwell Number:");
             multiFloorConnection.setVisible(true);
             numberText.setText(selected.getShaft());
         } else {
