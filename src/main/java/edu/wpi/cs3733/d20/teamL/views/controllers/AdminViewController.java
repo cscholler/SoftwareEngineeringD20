@@ -69,4 +69,15 @@ public class AdminViewController {
         }
 
     }
+    @FXML
+    private void addUserClicked() {
+        try {
+            System.out.println("Got here");
+            Parent root = loaderHelper.getFXMLLoader("AddUser").load();
+            loaderHelper.setupScene(new Scene(root));
+        } catch (IOException e) {
+            log.error("Encountered IOException", e);
+        }
+
+    }
 }

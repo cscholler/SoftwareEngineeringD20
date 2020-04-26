@@ -273,6 +273,11 @@ public class DBConstants {
 					"SET f_name = ?, l_name = ? " +
 					"WHERE id = ?";
 
+	public static final String UPDATE_DOCTOR_USERNAME =
+			"UPDATE Doctors " +
+					"SET username = ?" +
+					"WHERE id = ?";
+
 	public static final String UPDATE_USER_PASSWORD =
 			"UPDATE Users " +
 					"SET password = ? " +
