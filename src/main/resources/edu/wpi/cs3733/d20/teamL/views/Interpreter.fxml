@@ -1,22 +1,101 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.3364632237871675" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1">
+<SplitPane dividerPositions="0.40375586854460094" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.InterpreterController">
   <items>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: white;">
          <children>
-            <JFXListView layoutX="114.0" layoutY="49.0" prefHeight="718.0" prefWidth="427.2" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-         </children></AnchorPane>
+            <HBox alignment="CENTER_LEFT" spacing="120.0">
+               <children>
+                  <JFXButton fx:id="btnBack" style="-fx-background-color: white;" text=" ">
+                     <graphic>
+                        <ImageView fitHeight="63.0" fitWidth="62.0">
+                           <image>
+                              <Image url="@../assets/baseline_arrow_back_black_48dp.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
+                  <Label alignment="CENTER" prefHeight="80.0" prefWidth="188.0" text="Languages">
+                     <font>
+                        <Font name="Segoe UI Bold" size="30.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <JFXButton fx:id="btnSpanish" alignment="TOP_LEFT" maxWidth="1000.0" style="-fx-background-color: lightgray; -fx-border-color: gray;" text="     Español (Spanish)" VBox.vgrow="ALWAYS">
+               <graphic>
+                  <ImageView fitHeight="60.0" fitWidth="100.0">
+                     <image>
+                        <Image url="@../assets/flags/spain_flag-300x193.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets bottom="7.5" left="7.5" right="7.5" top="20.0" />
+               </padding>
+            </JFXButton>
+            <JFXButton fx:id="btnFrench" alignment="TOP_LEFT" maxWidth="1000.0" prefHeight="95.0" style="-fx-background-color: lightgray; -fx-border-color: gray;" text="     Français (French)">
+               <graphic>
+                  <ImageView fitHeight="60.0" fitWidth="100.0">
+                     <image>
+                        <Image url="@../assets/flags/Flag_of_France.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets bottom="7.5" left="7.5" right="7.5" top="20.0" />
+               </padding>
+            </JFXButton>
+            <JFXButton fx:id="btnItalian" alignment="TOP_LEFT" maxWidth="1000.0" prefHeight="95.0" style="-fx-background-color: lightgray; -fx-border-color: gray;" text="     Italiano (Italian)">
+               <graphic>
+                  <ImageView fitHeight="60.0" fitWidth="100.0">
+                     <image>
+                        <Image url="@../assets/flags/flag-400.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets bottom="7.5" left="7.5" right="7.5" top="20.0" />
+               </padding>
+            </JFXButton>
+            <JFXButton fx:id="btnASL" alignment="TOP_LEFT" maxWidth="1000.0" prefHeight="95.0" style="-fx-background-color: lightgray; -fx-border-color: gray;" text="     American Sign Language">
+               <graphic>
+                  <ImageView fitHeight="60.0" fitWidth="100.0">
+                     <image>
+                        <Image url="@../assets/flags/88-887656_asl-cliparts-asl-in-sign-language.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets bottom="7.5" left="7.5" right="7.5" top="20.0" />
+               </padding>
+            </JFXButton>
+            <JFXButton fx:id="btnChinese" alignment="TOP_LEFT" maxWidth="1000.0" prefHeight="95.0" style="-fx-background-color: lightgray; -fx-border-color: gray;" text="     中文 (Chinese)">
+               <graphic>
+                  <ImageView fitHeight="60.0" fitWidth="100.0">
+                     <image>
+                        <Image url="@../assets/flags/china-flag-icon-free-download.jpg" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets bottom="7.5" left="7.5" right="7.5" top="20.0" />
+               </padding>
+            </JFXButton>
+         </children></VBox>
       <BorderPane prefHeight="200.0" prefWidth="200.0">
          <top>
             <Label stylesheets="@../css/FormStyles.css" text="Request an Interpreter" textFill="WHITE" BorderPane.alignment="CENTER">
@@ -29,9 +108,9 @@
             </Label>
          </top>
          <center>
-            <VBox prefHeight="200.0" prefWidth="100.0" spacing="50.0" BorderPane.alignment="CENTER">
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="50.0" BorderPane.alignment="CENTER">
                <children>
-                  <JFXTextField labelFloat="true" promptText="Interpreter Type ">
+                  <JFXTextField fx:id="interpTypeText" labelFloat="true" onAction="#handleButtonAction" prefHeight="40.0" promptText="Interpreter Type " unFocusColor="BLACK">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -39,7 +118,7 @@
                         <Insets left="10.0" />
                      </padding>
                   </JFXTextField>
-                  <JFXTextField labelFloat="true" promptText="Patient Name ">
+                  <JFXTextField fx:id="pNameText" labelFloat="true" onAction="#handleButtonAction" prefHeight="40.0" promptText="Patient Name " unFocusColor="BLACK">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -47,7 +126,7 @@
                         <Insets left="10.0" />
                      </padding>
                   </JFXTextField>
-                  <JFXTextField promptText="Patient Room Number ">
+                  <JFXTextField fx:id="roomNumText" labelFloat="true" onAction="#handleButtonAction" prefHeight="40.0" promptText="Patient Room Number " unFocusColor="BLACK">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -55,7 +134,7 @@
                         <Insets left="10.0" />
                      </padding>
                   </JFXTextField>
-                  <JFXTextField labelFloat="true" promptText="Staff Member Name ">
+                  <JFXTextField fx:id="userIDText" labelFloat="true" onAction="#handleButtonAction" prefHeight="40.0" promptText="User ID" unFocusColor="BLACK">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -63,7 +142,7 @@
                         <Insets left="10.0" />
                      </padding>
                   </JFXTextField>
-                  <JFXTextField labelFloat="true" promptText="Assigned Staff Member ">
+                  <JFXTextField fx:id="assignedToText" labelFloat="true" onAction="#handleButtonAction" prefHeight="40.0" promptText="Assigned Staff Member " unFocusColor="BLACK">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -71,6 +150,25 @@
                         <Insets left="10.0" />
                      </padding>
                   </JFXTextField>
+                  <JFXTextField fx:id="additionalText" labelFloat="true" onAction="#handleButtonAction" prefHeight="40.0" promptText="Additional Information" unFocusColor="BLACK">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </JFXTextField>
+                  <HBox alignment="CENTER_RIGHT" spacing="90.0">
+                     <children>
+                        <JFXButton fx:id="btnSubmit" onAction="#handleButtonAction" style="-fx-background-color: #405784;" text="Submit" textFill="WHITE" />
+                        <Label fx:id="confirmation" prefHeight="17.0" prefWidth="196.0" text="Label" visible="false">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0" />
                </children>
                <BorderPane.margin>
                   <Insets left="40.0" right="40.0" top="50.0" />
