@@ -8,6 +8,8 @@ import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.MapParser;
+import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
+import edu.wpi.cs3733.d20.teamL.services.pathfinding.MapParser;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
 import edu.wpi.cs3733.d20.teamL.views.components.*;
@@ -45,13 +47,13 @@ public class MapEditorController {
     @FXML
     MapPane map;
     @FXML
-    Label nodeIDText;
+    Label nodeIDText,  numberlbl;
     @FXML
     JFXTextField numberText, xCoordText, yCoordText, buildingText, nodeTypeText, shortNameText, longNameText;
     @FXML
     ComboBox nodeTypeValue;
     @FXML
-    VBox editor, floorSelector;
+    VBox editor, floorSelector, multiFloorConnection;
 	@FXML
     JFXNodesList saveNodesList, loadNodesList, pathNodesList;
     @Inject
@@ -63,6 +65,7 @@ public class MapEditorController {
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 
     private final List<String> types = Arrays.asList("ELEV", "REST", "STAI", "DEPT", "LABS", "INFO", "CONF", "EXIT", "RETL", "SERV");
+    private int floor = 2;
 
     @FXML
     public void initialize() {
@@ -260,9 +263,28 @@ public class MapEditorController {
             nodeTypeValue.getSelectionModel().select(types.indexOf(selectedNode.getType())+1);
             shortNameText.setText(selectedNode.getShortName());
             longNameText.setText(selectedNode.getLongName());
+            nodeTypeChanged();
         }
     }
 
+    @FXML
+    private void nodeTypeChanged() {
+        int index = nodeTypeValue.getSelectionModel().getSelectedIndex();
+        Node selected = map.getSelectedNode();
+
+        if(index == 1) {
+            numberlbl.setText("Elevator Number:");
+            multiFloorConnection.setVisible(true);
+            numberText.setText(selected.getShaft());
+        } else if (index == 3) {
+            numberlbl.setText("Stairwell Number:");
+            multiFloorConnection.setVisible(true);
+            numberText.setText(selected.getShaft());
+        } else {
+            multiFloorConnection.setVisible(false);
+            numberText.setText("");
+        }
+    }
 
     @FXML
     private void updateNode() {
@@ -278,13 +300,31 @@ public class MapEditorController {
         selectedNode.setType(types.get(nodeTypeValue.getSelectionModel().getSelectedIndex()-1));
         selectedNode.setShortName(shortNameText.getText());
         selectedNode.setLongName(longNameText.getText());
+        selectedNode.setShaft(numberText.getText());
 
+        selectedNode.setId(map.getBuilding().getUniqueNodeID(selectedNode));
+        nodeIDText.setText(selectedNode.getID());
+
+        addMultiFloorEdge(selectedNode);
         map.removeNode(selectedNodeGUI);
         map.addNode(selectedNode);
+
         for(Node neighbor : neighbors) {
             Edge edge = new Edge(selectedNode, neighbor);
             selectedNode.addEdgeTwoWay(edge);
             map.addEdge(edge);
+        }
+    }
+
+    private void addMultiFloorEdge(Node node) {
+        if(node.getType().equals("ELEV") || node.getType().equals("STAI")) {
+            for(Node adj : map.getBuilding().getNodes()) {
+                if(node.getType().equals(adj.getType()) && node.getShaft().equals(adj.getShaft())) {
+                    if((node.getFloor() == adj.getFloor() + 1) || (node.getFloor() == adj.getFloor() - 1)) {
+                        node.addEdgeTwoWay(new Edge(node, adj));
+                    }
+                }
+            }
         }
     }
 

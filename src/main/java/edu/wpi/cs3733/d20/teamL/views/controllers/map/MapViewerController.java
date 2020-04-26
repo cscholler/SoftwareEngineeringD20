@@ -8,6 +8,7 @@ import java.util.Iterator;
 import edu.wpi.cs3733.d20.teamL.entities.Building;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import javafx.event.Event;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -211,7 +212,7 @@ public class MapViewerController {
     }
 
     @FXML
-    public void handleFloor (Event event) {
+    public void handleFloor(ActionEvent event) {
         JFXButton button = (JFXButton) event.getSource();
 
         map.setFloor(Integer.parseInt(button.getText()));
