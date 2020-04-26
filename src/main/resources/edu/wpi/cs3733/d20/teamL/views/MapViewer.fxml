@@ -21,19 +21,30 @@
             <children>
                 <VBox style="-fx-background-color: #0d2e57;">
                     <children>
-                        <JFXButton alignment="CENTER" contentDisplay="CENTER" onAction="#backToMain" prefHeight="60.0" prefWidth="35.0" style="-fx-background-color: #0d2e57;" styleClass="background" text=" " textFill="WHITE">
-                            <font>
-                                <Font size="22.0" />
-                            </font>
-                            <graphic>
-                                <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../assets/baseline_home_white_48dp.png" />
-                                    </image>
-                                </ImageView>
-                            </graphic>
+                        <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="22.0">
+                            <children>
+                              <JFXButton alignment="CENTER" contentDisplay="CENTER" onAction="#backToMain" prefHeight="60.0" prefWidth="35.0" style="-fx-background-color: #0d2e57;" styleClass="background" text=" " textFill="WHITE">
+                                  <font>
+                                      <Font size="22.0" />
+                                  </font>
+                                  <graphic>
+                                      <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                          <image>
+                                              <Image url="@../assets/baseline_home_white_48dp.png" />
+                                          </image>
+                                      </ImageView>
+                                  </graphic>
+                              </JFXButton>
+                                <JFXButton buttonType="RAISED" maxWidth="40.0" prefHeight="40.0" prefWidth="40.0" styleClass="circle-button" text="Restroom">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
                         </JFXButton>
-                        <VBox alignment="TOP_CENTER" prefWidth="404.0" spacing="20.0" style="-fx-background-color: #0d2e57;">
+                                <JFXButton buttonType="RAISED" maxWidth="40.0" prefHeight="40.0" prefWidth="40.0" styleClass="circle-button" text="Elevator" />
+                                <JFXButton buttonType="RAISED" maxWidth="40.0" prefHeight="40.0" prefWidth="40.0" styleClass="circle-button" text="Stairs" />
+                            </children>
+                        </HBox>
+                        <VBox alignment="TOP_CENTER" prefWidth="404.0" spacing="15.0" style="-fx-background-color: #0d2e57;">
                             <children>
                                 <HBox prefHeight="100.0" prefWidth="200.0">
                                     <children>
@@ -69,29 +80,19 @@
                                         </JFXButton>
                                     </children>
                                 </HBox>
-                                <JFXButton fx:id="btnNavigate" buttonType="RAISED" maxHeight="45.0" maxWidth="100.0" minHeight="45.0" minWidth="100.0" onAction="#navigate" prefHeight="45.0" prefWidth="100.0" text="Navigate" textAlignment="CENTER" textFill="WHITE">
+                                <JFXButton fx:id="btnNavigate" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#navigate" prefWidth="76.0" text="Navigate" textAlignment="CENTER" textFill="WHITE">
                                     <font>
-                                        <Font size="18.0" />
+                                        <Font size="14.0" />
                                     </font>
                                 </JFXButton>
-                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="25.0">
-                                  <children>
-                                      <JFXButton buttonType="RAISED" maxWidth="40.0" prefHeight="40.0" prefWidth="40.0" styleClass="circle-button" text="Restroom" />
-                                      <JFXButton buttonType="RAISED" maxWidth="40.0" prefHeight="40.0" prefWidth="40.0" styleClass="circle-button" text="Elevator" />
-                                      <JFXButton buttonType="RAISED" maxWidth="40.0" prefHeight="40.0" prefWidth="40.0" styleClass="circle-button" text="Stairs" />
-                                  </children>
-                                  <padding>
-                                      <Insets left="10.0" />
-                                  </padding>
-                              </HBox>
-                                <JFXButton fx:id="btnTextMe" alignment="CENTER" buttonType="RAISED" onAction="#handleText" prefHeight="32.0" prefWidth="200.0" text="Send Me Directions" textFill="WHITE" visible="false" />
-                        <VBox fx:id="instructions" maxHeight="600.0" prefHeight="600.0" />
+                                <JFXButton fx:id="btnTextMe" alignment="CENTER" buttonType="RAISED" onAction="#handleText" prefHeight="30.0" prefWidth="200.0" text="Send Me Directions" textFill="WHITE" visible="false" />
+                        <VBox fx:id="instructions" prefHeight="5000.0" />
                             </children>
                             <padding>
                                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                             </padding>
                             <VBox.margin>
-                                <Insets top="30.0" />
+                                <Insets top="5.0" />
                             </VBox.margin>
                         </VBox>
                     </children>
