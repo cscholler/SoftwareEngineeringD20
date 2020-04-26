@@ -18,6 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import edu.wpi.cs3733.d20.teamL.views.components.MapPane?>
 <BorderPane fx:id="root" prefHeight="720" prefWidth="1280" stylesheets="@../css/MapStyles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.map.MapEditorController">
     <center>
 
@@ -165,13 +166,20 @@
                <children>
                   <HBox alignment="CENTER_LEFT">
                      <children>
-                        <JFXButton buttonType="RAISED" onAction="#backToMain" prefHeight="35.0" prefWidth="70.0" style="-fx-background-color: #405784;" text="Back" textFill="WHITE">
+                        <JFXButton buttonType="RAISED" onAction="#backToMain" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #0D2E57;" text=" " textFill="WHITE">
                            <HBox.margin>
-                              <Insets left="10.0" />
+                              <Insets left="15.0" top="5.0" />
                            </HBox.margin>
                            <font>
                               <Font size="15.0" />
                            </font>
+                           <graphic>
+                              <ImageView fitHeight="10.0" pickOnBounds="true" preserveRatio="true" scaleX="3.0" scaleY="3.0" translateX="4.0">
+                                 <image>
+                                    <Image url="@../assets/baseline_home_white_48dp.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
                         </JFXButton>
                      </children>
                      <HBox.margin>
@@ -180,17 +188,24 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <JFXTextField fx:id="startNode" focusColor="#0d2057" prefWidth="200.0" promptText="Starting Point" styleClass="text-field" unFocusColor="#ffffff00">
+                        <JFXTextField fx:id="startNode" focusColor="#0d2057" prefWidth="200.0" promptText="Starting Point" style="-fx-border-color: #0D2E57; -fx-border-width: 3;" styleClass="text-field" unFocusColor="#ffffff00">
                            <HBox.margin>
                               <Insets right="25.0" />
                            </HBox.margin>
                         </JFXTextField>
-                        <JFXTextField fx:id="endNode" focusColor="#0d2057" prefWidth="200.0" promptText="Destination" styleClass="text-field" unFocusColor="#ffffff00">
+                        <JFXTextField fx:id="endNode" focusColor="#0d2057" prefHeight="40.0" prefWidth="200.0" promptText="Destination" style="-fx-border-color: #0D2E57; -fx-border-width: 3;" styleClass="text-field" unFocusColor="#ffffff00">
                            <HBox.margin>
                               <Insets left="25.0" />
                            </HBox.margin>
                         </JFXTextField>
-                        <JFXButton fx:id="pathFind" buttonType="RAISED" style="-fx-background-color: #405784;" text="Path Find" textFill="WHITE" />
+                        <JFXButton fx:id="pathFind" buttonType="RAISED" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #0D2E57; -fx-background-radius: 0;" text=" " textFill="WHITE">
+                           <graphic>
+                              <ImageView fitHeight="11.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true" scaleX="3.0" scaleY="3.0" translateX="2.0">
+                                 <image>
+                                    <Image url="@../assets/home page/Search-button-home.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></JFXButton>
                      </children>
                   </HBox>
                </children>
@@ -244,21 +259,49 @@
                            <tooltip>
                               <Tooltip text="Switch Pathfinding Algorithm" />
                            </tooltip>
+                           <graphic>
+                              <ImageView fitHeight="81.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true" scaleX="2.0" scaleY="2.0" translateX="2.0" translateY="1.0">
+                                 <image>
+                                    <Image url="@../assets/map editor/AStar.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="pathfindingOptions1" buttonType="RAISED" layoutX="10.0" layoutY="10.0" styleClass="nodeListButton" text=" ">
+                        <JFXButton fx:id="pathfindingOptions1" buttonType="RAISED" styleClass="nodeListButton" text=" ">
                            <tooltip>
                               <Tooltip text="A*" />
                            </tooltip>
+                           <graphic>
+                              <ImageView fitHeight="19.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true" scaleX="2.0" scaleY="2.0" translateX="2.0" translateY="1.0">
+                                 <image>
+                                    <Image url="@../assets/map editor/AStar.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="pathfindingOptions11" buttonType="RAISED" layoutX="10.0" layoutY="60.0" styleClass="nodeListButton" text=" ">
+                        <JFXButton fx:id="pathfindingOptions11" buttonType="RAISED" prefHeight="42.0" prefWidth="49.0" styleClass="nodeListButton" text=" ">
                            <tooltip>
                               <Tooltip text="Depth First" />
                            </tooltip>
+                           <graphic>
+                              <ImageView fitHeight="17.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true" scaleX="3.0" scaleY="3.0" translateX="3.0" translateY="-1.0">
+                                 <image>
+                                    <Image url="@../assets/map editor/DepthFirst.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="pathfindingOptions111" buttonType="RAISED" layoutX="10.0" layoutY="110.0" styleClass="nodeListButton" text=" ">
+                        <JFXButton fx:id="pathfindingOptions111" buttonType="RAISED" prefHeight="146.0" prefWidth="206.0" styleClass="nodeListButton" text=" ">
                            <tooltip>
                               <Tooltip text="Breadth First" />
                            </tooltip>
+                           <graphic>
+                              <ImageView fitHeight="18.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true" scaleX="3.5" scaleY="3.5" translateX="4.0">
+                                 <image>
+                                    <Image url="@../assets/map editor/Breath First.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
                         </JFXButton>
                      </children>
                   </JFXNodesList>
@@ -266,9 +309,9 @@
                      <graphic>
                         <JFXButton buttonType="RAISED" styleClass="nodeListButton" text=" ">
                            <graphic>
-                                          <ImageView fitHeight="22.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="15.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true" scaleX="3.0" scaleY="3.0" translateX="3.0">
                                               <image>
-                                                  <Image url="@../assets/Eraser_Placeholder.png" />
+                                                  <Image url="@../assets/map editor/eraser.png" />
                                               </image>
                                           </ImageView>
                            </graphic>
@@ -280,7 +323,7 @@
                   </JFXToggleNode>
                </children>
             </VBox>
-            <VBox AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+            <VBox AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="15.0">
                <children>
                   <JFXButton buttonType="RAISED" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 20 20 0 0;" styleClass="floorChangeButton" text="▲" textFill="WHITE" />
                   <JFXButton buttonType="RAISED" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 0 0 20 20;" styleClass="floorChangeButton" text="▼" textFill="WHITE" />
