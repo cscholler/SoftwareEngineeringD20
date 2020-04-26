@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -68,6 +69,8 @@ public class MapViewerController {
     private JFXAutoCompletePopup<String> autoCompletePopup;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 
+    private int floor = 2;
+
     @FXML
     private void initialize() {
         cache.cacheAllFromDB();
@@ -77,6 +80,7 @@ public class MapViewerController {
 
         Graph newGraph = new Graph();
         newGraph.addAllNodes(cache.getNodeCache());
+        map.setCurrentFloor(floor);
         map.setGraph(newGraph);
 
         map.setZoomLevel(1);
@@ -193,5 +197,13 @@ public class MapViewerController {
         } catch (IOException e) {
             log.error("Encountered IOException", e);
         }
+    }
+    @FXML
+    public void handleFloor(ActionEvent event) {
+        JFXButton button = (JFXButton) event.getSource();
+        floor = Integer.parseInt(button.getText());
+
+        map.setCurrentFloor(floor);
+        map.setGraph(map.getGraph());
     }
 }
