@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.ResourceBundle;
 
+import edu.wpi.cs3733.d20.teamL.entities.GiftRequest;
+import edu.wpi.cs3733.d20.teamL.entities.ServiceRequest;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,6 +23,7 @@ import com.google.inject.Inject;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 
+import javafx.scene.control.ListView;
 import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.cs3733.d20.teamL.entities.MedicineRequest;
@@ -39,7 +42,11 @@ public class NotificationsPageController implements Initializable {
 	@FXML
     private JFXButton btnBack, btnCompleted, btnDecline;
     @FXML
-    private JFXListView<MedicineRequest> notifications;
+    private JFXListView<ServiceRequest> notifications;
+    @FXML
+    private JFXListView<MedicineRequest> medReq;
+    @FXML
+	private JFXListView<GiftRequest> giftReq;
     @FXML
     private Label reqMessage, addInfo;
 
@@ -51,7 +58,7 @@ public class NotificationsPageController implements Initializable {
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		loadData();
-		notifications.setCellFactory(param -> new ListCell<>() {
+		medReq.setCellFactory(param -> new ListCell<>() {
 			@Override
 			protected void updateItem(MedicineRequest medReq, boolean empty) {
 				super.updateItem(medReq, empty);
@@ -59,24 +66,57 @@ public class NotificationsPageController implements Initializable {
 					String status;
 					switch (medReq.getStatus()) {
 						default :
-						case "0" : {
-							status = "Pending";
-						}
+						case "0" : { status = "Pending"; }
 						break;
-						case "1" : {
-							status = "Approved";
-						}
+						case "1" : { status = "Approved"; }
 						break;
-						case "2" : {
-							status = "Denied";
-						}
+						case "2" : { status = "Denied"; }
 						break;
 					}
 					setText("[" + medReq.getDateAndTime() + "] " +  medReq.getDose() + " of " + medReq.getMedType() + " for " + medReq.getPatientName() + " (" + status + ")");
 				}
 			}
 		});
+		giftReq.setCellFactory(param -> new ListCell<>() {
+			@Override
+			protected void updateItem(GiftRequest giftReq, boolean empty) {
+				super.updateItem(giftReq, empty);
+				if (giftReq != null) {
+					String status;
+					switch (giftReq.getStatus()) {
+						default :
+						case "0" : { status = "Pending"; }
+						break;
+						case "1" : { status = "Approved"; }
+						break;
+						case "2" : { status = "Denied"; }
+						break;
+					}
+					//setText("[" + medReq.getDateAndTime() + "] " +  medReq.getDose() + " of " + medReq.getMedType() + " for " + medReq.getPatientName() + " (" + status + ")");
+				}
+			}
+		});
+		notifications.setCellFactory(param -> new ListCell<>() {
+			@Override
+			protected void updateItem(ServiceRequest req, boolean empty) {
+				super.updateItem(req, empty);
+				if (req != null) {
+					String status;
+					switch (req.getStatus()) {
+						default :
+						case "0" : { status = "Pending"; }
+						break;
+						case "1" : { status = "Approved"; }
+						break;
+						case "2" : { status = "Denied"; }
+						break;
+					}
+					//setText("[" + medReq.getDateAndTime() + "] " +  medReq.getDose() + " of " + medReq.getMedType() + " for " + medReq.getPatientName() + " (" + status + ")");
+				}
+			}
+		});
 	}
+
 
     /**
      * Loads data to the list view in the form of MedicineRequest Objects
@@ -101,18 +141,18 @@ public class NotificationsPageController implements Initializable {
 			System.out.println(row.get(0));
 			list.add(new MedicineRequest(row.get(0), patientName, patientID, doctorName, row.get(3), row.get(4), row.get(5), roomID, row.get(6), row.get(7), row.get(8)));
 		}
-        notifications.getItems().addAll(list);
+        medReq.getItems().addAll(list);
     }
 
     /**
-     * Checks for anyone clicking on the listView of notifications and opens them in the pane to the right
+     * Checks for anyone clicking on the listView of medReq and opens them in the pane to the right
      */
     @FXML
     private void displaySelected() {
-        MedicineRequest req = notifications.getSelectionModel().getSelectedItem();
+        MedicineRequest req = medReq.getSelectionModel().getSelectedItem();
         setCurrentRequest(req);
         try {
-			String message = notifications.getSelectionModel().getSelectedItem().getPatientName();
+			String message = medReq.getSelectionModel().getSelectedItem().getPatientName();
 			if (message == null || message.isEmpty()) {
 				System.out.println("Nothing");
 			} else {
