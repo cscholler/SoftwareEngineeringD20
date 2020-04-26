@@ -41,7 +41,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 			connect(props);
 		}
 		// Uncomment if database needs to be rebuilt
-		rebuildDatabase();
+		//rebuildDatabase();
 	}
 
 	/**
@@ -200,17 +200,6 @@ public class DatabaseService extends Service implements IDatabaseService {
 	 */
 	@Override
 	public void rebuildDatabase() {
-<<<<<<< Updated upstream
-=======
-		ArrayList<SQLEntry> updates = new ArrayList<>();
-		updates.add(new SQLEntry(DBConstants.CREATE_NODE_TABLE));
-		updates.add(new SQLEntry(DBConstants.CREATE_EDGE_TABLE));
-		updates.add(new SQLEntry(DBConstants.CREATE_USER_TABLE));
-		updates.add(new SQLEntry(DBConstants.CREATE_DOCTOR_TABLE));
-		//updates.add(new SQLEntry(DBConstants.CREATE_PATIENT_TABLE));
-		//updates.add(new SQLEntry(DBConstants.CREATE_MEDICATION_REQUEST_TABLE));
-
->>>>>>> Stashed changes
 		dropTables();
 		ArrayList<SQLEntry> updates = new ArrayList<>();
 		updates.add(new SQLEntry(DBConstants.CREATE_NODE_TABLE));
@@ -251,7 +240,6 @@ public class DatabaseService extends Service implements IDatabaseService {
 		ArrayList<String> dropTableUpdates = new ArrayList<>();
 		ArrayList<String> tablesToDrop = new ArrayList<>();
 		ArrayList<SQLEntry> updates = new ArrayList<>();
-<<<<<<< Updated upstream
 		dropTableUpdates.add(DBConstants.DROP_NODE_TABLE);
 		dropTableUpdates.add(DBConstants.DROP_EDGE_TABLE);
 		dropTableUpdates.add(DBConstants.DROP_USER_TABLE);
@@ -261,14 +249,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 		dropTableUpdates.add(DBConstants.DROP_GIFT_REQUEST_TABLE);
 		dropTableUpdates.add(DBConstants.DROP_MEDICATION_REQUEST_TABLE);
 		dropTableUpdates.add(DBConstants.DROP_SERVICE_REQUEST_TABLE);
-=======
-		//dropTableUpdates.add(DBConstants.DROP_NODE_TABLE);
-		//dropTableUpdates.add(DBConstants.DROP_EDGE_TABLE);
-		//dropTableUpdates.add(DBConstants.DROP_DOCTOR_TABLE);
-		///dropTableUpdates.add(DBConstants.DROP_PATIENT_TABLE);
-		//dropTableUpdates.add(DBConstants.DROP_MEDICATION_REQUEST_TABLE);
-		//dropTableUpdates.add(DBConstants.DROP_USER_TABLE);
->>>>>>> Stashed changes
+
 		try {
 			for (int i = 0; i < DBConstants.GET_TABLE_NAMES().size(); i++) {
 				resSet = connection.getMetaData().getTables(null, "APP", DBConstants.GET_TABLE_NAMES().get(i).toUpperCase(), null);

@@ -100,7 +100,7 @@ public class DBConstants {
 			"CREATE TABLE Service_Requests(" +
 					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
 					"patient_id INT REFERENCES Patients(id), " +
-					"request_user_id VARCHAR(32) REFERENCES Users(username)" +
+					"request_user_id VARCHAR(32) REFERENCES Users(username), " +
 					"location VARCHAR(10) NOT NULL REFERENCES Nodes(id), " +
 					"service VARCHAR(64) NOT NULL, " +
 					"type VARCHAR(64), " +
