@@ -12,12 +12,6 @@
 <?import javafx.scene.text.Font?>
 
 <BorderPane prefHeight="720.0" prefWidth="1080.0" styleClass="background" stylesheets="@../css/GlobalStyles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.NotificationsPageController">
-   <left>
-      <JFXListView fx:id="notifications" onMouseClicked="#displaySelected" prefWidth="350.0" styleClass="notification-list" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets bottom="20.0" left="20.0" top="10.0" />
-         </BorderPane.margin></JFXListView>
-   </left>
    <center>
       <BorderPane style="-fx-background-radius: 10; -fx-background-color: white;" stylesheets="@../css/GlobalStyles.css" BorderPane.alignment="CENTER">
          <top>
@@ -63,7 +57,7 @@
             </HBox>
          </bottom>
          <BorderPane.margin>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
+            <Insets bottom="20.0" left="20.0" right="20.0" top="15.0" />
          </BorderPane.margin>
       </BorderPane>
    </center>
@@ -94,10 +88,57 @@
                      <font>
                         <Font size="40.0" />
                      </font>
+                     <HBox.margin>
+                        <Insets left="325.0" />
+                     </HBox.margin>
                   </Label>
                </children>
             </HBox>
          </children>
       </VBox>
    </top>
+   <left>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="500.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Medication Requests" textFill="WHITE">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <JFXListView fx:id="medReq" onMouseClicked="#displaySelected" prefHeight="400.0" prefWidth="163.0" styleClass="notification-list">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </JFXListView>
+            <Label text="Gift Requests" textFill="WHITE">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <JFXListView fx:id="giftReq" styleClass="notification-list" />
+            <Label text="Other Requests" textFill="WHITE">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <JFXListView fx:id="notifications" styleClass="notification-list">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </JFXListView>
+         </children>
+         <padding>
+            <Insets left="20.0" />
+         </padding>
+      </VBox>
+   </left>
 </BorderPane>
