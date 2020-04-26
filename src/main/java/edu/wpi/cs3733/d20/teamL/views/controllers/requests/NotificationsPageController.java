@@ -12,7 +12,6 @@ import edu.wpi.cs3733.d20.teamL.entities.ServiceRequest;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -181,13 +180,6 @@ public class NotificationsPageController implements Initializable {
         	log.info("No notification currently selected");
 		}
     }
-
-    /**
-     * Handles buttons pressed on the notification screen back, decline, approve
-     * @param e tracks which button is pressed
-     * @throws IOException
-     */
-
 
     @FXML
     private void btnBackClicked() throws IOException {

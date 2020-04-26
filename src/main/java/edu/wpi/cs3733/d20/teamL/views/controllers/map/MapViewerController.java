@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import edu.wpi.cs3733.d20.teamL.services.IMessengerService;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -38,25 +39,20 @@ import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
 public class MapViewerController {
     @FXML
     MapPane map;
-
     @FXML
     JFXTextField startingPoint, destination;
-
     @FXML
     JFXButton btnNavigate;
-
     @FXML
     ScrollPane scroll;
-
     @FXML
     VBox instructions;
-
     @FXML
     JFXButton btnTextMe;
-
     @Inject
     private IDatabaseCache cache;
-
+    @Inject
+	private IMessengerService messenger;
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
@@ -115,7 +111,7 @@ public class MapViewerController {
 
         if (startNode != null && destNode != null) {
             String directions = highlightSourceToDestination(startNode, destNode);
-            //mailer.setDirections(directions);
+            messenger.setDirections(directions);
             Label directionsLabel = new Label();
             directionsLabel.setFont(new Font(14));
             directionsLabel.setText(directions);
@@ -168,7 +164,7 @@ public class MapViewerController {
         StringBuilder builder = new StringBuilder();
 
         for(String direction : message) {
-            builder.append(direction + "\n\n");
+            builder.append(direction).append("\n\n");
         }
 
         return builder.toString();

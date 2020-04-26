@@ -1,20 +1,17 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.dialogues;
 
+import com.google.inject.Inject;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import edu.wpi.cs3733.d20.teamL.services.IMessengerService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.stage.Stage;
 
-import javax.inject.Inject;
-import java.util.List;
-
-public class SendTextDirectionsController {
-
-    List<String> directions;
-
+public class SendDirectionsController {
+	@Inject
+	private IMessengerService messenger;
     @FXML
     private JFXTextField emailField;
     @FXML
@@ -36,7 +33,9 @@ public class SendTextDirectionsController {
         carrierSelector.setText("AT&T");
     }
     @FXML
-    void onVerizon(ActionEvent event) { carrierSelector.setText("Verizon");}
+    void onVerizon(ActionEvent event) {
+    	carrierSelector.setText("Verizon");
+    }
 
     /**
      * closes text directions window
@@ -56,23 +55,16 @@ public class SendTextDirectionsController {
 	void handleSend(ActionEvent event) {
 	    //sends text
 		if (event.getSource() == btnText) {
-			if (!carrierSelector.getText().equals("Select Carrier for Number")) {
-				String carrier = carrierSelector.getText();
-				String number = phoneNumberField.getText();
-				//TODO: replace with Twilio implementation
-				/*mailer.setCarrier(carrier);
-				mailer.setPhoneNumber(number);
-				mailer.setIsText(true);
-				mailer.sendTextToCarrier();*/
-			}
+			String phoneNumber = phoneNumberField.getText();
+			//TODO: replace with Twilio implementation
+			messenger.sendText(messenger.getDirections(), phoneNumber);
+
 		// sends email
 		} else if (event.getSource() == btnEmail) {
 			if (!emailField.getText().equals("")) {
 				//TODO: replace with SendGrid implementation
-				String email = emailField.getText();
-				/*mailer.setEmailAddress(email);
-				mailer.setIsText(false);
-				mailer.sendMail();*/
+				String emailAddress = emailField.getText();
+				messenger.sendEmail(messenger.getDirections(), emailAddress);
 			}
 		}
 	}

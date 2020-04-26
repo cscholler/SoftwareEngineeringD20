@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="297.0" maxWidth="432.0" minHeight="221.0" minWidth="432.0" prefHeight="297.0" prefWidth="433.0" styleClass="modalback" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.SendTextDirectionsController">
+<AnchorPane maxHeight="297.0" maxWidth="432.0" minHeight="221.0" minWidth="432.0" prefHeight="297.0" prefWidth="433.0" styleClass="modalback" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.SendDirectionsController">
     <children>
       <BorderPane prefHeight="297.0" prefWidth="432.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
