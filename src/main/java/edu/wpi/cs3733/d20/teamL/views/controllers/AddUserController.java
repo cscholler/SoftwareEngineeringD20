@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
+import javafx.scene.control.MenuButton;
 import javafx.scene.paint.Color;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,11 +30,9 @@ public class AddUserController implements Initializable {
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 
     @FXML
-    JFXCheckBox doctor;
-    @FXML
     JFXTextField docID, fName, lName, services, username, password;
     @FXML
-    Menu role;
+    MenuButton role;
     @FXML
     Label lblConfirmation;
     @Inject
@@ -44,28 +43,32 @@ public class AddUserController implements Initializable {
 //    private ILoginManager loginManager;
 
     @FXML
-    private void doctorChecked(){
-        docID.setVisible(true);
-    }
-
-    @FXML
     private void submitClicked(){
     String firstName = fName.getText();
     String lastName = lName.getText();
     String service = services.getText();
     String un = username.getText();
     String pw = password.getText();
-    String doctorID = "1111";//docID.getText();
-    String type = "Nurse";//role.getText();
+    String doctorID = docID.getText();
+    String type = role.getText();
 
-    if(type.equals("Nurse")){
-        type = "1";
+    switch(type) {
+        case "Nurse":
+            type = "1";
+            break;
+        case "Doctor":
+            type = "2";
+            break;
+        case "Admin":
+            type = "3";
+            break;
     }
+
         formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_DOCTORS)));
 
         int rows = 0;
     if(firstName != null){
-        rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(firstName, lastName, un, pw, "1", service))));
+        rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(firstName, lastName, un, pw, type, service))));
         formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_USERS)));
     if(docID.getText() != null && !(docID.getText().isEmpty())) {
         rows = db.executeUpdate(new SQLEntry(DBConstants.UPDATE_DOCTOR_USERNAME, new ArrayList<>(Arrays.asList(un,doctorID ))));
@@ -100,5 +103,23 @@ public class AddUserController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_DOCTORS)));
 
+    }
+    @FXML
+    private void nurseSelected(){
+        role.setText("Nurse");
+        docID.setVisible(false);
+        docID.setDisable(true);
+    }
+    @FXML
+    private void doctorSelected(){
+        role.setText("Doctor");
+        docID.setVisible(true);
+        docID.setDisable(false);
+    }
+    @FXML
+    private void adminSelected(){
+        role.setText("Admin");
+        docID.setVisible(false);
+        docID.setDisable(true);
     }
 }

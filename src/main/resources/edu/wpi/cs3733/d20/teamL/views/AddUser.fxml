@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
@@ -13,41 +12,37 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.AddUserController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.AddUserController">
    <center>
-      <VBox alignment="CENTER" prefHeight="188.0" prefWidth="600.0" spacing="30.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" prefHeight="188.0" prefWidth="600.0" spacing="100.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER" prefHeight="0.0" prefWidth="600.0" spacing="20.0">
+            <HBox alignment="CENTER" spacing="20.0">
                <children>
-                  <JFXTextField fx:id="fName" labelFloat="true" promptText="First Name" />
-                  <JFXTextField fx:id="lName" labelFloat="true" promptText="Last Name" />
+                  <JFXTextField fx:id="fName" labelFloat="true" prefHeight="40.0" promptText="First Name" />
+                  <JFXTextField fx:id="lName" labelFloat="true" prefHeight="40.0" promptText="Last Name" />
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="0.0" prefWidth="600.0" spacing="20.0">
+            <HBox alignment="CENTER" spacing="20.0">
                <children>
-                  <JFXTextField fx:id="username" labelFloat="true" promptText="Username" />
-                  <JFXTextField fx:id="password" labelFloat="true" promptText="Password" />
+                  <JFXTextField fx:id="username" labelFloat="true" prefHeight="40.0" promptText="Username" />
+                  <JFXTextField fx:id="password" labelFloat="true" prefHeight="40.0" promptText="Password" />
                </children>
             </HBox>
-            <JFXTextField fx:id="services" labelFloat="true" promptText="Services">
+            <JFXTextField fx:id="services" labelFloat="true" maxWidth="600.0" prefHeight="30.0" prefWidth="400.0" promptText="Services">
                <VBox.margin>
                   <Insets left="100.0" right="100.0" />
                </VBox.margin>
             </JFXTextField>
             <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="60.0">
                <children>
-                  <MenuButton fx:id="userType" mnemonicParsing="false" text="MenuButton">
+                  <MenuButton fx:id="role" minWidth="100.0" mnemonicParsing="false" prefHeight="40.0" text="User Type">
                     <items>
-                      <MenuItem mnemonicParsing="false" text="Nurse" />
-                      <MenuItem mnemonicParsing="false" text="Doctor" />
-                        <MenuItem mnemonicParsing="false" text="Admin" />
+                      <MenuItem mnemonicParsing="false" onAction="#nurseSelected" text="Nurse" />
+                      <MenuItem mnemonicParsing="false" onAction="#doctorSelected" text="Doctor" />
+                        <MenuItem mnemonicParsing="false" onAction="#adminSelected" text="Admin" />
                     </items>
                   </MenuButton>
-                  <JFXCheckBox fx:id="doctor" alignment="CENTER" checkedColor="#008cff" contentDisplay="RIGHT" onAction="#doctorChecked" text="Doctor" textAlignment="CENTER" textFill="WHITE" unCheckedColor="WHITE">
-                     <graphic>
-                        <JFXTextField fx:id="docID" labelFloat="true" maxWidth="100.0" prefWidth="50.0" promptText="Doctor ID" visible="false" />
-                     </graphic>
-                  </JFXCheckBox>
+                  <JFXTextField fx:id="docID" labelFloat="true" maxWidth="100.0" prefHeight="40.0" prefWidth="50.0" promptText="Doctor ID" visible="false" />
                </children>
             </HBox>
          </children>

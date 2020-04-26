@@ -1,7 +1,7 @@
 .text-field{
     -fx-border-radius: 10 0 0 10;
     -fx-background-color: white;
-    -fx-pref-height: 20px;
+    -fx-pref-height: 40px;
     -fx-pref-width: 250;
 }
 
