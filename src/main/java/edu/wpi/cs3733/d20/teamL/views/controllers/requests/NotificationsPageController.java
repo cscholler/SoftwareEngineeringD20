@@ -140,9 +140,9 @@ public class NotificationsPageController implements Initializable {
 			}
 			break;
 			// Doctor
-			case "2": {
+			/*case "2": {
 				query = DBConstants.SELECT_ALL_MEDICATION_REQUESTS_FOR_DOCTOR;
-			}
+			}*/
 		}
 		medRequests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(query, new ArrayList<>(Collections.singletonList(loginManager.getCurrentUser().getUsername())))));
 
