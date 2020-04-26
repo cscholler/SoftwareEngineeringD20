@@ -1,6 +1,5 @@
 package edu.wpi.cs3733.d20.teamL.entities;
 
-import edu.wpi.cs3733.d20.teamL.services.graph.Graph;
 import javafx.geometry.Point2D;
 
 import java.util.ArrayList;

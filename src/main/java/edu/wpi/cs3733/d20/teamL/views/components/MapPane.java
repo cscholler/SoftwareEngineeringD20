@@ -2,7 +2,7 @@ package edu.wpi.cs3733.d20.teamL.views.components;
 
 import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
-import edu.wpi.cs3733.d20.teamL.services.graph.Graph;
+import edu.wpi.cs3733.d20.teamL.entities.Graph;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
