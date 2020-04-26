@@ -2,7 +2,7 @@ package edu.wpi.cs3733.d20.teamL.entities;
 
 import java.util.Date;
 
-public class MedicineRequest {
+public class MedicationRequest {
 	private String id;
     private String patientName;
     private String patientID;
@@ -15,7 +15,7 @@ public class MedicineRequest {
     private String status;
     private String dateAndTime;
 
-    public MedicineRequest(String id, String patientName, String patientID, String doctorName, String nurseName, String dose, String medType, String roomNum, String addInfo, String status, String dateAndTime) {
+    public MedicationRequest(String id, String patientName, String patientID, String doctorName, String nurseName, String dose, String medType, String roomNum, String addInfo, String status, String dateAndTime) {
     	this.id = id;
         this.patientName = patientName;
         this.patientID = patientID;

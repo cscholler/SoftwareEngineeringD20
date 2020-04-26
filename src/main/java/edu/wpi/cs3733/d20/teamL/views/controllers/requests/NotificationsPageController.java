@@ -23,7 +23,7 @@ import com.jfoenix.controls.JFXListView;
 
 import lombok.extern.slf4j.Slf4j;
 
-import edu.wpi.cs3733.d20.teamL.entities.MedicineRequest;
+import edu.wpi.cs3733.d20.teamL.entities.MedicationRequest;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
@@ -31,15 +31,15 @@ import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 
 @Slf4j
 public class NotificationsPageController implements Initializable {
-   	private ObservableList<MedicineRequest> list = FXCollections.observableArrayList();
+   	private ObservableList<MedicationRequest> list = FXCollections.observableArrayList();
 	private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
-	private MedicineRequest currentRequest;
+	private MedicationRequest currentRequest;
 	@Inject
 	private IDatabaseService db;
 	@FXML
     private JFXButton btnBack, btnCompleted, btnDecline;
     @FXML
-    private JFXListView<MedicineRequest> notifications;
+    private JFXListView<MedicationRequest> notifications;
     @FXML
     private Label reqMessage, addInfo;
 
@@ -53,7 +53,7 @@ public class NotificationsPageController implements Initializable {
 		loadData();
 		notifications.setCellFactory(param -> new ListCell<>() {
 			@Override
-			protected void updateItem(MedicineRequest medReq, boolean empty) {
+			protected void updateItem(MedicationRequest medReq, boolean empty) {
 				super.updateItem(medReq, empty);
 				if (medReq != null) {
 					String status;
@@ -99,7 +99,7 @@ public class NotificationsPageController implements Initializable {
 			patientName = name.get(0) + " " + name.get(1);
 			roomID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ROOM, new ArrayList<>(Collections.singletonList(patientID))))).get(0).get(0);
 			System.out.println(row.get(0));
-			list.add(new MedicineRequest(row.get(0), patientName, patientID, doctorName, row.get(3), row.get(4), row.get(5), roomID, row.get(6), row.get(7), row.get(8)));
+			list.add(new MedicationRequest(row.get(0), patientName, patientID, doctorName, row.get(3), row.get(4), row.get(5), roomID, row.get(6), row.get(7), row.get(8)));
 		}
         notifications.getItems().addAll(list);
     }
@@ -109,7 +109,7 @@ public class NotificationsPageController implements Initializable {
      */
     @FXML
     private void displaySelected() {
-        MedicineRequest req = notifications.getSelectionModel().getSelectedItem();
+        MedicationRequest req = notifications.getSelectionModel().getSelectedItem();
         setCurrentRequest(req);
         try {
 			String message = notifications.getSelectionModel().getSelectedItem().getPatientName();
@@ -152,11 +152,11 @@ public class NotificationsPageController implements Initializable {
 		}
     }
 
-	public MedicineRequest getCurrentRequest() {
+	public MedicationRequest getCurrentRequest() {
 		return currentRequest;
 	}
 
-	public void setCurrentRequest(MedicineRequest currentRequest) {
+	public void setCurrentRequest(MedicationRequest currentRequest) {
 		this.currentRequest = currentRequest;
 	}
 }

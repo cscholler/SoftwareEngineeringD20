@@ -74,8 +74,8 @@ public class DBConstants {
 			"CREATE TABLE Gift_Delivery_Requests(" +
 					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
 					"patient_id INT NOT NULL REFERENCES Patients(id), " +
-					"nurse_name VARCHAR(64) NOT NULL, " +
-					"assignee VARCHAR(32) REFERENCES Users(username), " +
+					"request_username VARCHAR(64) NOT NULL REFERENCES User(username), " +
+					"assignee_username VARCHAR(64) NOT NULL REFERENCES User(username), " +
 					"gift_id INT NOT NULL REFERENCES Gifts(id), " +
 					"message VARCHAR(128), " +
 					"notes VARCHAR(256), " +
@@ -88,7 +88,8 @@ public class DBConstants {
 					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
 					"doctor_id INT NOT NULL REFERENCES Doctors(id), " +
 					"patient_id INT NOT NULL REFERENCES Patients(id), " +
-					"nurse_name VARCHAR(64) NOT NULL, " +
+					"nurse_username VARCHAR(64) NOT NULL REFERENCES User(username), " +
+					"deliverer_username VARCHAR(64) REFERENCES User(username), " +
 					"dose VARCHAR(64) NOT NULL, " +
 					"type VARCHAR(64) NOT NULL, " +
 					"notes VARCHAR(256), " +
@@ -100,11 +101,11 @@ public class DBConstants {
 			"CREATE TABLE Service_Requests(" +
 					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
 					"patient_id INT REFERENCES Patients(id), " +
-					"request_user_id VARCHAR(32) REFERENCES Users(username)" +
+					"request_username VARCHAR(32) REFERENCES Users(username)" +
+					"assignee_username VARCHAR(32) NOT NULL REFERENCES Users(username), " +
 					"location VARCHAR(10) NOT NULL REFERENCES Nodes(id), " +
 					"service VARCHAR(64) NOT NULL, " +
 					"type VARCHAR(64), " +
-					"assignee VARCHAR(32) NOT NULL REFERENCES Users(username), " +
 					"notes VARCHAR(256), " +
 					"status CHAR(1) NOT NULL, " +
 					"date_and_time CHAR(19) NOT NULL, " +
@@ -128,7 +129,7 @@ public class DBConstants {
 	public static final String DROP_GIFT_TABLE =
 			"DROP TABLE Gifts";
 
-	public static final String DROP_GIFT_REQUEST_TABLE =
+	public static final String DROP_GIFT_DELIVER_REQUEST_TABLE =
 			"DROP TABLE Gift_Delivery_Requests";
 
 	public static final String DROP_MEDICATION_REQUEST_TABLE =
@@ -157,13 +158,17 @@ public class DBConstants {
 			"INSERT INTO Patients(id, f_name, l_name, doctor_id, room_id)" +
 					"VALUES(?, ?, ?, ?, ?)";
 
-	public static final String ADD_MEDICATION_REQUEST =
-			"INSERT INTO Medication_Requests(doctor_id, patient_id, nurse_name, dose, type, notes, status, date_and_time)" +
+	public static final String ADD_GIFT_DELIVERY_REQUEST =
+			"INSERT INTO Gift_Delivery_Requests(patient_id, request_username, assignee_username, gift_id, message, notes, status, date_and_time)" +
 					"VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 
+	public static final String ADD_MEDICATION_REQUEST =
+			"INSERT INTO Medication_Requests(doctor_id, patient_id, nurse_username, deliverer_username, dose, type, notes, status, date_and_time)" +
+					"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
 	public static final String ADD_SERVICE_REQUEST =
-			"INSERT INTO Service_Requests(doctor_id, patient_id, nurse_name, dose, type, notes, status, date_and_time)" +
-					"VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+			"INSERT INTO Service_Requests(patient_id, request_username, assignee_username, location, service, type, notes, status, date_and_time)" +
+					"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	public static final String SELECT_ALL_NODES =
 			"SELECT * " +
@@ -172,18 +177,6 @@ public class DBConstants {
 	public static final String SELECT_ALL_EDGES =
 			"SELECT * " +
 					"FROM Edges";
-
-	public static final String SELECT_ALL_DOCTORS =
-			"SELECT * " +
-					"FROM Doctors";
-
-	public static final String SELECT_ALL_PATIENTS =
-			"SELECT * " +
-					"FROM Patients";
-
-	public static final String SELECT_ALL_MEDICATION_REQUESTS =
-			"SELECT * " +
-					"FROM Medication_Requests";
 
 	public static final String SELECT_ALL_USERS =
 			"SELECT * " +
@@ -199,6 +192,10 @@ public class DBConstants {
 					"FROM Users " +
 					"WHERE id = ?";
 
+	public static final String SELECT_ALL_DOCTORS =
+			"SELECT * " +
+					"FROM Doctors";
+
 	public static final String GET_DOCTOR_ID =
 			"SELECT id " +
 					"FROM Doctors " +
@@ -208,6 +205,10 @@ public class DBConstants {
 			"SELECT f_name, l_name " +
 					"FROM Doctors " +
 					"WHERE id = ?";
+
+	public static final String SELECT_ALL_PATIENTS =
+			"SELECT * " +
+					"FROM Patients";
 
 	public static final String GET_PATIENT_ID =
 			"SELECT id " +
@@ -224,6 +225,38 @@ public class DBConstants {
 					"FROM Patients " +
 					"WHERE id = ?";
 
+	public static final String SELECT_ALL_GIFT_DELIVERY_REQUESTS =
+			"SELECT * " +
+					"FROM Gift_Delivery_Requests";
+
+	public static final String SELECT_ALL_GIFT_DELIVERY_REQUESTS_FOR_USER =
+			"SELECT * " +
+					"FROM Gift_Delivery_Requests " +
+					"WHERE assignee_username = ?";
+
+	public static final String SELECT_ALL_MEDICATION_REQUESTS =
+			"SELECT * " +
+					"FROM Medication_Requests";
+
+	public static final String SELECT_ALL_MEDICATION_REQUESTS_FOR_NURSE =
+			"SELECT * " +
+					"FROM Medication_Requests " +
+					"WHERE nurse_username = ?";
+
+	public static final String SELECT_ALL_MEDICATION_REQUESTS_FOR_DELIVERER =
+			"SELECT * " +
+					"FROM Medication_Requests " +
+					"WHERE deliverer_username = ?";
+
+	public static final String SELECT_ALL_SERVICE_REQUESTS =
+			"SELECT * " +
+					"FROM Service_Requests";
+
+	public static final String SELECT_ALL_SERVICE_REQUESTS_FOR_USER =
+			"SELECT * " +
+					"FROM Service_Requests " +
+					"WHERE assignee_username = ?";
+
 	public static final String UPDATE_NODE =
 			"UPDATE Nodes " +
 					"SET x_pos = ?, y_pos = ?, floor = ?, building = ?, node_type = ?, l_name = ?, s_name = ? " +
@@ -232,16 +265,6 @@ public class DBConstants {
 	public static final String UPDATE_EDGE =
 			"UPDATE Edges " +
 					"SET node_start = ?, node_end = ? " +
-					"WHERE id = ?";
-
-	public static final String UPDATE_MEDICATION_REQUEST =
-			"UPDATE Medication_Requests " +
-					"SET doctor_id = ?, patient_id = ?, nurse_name = ?, dose = ?, type = ?, notes = ?, status = ?, date_and_time = ? " +
-					"WHERE id = ?";
-
-	public static final String UPDATE_MEDICATION_REQUEST_STATUS =
-			"UPDATE Medication_Requests " +
-					"SET status = ? " +
 					"WHERE id = ?";
 
 	public static final String UPDATE_USER_NAME =
@@ -259,9 +282,39 @@ public class DBConstants {
 					"SET acct_type = ? " +
 					"WHERE id = ?";
 
-	public static final String UPDATE_LAST_USER_LOGIN =
-			"UPDATE Users " +
-					"SET last_login = ? " +
+	public static final String UPDATE_GIFT_DELIVERY_REQUEST =
+			"UPDATE Medication_Requests " +
+					"SET patient_id = ?, request_username = ?, assignee_username = ?, gift_id = ?, message = ?, notes = ?, status = ?, date_and_time = ? " +
+					"WHERE id = ?";
+
+	public static final String UPDATE_GIFT_DELIVERY_REQUEST_STATUS =
+			"UPDATE Medication_Requests " +
+					"SET status = ? " +
+					"WHERE id = ?";
+
+	public static final String UPDATE_MEDICATION_REQUEST =
+			"UPDATE Medication_Requests " +
+					"SET doctor_id = ?, patient_id = ?, nurse_username = ?, deliverer_username = ?, dose = ?, type = ?, notes = ?, status = ?, date_and_time = ? " +
+					"WHERE id = ?";
+
+	public static final String UPDATE_MEDICATION_REQUEST_DELIVERER =
+			"UPDATE Medication_Requests " +
+					"SET deliverer_username = ? " +
+					"WHERE id = ?";
+
+	public static final String UPDATE_MEDICATION_REQUEST_STATUS =
+			"UPDATE Medication_Requests " +
+					"SET status = ? " +
+					"WHERE id = ?";
+
+	public static final String UPDATE_SERVICE_REQUEST =
+			"UPDATE Medication_Requests " +
+					"SET patient_id = ?, request_username = ?, assignee_username = ?, location = ?, service = ?, type = ?, notes = ?, status = ?, date_and_time = ? " +
+					"WHERE id = ?";
+
+	public static final String UPDATE_SERVICE_REQUEST_STATUS =
+			"UPDATE Medication_Requests " +
+					"SET status = ? " +
 					"WHERE id = ?";
 
 	public static final String REMOVE_NODE =
@@ -270,5 +323,17 @@ public class DBConstants {
 
 	public static final String REMOVE_EDGE =
 			"DELETE FROM Edges " +
+					"WHERE id = ?";
+
+	public static final String REMOVE_GIFT_DELIVERY_REQUEST =
+			"DELETE FROM Gift_Delivery_Requests " +
+					"WHERE id = ?";
+
+	public static final String REMOVE_MEDICATION_REQUEST =
+			"DELETE FROM Medication_Requests " +
+					"WHERE id = ?";
+
+	public static final String REMOVE_SERVICE_REQUEST =
+			"DELETE FROM Service_Requests " +
 					"WHERE id = ?";
 }
