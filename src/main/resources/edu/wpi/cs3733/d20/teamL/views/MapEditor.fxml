@@ -18,7 +18,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import edu.wpi.cs3733.d20.teamL.views.components.MapPane?>
 <BorderPane fx:id="root" prefHeight="720" prefWidth="1280" stylesheets="@../css/MapStyles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.map.MapEditorController">
     <center>
 
@@ -202,7 +201,7 @@
                            <graphic>
                               <ImageView fitHeight="11.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true" scaleX="3.0" scaleY="3.0" translateX="2.0">
                                  <image>
-                                    <Image url="@../assets/home page/Search-button-home.png" />
+                                       <Image url="@../assets/home page/Search-button-home.png" />
                                  </image>
                               </ImageView>
                            </graphic></JFXButton>
@@ -221,6 +220,13 @@
                            <tooltip>
                               <Tooltip autoHide="true" contentDisplay="RIGHT" text="Save Options" />
                            </tooltip>
+                           <graphic>
+                              <ImageView fitHeight="16.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true" scaleX="2.5" scaleY="2.5" translateX="4.0" translateY="-2.0">
+                                 <image>
+                                    <Image url="@../assets/nodes/SAVE.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
                         </JFXButton>
                         <JFXButton fx:id="saveToDB" onAction="#saveToDB" styleClass="nodeListButton">
                            <tooltip>
@@ -240,6 +246,13 @@
                            <tooltip>
                               <Tooltip text="Load Options" />
                            </tooltip>
+                           <graphic>
+                              <ImageView fitHeight="13.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true" scaleX="3.5" scaleY="3.5" translateX="3.5" translateY="-2.0">
+                                 <image>
+                                    <Image url="@../assets/nodes/UPLOAD.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
                         </JFXButton>
                         <JFXButton fx:id="openDB" buttonType="RAISED" layoutX="10.0" layoutY="10.0" onAction="#openFromDB" styleClass="nodeListButton" text=" ">
                            <tooltip>
@@ -333,6 +346,11 @@
                <children>
                   <JFXNodesList rotate="270.0" spacing="10.0">
                      <children>
+                        <JFXButton layoutX="15.0" layoutY="70.0" styleClass="nodeTypeButton" text=" ">
+                           <tooltip>
+                              <Tooltip text="ELEV (Elevator)" />
+                           </tooltip>
+                        </JFXButton>
                         <JFXButton fx:id="node" onAction="#insertNode" styleClass="nodeListButton" text="+">
                            <font>
                               <Font name="System Bold" size="12.0" />
@@ -344,11 +362,6 @@
                         <JFXButton styleClass="nodeTypeButton" text=" ">
                            <tooltip>
                               <Tooltip text="HALL (Hallway)" />
-                           </tooltip>
-                        </JFXButton>
-                        <JFXButton layoutX="15.0" layoutY="70.0" styleClass="nodeTypeButton" text=" ">
-                           <tooltip>
-                              <Tooltip text="ELEV (Elevator)" />
                            </tooltip>
                         </JFXButton>
                         <JFXButton layoutX="15.0" layoutY="123.0" styleClass="nodeTypeButton" text=" ">
