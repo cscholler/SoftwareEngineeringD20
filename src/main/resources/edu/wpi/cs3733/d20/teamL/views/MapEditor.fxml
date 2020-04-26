@@ -198,12 +198,20 @@
                      <children>
                         <JFXTextField fx:id="startNode" focusColor="#0d2057" prefWidth="200.0" promptText="Starting Point" style="-fx-border-color: #0D2E57; -fx-border-width: 3;" styleClass="text-field" unFocusColor="#ffffff00">
                            <HBox.margin>
-                              <Insets right="25.0" />
+                              <Insets />
                            </HBox.margin>
                         </JFXTextField>
+                        <JFXButton prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: transparent;" text=" ">
+                           <graphic>
+                              <ImageView fitHeight="13.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true" scaleX="3.5" scaleY="4.5" translateX="3.0">
+                                 <image>
+                                    <Image url="@../assets/map editor/reverseArrow.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></JFXButton>
                         <JFXTextField fx:id="endNode" focusColor="#0d2057" prefHeight="40.0" prefWidth="200.0" promptText="Destination" style="-fx-border-color: #0D2E57; -fx-border-width: 3;" styleClass="text-field" unFocusColor="#ffffff00">
                            <HBox.margin>
-                              <Insets left="25.0" />
+                              <Insets />
                            </HBox.margin>
                         </JFXTextField>
                         <JFXButton fx:id="pathFind" buttonType="RAISED" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #0D2E57; -fx-background-radius: 0;" text=" " textFill="WHITE">
