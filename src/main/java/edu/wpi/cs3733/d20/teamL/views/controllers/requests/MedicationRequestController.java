@@ -3,10 +3,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.search.SearchFields;
@@ -30,7 +27,11 @@ import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
+import lombok.extern.slf4j.Slf4j;
 
+import javax.swing.*;
+
+@Slf4j
 public class MedicationRequestController implements Initializable {
 	DBTableFormatter formatter = new DBTableFormatter();
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
@@ -39,7 +40,7 @@ public class MedicationRequestController implements Initializable {
 	@Inject
 	private IDatabaseService db;
 	@Inject
-	private IDatabaseCache dbCache;
+	private IDatabaseCache cache;
 	@Inject
 	private ILoginManager loginManager;
     @FXML
@@ -51,9 +52,8 @@ public class MedicationRequestController implements Initializable {
 
 	@FXML
 	public void initialize(URL location, ResourceBundle resources) {
-        dbCache.cacheAllFromDB();
-
-        sf = new SearchFields(dbCache.getNodeCache());
+        cache.cacheAllFromDB();
+        sf = new SearchFields(cache.getNodeCache());
         sf.getFields().add(SearchFields.Field.nodeID);
         sf.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
@@ -61,66 +61,62 @@ public class MedicationRequestController implements Initializable {
 	}
 
     /**
-     * shows autocomplete options when searching for a room
+     * Applies autocomplete to the room number field
      */
     @FXML
     private void autocomplete() {
         sf.applyAutocomplete(roomNumText, autoCompletePopup);
     }
 
-    /**
-     * handles buttons "cancel" and "submit" when clicked in a medication service request
-     * @param e tracks when button is pressed
-     * @throws IOException
-     */
     @FXML
-    public void handleButtonAction(ActionEvent e) throws IOException {
-        //goe back to Staff View
-        if (e.getSource() == btnCancel) {
-            Parent root = loaderHelper.getFXMLLoader("StaffView").load();
-            loaderHelper.setupScene(new Scene(root));
+    private void btnCancelClicked() throws IOException {
+		Parent root = loaderHelper.getFXMLLoader("StaffView").load();
+		loaderHelper.setupScene(new Scene(root));
+	}
 
-        //sumbits request
-        } else if (e.getSource() == btnSubmit){
-            String doctorFName = docFNameText.getText();
-            String doctorLName = docLNameText.getText();
-            String medType = medTypeText.getText();
-            String dose = doseText.getText();
-            String patientFName = patFNameText.getText();
-            String patientLName = patLNameText.getText();
-            String roomNum = roomNumText.getText();
-            String additionalInfo = addInfoText.getText();
+	@FXML
+	private void btnSubmitClicked() throws IOException {
+		String doctorFName = docFNameText.getText();
+		String doctorLName = docLNameText.getText();
+		String medType = medTypeText.getText();
+		String dose = doseText.getText();
+		String patientFName = patFNameText.getText();
+		String patientLName = patLNameText.getText();
+		String roomNum = roomNumText.getText();
+		String additionalInfo = addInfoText.getText();
 
-            // Status codes-- 0: pending, 1: approved, 2: denied
-            String status = "0";
-            String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
-            String user = loginManager.getCurrentUser().getUsername();
-			// Adds request info to database
-			String doctorID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_DOCTOR_ID, new ArrayList<>(Arrays.asList(doctorFName, doctorLName))))).get(0).get(0);
-			String patientID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ID, new ArrayList<>(Arrays.asList(patientFName, patientLName))))).get(0).get(0);
-			// TODO: Get name of nurse from current user
-			int rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_MEDICATION_REQUEST, new ArrayList<>(Arrays.asList(doctorID, patientID, user, dose, medType, additionalInfo, status, dateAndTime))));
-			//formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_MEDICATION_REQUESTS)));
-			// TODO: Check if any info is invalid before sending request
+		// Status codes-- 0: pending, 1: approved, 2: delivered, 3: denied,
+		String status = "0";
+		String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
+		String nurseUsername = loginManager.getCurrentUser().getUsername();
+		// Adds request info to database
+		String doctorID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_DOCTOR_ID, new ArrayList<>(Arrays.asList(doctorFName, doctorLName))))).get(0).get(0);
+		String patientID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ID, new ArrayList<>(Arrays.asList(patientFName, patientLName))))).get(0).get(0);
+		String patientRoomNum = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ROOM, new ArrayList<>(Collections.singletonList(patientID))))).get(0).get(0);
+		int rows = 0;
+		//TODO: add more verification checks
+		if (patientRoomNum.equals(roomNum)) {
+			rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_MEDICATION_REQUEST, new ArrayList<>(Arrays.asList(doctorID, patientID, nurseUsername, null, dose, medType, additionalInfo, status, dateAndTime))));
+		}
+		//formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_MEDICATION_REQUESTS)));
+		if (rows == 0) {
+			confirmation.setTextFill(Color.RED);
+			confirmation.setText("Submission failed");
+		} else if (rows == 1) {
+			confirmation.setTextFill(Color.BLACK);
+			confirmation.setText("Medication Request Sent");
 
-            if (rows == 0) {
-                confirmation.setTextFill(Color.RED);
-                confirmation.setText("Submission failed      ");
-            } else {
-                confirmation.setTextFill(Color.BLACK);
-                confirmation.setText("Medication Request Sent");
-
-                docFNameText.setText("");
-                docLNameText.setText("");
-                medTypeText.setText("");
-                doseText.setText("");
-                patFNameText.setText("");
-                patLNameText.setText("");
-                roomNumText.setText("");
-                addInfoText.setText("");
-            }
-
-            loaderHelper.showAndFade(confirmation);
-        }
-    }
+			docFNameText.setText("");
+			docLNameText.setText("");
+			medTypeText.setText("");
+			doseText.setText("");
+			patFNameText.setText("");
+			patLNameText.setText("");
+			roomNumText.setText("");
+			addInfoText.setText("");
+		} else {
+			log.error("SQL update affected more than 1 row.");
+		}
+		loaderHelper.showAndFade(confirmation);
+	}
 }
