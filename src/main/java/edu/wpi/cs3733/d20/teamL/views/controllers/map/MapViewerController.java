@@ -40,6 +40,9 @@ public class MapViewerController {
     JFXTextField startingPoint, destination;
 
     @FXML
+    JFXButton btnNavigate;
+
+    @FXML
     VBox instructions;
 
     @FXML
@@ -59,6 +62,7 @@ public class MapViewerController {
         dbCache.cacheAllFromDB();
 
         map.setEditable(false);
+        btnNavigate.setDisableVisualFocus(true);
 
         Graph newGraph = new Graph();
         newGraph.addAllNodes(dbCache.getNodeCache());
