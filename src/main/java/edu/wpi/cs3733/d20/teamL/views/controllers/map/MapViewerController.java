@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
+import edu.wpi.cs3733.d20.teamL.services.pathfinding.PathfinderService;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -27,7 +29,7 @@ import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.entities.Graph;
 import edu.wpi.cs3733.d20.teamL.entities.Path;
-import edu.wpi.cs3733.d20.teamL.util.pathfinding.PathFinder;
+
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
@@ -56,6 +58,7 @@ public class MapViewerController {
 
     @Inject
     private IDatabaseCache cache;
+
 
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
@@ -142,7 +145,7 @@ public class MapViewerController {
     private String highlightSourceToDestination(Node source, Node destination) {
         map.getSelector().clear();
 
-        Path path = PathFinder.aStarPathFind(map.getGraph(), source, destination);
+        Path path = PathfinderService.pathfind(map.getGraph(), source, destination);
         Iterator<Node> nodeIterator = path.iterator();
 
         // Loop through each node in the path and select it as well as the edge pointing to the next node
