@@ -1,13 +1,10 @@
-package edu.wpi.cs3733.d20.teamL.services.graph;
+package edu.wpi.cs3733.d20.teamL.entities;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import javafx.geometry.Point2D;
-
-import edu.wpi.cs3733.d20.teamL.entities.Edge;
-import edu.wpi.cs3733.d20.teamL.entities.Node;
 
 public class Path implements Iterable<Node> {
 
