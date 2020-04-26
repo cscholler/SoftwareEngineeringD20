@@ -50,13 +50,13 @@ public class MapEditorController {
     @FXML
     MapPane map;
     @FXML
-    Label nodeIDText;
+    Label nodeIDText, numberlbl;
     @FXML
     JFXTextField numberText, xCoordText, yCoordText, buildingText, nodeTypeText, shortNameText, longNameText;
     @FXML
     ComboBox nodeTypeValue;
     @FXML
-    VBox editor;
+    VBox editor, multiFloorConnection;
 	@FXML
     JFXNodesList saveNodesList, loadNodesList, pathNodesList;
     @Inject
@@ -205,9 +205,9 @@ public class MapEditorController {
         cache.cacheAllFromDB();
         Graph newGraph = new Graph();
         for (Node node : cache.getNodeCache()) {
-            if (node.getFloor() == floor)
-                newGraph.addNode(node);
+            newGraph.addNode(node);
         }
+        map.setCurrentFloor(floor);
         map.setGraph(newGraph);
     }
 
@@ -253,9 +253,28 @@ public class MapEditorController {
             nodeTypeValue.getSelectionModel().select(types.indexOf(selectedNode.getType())+1);
             shortNameText.setText(selectedNode.getShortName());
             longNameText.setText(selectedNode.getLongName());
+            nodeTypeChanged();
         }
     }
 
+    @FXML
+    private void nodeTypeChanged() {
+        int index = nodeTypeValue.getSelectionModel().getSelectedIndex();
+        Node selected = map.getSelectedNode();
+
+        if(index == 1) {
+            numberlbl.setText("Elevator Connector Number:");
+            multiFloorConnection.setVisible(true);
+            numberText.setText(selected.getShaft());
+        } else if (index == 3) {
+            numberlbl.setText("Stairwell Connector Number:");
+            multiFloorConnection.setVisible(true);
+            numberText.setText(selected.getShaft());
+        } else {
+            multiFloorConnection.setVisible(false);
+            numberText.setText("");
+        }
+    }
 
     @FXML
     private void updateNode() {
@@ -263,17 +282,21 @@ public class MapEditorController {
         NodeGUI selectedNodeGUI = map.getNodeGUI(selectedNode);
         Collection<Node> neighbors = selectedNode.getNeighbors();
 
-        selectedNode.setId(nodeIDText.getText());
         double x = Double.parseDouble(xCoordText.getText());
         double y = Double.parseDouble(yCoordText.getText());
         selectedNode.setPosition(new Point2D(x, y));
-        selectedNode.setBuilding(map.getCurrentBuilding());
         selectedNode.setType(types.get(nodeTypeValue.getSelectionModel().getSelectedIndex()-1));
         selectedNode.setShortName(shortNameText.getText());
         selectedNode.setLongName(longNameText.getText());
+        selectedNode.setShaft(numberText.getText());
 
+        selectedNode.setId(map.getGraph().getUniqueNodeID(selectedNode));
+        nodeIDText.setText(selectedNode.getID());
+
+        addMultiFloorEdge(selectedNode);
         map.removeNode(selectedNodeGUI);
         map.addNode(selectedNode);
+
         for(Node neighbor : neighbors) {
             Edge edge = new Edge(selectedNode, neighbor);
             selectedNode.addEdgeTwoWay(edge);
@@ -281,14 +304,28 @@ public class MapEditorController {
         }
     }
 
+    private void addMultiFloorEdge(Node node) {
+        if(node.getType().equals("ELEV") || node.getType().equals("STAI")) {
+            for(Node adj : map.getGraph().getNodes()) {
+                if(node.getType().equals(adj.getType()) && node.getShaft().equals(adj.getShaft())) {
+                    if((node.getFloor() == adj.getFloor() + 1) || (node.getFloor() == adj.getFloor() - 1)) {
+                        node.addEdgeTwoWay(new Edge(node, adj));
+                    }
+                }
+            }
+        }
+    }
+
     @FXML
     private void changeFloor(ActionEvent event) {
         if(event.getSource() == floorUp && floor < 5) {
             floor ++;
-            openFromDB();
+            map.setCurrentFloor(floor);
+            map.setGraph(map.getGraph());
         } else if (event.getSource() == floorDown && floor > 1) {
             floor --;
-            openFromDB();
+            map.setCurrentFloor(floor);
+            map.setGraph(map.getGraph());
         }
     }
 }

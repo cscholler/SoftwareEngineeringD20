@@ -257,12 +257,14 @@ public class MapPane extends StackPane {
 
         // Add nodes to the scene
         for (Node node : graph.getNodes()) {
-            addNode(node);
+            if(node.getFloor() == currentFloor)
+                addNode(node);
         }
 
         // Add lines to the scene
         for (Edge edge : graph.getEdges()) {
-            addEdge(edge);
+            if(edge.getSource().getFloor() == currentFloor)
+                addEdge(edge);
         }
 
         ArrayList<Node> nodeList = new ArrayList<>(nodes.keySet());
@@ -579,6 +581,10 @@ public class MapPane extends StackPane {
 
     public int getCurrentFloor() {
         return currentFloor;
+    }
+
+    public void setCurrentFloor(int currentFloor) {
+        this.currentFloor = currentFloor;
     }
 
     public String getCurrentBuilding() {
