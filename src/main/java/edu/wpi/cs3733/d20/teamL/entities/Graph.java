@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Graph {
 
-    private Map<String, Node> nodes = new ConcurrentHashMap<>();
+    protected Map<String, Node> nodes = new ConcurrentHashMap<>();
 
     /**
      * Gets the collection of Nodes contained in this graph.
