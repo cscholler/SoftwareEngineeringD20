@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -43,6 +44,9 @@ public class MapViewerController {
 
     @FXML
     JFXButton btnNavigate;
+
+    @FXML
+    ScrollPane scroll;
 
     @FXML
     VBox instructions;
@@ -121,7 +125,7 @@ public class MapViewerController {
 
             instructions.getChildren().clear();
             instructions.getChildren().add(directionsLabel);
-            instructions.setVisible(true);
+            scroll.setVisible(true);
             btnTextMe.setDisable(false);
             btnTextMe.setVisible(true);
         }
