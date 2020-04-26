@@ -18,4 +18,5 @@
 
 .confirm {
     -fx-background-color: #0d2e57;
+    -fx-text-fill: white;
 }
