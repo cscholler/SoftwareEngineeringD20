@@ -52,12 +52,12 @@ public class NavigationController implements Initializable {
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
         Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("h:mm aa").format(new Date())));
-            }
-        }, 0, 1000);
+		timer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("h:mm aa").format(new Date())));
+			}
+		}, 0, 1000);
 
         cache.cacheAllFromDB();
         sf = new SearchFields(cache.getNodeCache());
@@ -87,8 +87,8 @@ public class NavigationController implements Initializable {
             MapViewerController controller = loader.getController();
             controller.setDestination(searchBox.getText());
             controller.navigate();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ex) {
+            log.error("Encountered IOException.", ex);
         }
     }
 
@@ -100,8 +100,8 @@ public class NavigationController implements Initializable {
         try {
             Parent root = loaderHelper.getFXMLLoader("LoginPage").load();
             loaderHelper.setupPopup(new Stage(), new Scene(root));
-        } catch (IOException e) {
-            log.error("Encountered IOException", e);
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
         }
     }
 
@@ -113,8 +113,8 @@ public class NavigationController implements Initializable {
         try {
             Parent root = loaderHelper.getFXMLLoader("MapViewer").load();
             loaderHelper.setupScene(new Scene(root));
-        } catch (IOException e) {
-            log.error("Encountered IOException", e);
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
         }
     }
 
@@ -126,8 +126,8 @@ public class NavigationController implements Initializable {
         try {
             Parent root = loaderHelper.getFXMLLoader("Help").load();
             loaderHelper.setupScene(new Scene(root));
-        } catch (IOException e) {
-            log.error("Encountered IOException", e);
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
         }
     }
 
