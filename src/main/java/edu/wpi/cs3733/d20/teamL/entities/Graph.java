@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamL.services.graph;
+package edu.wpi.cs3733.d20.teamL.entities;
 
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.entities.Edge;

@@ -1,16 +1,20 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import com.google.inject.Inject;
@@ -23,9 +27,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
-import edu.wpi.cs3733.d20.teamL.services.graph.Graph;
-import edu.wpi.cs3733.d20.teamL.services.graph.Path;
-import edu.wpi.cs3733.d20.teamL.services.graph.PathFinder;
+import edu.wpi.cs3733.d20.teamL.entities.Graph;
+import edu.wpi.cs3733.d20.teamL.entities.Path;
+import edu.wpi.cs3733.d20.teamL.services.pathfinding.PathfinderService;
 import edu.wpi.cs3733.d20.teamL.services.mail.IMailerService;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.services.search.SearchFields;
@@ -42,6 +46,12 @@ public class MapViewerController {
     JFXTextField startingPoint, destination;
 
     @FXML
+    JFXButton btnNavigate;
+
+    @FXML
+    ScrollPane scroll;
+
+    @FXML
     VBox instructions;
 
     @FXML
@@ -51,6 +61,8 @@ public class MapViewerController {
     private IDatabaseCache cache;
     @Inject
 	private IMailerService mailer;
+    @Inject
+    private IPathfinderService pathfinderService;
 
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
@@ -61,6 +73,7 @@ public class MapViewerController {
         cache.cacheAllFromDB();
 
         map.setEditable(false);
+        btnNavigate.setDisableVisualFocus(true);
 
         Graph newGraph = new Graph();
         newGraph.addAllNodes(cache.getNodeCache());
@@ -111,13 +124,14 @@ public class MapViewerController {
             String directions = highlightSourceToDestination(startNode, destNode);
             mailer.setDirections(directions);
             Label directionsLabel = new Label();
+            directionsLabel.setFont(new Font(14));
             directionsLabel.setText(directions);
             directionsLabel.setTextFill(Color.WHITE);
             directionsLabel.setWrapText(true);
 
             instructions.getChildren().clear();
             instructions.getChildren().add(directionsLabel);
-            instructions.setVisible(true);
+            scroll.setVisible(true);
             btnTextMe.setDisable(false);
             btnTextMe.setVisible(true);
         }
@@ -135,7 +149,7 @@ public class MapViewerController {
     private String highlightSourceToDestination(Node source, Node destination) {
         map.getSelector().clear();
 
-        Path path = PathFinder.aStarPathFind(map.getGraph(), source, destination);
+        Path path = pathfinderService.pathfind(map.getGraph(), source, destination);
         Iterator<Node> nodeIterator = path.iterator();
 
         // Loop through each node in the path and select it as well as the edge pointing to the next node
