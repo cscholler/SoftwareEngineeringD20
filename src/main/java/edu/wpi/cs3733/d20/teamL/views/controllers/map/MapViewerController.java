@@ -23,9 +23,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
-import edu.wpi.cs3733.d20.teamL.services.graph.Graph;
-import edu.wpi.cs3733.d20.teamL.services.graph.Path;
-import edu.wpi.cs3733.d20.teamL.services.graph.PathFinder;
+import edu.wpi.cs3733.d20.teamL.entities.Graph;
+import edu.wpi.cs3733.d20.teamL.entities.Path;
+import edu.wpi.cs3733.d20.teamL.util.pathfinding.PathFinder;
 import edu.wpi.cs3733.d20.teamL.services.mail.IMailerService;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.services.search.SearchFields;
@@ -40,6 +40,9 @@ public class MapViewerController {
 
     @FXML
     JFXTextField startingPoint, destination;
+
+    @FXML
+    JFXButton btnNavigate;
 
     @FXML
     VBox instructions;
@@ -61,6 +64,7 @@ public class MapViewerController {
         cache.cacheAllFromDB();
 
         map.setEditable(false);
+        btnNavigate.setDisableVisualFocus(true);
 
         Graph newGraph = new Graph();
         newGraph.addAllNodes(cache.getNodeCache());

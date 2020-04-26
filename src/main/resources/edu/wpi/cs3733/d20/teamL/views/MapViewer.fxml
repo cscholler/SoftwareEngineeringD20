@@ -2,149 +2,175 @@
 
 <?import com.jfoenix.controls.*?>
 <?import edu.wpi.cs3733.d20.teamL.views.components.*?>
+<?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.map.MapViewerController">
+<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.map.MapViewerController">
     <center>
-        <MapPane fx:id="map" />
+
     </center>
-   <right>
-      <VBox alignment="BOTTOM_RIGHT" prefHeight="720.0" prefWidth="103.0" BorderPane.alignment="CENTER">
-         <children>
-            <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: gray;" text="+" textAlignment="CENTER">
-               <VBox.margin>
-                  <Insets bottom="2.0" right="10.0" />
-               </VBox.margin>
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </JFXButton>
-            <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: gray;" text="-" textAlignment="CENTER">
-               <VBox.margin>
-                  <Insets bottom="10.0" right="10.0" />
-               </VBox.margin>
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </JFXButton>
-         </children>
-      </VBox>
-   </right>
-   <left>
-      <HBox prefHeight="720.0" prefWidth="532.0" BorderPane.alignment="CENTER">
-         <children>
-              <VBox fx:id="instructions" style="-fx-background-color: #0d2e57;">
-                  <children>
-                      <JFXButton buttonType="RAISED" onAction="#backToMain" prefHeight="60.0" prefWidth="35.0" style="-fx-background-color: gray;" textFill="WHITE">
-                          <font>
-                              <Font size="22.0" />
-                          </font>
-                     <graphic>
-                        <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../assets/House2.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                      </JFXButton>
-                      <VBox alignment="TOP_CENTER" prefHeight="422.0" prefWidth="404.0" spacing="20.0" style="-fx-background-color: #0d2e57;">
-                          <children>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                                    <JFXTextField fx:id="startingPoint" focusColor="WHITE" labelFloat="true" onKeyTyped="#startingPointAutocomplete" prefHeight="48.0" prefWidth="325.0" promptText="Starting Point" style="-fx-text-inner-color: black; -fx-prompt-text-fill: gray; -fx-background-color: white;" text="Hallway Intersection 14 Level 2">
-                                 <font>
-                                    <Font size="22.0" />
-                                 </font>
-                              </JFXTextField>
-                              <JFXButton prefHeight="48.0" prefWidth="41.0" text="X" textFill="WHITE">
-                                 <font>
-                                    <Font name="Corbel Light" size="22.0" />
-                                 </font>
-                              </JFXButton>
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                                    <JFXTextField fx:id="destination" focusColor="WHITE" labelFloat="true" onKeyTyped="#destinationAutocomplete" prefHeight="40.0" prefWidth="325.0" promptText="Destination" style="-fx-text-inner-color: black; -fx-prompt-text-fill: gray; -fx-background-color: white;">
-                                 <font>
-                                    <Font size="22.0" />
-                                 </font>
-                              </JFXTextField>
-                              <JFXButton prefHeight="48.0" text="X" textFill="WHITE">
-                                 <font>
-                                    <Font name="Corbel Light" size="22.0" />
-                                 </font>
-                              </JFXButton>
-                           </children>
-                        </HBox>
-                              <JFXButton buttonType="RAISED" onAction="#navigate" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: gray;" text="Navigate" textFill="WHITE">
-                           <font>
-                              <Font size="17.0" />
-                           </font>
+    <stylesheets>
+        <URL value="@../css/GlobalStyles.css" />
+        <URL value="@../css/MapStyles.css" />
+    </stylesheets>
+    <left>
+        <HBox prefHeight="720.0" prefWidth="343.0" BorderPane.alignment="CENTER">
+            <children>
+                <VBox style="-fx-background-color: #0d2e57;">
+                    <children>
+                        <JFXButton alignment="CENTER" contentDisplay="CENTER" onAction="#backToMain" prefHeight="60.0" prefWidth="35.0" style="-fx-background-color: #0d2e57;" styleClass="background" text=" " textFill="WHITE">
+                            <font>
+                                <Font size="22.0" />
+                            </font>
+                            <graphic>
+                                <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../assets/baseline_home_white_48dp.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
                         </JFXButton>
-                              <JFXButton fx:id="btnTextMe" alignment="CENTER" buttonType="RAISED" onAction="#handleText" prefHeight="32.0" prefWidth="140.0" style="-fx-background-color: gray;" text="Send Me Directions" textFill="WHITE" visible="false" />
-                        <VBox fx:id="instructions" prefHeight="200.0" prefWidth="364.0" />
-                          </children>
-                          <padding>
-                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                          </padding>
-                          <VBox.margin>
-                              <Insets top="30.0" />
-                          </VBox.margin>
-                      </VBox>
-                  </children>
-                  <padding>
-                      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                  </padding>
-              </VBox>
-            <VBox prefHeight="720.0" prefWidth="78.0">
-               <children>
-                  <JFXButton prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: #0d2e57;" text="1" textFill="WHITE">
-                     <VBox.margin>
-                        <Insets left="5.0" top="5.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font name="System Bold" size="25.0" />
-                     </font>
-                  </JFXButton>
-                  <JFXButton prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: #0d2e57;" text="2" textFill="WHITE">
-                     <VBox.margin>
-                        <Insets left="5.0" top="5.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font name="System Bold" size="25.0" />
-                     </font>
-                  </JFXButton>
-                  <JFXButton prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: #0d2e57;" text="3" textFill="WHITE">
-                     <VBox.margin>
-                        <Insets left="5.0" top="5.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font name="System Bold" size="25.0" />
-                     </font>
-                  </JFXButton>
-                  <JFXButton prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: #0d2e57;" text="4" textFill="WHITE">
-                     <VBox.margin>
-                        <Insets left="5.0" top="5.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font name="System Bold" size="25.0" />
-                     </font>
-                  </JFXButton>
-                  <JFXButton prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: #0d2e57;" text="5" textFill="WHITE">
-                     <VBox.margin>
-                        <Insets left="5.0" top="5.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font name="System Bold" size="25.0" />
-                     </font>
-                  </JFXButton>
-               </children>
-            </VBox>
+                        <VBox alignment="TOP_CENTER" prefWidth="404.0" spacing="20.0" style="-fx-background-color: #0d2e57;">
+                            <children>
+                                <HBox prefHeight="100.0" prefWidth="200.0">
+                                    <children>
+                                        <JFXTextField fx:id="startingPoint" focusColor="WHITE" labelFloat="true" maxHeight="30.0" onKeyTyped="#startingPointAutocomplete" promptText="Starting Point" style="-fx-text-inner-color: black; -fx-prompt-text-fill: gray; -fx-background-color: white;" styleClass="text-field" text="Hallway Intersection 14 Level 2">
+                                            <font>
+                                                <Font size="16.0" />
+                                            </font>
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                                        </JFXTextField>
+                                        <JFXButton maxHeight="30.0" style="-fx-font-size: 10;" styleClass="clear" stylesheets="@../css/GlobalStyles.css" text="X" textFill="WHITE">
+                                            <font>
+                                                <Font name="Corbel Light" size="10.0" />
+                                            </font>
+                                        </JFXButton>
+                                    </children>
+                                </HBox>
+                                <HBox prefHeight="100.0" prefWidth="200.0">
+                                    <children>
+                                        <JFXTextField fx:id="destination" focusColor="WHITE" labelFloat="true" maxHeight="30.0" onKeyTyped="#destinationAutocomplete" promptText="Destination" style="-fx-text-inner-color: black; -fx-prompt-text-fill: gray; -fx-background-color: white; -fx-border-radius: 5 0 0 5;" styleClass="text-field">
+                                            <font>
+                                                <Font size="16.0" />
+                                            </font>
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                                        </JFXTextField>
+                                        <JFXButton maxHeight="30.0" style="-fx-font-size: 10;" styleClass="clear" text="X" textFill="WHITE">
+                                            <font>
+                                                <Font name="Corbel Light" size="10.0" />
+                                            </font>
+                                        </JFXButton>
+                                    </children>
+                                </HBox>
+                                <JFXButton fx:id="btnNavigate" buttonType="RAISED" maxHeight="45.0" maxWidth="100.0" minHeight="45.0" minWidth="100.0" onAction="#navigate" prefHeight="45.0" prefWidth="100.0" text="Navigate" textAlignment="CENTER" textFill="WHITE">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </JFXButton>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="25.0">
+                                  <children>
+                                      <JFXButton buttonType="RAISED" maxWidth="40.0" prefHeight="40.0" prefWidth="40.0" styleClass="circle-button" text="Restroom" />
+                                      <JFXButton buttonType="RAISED" maxWidth="40.0" prefHeight="40.0" prefWidth="40.0" styleClass="circle-button" text="Elevator" />
+                                      <JFXButton buttonType="RAISED" maxWidth="40.0" prefHeight="40.0" prefWidth="40.0" styleClass="circle-button" text="Stairs" />
+                                  </children>
+                                  <padding>
+                                      <Insets left="10.0" />
+                                  </padding>
+                              </HBox>
+                                <JFXButton fx:id="btnTextMe" alignment="CENTER" buttonType="RAISED" onAction="#handleText" prefHeight="32.0" prefWidth="200.0" text="Send Me Directions" textFill="WHITE" visible="false" />
+                        <VBox fx:id="instructions" maxHeight="600.0" prefHeight="600.0" />
+                            </children>
+                            <padding>
+                                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                            </padding>
+                            <VBox.margin>
+                                <Insets top="30.0" />
+                            </VBox.margin>
+                        </VBox>
+                    </children>
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                    </padding>
+                </VBox>
+            </children>
+        </HBox>
+    </left>
+    <center>
+      <AnchorPane BorderPane.alignment="CENTER">
+         <children>
+                <MapPane fx:id="map" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <VBox maxHeight="300.0" maxWidth="40.0" prefHeight="720.0" prefWidth="855.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                      <children>
+                          <JFXButton alignment="CENTER" contentDisplay="CENTER" prefWidth="0.0" ripplerFill="WHITE" style="-fx-background-color: #0d2e57; -fx-background-radius: 20 20 0 0;" styleClass="floor-buttons" text="1" textAlignment="CENTER" textFill="WHITE">
+                              <VBox.margin>
+                                  <Insets left="5.0" top="5.0" />
+                              </VBox.margin>
+                              <font>
+                                  <Font name="System Bold" size="18.0" />
+                              </font>
+                          </JFXButton>
+                          <JFXButton alignment="CENTER" contentDisplay="CENTER" ripplerFill="WHITE" style="-fx-background-color: #0d2e57; -fx-background-radius: o;" styleClass="floor-buttons" text="2" textFill="WHITE">
+                              <VBox.margin>
+                                  <Insets left="5.0" />
+                              </VBox.margin>
+                              <font>
+                                  <Font name="System Bold" size="18.0" />
+                              </font>
+                          </JFXButton>
+                          <JFXButton alignment="CENTER" contentDisplay="CENTER" ripplerFill="WHITE" style="-fx-background-color: #0d2e57; -fx-background-radius: o;" styleClass="floor-buttons" text="3" textAlignment="CENTER" textFill="WHITE">
+                              <VBox.margin>
+                                  <Insets left="5.0" />
+                              </VBox.margin>
+                              <font>
+                                  <Font name="System Bold" size="18.0" />
+                              </font>
+                          </JFXButton>
+                          <JFXButton alignment="CENTER" contentDisplay="CENTER" ripplerFill="WHITE" style="-fx-background-color: #0d2e57; -fx-background-radius: o;" styleClass="floor-buttons" text="4" textAlignment="CENTER" textFill="WHITE">
+                              <VBox.margin>
+                                  <Insets left="5.0" />
+                              </VBox.margin>
+                              <font>
+                                  <Font name="System Bold" size="18.0" />
+                              </font>
+                          </JFXButton>
+                          <JFXButton alignment="CENTER" contentDisplay="CENTER" ripplerFill="WHITE" style="-fx-background-color: #0d2e57; -fx-background-radius: 0 0 20 20;" styleClass="floor-buttons" text="5" textAlignment="CENTER" textFill="WHITE">
+                              <VBox.margin>
+                                  <Insets left="5.0" />
+                              </VBox.margin>
+                              <font>
+                                  <Font name="System Bold" size="18.0" />
+                              </font>
+                          </JFXButton>
+                      </children>
+                  </VBox>
+                  <VBox alignment="BOTTOM_RIGHT" cache="true" maxHeight="100.0" maxWidth="50.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
+                      <children>
+                          <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" minHeight="40.0" minWidth="40.0" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 20 20 0 0;" text="+" textAlignment="CENTER">
+                              <font>
+                                  <Font name="System Bold" size="18.0" />
+                              </font>
+                              <padding>
+                                  <Insets right="20.0" />
+                              </padding>
+                          </JFXButton>
+                          <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" minHeight="40.0" minWidth="40.0" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 0 0 20 20;" text="-" textAlignment="CENTER">
+                              <font>
+                                  <Font name="System Bold" size="18.0" />
+                              </font>
+                              <padding>
+                                  <Insets right="20.0" />
+                              </padding>
+                          </JFXButton>
+                      </children>
+                  </VBox>
          </children>
-      </HBox>
-   </left>
+      </AnchorPane>
+    </center>
 </BorderPane>

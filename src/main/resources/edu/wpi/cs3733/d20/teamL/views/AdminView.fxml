@@ -41,7 +41,7 @@
                 <Circle fill="#f9f9f9" radius="66.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                 <ImageView fitHeight="96.0" fitWidth="95.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                     <image>
-                        <Image url="@../assets/Map-icon.png" />
+<!--                        <Image url="@../assets/Map-icon.png" />-->
                     </image>
                     <GridPane.margin>
                         <Insets bottom="10.0" right="20.0" />
@@ -93,7 +93,7 @@
                 </Label>
                 <ImageView fitHeight="97.0" fitWidth="100.0" GridPane.columnIndex="2">
                     <image>
-                        <Image url="@../assets/active-search.png" />
+                        <Image url="@../assets/staff view/active-search.png" />
                     </image>
                     <GridPane.margin>
                         <Insets left="15.0" />
@@ -101,7 +101,7 @@
                 </ImageView>
                 <ImageView fitHeight="88.0" fitWidth="80.0" GridPane.halignment="RIGHT">
                     <image>
-                        <Image url="@../assets/notification-icon.png" />
+<!--                        <Image url="@../assets/notification-icon.png" />-->
                     </image>
                     <GridPane.margin>
                         <Insets right="26.0" />
@@ -109,12 +109,12 @@
                 </ImageView>
                 <ImageView fitHeight="102.0" fitWidth="96.0" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                     <image>
-                        <Image url="@../assets/medicine-icon.png" />
+                        <Image url="@../assets/staff view/medicine-icon.png" />
                     </image>
                 </ImageView>
                 <ImageView fitHeight="98.0" fitWidth="97.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                     <image>
-                        <Image url="@../assets/Room-icon.png" />
+                        <Image url="@../assets/staff view/Room-icon.png" />
                     </image>
                     <GridPane.margin>
                         <Insets left="15.0" />
@@ -122,7 +122,7 @@
                 </ImageView>
                 <ImageView fitHeight="91.0" fitWidth="94.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                     <image>
-                        <Image url="@../assets/Maintenance-icon.png" />
+                        <Image url="@../assets/staff view/Maintenance-icon.png" />
                     </image>
                 </ImageView>
                 <JFXButton fx:id="btnNotif" onAction="#notificationsClicked" opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.halignment="RIGHT" />
