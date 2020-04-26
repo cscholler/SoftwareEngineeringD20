@@ -353,7 +353,7 @@
                   </JFXToggleNode>
                </children>
             </VBox>
-            <VBox AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="15.0">
+            <VBox AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="15.0" fx:id="floorSelector">
                <children>
                   <JFXButton fx:id="floorUp" buttonType="RAISED" onAction="#changeFloor" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 20 20 0 0;" styleClass="floorChangeButton" text="▲" textFill="WHITE" />
                   <JFXButton fx:id="floorDown" buttonType="RAISED" onAction="#changeFloor" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 0 0 20 20;" styleClass="floorChangeButton" text="▼" textFill="WHITE" />

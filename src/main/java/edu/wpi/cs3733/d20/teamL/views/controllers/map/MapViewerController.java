@@ -1,12 +1,13 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import edu.wpi.cs3733.d20.teamL.entities.Building;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
+import javafx.event.Event;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -53,7 +54,7 @@ public class MapViewerController {
     ScrollPane scroll;
 
     @FXML
-    VBox instructions;
+    VBox instructions, floorSelector;
 
     @FXML
     JFXButton btnTextMe;
@@ -69,8 +70,6 @@ public class MapViewerController {
     private JFXAutoCompletePopup<String> autoCompletePopup;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 
-    private int floor = 2;
-
     @FXML
     private void initialize() {
         cache.cacheAllFromDB();
@@ -78,10 +77,23 @@ public class MapViewerController {
         map.setEditable(false);
         btnNavigate.setDisableVisualFocus(true);
 
-        Graph newGraph = new Graph();
-        newGraph.addAllNodes(cache.getNodeCache());
-        map.setCurrentFloor(floor);
-        map.setGraph(newGraph);
+        Building startBuilding = new Building("Faulkner");
+        startBuilding.addAllNodes(cache.getNodeCache());
+        map.setBuilding(startBuilding);
+
+        map.setFloor(2);
+
+        // Add floor buttons
+        for (int i = 1; i <= startBuilding.getMaxFloor(); i++) {
+            JFXButton newButton = new JFXButton();
+            newButton.setButtonType(JFXButton.ButtonType.RAISED);
+            newButton.getStylesheets().add("edu/wpi/cs3733/d20/teamL/css/MapStyles.css");
+            newButton.setText("" + i);
+            newButton.setOnAction(this::handleFloor);
+            newButton.getStyleClass().add("floor-buttons");
+
+            floorSelector.getChildren().add(1, newButton);
+        }
 
         map.setZoomLevel(1);
         map.init();
@@ -153,7 +165,7 @@ public class MapViewerController {
     private String highlightSourceToDestination(Node source, Node destination) {
         map.getSelector().clear();
 
-        Path path = pathfinderService.pathfind(map.getGraph(), source, destination);
+        Path path = pathfinderService.pathfind(map.getBuilding(), source, destination);
         Iterator<Node> nodeIterator = path.iterator();
 
         // Loop through each node in the path and select it as well as the edge pointing to the next node
@@ -198,12 +210,11 @@ public class MapViewerController {
             log.error("Encountered IOException", e);
         }
     }
+
     @FXML
     public void handleFloor(ActionEvent event) {
         JFXButton button = (JFXButton) event.getSource();
-        floor = Integer.parseInt(button.getText());
 
-        map.setCurrentFloor(floor);
-        map.setGraph(map.getGraph());
+        map.setFloor(Integer.parseInt(button.getText()));
     }
 }
