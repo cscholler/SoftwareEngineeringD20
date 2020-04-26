@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.ResourceBundle;
 
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
-import edu.wpi.cs3733.d20.teamL.services.search.SearchFields;
+import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
