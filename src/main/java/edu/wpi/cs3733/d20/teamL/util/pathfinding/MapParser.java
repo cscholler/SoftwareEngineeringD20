@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamL.services.graph;
+package edu.wpi.cs3733.d20.teamL.util.pathfinding;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import edu.wpi.cs3733.d20.teamL.entities.Graph;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import javafx.geometry.Point2D;
 

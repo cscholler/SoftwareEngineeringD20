@@ -37,7 +37,7 @@
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
                <children>
 
-                  <JFXButton fx:id="btnDecline" onAction="#handleButtonAction" prefHeight="38.0" prefWidth="175.0" style="-fx-background-color: gray;" text="Decline" textFill="WHITE">
+                  <JFXButton fx:id="btnDecline" onAction="#btnDeclineClicked" prefHeight="38.0" prefWidth="175.0" style="-fx-background-color: gray;" text="Decline" textFill="WHITE">
 
                      <font>
                         <Font size="26.0" />
@@ -47,7 +47,7 @@
                      </HBox.margin>
                   </JFXButton>
 
-                  <JFXButton fx:id="btnCompleted" onAction="#handleButtonAction" prefHeight="47.0" prefWidth="175.0" style="-fx-background-color: #0D2E57;" text="Approve" textFill="WHITE">
+                  <JFXButton fx:id="btnCompleted" onAction="#btnCompletedClicked" prefHeight="47.0" prefWidth="175.0" style="-fx-background-color: #0D2E57;" text="Approve" textFill="WHITE">
 
                      <font>
                         <Font size="26.0" />
@@ -69,7 +69,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="65.0" prefWidth="1080.0" spacing="15.0">
                <children>
-                  <JFXButton fx:id="btnBack" alignment="CENTER" contentDisplay="CENTER" onAction="#handleButtonAction" prefHeight="29.0" prefWidth="22.0" text=" ">
+                  <JFXButton fx:id="btnBack" alignment="CENTER" contentDisplay="CENTER" onAction="#btnBackClicked" prefHeight="29.0" prefWidth="22.0" text=" ">
                      <font>
                         <Font size="14.0" />
                      </font>

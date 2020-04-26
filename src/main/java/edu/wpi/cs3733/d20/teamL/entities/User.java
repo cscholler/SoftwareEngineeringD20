@@ -18,7 +18,7 @@ public class User {
 		this.lName = lName;
 		this.username = username;
 		this.acctType = acctType;
-		if(services != null)
+		if (services != null)
 			this.services = Arrays.asList(services.split(","));
 		else
 			this.services = new ArrayList<>();

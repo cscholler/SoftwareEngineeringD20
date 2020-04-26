@@ -246,7 +246,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 		dropTableUpdates.add(DBConstants.DROP_DOCTOR_TABLE);
 		dropTableUpdates.add(DBConstants.DROP_PATIENT_TABLE);
 		dropTableUpdates.add(DBConstants.DROP_GIFT_TABLE);
-		dropTableUpdates.add(DBConstants.DROP_GIFT_REQUEST_TABLE);
+		dropTableUpdates.add(DBConstants.DROP_GIFT_DELIVER_REQUEST_TABLE);
 		dropTableUpdates.add(DBConstants.DROP_MEDICATION_REQUEST_TABLE);
 		dropTableUpdates.add(DBConstants.DROP_SERVICE_REQUEST_TABLE);
 		try {
