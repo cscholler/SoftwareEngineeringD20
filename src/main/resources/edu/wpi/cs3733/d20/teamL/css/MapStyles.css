@@ -5,8 +5,8 @@
 
 .button {
     -fx-padding: 10;
-    -fx-background-color: #c3c3c3;
-    -fx-text-fill: black;
+    -fx-background-color: #405784;
+    -fx-text-fill: white;
 }
 
 .clear {
@@ -37,5 +37,6 @@
     -fx-background-radius: 20;
     -fx-pref-width: 40;
     -fx-pref-height: 40;
-    -fx-background-color: #c3c3c3;
+    -fx-background-color: #405784;
+    -fx-text-fill: white;
 }

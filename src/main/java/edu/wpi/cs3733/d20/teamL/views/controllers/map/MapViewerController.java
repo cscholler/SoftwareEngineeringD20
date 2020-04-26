@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import com.google.inject.Inject;
@@ -119,6 +121,7 @@ public class MapViewerController {
             String directions = highlightSourceToDestination(startNode, destNode);
             mailer.setDirections(directions);
             Label directionsLabel = new Label();
+            directionsLabel.setFont(new Font(14));
             directionsLabel.setText(directions);
             directionsLabel.setTextFill(Color.WHITE);
             directionsLabel.setWrapText(true);
