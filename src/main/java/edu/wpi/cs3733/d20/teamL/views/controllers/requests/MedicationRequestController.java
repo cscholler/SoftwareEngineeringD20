@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.search.SearchFields;
+import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -39,6 +40,8 @@ public class MedicationRequestController implements Initializable {
 	private IDatabaseService db;
 	@Inject
 	private IDatabaseCache dbCache;
+	@Inject
+	private ILoginManager loginManager;
     @FXML
     private Label confirmation;
     @FXML
@@ -91,13 +94,13 @@ public class MedicationRequestController implements Initializable {
             // Status codes-- 0: pending, 1: approved, 2: denied
             String status = "0";
             String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
-
+            String user = loginManager.getCurrentUser().getUsername();
 			// Adds request info to database
 			String doctorID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_DOCTOR_ID, new ArrayList<>(Arrays.asList(doctorFName, doctorLName))))).get(0).get(0);
 			String patientID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ID, new ArrayList<>(Arrays.asList(patientFName, patientLName))))).get(0).get(0);
 			// TODO: Get name of nurse from current user
-			int rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_MEDICATION_REQUEST, new ArrayList<>(Arrays.asList(doctorID, patientID, "Nurse", dose, medType, additionalInfo, status, dateAndTime))));
-			//formatter.reportQueryResults(db.executeQuery(DBConstants.selectAllMedicationRequests));
+			int rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_MEDICATION_REQUEST, new ArrayList<>(Arrays.asList(doctorID, patientID, user, dose, medType, additionalInfo, status, dateAndTime))));
+			//formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_MEDICATION_REQUESTS)));
 			// TODO: Check if any info is invalid before sending request
 
             if (rows == 0) {

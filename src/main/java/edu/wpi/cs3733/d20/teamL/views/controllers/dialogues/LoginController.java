@@ -33,9 +33,9 @@ public class LoginController {
     @FXML
     private Text incorrectText;
     @FXML
-    AnchorPane anchorPane;
+    private AnchorPane anchorPane;
     @Inject
-	LoginManager loginManager;
+	private LoginManager loginManager;
 
     /**
      * logs the user in when the enter key is pressed

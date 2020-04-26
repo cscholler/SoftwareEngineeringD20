@@ -99,9 +99,11 @@ public class DBConstants {
 	public static final String CREATE_SERVICE_REQUEST_TABLE =
 			"CREATE TABLE Service_Requests(" +
 					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
-					"patient_id INT NOT NULL REFERENCES Patients(id), " +
-					"nurse_name VARCHAR(64) NOT NULL, " +
+					"patient_id INT REFERENCES Patients(id), " +
+					"request_user_id VARCHAR(32) REFERENCES Users(username)" +
+					"location VARCHAR(10) NOT NULL REFERENCES Nodes(id), " +
 					"service VARCHAR(64) NOT NULL, " +
+					"type VARCHAR(64), " +
 					"assignee VARCHAR(32) NOT NULL REFERENCES Users(username), " +
 					"notes VARCHAR(256), " +
 					"status CHAR(1) NOT NULL, " +
