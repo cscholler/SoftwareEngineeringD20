@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import javax.inject.Inject;
 
+import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,9 +32,9 @@ import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.entities.Graph;
-import edu.wpi.cs3733.d20.teamL.util.pathfinding.MapParser;
+import edu.wpi.cs3733.d20.teamL.services.pathfinding.MapParser;
 import edu.wpi.cs3733.d20.teamL.entities.Path;
-import edu.wpi.cs3733.d20.teamL.util.pathfinding.PathFinder;
+import edu.wpi.cs3733.d20.teamL.services.pathfinding.PathfinderService;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
 import edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.DataDialogue;
@@ -71,6 +72,9 @@ public class MapEditorController {
     private Scene scene;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 
+    @Inject
+    IPathfinderService pathfinderService;
+
     @FXML
     public void initialize() {
         scene = root.getScene();
@@ -78,7 +82,7 @@ public class MapEditorController {
         coreShortcuts();
 
         pathFind.setOnAction(event -> {
-            Path path = PathFinder.aStarPathFind(map.getGraph(), map.getGraph().getNode(startNode.getText()), map.getGraph().getNode(endNode.getText()));
+            Path path = pathfinderService.pathfind(map.getGraph(), map.getGraph().getNode(startNode.getText()), map.getGraph().getNode(endNode.getText()));
             System.out.println(path.generateTextMessage());
 
             Iterator<Node> nodeIterator = path.iterator();
