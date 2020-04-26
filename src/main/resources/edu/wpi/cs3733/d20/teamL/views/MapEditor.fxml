@@ -202,7 +202,7 @@
                            <graphic>
                               <ImageView fitHeight="11.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true" scaleX="3.0" scaleY="3.0" translateX="2.0">
                                  <image>
-                                    <Image url="@../assets/home page/Search-button-home.png" />
+                                       <Image url="@../assets/home page/Search-button-home.png" />
                                  </image>
                               </ImageView>
                            </graphic></JFXButton>
@@ -221,6 +221,13 @@
                            <tooltip>
                               <Tooltip autoHide="true" contentDisplay="RIGHT" text="Save Options" />
                            </tooltip>
+                           <graphic>
+                              <ImageView fitHeight="16.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true" scaleX="2.5" scaleY="2.5" translateX="4.0" translateY="-2.0">
+                                 <image>
+                                    <Image url="@../assets/nodes/SAVE.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
                         </JFXButton>
                         <JFXButton fx:id="saveToDB" onAction="#saveToDB" styleClass="nodeListButton">
                            <tooltip>
@@ -240,6 +247,13 @@
                            <tooltip>
                               <Tooltip text="Load Options" />
                            </tooltip>
+                           <graphic>
+                              <ImageView fitHeight="13.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true" scaleX="3.5" scaleY="3.5" translateX="3.5" translateY="-2.0">
+                                 <image>
+                                    <Image url="@../assets/nodes/UPLOAD.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
                         </JFXButton>
                         <JFXButton fx:id="openDB" buttonType="RAISED" layoutX="10.0" layoutY="10.0" onAction="#openFromDB" styleClass="nodeListButton" text=" ">
                            <tooltip>
