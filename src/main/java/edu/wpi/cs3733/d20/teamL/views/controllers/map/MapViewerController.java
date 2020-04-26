@@ -5,11 +5,9 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -47,7 +45,7 @@ public class MapViewerController {
     JFXButton btnNavigate;
 
     @FXML
-    VBox instructions, floorSelector;
+    VBox instructions;
 
     @FXML
     JFXButton btnTextMe;
@@ -61,8 +59,6 @@ public class MapViewerController {
     private JFXAutoCompletePopup<String> autoCompletePopup;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 
-    private int floor = 2;
-
     @FXML
     private void initialize() {
         cache.cacheAllFromDB();
@@ -71,10 +67,7 @@ public class MapViewerController {
         btnNavigate.setDisableVisualFocus(true);
 
         Graph newGraph = new Graph();
-        for (Node node : cache.getNodeCache()) {
-            if (node.getFloor() == floor)
-                newGraph.addNode(node);
-        }
+        newGraph.addAllNodes(cache.getNodeCache());
         map.setGraph(newGraph);
 
         map.setZoomLevel(1);
@@ -190,18 +183,5 @@ public class MapViewerController {
         } catch (IOException e) {
             log.error("Encountered IOException", e);
         }
-    }
-
-    @FXML
-    public void handleFloor (Event event) {
-        JFXButton button = (JFXButton) event.getSource();
-        floor = Integer.parseInt(button.getText());
-
-        Graph newGraph = new Graph();
-        for (Node node : cache.getNodeCache()) {
-            if (node.getFloor() == floor)
-                newGraph.addNode(node);
-        }
-        map.setGraph(newGraph);
     }
 }

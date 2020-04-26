@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamL.util.pathfinding;
+package edu.wpi.cs3733.d20.teamL.services.pathfinding;
 
 import java.io.BufferedReader;
 import java.io.File;

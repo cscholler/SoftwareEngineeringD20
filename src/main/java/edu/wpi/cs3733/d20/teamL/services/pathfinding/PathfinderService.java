@@ -1,17 +1,18 @@
-package edu.wpi.cs3733.d20.teamL.util.pathfinding;
+package edu.wpi.cs3733.d20.teamL.services.pathfinding;
 
 import edu.wpi.cs3733.d20.teamL.entities.Graph;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.entities.Path;
 
+import javax.inject.Inject;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.PriorityQueue;
 
-public class PathFinder {
+public class PathfinderService implements IPathfinderService {
 
     class NodeEntry {
         public Node node;
@@ -40,18 +41,31 @@ public class PathFinder {
     private Map<Node, NodeEntry> priorityQueueKey = new HashMap<>();
 
     private boolean hasCoords = false;
+    private enum PathfindingMethod {
+        Astar, BFS, DFS
+    };
+
+    PathfindingMethod pathfindingMethod = PathfindingMethod.Astar;
 
     /**
-     * Uses the A-Star algorithm to get a path between the source and destination node. Returns null
+     * Uses the a pathfinding algorithm to get a path between the source and destination node. Returns null
      * if there is no path
      *
      * @param source      The Node to start with
      * @param destination The Node to pathfind to
      * @return a list of Nodes in representing the path between source and destination (inclusive).
      */
-    public static Path aStarPathFind(Graph graph, Node source, Node destination) {
-        PathFinder pathFinder = new PathFinder();
-        return pathFinder.doAStarPathFind(graph, source, destination);
+    public Path pathfind(Graph graph, Node source, Node destination) {
+        switch (pathfindingMethod) {
+            case Astar:
+                return aStarPathFind(graph, source, destination);
+            case BFS:
+                return null;
+            case DFS:
+                return null;
+            default:
+                return aStarPathFind(graph, source, destination);
+        }
     }
 
     /**
@@ -62,7 +76,7 @@ public class PathFinder {
      * @param destination The Node to pathfind to
      * @return a list of Nodes in representing the path between source and destination (inclusive).
      */
-    public Path doAStarPathFind(Graph graph, Node source, Node destination) {
+    private Path aStarPathFind(Graph graph, Node source, Node destination) {
 
         // Initialize all nodes in the priority queue to infinity but don't add the source
         for (Node node : graph.getNodes()) {
