@@ -1,17 +1,10 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.dialogues;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXPasswordField;
-import com.jfoenix.controls.JFXTextField;
-
 import java.io.IOException;
 
-import edu.wpi.cs3733.d20.teamL.services.users.LoginManager;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -20,7 +13,14 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import javax.inject.Inject;
+import com.google.inject.Inject;
+
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
+
+import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 
 public class LoginController {
 	FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
@@ -33,9 +33,9 @@ public class LoginController {
     @FXML
     private Text incorrectText;
     @FXML
-    AnchorPane anchorPane;
+    private AnchorPane anchorPane;
     @Inject
-	LoginManager loginManager;
+	private ILoginManager loginManager;
 
     /**
      * logs the user in when the enter key is pressed
