@@ -316,6 +316,11 @@ public class MapEditorController {
         }
     }
 
+    /**
+     * Adds a node with edges linking to nodes on other floors.
+     *
+     * @param node The new node to add
+     */
     private void addMultiFloorEdge(Node node) {
         if(node.getType().equals("ELEV") || node.getType().equals("STAI")) {
             for(Node adj : map.getBuilding().getNodes()) {
