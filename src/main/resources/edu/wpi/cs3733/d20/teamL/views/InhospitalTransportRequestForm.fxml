@@ -38,7 +38,7 @@
                      </font></JFXTextField>
                </children>
             </HBox>
-            <JFXComboBox fx:id="transportSelector" minWidth="300.0" styleClass="button" />
+            <JFXComboBox fx:id="transportSelector" minWidth="300.0" promptText="Transport Type" styleClass="button" />
          </children>
       </VBox>
    </center>

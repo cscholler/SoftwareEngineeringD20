@@ -16,6 +16,7 @@ public class Node {
     private String longName;
     private String building;
     private String type;
+    private String shaft = "0";
     private int floor = 0;
 
     private HashMap<String, Object> data = new HashMap<>(); //TODO remove Hashmap and add NodeGUI Field
@@ -125,6 +126,14 @@ public class Node {
 
     public void setFloor(int floor) {
         this.floor = floor;
+    }
+
+    public String getShaft() {
+        return shaft;
+    }
+
+    public void setShaft(String shaft) {
+        this.shaft = shaft;
     }
 
     /**
