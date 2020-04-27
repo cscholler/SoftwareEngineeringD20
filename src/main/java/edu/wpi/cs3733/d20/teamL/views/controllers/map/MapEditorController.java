@@ -16,8 +16,11 @@ import edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.DataDialogue;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
+import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
 
@@ -64,6 +67,7 @@ public class MapEditorController {
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
+    private boolean eraserBool = false;
 
     private final List<String> types = Arrays.asList("ELEV", "REST", "STAI", "DEPT", "LABS", "INFO", "CONF", "EXIT", "RETL", "SERV");
     private int floor = 2;
@@ -349,15 +353,36 @@ public class MapEditorController {
         }
     }
 
+    /**
+     * Show editConnects tab
+     */
     @FXML
     private void editConnections() {
         nodeConnectionsTab.setPrefWidth(200);
         nodeConnectionsTab.setVisible(true);
     }
 
+    /**
+     * Hides editConnections tab
+     */
     @FXML
     private void saveConnections() {
         nodeConnectionsTab.setPrefWidth(0);
         nodeConnectionsTab.setVisible(false);
+    }
+
+    /**
+     * toggles mouse between normal mouse and eraser
+     */
+    @FXML
+    private void eraserMouse() {
+        if (!eraserBool) {
+            Image image = new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/eraserMouse.png");  //pass in the image path
+            eraser.getScene().setCursor(new ImageCursor(image));
+            eraserBool = true;
+        } else if (eraserBool) {
+            eraser.getScene().setCursor(Cursor.DEFAULT);
+            eraserBool = false;
+        }
     }
 }

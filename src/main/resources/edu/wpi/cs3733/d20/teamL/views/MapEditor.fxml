@@ -21,7 +21,6 @@
 <?import edu.wpi.cs3733.d20.teamL.views.components.MapPane?>
 <BorderPane fx:id="root" prefHeight="720" prefWidth="1280" stylesheets="@../css/MapStyles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.map.MapEditorController">
     <center>
-
     </center>
    <right>
       <HBox BorderPane.alignment="CENTER">
@@ -221,7 +220,7 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <JFXTextField fx:id="startNode" focusColor="#0d2057" prefWidth="200.0" promptText="Starting Point" onKeyTyped="#autocompletestart" style="-fx-border-color: #0D2E57; -fx-border-width: 3; -fx-border-radius: 0;" styleClass="text-field" unFocusColor="#ffffff00">
+                        <JFXTextField fx:id="startNode" focusColor="#0d2057" onKeyTyped="#autocompletestart" prefWidth="200.0" promptText="Starting Point" style="-fx-border-color: #0D2E57; -fx-border-width: 3; -fx-border-radius: 0;" styleClass="text-field" unFocusColor="#ffffff00">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
@@ -234,7 +233,7 @@
                                  </image>
                               </ImageView>
                            </graphic></JFXButton>
-                        <JFXTextField fx:id="endNode" focusColor="#0d2057" prefHeight="40.0" prefWidth="200.0" promptText="Destination" onKeyTyped="#autocompleteend" style="-fx-border-color: #0D2E57; -fx-border-width: 3; -fx-border-radius: 0;" styleClass="text-field" unFocusColor="#ffffff00">
+                        <JFXTextField fx:id="endNode" focusColor="#0d2057" onKeyTyped="#autocompleteend" prefHeight="40.0" prefWidth="200.0" promptText="Destination" style="-fx-border-color: #0D2E57; -fx-border-width: 3; -fx-border-radius: 0;" styleClass="text-field" unFocusColor="#ffffff00">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
@@ -388,7 +387,7 @@
                         </JFXButton>
                      </children>
                   </JFXNodesList>
-                  <JFXToggleNode fx:id="eraser" onAction="#handleTools" prefHeight="68.0" style="-fx-background-radius: 68;">
+                  <JFXToggleNode fx:id="eraser" onAction="#handleTools" onMouseClicked="#eraserMouse" prefHeight="68.0" style="-fx-background-radius: 68;">
                      <graphic>
                         <JFXButton buttonType="RAISED" styleClass="nodeListButton" text=" ">
                            <graphic>
