@@ -32,6 +32,12 @@ import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
 
 public class InterpreterController implements Initializable {
+    public JFXButton btnSpanish;
+    public JFXButton btnFrench;
+    public JFXButton btnItalian;
+    public JFXButton btnASL;
+    public JFXButton btnChinese;
+
     DBTableFormatter formatter = new DBTableFormatter();
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
     private SearchFields sf;
@@ -100,9 +106,8 @@ public class InterpreterController implements Initializable {
             String concatenatedNotes = interpreterType + "\n" + patientName + "\n" + roomNumber + "\n" + userID + "\n" + assignedTo + "\n" +additionalInfo;
             // TODO: Get name of nurse from current user
             int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
-                    new ArrayList<>(Arrays.asList(null, "Nurse", "Sanitation Service Request", "SanitationManager", concatenatedNotes, status, dateAndTime)))));
+                    new ArrayList<>(Arrays.asList(interpreterType, patientName, roomNumber, userID, assignedTo, additionalInfo, status)))));
             // TODO: Get name of nurse from current user
-            interpreterType, patientName, roomNumber, userID, assignedTo, additionalInfo, status))));
             //formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_MEDICATION_REQUESTS)));
             // TODO: Check if any info is invalid before sending request
 

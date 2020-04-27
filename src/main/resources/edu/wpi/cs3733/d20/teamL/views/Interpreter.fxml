@@ -51,7 +51,7 @@
                <graphic>
                   <ImageView fitHeight="60.0" fitWidth="100.0">
                      <image>
-                        <Image url="@../assets/flags/Flag_of_France.png" />
+                        <Image url="@../assets/flags/France.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -63,7 +63,7 @@
                <graphic>
                   <ImageView fitHeight="60.0" fitWidth="100.0">
                      <image>
-                        <Image url="@../assets/flags/flag-400.png" />
+                        <Image url="@../assets/flags/italian.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -75,7 +75,7 @@
                <graphic>
                   <ImageView fitHeight="60.0" fitWidth="100.0">
                      <image>
-                        <Image url="@../assets/flags/88-887656_asl-cliparts-asl-in-sign-language.png" />
+                        <Image url="@../assets/flags/ASL.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -87,7 +87,7 @@
                <graphic>
                   <ImageView fitHeight="60.0" fitWidth="100.0">
                      <image>
-                        <Image url="@../assets/flags/china-flag-icon-free-download.jpg" />
+                        <Image url="@../assets/flags/China.jpg" />
                      </image>
                   </ImageView>
                </graphic>
