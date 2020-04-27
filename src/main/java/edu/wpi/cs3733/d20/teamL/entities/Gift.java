@@ -5,14 +5,14 @@ public class Gift {
     private String type;
     private String subtype;
     private String description;
-    private int inventory;
+    private String inventory;
 
     public Gift(String id, String type, String subtype, String description, String inventory) {
         this.id = id;
         this.type = type;
         this.subtype = subtype;
         this.description = description;
-        this.inventory = Integer.parseInt(inventory);
+        this.inventory = inventory;
     }
 
     public String getId() {
@@ -31,9 +31,9 @@ public class Gift {
         return description;
     }
 
-    public int getInventory() {
+    public String getInventory() {
         return inventory;
     }
 
-    public void setInventory(int inventory) { this.inventory = inventory; }
+    public void setInventory(String inventory) { this.inventory = inventory; }
 }

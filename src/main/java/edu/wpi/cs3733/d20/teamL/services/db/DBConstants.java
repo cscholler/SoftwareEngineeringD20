@@ -158,6 +158,10 @@ public class DBConstants {
 			"INSERT INTO Patients(id, f_name, l_name, doctor_id, room_id)" +
 					"VALUES(?, ?, ?, ?, ?)";
 
+	public static final String ADD_GIFT =
+			"INSERT INTO Gifts(type, subtype, description, inventory)" +
+					"VALUES(?, ?, ?, ?)";
+
 	public static final String ADD_MEDICATION_REQUEST =
 			"INSERT INTO Medication_Requests(doctor_id, patient_id, nurse_name, dose, type, notes, status, date_and_time)" +
 					"VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
@@ -185,6 +189,10 @@ public class DBConstants {
 	public static final String SELECT_ALL_USERS =
 			"SELECT * " +
 					"FROM Users";
+
+	public static final String SELECT_ALL_GIFTS =
+			"SELECT * " +
+					"FROM Gifts";
 
 	public static final String GET_USER =
 			"SELECT id, f_name, l_name, username, acct_type, services " +
