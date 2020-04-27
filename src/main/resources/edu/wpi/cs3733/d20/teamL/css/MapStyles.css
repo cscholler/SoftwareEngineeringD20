@@ -5,5 +5,83 @@
 
 .button {
     -fx-padding: 10;
-    -fx-background-color: grey;
+    -fx-background-color: #405784;
+    -fx-text-fill: white;
+}
+
+.clear {
+    -fx-text-fill: black;
+    -fx-background-color: white;
+    -fx-border-color: white;
+    -fx-border-width: 2px;
+    -fx-pref-height: 30px;
+    -fx-border-radius: 0 10 10 0;
+}
+
+.text-field {
+    -fx-border-radius: 10 0 0 10;
+    -fx-background-color: white;
+    -fx-pref-height: 20px;
+    -fx-pref-width: 250;
+}
+
+.floor-buttons {
+    -fx-padding: 5;
+    -fx-background-color: #0e2d57;
+    -fx-text-fill: white;
+    -fx-pref-width: 40;
+    -fx-pref-height: 40;
+    -fx-background-radius: 0;
+}
+.circle-button {
+    -fx-background-radius: 20;
+    -fx-pref-width: 40;
+    -fx-pref-height: 40;
+    -fx-background-color: #405784;
+    -fx-text-fill: white;
+}
+
+.nodeListButton {
+    -fx-pref-width: 50px;
+    -fx-background-color: #0d2e57;
+    -fx-background-radius: 50px;
+    -fx-pref-height: 50px;
+    -fx-text-fill: white;
+    -fx-border-color: white;
+    -fx-border-radius: 50px;
+    -fx-border-width: 4px;
+}
+
+.nodeTypeButton {
+    -fx-pref-width: 40px;
+    -fx-background-color: #405784;
+    -fx-background-radius: 40px;
+    -fx-pref-height: 40px;
+    -fx-text-fill: white;
+    -fx-border-color: white;
+    -fx-border-radius: 40px;
+    -fx-border-width: 3px;
+    -fx-font-size: 3px;
+}
+
+.floorChangeButton{
+    -fx-pref-width: 40px;
+    -fx-pref-height: 40px;
+    -fx-background-color: #0D2E57;
+
+}
+
+.text-field {
+    -fx-background-color: white;
+    -fx-pref-height: 40px;
+}
+
+.editorPaneVbox {
+    -fx-pref-height: 90px;
+}
+
+.tooltip {
+    -fx-show-delay: 200ms;
+    -fx-show-duration: 10000ms;
+    -fx-font-size: 13px;
 }

@@ -1,9 +1,9 @@
 package edu.wpi.cs3733.d20.teamL;
 
 import java.io.IOException;
+
 import com.google.inject.Inject;
-import edu.wpi.cs3733.d20.teamL.services.db.DatabaseService;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
@@ -11,14 +11,17 @@ import javafx.stage.Stage;
 
 import lombok.extern.slf4j.Slf4j;
 
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 
 @Slf4j
 public class App extends Application {
-	//DatabaseService db;
 	FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 	public static Stage stage;
 	public static final double SCREEN_WIDTH = Screen.getPrimary().getVisualBounds().getWidth();
 	public static final double SCREEN_HEIGHT = Screen.getPrimary().getVisualBounds().getHeight();
+
+	@Inject
+	private IDatabaseService dbService;
 
 	@Override
 	public void init() {
@@ -40,7 +43,7 @@ public class App extends Application {
 
 	@Override
 	public void stop() {
-		//db.stopService();
 		log.info("Shutting Down");
+		//dbService.stopService();
 	}
 }

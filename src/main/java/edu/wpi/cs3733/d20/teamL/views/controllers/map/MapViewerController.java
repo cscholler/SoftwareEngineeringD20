@@ -5,12 +5,19 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import edu.wpi.cs3733.d20.teamL.entities.Building;
+import edu.wpi.cs3733.d20.teamL.services.IMessengerService;
+import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
+import javafx.event.Event;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import com.google.inject.Inject;
@@ -23,12 +30,11 @@ import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
-import edu.wpi.cs3733.d20.teamL.services.graph.Graph;
-import edu.wpi.cs3733.d20.teamL.services.graph.Path;
-import edu.wpi.cs3733.d20.teamL.services.graph.PathFinder;
-import edu.wpi.cs3733.d20.teamL.services.mail.IMailerService;
+import edu.wpi.cs3733.d20.teamL.entities.Graph;
+import edu.wpi.cs3733.d20.teamL.entities.Path;
+import edu.wpi.cs3733.d20.teamL.services.pathfinding.PathfinderService;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
-import edu.wpi.cs3733.d20.teamL.services.search.SearchFields;
+import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
 import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
 import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
@@ -42,7 +48,13 @@ public class MapViewerController {
     JFXTextField startingPoint, destination;
 
     @FXML
-    VBox instructions;
+    JFXButton btnNavigate;
+
+    @FXML
+    ScrollPane scroll;
+
+    @FXML
+    VBox instructions, floorSelector;
 
     @FXML
     JFXButton btnTextMe;
@@ -50,7 +62,9 @@ public class MapViewerController {
     @Inject
     private IDatabaseCache cache;
     @Inject
-	private IMailerService mailer;
+    private IPathfinderService pathfinderService;
+    @Inject
+    private IMessengerService messengerService;
 
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
@@ -61,10 +75,25 @@ public class MapViewerController {
         cache.cacheAllFromDB();
 
         map.setEditable(false);
+        btnNavigate.setDisableVisualFocus(true);
 
-        Graph newGraph = new Graph();
-        newGraph.addAllNodes(cache.getNodeCache());
-        map.setGraph(newGraph);
+        Building startBuilding = new Building("Faulkner");
+        startBuilding.addAllNodes(cache.getNodeCache());
+        map.setBuilding(startBuilding);
+
+        map.setFloor(2);
+
+        // Add floor buttons
+        for (int i = 1; i <= startBuilding.getMaxFloor(); i++) {
+            JFXButton newButton = new JFXButton();
+            newButton.setButtonType(JFXButton.ButtonType.RAISED);
+            newButton.getStylesheets().add("edu/wpi/cs3733/d20/teamL/css/MapStyles.css");
+            newButton.setText("" + i);
+            newButton.setOnAction(this::handleFloor);
+            newButton.getStyleClass().add("floor-buttons");
+
+            floorSelector.getChildren().add(1, newButton);
+        }
 
         map.setZoomLevel(1);
         map.init();
@@ -109,15 +138,17 @@ public class MapViewerController {
 
         if (startNode != null && destNode != null) {
             String directions = highlightSourceToDestination(startNode, destNode);
-            mailer.setDirections(directions);
+            messengerService.setDirections(directions);
+
             Label directionsLabel = new Label();
+            directionsLabel.setFont(new Font(14));
             directionsLabel.setText(directions);
             directionsLabel.setTextFill(Color.WHITE);
             directionsLabel.setWrapText(true);
 
             instructions.getChildren().clear();
             instructions.getChildren().add(directionsLabel);
-            instructions.setVisible(true);
+            scroll.setVisible(true);
             btnTextMe.setDisable(false);
             btnTextMe.setVisible(true);
         }
@@ -135,7 +166,7 @@ public class MapViewerController {
     private String highlightSourceToDestination(Node source, Node destination) {
         map.getSelector().clear();
 
-        Path path = PathFinder.aStarPathFind(map.getGraph(), source, destination);
+        Path path = pathfinderService.pathfind(map.getBuilding(), source, destination);
         Iterator<Node> nodeIterator = path.iterator();
 
         // Loop through each node in the path and select it as well as the edge pointing to the next node
@@ -179,5 +210,12 @@ public class MapViewerController {
         } catch (IOException e) {
             log.error("Encountered IOException", e);
         }
+    }
+
+    @FXML
+    public void handleFloor(ActionEvent event) {
+        JFXButton button = (JFXButton) event.getSource();
+
+        map.setFloor(Integer.parseInt(button.getText()));
     }
 }

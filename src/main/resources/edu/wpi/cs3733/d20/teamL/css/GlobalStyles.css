@@ -8,6 +8,13 @@
 }
 
 .button {
-    -fx-font-family: Roboto;
+   -fx-font-family: Roboto;
+    -fx-font-size: 14;
     -fx-background-radius: 5px;
 }
+
+.notification-list {
+    -fx-background-radius: 10;
+    -fx-padding: 10;
+}
+
