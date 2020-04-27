@@ -7,9 +7,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.ResourceBundle;
 
-import edu.wpi.cs3733.d20.teamL.entities.GiftDeliveryRequest;
-import edu.wpi.cs3733.d20.teamL.entities.ServiceRequest;
-import edu.wpi.cs3733.d20.teamL.entities.User;
+import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,7 +28,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import lombok.extern.slf4j.Slf4j;
 
-import edu.wpi.cs3733.d20.teamL.entities.MedicationRequest;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
@@ -38,14 +35,16 @@ import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 
 @Slf4j
 public class NotificationsPageController implements Initializable {
-    private ObservableList<MedicationRequest> list = FXCollections.observableArrayList();
-    private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
-    private MedicationRequest currentRequest;
-    @Inject
-    private IDatabaseService db;
-    @Inject
-    private ILoginManager loginManager;
-    @FXML
+   	private ObservableList<MedicationRequest> medReqList = FXCollections.observableArrayList();
+   	private ObservableList<GiftDeliveryRequest> giftReqList = FXCollections.observableArrayList();
+   	private ObservableList<ServiceRequest> serviceReqList = FXCollections.observableArrayList();
+	private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+	private MedicationRequest currentRequest;
+	@Inject
+	private IDatabaseService db;
+	@Inject
+	private ILoginManager loginManager;
+	@FXML
     private JFXButton btnBack, btnCompleted, btnDecline;
     @FXML
     private JFXListView<ServiceRequest> serviceReqs;
@@ -64,169 +63,206 @@ public class NotificationsPageController implements Initializable {
     JFXButton approve = new JFXButton();
     JFXButton delivered = new JFXButton();
 
-    /**
-     * Calls loadData and sets up the cellFactory
-     *
-     * @param url
-     * @param resourceBundle
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+	/**
+	 * Calls loadData and sets up the cellFactory
+	 * @param url
+	 * @param resourceBundle
+	 */
+	@Override
+	public void initialize(URL url, ResourceBundle resourceBundle) {
         approve = btnCompleted;
         delivered = btnCompleted;
-        user = loginManager.getCurrentUser();
-        loadRequests("medication");
-        loadRequests("gift");
-        loadRequests("service");
-        medReqs.setCellFactory(param -> new ListCell<>() {
-            @Override
-            protected void updateItem(MedicationRequest medReq, boolean empty) {
-                super.updateItem(medReq, empty);
-                if (medReq != null) {
-                    String status;
-                    switch (medReq.getStatus()) {
-                        default:
-                        case "0": {
-                            status = "Pending";
-                        }
-                        break;
-                        case "1": {
-                            status = "Approved";
-                        }
-                        break;
-                        case "2": {
-                            status = "Delivered";
-                        }
-                        break;
-                        case "3": {
-                            status = "Denied";
-                        }
-                    }
-                    setText("[" + medReq.getDateAndTime() + "] " + medReq.getDose() + " of " + medReq.getMedType() + " for " + medReq.getPatientName() + " (" + status + ")");
-                }
-            }
-        });
-        giftReqs.setCellFactory(param -> new ListCell<>() {
-            @Override
-            protected void updateItem(GiftDeliveryRequest giftReq, boolean empty) {
-                super.updateItem(giftReq, empty);
-                if (giftReq != null) {
-                    String status;
-                    switch (giftReq.getStatus()) {
-                        default:
-                        case "0": {
-                            status = "Pending";
-                        }
-                        break;
-                        case "1": {
-                            status = "Approved";
-                        }
-                        break;
-                        case "2": {
-                            status = "Denied";
-                        }
-                    }
-                    //setText("[" + medReq.getDateAndTime() + "] " +  medReq.getDose() + " of " + medReq.getMedType() + " for " + medReq.getPatientName() + " (" + status + ")");
-                }
-            }
-        });
-        serviceReqs.setCellFactory(param -> new ListCell<>() {
-            @Override
-            protected void updateItem(ServiceRequest req, boolean empty) {
-                super.updateItem(req, empty);
-                if (req != null) {
-                    String status;
-                    switch (req.getStatus()) {
-                        default:
-                        case "0": {
-                            status = "Pending";
-                        }
-                        break;
-                        case "1": {
-                            status = "Approved";
-                        }
-                        break;
-                        case "2": {
-                            status = "Denied";
-                        }
-                    }
-                    //setText("[" + medReq.getDateAndTime() + "] " +  medReq.getDose() + " of " + medReq.getMedType() + " for " + medReq.getPatientName() + " (" + status + ")");
-                }
-            }
-        });
-    }
+		buttonBox.getChildren().remove(btnCompleted);
+		buttonBox.getChildren().add(approve);
+		approve.setText("Approve");
+		approve.setOnAction(approved);
+
+	    user = loginManager.getCurrentUser();
+		loadRequests("medication");
+		loadRequests("gift");
+		loadRequests("service");
+		medReqs.setCellFactory(param -> new ListCell<>() {
+			@Override
+			protected void updateItem(MedicationRequest medReq, boolean empty) {
+				super.updateItem(medReq, empty);
+				if (medReq != null) {
+					String status;
+					switch (medReq.getStatus()) {
+						default :
+						case "0" : {
+							status = "Pending";
+						}
+						break;
+						case "1" : {
+							status = "Approved";
+						}
+						break;
+						case "2" : {
+							status = "Delivered";
+						}
+						break;
+						case "3" : {
+							status = "Denied";
+						}
+					}
+					setText("[" + medReq.getDateAndTime() + "] " +  medReq.getDose() + " of " + medReq.getMedType() + " for " + medReq.getPatientName() + " (" + status + ")");
+				}
+			}
+		});
+		giftReqs.setCellFactory(param -> new ListCell<>() {
+			@Override
+			protected void updateItem(GiftDeliveryRequest giftReq, boolean empty) {
+				super.updateItem(giftReq, empty);
+				if (giftReq != null) {
+					String status;
+					switch (giftReq.getStatus()) {
+						default :
+						case "0" : {
+							status = "Pending";
+						}
+						break;
+						case "1" : {
+							status = "Approved";
+						}
+						break;
+						case "2" : {
+							status = "Denied";
+						}
+					}
+					//setText("[" + giftReq.getDateAndTime() + "] " +  giftReq.getDose() + " of " + giftReq.getMedType() + " for " + giftReq.getPatientName() + " (" + status + ")");
+				}
+			}
+		});
+		serviceReqs.setCellFactory(param -> new ListCell<>() {
+			@Override
+			protected void updateItem(ServiceRequest req, boolean empty) {
+				super.updateItem(req, empty);
+				if (req != null) {
+					String status;
+					switch (req.getStatus()) {
+						default :
+						case "0" : {
+							status = "Pending";
+						}
+						break;
+						case "1" : {
+							status = "Approved";
+						}
+						break;
+						case "2" : {
+							status = "Denied";
+						}
+					}
+					//setText("[" + medReq.getDateAndTime() + "] " +  medReq.getDose() + " of " + medReq.getMedType() + " for " + medReq.getPatientName() + " (" + status + ")");
+				}
+			}
+		});
+	}
 
     /**
      * Loads data to the list view in the form of MedicineRequest Objects
      */
     @FXML
     private void loadRequests(String type) {
-        list.removeAll();
-        ArrayList<ArrayList<String>> requests = new ArrayList<>();
-        String username = user.getUsername();
-        switch (user.getAcctType()) {
-            // Staff member
-            default:
-            case "0":
-            case "1": {
-                log.info("Viewing notifications as staff member with username {}", username);
-                requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_MEDICATION_REQUESTS_FOR_DELIVERER, new ArrayList<>(Collections.singletonList(username)))));
-            }
-            break;
-            // Doctor
-            case "2": {
-                log.info("Viewing notifications as doctor with username: {}", username);
-                ArrayList<ArrayList<String>> doctorIDTable = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_DOCTOR_ID_BY_USERNAME, new ArrayList<>(Collections.singletonList(username)))));
-                if (doctorIDTable.size() != 0) {
-                    requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_MEDICATION_REQUESTS_FOR_DOCTOR, new ArrayList<>(Collections.singletonList(doctorIDTable.get(0).get(0))))));
-                }
-            }
-        }
-        String patientID;
-        String patientName;
-        String roomID;
-        for (ArrayList<String> row : requests) {
-            patientID = row.get(2);
-            ArrayList<String> name = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_NAME, new ArrayList<>(Collections.singletonList(patientID))))).get(0);
-            patientName = name.get(0) + " " + name.get(1);
-            roomID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ROOM, new ArrayList<>(Collections.singletonList(patientID))))).get(0).get(0);
-            list.add(new MedicationRequest(row.get(0), row.get(1), row.get(2), patientName, roomID, row.get(3), row.get(4), row.get(5), row.get(6), row.get(7), row.get(8), row.get(9)));
-        }
-        medReqs.getItems().addAll(list);
+        medReqList.removeAll();
+		String username = user.getUsername();
+		ArrayList<ArrayList<String>> requests = new ArrayList<>();
+		switch (type) {
+			case "medication": {
+				switch (user.getAcctType()) {
+					// Staff member
+					default:
+					case "0":
+					case "3":
+					case "1": {
+						log.info("Viewing notifications as staff member with username {}", username);
+						requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_MEDICATION_REQUESTS_FOR_DELIVERER, new ArrayList<>(Collections.singletonList(username)))));
+					}
+					break;
+					// Doctor
+					case "2": {
+						log.info("Viewing notifications as doctor with username: {}", username);
+						ArrayList<ArrayList<String>> doctorIDTable = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_DOCTOR_ID_BY_USERNAME, new ArrayList<>(Collections.singletonList(username)))));
+						if (doctorIDTable.size() == 1) {
+							requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_MEDICATION_REQUESTS_FOR_DOCTOR, new ArrayList<>(Collections.singletonList(doctorIDTable.get(0).get(0))))));
+						}
+					}
+				}
+				String patientID;
+				String patientName;
+				String roomID;
+				for (ArrayList<String> row : requests) {
+					patientID = row.get(2);
+					// TODO: convert to function
+					ArrayList<String> name = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_NAME, new ArrayList<>(Collections.singletonList(patientID))))).get(0);
+					patientName = name.get(0) + " " + name.get(1);
+					roomID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ROOM, new ArrayList<>(Collections.singletonList(patientID))))).get(0).get(0);
+					medReqList.add(new MedicationRequest(row.get(0), row.get(1), row.get(2), patientName, roomID, row.get(3), row.get(4), row.get(5), row.get(6), row.get(7), row.get(8), row.get(9)));
+				}
+				medReqs.getItems().addAll(medReqList);
+			}
+			break;
+			case "gift": {
+				requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_GIFT_DELIVERY_REQUESTS_FOR_USER, new ArrayList<>(Collections.singletonList(username)))));
+				String patientID;
+				String patientName;
+				String roomID;
+				for (ArrayList<String> row : requests) {
+					patientID = row.get(1);
+					ArrayList<String> name = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_NAME, new ArrayList<>(Collections.singletonList(patientID))))).get(0);
+					patientName = name.get(0) + " " + name.get(1);
+					roomID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ROOM, new ArrayList<>(Collections.singletonList(patientID))))).get(0).get(0);
+					ArrayList<Gift> gifts = new ArrayList<>();
+					ArrayList<ArrayList<String>> giftEntries = new ArrayList<>();
+					for (int i = 5; i < 8; i++) {
+						giftEntries.add(db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_GIFT, new ArrayList<>(Collections.singletonList(row.get(i)))))).get(0));
+					}
+					for (ArrayList<String> giftEntry : giftEntries) {
+						gifts.add(new Gift(giftEntry.get(0), giftEntry.get(1), giftEntry.get(2), giftEntry.get(3), giftEntry.get(4)));
+					}
+					giftReqList.add(new GiftDeliveryRequest(row.get(0), row.get(1), patientName, roomID, row.get(2), row.get(3), row.get(4), gifts, row.get(8), row.get(9), row.get(10), row.get(11)));
+				}
+			}
+			break;
+			default:
+			case "service": {
+				requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_SERVICE_REQUESTS_FOR_USER, new ArrayList<>(Collections.singletonList(username)))));
+			}
+		}
     }
 
     /**
      * Checks for anyone clicking on the listView of medReq and opens them in the pane to the right
      */
     @FXML
-    private void displaySelected() {
+    private void displaySelectedMedReq() {
         MedicationRequest req = medReqs.getSelectionModel().getSelectedItem();
         setCurrentRequest(req);
         try {
-            //if (req.getPatientName() == null || req.getPatientName().isEmpty()) {
-            if (req == null) {
-                log.error("Invalid request");
-            } else {
-                reqMessage.setWrapText(true);
-                addInfo.setWrapText(true);
-                addInfo.setText(req.getNotes());
-                String message;
-                ArrayList<String> doctorNameRow = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_DOCTOR_NAME, new ArrayList<>(Collections.singletonList(req.getDoctorID()))))).get(0);
-                String doctorName = doctorNameRow.get(0) + " " + doctorNameRow.get(1);
-                // TODO: Verify that it's the correct doctor
-                if (user.getAcctType().equals("2") && (user.getFName() + " " + user.getLName()).equals(doctorName)) {
-                    log.info("logged in as doctor");
-                    message = req.getNurseUsername() + " requests " + req.getDose() + " of " + req.getMedType() + " for " + req.getPatientName() + "(" + req.getPatientID() + ")" + " in room " + req.getRoomNum();
-                } else {
-                    log.info("logged in as non doctor");
-                    message = doctorName + " requests " + req.getDose() + " of " + req.getMedType() + " to be delivered to " + req.getPatientName() + "(" + req.getPatientID() + ")" + " in room " + req.getRoomNum();
-                }
-                meds = true;
-                reqMessage.setText(message);
-            }
-        } catch (NullPointerException ex) {
-            log.info("No notification currently selected");
-        }
+			if (req != null) {
+				reqMessage.setWrapText(true);
+				addInfo.setWrapText(true);
+				addInfo.setText(req.getNotes());
+				String message;
+				ArrayList<String> doctorNameRow = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_DOCTOR_NAME, new ArrayList<>(Collections.singletonList(req.getDoctorID()))))).get(0);
+				String doctorName = doctorNameRow.get(0) + " " + doctorNameRow.get(1);
+				// TODO: Verify that it's the correct doctor
+				if (user.getAcctType().equals("2") && (user.getFName() + " " + user.getLName()).equals(doctorName)) {
+					log.info("logged in as doctor");
+					message = req.getNurseUsername() + " requests " + req.getDose() + " of " + req.getMedType() + " for " + req.getPatientName() + "(" + req.getPatientID() +")" + " in room " + req.getRoomNum();
+ 				} else {
+					log.info("logged in as non doctor");
+					message = doctorName + " requests " + req.getDose() + " of " + req.getMedType() + " to be delivered to " + req.getPatientName() + "(" + req.getPatientID() +")" + " in room " + req.getRoomNum();
+				}
+				reqMessage.setText(message);
+				meds = true;
+			} else {
+				log.warn("Attempted to display an empty or invalid request.");
+			}
+		} catch (NullPointerException ex) {
+        	log.info("No notification currently selected");
+		}
+        meds = true;
     }
 
     @FXML
@@ -238,36 +274,48 @@ public class NotificationsPageController implements Initializable {
     }
 
     @FXML
+	private void displaySelectedGiftReq() {
+		buttonBox.getChildren().remove(delivered);
+		buttonBox.getChildren().add(approve);
+		approve.setText("Approve");
+		approve.setOnAction(approved);
+		meds = false;
+	}
+
+	@FXML
+	private void displaySelectedServiceReq() {
+		buttonBox.getChildren().remove(delivered);
+		buttonBox.getChildren().add(approve);
+		approve.setText("Approve");
+		approve.setOnAction(approved);
+	meds = false;
+	}
+
+
+    @FXML
     private void btnCompletedClicked() {
         String status = "1";
-        //db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_STATUS, new ArrayList<>(Arrays.asList(status, getCurrentRequest().getID()))));
-        //getCurrentRequest().setStatus(status);
-        //System.out.println(getCurrentRequest().getStatus());
-      //  if (meds) {
-            buttonBox.getChildren().remove(btnCompleted);
-        buttonBox.getChildren().remove(approve);
-            buttonBox.getChildren().add(delivered);
-            delivered.setText("Delivered");
-            delivered.setOnAction(event);
-        //}
+		db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_STATUS, new ArrayList<>(Arrays.asList(status, getCurrentRequest().getID()))));
+		getCurrentRequest().setStatus(status);
+		System.out.println(getCurrentRequest().getStatus());
 
     }
 
-    EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
+    EventHandler<ActionEvent> isDelivered = new EventHandler<ActionEvent>() {
         public void handle(ActionEvent e) {
-                buttonBox.getChildren().remove(delivered);
-                buttonBox.getChildren().add(approve);
-                approve.setText("Approve");
-                approve.setOnAction(other);
+
         }
     };
 
-    EventHandler<ActionEvent> other = new EventHandler<ActionEvent>() {
+    EventHandler<ActionEvent> approved = new EventHandler<ActionEvent>() {
         public void handle(ActionEvent e) {
-            buttonBox.getChildren().remove(approve);
-            buttonBox.getChildren().add(delivered);
-            delivered.setText("Delivered");
-            delivered.setOnAction(event);
+
+            if(meds) {
+				buttonBox.getChildren().remove(approve);
+				buttonBox.getChildren().add(delivered);
+				delivered.setText("Delivered");
+				delivered.setOnAction(isDelivered);
+			}
         }
     };
 

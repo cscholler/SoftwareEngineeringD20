@@ -40,60 +40,58 @@ public class AddUserController implements Initializable {
 //    private ILoginManager loginManager;
 
     @FXML
-    private void submitClicked(){
-    String firstName = fNameText.getText();
-    String lastName = lNameText.getText();
-    String service = servicesText.getText();
-    String un = usernameText.getText();
-    String pw = passwordText.getText();
-    String doctorID = doctorIDText.getText();
-    String type = role.getText();
+    private void submitClicked() {
+		String firstName = fNameText.getText();
+		String lastName = lNameText.getText();
+		String service = servicesText.getText();
+		String username = usernameText.getText();
+		String password = passwordText.getText();
+		String doctorID = doctorIDText.getText();
+		String type = role.getText();
 
-    switch(type) {
-        case "Nurse":
-            type = "1";
-            break;
-        case "Doctor":
-            type = "2";
-            break;
-        case "Admin":
-            type = "3";
-            break;
-    }
+		switch(type) {
+			case "Nurse":
+				type = "1";
+				break;
+			case "Doctor":
+				type = "2";
+				break;
+			case "Admin":
+				type = "3";
+				break;
+		}
 
         formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_DOCTORS)));
 
         int rows = 0;
-		if (firstName != null){
-			rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(firstName, lastName, un, pw, type, service))));
+		if (firstName != null) {
+			rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(firstName, lastName, username, password, type, service))));
 			formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_USERS)));
-		if (doctorIDText.getText() != null && !(doctorIDText.getText().isEmpty())) {
-			rows = db.executeUpdate(new SQLEntry(DBConstants.UPDATE_DOCTOR_USERNAME, new ArrayList<>(Arrays.asList(un, doctorID))));
+			if (doctorIDText.getText() != null && !(doctorIDText.getText().isEmpty())) {
+				rows = db.executeUpdate(new SQLEntry(DBConstants.UPDATE_DOCTOR_USERNAME, new ArrayList<>(Arrays.asList(username, doctorID))));
+			}
+			if (rows == 0) {
+				lblConfirmation.setTextFill(Color.RED);
+				lblConfirmation.setText("Submission failed");
+			} else if (rows == 1) {
+				lblConfirmation.setTextFill(Color.BLACK);
+				lblConfirmation.setText("Medication Request Sent");
+				lNameText.setText("");
+				fNameText.setText("");
+				servicesText.setText("");
+				usernameText.setText("");
+				passwordText.setText("");
+				doctorIDText.setText("");
+			} else {
+				log.error("SQL update affected more than 1 row.");
+			}
+			loaderHelper.showAndFade(lblConfirmation);
 		}
-        if (rows == 0) {
-            lblConfirmation.setTextFill(Color.RED);
-            lblConfirmation.setText("Submission failed");
-        } else if (rows == 1) {
-            lblConfirmation.setTextFill(Color.BLACK);
-            lblConfirmation.setText("Medication Request Sent");
-            lNameText.setText("");
-            fNameText.setText("");
-            servicesText.setText("");
-            usernameText.setText("");
-            passwordText.setText("");
-            doctorIDText.setText("");
-
-
-        } else {
-            log.error("SQL update affected more than 1 row.");
-        }
-        loaderHelper.showAndFade(lblConfirmation);
     }
 
-    }
-@FXML
+	@FXML
     private void closeClicked(){
-
+        loaderHelper.goBack();
     }
 
     @Override

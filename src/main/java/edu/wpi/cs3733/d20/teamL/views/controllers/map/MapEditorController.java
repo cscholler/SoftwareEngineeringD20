@@ -219,6 +219,7 @@ public class MapEditorController {
         newBuilding.addAllNodes(cache.getNodeCache());
 
         map.setBuilding(newBuilding);
+        map.setFloor(2);
     }
 
     @FXML
