@@ -6,11 +6,7 @@ import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.entities.Path;
 
 import javax.inject.Inject;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class PathfinderService implements IPathfinderService {
 
@@ -130,13 +126,59 @@ public class PathfinderService implements IPathfinderService {
         return null;
     }
 
-    private Path depthFirstFind(Graph graph, Node source, Node destination) {
+    /**
+     * Performs Depth First Traversal
+     *
+     * @param source The starting Node
+     * @param destination The ending Node
+     * @return
+     */
+    public Path depthFirstFind(Graph graph, Node source, Node destination) {
 
-        source.visit();
-        for (NodeEntry neighbor: priorityQueue) {
+        //List<Node> visitedNodes = new LinkedList<>();
+        Collection<Node> neighbors = source.getNeighbors();
+        int size = neighbors.size();
+        Vector<Boolean> visitedNodes = new Vector<Boolean>(size);
 
+        //Initialize everything to null
+        for (int i = 0; i < size; i++) {
+            visitedNodes.add(false);
+        }
+        //Iterate through the neighbors of the source Node
+        for (int i = 0; i < neighbors.size(); i++) {
+
+            //Checks to see if the neighbors are null (not visited)
+            if (!visitedNodes.get(i)) {
+
+                depthFirstHelper(i, visitedNodes);
+            }
         }
 
+        return Path.listToPath(entryToList(destination));
+    }
+
+    /**
+     * A recursive call to get all the Nodes visited
+     *
+     * @param index The index of the Node to get
+     * @param visited Keeps track of which Nodes were visited
+     */
+    private void depthFirstHelper(int index, Vector<Boolean> visited) {
+
+        Stack<Integer> nodeStack = new Stack<>();
+        //Pushes the node into the stack
+        nodeStack.push(index);
+        //Checks if the stack is empty
+        while(nodeStack.empty() == false) {
+
+            index = nodeStack.peek();
+            nodeStack.pop();
+
+            if(visited.get(index) == false) {
+
+                visited.set(index, true);
+            }
+        }
     }
 
     /**
