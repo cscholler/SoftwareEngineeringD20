@@ -84,7 +84,7 @@ public class MapEditorController {
         coreShortcuts();
 
         pathFind.setOnAction(event -> {
-            Path path = pathfinder.pathfind(map.getBuilding(), map.getBuilding().getNode(startNode.getText()), map.getBuilding().getNode(endNode.getText()));
+            Path path = pathfinder.pathfind(map.getBuilding(), sf.getNode(startNode.getText()), sf.getNode(endNode.getText()));
             System.out.println(path.generateTextMessage());
 
             Iterator<Node> nodeIterator = path.iterator();
