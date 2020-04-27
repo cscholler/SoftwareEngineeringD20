@@ -43,7 +43,7 @@
       </VBox>
    </center>
    <bottom>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0" styleClass="topBorder" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0" BorderPane.alignment="CENTER">
          <children>
             <JFXButton buttonType="RAISED" onAction="#closeClicked" text="Close" />
             <JFXButton buttonType="RAISED" onAction="#submitClicked" text="Submit" />
