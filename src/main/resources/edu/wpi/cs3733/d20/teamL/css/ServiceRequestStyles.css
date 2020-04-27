@@ -5,6 +5,7 @@
 
 .label {
     -fx-font-size: 30;
+    -fx-text-fill: white;
 }
 
 .title {
@@ -16,7 +17,8 @@
     -fx-padding: 10;
     -fx-background-color: #405784;
     -fx-text-fill: white;
-    -fx-pref-width: 100
+    -fx-pref-width: 100;
+    -jfx-button-type: RAISED;
 }
 
 .text-field {
@@ -29,5 +31,10 @@
 .text-area {
     -fx-background-color: white;
     -fx-pref-height: 150px;
+}
+
+.jfx-combo-box {
+    -fx-text-inner-color: white;
+    -fx-prompt-text-fill: lightgrey;
 }
 
