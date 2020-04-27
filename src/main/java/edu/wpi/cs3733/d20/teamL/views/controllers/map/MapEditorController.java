@@ -31,7 +31,6 @@ import javafx.geometry.Point2D;
 import java.util.*;
 import javax.inject.Inject;
 
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 
@@ -63,7 +62,7 @@ public class MapEditorController {
 	@FXML
     Tooltip saveTooltip, loadTooltip, pathfindTooltip;
 	@FXML
-    ImageView saveOptionsImage, loadOptionsImage, pathfindImage;
+    ImageView saveOptImg, loadOptionsImage, pathfindImage;
 
     @Inject
 	private IDatabaseCache cache;
@@ -75,6 +74,7 @@ public class MapEditorController {
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
     private boolean eraserBool = false;
+    private char pathFindingAlg = 'A';
 
     private final List<String> types = Arrays.asList("ELEV", "REST", "STAI", "DEPT", "LABS", "INFO", "CONF", "EXIT", "RETL", "SERV");
     private int floor = 2;
@@ -135,6 +135,8 @@ public class MapEditorController {
         nodeConnectionsTab.setVisible(false);
 
         map.recalculatePositions();
+
+        eraser.setDisableAnimation(true);
 
         //saveNodesList.addAnimatedNode(saveDBButton);
 	}
@@ -384,8 +386,8 @@ public class MapEditorController {
     @FXML
     private void eraserMouse() {
         if (!eraserBool) {
-            Image image = new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/eraserMouse.png");  //pass in the image path
-            eraser.getScene().setCursor(new ImageCursor(image));
+            Image eraserImage = new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/eraserMouse.png");  //pass in the image path
+            eraser.getScene().setCursor(new ImageCursor(eraserImage));
             eraserBool = true;
         } else if (eraserBool) {
             eraser.getScene().setCursor(Cursor.DEFAULT);
@@ -394,20 +396,14 @@ public class MapEditorController {
     }
 
     @FXML
-    private void closeConnections() {
-        nodeConnectionsTab.setPrefWidth(0);
-        nodeConnectionsTab.setVisible(false);
-    }
-
-    @FXML
     private void saveOptionsClicked() {
         //show/hide options image
         if(saveNodesList.isExpanded()) {
             saveTooltip.setText("Click to Close");
-            saveOptionsImage.setVisible(false);
+            saveOptImg.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/xButton.png", 40, 0, true, false));
         } else {
             saveTooltip.setText("Click to Show Save Options");
-            saveOptionsImage.setVisible(true);
+            saveOptImg.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/SaveToFile.png"));
         }
     }
 
@@ -416,10 +412,10 @@ public class MapEditorController {
         //show/hide options image
         if(loadNodesList.isExpanded()) {
             loadTooltip.setText("Click to Close");
-            loadOptionsImage.setVisible(false);
+            loadOptionsImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/xButton.png"));
         } else {
             loadTooltip.setText("Click to Show Load Options");
-            loadOptionsImage.setVisible(true);
+            loadOptionsImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/UploadFromFolder.png"));
         }
     }
 
@@ -428,11 +424,35 @@ public class MapEditorController {
         //show/hide options image
         if(pathNodesList.isExpanded()) {
             pathfindTooltip.setText("Click to Close");
-            pathfindImage.setVisible(false);
+            pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/xButton.png", 40, 0, true, false));
         } else {
             pathfindTooltip.setText("Switch Pathfinding Algorithm");
-            pathfindImage.setVisible(true);
+            if (pathFindingAlg == 'A') pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/AStar.png"));
+            if (pathFindingAlg == 'B') pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/Breath First.png", 60, 0, true, false));
+            if (pathFindingAlg == 'D') pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/DepthFirst.png"));
         }
     }
+
+    @FXML
+    private void aStarSelected(){
+        pathFindingAlg = 'A';
+        pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/AStar.png", 40, 0, true, false));
+        pathNodesList.animateList(false);
+    }
+
+    @FXML
+    private void depthSelected(){
+        pathFindingAlg = 'D';
+        pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/DepthFirst.png", 40, 0, true, false));
+        pathNodesList.animateList(false);
+    }
+
+    @FXML
+    private void breadthSelected(){
+        pathFindingAlg = 'B';
+        pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/Breath First.png", 60, 0, true, false));
+        pathNodesList.animateList(false);
+    }
+
 
 }
