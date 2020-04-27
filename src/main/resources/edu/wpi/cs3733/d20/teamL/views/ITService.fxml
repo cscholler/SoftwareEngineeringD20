@@ -5,10 +5,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -27,7 +24,7 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <JFXButton fx:id="btnBack" buttonType="RAISED" maxWidth="200.0" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #dfdfdc;" text="Back">
+            <JFXButton fx:id="btnBack" buttonType="RAISED" maxWidth="200.0" onAction="#backClicked" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #dfdfdc;" text="Back">
                <HBox.margin>
                   <Insets right="20.0" />
                </HBox.margin>
@@ -35,7 +32,7 @@
                   <Font size="24.0" />
                </font>
             </JFXButton>
-            <JFXButton buttonType="RAISED" maxWidth="200.0" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #0d2e57;" text="Submit" textFill="WHITE">
+            <JFXButton fx:id="btnSubmit" buttonType="RAISED" maxWidth="200.0" onAction="#submitClicked" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #0d2e57;" text="Submit" textFill="WHITE">
                <font>
                   <Font size="24.0" />
                </font>
@@ -46,41 +43,43 @@
          </padding>
       </HBox>
    </bottom>
-   <center>
-      <GridPane BorderPane.alignment="CENTER">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-               <children>
-                  <JFXTextField focusColor="#0d2e57" labelFloat="true" minHeight="40.0" minWidth="300.0" prefHeight="40.0" prefWidth="300.0" promptText="Patient Name">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </JFXTextField>
-               </children></VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
-               <children>
-                  <JFXTextField focusColor="#0d2e57" labelFloat="true" minHeight="40.0" minWidth="300.0" prefHeight="40.0" prefWidth="300.0" promptText="Type of Service" />
-               </children></VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2" />
-            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" />
-            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-         </children>
-      </GridPane>
-   </center>
    <left>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
    </left>
    <right>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
    </right>
+   <center>
+      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox alignment="CENTER" prefHeight="562.0" prefWidth="435.0" spacing="50.0">
+               <children>
+                  <JFXTextField prefHeight="40.0" prefWidth="300.0" />
+                  <JFXTextField labelFloat="true" prefHeight="40.0" prefWidth="300.0" promptText="Subject">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXTextField labelFloat="true" prefHeight="40.0" prefWidth="300.0" promptText="Subject">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </JFXTextField>
+                  <JFXTextField prefHeight="40.0" prefWidth="300.0" promptText="Subject">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </JFXTextField>
+               </children>
+            </VBox>
+            <VBox prefHeight="520.0" prefWidth="445.0" />
+         </children>
+      </HBox>
+   </center>
 </BorderPane>
