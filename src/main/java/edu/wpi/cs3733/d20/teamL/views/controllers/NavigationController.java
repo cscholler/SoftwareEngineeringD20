@@ -126,7 +126,7 @@ public class NavigationController implements Initializable {
     @FXML
     private void helpBtnClicked() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("InhospitalTransportRequestForm").load();
+            Parent root = loaderHelper.getFXMLLoader("Help").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
