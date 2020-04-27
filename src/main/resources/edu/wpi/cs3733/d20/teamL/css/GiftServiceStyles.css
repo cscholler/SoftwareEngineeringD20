@@ -9,3 +9,11 @@
     -fx-background-radius: 0;
     -fx-background-color: white;
 }
+
+.button-x {
+    -fx-scale-x: 30;
+    -fx-scale-y: 30;
+    -fx-background-color: white;
+    -fx-text-fill: black;
+
+}

@@ -90,12 +90,12 @@ public class ServiceRequestController {
 
     @FXML
     private void giftRequestClicked() {
-//        try {
-//            Parent root = loaderHelper.getFXMLLoader("SecurityPage").load();
-//            loaderHelper.setupScene(new Scene(root));
-//        } catch (IOException ex) {
-//            log.error("Encountered IOException", ex);
-//        }
+        try {
+            Parent root = loaderHelper.getFXMLLoader("GiftCart").load();
+            loaderHelper.setupScene(new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
     }
 
     @FXML

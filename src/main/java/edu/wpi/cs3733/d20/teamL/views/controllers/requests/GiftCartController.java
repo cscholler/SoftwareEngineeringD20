@@ -8,9 +8,11 @@ import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import org.apache.derby.iapi.sql.ResultSet;
 
-import java.awt.*;
+
 import java.util.ArrayList;
 
 public class GiftCartController {
@@ -27,12 +29,12 @@ public class GiftCartController {
     Image img1, img2, img3;
 
     private int index = 0;
-    private ArrayList<Gift> gifts;
+    private ArrayList<Gift> gifts = new ArrayList<>();
+    private ArrayList<Gift> cart = new ArrayList<>();
 
     @FXML
     public void initialize() {
         ArrayList<ArrayList<String>> giftsDB = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_GIFTS)));
-        ArrayList<Gift> gifts = new ArrayList<>();
 
         for(ArrayList<String> g : giftsDB) {
             gifts.add(new Gift(g.get(0), g.get(1), g.get(2), g.get(3), g.get(4)));
@@ -62,5 +64,27 @@ public class GiftCartController {
         desc1.setText(gifts.get(index).getDescription());
         desc2.setText(gifts.get(index+1).getDescription());
         desc3.setText(gifts.get(index+2).getDescription());
+    }
+
+    @FXML
+    private void checkoutBtnPressed() {
+
+    }
+
+    @FXML
+    private void addCartPressed(ActionEvent event) {
+        if (cart.size() < 3) {
+            if (event.getSource() == addCart1Btn) {
+                cart.add(gifts.get(index));
+            } else if (event.getSource() == addCart2Btn) {
+                cart.add(gifts.get(index + 1));
+            } else if (event.getSource() == addCart3Btn) {
+                cart.add(gifts.get(index + 2));
+            }
+        }
+    }
+
+    private void updateCart() {
+
     }
 }
