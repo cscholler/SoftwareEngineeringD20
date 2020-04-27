@@ -9,27 +9,25 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
 
-<fx:root prefHeight="539.0" prefWidth="791.0" type="javafx.scene.layout.StackPane" BorderPane.alignment="CENTER"
-         xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root prefHeight="539.0" prefWidth="791.0" type="javafx.scene.layout.StackPane" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <ScrollPane fx:id="scroller">
             <content>
                 <AnchorPane>
                     <children>
-                        <ImageView fx:id="mapImage" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0"
-                                   AnchorPane.topAnchor="0.0">
+                        <ImageView fx:id="mapImage" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <image>
-                                <Image url="@../../assets/maps/Floor2LM.png"/>
+                                <Image url="@../../assets/maps/Floor2LM.png" />
                             </image>
                         </ImageView>
-                        <AnchorPane fx:id="body" prefHeight="200.0" prefWidth="200.0"/>
+                        <AnchorPane fx:id="body" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                     </children>
                 </AnchorPane>
             </content>
         </ScrollPane>
         <Label fx:id="position" alignment="BOTTOM_LEFT" StackPane.alignment="BOTTOM_LEFT">
             <StackPane.margin>
-                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </StackPane.margin>
         </Label>
     </children>

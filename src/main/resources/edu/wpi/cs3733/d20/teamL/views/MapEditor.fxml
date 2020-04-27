@@ -1,215 +1,439 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXNodesList?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXToggleNode?>
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleButton?>
-<?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import edu.wpi.cs3733.d20.teamL.views.components.MapPane?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="root" prefWidth="1280" prefHeight="720"
-            xmlns="http://javafx.com/javafx/11.0.1"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.map.MapEditorController">
-    <top>
-        <VBox prefWidth="100.0" BorderPane.alignment="CENTER">
-            <children>
-                <MenuBar BorderPane.alignment="CENTER">
-                    <menus>
-                        <Menu text="File">
-                            <items>
-                                <MenuItem fx:id="saveToDB" onAction="#saveToDB" text="Save to DB"/>
-                                <MenuItem fx:id="saveToCSV" onAction="#saveToCSV" text="Save to CSV"/>
-                                <MenuItem fx:id="open" onAction="#open" text="Open From CSV"/>
-                                <MenuItem fx:id="openDB" onAction="#openFromDB" text="Open From Database"/>
-                                <MenuItem fx:id="quit" onAction="#quit" text="Quit"/>
-                            </items>
-                        </Menu>
-                        <Menu text="Edit">
-                            <items>
-                                <MenuItem fx:id="undo" text="Undo" />
-                                <MenuItem fx:id="redo" text="Redo" />
-                            </items>
-                        </Menu>
-                        <Menu mnemonicParsing="false" text="Insert">
-                            <items>
-                                <MenuItem fx:id="node" onAction="#insertNode" text="Node" />
-                                <MenuItem fx:id="edge" text="Edge" />
-                            </items>
-                        </Menu>
-                        <Menu text="Help">
-                            <items>
-                                <MenuItem text="About" />
-                            </items>
-                        </Menu>
-                    </menus>
-                </MenuBar>
-                <ToolBar>
-                    <items>
-                        <HBox spacing="20.0">
-                            <children>
-                                <Button mnemonicParsing="false" text="Back" onAction="#backToMain"/>
-                                <HBox spacing="10.0">
-                                    <children>
-                                        <ToggleButton fx:id="mouse" onAction="#handleTools" selected="true">
-                                            <toggleGroup>
-                                                <ToggleGroup fx:id="tools"/>
-                                            </toggleGroup>
-                                            <graphic>
-                                                <ImageView fitHeight="20.0" fitWidth="17.0" pickOnBounds="true"
-                                                           preserveRatio="true">
-                                                    <image>
-                                                        <Image url="@../assets/home page/Cursor_placeholder.png"/>
-                                                    </image>
-                                                </ImageView>
-                                            </graphic>
-                                        </ToggleButton>
-                                        <ToggleButton fx:id="eraser" onAction="#handleTools" toggleGroup="$tools">
-                                            <graphic>
-                                                <ImageView fitHeight="20.0" fitWidth="21.0" pickOnBounds="true"
-                                                           preserveRatio="true">
-                                                    <image>
-                                                        <Image url="@../assets/home page/Eraser_Placeholder.png"/>
-                                                    </image>
-                                                </ImageView>
-                                            </graphic>
-                                        </ToggleButton>
-                                        <HBox alignment="CENTER_LEFT" spacing="10.0">
-                                            <children>
-                                                <HBox alignment="CENTER_LEFT" spacing="5.0">
-                                                    <children>
-                                                        <Label text="Start Node:"/>
-                                                        <TextField fx:id="startNode"/>
-                                                    </children>
-                                                </HBox>
-                                                <HBox alignment="CENTER_LEFT" spacing="5.0">
-                                                    <children>
-                                                        <Label text="End Node"/>
-                                                        <TextField fx:id="endNode"/>
-                                                    </children>
-                                                </HBox>
-                                                <Button fx:id="pathFind" mnemonicParsing="false" text="Path Find"/>
-                                            </children>
-                                            <padding>
-                                                <Insets left="10.0" right="10.0"/>
-                                            </padding>
-                                        </HBox>
-                                    </children>
-                                </HBox>
-                            </children>
-                        </HBox>
-                    </items>
-                </ToolBar>
-            </children>
-        </VBox>
-    </top>
+<?import edu.wpi.cs3733.d20.teamL.views.components.MapPane?>
+<BorderPane fx:id="root" prefHeight="720" prefWidth="1280" stylesheets="@../css/MapStyles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.map.MapEditorController">
     <center>
-        <MapPane prefHeight="150.0" prefWidth="200.0" fx:id="map" onAction="#myCustomAction"/>
+
     </center>
    <right>
-      <VBox fx:id="editor" alignment="CENTER_LEFT" minWidth="-Infinity" prefHeight="650.0" prefWidth="200.0" style="-fx-background-color: #0D2E57 #0D2E57;" BorderPane.alignment="CENTER">
+      <VBox fx:id="editor" minWidth="-Infinity" prefHeight="650.0" prefWidth="200.0" style="-fx-background-color: #0D2E57 #0D2E57;" BorderPane.alignment="CENTER">
          <children>
-            <Label text="NodeID:" textFill="WHITE">
-               <VBox.margin>
-                  <Insets left="10.0" top="20.0" />
-               </VBox.margin>
-            </Label>
-            <JFXTextField fx:id="nodeIDText" focusColor="WHITE" promptText="Enter new ID..." style="-fx-text-inner-color: #ffffff;">
-               <VBox.margin>
-                  <Insets left="10.0" right="10.0" />
-               </VBox.margin>
-            </JFXTextField>
-            <Label layoutX="30.0" layoutY="20.0" text="X Coordinate:" textFill="WHITE">
-               <VBox.margin>
-                  <Insets left="10.0" top="20.0" />
-               </VBox.margin>
-            </Label>
-            <JFXTextField focusColor="WHITE" layoutX="10.0" layoutY="37.0" promptText="Enter new X coordinate..." style="-fx-text-inner-color: #ffffff;" fx:id="xCoordText">
-               <VBox.margin>
-                  <Insets left="10.0" right="10.0" />
-               </VBox.margin>
-            </JFXTextField>
-            <Label text="Y Coordinate:" textFill="WHITE">
-               <VBox.margin>
-                  <Insets left="10.0" top="20.0" />
-               </VBox.margin>
-            </Label>
-            <JFXTextField fx:id="yCoordText" focusColor="WHITE" promptText="Enter new Y coordinate..." style="-fx-text-inner-color: #ffffff;">
-               <VBox.margin>
-                  <Insets left="10.0" right="10.0" />
-               </VBox.margin>
-            </JFXTextField>
-            <Label text="Building:" textFill="WHITE">
-               <VBox.margin>
-                  <Insets left="10.0" top="20.0" />
-               </VBox.margin>
-            </Label>
-            <JFXTextField fx:id="buildingText" focusColor="WHITE" promptText="Enter new building..." style="-fx-text-inner-color: #ffffff;">
-               <VBox.margin>
-                  <Insets left="10.0" right="10.0" />
-               </VBox.margin>
-            </JFXTextField>
-            <Label text="Node Type:" textFill="WHITE">
-               <VBox.margin>
-                  <Insets left="10.0" top="20.0" />
-               </VBox.margin>
-            </Label>
-            <JFXTextField fx:id="nodeTypeText" focusColor="WHITE" promptText="Enter new node type..." style="-fx-text-inner-color: #ffffff;">
-               <VBox.margin>
-                  <Insets left="10.0" right="10.0" />
-               </VBox.margin>
-            </JFXTextField>
-            <Label text="Long Name:" textFill="WHITE">
-               <VBox.margin>
-                  <Insets left="10.0" top="20.0" />
-               </VBox.margin>
-            </Label>
-            <JFXTextField fx:id="longNameText" focusColor="WHITE" promptText="Enter new long name..." style="-fx-text-inner-color: #ffffff;">
-               <VBox.margin>
-                  <Insets left="10.0" right="10.0" />
-               </VBox.margin>
-            </JFXTextField>
-            <Label text="Short Name:" textFill="WHITE">
-               <VBox.margin>
-                  <Insets left="10.0" top="20.0" />
-               </VBox.margin>
-            </Label>
-            <JFXTextField fx:id="shortNameText" focusColor="WHITE" promptText="Enter new short name..." style="-fx-text-inner-color: #ffffff;">
-               <VBox.margin>
-                  <Insets left="10.0" right="10.0" />
-               </VBox.margin>
-            </JFXTextField>
-            <Button fx:id="btnEditConnections" mnemonicParsing="false" text="Edit Connections">
-               <VBox.margin>
-                  <Insets left="10.0" top="20.0" />
-               </VBox.margin>
-            </Button>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <HBox prefHeight="747.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="btnCancel" mnemonicParsing="false" prefWidth="70.0" text="Cancel">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Button fx:id="btnSave" mnemonicParsing="false" prefWidth="70.0" text="Save" onAction="#updateNode">
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </Button>
+                  <VBox prefHeight="717.0" prefWidth="200.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: #00032E;">
+                           <children>
+                              <Label fx:id="nodeIDText" text="Node: LHALL00102" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" styleClass="editorPaneVbox">
+                           <children>
+                              <Label text="Node Type:" textFill="WHITE">
+                                 <VBox.margin>
+                                    <Insets left="10.0" top="25.0" />
+                                 </VBox.margin>
+                              </Label>
+                               <ComboBox fx:id="nodeTypeValue" onAction="#nodeTypeChanged" onInputMethodTextChanged="#nodeTypeChanged" prefWidth="180.0" promptText="Enter new node type..." style="-fx-background-color: #ffffff;">
+                                   <VBox.margin>
+                                       <Insets left="10.0" right="10.0" top="5.0" />
+                                   </VBox.margin>
+                                   <items>
+                                       <FXCollections fx:factory="observableArrayList">
+                                           <String fx:id="HALL" fx:value="Hallway" />
+                                           <String fx:id="ELEV" fx:value="Elevator" />
+                                           <String fx:id="REST" fx:value="Restroom" />
+                                           <String fx:id="STAI" fx:value="Stair" />
+                                           <String fx:id="DEPT" fx:value="Dept/Clinic/Waiting" />
+                                           <String fx:id="LABS" fx:value="Labs/Imaging/Testing" />
+                                           <String fx:id="INFO" fx:value="Info/Security" />
+                                           <String fx:id="CONF" fx:value="Conference Room" />
+                                           <String fx:id="EXIT" fx:value="Exit/Entrance" />
+                                           <String fx:id="RETL" fx:value="Food/Shops" />
+                                           <String fx:id="SERV" fx:value="Non-medical Services" />
+                                       </FXCollections>
+                                   </items>
+                                   <value>
+                                       <String fx:value="None Selected" />
+                                   </value>
+                               </ComboBox>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" styleClass="editorPaneVbox">
+                           <children>
+                              <Label text="X Coordinate:" textFill="WHITE">
+                                 <VBox.margin>
+                                    <Insets left="10.0" top="25.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <JFXTextField focusColor="#0d2e57" promptText="Enter new X coordinate..." style="-fx-background-color: #ffffff;" unFocusColor="#ffffff00" fx:id="xCoordText">
+                                 <VBox.margin>
+                                    <Insets left="10.0" right="10.0" top="5.0" />
+                                 </VBox.margin>
+                              </JFXTextField>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" styleClass="editorPaneVbox">
+                           <children>
+                              <Label text="Y Coordinate:" textFill="WHITE">
+                                 <VBox.margin>
+                                    <Insets left="10.0" top="25.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <JFXTextField fx:id="yCoordText" focusColor="#0d2e57" promptText="Enter new Y coordinate..." style="-fx-background-color: #ffffff;" unFocusColor="#ffffff00">
+                                 <VBox.margin>
+                                    <Insets left="10.0" right="10.0" top="5.0" />
+                                 </VBox.margin>
+                              </JFXTextField>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" styleClass="editorPaneVbox">
+                           <children>
+                              <Label text="Full Name:" textFill="WHITE">
+                                 <VBox.margin>
+                                    <Insets left="10.0" top="25.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <JFXTextField fx:id="longNameText" focusColor="#0d2e57" promptText="Enter new full name..." style="-fx-background-color: #ffffff;" unFocusColor="#ffffff00">
+                                 <VBox.margin>
+                                    <Insets left="10.0" right="10.0" top="5.0" />
+                                 </VBox.margin>
+                              </JFXTextField>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" styleClass="editorPaneVbox">
+                           <children>
+                              <Label text="Nickname:" textFill="WHITE">
+                                 <VBox.margin>
+                                    <Insets left="10.0" top="25.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <JFXTextField fx:id="shortNameText" focusColor="#0d2e57" promptText="Enter new nickname..." style="-fx-background-color: #ffffff;" unFocusColor="#ffffff00">
+                                 <VBox.margin>
+                                    <Insets left="10.0" right="10.0" top="5.0" />
+                                 </VBox.margin>
+                              </JFXTextField>
+                           </children>
+                        </VBox>
+                        <VBox fx:id="multiFloorConnection" prefHeight="200.0" prefWidth="100.0" styleClass="editorPaneVbox">
+                           <children>
+                              <Label fx:id="numberlbl" text="Shaft Connection:" textFill="WHITE">
+                                 <VBox.margin>
+                                    <Insets left="10.0" top="25.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <JFXTextField fx:id="numberText" focusColor="#0d2e57" promptText="Enter number..." style="-fx-background-color: #ffffff;" unFocusColor="#ffffff00">
+                                 <VBox.margin>
+                                    <Insets left="10.0" right="10.0" top="5.0" />
+                                 </VBox.margin>
+                              </JFXTextField>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="200.0" spacing="15.0" styleClass="editorPaneVbox">
+                           <children>
+                              <JFXButton fx:id="btnEditConnectionsbtnEditConnections" buttonType="RAISED" defaultButton="true" prefWidth="145.0" ripplerFill="WHITE" style="-fx-background-color: #405784;" text="Edit Connections" textAlignment="CENTER" textFill="WHITE" />
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" styleClass="editorPaneVbox">
+                                 <children>
+                                    <JFXButton fx:id="btnCancel" buttonType="RAISED" prefWidth="62.5" ripplerFill="WHITE" style="-fx-background-color: #405784;" text="Cancel" textAlignment="CENTER" textFill="WHITE" />
+                                    <JFXButton fx:id="btnSave" buttonType="RAISED" onAction="#updateNode" prefWidth="62.5" ripplerFill="WHITE" style="-fx-background-color: #405784;" text="Save" textFill="WHITE" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <VBox prefHeight="200.0" prefWidth="100.0" />
+                           </children>
+                           <VBox.margin>
+                              <Insets top="25.0" />
+                           </VBox.margin>
+                        </VBox>
+                     </children>
+                  </VBox>
                </children>
             </HBox>
          </children>
       </VBox>
    </right>
+   <center>
+      <AnchorPane BorderPane.alignment="CENTER">
+         <children>
+            <MapPane fx:id="map" onAction="#myCustomAction" prefHeight="720.0" prefWidth="1080.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <HBox alignment="CENTER_LEFT" spacing="250.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="10.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT">
+                     <children>
+                        <JFXButton buttonType="RAISED" onAction="#backToMain" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #0D2E57;" text=" " textFill="WHITE">
+                           <HBox.margin>
+                              <Insets left="15.0" top="5.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="10.0" pickOnBounds="true" preserveRatio="true" scaleX="3.0" scaleY="3.0" translateX="4.0">
+                                 <image>
+                                    <Image url="@../assets/baseline_home_white_48dp.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <JFXTextField fx:id="startNode" focusColor="#0d2057" prefWidth="200.0" promptText="Starting Point" style="-fx-border-color: #0D2E57; -fx-border-width: 3;" styleClass="text-field" unFocusColor="#ffffff00">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </JFXTextField>
+                        <JFXButton prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: transparent;" text=" ">
+                           <graphic>
+                              <ImageView fitHeight="13.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true" scaleX="3.5" scaleY="4.5" translateX="3.0">
+                                 <image>
+                                    <Image url="@../assets/map editor/reverseArrow.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></JFXButton>
+                        <JFXTextField fx:id="endNode" focusColor="#0d2057" prefHeight="40.0" prefWidth="200.0" promptText="Destination" style="-fx-border-color: #0D2E57; -fx-border-width: 3;" styleClass="text-field" unFocusColor="#ffffff00">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </JFXTextField>
+                        <JFXButton fx:id="pathFind" buttonType="RAISED" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #0D2E57; -fx-background-radius: 0;" text=" " textFill="WHITE">
+                           <graphic>
+                              <ImageView fitHeight="11.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true" scaleX="3.0" scaleY="3.0" translateX="2.0">
+                                 <image>
+                                       <Image url="@../assets/home page/Search-button-home.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></JFXButton>
+                     </children>
+                  </HBox>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </HBox>
+            <VBox alignment="TOP_CENTER" prefHeight="648.0" prefWidth="70.0" spacing="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="70.0">
+               <children>
+                  <JFXNodesList fx:id="saveNodesList" rotate="270.0" spacing="10.0">
+                     <children>
+                        <JFXButton fx:id="saveOptions" buttonType="RAISED" styleClass="nodeListButton" text=" ">
+                           <tooltip>
+                              <Tooltip autoHide="true" contentDisplay="RIGHT" text="Save Options" />
+                           </tooltip>
+                           <graphic>
+                              <ImageView fitHeight="16.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true" scaleX="2.5" scaleY="2.5" translateX="4.0" translateY="-2.0">
+                                 <image>
+                                    <Image url="@../assets/nodes/SAVE.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
+                        <JFXButton fx:id="saveToDB" onAction="#saveToDB" styleClass="nodeListButton">
+                           <tooltip>
+                              <Tooltip text="Save to Database" />
+                           </tooltip>
+                        </JFXButton>
+                        <JFXButton fx:id="saveToCSV" layoutX="10.0" layoutY="70.0" onAction="#saveToCSV" styleClass="nodeListButton">
+                           <tooltip>
+                              <Tooltip text="Save to CSV" />
+                           </tooltip>
+                        </JFXButton>
+                     </children>
+                  </JFXNodesList>
+                  <JFXNodesList fx:id="loadNodesList" rotate="270.0" spacing="10.0">
+                     <children>
+                        <JFXButton fx:id="loadOptions" buttonType="RAISED" styleClass="nodeListButton" text=" ">
+                           <tooltip>
+                              <Tooltip text="Load Options" />
+                           </tooltip>
+                           <graphic>
+                              <ImageView fitHeight="13.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true" scaleX="3.5" scaleY="3.5" translateX="3.5" translateY="-2.0">
+                                 <image>
+                                    <Image url="@../assets/nodes/UPLOAD.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
+                        <JFXButton fx:id="openDB" buttonType="RAISED" layoutX="10.0" layoutY="10.0" onAction="#openFromDB" styleClass="nodeListButton" text=" ">
+                           <tooltip>
+                              <Tooltip text="Load from Databse" />
+                           </tooltip>
+                        </JFXButton>
+                        <JFXButton fx:id="open" buttonType="RAISED" layoutX="10.0" layoutY="60.0" onAction="#open" styleClass="nodeListButton" text=" ">
+                           <tooltip>
+                              <Tooltip text="Load from CSV" />
+                           </tooltip>
+                        </JFXButton>
+                     </children>
+                  </JFXNodesList>
+                  <JFXNodesList fx:id="pathNodesList" alignment="TOP_CENTER" prefHeight="16.0" prefWidth="10.0" rotate="270.0" spacing="10.0">
+                     <children>
+                        <JFXButton fx:id="pathfindingOptions" buttonType="RAISED" styleClass="nodeListButton" text=" ">
+                           <tooltip>
+                              <Tooltip text="Switch Pathfinding Algorithm" />
+                           </tooltip>
+                           <graphic>
+                              <ImageView fitHeight="81.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true" scaleX="2.0" scaleY="2.0" translateX="2.0" translateY="1.0">
+                                 <image>
+                                    <Image url="@../assets/map editor/AStar.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
+                        <JFXButton fx:id="pathfindingOptions1" buttonType="RAISED" styleClass="nodeListButton" text=" ">
+                           <tooltip>
+                              <Tooltip text="A*" />
+                           </tooltip>
+                           <graphic>
+                              <ImageView fitHeight="19.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true" scaleX="2.0" scaleY="2.0" translateX="2.0" translateY="1.0">
+                                 <image>
+                                    <Image url="@../assets/map editor/AStar.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
+                        <JFXButton fx:id="pathfindingOptions11" buttonType="RAISED" prefHeight="42.0" prefWidth="49.0" styleClass="nodeListButton" text=" ">
+                           <tooltip>
+                              <Tooltip text="Depth First" />
+                           </tooltip>
+                           <graphic>
+                              <ImageView fitHeight="17.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true" scaleX="3.0" scaleY="3.0" translateX="3.0" translateY="-1.0">
+                                 <image>
+                                    <Image url="@../assets/map editor/DepthFirst.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
+                        <JFXButton fx:id="pathfindingOptions111" buttonType="RAISED" prefHeight="146.0" prefWidth="206.0" styleClass="nodeListButton" text=" ">
+                           <tooltip>
+                              <Tooltip text="Breadth First" />
+                           </tooltip>
+                           <graphic>
+                              <ImageView fitHeight="18.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true" scaleX="3.5" scaleY="3.5" translateX="4.0">
+                                 <image>
+                                    <Image url="@../assets/map editor/Breath First.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
+                     </children>
+                  </JFXNodesList>
+                  <JFXToggleNode fx:id="eraser" onAction="#handleTools" prefHeight="68.0" style="-fx-background-radius: 68;">
+                     <graphic>
+                        <JFXButton buttonType="RAISED" styleClass="nodeListButton" text=" ">
+                           <graphic>
+                                          <ImageView fitHeight="15.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true" scaleX="3.0" scaleY="3.0" translateX="3.0">
+                                              <image>
+                                                  <Image url="@../assets/map editor/eraser.png" />
+                                              </image>
+                                          </ImageView>
+                           </graphic>
+                        </JFXButton>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Eraser Tool (For removing nodes and edges)" />
+                     </tooltip>
+                  </JFXToggleNode>
+               </children>
+            </VBox>
+            <VBox AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="15.0" fx:id="floorSelector">
+               <children>
+                  <JFXButton fx:id="floorUp" buttonType="RAISED" onAction="#changeFloor" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 20 20 0 0;" styleClass="floorChangeButton" text="▲" textFill="WHITE" />
+                  <JFXButton fx:id="floorDown" buttonType="RAISED" onAction="#changeFloor" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 0 0 20 20;" styleClass="floorChangeButton" text="▼" textFill="WHITE" />
+               </children>
+            </VBox>
+            <HBox layoutX="228.0" layoutY="225.0" spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0">
+               <children>
+                  <JFXNodesList rotate="270.0" spacing="10.0">
+                     <children>
+                        <JFXButton layoutX="15.0" layoutY="70.0" styleClass="nodeTypeButton" text=" ">
+                           <tooltip>
+                              <Tooltip text="ELEV (Elevator)" />
+                           </tooltip>
+                        </JFXButton>
+                        <JFXButton fx:id="node" onAction="#insertNode" styleClass="nodeListButton" text="+">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                           <tooltip>
+                              <Tooltip text="Add Node (click and drag to add node)" />
+                           </tooltip>
+                        </JFXButton>
+                        <JFXButton styleClass="nodeTypeButton" text=" ">
+                           <tooltip>
+                              <Tooltip text="HALL (Hallway)" />
+                           </tooltip>
+                        </JFXButton>
+                        <JFXButton layoutX="15.0" layoutY="123.0" styleClass="nodeTypeButton" text=" ">
+                           <tooltip>
+                              <Tooltip text="REST (Restroom)" />
+                           </tooltip>
+                        </JFXButton>
+                        <JFXButton layoutX="15.0" layoutY="176.0" styleClass="nodeTypeButton" text=" ">
+                           <tooltip>
+                              <Tooltip text="STAI (Stairwell)" />
+                           </tooltip>
+                        </JFXButton>
+                        <JFXButton layoutX="15.0" layoutY="230.0" styleClass="nodeTypeButton" text=" ">
+                           <tooltip>
+                              <Tooltip text="DEPT (Medical departments, Clinics, Waiting Areas)" />
+                           </tooltip>
+                        </JFXButton>
+                        <JFXButton layoutX="15.0" layoutY="549.0" styleClass="nodeTypeButton" text=" ">
+                           <tooltip>
+                              <Tooltip text="LABS (Labs, Imaging Centers, Medical Testing Areas)" />
+                           </tooltip>
+                        </JFXButton>
+                        <JFXButton layoutX="15.0" layoutY="283.0" styleClass="nodeTypeButton" text=" ">
+                           <tooltip>
+                              <Tooltip text="INFO (Information, Security, Lost &amp; Found)" />
+                           </tooltip>
+                        </JFXButton>
+                        <JFXButton layoutX="15.0" layoutY="336.0" styleClass="nodeTypeButton" text=" ">
+                           <tooltip>
+                              <Tooltip text="CONF (Conference Rooms)" />
+                           </tooltip>
+                        </JFXButton>
+                        <JFXButton layoutX="15.0" layoutY="389.0" styleClass="nodeTypeButton" text=" ">
+                           <tooltip>
+                              <Tooltip text="EXIT (Exit/Entrance)" />
+                           </tooltip>
+                        </JFXButton>
+                        <JFXButton layoutX="15.0" layoutY="442.0" styleClass="nodeTypeButton" text=" ">
+                           <tooltip>
+                              <Tooltip text="RETL (Shops, Food, Payphone, etc.)" />
+                           </tooltip>
+                        </JFXButton>
+                        <JFXButton layoutX="15.0" layoutY="496.0" styleClass="nodeTypeButton" text=" ">
+                           <tooltip>
+                              <Tooltip text="SERV (Hospital Non-Medical Services, Interpreters, Shuttles, Library, etc.)" />
+                           </tooltip>
+                        </JFXButton>
+                     </children>
+                     <HBox.margin>
+                        <Insets bottom="10.0" />
+                     </HBox.margin>
+                  </JFXNodesList>
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+   </center>
 </BorderPane>
