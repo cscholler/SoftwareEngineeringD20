@@ -123,7 +123,7 @@
                         <Insets left="10.0" />
                      </padding>
                   </JFXTextField>
-                  <JFXTextField fx:id="roomNumText" labelFloat="true" onAction="#handleButtonAction" prefHeight="40.0" promptText="Patient Room Number " unFocusColor="BLACK">
+                  <JFXTextField fx:id="roomNumText" labelFloat="true" onAction="#handleButtonAction" onKeyPressed="#autocomplete" prefHeight="40.0" promptText="Patient Room Number " unFocusColor="BLACK">
                      <font>
                         <Font size="20.0" />
                      </font>

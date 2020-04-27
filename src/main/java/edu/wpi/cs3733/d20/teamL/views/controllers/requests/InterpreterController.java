@@ -1,16 +1,17 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 
-import java.io.IOException;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.ResourceBundle;
-
+import com.google.inject.Inject;
+import com.jfoenix.controls.JFXAutoCompletePopup;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
+import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
-import edu.wpi.cs3733.d20.teamL.services.search.SearchFields;
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
+import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
+import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,17 +20,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 
-import com.google.inject.Inject;
-
-import com.jfoenix.controls.JFXAutoCompletePopup;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTextField;
-
-import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
-import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
-import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
-import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
+import java.io.IOException;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.ResourceBundle;
 
 public class InterpreterController implements Initializable {
     public JFXButton btnSpanish;
@@ -104,14 +101,14 @@ public class InterpreterController implements Initializable {
 
             String concatenatedNotes = interpreterType + "\n" + patientName + "\n" + roomNumber + "\n" + userID + "\n" + assignedTo + "\n" +additionalInfo;
             int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
-                    new ArrayList<>(Arrays.asList(interpreterType, patientName, roomNumber, userID, assignedTo, additionalInfo, concatenatedNotes, status)))));
+                    new ArrayList<>(Arrays.asList(interpreterType, patientName, roomNumber, user, assignedTo, additionalInfo, concatenatedNotes, dateAndTime, status)))));
 
             if (rows == 0) {
                 confirmation.setTextFill(Color.RED);
                 confirmation.setText("Submission failed      ");
             } else {
                 confirmation.setTextFill(Color.WHITE);
-                confirmation.setText("Medication Request Sent");
+                confirmation.setText("Interpreter Request Sent");
 
                 interpType.setText("Interpreter Type:");
                 pNameText.setText("");
