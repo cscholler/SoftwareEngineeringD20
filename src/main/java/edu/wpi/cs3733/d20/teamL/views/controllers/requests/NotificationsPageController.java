@@ -216,11 +216,7 @@ public class NotificationsPageController implements Initializable {
     }
 
     @FXML
-    private void btnBackClicked() throws IOException {
-    	// TODO: replace with unified staff screen
-//    	String returnScreen = user.getAcctType().equals("3") ? "AdminView" : "StaffView";
-//		Parent root = loaderHelper.getFXMLLoader(returnScreen).load();
-//		loaderHelper.setupScene(new Scene(root));
+    private void btnBackClicked() {
 		loaderHelper.goBack();
 	}
 
