@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane prefHeight="720.0" prefWidth="1080.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.ServiceRequestController">
@@ -32,70 +33,128 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <JFXButton alignment="CENTER" contentDisplay="CENTER" minWidth="200.0" onAction="#securityClicked" prefHeight="200.0" prefWidth="100.0" style="-fx-background-radius: 125; -fx-border-radius: 125; -fx-border-color: white;" text=" " GridPane.halignment="RIGHT">
-               <graphic>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../assets/Services/security.png" />
-                     </image>
-                  </ImageView>
-               </graphic></JFXButton>
-            <JFXButton alignment="CENTER" contentDisplay="CENTER" minWidth="200.0" onAction="#outTransClicked" prefHeight="200.0" prefWidth="100.0" style="-fx-background-radius: 125; -fx-border-radius: 125; -fx-border-color: white;" text=" " GridPane.columnIndex="1" GridPane.halignment="CENTER">
-               <graphic>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../assets/Services/taxi.png" />
-                     </image>
-                  </ImageView>
-               </graphic></JFXButton>
-            <JFXButton alignment="CENTER" contentDisplay="CENTER" minWidth="200.0" onAction="#giftRequestClicked" prefHeight="200.0" prefWidth="100.0" style="-fx-background-radius: 125; -fx-border-radius: 125; -fx-border-color: white;" text=" " GridPane.halignment="RIGHT" GridPane.rowIndex="1">
-               <graphic>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../assets/Services/gift.png" />
-                     </image>
-                  </ImageView>
-               </graphic></JFXButton>
-            <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" minWidth="200.0" onAction="#medRequestClicked" prefHeight="200.0" prefWidth="100.0" ripplerFill="WHITE" style="-fx-background-radius: 125; -fx-border-radius: 125; -fx-border-color: white;" text=" " GridPane.columnIndex="2">
-               <graphic>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../assets/Services/pharmacy.png" />
-                     </image>
-                  </ImageView>
-               </graphic></JFXButton>
-            <JFXButton alignment="CENTER" contentDisplay="CENTER" minWidth="200.0" onAction="#inTransClicked" prefHeight="200.0" prefWidth="100.0" style="-fx-background-radius: 125; -fx-border-radius: 125; -fx-border-color: white;" text=" " GridPane.halignment="RIGHT" GridPane.rowIndex="2">
-               <graphic>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../assets/Services/wheelchair.png" />
-                     </image>
-                  </ImageView>
-               </graphic></JFXButton>
-            <JFXButton alignment="CENTER" contentDisplay="CENTER" minWidth="200.0" onAction="#maintainanceClicked" prefHeight="200.0" prefWidth="100.0" style="-fx-background-radius: 125; -fx-border-radius: 125; -fx-border-color: white;" text=" " GridPane.columnIndex="2" GridPane.rowIndex="1">
-               <graphic>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../assets/Services/wrench.png" />
-                     </image>
-                  </ImageView>
-               </graphic></JFXButton>
-            <JFXButton alignment="CENTER" contentDisplay="CENTER" minWidth="200.0" onAction="#translateClicked" prefHeight="200.0" prefWidth="100.0" style="-fx-background-radius: 125; -fx-border-radius: 125; -fx-border-color: white;" text=" " GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
-               <graphic>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../assets/Services/translate.png" />
-                     </image>
-                  </ImageView>
-               </graphic></JFXButton>
-            <JFXButton alignment="CENTER" contentDisplay="CENTER" minWidth="200.0" onAction="#sanitationClicked" prefHeight="200.0" prefWidth="100.0" style="-fx-background-radius: 125; -fx-border-radius: 125; -fx-border-color: white;" text=" " GridPane.columnIndex="2" GridPane.rowIndex="2">
-               <graphic>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-               </graphic></JFXButton>
-            <JFXButton alignment="CENTER" contentDisplay="CENTER" minWidth="200.0" onAction="#itClicked" prefHeight="200.0" prefWidth="100.0" style="-fx-background-radius: 125; -fx-border-radius: 125; -fx-border-color: white;" styleClass="circle-button" text="IT" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-               <font>
-                  <Font size="13.0" />
-               </font></JFXButton>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#securityClicked" style="-fx-background-radius: 125; -fx-border-radius: 125; -fx-border-color: white;" styleClass="circle-button" text=" ">
+                     <graphic>
+                        <ImageView fitHeight="116.0" fitWidth="118.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/Services/security.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
+                  <Label text="Security" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+               <children>
+                  <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#giftRequestClicked" style="-fx-background-radius: 125; -fx-border-radius: 125; -fx-border-color: white;" styleClass="circle-button" text=" ">
+                     <graphic>
+                        <ImageView pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/Services/gift.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
+                  <Label text="Gift" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2">
+               <children>
+                  <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#maintainanceClicked" style="-fx-background-radius: 125; -fx-border-radius: 125; -fx-border-color: white;" styleClass="circle-button" text=" ">
+                     <graphic>
+                        <ImageView pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/Services/wrench.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
+                  <Label text="Maintenance" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
+               <children>
+                  <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#outTransClicked" style="-fx-background-radius: 125; -fx-border-radius: 125; -fx-border-color: white;" styleClass="circle-button" text=" ">
+                     <graphic>
+                        <ImageView fitHeight="109.0" fitWidth="121.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/Services/taxi.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
+                  <Label text="Transport Out" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                  <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" onAction="#medRequestClicked" ripplerFill="WHITE" style="-fx-background-radius: 125; -fx-border-radius: 125; -fx-border-color: white;" styleClass="circle-button" text=" ">
+                     <graphic>
+                        <ImageView pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/Services/pharmacy.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
+                  <Label text="Medication" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <children>
+                  <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#inTransClicked" style="-fx-background-radius: 125; -fx-border-radius: 125; -fx-border-color: white;" styleClass="circle-button" text=" ">
+                     <graphic>
+                        <ImageView pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/Services/wheelchair.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
+                  <Label text="Transport In" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2">
+               <children>
+                  <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#sanitationClicked" style="-fx-background-radius: 125; -fx-border-radius: 125; -fx-border-color: white;" styleClass="circle-button" text=" ">
+                     <graphic>
+                        <ImageView fitHeight="124.0" fitWidth="104.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/Services/mop.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
+                  <Label text="Sanitation" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+                  <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#translateClicked" style="-fx-background-radius: 125; -fx-border-radius: 125; -fx-border-color: white;" styleClass="circle-button" text=" ">
+                     <graphic>
+                        <ImageView pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/Services/translate.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
+                  <Label text="Translate" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+               <children>
+                  <JFXButton alignment="CENTER" contentDisplay="CENTER" onAction="#itClicked" style="-fx-background-radius: 125; -fx-border-radius: 125; -fx-border-color: white;" styleClass="circle-button" text="IT" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </JFXButton>
+                  <Label text="Info Technology" />
+               </children>
+            </VBox>
          </children>
          <padding>
             <Insets left="5.0" right="5.0" />
@@ -103,13 +162,25 @@
       </GridPane>
    </center>
    <top>
-      <HBox prefHeight="53.0" prefWidth="1080.0" spacing="320.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="53.0" prefWidth="1080.0" spacing="320.0" BorderPane.alignment="CENTER">
          <children>
-            <JFXButton onAction="#backClicked" text="Back" />
-            <Label text="Service Requests" textFill="WHITE" />
+            <HBox prefHeight="58.0" prefWidth="623.0">
+               <children>
+                  <JFXButton onAction="#backClicked" text="Back">
+                     <HBox.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </HBox.margin>
+                  </JFXButton>
+               </children>
+            </HBox>
+            <HBox>
+               <children>
+                  <Label prefHeight="58.0" prefWidth="1226.0" text="Service Requests" textFill="WHITE" />
+               </children>
+            </HBox>
          </children>
          <BorderPane.margin>
-            <Insets left="10.0" top="10.0" />
+            <Insets />
          </BorderPane.margin>
       </HBox>
    </top>
