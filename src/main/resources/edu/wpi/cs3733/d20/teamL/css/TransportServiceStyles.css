@@ -1,0 +1,14 @@
+.text-field {
+    -fx-border-radius: 5 0 0 5;
+    -fx-background-color: white;
+    -fx-pref-height: 40px;
+    -fx-pref-width: 250;
+}
+
+.button {
+    -fx-padding: 10;
+    -fx-background-color: #c3c3c3;
+    -fx-text-fill: black;
+    -fx-pref-height: 40;
+    -fx-pref-width: 80;
+}

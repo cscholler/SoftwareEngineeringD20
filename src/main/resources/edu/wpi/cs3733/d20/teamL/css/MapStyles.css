@@ -5,5 +5,38 @@
 
 .button {
     -fx-padding: 10;
-    -fx-background-color: grey;
+    -fx-background-color: #405784;
+    -fx-text-fill: white;
+}
+
+.clear {
+    -fx-text-fill: black;
+    -fx-background-color: white;
+    -fx-border-color: white;
+    -fx-border-width: 2px;
+    -fx-pref-height: 30px;
+    -fx-border-radius: 0 10 10 0;
+}
+
+.text-field {
+    -fx-border-radius: 10 0 0 10;
+    -fx-background-color: white;
+    -fx-pref-height: 20px;
+    -fx-pref-width: 250;
+}
+
+.floor-buttons {
+    -fx-padding: 5;
+    -fx-background-color: #0e2d57;
+    -fx-text-fill: white;
+    -fx-pref-width: 40;
+    -fx-pref-height: 40;
+    -fx-background-radius: 0;
+}
+.circle-button {
+    -fx-background-radius: 20;
+    -fx-pref-width: 40;
+    -fx-pref-height: 40;
+    -fx-background-color: #405784;
+    -fx-text-fill: white;
 }
