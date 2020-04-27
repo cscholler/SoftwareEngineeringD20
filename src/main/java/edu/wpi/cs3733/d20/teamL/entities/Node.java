@@ -146,6 +146,16 @@ public class Node {
     }
 
     /**
+     * Adds a new Edge leading to the given node
+     *
+     * @param otherNode The node this edge leads to
+     */
+    public void addEdge(Node otherNode) {
+        Edge newEdge = new Edge(this, otherNode);
+        newEdge.setSource(this);
+    }
+
+    /**
      * Adds a new edge to the Node and one to the destination node to this one.
      *
      * @param newEdge The edge to add
@@ -156,6 +166,17 @@ public class Node {
         Edge otherEdge = new Edge(newEdge.getDestination(), this);
 
         newEdge.getDestination().addEdge(otherEdge);
+    }
+
+    /**
+     * Adds a new edge to the Node and one to the destination node to this one.
+     *
+     * @param otherNode The node to add a two way edge to
+     */
+    public void addEdgeTwoWay(Node otherNode) {
+        addEdge(otherNode);
+
+        otherNode.addEdge(this);
     }
 
     /**
