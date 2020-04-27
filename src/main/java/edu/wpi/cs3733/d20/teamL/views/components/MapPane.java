@@ -62,9 +62,10 @@ public class MapPane extends StackPane {
     private boolean erasing = false;
 
     private EdgeGUI tempEdge;
-    private int circleRadius = 12;
+    private int nodeRadius = 12;
     private Color nodeColor = Color.DARKBLUE;
-    private Paint highLightColor = Color.rgb(20, 194, 247);
+    private Color highLightColor = Color.rgb(20, 194, 247);
+    private double edgeThickness = 3;
     private double highlightThickness = 2;
     private Building currentBuilding;
 
@@ -245,6 +246,50 @@ public class MapPane extends StackPane {
         this.currentBuilding = currentBuilding;
     }
 
+    public void setSelectedNode(Node selectedNode) {
+        this.selectedNode = selectedNode;
+    }
+
+    public int getNodeRadius() {
+        return nodeRadius;
+    }
+
+    public void setNodeRadius(int nodeRadius) {
+        this.nodeRadius = nodeRadius;
+    }
+
+    public Color getNodeColor() {
+        return nodeColor;
+    }
+
+    public void setNodeColor(Color nodeColor) {
+        this.nodeColor = nodeColor;
+    }
+
+    public Paint getHighLightColor() {
+        return highLightColor;
+    }
+
+    public void setHighLightColor(Color highLightColor) {
+        this.highLightColor = highLightColor;
+    }
+
+    public double getHighlightThickness() {
+        return highlightThickness;
+    }
+
+    public void setHighlightThickness(double highlightThickness) {
+        this.highlightThickness = highlightThickness;
+    }
+
+    public double getEdgeThickness() {
+        return edgeThickness;
+    }
+
+    public void setEdgeThickness(double edgeThickness) {
+        this.edgeThickness = edgeThickness;
+    }
+
     /**
      * Gets what floor the map is currently displaying. This is simply a shortcut for mapPane.getCurrentFloor.getFloor().
      *
@@ -354,7 +399,7 @@ public class MapPane extends StackPane {
     public NodeGUI addNode(Node node) {
         NodeGUI nodeGUI = new NodeGUI(node);
 
-        nodeGUI.getCircle().setRadius(circleRadius);
+        nodeGUI.getCircle().setRadius(nodeRadius);
         nodeGUI.getCircle().fillProperty().setValue(nodeColor);
         nodeGUI.setHighlightColor(highLightColor);
         nodeGUI.setHighlightRadius(highlightThickness);
@@ -405,7 +450,7 @@ public class MapPane extends StackPane {
 
                 // -----------Handle adding the edge-----------
                 if (event.isSecondaryButtonDown() && !draggingNode && !dragSelecting && !erasing) {
-                    tempEdge = new EdgeGUI(circleRadius / 4, nodeColor, highLightColor, highlightThickness);
+                    tempEdge = new EdgeGUI(nodeRadius / 4, nodeColor, highLightColor, highlightThickness);
                     tempEdge.startXProperty().bind(nodeGUI.getXProperty());
                     tempEdge.startYProperty().bind(nodeGUI.getYProperty());
                     tempEdge.setEndX(tempEdge.getStartX());
@@ -522,6 +567,7 @@ public class MapPane extends StackPane {
         edgeGUI.strokeProperty().setValue(nodeColor);
         edgeGUI.setHighlightColor(highLightColor);
         edgeGUI.setHighlightRadius(highlightThickness);
+        edgeGUI.setStrokeWidth(edgeThickness);
 
         // Set start position of the line to the source node
         edgeGUI.startXProperty().bind(getNodeGUI(edge.getSource()).getXProperty());

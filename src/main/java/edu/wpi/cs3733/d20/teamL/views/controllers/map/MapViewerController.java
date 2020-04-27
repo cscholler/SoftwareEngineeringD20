@@ -75,12 +75,12 @@ public class MapViewerController {
         cache.cacheAllFromDB();
 
         map.setEditable(false);
+        map.setHighLightColor(Color.BLUE);
         btnNavigate.setDisableVisualFocus(true);
 
         Building startBuilding = new Building("Faulkner");
         startBuilding.addAllNodes(cache.getNodeCache());
         map.setBuilding(startBuilding);
-
         map.setFloor(2);
 
         // Add floor buttons
@@ -99,6 +99,7 @@ public class MapViewerController {
         map.init();
         map.getScroller().setVvalue(0.5);
         map.getScroller().setHvalue(0.5);
+
 
         sf = new SearchFields(cache.getNodeCache());
         sf.getFields().addAll(Arrays.asList(SearchFields.Field.shortName, SearchFields.Field.longName));
