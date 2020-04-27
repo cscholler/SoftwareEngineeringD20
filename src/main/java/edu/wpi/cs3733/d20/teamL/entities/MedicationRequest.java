@@ -19,9 +19,9 @@ public class MedicationRequest {
 							 String nurseUsername, String delivererUsername, String dose, String medType,
 							 String notes, String status, String dateAndTime) {
     	this.id = id;
-		this.doctorID = doctorID;
 		this.patientID = patientID;
-        this.patientName = patientName;
+		this.patientName = patientName;
+		this.doctorID = doctorID;
 		this.roomNum = roomNum;
         this.nurseUsername = nurseUsername;
         this.delivererUsername = delivererUsername;

@@ -91,8 +91,8 @@ public class DBConstants {
 	public static final String CREATE_MEDICATION_REQUEST_TABLE =
 			"CREATE TABLE Medication_Requests(" +
 					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
-					"doctor_id INT NOT NULL REFERENCES Doctors(id), " +
 					"patient_id INT NOT NULL REFERENCES Patients(id), " +
+					"doctor_id INT NOT NULL REFERENCES Doctors(id), " +
 					"nurse_username VARCHAR(32) NOT NULL REFERENCES Users(username), " +
 					"deliverer_username VARCHAR(32) REFERENCES Users(username), " +
 					"dose VARCHAR(64) NOT NULL, " +
@@ -209,6 +209,11 @@ public class DBConstants {
 			"SELECT id, username, f_name, l_name, acct_type " +
 					"FROM Users " +
 					"WHERE id = ?";
+
+	public static final String GET_NAME_BY_USERNAME =
+			"SELECT f_name, l_name " +
+					"FROM Users " +
+					"WHERE username = ?";
 
 	public static final String SELECT_ALL_DOCTORS =
 			"SELECT * " +
