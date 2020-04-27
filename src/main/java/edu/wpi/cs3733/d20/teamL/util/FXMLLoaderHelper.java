@@ -73,7 +73,7 @@ public class FXMLLoaderHelper {
 	 */
 	public void goBack() {
 		history.pop();
-		setupScene(history.firstElement());
+		setupScene(history.pop());
 	}
 
 	/**
