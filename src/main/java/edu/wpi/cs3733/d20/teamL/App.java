@@ -2,6 +2,8 @@ package edu.wpi.cs3733.d20.teamL;
 
 import java.io.IOException;
 
+import com.google.inject.Inject;
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
@@ -17,6 +19,9 @@ public class App extends Application {
 	public static Stage stage;
 	public static final double SCREEN_WIDTH = Screen.getPrimary().getVisualBounds().getWidth();
 	public static final double SCREEN_HEIGHT = Screen.getPrimary().getVisualBounds().getHeight();
+
+	@Inject
+	private IDatabaseService dbService;
 
 	@Override
 	public void init() {
@@ -39,5 +44,6 @@ public class App extends Application {
 	@Override
 	public void stop() {
 		log.info("Shutting Down");
+		//dbService.stopService();
 	}
 }
