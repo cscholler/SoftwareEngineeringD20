@@ -35,7 +35,7 @@
                   </Label>
                </children>
             </HBox>
-            <JFXButton fx:id="btnSpanish" alignment="TOP_LEFT" maxWidth="1000.0" style="-fx-background-color: lightgray; -fx-border-color: gray;" text="     Español (Spanish)" VBox.vgrow="ALWAYS">
+            <JFXButton fx:id="btnSpanish" alignment="TOP_LEFT" maxWidth="1000.0" onAction="#autoFillLanguage" style="-fx-background-color: lightgray; -fx-border-color: gray;" text="     Español (Spanish)" VBox.vgrow="ALWAYS">
                <graphic>
                   <ImageView fitHeight="60.0" fitWidth="100.0">
                      <image>
@@ -47,7 +47,7 @@
                   <Insets bottom="7.5" left="7.5" right="7.5" top="20.0" />
                </padding>
             </JFXButton>
-            <JFXButton fx:id="btnFrench" alignment="TOP_LEFT" maxWidth="1000.0" prefHeight="95.0" style="-fx-background-color: lightgray; -fx-border-color: gray;" text="     Français (French)">
+            <JFXButton fx:id="btnFrench" alignment="TOP_LEFT" maxWidth="1000.0" onAction="#autoFillLanguage" prefHeight="95.0" style="-fx-background-color: lightgray; -fx-border-color: gray;" text="     Français (French)">
                <graphic>
                   <ImageView fitHeight="60.0" fitWidth="100.0">
                      <image>
@@ -59,7 +59,7 @@
                   <Insets bottom="7.5" left="7.5" right="7.5" top="20.0" />
                </padding>
             </JFXButton>
-            <JFXButton fx:id="btnItalian" alignment="TOP_LEFT" maxWidth="1000.0" prefHeight="95.0" style="-fx-background-color: lightgray; -fx-border-color: gray;" text="     Italiano (Italian)">
+            <JFXButton fx:id="btnItalian" alignment="TOP_LEFT" maxWidth="1000.0" onAction="#autoFillLanguage" prefHeight="95.0" style="-fx-background-color: lightgray; -fx-border-color: gray;" text="     Italiano (Italian)">
                <graphic>
                   <ImageView fitHeight="60.0" fitWidth="100.0">
                      <image>
@@ -71,7 +71,7 @@
                   <Insets bottom="7.5" left="7.5" right="7.5" top="20.0" />
                </padding>
             </JFXButton>
-            <JFXButton fx:id="btnASL" alignment="TOP_LEFT" maxWidth="1000.0" prefHeight="95.0" style="-fx-background-color: lightgray; -fx-border-color: gray;" text="     American Sign Language">
+            <JFXButton fx:id="btnASL" alignment="TOP_LEFT" maxWidth="1000.0" onAction="#autoFillLanguage" prefHeight="95.0" style="-fx-background-color: lightgray; -fx-border-color: gray;" text="     American Sign Language">
                <graphic>
                   <ImageView fitHeight="60.0" fitWidth="100.0">
                      <image>
@@ -83,7 +83,7 @@
                   <Insets bottom="7.5" left="7.5" right="7.5" top="20.0" />
                </padding>
             </JFXButton>
-            <JFXButton fx:id="btnChinese" alignment="TOP_LEFT" maxWidth="1000.0" prefHeight="95.0" style="-fx-background-color: lightgray; -fx-border-color: gray;" text="     中文 (Chinese)">
+            <JFXButton fx:id="btnChinese" alignment="TOP_LEFT" maxWidth="1000.0" onAction="#autoFillLanguage" prefHeight="95.0" style="-fx-background-color: lightgray; -fx-border-color: gray;" text="     中文 (Chinese)">
                <graphic>
                   <ImageView fitHeight="60.0" fitWidth="100.0">
                      <image>
@@ -108,16 +108,13 @@
             </Label>
          </top>
          <center>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="50.0" BorderPane.alignment="CENTER">
+            <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="50.0" BorderPane.alignment="CENTER">
                <children>
-                  <JFXTextField fx:id="interpTypeText" labelFloat="true" onAction="#handleButtonAction" prefHeight="40.0" promptText="Interpreter Type " unFocusColor="BLACK">
+                  <Label fx:id="interpType" text="Interpreter Type: " textFill="WHITE">
                      <font>
                         <Font size="20.0" />
                      </font>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </JFXTextField>
+                  </Label>
                   <JFXTextField fx:id="pNameText" labelFloat="true" onAction="#handleButtonAction" prefHeight="40.0" promptText="Patient Name " unFocusColor="BLACK">
                      <font>
                         <Font size="20.0" />
