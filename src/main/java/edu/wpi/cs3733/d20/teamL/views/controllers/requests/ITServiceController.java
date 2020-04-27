@@ -64,7 +64,7 @@ public class ITServiceController implements Initializable {
 
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
 
-        typeBox.setValue("Request Type:");
+        typeBox.setPromptText("Request Type:");
         typeBox.setItems(options);
     }
 
@@ -96,7 +96,7 @@ public class ITServiceController implements Initializable {
     private void submitClicked() {
         String userName = loginManager.getCurrentUser().getUsername();
         String location = locationText.getText();
-        String type = (String) typeBox.getValue();
+        String type = typeBox.getPromptText();
         String notes = notesText.getText();
 
         String status = "0";
@@ -113,7 +113,7 @@ public class ITServiceController implements Initializable {
             confirmation.setText("IT Request Sent");
 
             locationText.setText("");
-            typeBox.setValue("Request Type:");
+            typeBox.setPromptText("Request Type:");
             notesText.setText("");
         }
         loaderHelper.showAndFade(confirmation);
