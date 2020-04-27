@@ -1,4 +1,6 @@
 .circle-button {
     -fx-font-size: 120;
     -fx-text-fill: white;
+    -fx-background-color: #405784;
+    -fx-text-fill: white;
 }
