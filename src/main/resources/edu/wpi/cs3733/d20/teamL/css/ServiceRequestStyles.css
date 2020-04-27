@@ -5,15 +5,18 @@
 
 .label {
     -fx-font-size: 30;
+    -fx-text-fill: white;
 }
 
 .title {
     -fx-font-size: 70;
+    -fx-text-fill: white;
 }
 
 .button{
     -fx-background-radius: 5px;
     -fx-background-color: #405784;
+    -fx-text-fill: white;
 }
 
 .text-field {
@@ -26,3 +29,6 @@
     -fx-pref-height: 150px;
 }
 
+.title-background {
+    -fx-background-color:  #00032E;
+}
