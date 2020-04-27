@@ -4,6 +4,8 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -22,11 +24,11 @@
       </HBox>
    </top>
    <bottom>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
          <children>
             <JFXButton fx:id="btnBack" buttonType="RAISED" maxWidth="200.0" onAction="#backClicked" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #dfdfdc;" text="Back">
                <HBox.margin>
-                  <Insets right="20.0" />
+                  <Insets />
                </HBox.margin>
                <font>
                   <Font size="24.0" />
@@ -37,9 +39,14 @@
                   <Font size="24.0" />
                </font>
             </JFXButton>
+            <Label fx:id="confirmation" text="IT Request Sent" visible="false">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
          </children>
          <padding>
-            <Insets right="10.0" />
+            <Insets left="100.0" />
          </padding>
       </HBox>
    </bottom>
@@ -52,10 +59,18 @@
    <center>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox alignment="CENTER" prefHeight="562.0" prefWidth="435.0" spacing="50.0">
+            <VBox alignment="CENTER_LEFT" prefHeight="562.0" prefWidth="435.0" spacing="50.0">
                <children>
-                  <JFXTextField prefHeight="40.0" prefWidth="300.0" />
-                  <JFXTextField labelFloat="true" prefHeight="40.0" prefWidth="300.0" promptText="Subject">
+                  <Label text="Enter Information:">
+                     <font>
+                        <Font name="System Bold" size="36.0" />
+                     </font>
+                  </Label>
+                  <JFXTextField fx:id="locationText" focusColor="#0d2e57" labelFloat="true" prefHeight="40.0" prefWidth="300.0" promptText="Location">
+                     <font>
+                        <Font size="14.0" />
+                     </font></JFXTextField>
+                  <JFXTextField fx:id="typeText" focusColor="#0d2e57" labelFloat="true" prefHeight="40.0" prefWidth="300.0" promptText="Type of Request">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -63,22 +78,30 @@
                         <Insets />
                      </VBox.margin>
                   </JFXTextField>
-                  <JFXTextField labelFloat="true" prefHeight="40.0" prefWidth="300.0" promptText="Subject">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </JFXTextField>
-                  <JFXTextField prefHeight="40.0" prefWidth="300.0" promptText="Subject">
+                  <JFXTextField fx:id="notesText" alignment="TOP_LEFT" focusColor="#0d2e57" prefHeight="150.0" prefWidth="380.0" promptText="Additional Notes">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </JFXTextField>
                </children>
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
             </VBox>
-            <VBox prefHeight="520.0" prefWidth="445.0" />
+            <VBox alignment="CENTER" prefHeight="520.0" prefWidth="445.0">
+               <children>
+                  <ImageView fitHeight="523.0" fitWidth="447.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/computer.png" />
+                     </image>
+                     <VBox.margin>
+                        <Insets left="50.0" top="50.0" />
+                     </VBox.margin>
+                  </ImageView>
+               </children>
+               <HBox.margin>
+                  <Insets left="60.0" />
+               </HBox.margin></VBox>
          </children>
       </HBox>
    </center>

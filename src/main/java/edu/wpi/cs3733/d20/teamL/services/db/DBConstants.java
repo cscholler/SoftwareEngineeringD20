@@ -161,6 +161,10 @@ public class DBConstants {
 			"INSERT INTO Medication_Requests(doctor_id, patient_id, nurse_name, dose, type, notes, status, date_and_time)" +
 					"VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 
+	public static final String ADD_SERVICE_REQUEST =
+			"INSERT INTO Service_Requests(patient_id, request_username, assignee_username, location, service, type, notes, status, date_and_time)" +
+					"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
 	public static final String SELECT_ALL_NODES =
 			"SELECT * " +
 					"FROM Nodes";
