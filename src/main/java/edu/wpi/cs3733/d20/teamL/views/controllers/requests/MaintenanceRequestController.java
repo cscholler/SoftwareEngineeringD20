@@ -13,6 +13,7 @@ import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -43,7 +44,7 @@ public class MaintenanceRequestController implements Initializable {
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-        loggedInUsername = "maintenance_requester"; // TODO implement a system to check who is logged in
+        loggedInUsername = "nurse"; // TODO implement a system to check who is logged in
 
         // Setup autocomplete
         searchFields = new SearchFields(dbCache.getNodeCache());
@@ -73,16 +74,22 @@ public class MaintenanceRequestController implements Initializable {
             String notes = urgency.getSelectionModel().getSelectedItem().toString() + "|" + description.getText();
             String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
 
-            ArrayList<String> params = new ArrayList<>(Arrays.asList(null, loggedInUsername, "maintenance_user", location.getText(),
-                    "maintenance", type.getSelectionModel().getSelectedItem().toString(), notes, "pending", dateAndTime));
+            ArrayList<String> params = new ArrayList<>(Arrays.asList(null, loggedInUsername, "maintenance", location.getText(),
+                    "maintenance", type.getSelectionModel().getSelectedItem().toString(), notes, "0", dateAndTime));
             int rows = dbService.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST, params));
 
             if (rows == 0) {
                 error.setText("Submission failed");
+                error.setTextFill(Color.RED);
+                loaderHelper.showAndFade(error);
+            } else {
+                error.setText("Maintenance request sent");
+                error.setTextFill(Color.WHITE);
                 loaderHelper.showAndFade(error);
             }
         } else {
             error.setText("Please fill in all fields");
+            error.setTextFill(Color.RED);
             loaderHelper.showAndFade(error);
         }
     }
@@ -103,6 +110,6 @@ public class MaintenanceRequestController implements Initializable {
      * @return {true} If and only if all fields are filled {false} Otherwise
      */
     private boolean fieldsFilled() {
-        return location.getText().length() > 0 && description.getText().length() > 0 && urgency.getSelectionModel().getSelectedIndex() > 0 && type.getSelectionModel().getSelectedIndex() > 0;
+        return location.getText().length() > 0 && description.getText().length() > 0 && !urgency.getSelectionModel().isEmpty() && !type.getSelectionModel().isEmpty();
     }
 }
