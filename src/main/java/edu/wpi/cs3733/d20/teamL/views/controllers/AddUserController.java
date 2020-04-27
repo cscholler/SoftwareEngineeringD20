@@ -96,7 +96,7 @@ public class AddUserController implements Initializable {
     }
 @FXML
     private void closeClicked(){
-
+        loaderHelper.goBack();
     }
 
     @Override

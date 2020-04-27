@@ -70,8 +70,7 @@ public class MedicationRequestController implements Initializable {
 
     @FXML
     private void btnCancelClicked() throws IOException {
-		Parent root = loaderHelper.getFXMLLoader("StaffView").load();
-		loaderHelper.setupScene(new Scene(root));
+		loaderHelper.goBack();
 	}
 
 	@FXML
