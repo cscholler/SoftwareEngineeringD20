@@ -103,7 +103,7 @@ public class ITServiceController implements Initializable {
         String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
 
         int rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
-                new ArrayList<>(Arrays.asList(null, userName, "maintenance", location, "IT Service", type, notes, status, dateAndTime))));
+                new ArrayList<>(Arrays.asList(null, userName, "it", location, "IT Service", type, notes, status, dateAndTime))));
 
         if (rows == 0) {
             confirmation.setTextFill(Color.RED);
