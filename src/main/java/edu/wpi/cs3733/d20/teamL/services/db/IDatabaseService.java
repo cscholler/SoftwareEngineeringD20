@@ -7,6 +7,10 @@ import java.util.Properties;
 
 public interface IDatabaseService {
 
+	void startService();
+
+	void stopService();
+
 	void connect(Properties props);
 
 	ResultSet executeQuery(SQLEntry query);

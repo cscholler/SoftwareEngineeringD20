@@ -1,0 +1,16 @@
+.circle-button {
+    -fx-font-size: 90;
+    -fx-text-fill: white;
+    -fx-pref-width: 150;
+    -fx-pref-height: 150;
+    -fx-background-radius: 75;
+    -fx-max-height: 150;
+    -fx-max-width: 150;
+    -fx-min-height: 150;
+    -fx-min-width: 150;
+}
+
+.label{
+    -fx-font-size: 40;
+    -fx-text-fill: white;
+}

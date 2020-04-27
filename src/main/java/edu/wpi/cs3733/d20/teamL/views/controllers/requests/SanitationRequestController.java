@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-public class SanitationRequestController implements Initializable {
+public class SanitationRequestController {
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
@@ -43,7 +43,7 @@ public class SanitationRequestController implements Initializable {
     private JFXTextArea addNotesText;
 
     @FXML
-    public void initialize(URL location, ResourceBundle resources){
+    public void initialize(){
         dbCache.cacheAllFromDB();
 
         sf = new SearchFields(dbCache.getNodeCache());

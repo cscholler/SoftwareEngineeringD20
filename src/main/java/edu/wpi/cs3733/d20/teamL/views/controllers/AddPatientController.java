@@ -26,16 +26,16 @@ import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 
 @Slf4j
 public class AddPatientController {
-	private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
-	private DBTableFormatter formatter = new DBTableFormatter();
-	private SearchFields sf;
-	private JFXAutoCompletePopup<String> autoCompletePopup;
+    private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    private DBTableFormatter formatter = new DBTableFormatter();
+    private SearchFields sf;
+    private JFXAutoCompletePopup<String> autoCompletePopup;
     @FXML
     private JFXTextField fNameText, lNameText, IDText, doctorIDText, roomNumText, addInfoText;
     @FXML
     private Label lblConfirmation;
     @Inject
-	private IDatabaseService db;
+    private IDatabaseService db;
     @Inject
     private IDatabaseCache dbCache;
 
@@ -60,12 +60,7 @@ public class AddPatientController {
      */
     @FXML
     private void btnBackClicked() {
-        try {
-            Parent root = loaderHelper.getFXMLLoader("StaffView").load();
-            loaderHelper.setupScene(new Scene(root));
-        } catch (IOException ex) {
-            log.error("Encountered IOException", ex);
-        }
+        loaderHelper.goBack();
     }
 
     /**
@@ -96,7 +91,7 @@ public class AddPatientController {
         lblConfirmation.setVisible(true);
         //fade the label out
         loaderHelper.showAndFade(lblConfirmation);
-		formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_PATIENTS)));
+        formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_PATIENTS)));
     }
 }
 

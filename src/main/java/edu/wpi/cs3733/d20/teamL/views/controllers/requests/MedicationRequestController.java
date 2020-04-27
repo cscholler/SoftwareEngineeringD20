@@ -70,8 +70,7 @@ public class MedicationRequestController implements Initializable {
 
     @FXML
     private void btnCancelClicked() throws IOException {
-		Parent root = loaderHelper.getFXMLLoader("StaffView").load();
-		loaderHelper.setupScene(new Scene(root));
+		loaderHelper.goBack();
 	}
 
 	@FXML
@@ -90,7 +89,7 @@ public class MedicationRequestController implements Initializable {
 		String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
 		String nurseUsername = loginManager.getCurrentUser().getUsername();
 		// Adds request info to database
-		String doctorID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_DOCTOR_ID, new ArrayList<>(Arrays.asList(doctorFName, doctorLName))))).get(0).get(0);
+		String doctorID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_DOCTOR_ID_BY_NAME, new ArrayList<>(Arrays.asList(doctorFName, doctorLName))))).get(0).get(0);
 		String patientID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ID, new ArrayList<>(Arrays.asList(patientFName, patientLName))))).get(0).get(0);
 		String patientRoomNum = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ROOM, new ArrayList<>(Collections.singletonList(patientID))))).get(0).get(0);
 		int rows = 0;
