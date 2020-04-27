@@ -24,7 +24,7 @@
     <bottom>
         <HBox alignment="CENTER" prefHeight="142.0" prefWidth="1080.0" spacing="100.0" BorderPane.alignment="CENTER">
             <children>
-                <JFXButton fx:id="btnCancel" buttonType="RAISED" maxWidth="200.0" onAction="#backClicked" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #dfdfdc;" text="Back" textAlignment="CENTER">
+                <JFXButton fx:id="btnCancel" buttonType="RAISED" maxWidth="200.0" onAction="#btnBackClicked" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #dfdfdc;" text="Back" textAlignment="CENTER">
                     <font>
                         <Font size="24.0" />
                     </font>
@@ -32,12 +32,12 @@
                         <Insets left="240.0" />
                     </HBox.margin>
                 </JFXButton>
-                <JFXButton fx:id="btnSubmit" buttonType="RAISED" maxWidth="200.0" onAction="#submitClicked" prefHeight="31.0" prefWidth="200.0" style="-fx-background-color: #0d2e57;" text="Submit" textAlignment="CENTER" textFill="WHITE">
+                <JFXButton fx:id="btnSubmit" buttonType="RAISED" maxWidth="200.0" onAction="#btnSubmitClicked" prefHeight="31.0" prefWidth="200.0" style="-fx-background-color: #0d2e57;" text="Submit" textAlignment="CENTER" textFill="WHITE">
                     <font>
                         <Font size="24.0" />
                     </font>
                 </JFXButton>
-                <Label fx:id="lblsubmitted" text="Patient Submitted!">
+                <Label fx:id="lblConfirmation" text="Patient Submitted!">
                     <font>
                         <Font size="16.0" />
                     </font>

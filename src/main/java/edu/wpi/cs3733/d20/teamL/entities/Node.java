@@ -16,8 +16,8 @@ public class Node {
     private String longName;
     private String building;
     private String type;
-    private int floor = 0;
-    private boolean visited;
+    private String shaft = "0";
+    private int floor;
 
     private HashMap<String, Object> data = new HashMap<>(); //TODO remove Hashmap and add NodeGUI Field
 
@@ -128,12 +128,30 @@ public class Node {
         this.floor = floor;
     }
 
+    public String getShaft() {
+        return shaft;
+    }
+
+    public void setShaft(String shaft) {
+        this.shaft = shaft;
+    }
+
     /**
      * Adds a new edge to the Node.
      *
      * @param newEdge The edge to add
      */
     public void addEdge(Edge newEdge) {
+        newEdge.setSource(this);
+    }
+
+    /**
+     * Adds a new Edge leading to the given node
+     *
+     * @param otherNode The node this edge leads to
+     */
+    public void addEdge(Node otherNode) {
+        Edge newEdge = new Edge(this, otherNode);
         newEdge.setSource(this);
     }
 
@@ -148,6 +166,17 @@ public class Node {
         Edge otherEdge = new Edge(newEdge.getDestination(), this);
 
         newEdge.getDestination().addEdge(otherEdge);
+    }
+
+    /**
+     * Adds a new edge to the Node and one to the destination node to this one.
+     *
+     * @param otherNode The node to add a two way edge to
+     */
+    public void addEdgeTwoWay(Node otherNode) {
+        addEdge(otherNode);
+
+        otherNode.addEdge(this);
     }
 
     /**
@@ -231,7 +260,7 @@ public class Node {
         return data;
     }
 
-    /**
+    /*
      * Checks if all the fields of this node are the same as the other node.
      *
      * @param obj

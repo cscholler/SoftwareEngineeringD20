@@ -7,7 +7,7 @@ public abstract class Service {
 		startService();
 	}
 
-	protected abstract void startService();
+	public abstract void startService();
 
-	protected abstract void stopService();
+	public abstract void stopService();
 }

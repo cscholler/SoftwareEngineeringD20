@@ -7,9 +7,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.ResourceBundle;
 
+import edu.wpi.cs3733.d20.teamL.entities.GiftDeliveryRequest;
+import edu.wpi.cs3733.d20.teamL.entities.ServiceRequest;
+import edu.wpi.cs3733.d20.teamL.entities.User;
+import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -23,7 +26,7 @@ import com.jfoenix.controls.JFXListView;
 
 import lombok.extern.slf4j.Slf4j;
 
-import edu.wpi.cs3733.d20.teamL.entities.MedicineRequest;
+import edu.wpi.cs3733.d20.teamL.entities.MedicationRequest;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
@@ -31,17 +34,25 @@ import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 
 @Slf4j
 public class NotificationsPageController implements Initializable {
-   	private ObservableList<MedicineRequest> list = FXCollections.observableArrayList();
+   	private ObservableList<MedicationRequest> list = FXCollections.observableArrayList();
 	private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
-	private MedicineRequest currentRequest;
+	private MedicationRequest currentRequest;
 	@Inject
 	private IDatabaseService db;
+	@Inject
+	private ILoginManager loginManager;
 	@FXML
     private JFXButton btnBack, btnCompleted, btnDecline;
     @FXML
-    private JFXListView<MedicineRequest> notifications;
+    private JFXListView<ServiceRequest> serviceReqs;
+	@FXML
+    private JFXListView<MedicationRequest> medReqs;
+	@FXML
+	private JFXListView<GiftDeliveryRequest> giftReqs;
     @FXML
     private Label reqMessage, addInfo;
+    private User user;
+    private String doctorUsername;
 
 	/**
 	 * Calls loadData and sets up the cellFactory
@@ -50,10 +61,11 @@ public class NotificationsPageController implements Initializable {
 	 */
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
+		user = loginManager.getCurrentUser();
 		loadData();
-		notifications.setCellFactory(param -> new ListCell<>() {
+		medReqs.setCellFactory(param -> new ListCell<>() {
 			@Override
-			protected void updateItem(MedicineRequest medReq, boolean empty) {
+			protected void updateItem(MedicationRequest medReq, boolean empty) {
 				super.updateItem(medReq, empty);
 				if (medReq != null) {
 					String status;
@@ -68,11 +80,62 @@ public class NotificationsPageController implements Initializable {
 						}
 						break;
 						case "2" : {
-							status = "Denied";
+							status = "Delivered";
 						}
 						break;
+						case "3" : {
+							status = "Denied";
+						}
 					}
 					setText("[" + medReq.getDateAndTime() + "] " +  medReq.getDose() + " of " + medReq.getMedType() + " for " + medReq.getPatientName() + " (" + status + ")");
+				}
+			}
+		});
+		giftReqs.setCellFactory(param -> new ListCell<>() {
+			@Override
+			protected void updateItem(GiftDeliveryRequest giftReq, boolean empty) {
+				super.updateItem(giftReq, empty);
+				if (giftReq != null) {
+					String status;
+					switch (giftReq.getStatus()) {
+						default :
+						case "0" : {
+							status = "Pending";
+						}
+						break;
+						case "1" : {
+							status = "Approved";
+						}
+						break;
+						case "2" : {
+							status = "Denied";
+						}
+					}
+					//setText("[" + medReq.getDateAndTime() + "] " +  medReq.getDose() + " of " + medReq.getMedType() + " for " + medReq.getPatientName() + " (" + status + ")");
+				}
+			}
+		});
+		serviceReqs.setCellFactory(param -> new ListCell<>() {
+			@Override
+			protected void updateItem(ServiceRequest req, boolean empty) {
+				super.updateItem(req, empty);
+				if (req != null) {
+					String status;
+					switch (req.getStatus()) {
+						default :
+						case "0" : {
+							status = "Pending";
+						}
+						break;
+						case "1" : {
+							status = "Approved";
+						}
+						break;
+						case "2" : {
+							status = "Denied";
+						}
+					}
+					//setText("[" + medReq.getDateAndTime() + "] " +  medReq.getDose() + " of " + medReq.getMedType() + " for " + medReq.getPatientName() + " (" + status + ")");
 				}
 			}
 		});
@@ -84,79 +147,102 @@ public class NotificationsPageController implements Initializable {
     @FXML
     private void loadData() {
         list.removeAll();
-		ArrayList<ArrayList<String>> medRequests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_MEDICATION_REQUESTS)));
+		ArrayList<ArrayList<String>> medRequests;
+		String username = user.getUsername();
+		switch (user.getAcctType()) {
+			//
+			default:
+			case "0":
+			case "1": {
+				log.info("Viewing notifications as staff member with username {}", username);
+				medRequests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_MEDICATION_REQUESTS_FOR_DELIVERER, new ArrayList<>(Collections.singletonList(username)))));
+			}
+			break;
+			// Doctor
+			case "2": {
+				log.info("Viewing notifications as doctor with username: {}", username);
+				String doctorID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_DOCTOR_ID_BY_USERNAME, new ArrayList<>(Collections.singletonList(username))))).get(0).get(0);
+				medRequests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_MEDICATION_REQUESTS_FOR_DOCTOR, new ArrayList<>(Collections.singletonList(doctorID)))));
+			}
+		}
 		String patientID;
 		String patientName;
-		String doctorID;
-		String doctorName;
 		String roomID;
 		for (ArrayList<String> row : medRequests) {
-			doctorID = row.get(1);
 			patientID = row.get(2);
-			ArrayList<String> name = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_DOCTOR_NAME, new ArrayList<>(Collections.singletonList(doctorID))))).get(0);
-			doctorName = name.get(0) + " " + name.get(1);
-			name = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_NAME, new ArrayList<>(Collections.singletonList(patientID))))).get(0);
+			ArrayList<String> name = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_NAME, new ArrayList<>(Collections.singletonList(patientID))))).get(0);
 			patientName = name.get(0) + " " + name.get(1);
 			roomID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ROOM, new ArrayList<>(Collections.singletonList(patientID))))).get(0).get(0);
-			System.out.println(row.get(0));
-			list.add(new MedicineRequest(row.get(0), patientName, patientID, doctorName, row.get(3), row.get(4), row.get(5), roomID, row.get(6), row.get(7), row.get(8)));
+			list.add(new MedicationRequest(row.get(0), row.get(1), row.get(2), patientName, roomID, row.get(3), row.get(4), row.get(5), row.get(6), row.get(7), row.get(8), row.get(9)));
 		}
-        notifications.getItems().addAll(list);
+        medReqs.getItems().addAll(list);
     }
 
     /**
-     * Checks for anyone clicking on the listView of notifications and opens them in the pane to the right
+     * Checks for anyone clicking on the listView of medReq and opens them in the pane to the right
      */
     @FXML
     private void displaySelected() {
-        MedicineRequest req = notifications.getSelectionModel().getSelectedItem();
+        MedicationRequest req = medReqs.getSelectionModel().getSelectedItem();
         setCurrentRequest(req);
         try {
-			String message = notifications.getSelectionModel().getSelectedItem().getPatientName();
-			if (message == null || message.isEmpty()) {
-				System.out.println("Nothing");
+			//if (req.getPatientName() == null || req.getPatientName().isEmpty()) {
+			if (req == null) {
+				log.error("Invalid request");
 			} else {
 				reqMessage.setWrapText(true);
-				reqMessage.setText(req.getNurseName() + " requests " + req.getDose() + " of " + req.getMedType() + " for " + req.getPatientName() + "(" + req.getPatientID() +")" + " in room " + req.getRoomNum());
 				addInfo.setWrapText(true);
-				addInfo.setText(req.getAddInfo());
-				System.out.println(message);
+				addInfo.setText(req.getNotes());
+				String message;
+				ArrayList<String> doctorNameRow = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_DOCTOR_NAME, new ArrayList<>(Collections.singletonList(req.getDoctorID()))))).get(0);
+				String doctorName = doctorNameRow.get(0) + " " + doctorNameRow.get(1);
+				// TODO: Verify that it's the correct doctor
+				if (user.getAcctType().equals("2") && (user.getFName() + " " + user.getLName()).equals(doctorName)) {
+					log.info("logged in as doctor");
+					message = req.getNurseUsername() + " requests " + req.getDose() + " of " + req.getMedType() + " for " + req.getPatientName() + "(" + req.getPatientID() +")" + " in room " + req.getRoomNum();
+ 				} else {
+					log.info("logged in as non doctor");
+					message = doctorName + " requests " + req.getDose() + " of " + req.getMedType() + " to be delivered to " + req.getPatientName() + "(" + req.getPatientID() +")" + " in room " + req.getRoomNum();
+				}
+				reqMessage.setText(message);
 			}
 		} catch (NullPointerException ex) {
-        	log.info("No notifcation currently selected");
+        	log.info("No notification currently selected");
 		}
     }
 
-    /**
-     * Handles buttons pressed on the notification screen back, decline, approve
-     * @param e tracks which button is pressed
-     * @throws IOException
-     */
     @FXML
-    public void handleButtonAction(ActionEvent e) throws IOException {
+    private void btnBackClicked() throws IOException {
+    	// TODO: replace with unified staff screen
+//    	String returnScreen = user.getAcctType().equals("3") ? "AdminView" : "StaffView";
+//		Parent root = loaderHelper.getFXMLLoader(returnScreen).load();
+//		loaderHelper.setupScene(new Scene(root));
+		loaderHelper.goBack();
+	}
 
-        if (e.getSource() == btnBack) {
-			Parent root = loaderHelper.getFXMLLoader("AdminView").load();
-			loaderHelper.setupScene(new Scene(root));
+	@FXML
+	private void btnCompletedClicked() {
+		String status = "1";
+		db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_STATUS, new ArrayList<>(Arrays.asList(status, getCurrentRequest().getID()))));
+		getCurrentRequest().setStatus(status);
+		System.out.println(getCurrentRequest().getStatus());
+	}
 
-        } else {
-        	String status = "0";
-        	if (e.getSource() == btnCompleted) {
-        		status = "1";
-			} else if (e.getSource() == btnDecline) {
-        		status = "2";
-			}
-			db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_STATUS, new ArrayList<>(Arrays.asList(status, getCurrentRequest().getID()))));
-			getCurrentRequest().setStatus(status);
-			System.out.println(getCurrentRequest().getStatus());
-		}
-    }
+	@FXML
+	private void btnDeclineClicked() {
+		String status = "3";
+		db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_STATUS, new ArrayList<>(Arrays.asList(status, getCurrentRequest().getID()))));
+		getCurrentRequest().setStatus(status);
+		System.out.println(getCurrentRequest().getStatus());
+	}
 
-	public MedicineRequest getCurrentRequest() {
+	// TODO: add delivered button for med reqs
+
+	public MedicationRequest getCurrentRequest() {
 		return currentRequest;
 	}
 
-	public void setCurrentRequest(MedicineRequest currentRequest) {
+	public void setCurrentRequest(MedicationRequest currentRequest) {
 		this.currentRequest = currentRequest;
 	}
 }
