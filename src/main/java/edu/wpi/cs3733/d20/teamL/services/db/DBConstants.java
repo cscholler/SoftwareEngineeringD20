@@ -103,8 +103,8 @@ public class DBConstants {
 					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
 					"patient_id INT REFERENCES Patients(id), " +
 					"request_username VARCHAR(32) REFERENCES Users(username), " +
-					"assignee_username VARCHAR(32) NOT NULL REFERENCES Users(username), " +
-					"location VARCHAR(10) NOT NULL REFERENCES Nodes(id), " +
+					"assignee_username VARCHAR(32) REFERENCES Users(username), " +
+					"location VARCHAR(10) REFERENCES Nodes(id), " +
 					"service VARCHAR(64) NOT NULL, " +
 					"type VARCHAR(64), " +
 					"notes VARCHAR(256), " +
@@ -170,6 +170,7 @@ public class DBConstants {
 	public static final String ADD_SERVICE_REQUEST =
 			"INSERT INTO Service_Requests(patient_id, request_username, assignee_username, location, service, type, notes, status, date_and_time)" +
 					"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
 
 	public static final String SELECT_ALL_NODES =
 			"SELECT * " +

@@ -76,8 +76,6 @@ public class NavigationController implements Initializable {
             if (event.getCode().equals(KeyCode.ENTER))
                 searchMap();
         });
-        messenger.sendEmail("This is a test email.", "lukebodwell@gmail.com");
-        messenger.sendText("This is a test text.", "2073186779");
     }
 
     /**
