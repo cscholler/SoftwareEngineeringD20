@@ -18,6 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import edu.wpi.cs3733.d20.teamL.views.components.MapPane?>
 <BorderPane fx:id="root" prefHeight="720" prefWidth="1280" stylesheets="@../css/MapStyles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.map.MapEditorController">
     <center>
 
@@ -255,14 +256,14 @@
             </HBox>
             <VBox alignment="TOP_CENTER" prefHeight="648.0" prefWidth="70.0" spacing="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="70.0">
                <children>
-                  <JFXNodesList rotate="270.0" spacing="10.0">
+                  <JFXNodesList fx:id="loadNodesList" rotate="270.0" spacing="10.0">
                      <children>
-                        <JFXButton fx:id="loadOptions" buttonType="RAISED" onAction="#saveOptionsClicked" styleClass="nodeListButton" text=" ">
+                        <JFXButton fx:id="loadOptions" buttonType="RAISED" onAction="#loadOptionsClicked" styleClass="nodeListButton" text=" ">
                            <tooltip>
-                              <Tooltip fx:id="saveTooltip" text="Click to Show Load Options" />
+                              <Tooltip fx:id="loadTooltip" text="Click to Show Load Options" />
                            </tooltip>
                            <graphic>
-                              <ImageView fitHeight="13.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true" scaleX="2.5" scaleY="2.5" translateX="3.5">
+                              <ImageView fx:id="loadOptionsImage" fitHeight="13.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true" scaleX="2.5" scaleY="2.5" translateX="3.5">
                                  <image>
                                     <Image url="@../assets/map editor/UploadFromFolder.png" />
                                  </image>
@@ -297,12 +298,12 @@
                   </JFXNodesList>
                   <JFXNodesList fx:id="saveNodesList" rotate="270.0" spacing="10.0">
                      <children>
-                        <JFXButton fx:id="saveOptions" buttonType="RAISED" styleClass="nodeListButton" text=" ">
+                        <JFXButton fx:id="saveOptions" buttonType="RAISED" onAction="#saveOptionsClicked" styleClass="nodeListButton" text=" ">
                            <tooltip>
-                              <Tooltip fx:id="loadTooltip" autoHide="true" contentDisplay="RIGHT" text="Click to Show Save Options" />
+                              <Tooltip fx:id="saveTooltip" autoHide="true" contentDisplay="RIGHT" text="Click to Show Save Options" />
                            </tooltip>
                            <graphic>
-                              <ImageView fitHeight="16.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true" scaleX="2.0" scaleY="2.0" translateX="4.0" translateY="-1.0">
+                              <ImageView fx:id="saveOptionsImage" fitHeight="16.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true" scaleX="2.0" scaleY="2.0" translateX="4.0" translateY="-1.0">
                                  <image>
                                     <Image url="@../assets/map editor/SaveToFile.png" />
                                  </image>
@@ -337,12 +338,12 @@
                   </JFXNodesList>
                   <JFXNodesList fx:id="pathNodesList" alignment="TOP_CENTER" prefHeight="16.0" prefWidth="10.0" rotate="270.0" spacing="10.0">
                      <children>
-                        <JFXButton fx:id="pathfindingOptions" buttonType="RAISED" styleClass="nodeListButton" text=" ">
+                        <JFXButton fx:id="pathfindingOptions" buttonType="RAISED" onAction="#pathfindOptionsClicked" styleClass="nodeListButton" text=" ">
                            <tooltip>
                               <Tooltip fx:id="pathfindTooltip" text="Switch Pathfinding Algorithm" />
                            </tooltip>
                            <graphic>
-                              <ImageView fitHeight="81.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true" scaleX="2.0" scaleY="2.0" translateX="2.0" translateY="1.0">
+                              <ImageView fx:id="pathfindImage" fitHeight="81.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true" scaleX="2.0" scaleY="2.0" translateX="2.0" translateY="1.0">
                                  <image>
                                     <Image url="@../assets/map editor/AStar.png" />
                                  </image>
