@@ -10,6 +10,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import edu.wpi.cs3733.d20.teamL.services.IMessengerService;
+import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -37,7 +38,9 @@ import edu.wpi.cs3733.d20.teamL.views.controllers.map.MapViewerController;
 
 @Slf4j
 public class NavigationController implements Initializable {
-
+	private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+	private JFXAutoCompletePopup<String> autoCompletePopup;
+	private SearchFields sf;
     @FXML
     private ImageView iHome;
     @FXML
@@ -46,13 +49,13 @@ public class NavigationController implements Initializable {
     private Label timeLabel;
     @Inject
     private IDatabaseCache cache;
-    private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
-    private IMessengerService messenger = new IMessengerService();
-    private JFXAutoCompletePopup<String> autoCompletePopup;
-    private SearchFields sf;
+    @Inject
+	private ILoginManager loginManager;
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
+    	// TODO: fix
+    	log.info("Current user: {}", (!loginManager.isAuthenticated() ? "None" : "Auth"));
         Timer timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 			@Override
@@ -76,8 +79,6 @@ public class NavigationController implements Initializable {
             if (event.getCode().equals(KeyCode.ENTER))
                 searchMap();
         });
-        messenger.sendEmail("This is a test email.", "lukebodwell@gmail.com");
-        messenger.sendText("This is a test text.", "2073186779");
     }
 
     /**
@@ -154,13 +155,5 @@ public class NavigationController implements Initializable {
     @FXML
     private void autocomplete() {
         sf.applyAutocomplete(searchBox, autoCompletePopup);
-    }
-
-    public Label getTimeLabel() {
-        return timeLabel;
-    }
-
-    public void setTimeLabel(Label timeLabel) {
-        this.timeLabel = timeLabel;
     }
 }

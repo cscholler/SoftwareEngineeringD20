@@ -146,9 +146,11 @@ public class DatabaseService extends Service implements IDatabaseService {
 				Statement stmt;
 				stmt = connection.createStatement();
 				numRowsAffected = stmt.executeUpdate(update.getStatement());
+				stmt.close();
 			} else {
 				PreparedStatement pStmt = fillPreparedStatement(update);
 				numRowsAffected = pStmt.executeUpdate();
+				pStmt.close();
 			}
 		} catch (SQLException ex) {
 			log.error("Encountered SQLException.", ex);
@@ -217,7 +219,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 
 		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Admin", "Admin", "admin", "admin", "3", null))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Nurse", "Joy", "nurse", "nurse", "1", null))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Staff", "Member", "staff", "staff", "1", null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Staff", "Member", "staff", "staff", "0", null))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Wilson", "Wong", "doctor", "doctor", "2", null))));
 	}
 

@@ -197,15 +197,20 @@ public class DBConstants {
 			"SELECT * " +
 					"FROM Doctors";
 
-	public static final String GET_DOCTOR_ID =
-			"SELECT id " +
-					"FROM Doctors " +
-					"WHERE f_name = ? AND l_name = ?";
-
 	public static final String GET_DOCTOR_NAME =
 			"SELECT f_name, l_name " +
 					"FROM Doctors " +
 					"WHERE id = ?";
+
+	public static final String GET_DOCTOR_ID_BY_NAME =
+			"SELECT id " +
+					"FROM Doctors " +
+					"WHERE f_name = ? AND l_name = ?";
+
+	public static final String GET_DOCTOR_ID_BY_USERNAME =
+			"SELECT id " +
+					"FROM Doctors " +
+					"WHERE username = ?";
 
 	public static final String SELECT_ALL_PATIENTS =
 			"SELECT * " +
@@ -242,7 +247,7 @@ public class DBConstants {
 	public static final String SELECT_ALL_MEDICATION_REQUESTS_FOR_DOCTOR =
 			"SELECT * " +
 					"FROM Medication_Requests " +
-					"WHERE doctor_username = ?";
+					"WHERE doctor_id = ?";
 
 	public static final String SELECT_ALL_MEDICATION_REQUESTS_FOR_DELIVERER =
 			"SELECT * " +
