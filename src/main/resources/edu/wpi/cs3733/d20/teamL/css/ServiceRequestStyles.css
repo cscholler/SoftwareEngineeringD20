@@ -1,0 +1,33 @@
+
+.background {
+    -fx-background-color: #0d2e57;
+}
+
+.label {
+    -fx-font-size: 30;
+}
+
+.title {
+    -fx-font-size: 70;
+}
+
+.button{
+    -fx-background-radius: 5px;
+    -fx-padding: 10;
+    -fx-background-color: #405784;
+    -fx-text-fill: white;
+    -fx-pref-width: 100
+}
+
+.text-field {
+    -fx-background-color: white;
+    -fx-pref-height: 40px;
+    -fx-border-radius: 10 0 0 10;
+    -fx-pref-width: 250;
+}
+
+.text-area {
+    -fx-background-color: white;
+    -fx-pref-height: 150px;
+}
+

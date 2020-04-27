@@ -39,7 +39,7 @@ public class StaffViewController {
     @FXML
     private void medsClicked() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("MedicationRequest").load();
+            Parent root = loaderHelper.getFXMLLoader("ServiceRequestsPage").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
