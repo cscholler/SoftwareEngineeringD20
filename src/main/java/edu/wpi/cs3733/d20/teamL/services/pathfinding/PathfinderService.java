@@ -37,11 +37,11 @@ public class PathfinderService implements IPathfinderService {
     private Map<Node, NodeEntry> priorityQueueKey = new HashMap<>();
 
     private boolean hasCoords = false;
-    private enum PathfindingMethod {
+    public enum PathfindingMethod {
         Astar, BFS, DFS
     };
 
-    PathfindingMethod pathfindingMethod = PathfindingMethod.Astar;
+    private PathfindingMethod pathfindingMethod = PathfindingMethod.Astar;
 
     /**
      * Uses the a pathfinding algorithm to get a path between the source and destination node. Returns null
@@ -139,7 +139,6 @@ public class PathfinderService implements IPathfinderService {
         LinkedList<Node> visitedNodes = new LinkedList<>();
         Stack<Node> stack = new Stack<Node>();
         stack.add(source);
-        boolean visited = false;
 
         //Loops until the stack is empty
         while (!stack.isEmpty()) {
@@ -148,13 +147,15 @@ public class PathfinderService implements IPathfinderService {
 
             //Mark destination is visited if the node popped is the destination node
             if (destination == currentNode) {
-                visited = true;
+                path.add(destination);
+                break;
             }
             //If the node is not in the list of visited nodes, add it to the list
             if (visitedNodes.contains(currentNode) == false) {
 
                 visitedNodes.add(currentNode);
                 path.add(currentNode);
+
                 Collection<Node> neighbors = currentNode.getNeighbors();
 
                 //Checks if the list of neighbors is not empty
@@ -169,6 +170,10 @@ public class PathfinderService implements IPathfinderService {
                     }
                 }
             }
+        }
+        for(Node node : path) {
+
+            System.out.println(node.getID());
         }
         return Path.listToPath(path);
     }
@@ -211,5 +216,13 @@ public class PathfinderService implements IPathfinderService {
         priorityQueue.remove(nodeEntry);
         nodeEntry.shortestPath = newShortestPath;
         priorityQueue.add(nodeEntry);
+    }
+
+    public PathfindingMethod getPathfindingMethod() {
+        return pathfindingMethod;
+    }
+
+    public void setPathfindingMethod(PathfindingMethod pathfindingMethod) {
+        this.pathfindingMethod = pathfindingMethod;
     }
 }
