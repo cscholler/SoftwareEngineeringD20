@@ -27,6 +27,7 @@ import javafx.geometry.Point2D;
 import java.util.*;
 import javax.inject.Inject;
 
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 
@@ -55,6 +56,9 @@ public class MapEditorController {
     VBox editor, multiFloorConnection, nodeConnectionsTab;
 	@FXML
     JFXNodesList saveNodesList, loadNodesList, pathNodesList;
+	@FXML
+    Tooltip saveTooltip, loadTooltip, pathfindTooltip;
+
     @Inject
 	private IDatabaseCache cache;
     @Inject
@@ -360,4 +364,19 @@ public class MapEditorController {
         nodeConnectionsTab.setPrefWidth(0);
         nodeConnectionsTab.setVisible(false);
     }
+
+    @FXML
+    private void closeConnections() {
+        nodeConnectionsTab.setPrefWidth(0);
+        nodeConnectionsTab.setVisible(false);
+    }
+
+    @FXML
+    private void saveOptionsClicked() {
+        //change icon to/from an x
+        if(!saveNodesList.isExpanded()) {
+            saveTooltip.setText("Click to Close");
+        }
+    }
+
 }
