@@ -132,8 +132,8 @@
                                   <Font name="System Bold" size="18.0" />
                               </font>
                           </JFXButton>
-                  <JFXButton buttonType="RAISED" styleClass="floor-buttons" text="5" />
-                          <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" ripplerFill="WHITE" style="-fx-background-color: #0d2e57; -fx-background-radius: o;" styleClass="floor-buttons" text="4" textFill="WHITE">
+                  <JFXButton buttonType="RAISED" styleClass="floor-buttons" onAction="#handleFloor" text="5" />
+                          <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" ripplerFill="WHITE" style="-fx-background-color: #0d2e57; -fx-background-radius: o;" styleClass="floor-buttons" onAction="#handleFloor" text="4" textFill="WHITE">
                               <VBox.margin>
                                   <Insets />
                               </VBox.margin>
@@ -141,7 +141,7 @@
                                   <Font name="System Bold" size="18.0" />
                               </font>
                           </JFXButton>
-                          <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" ripplerFill="WHITE" style="-fx-background-color: #0d2e57; -fx-background-radius: o;" styleClass="floor-buttons" text="3" textAlignment="CENTER" textFill="WHITE">
+                          <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" ripplerFill="WHITE" style="-fx-background-color: #0d2e57; -fx-background-radius: o;" styleClass="floor-buttons" onAction="#handleFloor" text="3" textAlignment="CENTER" textFill="WHITE">
                               <VBox.margin>
                                   <Insets />
                               </VBox.margin>
@@ -149,7 +149,7 @@
                                   <Font name="System Bold" size="18.0" />
                               </font>
                           </JFXButton>
-                          <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" ripplerFill="WHITE" style="-fx-background-color: #0d2e57; -fx-background-radius: o;" styleClass="floor-buttons" text="2" textAlignment="CENTER" textFill="WHITE">
+                          <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" ripplerFill="WHITE" style="-fx-background-color: #0d2e57; -fx-background-radius: o;" styleClass="floor-buttons" onAction="#handleFloor" text="2" textAlignment="CENTER" textFill="WHITE">
                               <VBox.margin>
                                   <Insets />
                               </VBox.margin>
@@ -157,7 +157,7 @@
                                   <Font name="System Bold" size="18.0" />
                               </font>
                           </JFXButton>
-                  <JFXButton buttonType="RAISED" styleClass="floor-buttons" text="1" />
+                  <JFXButton buttonType="RAISED" styleClass="floor-buttons" onAction="#handleFloor" text="1" />
                           <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" ripplerFill="WHITE" style="-fx-background-color: #0d2e57; -fx-background-radius: 0 0 20 20;" styleClass="floor-buttons" text="▼" textAlignment="CENTER" textFill="WHITE">
                               <VBox.margin>
                                   <Insets />

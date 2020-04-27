@@ -41,7 +41,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 			connect(props);
 		}
 		// Uncomment if database needs to be rebuilt
-		//rebuildDatabase();
+		rebuildDatabase();
 	}
 
 	/**
@@ -212,8 +212,8 @@ public class DatabaseService extends Service implements IDatabaseService {
 		updates.add(new SQLEntry(DBConstants.CREATE_MEDICATION_REQUEST_TABLE));
 		updates.add(new SQLEntry(DBConstants.CREATE_SERVICE_REQUEST_TABLE));
 		executeUpdates(updates);
-		populateFromCSV("MapLnodesFloor2", DBConstants.ADD_NODE);
-		populateFromCSV("MapLedgesFloor2", DBConstants.ADD_EDGE);
+		populateFromCSV("MapLAllNodes", DBConstants.ADD_NODE);
+		populateFromCSV("MapLAllEdges", DBConstants.ADD_EDGE);
 
 		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Admin", "Admin", "admin", "admin", "3", null))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Nurse", "Joy", "nurse", "nurse", "1", null))));
