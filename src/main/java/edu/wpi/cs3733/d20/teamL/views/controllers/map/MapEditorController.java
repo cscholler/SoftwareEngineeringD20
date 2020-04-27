@@ -1,15 +1,13 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXNodesList;
-import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.JFXToggleNode;
+import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.entities.Graph;
 import edu.wpi.cs3733.d20.teamL.entities.Path;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.MapParser;
+import edu.wpi.cs3733.d20.teamL.services.search.SearchFields;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
 import edu.wpi.cs3733.d20.teamL.views.components.*;
@@ -54,7 +52,7 @@ public class MapEditorController {
     @FXML
     ComboBox nodeTypeValue;
     @FXML
-    VBox editor, multiFloorConnection;
+    VBox editor, multiFloorConnection, nodeConnectionsTab;
 	@FXML
     JFXNodesList saveNodesList, loadNodesList, pathNodesList;
     @Inject
@@ -64,6 +62,8 @@ public class MapEditorController {
 
     private Scene scene;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    private SearchFields sf;
+    private JFXAutoCompletePopup<String> autoCompletePopup;
 
     private final List<String> types = Arrays.asList("ELEV", "REST", "STAI", "DEPT", "LABS", "INFO", "CONF", "EXIT", "RETL", "SERV");
     private int floor = 2;
@@ -102,6 +102,13 @@ public class MapEditorController {
 
         cache.cacheAllFromDB();
 
+        sf = new SearchFields(cache.getNodeCache());
+        sf.getFields().add(SearchFields.Field.nodeID);
+        sf.getFields().add(SearchFields.Field.longName);
+        sf.populateSearchFields();
+        autoCompletePopup = new JFXAutoCompletePopup<>();
+        autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
+
         map.setEditable(true);
         map.init();
         openFromDB();
@@ -111,6 +118,10 @@ public class MapEditorController {
         //Hides the node editor VBox
         editor.setPrefWidth(0);
         editor.setVisible(false);
+
+        //Hides the edges editor VBox
+        nodeConnectionsTab.setPrefWidth(0);
+        nodeConnectionsTab.setVisible(false);
 
         map.recalculatePositions();
 
@@ -138,6 +149,15 @@ public class MapEditorController {
         return map;
     }
 
+    @FXML
+    private void autocompletestart() {
+        sf.applyAutocomplete(startNode, autoCompletePopup);
+    }
+
+    @FXML
+    private void autocompleteend() {
+        sf.applyAutocomplete(endNode, autoCompletePopup);
+    }
 
     @FXML
     private void quit() {
@@ -327,5 +347,17 @@ public class MapEditorController {
             map.setCurrentFloor(floor);
             map.setGraph(map.getGraph());
         }
+    }
+
+    @FXML
+    private void editConnections() {
+        nodeConnectionsTab.setPrefWidth(200);
+        nodeConnectionsTab.setVisible(true);
+    }
+
+    @FXML
+    private void saveConnections() {
+        nodeConnectionsTab.setPrefWidth(0);
+        nodeConnectionsTab.setVisible(false);
     }
 }
