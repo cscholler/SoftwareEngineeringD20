@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamL.services.pathfinding;
+package edu.wpi.cs3733.d20.teamL.util.pathfinding;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,10 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-import edu.wpi.cs3733.d20.teamL.entities.Building;
 import edu.wpi.cs3733.d20.teamL.entities.Graph;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import javafx.geometry.Point2D;
@@ -58,17 +55,6 @@ public class MapParser {
         }
 
         return new ArrayList<>(2);
-    }
-
-    public static Building parseMapToBuilding(File nodesFile, File edgesFile) {
-        Graph newGraph = parseMapToGraph(nodesFile, edgesFile);
-
-        List<Node> nodes = new ArrayList<>(newGraph.getNodes());
-
-        Building newBuilding = new Building(nodes.get(0).getBuilding());
-        newBuilding.addAllNodes(newGraph.getNodes());
-
-        return newBuilding;
     }
 
     public static Graph parseMapToGraph(File nodesFile, File edgesFile) { //TODO use csv parser

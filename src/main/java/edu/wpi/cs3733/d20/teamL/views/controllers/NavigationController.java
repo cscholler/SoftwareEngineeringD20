@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import edu.wpi.cs3733.d20.teamL.services.IMessengerService;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -30,7 +31,7 @@ import com.google.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
-import edu.wpi.cs3733.d20.teamL.services.search.SearchFields;
+import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.views.controllers.map.MapViewerController;
 
@@ -46,18 +47,19 @@ public class NavigationController implements Initializable {
     @Inject
     private IDatabaseCache cache;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    private IMessengerService messenger = new IMessengerService();
     private JFXAutoCompletePopup<String> autoCompletePopup;
     private SearchFields sf;
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
         Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("h:mm aa").format(new Date())));
-            }
-        }, 0, 1000);
+		timer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("h:mm aa").format(new Date())));
+			}
+		}, 0, 1000);
 
         cache.cacheAllFromDB();
         sf = new SearchFields(cache.getNodeCache());
@@ -74,6 +76,8 @@ public class NavigationController implements Initializable {
             if (event.getCode().equals(KeyCode.ENTER))
                 searchMap();
         });
+        messenger.sendEmail("This is a test email.", "lukebodwell@gmail.com");
+        messenger.sendText("This is a test text.", "2073186779");
     }
 
     /**
@@ -87,8 +91,8 @@ public class NavigationController implements Initializable {
             MapViewerController controller = loader.getController();
             controller.setDestination(searchBox.getText());
             controller.navigate();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ex) {
+            log.error("Encountered IOException.", ex);
         }
     }
 
@@ -100,8 +104,8 @@ public class NavigationController implements Initializable {
         try {
             Parent root = loaderHelper.getFXMLLoader("LoginPage").load();
             loaderHelper.setupPopup(new Stage(), new Scene(root));
-        } catch (IOException e) {
-            log.error("Encountered IOException", e);
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
         }
     }
 
@@ -113,8 +117,8 @@ public class NavigationController implements Initializable {
         try {
             Parent root = loaderHelper.getFXMLLoader("MapViewer").load();
             loaderHelper.setupScene(new Scene(root));
-        } catch (IOException e) {
-            log.error("Encountered IOException", e);
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
         }
     }
 
@@ -126,8 +130,8 @@ public class NavigationController implements Initializable {
         try {
             Parent root = loaderHelper.getFXMLLoader("Help").load();
             loaderHelper.setupScene(new Scene(root));
-        } catch (IOException e) {
-            log.error("Encountered IOException", e);
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
         }
     }
 

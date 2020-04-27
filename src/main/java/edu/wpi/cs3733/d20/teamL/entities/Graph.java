@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Graph {
 
-    protected Map<String, Node> nodes = new ConcurrentHashMap<>();
+    private Map<String, Node> nodes = new ConcurrentHashMap<>();
 
     /**
      * Gets the collection of Nodes contained in this graph.
@@ -123,31 +123,6 @@ public class Graph {
                 curr ++;
                 id = "new_node" + curr.toString();
             }
-        }
-        return id;
-    }
-
-    /**
-     * Gets a unique node ID based on the node's current type and floor
-     *
-     * @param node Node to generate unique ID for
-     * @return String of unique ID
-     */
-    public String getUniqueNodeID(Node node) {
-        String team = "L";
-        String type = node.getType();
-        String shaft = node.getShaft();
-        String floor = (node.getFloor() < 10 ? "0" : "") + node.getFloor();
-
-        String id = "new_node";
-        Integer curr = 0;
-        boolean unique = false;
-        while(!unique) {
-            curr ++;
-            String adjCurr = (curr < 10 ? "0" : "") + curr;
-            id = team + type + shaft + adjCurr + floor;
-
-            if(this.getNode(id) == null) unique = true;
         }
         return id;
     }

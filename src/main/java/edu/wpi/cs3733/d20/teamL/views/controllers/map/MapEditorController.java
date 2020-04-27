@@ -1,71 +1,75 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXNodesList;
-import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.JFXToggleNode;
-import edu.wpi.cs3733.d20.teamL.entities.*;
-import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
-import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
-import edu.wpi.cs3733.d20.teamL.services.pathfinding.MapParser;
-import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
-import edu.wpi.cs3733.d20.teamL.services.pathfinding.MapParser;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
-import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
-import edu.wpi.cs3733.d20.teamL.views.components.*;
-import edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.DataDialogue;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import javax.inject.Inject;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.input.*;
-import javafx.scene.layout.BorderPane;
-
 import javafx.geometry.Point2D;
-
-
-import java.util.*;
-import javax.inject.Inject;
-
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
+import com.jfoenix.controls.JFXTextField;
 
 import lombok.extern.slf4j.Slf4j;
+
+import edu.wpi.cs3733.d20.teamL.entities.Edge;
+import edu.wpi.cs3733.d20.teamL.entities.Node;
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
+import edu.wpi.cs3733.d20.teamL.entities.Graph;
+import edu.wpi.cs3733.d20.teamL.util.pathfinding.MapParser;
+import edu.wpi.cs3733.d20.teamL.entities.Path;
+import edu.wpi.cs3733.d20.teamL.util.pathfinding.PathFinder;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
+import edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.DataDialogue;
+import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
+import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
+import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
 
 @Slf4j
 public class MapEditorController {
     @FXML
-    JFXTextField startNode, endNode;
+    MenuItem saveToDB, saveToCSV, open, quit;
     @FXML
-    JFXButton pathFind, btnCancel, btnSave, saveToDB, saveToCSV, open, node, saveOptions, loadOptions, pathfindingOptions, floorUp, floorDown;
+    MenuItem undo, redo;
     @FXML
-    JFXToggleNode eraser;
+    MenuItem node, edge;
+    @FXML
+    TextField startNode, endNode;
+    @FXML
+    Button pathFind, btnCancel, btnSave, btnEditConnections, btnOpenEditor;
+    @FXML
+    ToggleGroup tools;
+    @FXML
+    ToggleButton mouse, eraser;
     @FXML
     BorderPane root;
     @FXML
     MapPane map;
     @FXML
-    Label nodeIDText,  numberlbl;
+    JFXTextField nodeIDText, xCoordText, yCoordText, buildingText, nodeTypeText, shortNameText, longNameText;
     @FXML
-    JFXTextField numberText, xCoordText, yCoordText, buildingText, nodeTypeText, shortNameText, longNameText;
-    @FXML
-    ComboBox nodeTypeValue;
-    @FXML
-    VBox editor, floorSelector, multiFloorConnection;
-	@FXML
-    JFXNodesList saveNodesList, loadNodesList, pathNodesList;
-    @Inject
+    VBox editor;
+	@Inject
 	private IDatabaseCache cache;
-    @Inject
-    private IPathfinderService pathfinder;
 
     private Scene scene;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
-
-    private final List<String> types = Arrays.asList("ELEV", "REST", "STAI", "DEPT", "LABS", "INFO", "CONF", "EXIT", "RETL", "SERV");
-    private int floor = 2;
 
     @FXML
     public void initialize() {
@@ -74,7 +78,7 @@ public class MapEditorController {
         coreShortcuts();
 
         pathFind.setOnAction(event -> {
-            Path path = pathfinder.pathfind(map.getBuilding(), map.getBuilding().getNode(startNode.getText()), map.getBuilding().getNode(endNode.getText()));
+            Path path = PathFinder.aStarPathFind(map.getGraph(), map.getGraph().getNode(startNode.getText()), map.getGraph().getNode(endNode.getText()));
             System.out.println(path.generateTextMessage());
 
             Iterator<Node> nodeIterator = path.iterator();
@@ -107,25 +111,11 @@ public class MapEditorController {
 
         map.setZoomLevel(1);
 
-        // Add floor buttons
-        for (int i = 1; i <= map.getBuilding().getMaxFloor(); i++) {
-            JFXButton newButton = new JFXButton();
-            newButton.setButtonType(JFXButton.ButtonType.RAISED);
-            newButton.getStylesheets().add("edu/wpi/cs3733/d20/teamL/css/MapStyles.css");
-            newButton.setText("" + i);
-            newButton.setOnAction(this::changeFloor);
-            newButton.getStyleClass().add("floor-buttons");
-
-            floorSelector.getChildren().add(1, newButton);
-        }
-
         //Hides the node editor VBox
         editor.setPrefWidth(0);
         editor.setVisible(false);
 
         map.recalculatePositions();
-
-        //saveNodesList.addAnimatedNode(saveDBButton);
 	}
 
     /**
@@ -140,6 +130,13 @@ public class MapEditorController {
         KeyCombination cy = new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_DOWN);
         KeyCombination co = new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN);
 
+        // Add shortcut prompts to buttons
+        quit.setAccelerator(cq);
+        saveToDB.setAccelerator(cs);
+        saveToCSV.setAccelerator(css);
+        undo.setAccelerator(cz);
+        redo.setAccelerator(cy);
+        open.setAccelerator(co);
     }
 
     /**
@@ -158,7 +155,7 @@ public class MapEditorController {
 
     @FXML
     private void saveToDB() {
-        ArrayList<Node> nodes = new ArrayList<>(map.getBuilding().getNodes());
+        ArrayList<Node> nodes = new ArrayList<>(map.getGraph().getNodes());
         ArrayList<Edge> blackList = new ArrayList<>();
         ArrayList<Edge> newEdges = new ArrayList<>();
 
@@ -187,8 +184,8 @@ public class MapEditorController {
 		CSVHelper csvHelper = new CSVHelper();
 		ArrayList<ArrayList<String>> nodeTable = new ArrayList<>();
 		ArrayList<ArrayList<String>> edgeTable = new ArrayList<>();
-		ArrayList<Node> nodes = new ArrayList<>(map.getBuilding().getNodes());
-		ArrayList<Edge> edges = new ArrayList<>(map.getBuilding().getEdges());
+		ArrayList<Node> nodes = new ArrayList<>(map.getGraph().getNodes());
+		ArrayList<Edge> edges = new ArrayList<>(map.getGraph().getEdges());
 		nodeTable.add(new ArrayList<>(Arrays.asList("nodeID", "xCoord", "yCoord", "floor", "building", "nodeType", "longName", "shortName")));
 		for (Node node : nodes) {
 			nodeTable.add(node.toArrayList());
@@ -205,31 +202,29 @@ public class MapEditorController {
     public void open() {
         DataDialogue data = new DataDialogue();
         boolean confirmed = data.showDialogue(pathFind.getScene().getWindow());
-
         if (confirmed) {
-            Building newBuilding = MapParser.parseMapToBuilding(data.getNodeFile(), data.getEdgeFile());
-            map.setBuilding(newBuilding);
+            map.setGraph(MapParser.parseMapToGraph(data.getNodeFile(), data.getEdgeFile()));
         }
+
     }
 
     @FXML
     private void openFromDB() {
         cache.cacheAllFromDB();
-        Building newBuilding = new Building("Faulkner");
-        newBuilding.addAllNodes(cache.getNodeCache());
-
-        map.setBuilding(newBuilding);
+        Graph newGraph = new Graph();
+        newGraph.addAllNodes(cache.getNodeCache());
+        map.setGraph(newGraph);
     }
 
     @FXML
     private void insertNode() {
-        Node node = new Node(map.getBuilding().getUniqueNodeID(), new Point2D(100,100), map.getFloor(), map.getBuilding().getName());
+        Node node = new Node(map.getGraph().getUniqueNodeID(), new Point2D(100,100), map.getCurrentFloor(), map.getCurrentBuilding()); //TODO CHANGE TO UNIQUE ID
         map.addNode(node);
     }
 
     @FXML
-    private void handleTools() {
-        if (eraser.isSelected()) {
+    private void handleTools(ActionEvent event) {
+        if (event.getSource() == eraser) {
             map.setErasing(true);
         } else {
             map.setErasing(false);
@@ -255,34 +250,16 @@ public class MapEditorController {
         } else {
             editor.setPrefWidth(200);
             editor.setVisible(true);
+
             nodeIDText.setText(selectedNode.getID());
             Double x = selectedNode.getPosition().getX();
             Double y = selectedNode.getPosition().getY();
             xCoordText.setText(x.toString());
             yCoordText.setText(y.toString());
-            nodeTypeValue.getSelectionModel().select(types.indexOf(selectedNode.getType())+1);
+            buildingText.setText(selectedNode.getBuilding());
+            nodeTypeText.setText(selectedNode.getType());
             shortNameText.setText(selectedNode.getShortName());
             longNameText.setText(selectedNode.getLongName());
-            nodeTypeChanged();
-        }
-    }
-
-    @FXML
-    private void nodeTypeChanged() {
-        int index = nodeTypeValue.getSelectionModel().getSelectedIndex();
-        Node selected = map.getSelectedNode();
-
-        if(index == 1) {
-            numberlbl.setText("Elevator Number:");
-            multiFloorConnection.setVisible(true);
-            numberText.setText(selected.getShaft());
-        } else if (index == 3) {
-            numberlbl.setText("Stairwell Number:");
-            multiFloorConnection.setVisible(true);
-            numberText.setText(selected.getShaft());
-        } else {
-            multiFloorConnection.setVisible(false);
-            numberText.setText("");
         }
     }
 
@@ -296,50 +273,17 @@ public class MapEditorController {
         double x = Double.parseDouble(xCoordText.getText());
         double y = Double.parseDouble(yCoordText.getText());
         selectedNode.setPosition(new Point2D(x, y));
-        selectedNode.setBuilding(map.getBuilding().getName());
-        selectedNode.setType(types.get(nodeTypeValue.getSelectionModel().getSelectedIndex()-1));
+        selectedNode.setBuilding(buildingText.getText());
+        selectedNode.setType(nodeTypeText.getText());
         selectedNode.setShortName(shortNameText.getText());
         selectedNode.setLongName(longNameText.getText());
-        selectedNode.setShaft(numberText.getText());
 
-        selectedNode.setId(map.getBuilding().getUniqueNodeID(selectedNode));
-        nodeIDText.setText(selectedNode.getID());
-
-        addMultiFloorEdge(selectedNode);
         map.removeNode(selectedNodeGUI);
         map.addNode(selectedNode);
-
         for(Node neighbor : neighbors) {
             Edge edge = new Edge(selectedNode, neighbor);
             selectedNode.addEdgeTwoWay(edge);
             map.addEdge(edge);
-        }
-    }
-
-    private void addMultiFloorEdge(Node node) {
-        if(node.getType().equals("ELEV") || node.getType().equals("STAI")) {
-            for(Node adj : map.getBuilding().getNodes()) {
-                if(node.getType().equals(adj.getType()) && node.getShaft().equals(adj.getShaft())) {
-                    if((node.getFloor() == adj.getFloor() + 1) || (node.getFloor() == adj.getFloor() - 1)) {
-                        node.addEdgeTwoWay(new Edge(node, adj));
-                    }
-                }
-            }
-        }
-    }
-
-    @FXML
-    private void changeFloor(ActionEvent event) {
-        if(event.getSource() == floorUp && map.getFloor() < 5) {
-            map.setFloor(map.getFloor() + 1);
-            openFromDB();
-        } else if (event.getSource() == floorDown && map.getFloor() > 1) {
-            map.setFloor(map.getFloor() - 1);
-            openFromDB();
-        } else {
-            JFXButton sourceButton = (JFXButton) event.getSource();
-
-            map.setFloor(Integer.parseInt(sourceButton.getText()));
         }
     }
 }

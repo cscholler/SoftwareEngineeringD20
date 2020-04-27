@@ -2,11 +2,11 @@ package edu.wpi.cs3733.d20.teamL.services.db;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Properties;
 
 public interface IDatabaseService {
+
 	void connect(Properties props);
 
 	ResultSet executeQuery(SQLEntry query);

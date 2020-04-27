@@ -5,11 +5,7 @@ import edu.wpi.cs3733.d20.teamL.entities.User;
 import java.util.ArrayList;
 
 public interface ILoginManager {
-	String SERVICE_NAME = "login-manager";
-
-	void startService();
-
-	void stopService();
+	String SERVICE_NAME = "login-manager-01";
 
 	void logIn(String username, String password);
 

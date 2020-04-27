@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamL.services.pathfinding.graph;
+package edu.wpi.cs3733.d20.teamL.util.pathfinding.graph;
 
 import static org.junit.jupiter.api.Assertions.*;
 

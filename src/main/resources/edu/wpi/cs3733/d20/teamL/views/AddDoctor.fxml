@@ -24,17 +24,17 @@
     <bottom>
         <HBox alignment="CENTER" prefHeight="136.0" prefWidth="1080.0" spacing="100.0" BorderPane.alignment="CENTER">
             <children>
-                <JFXButton fx:id="btnCancel" buttonType="RAISED" maxWidth="200.0" onAction="#backClicked" prefHeight="22.0" prefWidth="200.0" styleClass="cancel" text="Back" textAlignment="CENTER">
+                <JFXButton fx:id="btnCancel" buttonType="RAISED" maxWidth="200.0" onAction="#btnBackClicked" prefHeight="22.0" prefWidth="200.0" styleClass="cancel" text="Back" textAlignment="CENTER">
                     <font>
                         <Font size="24.0" />
                     </font>
                 </JFXButton>
-                <JFXButton fx:id="btnSubmit" buttonType="RAISED" maxWidth="200.0" onAction="#submitClicked" prefHeight="55.0" prefWidth="200.0" styleClass="confirm" text="Submit" textAlignment="CENTER" textFill="WHITE">
+                <JFXButton fx:id="btnSubmit" buttonType="RAISED" maxWidth="200.0" onAction="#btnSubmitClicked" prefHeight="55.0" prefWidth="200.0" styleClass="confirm" text="Submit" textAlignment="CENTER" textFill="WHITE">
                     <font>
                         <Font size="24.0" />
                     </font>
                 </JFXButton>
-                <Label fx:id="confirmation" text="Doctor Added" visible="false">
+                <Label fx:id="lblConfirmation" text="Doctor Added">
                     <font>
                         <Font size="16.0" />
                     </font>
