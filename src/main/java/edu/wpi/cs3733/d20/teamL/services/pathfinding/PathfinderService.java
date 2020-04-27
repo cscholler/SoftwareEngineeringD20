@@ -6,11 +6,7 @@ import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.entities.Path;
 
 import javax.inject.Inject;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class PathfinderService implements IPathfinderService {
 
@@ -41,11 +37,13 @@ public class PathfinderService implements IPathfinderService {
     private Map<Node, NodeEntry> priorityQueueKey = new HashMap<>();
 
     private boolean hasCoords = false;
-    private enum PathfindingMethod {
-        Astar, BFS, DFS
-    };
 
-    PathfindingMethod pathfindingMethod = PathfindingMethod.Astar;
+    public enum PathfindingMethod {
+        Astar, BFS, DFS
+    }
+
+
+    private PathfindingMethod pathfindingMethod = PathfindingMethod.Astar;
 
     /**
      * Uses the a pathfinding algorithm to get a path between the source and destination node. Returns null
@@ -57,14 +55,14 @@ public class PathfinderService implements IPathfinderService {
      */
     public Path pathfind(Graph graph, Node source, Node destination) {
         switch (pathfindingMethod) {
+            default:
             case Astar:
                 return aStarPathFind(graph, source, destination);
             case BFS:
-                return null;
+                return breadthFirstSearch(source, destination);
             case DFS:
                 return null;
-            default:
-                return aStarPathFind(graph, source, destination);
+
         }
     }
 
@@ -169,4 +167,52 @@ public class PathfinderService implements IPathfinderService {
         nodeEntry.shortestPath = newShortestPath;
         priorityQueue.add(nodeEntry);
     }
+
+    public PathfindingMethod getPathfindingMethod() {
+        return pathfindingMethod;
+    }
+
+    public void setPathfindingMethod(PathfindingMethod pathfindingMethod) {
+        this.pathfindingMethod = pathfindingMethod;
+    }
+
+    /**
+     * Breadth First Search!
+     */
+    private Path breadthFirstSearch(Node source, Node destination) {
+
+        List<Node> path = new ArrayList<>();
+        LinkedList<Node> queue = new LinkedList<>();
+        LinkedList<Node> visited = new LinkedList<>();
+        queue.add(source);
+        boolean finished = false;
+
+        while (!queue.isEmpty() && !finished) {
+            Node current = queue.removeFirst();
+
+            if (destination == current) {
+                finished = true;
+            }
+
+            if (!visited.contains(current)) {
+                visited.add(current);
+                //System.out.print(current.getID() + " ");
+                path.add(current);
+
+                Collection<Node> neighbors = current.getNeighbors();
+
+                if (!neighbors.isEmpty()) {
+                    for (Node n : neighbors) {
+                        if (!visited.contains(n)) {
+                            queue.add(n);
+                        }
+                    }
+                }
+
+            }
+            //System.out.println();
+        }
+        return Path.listToPath(path);
+    }
 }
+
