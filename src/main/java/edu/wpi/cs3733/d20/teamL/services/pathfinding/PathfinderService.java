@@ -135,50 +135,42 @@ public class PathfinderService implements IPathfinderService {
      */
     public Path depthFirstFind(Graph graph, Node source, Node destination) {
 
-        //List<Node> visitedNodes = new LinkedList<>();
-        Collection<Node> neighbors = source.getNeighbors();
-        int size = neighbors.size();
-        Vector<Boolean> visitedNodes = new Vector<Boolean>(size);
+        List<Node> path = new LinkedList<>();
+        LinkedList<Node> visitedNodes = new LinkedList<>();
+        Stack<Node> stack = new Stack<Node>();
+        stack.add(source);
+        boolean visited = false;
 
-        //Initialize everything to null
-        for (int i = 0; i < size; i++) {
-            visitedNodes.add(false);
-        }
-        //Iterate through the neighbors of the source Node
-        for (int i = 0; i < neighbors.size(); i++) {
+        //Loops until the stack is empty
+        while (!stack.isEmpty()) {
 
-            //Checks to see if the neighbors are null (not visited)
-            if (!visitedNodes.get(i)) {
+            Node currentNode = stack.pop();
 
-                depthFirstHelper(i, visitedNodes);
+            //Mark destination is visited if the node popped is the destination node
+            if (destination == currentNode) {
+                visited = true;
+            }
+            //If the node is not in the list of visited nodes, add it to the list
+            if (visitedNodes.contains(currentNode) == false) {
+
+                visitedNodes.add(currentNode);
+                path.add(currentNode);
+                Collection<Node> neighbors = currentNode.getNeighbors();
+
+                //Checks if the list of neighbors is not empty
+                if (!neighbors.isEmpty()) {
+                    //For each node in the list, if it is not visited it is added to the stack
+                    for (Node next : neighbors) {
+
+                        if(!visitedNodes.contains(next)) {
+
+                            stack.add(next);
+                        }
+                    }
+                }
             }
         }
-
-        return Path.listToPath(entryToList(destination));
-    }
-
-    /**
-     * A recursive call to get all the Nodes visited
-     *
-     * @param index The index of the Node to get
-     * @param visited Keeps track of which Nodes were visited
-     */
-    private void depthFirstHelper(int index, Vector<Boolean> visited) {
-
-        Stack<Integer> nodeStack = new Stack<>();
-        //Pushes the node into the stack
-        nodeStack.push(index);
-        //Checks if the stack is empty
-        while(nodeStack.empty() == false) {
-
-            index = nodeStack.peek();
-            nodeStack.pop();
-
-            if(visited.get(index) == false) {
-
-                visited.set(index, true);
-            }
-        }
+        return Path.listToPath(path);
     }
 
     /**

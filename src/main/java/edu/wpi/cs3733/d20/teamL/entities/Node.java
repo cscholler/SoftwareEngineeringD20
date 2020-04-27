@@ -255,20 +255,4 @@ public class Node {
             throw new IllegalArgumentException("'equals()' must compare this with another Node.");
         }
     }*/
-
-    /**
-     * Labels the node as visited
-     *
-     */
-    public void visit() {
-        visited = true;
-    }
-
-    /**
-     * Labels the node as unvisited
-     *
-     */
-    public void unvisited() {
-        visited = false;
-    }
 }
