@@ -1,14 +1,10 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import edu.wpi.cs3733.d20.teamL.services.IMessengerService;
-import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -31,6 +27,7 @@ import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.entities.Graph;
 import edu.wpi.cs3733.d20.teamL.entities.Path;
+import edu.wpi.cs3733.d20.teamL.util.pathfinding.PathFinder;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
@@ -41,28 +38,28 @@ import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
 public class MapViewerController {
     @FXML
     MapPane map;
+
     @FXML
     JFXTextField startingPoint, destination;
+
     @FXML
     JFXButton btnNavigate;
+
     @FXML
     ScrollPane scroll;
+
     @FXML
     VBox instructions;
+
     @FXML
     JFXButton btnTextMe;
+
     @Inject
     private IDatabaseCache cache;
-    @Inject
-	private IMessengerService messenger;
-    @Inject
-    private IPathfinderService pathfinderService;
 
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
-
-    private int floor = 2;
 
     @FXML
     private void initialize() {
@@ -73,7 +70,6 @@ public class MapViewerController {
 
         Graph newGraph = new Graph();
         newGraph.addAllNodes(cache.getNodeCache());
-        map.setCurrentFloor(floor);
         map.setGraph(newGraph);
 
         map.setZoomLevel(1);
@@ -119,7 +115,7 @@ public class MapViewerController {
 
         if (startNode != null && destNode != null) {
             String directions = highlightSourceToDestination(startNode, destNode);
-            messenger.setDirections(directions);
+            //mailer.setDirections(directions);
             Label directionsLabel = new Label();
             directionsLabel.setFont(new Font(14));
             directionsLabel.setText(directions);
@@ -146,7 +142,7 @@ public class MapViewerController {
     private String highlightSourceToDestination(Node source, Node destination) {
         map.getSelector().clear();
 
-        Path path = pathfinderService.pathfind(map.getGraph(), source, destination);
+        Path path = PathFinder.aStarPathFind(map.getGraph(), source, destination);
         Iterator<Node> nodeIterator = path.iterator();
 
         // Loop through each node in the path and select it as well as the edge pointing to the next node
@@ -172,7 +168,7 @@ public class MapViewerController {
         StringBuilder builder = new StringBuilder();
 
         for(String direction : message) {
-            builder.append(direction).append("\n\n");
+            builder.append(direction + "\n\n");
         }
 
         return builder.toString();
@@ -190,13 +186,5 @@ public class MapViewerController {
         } catch (IOException e) {
             log.error("Encountered IOException", e);
         }
-    }
-    @FXML
-    public void handleFloor(ActionEvent event) {
-        JFXButton button = (JFXButton) event.getSource();
-        floor = Integer.parseInt(button.getText());
-
-        map.setCurrentFloor(floor);
-        map.setGraph(map.getGraph());
     }
 }

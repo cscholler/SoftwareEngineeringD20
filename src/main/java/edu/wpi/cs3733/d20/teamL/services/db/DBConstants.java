@@ -14,21 +14,21 @@ public class DBConstants {
 
 	public static final String CREATE_NODE_TABLE =
 			"CREATE TABLE Nodes(" +
-					"id VARCHAR(16) NOT NULL, " +
+					"id VARCHAR(10) NOT NULL, " +
 					"x_pos DOUBLE NOT NULL, " +
 					"y_pos DOUBLE NOT NULL, " +
 					"floor CHAR(1) NOT NULL, " +
 					"building VARCHAR(64) NOT NULL, " +
 					"node_type CHAR(4) NOT NULL, " +
-					"l_name VARCHAR(64) NOT NULL, " +
+					"l_name VARCHAR(32) NOT NULL, " +
 					"s_name VARCHAR(32) NOT NULL, " +
 					"PRIMARY KEY (id))";
 
 	public static final String CREATE_EDGE_TABLE =
 			"CREATE TABLE Edges(" +
 					"id VARCHAR(21) NOT NULL, " +
-					"node_start VARCHAR(16) NOT NULL REFERENCES Nodes(id), " +
-					"node_end VARCHAR(16) NOT NULL REFERENCES Nodes(id), " +
+					"node_start VARCHAR(10) NOT NULL REFERENCES Nodes(id), " +
+					"node_end VARCHAR(10) NOT NULL REFERENCES Nodes(id), " +
 					"PRIMARY KEY (id))";
 
 	public static final String CREATE_USER_TABLE =
@@ -49,7 +49,7 @@ public class DBConstants {
 					"f_name VARCHAR(32) NOT NULL, " +
 					"l_name VARCHAR(32) NOT NULL, " +
 					"username VARCHAR(32) REFERENCES Users(username), " +
-					"office_id VARCHAR(16) REFERENCES Nodes(id), " +
+					"office_id VARCHAR(10) REFERENCES Nodes(id), " +
 					"addl_info VARCHAR(256), " +
 					"PRIMARY KEY (id))";
 
@@ -59,7 +59,7 @@ public class DBConstants {
 					"f_name VARCHAR(32) NOT NULL, " +
 					"l_name VARCHAR(32) NOT NULL, " +
 					"doctor_id INT REFERENCES Doctors(id), " +
-					"room_id VARCHAR(16) REFERENCES Nodes(id), " +
+					"room_id VARCHAR(10) REFERENCES Nodes(id), " +
 					"addl_info VARCHAR(256), " +
 					"PRIMARY KEY (id))";
 
@@ -271,6 +271,11 @@ public class DBConstants {
 	public static final String UPDATE_USER_NAME =
 			"UPDATE Users " +
 					"SET f_name = ?, l_name = ? " +
+					"WHERE id = ?";
+
+	public static final String UPDATE_DOCTOR_USERNAME =
+			"UPDATE Doctors " +
+					"SET username = ?" +
 					"WHERE id = ?";
 
 	public static final String UPDATE_USER_PASSWORD =

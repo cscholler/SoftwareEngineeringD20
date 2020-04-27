@@ -89,16 +89,17 @@ public class MapPane extends StackPane {
         body.setFocusTraversable(true);
 
         // Zoom in and out when control is held
-        body.setOnScroll(event -> {
-            // Get the initial zoom level
-            double prevZoomLevel = getZoomLevel();
+        /*body.setOnScroll(event -> {
+            if (event.isControlDown()) {
+                // Get the initial zoom level
+                double prevZoomLevel = getZoomLevel();
 
-            // Change the zoom level
-            setZoomLevelToPosition(prevZoomLevel * (1 + event.getDeltaY() / 500), new Point2D(event.getX(), event.getY()));
+                // Change the zoom level
+                setZoomLevelToPosition(prevZoomLevel * (1 + event.getDeltaY() / 100), new Point2D(event.getX(), event.getY()));
 
-            position.setText(positionInfo());
-            event.consume();
-        });
+                position.setText(positionInfo());
+            }
+        });*/
     }
 
     public void init() {
@@ -244,11 +245,6 @@ public class MapPane extends StackPane {
         return graph;
     }
 
-    /**
-     * Converts the given graph into Node and Edge GUIs and displays them with the correct map image based on their floor and building.
-     *
-     * @param graph The graph to display
-     */
     public void setGraph(Graph graph) {
         this.graph = graph;
         nodes.clear();
@@ -257,36 +253,25 @@ public class MapPane extends StackPane {
 
         // Add nodes to the scene
         for (Node node : graph.getNodes()) {
-            if(node.getFloor() == currentFloor)
-                addNode(node);
+            addNode(node);
         }
 
         // Add lines to the scene
         for (Edge edge : graph.getEdges()) {
-            if(edge.getSource().getFloor() == currentFloor)
-                addEdge(edge);
+            addEdge(edge);
         }
-
+        
         ArrayList<Node> nodeList = new ArrayList<>(nodes.keySet());
         currentFloor = nodeList.get(0).getFloor();
         currentBuilding = nodeList.get(0).getBuilding();
 
-        setMapImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/Floor" + currentFloor + "LM.png"));
+        mapImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/Floor" + currentFloor + "LM.png"));
 
         recalculatePositions();
     }
 
     public void recalculatePositions() {
         setZoomLevel(getZoomLevel());
-    }
-
-    public void setMapImage(Image mapImage) {
-        this.mapImage.setImage(mapImage);
-        this.mapImage.setFitWidth(this.mapImage.getImage().getWidth() * zoomLevel);
-    }
-
-    public Image getMapImage() {
-        return mapImage.getImage();
     }
 
     public double getZoomLevel() {
@@ -303,8 +288,8 @@ public class MapPane extends StackPane {
             nodeGUI.setLayoutPos(newPos);
         }
 
-        // Scale the image
         mapImage.setFitWidth(mapImage.getFitWidth() * (zoomLevel / this.zoomLevel));
+        mapImage.setFitHeight(mapImage.getFitHeight() * (zoomLevel / this.zoomLevel));
 
         this.zoomLevel = zoomLevel;
     }
@@ -313,7 +298,7 @@ public class MapPane extends StackPane {
      * Sets the zoom level while preserving the camera position with respect to the given Point2D.
      *
      * @param newZoomLevel The new zoom level.
-     * @param position     The coordinates of the position to zoom to.
+     * @param position The coordinates of the position to zoom to.
      */
     public void setZoomLevelToPosition(double newZoomLevel, Point2D position) {
         double percentX = position.getX() / body.getWidth();
@@ -353,7 +338,7 @@ public class MapPane extends StackPane {
 
         // Highlight and unhighlight as the node is moused over, set the cursor to arrows if it is movable
         nodeGUI.getCircle().setOnMouseEntered(event -> {
-            if (!erasing) {
+            if(!erasing) {
                 nodeGUI.setHighlighted(true);
                 onSelectable = true;
             }
@@ -446,7 +431,7 @@ public class MapPane extends StackPane {
                     }
                     draggingNode = false;
                 }
-                if (selector.getNodes().size() == 1) {
+                if(selector.getNodes().size() == 1) {
                     selectedNode = nodeGUI.getNode();
                     selectedNodeGUI = nodeGUI;
                     onActionProperty().get().handle(event);
@@ -471,7 +456,7 @@ public class MapPane extends StackPane {
 
             nodeGUI.setVisible(false);
         }
-        if (!graph.getNodes().contains(node))
+        if(!graph.getNodes().contains(node))
             graph.addNode(node);
 
         nodes.put(node, nodeGUI);
@@ -491,8 +476,8 @@ public class MapPane extends StackPane {
             neighbor.removeEdge(edgeToNode);
             nodeGUI.getNode().removeEdge(edgeFromNode);
 
-            if (edges.get(edgeToNode) != null) body.getChildren().removeAll(edges.get(edgeToNode).getAllNodes());
-            if (edges.get(edgeFromNode) != null) body.getChildren().removeAll(edges.get(edgeFromNode).getAllNodes());
+            if(edges.get(edgeToNode) != null) body.getChildren().removeAll(edges.get(edgeToNode).getAllNodes());
+            if(edges.get(edgeFromNode) != null) body.getChildren().removeAll(edges.get(edgeFromNode).getAllNodes());
         }
 
         // Remove the node from the graph and the nodeGUI from the Pane
@@ -525,7 +510,7 @@ public class MapPane extends StackPane {
 
         body.getChildren().addAll(0, edgeGUI.getAllNodes());
 
-        if (!isEditable())
+        if(!isEditable())
             edgeGUI.setVisible(false);
     }
 
@@ -574,17 +559,12 @@ public class MapPane extends StackPane {
     public Node getSelectedNode() {
         return selectedNode;
     }
-
     public NodeGUI getSelectedNodeGUI() {
         return selectedNodeGUI;
     }
 
     public int getCurrentFloor() {
         return currentFloor;
-    }
-
-    public void setCurrentFloor(int currentFloor) {
-        this.currentFloor = currentFloor;
     }
 
     public String getCurrentBuilding() {
