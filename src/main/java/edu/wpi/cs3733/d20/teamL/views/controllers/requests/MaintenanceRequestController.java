@@ -8,6 +8,7 @@ import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
+import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import javafx.fxml.FXML;
@@ -39,12 +40,13 @@ public class MaintenanceRequestController implements Initializable {
     private IDatabaseService dbService;
     @Inject
     private IDatabaseCache dbCache;
+    @Inject
+    private ILoginManager loginManager;
 
     private String loggedInUsername;
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-        loggedInUsername = "nurse"; // TODO implement a system to check who is logged in
 
         // Setup autocomplete
         searchFields = new SearchFields(dbCache.getNodeCache());
@@ -69,12 +71,11 @@ public class MaintenanceRequestController implements Initializable {
 
     @FXML
     private void submit() {
-        // TODO Make a user to make maintenance requests to
         if (fieldsFilled()) {
             String notes = urgency.getSelectionModel().getSelectedItem().toString() + "|" + description.getText();
             String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
 
-            ArrayList<String> params = new ArrayList<>(Arrays.asList(null, loggedInUsername, "maintenance", location.getText(),
+            ArrayList<String> params = new ArrayList<>(Arrays.asList(null, loginManager.getCurrentUser().getUsername(), "maintenance", location.getText(),
                     "maintenance", type.getSelectionModel().getSelectedItem().toString(), notes, "0", dateAndTime));
             int rows = dbService.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST, params));
 
