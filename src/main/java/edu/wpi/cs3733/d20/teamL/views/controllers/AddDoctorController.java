@@ -28,24 +28,24 @@ import javax.inject.Inject;
 
 @Slf4j
 public class AddDoctorController {
-	private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
-	private DBTableFormatter formatter = new DBTableFormatter();
-	private SearchFields sf;
-	private JFXAutoCompletePopup<String> autoCompletePopup;
+    private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    private DBTableFormatter formatter = new DBTableFormatter();
+    private SearchFields sf;
+    private JFXAutoCompletePopup<String> autoCompletePopup;
     @Inject
-	private IDatabaseService db;
+    private IDatabaseService db;
     @Inject
     private IDatabaseCache cache;
-	@FXML
-	private Label lblConfirmation;
-	@FXML
-	private JFXTextField fNameText, lNameText, emailText, doctorIDText, officeNumText, addInfoText;
+    @FXML
+    private Label lblConfirmation;
+    @FXML
+    private JFXTextField fNameText, lNameText, emailText, doctorIDText, officeNumText, addInfoText;
 
 
     @FXML
     private void initialize() {
         cache.cacheAllFromDB();
-		lblConfirmation.setVisible(false);
+        lblConfirmation.setVisible(false);
         sf = new SearchFields(cache.getNodeCache());
         sf.getFields().add(SearchFields.Field.nodeID);
         sf.populateSearchFields();
@@ -59,16 +59,11 @@ public class AddDoctorController {
     }
 
     /**
-     * goes back to admin view page when back button is clicked 
+     * goes back to admin view page when back button is clicked
      */
     @FXML
     public void btnBackClicked() {
-        try {
-            Parent root = loaderHelper.getFXMLLoader("AdminView").load();
-            loaderHelper.setupScene(new Scene(root));
-        } catch (IOException ex) {
-            log.error("Encountered IOException", ex);
-        }
+        loaderHelper.goBack();
     }
 
     /**
@@ -76,29 +71,29 @@ public class AddDoctorController {
      */
     @FXML
     private void btnSubmitClicked() {
-			String docID = doctorIDText.getText();
-            String fName = fNameText.getText();
-            String lName = lNameText.getText();
-            String email = emailText.getText();
-            String roomNum = officeNumText.getText();
-            String additionalInfo = addInfoText.getText();
-			if (db.executeUpdate(new SQLEntry(DBConstants.ADD_DOCTOR, new ArrayList<>(Arrays.asList(docID, fName, lName, null, roomNum, additionalInfo)))) == 0) {
-			    lblConfirmation.setTextFill(Color.RED);
-			    lblConfirmation.setText("Submission failed");
-            } else {
-                lblConfirmation.setTextFill(Color.BLACK);
-                lblConfirmation.setText("Doctor Added");
-                fNameText.setText("");
-                lNameText.setText("");
-                emailText.setText("");
-                doctorIDText.setText("");
-                officeNumText.setText("");
-                addInfoText.setText("");
-            }
-			loaderHelper.showAndFade(lblConfirmation);
-			formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_DOCTORS)));
+        String docID = doctorIDText.getText();
+        String fName = fNameText.getText();
+        String lName = lNameText.getText();
+        String email = emailText.getText();
+        String roomNum = officeNumText.getText();
+        String additionalInfo = addInfoText.getText();
+        if (db.executeUpdate(new SQLEntry(DBConstants.ADD_DOCTOR, new ArrayList<>(Arrays.asList(docID, fName, lName, null, roomNum, additionalInfo)))) == 0) {
+            lblConfirmation.setTextFill(Color.RED);
+            lblConfirmation.setText("Submission failed");
+        } else {
+            lblConfirmation.setTextFill(Color.BLACK);
+            lblConfirmation.setText("Doctor Added");
+            fNameText.setText("");
+            lNameText.setText("");
+            emailText.setText("");
+            doctorIDText.setText("");
+            officeNumText.setText("");
+            addInfoText.setText("");
         }
+        loaderHelper.showAndFade(lblConfirmation);
+        formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_DOCTORS)));
     }
+}
 
 
 
