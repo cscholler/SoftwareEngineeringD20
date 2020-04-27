@@ -10,6 +10,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import edu.wpi.cs3733.d20.teamL.services.IMessengerService;
+import edu.wpi.cs3733.d20.teamL.services.MessengerService;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -39,7 +40,7 @@ import edu.wpi.cs3733.d20.teamL.views.controllers.map.MapViewerController;
 public class NavigationController implements Initializable {
 
     @FXML
-    private ImageView iHome;
+    private ImageView backgroundImage;
     @FXML
     private JFXTextField searchBox;
     @FXML
@@ -47,7 +48,7 @@ public class NavigationController implements Initializable {
     @Inject
     private IDatabaseCache cache;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
-    private IMessengerService messenger = new IMessengerService();
+    private IMessengerService messenger = new MessengerService();
     private JFXAutoCompletePopup<String> autoCompletePopup;
     private SearchFields sf;
 
@@ -67,10 +68,10 @@ public class NavigationController implements Initializable {
         sf.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
-        //sets picture on home
+        //Sets home screen picture
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-        iHome.setFitHeight(screenBounds.getHeight());
-        iHome.setFitWidth(screenBounds.getWidth());
+		backgroundImage.setFitWidth(screenBounds.getWidth());
+        backgroundImage.setFitHeight(screenBounds.getHeight());
 
         searchBox.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER))

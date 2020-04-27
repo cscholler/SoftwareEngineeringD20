@@ -15,7 +15,9 @@ public class ServiceProvider extends AbstractModule {
 	protected void configure() {
 		bind(IDatabaseService.class).to(DatabaseService.class).asEagerSingleton();
 		bind(IDatabaseCache.class).to(DatabaseCache.class).asEagerSingleton();
-		bind(ILoginManager.class).to(LoginManager.class).asEagerSingleton();
 		bind(IPathfinderService.class).to(PathfinderService.class).asEagerSingleton();
+		bind(ILoginManager.class).to(LoginManager.class).asEagerSingleton();
+		bind(IMessengerService.class).to(MessengerService.class).asEagerSingleton();
+		//bind(IPathfinderService.class).to(PathfinderService.class).asEagerSingleton();
 	}
 }

@@ -14,21 +14,21 @@ public class DBConstants {
 
 	public static final String CREATE_NODE_TABLE =
 			"CREATE TABLE Nodes(" +
-					"id VARCHAR(10) NOT NULL, " +
+					"id VARCHAR(16) NOT NULL, " +
 					"x_pos DOUBLE NOT NULL, " +
 					"y_pos DOUBLE NOT NULL, " +
 					"floor CHAR(1) NOT NULL, " +
 					"building VARCHAR(64) NOT NULL, " +
 					"node_type CHAR(4) NOT NULL, " +
-					"l_name VARCHAR(32) NOT NULL, " +
+					"l_name VARCHAR(64) NOT NULL, " +
 					"s_name VARCHAR(32) NOT NULL, " +
 					"PRIMARY KEY (id))";
 
 	public static final String CREATE_EDGE_TABLE =
 			"CREATE TABLE Edges(" +
 					"id VARCHAR(21) NOT NULL, " +
-					"node_start VARCHAR(10) NOT NULL REFERENCES Nodes(id), " +
-					"node_end VARCHAR(10) NOT NULL REFERENCES Nodes(id), " +
+					"node_start VARCHAR(16) NOT NULL REFERENCES Nodes(id), " +
+					"node_end VARCHAR(16) NOT NULL REFERENCES Nodes(id), " +
 					"PRIMARY KEY (id))";
 
 	public static final String CREATE_USER_TABLE =
@@ -49,7 +49,7 @@ public class DBConstants {
 					"f_name VARCHAR(32) NOT NULL, " +
 					"l_name VARCHAR(32) NOT NULL, " +
 					"username VARCHAR(32) REFERENCES Users(username), " +
-					"office_id VARCHAR(10) REFERENCES Nodes(id), " +
+					"office_id VARCHAR(16) REFERENCES Nodes(id), " +
 					"addl_info VARCHAR(256), " +
 					"PRIMARY KEY (id))";
 
@@ -59,7 +59,7 @@ public class DBConstants {
 					"f_name VARCHAR(32) NOT NULL, " +
 					"l_name VARCHAR(32) NOT NULL, " +
 					"doctor_id INT REFERENCES Doctors(id), " +
-					"room_id VARCHAR(10) REFERENCES Nodes(id), " +
+					"room_id VARCHAR(16) REFERENCES Nodes(id), " +
 					"addl_info VARCHAR(256), " +
 					"PRIMARY KEY (id))";
 
@@ -103,8 +103,8 @@ public class DBConstants {
 					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
 					"patient_id INT REFERENCES Patients(id), " +
 					"request_username VARCHAR(32) REFERENCES Users(username), " +
-					"assignee_username VARCHAR(32) REFERENCES Users(username), " +
-					"location VARCHAR(10) REFERENCES Nodes(id), " +
+					"assignee_username VARCHAR(32) NOT NULL REFERENCES Users(username), " +
+					"location VARCHAR(16) NOT NULL REFERENCES Nodes(id), " +
 					"service VARCHAR(64) NOT NULL, " +
 					"type VARCHAR(64), " +
 					"notes VARCHAR(256), " +
@@ -171,7 +171,6 @@ public class DBConstants {
 			"INSERT INTO Service_Requests(patient_id, request_username, assignee_username, location, service, type, notes, status, date_and_time)" +
 					"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-
 	public static final String SELECT_ALL_NODES =
 			"SELECT * " +
 					"FROM Nodes";
@@ -198,15 +197,20 @@ public class DBConstants {
 			"SELECT * " +
 					"FROM Doctors";
 
-	public static final String GET_DOCTOR_ID =
-			"SELECT id " +
-					"FROM Doctors " +
-					"WHERE f_name = ? AND l_name = ?";
-
 	public static final String GET_DOCTOR_NAME =
 			"SELECT f_name, l_name " +
 					"FROM Doctors " +
 					"WHERE id = ?";
+
+	public static final String GET_DOCTOR_ID_BY_NAME =
+			"SELECT id " +
+					"FROM Doctors " +
+					"WHERE f_name = ? AND l_name = ?";
+
+	public static final String GET_DOCTOR_ID_BY_USERNAME =
+			"SELECT id " +
+					"FROM Doctors " +
+					"WHERE username = ?";
 
 	public static final String SELECT_ALL_PATIENTS =
 			"SELECT * " +
@@ -243,7 +247,7 @@ public class DBConstants {
 	public static final String SELECT_ALL_MEDICATION_REQUESTS_FOR_DOCTOR =
 			"SELECT * " +
 					"FROM Medication_Requests " +
-					"WHERE doctor_username = ?";
+					"WHERE doctor_id = ?";
 
 	public static final String SELECT_ALL_MEDICATION_REQUESTS_FOR_DELIVERER =
 			"SELECT * " +

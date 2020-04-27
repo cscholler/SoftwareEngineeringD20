@@ -15,7 +15,7 @@ import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 @Slf4j
 public class LoginManager extends Service implements ILoginManager {
 	private User currentUser;
-	private boolean isAuthenticated;
+	private boolean isAuthenticated = false;
 	@Inject
 	private IDatabaseService db;
 
@@ -37,6 +37,7 @@ public class LoginManager extends Service implements ILoginManager {
 
 	@Override
 	public void logIn(String username, String password) {
+		log.info("Attempting to log in...");
 		ArrayList<ArrayList<String>> results = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_USER, new ArrayList<>(Arrays.asList(username, getHashedPassword(password))))));
 		if (results.size() == 1) {
 			ArrayList<String> userInfo = results.get(0);
@@ -51,6 +52,7 @@ public class LoginManager extends Service implements ILoginManager {
 
 	@Override
 	public void logOut() {
+		log.info("Logging out...");
 		currentUser = null;
 		isAuthenticated = false;
 	}
