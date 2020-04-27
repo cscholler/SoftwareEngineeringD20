@@ -23,9 +23,9 @@
     <center>
     </center>
    <right>
-      <HBox BorderPane.alignment="CENTER">
+      <HBox fx:id="testHbox" BorderPane.alignment="CENTER">
          <children>
-            <VBox fx:id="nodeConnectionsTab" prefWidth="200.0" style="-fx-background-color: #0D2E57 #0D2E57; -fx-border-color: white; -fx-border-width: 3;">
+            <VBox fx:id="nodeConnectionsTab" minWidth="-Infinity" prefWidth="200.0" style="-fx-background-color: #0D2E57 #0D2E57; -fx-border-color: white; -fx-border-width: 3;">
                <children>
                   <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: #00032E;">
                      <children>
@@ -168,7 +168,7 @@
                                     <JFXButton buttonType="RAISED" defaultButton="true" onAction="#editConnections" prefWidth="145.0" ripplerFill="WHITE" style="-fx-background-color: #405784;" text="Edit Connections" textAlignment="CENTER" textFill="WHITE" />
                                     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" styleClass="editorPaneVbox">
                                        <children>
-                                          <JFXButton fx:id="btnCancel" buttonType="RAISED" prefWidth="62.5" ripplerFill="WHITE" style="-fx-background-color: #405784;" text="Cancel" textAlignment="CENTER" textFill="WHITE" />
+                                          <JFXButton fx:id="btnCancel" buttonType="RAISED" onAction="#closeConnections" prefWidth="62.5" ripplerFill="WHITE" style="-fx-background-color: #405784;" text="Cancel" textAlignment="CENTER" textFill="WHITE" />
                                           <JFXButton fx:id="btnSave" buttonType="RAISED" onAction="#updateNode" prefWidth="62.5" ripplerFill="WHITE" style="-fx-background-color: #405784;" text="Save" textFill="WHITE" />
                                        </children>
                                        <VBox.margin>
@@ -257,12 +257,12 @@
                <children>
                   <JFXNodesList fx:id="loadNodesList" rotate="270.0" spacing="10.0">
                      <children>
-                        <JFXButton fx:id="loadOptions" buttonType="RAISED" styleClass="nodeListButton" text=" ">
+                        <JFXButton fx:id="loadOptions" buttonType="RAISED" onAction="#loadOptionsClicked" styleClass="nodeListButton" text=" ">
                            <tooltip>
-                              <Tooltip text="Load Options" />
+                              <Tooltip fx:id="loadTooltip" text="Click to Show Load Options" />
                            </tooltip>
                            <graphic>
-                              <ImageView fitHeight="13.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true" scaleX="2.5" scaleY="2.5" translateX="3.5">
+                              <ImageView fx:id="loadOptionsImage" fitHeight="13.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true" scaleX="2.5" scaleY="2.5" translateX="3.5">
                                  <image>
                                     <Image url="@../assets/map editor/UploadFromFolder.png" />
                                  </image>
@@ -297,12 +297,12 @@
                   </JFXNodesList>
                   <JFXNodesList fx:id="saveNodesList" rotate="270.0" spacing="10.0">
                      <children>
-                        <JFXButton fx:id="saveOptions" buttonType="RAISED" styleClass="nodeListButton" text=" ">
+                        <JFXButton fx:id="saveOptions" buttonType="RAISED" onAction="#saveOptionsClicked" styleClass="nodeListButton" text=" ">
                            <tooltip>
-                              <Tooltip autoHide="true" contentDisplay="RIGHT" text="Save Options" />
+                              <Tooltip fx:id="saveTooltip" autoHide="true" contentDisplay="RIGHT" text="Click to Show Save Options" />
                            </tooltip>
                            <graphic>
-                              <ImageView fitHeight="16.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true" scaleX="2.0" scaleY="2.0" translateX="4.0" translateY="-1.0">
+                              <ImageView fx:id="saveOptionsImage" fitHeight="16.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true" scaleX="2.0" scaleY="2.0" translateX="4.0" translateY="-1.0">
                                  <image>
                                     <Image url="@../assets/map editor/SaveToFile.png" />
                                  </image>
@@ -337,12 +337,12 @@
                   </JFXNodesList>
                   <JFXNodesList fx:id="pathNodesList" alignment="TOP_CENTER" prefHeight="16.0" prefWidth="10.0" rotate="270.0" spacing="10.0">
                      <children>
-                        <JFXButton fx:id="pathfindingOptions" buttonType="RAISED" styleClass="nodeListButton" text=" ">
+                        <JFXButton fx:id="pathfindingOptions" buttonType="RAISED" onAction="#pathfindOptionsClicked" styleClass="nodeListButton" text=" ">
                            <tooltip>
-                              <Tooltip text="Switch Pathfinding Algorithm" />
+                              <Tooltip fx:id="pathfindTooltip" text="Switch Pathfinding Algorithm" />
                            </tooltip>
                            <graphic>
-                              <ImageView fitHeight="81.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true" scaleX="2.0" scaleY="2.0" translateX="2.0" translateY="1.0">
+                              <ImageView fx:id="pathfindImage" fitHeight="81.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true" scaleX="2.0" scaleY="2.0" translateX="2.0" translateY="1.0">
                                  <image>
                                     <Image url="@../assets/map editor/AStar.png" />
                                  </image>

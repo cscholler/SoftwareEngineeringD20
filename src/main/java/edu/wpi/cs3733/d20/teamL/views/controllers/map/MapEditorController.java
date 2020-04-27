@@ -21,6 +21,7 @@ import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
 
@@ -30,6 +31,7 @@ import javafx.geometry.Point2D;
 import java.util.*;
 import javax.inject.Inject;
 
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 
@@ -58,6 +60,11 @@ public class MapEditorController {
     VBox editor, multiFloorConnection, nodeConnectionsTab;
 	@FXML
     JFXNodesList saveNodesList, loadNodesList, pathNodesList;
+	@FXML
+    Tooltip saveTooltip, loadTooltip, pathfindTooltip;
+	@FXML
+    ImageView saveOptionsImage, loadOptionsImage, pathfindImage;
+
     @Inject
 	private IDatabaseCache cache;
     @Inject
@@ -385,4 +392,47 @@ public class MapEditorController {
             eraserBool = false;
         }
     }
+
+    @FXML
+    private void closeConnections() {
+        nodeConnectionsTab.setPrefWidth(0);
+        nodeConnectionsTab.setVisible(false);
+    }
+
+    @FXML
+    private void saveOptionsClicked() {
+        //show/hide options image
+        if(saveNodesList.isExpanded()) {
+            saveTooltip.setText("Click to Close");
+            saveOptionsImage.setVisible(false);
+        } else {
+            saveTooltip.setText("Click to Show Save Options");
+            saveOptionsImage.setVisible(true);
+        }
+    }
+
+    @FXML
+    private void loadOptionsClicked() {
+        //show/hide options image
+        if(loadNodesList.isExpanded()) {
+            loadTooltip.setText("Click to Close");
+            loadOptionsImage.setVisible(false);
+        } else {
+            loadTooltip.setText("Click to Show Load Options");
+            loadOptionsImage.setVisible(true);
+        }
+    }
+
+    @FXML
+    private void pathfindOptionsClicked() {
+        //show/hide options image
+        if(pathNodesList.isExpanded()) {
+            pathfindTooltip.setText("Click to Close");
+            pathfindImage.setVisible(false);
+        } else {
+            pathfindTooltip.setText("Switch Pathfinding Algorithm");
+            pathfindImage.setVisible(true);
+        }
+    }
+
 }
