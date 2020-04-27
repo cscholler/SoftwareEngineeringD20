@@ -103,7 +103,7 @@ public class DBConstants {
 					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
 					"patient_id INT REFERENCES Patients(id), " +
 					"request_username VARCHAR(32) REFERENCES Users(username), " +
-					"assignee_username VARCHAR(32) NOT NULL REFERENCES Users(username), " +
+					"assignee_username VARCHAR(32) REFERENCES Users(username), " +
 					"location VARCHAR(10) NOT NULL REFERENCES Nodes(id), " +
 					"service VARCHAR(64) NOT NULL, " +
 					"type VARCHAR(64), " +

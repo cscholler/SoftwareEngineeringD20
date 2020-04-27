@@ -8,6 +8,7 @@ import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
+import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import javafx.collections.FXCollections;
@@ -41,11 +42,12 @@ public class InhospitalTransportController implements Initializable {
     private IDatabaseService db;
     @Inject
     private IDatabaseCache dbCache;
+    @Inject
+    private ILoginManager manager;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        dbCache.cacheAllFromDB();
         sf = new SearchFields(dbCache.getNodeCache());
         sf.getFields().add(SearchFields.Field.nodeID);
         sf.populateSearchFields();
@@ -76,15 +78,15 @@ public class InhospitalTransportController implements Initializable {
         String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
         int rows = 0;
         if (!(start.isEmpty() || end.isEmpty() || type.isEmpty())) {
-            rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_MEDICATION_REQUEST, new ArrayList<>(Arrays.asList("Start: " + start, "End: " + end, "Nurse", "Inhospital Transport", "", type, status, dateAndTime))));
+            rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST, new ArrayList<>(Arrays.asList(null, manager.getCurrentUser().getUsername(), null, start, "Inhospital Transport", type, end, status, dateAndTime))));
         }
 
         if (rows == 0) {
             confirmation.setTextFill(Color.RED);
-            confirmation.setText("Submission failed      ");
+            confirmation.setText("Request failed");
         } else {
             confirmation.setTextFill(Color.WHITE);
-            confirmation.setText("Medication Request Sent");
+            confirmation.setText("Transport Request Sent");
 
             startLoc.setText("");
             endLoc.setText("");
@@ -95,7 +97,7 @@ public class InhospitalTransportController implements Initializable {
     }
 
     @FXML
-    private void closeClicked(){
+    private void closeClicked() {
         loaderHelper.goBack();
     }
 }

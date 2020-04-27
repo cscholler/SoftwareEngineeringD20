@@ -28,11 +28,11 @@
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
                <children>
-                  <JFXTextField fx:id="startLoc" labelFloat="true" onAction="#autocompleteS" promptText="Start Location">
+                  <JFXTextField fx:id="startLoc" labelFloat="true" onKeyTyped="#autocompleteS" promptText="Start Location">
                      <font>
                         <Font size="14.0" />
                      </font></JFXTextField>
-                  <JFXTextField fx:id="endLoc" labelFloat="true" onAction="#autocompleteE" promptText="End Location">
+                  <JFXTextField fx:id="endLoc" labelFloat="true" onKeyTyped="#autocompleteE" promptText="End Location">
                      <font>
                         <Font size="14.0" />
                      </font></JFXTextField>
@@ -47,7 +47,7 @@
          <children>
             <JFXButton onAction="#closeClicked" text="Close" />
             <JFXButton onAction="#submitClicked" text="Submit" />
-            <Label text="Label" visible="false">
+            <Label fx:id="confirmation" prefHeight="20.0" prefWidth="250.0" text="Label" visible="false">
                <font>
                   <Font size="14.0" />
                </font>
@@ -57,7 +57,7 @@
             <Insets />
          </BorderPane.margin>
          <padding>
-            <Insets left="145.0" />
+            <Insets left="350.0" />
          </padding>
       </HBox>
    </bottom>
