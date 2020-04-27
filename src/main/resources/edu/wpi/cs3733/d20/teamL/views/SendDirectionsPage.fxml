@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <BorderPane prefHeight="297.0" prefWidth="432.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.SendDirectionsController">
    <top>
       <VBox alignment="CENTER" prefHeight="60.0" prefWidth="432.0" BorderPane.alignment="CENTER">
@@ -26,7 +25,7 @@
       </VBox>
    </top>
    <center>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="30.0" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                <children>
@@ -40,6 +39,9 @@
                      </cursor>
                   </JFXButton>
                </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                <children>
@@ -58,20 +60,38 @@
          <padding>
             <Insets bottom="20.0" />
          </padding>
+         <BorderPane.margin>
+            <Insets top="20.0" />
+         </BorderPane.margin>
       </VBox>
    </center>
-   <bottom>
-      <JFXButton fx:id="btnCancel" onAction="#cancelClicked" prefHeight="36.0" prefWidth="100.0" text="Cancel" BorderPane.alignment="CENTER">
-         <padding>
-            <Insets bottom="20.0" top="20.0" />
-         </padding>
-         <BorderPane.margin>
-            <Insets bottom="20.0" />
-         </BorderPane.margin>
-      </JFXButton>
-   </bottom>
    <stylesheets>
       <URL value="@../css/GlobalStyles.css" />
       <URL value="@../css/MapStyles.css" />
    </stylesheets>
+   <bottom>
+      <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <children>
+            <Label fx:id="confirmation" prefHeight="20.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
+            </Label>
+            <JFXButton fx:id="btnCancel" buttonType="RAISED" onAction="#cancelClicked" prefHeight="36.0" prefWidth="110.0" text="Close">
+               <padding>
+                  <Insets bottom="20.0" top="20.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </JFXButton>
+         </children>
+      </VBox>
+   </bottom>
 </BorderPane>
