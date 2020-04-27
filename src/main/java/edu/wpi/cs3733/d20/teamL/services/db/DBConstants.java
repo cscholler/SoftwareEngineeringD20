@@ -76,9 +76,12 @@ public class DBConstants {
 			"CREATE TABLE Gift_Delivery_Requests(" +
 					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
 					"patient_id INT NOT NULL REFERENCES Patients(id), " +
+					"sender_name VARCHAR(32) NOT NULL, " +
 					"request_username VARCHAR(32) NOT NULL REFERENCES Users(username), " +
 					"assignee_username VARCHAR(32) NOT NULL REFERENCES Users(username), " +
-					"gift_id INT NOT NULL REFERENCES Gifts(id), " +
+					"gift1_id INT NOT NULL REFERENCES Gifts(id), " +
+					"gift2_id INT REFERENCES Gifts(id), " +
+					"gift3_id INT REFERENCES Gifts(id), " +
 					"message VARCHAR(128), " +
 					"notes VARCHAR(256), " +
 					"status CHAR(1) NOT NULL, " +
@@ -191,6 +194,11 @@ public class DBConstants {
 	public static final String SELECT_ALL_GIFTS =
 			"SELECT * " +
 					"FROM Gifts";
+
+	public static final String GET_GIFT =
+			"SELECT * " +
+					"FROM Gifts " +
+					"WHERE id = ?";
 
 	public static final String GET_USER =
 			"SELECT id, f_name, l_name, username, acct_type, services " +

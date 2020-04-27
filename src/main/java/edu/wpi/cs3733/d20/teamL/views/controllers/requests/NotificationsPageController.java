@@ -6,9 +6,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.ResourceBundle;
 
-import edu.wpi.cs3733.d20.teamL.entities.GiftDeliveryRequest;
-import edu.wpi.cs3733.d20.teamL.entities.ServiceRequest;
-import edu.wpi.cs3733.d20.teamL.entities.User;
+import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,7 +21,6 @@ import com.jfoenix.controls.JFXListView;
 
 import lombok.extern.slf4j.Slf4j;
 
-import edu.wpi.cs3733.d20.teamL.entities.MedicationRequest;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
@@ -156,6 +153,7 @@ public class NotificationsPageController implements Initializable {
 					// Staff member
 					default:
 					case "0":
+					case "3":
 					case "1": {
 						log.info("Viewing notifications as staff member with username {}", username);
 						requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_MEDICATION_REQUESTS_FOR_DELIVERER, new ArrayList<>(Collections.singletonList(username)))));
@@ -165,7 +163,7 @@ public class NotificationsPageController implements Initializable {
 					case "2": {
 						log.info("Viewing notifications as doctor with username: {}", username);
 						ArrayList<ArrayList<String>> doctorIDTable = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_DOCTOR_ID_BY_USERNAME, new ArrayList<>(Collections.singletonList(username)))));
-						if (doctorIDTable.size() != 0) {
+						if (doctorIDTable.size() == 1) {
 							requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_MEDICATION_REQUESTS_FOR_DOCTOR, new ArrayList<>(Collections.singletonList(doctorIDTable.get(0).get(0))))));
 						}
 					}
@@ -175,6 +173,7 @@ public class NotificationsPageController implements Initializable {
 				String roomID;
 				for (ArrayList<String> row : requests) {
 					patientID = row.get(2);
+					// TODO: convert to function
 					ArrayList<String> name = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_NAME, new ArrayList<>(Collections.singletonList(patientID))))).get(0);
 					patientName = name.get(0) + " " + name.get(1);
 					roomID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ROOM, new ArrayList<>(Collections.singletonList(patientID))))).get(0).get(0);
@@ -185,13 +184,29 @@ public class NotificationsPageController implements Initializable {
 			break;
 			case "gift": {
 				requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_GIFT_DELIVERY_REQUESTS_FOR_USER, new ArrayList<>(Collections.singletonList(username)))));
+				String patientID;
+				String patientName;
+				String roomID;
 				for (ArrayList<String> row : requests) {
-
+					patientID = row.get(1);
+					ArrayList<String> name = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_NAME, new ArrayList<>(Collections.singletonList(patientID))))).get(0);
+					patientName = name.get(0) + " " + name.get(1);
+					roomID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ROOM, new ArrayList<>(Collections.singletonList(patientID))))).get(0).get(0);
+					ArrayList<Gift> gifts = new ArrayList<>();
+					ArrayList<ArrayList<String>> giftEntries = new ArrayList<>();
+					for (int i = 5; i < 8; i++) {
+						giftEntries.add(db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_GIFT, new ArrayList<>(Collections.singletonList(row.get(i)))))).get(0));
+					}
+					for (ArrayList<String> giftEntry : giftEntries) {
+						gifts.add(new Gift(giftEntry.get(0), giftEntry.get(1), giftEntry.get(2), giftEntry.get(3), giftEntry.get(4)));
+					}
+					giftReqList.add(new GiftDeliveryRequest(row.get(0), row.get(1), patientName, roomID, row.get(2), row.get(3), row.get(4), gifts, row.get(8), row.get(9), row.get(10), row.get(11)));
 				}
 			}
 			break;
 			default:
 			case "service": {
+				requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_SERVICE_REQUESTS_FOR_USER, new ArrayList<>(Collections.singletonList(username)))));
 			}
 		}
     }
@@ -204,10 +219,7 @@ public class NotificationsPageController implements Initializable {
         MedicationRequest req = medReqs.getSelectionModel().getSelectedItem();
         setCurrentRequest(req);
         try {
-			//if (req.getPatientName() == null || req.getPatientName().isEmpty()) {
-			if (req == null) {
-				log.error("Invalid request");
-			} else {
+			if (req != null) {
 				reqMessage.setWrapText(true);
 				addInfo.setWrapText(true);
 				addInfo.setText(req.getNotes());
@@ -223,6 +235,8 @@ public class NotificationsPageController implements Initializable {
 					message = doctorName + " requests " + req.getDose() + " of " + req.getMedType() + " to be delivered to " + req.getPatientName() + "(" + req.getPatientID() +")" + " in room " + req.getRoomNum();
 				}
 				reqMessage.setText(message);
+			} else {
+				log.warn("Attempted to display an empty or invalid request.");
 			}
 		} catch (NullPointerException ex) {
         	log.info("No notification currently selected");
@@ -230,12 +244,12 @@ public class NotificationsPageController implements Initializable {
     }
 
     @FXML
-	private void displaySelectGiftReq() {
+	private void displaySelectedGiftReq() {
 
 	}
 
 	@FXML
-	private void displaySelectServiceReq() {
+	private void displaySelectedServiceReq() {
 
 	}
 

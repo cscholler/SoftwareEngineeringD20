@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamL.services;
+package edu.wpi.cs3733.d20.teamL.services.messaging;
 
 import com.sendgrid.helpers.mail.objects.Email;
 import com.twilio.type.PhoneNumber;
