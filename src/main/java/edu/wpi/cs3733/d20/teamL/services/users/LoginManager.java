@@ -1,10 +1,8 @@
 package edu.wpi.cs3733.d20.teamL.services.users;
 
 import javax.inject.Inject;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,6 +26,7 @@ public class LoginManager extends Service implements ILoginManager {
 
 	@Override
 	public void startService() {
+		System.out.println("Starting login manager service");
 		logOut();
 	}
 

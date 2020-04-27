@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 
+
 import java.awt.*;
 import java.io.IOException;
 import java.util.Arrays;
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
+import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -22,17 +24,12 @@ import com.google.inject.Inject;
 import com.jfoenix.controls.JFXAutoCompletePopup;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-
 import lombok.extern.slf4j.Slf4j;
-
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.entities.Graph;
 import edu.wpi.cs3733.d20.teamL.entities.Path;
-import edu.wpi.cs3733.d20.teamL.services.pathfinding.PathfinderService;
-import edu.wpi.cs3733.d20.teamL.services.mail.IMailerService;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
-import edu.wpi.cs3733.d20.teamL.services.search.SearchFields;
 import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
 import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
 import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
@@ -59,8 +56,6 @@ public class MapViewerController {
 
     @Inject
     private IDatabaseCache cache;
-    @Inject
-	private IMailerService mailer;
     @Inject
     private IPathfinderService pathfinderService;
 
@@ -122,7 +117,6 @@ public class MapViewerController {
 
         if (startNode != null && destNode != null) {
             String directions = highlightSourceToDestination(startNode, destNode);
-            mailer.setDirections(directions);
             Label directionsLabel = new Label();
             directionsLabel.setFont(new Font(14));
             directionsLabel.setText(directions);
@@ -195,3 +189,4 @@ public class MapViewerController {
         }
     }
 }
+

@@ -6,7 +6,8 @@ import java.util.Arrays;
 import javax.inject.Inject;
 
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
-import edu.wpi.cs3733.d20.teamL.services.search.SearchFields;
+import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
+import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,7 +15,6 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 
 import com.jfoenix.controls.JFXAutoCompletePopup;
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
 import lombok.extern.slf4j.Slf4j;
@@ -27,14 +27,13 @@ import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 @Slf4j
 public class AddPatientController {
 	private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+	private DBTableFormatter formatter = new DBTableFormatter();
 	private SearchFields sf;
 	private JFXAutoCompletePopup<String> autoCompletePopup;
     @FXML
-	private JFXButton btnCancel, btnSubmit;
-    @FXML
     private JFXTextField fNameText, lNameText, IDText, doctorIDText, roomNumText, addInfoText;
     @FXML
-    private Label lblsubmitted;
+    private Label lblConfirmation;
     @Inject
 	private IDatabaseService db;
     @Inject
@@ -43,7 +42,7 @@ public class AddPatientController {
     @FXML
     private void initialize() {
         dbCache.cacheAllFromDB();
-        lblsubmitted.setVisible(false);
+        lblConfirmation.setVisible(false);
         sf = new SearchFields(dbCache.getNodeCache());
         sf.getFields().add(SearchFields.Field.nodeID);
         sf.populateSearchFields();
@@ -60,7 +59,7 @@ public class AddPatientController {
      * goes back to staff view page when back button is clicked
      */
     @FXML
-    private void backClicked() {
+    private void btnBackClicked() {
         try {
             Parent root = loaderHelper.getFXMLLoader("StaffView").load();
             loaderHelper.setupScene(new Scene(root));
@@ -73,29 +72,31 @@ public class AddPatientController {
      * Handles UI portion of submit being clicked giving confirmation when it succeeds
      */
     @FXML
-    private void submitClicked() {
+    private void btnSubmitClicked() {
         String patID = IDText.getText();
         String fName = fNameText.getText();
         String lName = lNameText.getText();
         String docID = doctorIDText.getText();
         String roomNum = roomNumText.getText();
         String additionalInfo = addInfoText.getText();
-        if (db.executeUpdate(new SQLEntry(DBConstants.ADD_PATIENT, new ArrayList<>(Arrays.asList(patID, fName, lName, docID, roomNum)))) == 0) {
-            lblsubmitted.setText("Submission failed!");
-            lblsubmitted.setTextFill(Color.RED);
+        if (db.executeUpdate(new SQLEntry(DBConstants.ADD_PATIENT, new ArrayList<>(Arrays.asList(patID, fName, lName, docID, roomNum, additionalInfo)))) == 0) {
+            lblConfirmation.setText("Submission failed!");
+            lblConfirmation.setTextFill(Color.RED);
         } else {
             //show the submitted label and clear the fields
-            lblsubmitted.setText("Patient Submitted!");
-            lblsubmitted.setTextFill(Color.BLACK);
+            lblConfirmation.setText("Patient Submitted!");
+            lblConfirmation.setTextFill(Color.BLACK);
             IDText.setText("");
             fNameText.setText("");
             lNameText.setText("");
             doctorIDText.setText("");
             roomNumText.setText("");
+            addInfoText.setText("");
         }
-        lblsubmitted.setVisible(true);
+        lblConfirmation.setVisible(true);
         //fade the label out
-        loaderHelper.showAndFade(lblsubmitted);
+        loaderHelper.showAndFade(lblConfirmation);
+		formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_PATIENTS)));
     }
 }
 
