@@ -6,9 +6,9 @@ import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.MapParser;
-import edu.wpi.cs3733.d20.teamL.services.search.SearchFields;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
+import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import edu.wpi.cs3733.d20.teamL.views.components.*;
 import edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.DataDialogue;
 
@@ -54,7 +54,7 @@ public class MapEditorController {
     @FXML
     ComboBox nodeTypeValue;
     @FXML
-    VBox editor, multiFloorConnection, nodeConnectionsTab, multiFloorConnection;
+    VBox editor, multiFloorConnection, nodeConnectionsTab, floorSelector;
 	@FXML
     JFXNodesList saveNodesList, loadNodesList, pathNodesList;
 	@FXML
@@ -415,7 +415,7 @@ public class MapEditorController {
     private void eraserMouse() {
         if (!eraserBool) {
             Image eraserImage = new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/eraserMouse.png");  //pass in the image path
-            eraser.getScene().setCursor(new ImageCursor(eraserImage));
+            map.getScene().setCursor(new ImageCursor(eraserImage));
             eraserBool = true;
         } else if (eraserBool) {
             eraser.getScene().setCursor(Cursor.DEFAULT);
