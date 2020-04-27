@@ -13,9 +13,6 @@
             style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.2-internal"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.map.MapViewerController">
-    <center>
-
-    </center>
     <stylesheets>
         <URL value="@../css/GlobalStyles.css"/>
         <URL value="@../css/MapStyles.css"/>
