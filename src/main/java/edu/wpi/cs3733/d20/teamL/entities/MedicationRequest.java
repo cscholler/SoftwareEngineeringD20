@@ -1,30 +1,31 @@
 package edu.wpi.cs3733.d20.teamL.entities;
 
-import java.util.Date;
-
-public class MedicineRequest {
+public class MedicationRequest {
 	private String id;
+	private String doctorID;
+	private String patientID;
     private String patientName;
-    private String patientID;
-    private String doctorName;
-    private String nurseName;
+	private String roomNum;
+    private String nurseUsername;
+    private String delivererUsername;
     private String medType;
     private String dose;
-    private String roomNum;
-    private String addInfo;
+    private String notes;
     private String status;
     private String dateAndTime;
+    //TODO: add username for doctor, nurse, and deliverer
 
-    public MedicineRequest(String id, String patientName, String patientID, String doctorName, String nurseName, String dose, String medType, String roomNum, String addInfo, String status, String dateAndTime) {
+    public MedicationRequest(String id, String doctorID, String patientID, String patientName, String roomNum, String nurseUsername, String delivererUsername, String dose, String medType, String notes, String status, String dateAndTime) {
     	this.id = id;
+		this.doctorID = doctorID;
+		this.patientID = patientID;
         this.patientName = patientName;
-        this.patientID = patientID;
-        this.doctorName = doctorName;
-        this.nurseName = nurseName;
+		this.roomNum = roomNum;
+        this.nurseUsername = nurseUsername;
+        this.delivererUsername = delivererUsername;
 		this.dose = dose;
         this.medType = medType;
-        this.roomNum = roomNum;
-        this.addInfo = addInfo;
+        this.notes = notes;
         this.status = status;
         this.dateAndTime = dateAndTime;
     }
@@ -45,13 +46,21 @@ public class MedicineRequest {
         this.patientID = patientID;
     }
 
-    public String getNurseName() {
-        return nurseName;
+    public String getNurseUsername() {
+        return nurseUsername;
     }
 
-    public void setNurseName(String nurseName) {
-        this.nurseName = nurseName;
+    public void setNurseUsername(String nurseUsername) {
+        this.nurseUsername = nurseUsername;
     }
+
+	public String getDelivererUsername() {
+		return delivererUsername;
+	}
+
+	public void setDelivererUsername(String delivererUsername) {
+		this.delivererUsername = delivererUsername;
+	}
 
     public String getMedType() {
         return medType;
@@ -77,12 +86,12 @@ public class MedicineRequest {
         this.roomNum = roomNum;
     }
 
-    public String getAddInfo() {
-        return addInfo;
+    public String getNotes() {
+        return notes;
     }
 
-    public void setAddInfo(String addInfo) {
-        this.addInfo = addInfo;
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
 	public String getStatus() {
@@ -101,12 +110,12 @@ public class MedicineRequest {
 		this.dateAndTime = dateAndTime;
 	}
 
-	public String getDoctorName() {
-		return doctorName;
+	public String getDoctorID() {
+		return doctorID;
 	}
 
-	public void setDoctorName(String doctorName) {
-		this.doctorName = doctorName;
+	public void setDoctorID(String doctorID) {
+		this.doctorID = doctorID;
 	}
 
 	public String getID() {

@@ -36,7 +36,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 	 * Starts the database service
 	 */
 	@Override
-	protected void startService() {
+	public void startService() {
 		if (connection == null) {
 			connect(props);
 		}
@@ -146,9 +146,11 @@ public class DatabaseService extends Service implements IDatabaseService {
 				Statement stmt;
 				stmt = connection.createStatement();
 				numRowsAffected = stmt.executeUpdate(update.getStatement());
+				stmt.close();
 			} else {
 				PreparedStatement pStmt = fillPreparedStatement(update);
 				numRowsAffected = pStmt.executeUpdate();
+				pStmt.close();
 			}
 		} catch (SQLException ex) {
 			log.error("Encountered SQLException.", ex);
@@ -212,12 +214,12 @@ public class DatabaseService extends Service implements IDatabaseService {
 		updates.add(new SQLEntry(DBConstants.CREATE_MEDICATION_REQUEST_TABLE));
 		updates.add(new SQLEntry(DBConstants.CREATE_SERVICE_REQUEST_TABLE));
 		executeUpdates(updates);
-		populateFromCSV("MapLnodesFloor2", DBConstants.ADD_NODE);
-		populateFromCSV("MapLedgesFloor2", DBConstants.ADD_EDGE);
+		populateFromCSV("MapLAllNodes", DBConstants.ADD_NODE);
+		populateFromCSV("MapLAllEdges", DBConstants.ADD_EDGE);
 
 		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Admin", "Admin", "admin", "admin", "3", null))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Nurse", "Joy", "nurse", "nurse", "1", null))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Staff", "Member", "staff", "staff", "1", null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Staff", "Member", "staff", "staff", "0", null))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Wilson", "Wong", "doctor", "doctor", "2", null))));
 
 		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Flower", "Roses", "A vase of 7 roses", "100"))));
@@ -263,10 +265,9 @@ public class DatabaseService extends Service implements IDatabaseService {
 		dropTableUpdates.add(DBConstants.DROP_DOCTOR_TABLE);
 		dropTableUpdates.add(DBConstants.DROP_PATIENT_TABLE);
 		dropTableUpdates.add(DBConstants.DROP_GIFT_TABLE);
-		dropTableUpdates.add(DBConstants.DROP_GIFT_REQUEST_TABLE);
+		dropTableUpdates.add(DBConstants.DROP_GIFT_DELIVER_REQUEST_TABLE);
 		dropTableUpdates.add(DBConstants.DROP_MEDICATION_REQUEST_TABLE);
 		dropTableUpdates.add(DBConstants.DROP_SERVICE_REQUEST_TABLE);
-
 		try {
 			for (int i = 0; i < DBConstants.GET_TABLE_NAMES().size(); i++) {
 				resSet = connection.getMetaData().getTables(null, "APP", DBConstants.GET_TABLE_NAMES().get(i).toUpperCase(), null);
