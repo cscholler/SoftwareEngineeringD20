@@ -49,6 +49,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 	 */
 	@Override
 	public void stopService() {
+		log.info("here");
 		disconnect();
 	}
 

@@ -1,6 +1,5 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,8 +14,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 
@@ -25,7 +22,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
@@ -75,7 +71,7 @@ public class NotificationsPageController implements Initializable {
 		buttonBox.getChildren().remove(btnCompleted);
 		buttonBox.getChildren().add(approve);
 		approve.setText("Approve");
-		approve.setOnAction(approved);
+		approve.setOnAction(markedApproved);
 
 	    user = loginManager.getCurrentUser();
 		loadRequests("medication");
@@ -129,17 +125,17 @@ public class NotificationsPageController implements Initializable {
 							status = "Denied";
 						}
 					}
-					//setText("[" + giftReq.getDateAndTime() + "] " +  giftReq.getDose() + " of " + giftReq.getMedType() + " for " + giftReq.getPatientName() + " (" + status + ")");
+					setText("[" + giftReq.getDateAndTime() + "] " +  giftReq.getGifts().size() + " gifts from " + giftReq.getSenderName() + " for " + giftReq.getPatientName() + " (" + status + ")");
 				}
 			}
 		});
 		serviceReqs.setCellFactory(param -> new ListCell<>() {
 			@Override
-			protected void updateItem(ServiceRequest req, boolean empty) {
-				super.updateItem(req, empty);
-				if (req != null) {
+			protected void updateItem(ServiceRequest serviceReq, boolean empty) {
+				super.updateItem(serviceReq, empty);
+				if (serviceReq != null) {
 					String status;
-					switch (req.getStatus()) {
+					switch (serviceReq.getStatus()) {
 						default :
 						case "0" : {
 							status = "Pending";
@@ -153,7 +149,8 @@ public class NotificationsPageController implements Initializable {
 							status = "Denied";
 						}
 					}
-					//setText("[" + medReq.getDateAndTime() + "] " +  medReq.getDose() + " of " + medReq.getMedType() + " for " + medReq.getPatientName() + " (" + status + ")");
+					String patientName = serviceReq.getPatientName();
+					setText("[" + serviceReq.getDateAndTime() + "] " +  serviceReq.getType() + " " + serviceReq.getService() + " service" + (patientName != null ? " for " + patientName : "") + " (" + status + ")");
 				}
 			}
 		});
@@ -191,7 +188,7 @@ public class NotificationsPageController implements Initializable {
 
 				for (ArrayList<String> row : requests) {
 					String patientID = row.get(1);
-					String patientName = getPatientName(patientID);
+					String patientName = getPatientFullName(patientID);
 					String roomID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ROOM, new ArrayList<>(Collections.singletonList(patientID))))).get(0).get(0);
 					medReqList.add(new MedicationRequest(row.get(0), row.get(1), patientName, row.get(2), roomID, row.get(3), row.get(4), row.get(5), row.get(6), row.get(7), row.get(8), row.get(9)));
 				}
@@ -202,7 +199,7 @@ public class NotificationsPageController implements Initializable {
 				requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_GIFT_DELIVERY_REQUESTS_FOR_USER, new ArrayList<>(Collections.singletonList(username)))));
 				for (ArrayList<String> row : requests) {
 					String patientID = row.get(1);
-					String patientName = getPatientName(patientID);
+					String patientName = getPatientFullName(patientID);
 					String roomID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ROOM, new ArrayList<>(Collections.singletonList(patientID))))).get(0).get(0);
 					ArrayList<Gift> gifts = new ArrayList<>();
 					ArrayList<ArrayList<String>> giftEntries = new ArrayList<>();
@@ -222,7 +219,7 @@ public class NotificationsPageController implements Initializable {
 				requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_SERVICE_REQUESTS_FOR_USER, new ArrayList<>(Collections.singletonList(username)))));
 				for (ArrayList<String> row : requests) {
 					String patientID = row.get(1);
-					String patientName = getPatientName(patientID);
+					String patientName = getPatientFullName(patientID);
 					serviceReqList.add(new ServiceRequest(row.get(0), row.get(1), patientName, row.get(2), row.get(3), row.get(4), row.get(5), row.get(6), row.get(7), row.get(8), row.get(9)));
 				}
 			}
@@ -260,6 +257,7 @@ public class NotificationsPageController implements Initializable {
 		} catch (NullPointerException ex) {
         	log.info("No notification currently selected");
 		}
+        meds = true;
     }
 
     @FXML
@@ -267,7 +265,7 @@ public class NotificationsPageController implements Initializable {
 		buttonBox.getChildren().remove(delivered);
 		buttonBox.getChildren().add(approve);
 		approve.setText("Approve");
-		approve.setOnAction(approved);
+		approve.setOnAction(markedApproved);
 		meds = false;
 	}
 
@@ -276,14 +274,14 @@ public class NotificationsPageController implements Initializable {
 		buttonBox.getChildren().remove(delivered);
 		buttonBox.getChildren().add(approve);
 		approve.setText("Approve");
-		approve.setOnAction(approved);
-	meds = false;
+		approve.setOnAction(markedApproved);
+		meds = false;
 	}
 
 
-	private String getPatientName(String patientID) {
-		ArrayList<String> name = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_NAME, new ArrayList<>(Collections.singletonList(patientID))))).get(0);
-		return name.get(0) + " " + name.get(1);
+	private String getPatientFullName(String patientID) {
+		ArrayList<String> fullName = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_NAME, new ArrayList<>(Collections.singletonList(patientID))))).get(0);
+		return fullName.get(0) + " " + fullName.get(1);
 	}
 
 	private String getUserFullName(String username) {
@@ -296,36 +294,27 @@ public class NotificationsPageController implements Initializable {
 		loaderHelper.goBack();
 	}
 
-    EventHandler<ActionEvent> isDelivered = new EventHandler<ActionEvent>() {
-        public void handle(ActionEvent e) {
+    EventHandler<ActionEvent> markedDelivered = event -> {
+	};
 
-        }
-    };
-
-    EventHandler<ActionEvent> approved = new EventHandler<ActionEvent>() {
-        public void handle(ActionEvent e) {
-            if (meds) {
-				buttonBox.getChildren().remove(approve);
-				buttonBox.getChildren().add(delivered);
-				delivered.setText("Delivered");
-				delivered.setOnAction(isDelivered);
-				String status = "1";
-				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_STATUS, new ArrayList<>(Arrays.asList(status, getCurrentRequest().getID()))));
-				getCurrentRequest().setStatus(status);
-				System.out.println(getCurrentRequest().getStatus());
-			}
-        }
-    };
+    EventHandler<ActionEvent> markedApproved = event ->  {
+		if (meds) {
+			buttonBox.getChildren().remove(approve);
+			buttonBox.getChildren().add(delivered);
+			delivered.setText("Delivered");
+			delivered.setOnAction(markedDelivered);
+			String status = "1";
+			db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_STATUS, new ArrayList<>(Arrays.asList(status, getCurrentRequest().getID()))));
+			getCurrentRequest().setStatus(status);
+		}
+	};
 
     @FXML
     private void btnDeclineClicked() {
         String status = "3";
         db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_STATUS, new ArrayList<>(Arrays.asList(status, getCurrentRequest().getID()))));
         getCurrentRequest().setStatus(status);
-        System.out.println(getCurrentRequest().getStatus());
     }
-
-    // TODO: add delivered button for med reqs
 
     public MedicationRequest getCurrentRequest() {
         return currentRequest;

@@ -84,6 +84,7 @@ public class DBConstants {
 					"gift3_id INT REFERENCES Gifts(id), " +
 					"message VARCHAR(128), " +
 					"notes VARCHAR(256), " +
+					// 0: Pending, 1: Approved, 2: Denied
 					"status CHAR(1) NOT NULL, " +
 					"date_and_time CHAR(19) NOT NULL, " +
 					"PRIMARY KEY (id))";
