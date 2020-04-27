@@ -6,6 +6,8 @@
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -16,37 +18,35 @@
       <URL value="@../css/GlobalStyles.css" />
       <URL value="@../css/TransportServiceStyles.css" />
    </stylesheets>
-   <top>
-      <Label text="In-Hospital Transport Request" textFill="WHITE" BorderPane.alignment="CENTER">
-         <font>
-            <Font size="39.0" />
-         </font>
-      </Label>
-   </top>
    <center>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="100.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
                <children>
                   <JFXTextField fx:id="startLoc" labelFloat="true" onKeyTyped="#autocompleteS" promptText="Start Location">
                      <font>
                         <Font size="14.0" />
                      </font></JFXTextField>
+                  <ImageView pickOnBounds="true" preserveRatio="true" rotate="180.0">
+                     <image>
+                        <Image url="@../assets/baseline_arrow_back_white_48dp.png" />
+                     </image>
+                  </ImageView>
                   <JFXTextField fx:id="endLoc" labelFloat="true" onKeyTyped="#autocompleteE" promptText="End Location">
                      <font>
                         <Font size="14.0" />
                      </font></JFXTextField>
                </children>
             </HBox>
-            <JFXComboBox fx:id="transportSelector" minWidth="300.0" promptText="Transport Type" styleClass="button" />
+            <JFXComboBox fx:id="transportSelector" minWidth="300.0" promptText="Transport Type" styleClass="text-field" />
          </children>
       </VBox>
    </center>
    <bottom>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0" styleClass="topBorder" BorderPane.alignment="CENTER">
          <children>
-            <JFXButton onAction="#closeClicked" text="Close" />
-            <JFXButton onAction="#submitClicked" text="Submit" />
+            <JFXButton buttonType="RAISED" onAction="#closeClicked" text="Close" />
+            <JFXButton buttonType="RAISED" onAction="#submitClicked" text="Submit" />
             <Label fx:id="confirmation" prefHeight="20.0" prefWidth="250.0" text="Label" visible="false">
                <font>
                   <Font size="14.0" />
@@ -61,4 +61,15 @@
          </padding>
       </HBox>
    </bottom>
+   <top>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="topBorder" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="In-Hospital Transport Request" textFill="WHITE">
+               <font>
+                  <Font size="60.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+   </top>
 </BorderPane>
