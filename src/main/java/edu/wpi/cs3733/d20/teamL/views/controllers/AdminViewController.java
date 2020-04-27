@@ -6,14 +6,19 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
+import com.google.inject.Inject;
+
 import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 
 @Slf4j
 public class AdminViewController {
+	private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+	@Inject
+	private ILoginManager loginManager;
 
-    FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 
     /**
      * goes to notifications page when notifications button is clicked
@@ -48,6 +53,7 @@ public class AdminViewController {
      */
     @FXML
     private void logoutClicked() {
+		loginManager.logOut();
         try {
             loaderHelper.goBack();
         } catch (Exception e) {
