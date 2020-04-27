@@ -262,7 +262,6 @@ public class NotificationsPageController implements Initializable {
 		} catch (NullPointerException ex) {
         	log.info("No notification currently selected");
 		}
-        meds = true;
     }
 
     @FXML
