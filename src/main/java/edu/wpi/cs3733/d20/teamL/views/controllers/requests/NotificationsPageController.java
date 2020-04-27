@@ -62,7 +62,9 @@ public class NotificationsPageController implements Initializable {
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		user = loginManager.getCurrentUser();
-		loadData();
+		loadRequests("medication");
+		loadRequests("gift");
+		loadRequests("service");
 		medReqs.setCellFactory(param -> new ListCell<>() {
 			@Override
 			protected void updateItem(MedicationRequest medReq, boolean empty) {
@@ -145,30 +147,32 @@ public class NotificationsPageController implements Initializable {
      * Loads data to the list view in the form of MedicineRequest Objects
      */
     @FXML
-    private void loadData() {
+    private void loadRequests(String type) {
         list.removeAll();
-		ArrayList<ArrayList<String>> medRequests;
+		ArrayList<ArrayList<String>> requests = new ArrayList<>();
 		String username = user.getUsername();
 		switch (user.getAcctType()) {
-			//
+			// Staff member
 			default:
 			case "0":
 			case "1": {
 				log.info("Viewing notifications as staff member with username {}", username);
-				medRequests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_MEDICATION_REQUESTS_FOR_DELIVERER, new ArrayList<>(Collections.singletonList(username)))));
+				requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_MEDICATION_REQUESTS_FOR_DELIVERER, new ArrayList<>(Collections.singletonList(username)))));
 			}
 			break;
 			// Doctor
 			case "2": {
 				log.info("Viewing notifications as doctor with username: {}", username);
-				String doctorID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_DOCTOR_ID_BY_USERNAME, new ArrayList<>(Collections.singletonList(username))))).get(0).get(0);
-				medRequests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_MEDICATION_REQUESTS_FOR_DOCTOR, new ArrayList<>(Collections.singletonList(doctorID)))));
+				ArrayList<ArrayList<String>> doctorIDTable = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_DOCTOR_ID_BY_USERNAME, new ArrayList<>(Collections.singletonList(username)))));
+				if (doctorIDTable.size() != 0) {
+					requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_MEDICATION_REQUESTS_FOR_DOCTOR, new ArrayList<>(Collections.singletonList(doctorIDTable.get(0).get(0))))));
+				}
 			}
 		}
 		String patientID;
 		String patientName;
 		String roomID;
-		for (ArrayList<String> row : medRequests) {
+		for (ArrayList<String> row : requests) {
 			patientID = row.get(2);
 			ArrayList<String> name = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_NAME, new ArrayList<>(Collections.singletonList(patientID))))).get(0);
 			patientName = name.get(0) + " " + name.get(1);

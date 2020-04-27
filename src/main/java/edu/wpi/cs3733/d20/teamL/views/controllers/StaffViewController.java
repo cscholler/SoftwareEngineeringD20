@@ -24,7 +24,7 @@ public class StaffViewController {
      * goes to notifications page when button is clicked
      */
     @FXML
-    private void notifsClicked(){
+    private void notifsClicked() {
         try {
             Parent root = loaderHelper.getFXMLLoader("NotificationsPage").load();
             loaderHelper.setupScene(new Scene(root));
@@ -37,12 +37,12 @@ public class StaffViewController {
      * goes to medication request page when button is clicked
      */
     @FXML
-    private void medsClicked(){
+    private void medsClicked() {
         try {
             Parent root = loaderHelper.getFXMLLoader("MedicationRequest").load();
             loaderHelper.setupScene(new Scene(root));
-        } catch (IOException e) {
-            log.error("Encountered IOException", e);
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
         }
     }
 
@@ -54,8 +54,8 @@ public class StaffViewController {
         try {
             Parent root = loaderHelper.getFXMLLoader("MapViewer").load();
             loaderHelper.setupScene(new Scene(root));
-        } catch (IOException e) {
-            log.error("Encountered IOException", e);
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
         }
     }
 
@@ -69,8 +69,8 @@ public class StaffViewController {
         try {
             Parent root = loaderHelper.getFXMLLoader("Home").load();
             loaderHelper.setupScene(new Scene(root));
-        } catch (IOException e) {
-            log.error("Encountered IOException", e);
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
         }
     }
 

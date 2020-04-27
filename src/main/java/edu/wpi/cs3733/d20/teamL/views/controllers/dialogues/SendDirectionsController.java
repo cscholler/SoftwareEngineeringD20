@@ -41,30 +41,28 @@ public class SendDirectionsController {
      */
 
     @FXML
-	void sendText(){
+	void sendText() {
         String phoneNumber = phoneNumberField.getText();
-        //TODO: replace with Twilio implementation
         confirmation.setText(messenger.sendText(messenger.getDirections(), phoneNumber));
-        if(confirmation.getText().equals("Message Sent")){
+        if (confirmation.getText().equals("Message Sent")) {
             confirmation.setTextFill(Color.WHITE);
             phoneNumberField.setText("");
             emailField.setText("");
-        } else{
+        } else {
             confirmation.setTextFill(Color.RED);
         }
         loaderHelper.showAndFade(confirmation);
     }
 
     @FXML
-    void sendEmail(){
-        //TODO: replace with SendGrid implementation
+    void sendEmail() {
         String emailAddress = emailField.getText();
         confirmation.setText(messenger.sendEmail(messenger.getDirections(), emailAddress));
-        if(confirmation.getText().equals("Message Sent")){
+        if (confirmation.getText().equals("Message Sent")) {
             confirmation.setTextFill(Color.WHITE);
             emailField.setText("");
             phoneNumberField.setText("");
-        } else{
+        } else {
             confirmation.setTextFill(Color.RED);
         }
         loaderHelper.showAndFade(confirmation);
