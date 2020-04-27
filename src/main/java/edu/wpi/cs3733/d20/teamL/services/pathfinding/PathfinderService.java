@@ -25,6 +25,11 @@ public class PathfinderService implements IPathfinderService {
             shortestPath = p_shortestPath;
         }
 
+        public NodeEntry (Node n, Node p) {
+            node = n;
+            parent = p;
+        }
+
         public double absoluteDist() {
             if (Integer.MAX_VALUE - shortestPath < distFromDest) return Integer.MAX_VALUE;
 
@@ -59,7 +64,7 @@ public class PathfinderService implements IPathfinderService {
             case Astar:
                 return aStarPathFind(graph, source, destination);
             case BFS:
-                return breadthFirstSearch(source, destination);
+                return breadthFirstSearch(graph, source, destination);
             case DFS:
                 return null;
 
@@ -179,31 +184,56 @@ public class PathfinderService implements IPathfinderService {
     /**
      * Breadth First Search!
      */
-    private Path breadthFirstSearch(Node source, Node destination) {
+    private Path breadthFirstSearch(Graph graph, Node source, Node destination) {
+
+        HashMap<Node, NodeEntry> nodes = new HashMap<>();
 
         List<Node> path = new ArrayList<>();
         LinkedList<Node> queue = new LinkedList<>();
         LinkedList<Node> visited = new LinkedList<>();
+        //LinkedList<Node> visitedNodes = new LinkedList<>();
+
+        for( Node n : graph.getNodes()) {
+            nodes.put(n, new NodeEntry(n));
+        }
+
         queue.add(source);
         boolean finished = false;
+        Node parent = null;
 
         while (!queue.isEmpty() && !finished) {
             Node current = queue.removeFirst();
 
+
             if (destination == current) {
                 finished = true;
+
+                NodeEntry n = nodes.get(current);
+                n.parent = parent;
+
+                while (n.parent != null) {
+                    path.add(n.node);
+
+                    for (Node ne : visited) {
+                        if (ne == n.parent) {
+                            n = nodes.get(ne);
+                            break;
+                        }
+                    }
+                }
+
             }
 
-            if (!visited.contains(current)) {
+            if (!visited.contains(nodes.get(current))) {
                 visited.add(current);
-                //System.out.print(current.getID() + " ");
-                path.add(current);
+                //System.out.println(current.getID());
+                //path.add(current);
 
                 Collection<Node> neighbors = current.getNeighbors();
 
                 if (!neighbors.isEmpty()) {
                     for (Node n : neighbors) {
-                        if (!visited.contains(n)) {
+                        if (!visited.contains(nodes.get(n))) {
                             queue.add(n);
                         }
                     }
@@ -211,7 +241,11 @@ public class PathfinderService implements IPathfinderService {
 
             }
             //System.out.println();
+            parent = current;
         }
+
+        Collections.reverse(path);
+
         return Path.listToPath(path);
     }
 }
