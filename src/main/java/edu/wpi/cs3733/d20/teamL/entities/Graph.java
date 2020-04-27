@@ -6,7 +6,7 @@ import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Graph {
+public class Graph implements Iterable<Node> {
 
     protected Map<String, Node> nodes = new ConcurrentHashMap<>();
 
@@ -150,6 +150,10 @@ public class Graph {
             if(this.getNode(id) == null) unique = true;
         }
         return id;
+    }
+
+    public Iterator<Node> iterator() {
+        return getNodes().iterator();
     }
 
 }
