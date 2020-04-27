@@ -2,6 +2,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 
 import com.jfoenix.controls.JFXAutoCompletePopup;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
@@ -10,7 +11,8 @@ import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 import edu.wpi.cs3733.d20.teamL.services.search.SearchFields;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
-import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -29,6 +31,8 @@ import java.util.ResourceBundle;
 @Slf4j
 public class ITServiceController implements Initializable {
 
+    ObservableList<String> options = FXCollections.observableArrayList("General Help", "Data Backup", "Hardware/Software Issues", "Cyber Attacks");
+
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
@@ -44,7 +48,9 @@ public class ITServiceController implements Initializable {
     @FXML
     private JFXButton btnBack, btnSubmit;
     @FXML
-    private JFXTextField locationText, typeText, notesText;
+    private JFXTextField locationText, notesText;
+    @FXML
+    private JFXComboBox typeBox;
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
@@ -56,6 +62,8 @@ public class ITServiceController implements Initializable {
         autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
 
+        typeBox.setValue("Request Type:");
+        typeBox.setItems(options);
     }
 
     /**
@@ -86,7 +94,7 @@ public class ITServiceController implements Initializable {
     private void submitClicked() {
         String userName = loginManager.getCurrentUser().getUsername();
         String location = locationText.getText();
-        String type = typeText.getText();
+        String type = (String) typeBox.getValue();
         String notes = notesText.getText();
 
         String status = "0";
@@ -103,7 +111,7 @@ public class ITServiceController implements Initializable {
             confirmation.setText("IT Request Sent");
 
             locationText.setText("");
-            typeText.setText("");
+            typeBox.setValue("Request Type:");
             notesText.setText("");
         }
         loaderHelper.showAndFade(confirmation);

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -66,18 +67,11 @@
                         <Font name="System Bold" size="36.0" />
                      </font>
                   </Label>
-                  <JFXTextField fx:id="locationText" focusColor="#0d2e57" labelFloat="true" prefHeight="40.0" prefWidth="300.0" promptText="Location">
+                  <JFXTextField fx:id="locationText" focusColor="#0d2e57" labelFloat="true" onKeyTyped="#autoComplete" prefHeight="40.0" prefWidth="300.0" promptText="Location">
                      <font>
                         <Font size="14.0" />
                      </font></JFXTextField>
-                  <JFXTextField fx:id="typeText" focusColor="#0d2e57" labelFloat="true" prefHeight="40.0" prefWidth="300.0" promptText="Type of Request">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </JFXTextField>
+                  <JFXComboBox fx:id="typeBox" focusColor="#0d2e57" prefHeight="40.0" prefWidth="360.0" />
                   <JFXTextField fx:id="notesText" alignment="TOP_LEFT" focusColor="#0d2e57" prefHeight="150.0" prefWidth="380.0" promptText="Additional Notes">
                      <font>
                         <Font size="14.0" />
