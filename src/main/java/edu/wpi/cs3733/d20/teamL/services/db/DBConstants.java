@@ -66,6 +66,7 @@ public class DBConstants {
 			"CREATE TABLE Gifts(" +
 					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
 					"type VARCHAR(16) NOT NULL, " +
+					"subtype VARCHAR(16) NOT NULL, " +
 					"description VARCHAR(128) NOT NULL, " +
 					"inventory INT NOT NULL, " +
 					"PRIMARY KEY (id))";
