@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="606.0" prefWidth="861.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.MaintenanceRequestController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="629.0" prefWidth="946.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.MaintenanceRequestController">
    <top>
       <Label styleClass="title" text="Maintenance Request" BorderPane.alignment="CENTER">
          <BorderPane.margin>
@@ -50,16 +50,24 @@
          </BorderPane.margin>
       </VBox>
    </center>
-   <bottom>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0">
-         <children>
-            <JFXButton onAction="#back" style="-fx-background-color: grey;" text="Back" />
-            <JFXButton onAction="#submit" text="Submit" />
-         </children>
-      </HBox>
-   </bottom>
    <stylesheets>
       <URL value="@../../css/GlobalStyles.css" />
       <URL value="@../../css/ServiceRequestStyles.css" />
    </stylesheets>
+   <bottom>
+      <VBox alignment="CENTER" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefWidth="200.0" spacing="100.0">
+               <children>
+                  <JFXButton onAction="#back" style="-fx-background-color: grey;" text="Back" />
+                  <JFXButton onAction="#submit" text="Submit" />
+               </children>
+            </HBox>
+            <Label fx:id="error" styleClass="error-label" text="Submission Failed" visible="false" />
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="10.0" top="20.0" />
+         </BorderPane.margin>
+      </VBox>
+   </bottom>
 </BorderPane>

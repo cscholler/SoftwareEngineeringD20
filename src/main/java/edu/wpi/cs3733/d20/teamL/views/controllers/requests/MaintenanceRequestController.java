@@ -12,6 +12,7 @@ import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -25,6 +26,8 @@ public class MaintenanceRequestController implements Initializable {
     private JFXComboBox urgency, type;
     @FXML
     private JFXTextField location, description;
+    @FXML
+    private Label error;
 
     private JFXAutoCompletePopup<String> autoCompletePopup = new JFXAutoCompletePopup<>();
 
@@ -72,9 +75,15 @@ public class MaintenanceRequestController implements Initializable {
 
             ArrayList<String> params = new ArrayList<>(Arrays.asList(null, loggedInUsername, "maintenance_user", location.getText(),
                     "maintenance", type.getSelectionModel().getSelectedItem().toString(), notes, "pending", dateAndTime));
-            dbService.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST, params));
-        } else {
+            int rows = dbService.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST, params));
 
+            if (rows == 0) {
+                error.setText("Submission failed");
+                loaderHelper.showAndFade(error);
+            }
+        } else {
+            error.setText("Please fill in all fields");
+            loaderHelper.showAndFade(error);
         }
     }
 

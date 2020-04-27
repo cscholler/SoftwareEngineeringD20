@@ -71,7 +71,7 @@ public class ServiceRequestController {
     @FXML
     private void maintainanceClicked() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("MaintenanceRequest").load();
+            Parent root = loaderHelper.getFXMLLoader("requests/MaintenanceRequest").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
