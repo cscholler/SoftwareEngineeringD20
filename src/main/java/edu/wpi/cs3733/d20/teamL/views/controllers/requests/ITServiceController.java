@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 
+import com.google.inject.Inject;
 import com.jfoenix.controls.JFXAutoCompletePopup;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -11,15 +12,16 @@ import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 import edu.wpi.cs3733.d20.teamL.services.search.SearchFields;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.inject.Inject;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
