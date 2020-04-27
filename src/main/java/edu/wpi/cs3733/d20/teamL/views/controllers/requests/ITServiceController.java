@@ -37,7 +37,7 @@ public class ITServiceController implements Initializable {
 
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
     private SearchFields sf;
-    private JFXAutoCompletePopup<String> autoCompletePopup;
+    private JFXAutoCompletePopup<String> autoCompletePopup = new JFXAutoCompletePopup<>();
 
     @Inject
     private IDatabaseService db;
@@ -61,7 +61,7 @@ public class ITServiceController implements Initializable {
         sf = new SearchFields(dbCache.getNodeCache());
         sf.getFields().add(SearchFields.Field.nodeID);
         sf.populateSearchFields();
-        autoCompletePopup = new JFXAutoCompletePopup<>();
+
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
 
         typeBox.setValue("Request Type:");
