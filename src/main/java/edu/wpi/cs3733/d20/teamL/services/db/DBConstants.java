@@ -104,7 +104,7 @@ public class DBConstants {
 					"patient_id INT REFERENCES Patients(id), " +
 					"request_username VARCHAR(32) REFERENCES Users(username), " +
 					"assignee_username VARCHAR(32) REFERENCES Users(username), " +
-					"location VARCHAR(10) NOT NULL REFERENCES Nodes(id), " +
+					"location VARCHAR(10) REFERENCES Nodes(id), " +
 					"service VARCHAR(64) NOT NULL, " +
 					"type VARCHAR(64), " +
 					"notes VARCHAR(256), " +
