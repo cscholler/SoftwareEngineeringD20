@@ -35,13 +35,13 @@ public class MessengerService extends Service implements IMessengerService {
     }
 
     @Override
-    protected void startService() {
+    public void startService() {
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         sg = new SendGrid(API_KEY);
     }
 
     @Override
-    protected void stopService() {
+    public void stopService() {
         Twilio.destroy();
     }
 
