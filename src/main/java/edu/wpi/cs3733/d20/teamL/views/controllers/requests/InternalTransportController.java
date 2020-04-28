@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-public class InhospitalTransportController implements Initializable {
+public class InternalTransportController implements Initializable {
 
     ObservableList<String> transportOptions = FXCollections.observableArrayList("Wheelchair w/ Operator", "Wheelchair w/o Operator", "Crutches", "Walker", "Stretcher");
 

@@ -85,7 +85,7 @@ public class DBConstants {
 					"gift3_id INT REFERENCES Gifts(id), " +
 					"message VARCHAR(128), " +
 					"notes VARCHAR(256), " +
-					// 0: Pending, 1: Approved, 2: Denied
+					// 0: Pending, 1: Approved, 2: Completed, 3: Denied
 					"status CHAR(1) NOT NULL, " +
 					"date_and_time CHAR(19) NOT NULL, " +
 					"PRIMARY KEY (id))";
@@ -100,6 +100,7 @@ public class DBConstants {
 					"dose VARCHAR(64) NOT NULL, " +
 					"type VARCHAR(64) NOT NULL, " +
 					"notes VARCHAR(256), " +
+					// 0: Pending, 1: Approved, 2: Completed, 3: Denied
 					"status CHAR(1) NOT NULL, " +
 					"date_and_time CHAR(19) NOT NULL, " +
 					"PRIMARY KEY (id))";
@@ -114,6 +115,7 @@ public class DBConstants {
 					"service VARCHAR(64) NOT NULL, " +
 					"type VARCHAR(64), " +
 					"notes VARCHAR(256), " +
+					// 0: Pending, 1: Approved, 2: Completed, 3: Denied
 					"status CHAR(1) NOT NULL, " +
 					"date_and_time CHAR(19) NOT NULL, " +
 					"PRIMARY KEY (id))";
