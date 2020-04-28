@@ -6,6 +6,7 @@ import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.MapParser;
+import edu.wpi.cs3733.d20.teamL.services.pathfinding.PathfinderService;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
@@ -466,6 +467,7 @@ public class MapEditorController {
         pathFindingAlg = 'A';
         pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/AStar.png", 40, 0, true, false));
         pathNodesList.animateList(false);
+        pathfinder.setPathfindingMethod(PathfinderService.PathfindingMethod.Astar);
     }
 
     @FXML
@@ -473,6 +475,7 @@ public class MapEditorController {
         pathFindingAlg = 'D';
         pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/DepthFirst.png", 40, 0, true, false));
         pathNodesList.animateList(false);
+		//pathfinder.setPathfindingMethod(PathfinderService.PathfindingMethod.DFS);
     }
 
     @FXML
@@ -480,7 +483,6 @@ public class MapEditorController {
         pathFindingAlg = 'B';
         pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/Breath First.png", 60, 0, true, false));
         pathNodesList.animateList(false);
+		pathfinder.setPathfindingMethod(PathfinderService.PathfindingMethod.BFS);
     }
-
-
 }

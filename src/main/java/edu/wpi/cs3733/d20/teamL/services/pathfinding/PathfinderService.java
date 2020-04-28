@@ -173,10 +173,12 @@ public class PathfinderService implements IPathfinderService {
         priorityQueue.add(nodeEntry);
     }
 
+    @Override
     public PathfindingMethod getPathfindingMethod() {
         return pathfindingMethod;
     }
 
+    @Override
     public void setPathfindingMethod(PathfindingMethod pathfindingMethod) {
         this.pathfindingMethod = pathfindingMethod;
     }
