@@ -205,7 +205,11 @@
                   </JFXButton>
                </children>
             </VBox>
-            <Label styleClass="title" stylesheets="@../css/ServiceRequestStyles.css" text="Gift Delivery Service" textFill="WHITE" />
+            <HBox alignment="CENTER" prefHeight="103.0" prefWidth="1177.0">
+               <children>
+                  <Label styleClass="title" stylesheets="@../css/ServiceRequestStyles.css" text="Gift Delivery Service" textFill="WHITE" />
+               </children>
+            </HBox>
          </children>
       </HBox>
    </top>
