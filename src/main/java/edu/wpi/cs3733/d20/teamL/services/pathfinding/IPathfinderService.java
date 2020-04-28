@@ -5,6 +5,9 @@ import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.entities.Path;
 
 public interface IPathfinderService {
+	Path pathfind(Graph graph, Node source, Node destination);
 
-    public Path pathfind(Graph graph, Node source, Node destination);
+    PathfinderService.PathfindingMethod getPathfindingMethod();
+
+	void setPathfindingMethod(PathfinderService.PathfindingMethod pathfindingMethod);
 }

@@ -1,0 +1,11 @@
+.circle-button {
+    -fx-font-size: 120;
+    -fx-text-fill: white;
+    -fx-background-color: #405784;
+    -fx-text-fill: white;
+}
+
+.label{
+    -fx-font-size: 20;
+    -fx-text-fill: white;
+}
