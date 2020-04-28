@@ -20,7 +20,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" spacing="80.0">
                <children>
-                  <JFXButton fx:id="btnBack" prefHeight="48.0" prefWidth="60.0" style="-fx-background-color: white;" styleClass="back" text=" ">
+                  <JFXButton fx:id="btnBack" onAction="#backClicked" prefHeight="48.0" prefWidth="60.0" style="-fx-background-color: white;" styleClass="back" text=" ">
                      <graphic>
                         <ImageView fitHeight="53.0" fitWidth="55.0">
                            <image>
