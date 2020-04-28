@@ -4,6 +4,8 @@
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
@@ -14,8 +16,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.collections.FXCollections?>
-<?import java.lang.String?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" styleClass="background" stylesheets="@../css/ServiceRequestStyles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.SanitationRequestController">
    <top>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #00032E;" BorderPane.alignment="CENTER">
@@ -50,7 +50,7 @@
                               <Font size="30.0" />
                            </font>
                         </Label>
-                        <JFXTextField fx:id="subject" prefWidth="200.0" promptText="Brief summary of the request" GridPane.columnIndex="1">
+                        <JFXTextField fx:id="subjectText" prefWidth="200.0" promptText="Brief summary of the request" GridPane.columnIndex="1">
                            <padding>
                               <Insets left="10.0" />
                            </padding>
@@ -58,7 +58,7 @@
                               <Font size="15.0" />
                            </font>
                         </JFXTextField>
-                        <JFXTextField fx:id="location" prefWidth="200.0" promptText="Room or Hallway" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <JFXTextField fx:id="locationText" onKeyTyped="#autocomplete" prefWidth="200.0" promptText="Room or Hallway" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <padding>
                               <Insets left="10.0" />
                            </padding>
@@ -72,16 +72,16 @@
                            </font>
                         </Label>
                         <Label text="Request Type:" textFill="WHITE" GridPane.rowIndex="2" />
-                        <JFXComboBox fx:id="reqType" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="244.0" promptText="Select Request Type" styleClass="text-field" unFocusColor="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <JFXComboBox fx:id="reqTypeText" maxHeight="1.7976931348623157E308" prefHeight="30.0" prefWidth="244.0" promptText="Select Request Type" styleClass="text-field" unFocusColor="#ffffff00" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <padding>
                               <Insets left="10.0" />
                            </padding>
                            <items>
-                              <FXCollections fx:factory = "observableArrayList">
-                                 <String fx:id = "bioHazard" fx:value="Bio Hazard"></String>
-                                 <String fx:id = "roomCleanUp" fx:value="Room Cleanup"></String>
-                                 <String fx:id = "spill" fx:value="Spill"></String>
-                                 <String fx:id = "nonUrgent" fx:value="Non-urgent Request"></String>
+                              <FXCollections fx:factory="observableArrayList">
+                                 <String fx:id="bioHazard" fx:value="Bio Hazard" />
+                                 <String fx:id="roomCleanUp" fx:value="Room Cleanup" />
+                                 <String fx:id="spill" fx:value="Spill" />
+                                 <String fx:id="nonUrgent" fx:value="Non-urgent Request" />
                               </FXCollections>
                            </items>
                         </JFXComboBox>
@@ -94,7 +94,7 @@
                      </VBox.margin>
                   </GridPane>
                   <Label prefHeight="45.0" prefWidth="253.0" text="Additional Notes:" textFill="WHITE" />
-                  <JFXTextArea fx:id="addNotes" prefHeight="192.0" prefWidth="451.0" promptText="Write additional important details here" styleClass="text-field">
+                  <JFXTextArea fx:id="addNotesText" prefHeight="192.0" prefWidth="451.0" promptText="Write additional important details here" styleClass="text-field">
                      <padding>
                         <Insets left="10.0" top="10.0" />
                      </padding>

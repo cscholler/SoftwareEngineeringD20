@@ -5,10 +5,3 @@
     -fx-pref-width: 250;
 }
 
-.button {
-    -fx-padding: 10;
-    -fx-background-color: #c3c3c3;
-    -fx-text-fill: black;
-    -fx-pref-height: 40;
-    -fx-pref-width: 80;
-}

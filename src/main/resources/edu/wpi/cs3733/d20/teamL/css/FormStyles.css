@@ -1,15 +1,29 @@
 
 .text-field {
     -fx-background-color: white;
-    -fx-pref-height: 40px;
+    -fx-pref-height: 24px;
 }
 
 .big-text-field {
-    -fx-pref-height: 120px;
+    -fx-pref-height: 72px;
+}
+
+.label {
+    -fx-font-size: 16px;
+}
+
+.field-box {
+    -fx-spacing: 0;
+}
+
+.title {
+    -fx-font-size: 36px;
 }
 
 .button {
+    -fx-font-family: Roboto;
     -fx-font-size: 24;
+    -jfx-button-type: RAISED;
 }
 
 .cancel {
@@ -18,8 +32,5 @@
 
 .confirm {
     -fx-background-color: #0d2e57;
-}
-
-.center-everything {
-    -fx-alignment: center;
+    -fx-text-fill: white;
 }

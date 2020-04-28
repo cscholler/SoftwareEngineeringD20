@@ -1,6 +1,9 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 
-import com.jfoenix.controls.*;
+import com.jfoenix.controls.JFXAutoCompletePopup;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
@@ -22,10 +25,10 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-public class SanitationRequestController implements Initializable {
+public class SanitationRequestController {
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
     private SearchFields sf;
-    private JFXAutoCompletePopup<String> autoCompletePopup;
+    private JFXAutoCompletePopup<String> autoCompletePopup = new JFXAutoCompletePopup<>();
     @Inject
     private IDatabaseService db;
     @Inject
@@ -40,13 +43,10 @@ public class SanitationRequestController implements Initializable {
     private JFXTextArea addNotesText;
 
     @FXML
-    public void initialize(URL location, ResourceBundle resources){
-        dbCache.cacheAllFromDB();
-
+    public void initialize(){
         sf = new SearchFields(dbCache.getNodeCache());
         sf.getFields().add(SearchFields.Field.nodeID);
         sf.populateSearchFields();
-        autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
     }
 
@@ -62,8 +62,7 @@ public class SanitationRequestController implements Initializable {
      */
     @FXML
     public void handleBackButton() throws IOException {
-        Parent root = loaderHelper.getFXMLLoader("StaffView").load();
-        loaderHelper.setupScene(new Scene(root));
+        loaderHelper.goBack();
     }
 
     @FXML
