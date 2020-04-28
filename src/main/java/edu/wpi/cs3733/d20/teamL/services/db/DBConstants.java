@@ -41,7 +41,7 @@ public class DBConstants {
 					// 0: Staff member, 1: Nurse, 2: Doctor, 3: Admin
 					"acct_type CHAR(1) NOT NULL, " +
 					"services VARCHAR(512), " +
-					"manager VARCHAR(16), " +
+					"manager VARCHAR(32), " +
 					"PRIMARY KEY (username))";
 
 	public static final String CREATE_DOCTOR_TABLE =

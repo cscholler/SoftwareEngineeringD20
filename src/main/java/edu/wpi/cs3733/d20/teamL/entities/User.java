@@ -21,7 +21,7 @@ public class User {
 		this.username = username;
 		this.acctType = acctType;
 		if (services != null) {
-			this.services = Arrays.asList(services.split(","));
+			this.services = Arrays.asList(services.split(";"));
 		} else {
 			this.services = new ArrayList<>();
 		}

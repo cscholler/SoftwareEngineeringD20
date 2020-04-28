@@ -108,7 +108,7 @@ public class NotificationsPageController implements Initializable {
 						}
 						break;
 						case "2" : {
-							status = "Delivered";
+							status = "Completed";
 						}
 						break;
 						case "3" : {
@@ -136,6 +136,10 @@ public class NotificationsPageController implements Initializable {
 						}
 						break;
 						case "2" : {
+							status = "Completed";
+						}
+						break;
+						case "3" : {
 							status = "Denied";
 						}
 					}
@@ -160,6 +164,10 @@ public class NotificationsPageController implements Initializable {
 						}
 						break;
 						case "2" : {
+							status = "Completed";
+						}
+						break;
+						case "3" : {
 							status = "Denied";
 						}
 					}

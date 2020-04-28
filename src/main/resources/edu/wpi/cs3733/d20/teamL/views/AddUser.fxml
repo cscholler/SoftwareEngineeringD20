@@ -88,12 +88,12 @@
                         <Insets left="80.0" />
                      </VBox.margin>
                   </JFXCheckBox>
-                  <JFXCheckBox fx:id="inTransportBox" checkedColor="WHITE" text="Internal Transport">
+                  <JFXCheckBox fx:id="inTransportBox" checkedColor="WHITE" text="Internal Transportation">
                      <VBox.margin>
                         <Insets left="80.0" />
                      </VBox.margin>
                   </JFXCheckBox>
-                  <JFXCheckBox fx:id="exTransportBox" checkedColor="WHITE" text="External Transport">
+                  <JFXCheckBox fx:id="exTransportBox" checkedColor="WHITE" text="External Transportation">
                      <VBox.margin>
                         <Insets left="80.0" />
                      </VBox.margin>
@@ -108,7 +108,7 @@
                         <Insets left="80.0" />
                      </VBox.margin>
                   </JFXCheckBox>
-                  <JFXCheckBox fx:id="pharmacistBox" checkedColor="WHITE" text="Pharmacist">
+                  <JFXCheckBox fx:id="pharmacistBox" checkedColor="WHITE" text="Pharmacy">
                      <VBox.margin>
                         <Insets left="80.0" />
                      </VBox.margin>

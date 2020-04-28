@@ -15,7 +15,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +27,7 @@ import java.util.ResourceBundle;
 @Slf4j
 public class AddUserController implements Initializable {
     ObservableList<String> serviceOptions = FXCollections.observableArrayList("Security", "Internal Transport", "External Transport", "Sanitation", "Maintenance", "Pharmacist", "Gift Shop", "Interpreter", "Information Technology");
-    ObservableList<String> userOptions = FXCollections.observableArrayList("Doctor", "Nurse", "Admin", "Staff");
+    ObservableList<String> userOptions = FXCollections.observableArrayList("Staff", "Nurse", "Doctor", "Admin");
 
     DBTableFormatter formatter = new DBTableFormatter();
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
@@ -36,14 +35,11 @@ public class AddUserController implements Initializable {
     @FXML
     JFXTextField doctorIDText, fNameText, lNameText, servicesText, usernameText, passwordText, languages;
     @FXML
-    MenuButton role;
-    @FXML
     Label lblConfirmation;
     @FXML
-    private JFXComboBox serviceCombo, userCombo;
+    private JFXComboBox<String> serviceCombo, userCombo;
     @FXML
-    private JFXCheckBox securityBox, inTransportBox, exTransportBox, interpreterBox, giftShopBox, pharmacistBox, managerBox, itBox, maintenanceBox, sanitationBox;
-    private ArrayList<JFXCheckBox> serviceCheckboxes = new ArrayList<>(Arrays.asList(securityBox, inTransportBox, exTransportBox, interpreterBox, giftShopBox, pharmacistBox, itBox, maintenanceBox, sanitationBox));
+    private JFXCheckBox securityBox, inTransportBox, exTransportBox, maintenanceBox, sanitationBox, pharmacistBox, giftShopBox, itBox,  interpreterBox, managerBox;
     @FXML
     private VBox boxOService;
     @Inject
@@ -59,9 +55,15 @@ public class AddUserController implements Initializable {
 		String username = usernameText.getText();
 		String password = passwordText.getText();
 		String doctorID = doctorIDText.getText();
-		String type = role.getText();
+		String type;
+		String services;
+		String manager;
 
-		switch(type) {
+		switch (userCombo.getValue()) {
+			default:
+			case "Staff Member":
+				type = "0";
+				break;
 			case "Nurse":
 				type = "1";
 				break;
@@ -70,18 +72,55 @@ public class AddUserController implements Initializable {
 				break;
 			case "Admin":
 				type = "3";
-				break;
 		}
-
-        formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_DOCTORS)));
         int rows = 0;
 
 		if (firstName != null) {
 			StringBuilder servicesList = new StringBuilder();
-			for (int i = 0; i < serviceCheckboxes.size(); i++) {
-				servicesList.append(serviceCheckboxes.get(i).getText()).append(serviceCheckboxes.);
+			boolean anyServicesSelected = false;
+			if (securityBox.isSelected()) {
+				servicesList.append("security;");
+				anyServicesSelected = true;
 			}
-			rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(firstName, lastName, username, password, type, services))));
+			if (inTransportBox.isSelected()) {
+				servicesList.append("internal_transportation;");
+				anyServicesSelected = true;
+			}
+			if (exTransportBox.isSelected()) {
+				servicesList.append("external_transportation;");
+				anyServicesSelected = true;
+			}
+			if (maintenanceBox.isSelected()) {
+				servicesList.append("maintenance;");
+				anyServicesSelected = true;
+			}
+			if (sanitationBox.isSelected()) {
+				servicesList.append("sanitation;");
+				anyServicesSelected = true;
+			}
+			if (pharmacistBox.isSelected()) {
+				servicesList.append("pharmacy;");
+				anyServicesSelected = true;
+			}
+			if (giftShopBox.isSelected()) {
+				servicesList.append("gift_shop;");
+				anyServicesSelected = true;
+			}
+			if (itBox.isSelected()) {
+				servicesList.append("information_technology;");
+				anyServicesSelected = true;
+			}
+			if (interpreterBox.isSelected()) {
+				servicesList.append("interpreter(").append(languages.getText().toLowerCase().replace(" ", "")).append(");");
+				anyServicesSelected = true;
+			}
+			if (anyServicesSelected) {
+				servicesList.setLength(servicesList.length() - 1);
+			}
+			manager = managerBox.isSelected() ? serviceCombo.getSelectionModel().getSelectedItem().toLowerCase().replace(" ", "_") : null;
+			System.out.println(manager);
+			services = servicesList.toString();
+			rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(firstName, lastName, username, password, type, services, manager))));
 			formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_USERS)));
 			if (doctorIDText.getText() != null && !(doctorIDText.getText().isEmpty())) {
 				rows = db.executeUpdate(new SQLEntry(DBConstants.UPDATE_DOCTOR_USERNAME, new ArrayList<>(Arrays.asList(username, doctorID))));
@@ -94,7 +133,6 @@ public class AddUserController implements Initializable {
 				lblConfirmation.setText("User added");
 				lNameText.setText("");
 				fNameText.setText("");
-				servicesText.setText("");
 				usernameText.setText("");
 				passwordText.setText("");
 				doctorIDText.setText("");
@@ -103,6 +141,8 @@ public class AddUserController implements Initializable {
 			}
 			loaderHelper.showAndFade(lblConfirmation);
 		}
+		formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_DOCTORS)));
+		formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_USERS)));
     }
 
 	@FXML
@@ -113,18 +153,18 @@ public class AddUserController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_DOCTORS)));
-
+		formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_USERS)));
         serviceCombo.setItems(serviceOptions);
         userCombo.setItems(userOptions);
     }
 
     @FXML
-    private void userSelected(){
-        user = (String) userCombo.getValue();
-        if(user == "Staff"){
+    private void userSelected() {
+        user = userCombo.getValue();
+        if (user.equals("Staff")) {
             managerBox.setVisible(true);
             managerBox.setDisable(false);
-            if(managerBox.isSelected()){
+            if (managerBox.isSelected()) {
                 serviceCombo.setVisible(true);
                 serviceCombo.setDisable(false);
                 boxOService.setVisible(false);
@@ -137,15 +177,15 @@ public class AddUserController implements Initializable {
                 serviceCombo.setDisable(true);
                 boxOService.setVisible(true);
                 boxOService.setDisable(false);
-                if(interpreterBox.isSelected()){
+                if (interpreterBox.isSelected()) {
                     languages.setVisible(true);
                     languages.setDisable(false);
-                } else{
+                } else {
                     languages.setVisible(false);
                     languages.setDisable(true);
                 }
             }
-        } else{
+        } else {
             managerBox.setDisable(true);
             managerBox.setVisible(false);
             languages.setVisible(false);
@@ -154,14 +194,12 @@ public class AddUserController implements Initializable {
             boxOService.setDisable(true);
         }
 
-        if(user == "Doctor"){
+        if (user.equals("Doctor")) {
             doctorIDText.setVisible(true);
             doctorIDText.setDisable(false);
-        } else{
+        } else {
             doctorIDText.setVisible(false);
             doctorIDText.setDisable(true);
         }
     }
-
-
 }
