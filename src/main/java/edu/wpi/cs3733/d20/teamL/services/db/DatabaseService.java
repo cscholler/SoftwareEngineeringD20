@@ -41,7 +41,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 			connect(props);
 		}
 		// Uncomment if database needs to be rebuilt
-		rebuildDatabase();
+		//rebuildDatabase();
 	}
 
 	/**
@@ -217,7 +217,6 @@ public class DatabaseService extends Service implements IDatabaseService {
 		populateFromCSV("MapLAllNodes", DBConstants.ADD_NODE);
 		populateFromCSV("MapLAllEdges", DBConstants.ADD_EDGE);
 
-		//TODO Something in here is breaking something
 		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Admin", "Admin", "admin", "admin", "3", null, null))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Nurse", "Joy", "nurse", "nurse", "1", null, null))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Staff", "Member", "staff", "staff", "0", null, null))));
