@@ -1,6 +1,5 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 import com.google.inject.Inject;
-import com.jfoenix.controls.JFXAutoCompletePopup;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
@@ -31,8 +30,6 @@ public class ExternalTransportController implements Initializable{
 
         ObservableList<String> transportOptions = FXCollections.observableArrayList("Taxi", "Bus", "Uber", "Lift");
 
-        private SearchFields sf;
-        private JFXAutoCompletePopup<String> autoCompletePopup;
         private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
         @FXML
         JFXComboBox transportSelector;
@@ -50,25 +47,12 @@ public class ExternalTransportController implements Initializable{
 
         @Override
         public void initialize(URL location, ResourceBundle resources) {
-            sf = new SearchFields(dbCache.getNodeCache());
-            sf.getFields().add(SearchFields.Field.nodeID);
-            sf.populateSearchFields();
-            autoCompletePopup = new JFXAutoCompletePopup<>();
-            autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
 
             transportSelector.setValue("Type of Transport");
             transportSelector.setItems(transportOptions);
         }
 
-        @FXML
-        private void autocompleteS() {
-            sf.applyAutocomplete(startLoc, autoCompletePopup);
-        }
 
-        @FXML
-        private void autocompleteE() {
-            sf.applyAutocomplete(endLoc, autoCompletePopup);
-        }
 
         @FXML
         private void submitClicked() {
