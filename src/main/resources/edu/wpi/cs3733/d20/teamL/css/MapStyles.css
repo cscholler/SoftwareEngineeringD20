@@ -16,6 +16,7 @@
     -fx-border-width: 2px;
     -fx-pref-height: 30px;
     -fx-border-radius: 0 10 10 0;
+    -jfx-button-type: FLAT;
 }
 
 .text-field {
