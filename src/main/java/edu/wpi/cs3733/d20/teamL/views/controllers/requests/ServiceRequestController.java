@@ -30,12 +30,12 @@ public class ServiceRequestController {
 
     @FXML
     private void outTransClicked() {
-//        try {
-//            Parent root = loaderHelper.getFXMLLoader("OuthospitalTransport").load();
-//            loaderHelper.setupScene(new Scene(root));
-//        } catch (IOException ex) {
-//            log.error("Encountered IOException", ex);
-//        }
+        try {
+            Parent root = loaderHelper.getFXMLLoader("ExternalTransportRequestForm").load();
+            loaderHelper.setupScene(new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
     }
 
     @FXML
