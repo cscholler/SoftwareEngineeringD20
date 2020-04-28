@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 
 import com.jfoenix.controls.*;
+import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
@@ -415,10 +416,10 @@ public class MapEditorController {
     private void eraserMouse() {
         if (!eraserBool) {
             Image eraserImage = new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/eraserMouse.png");  //pass in the image path
-            map.getScene().setCursor(new ImageCursor(eraserImage));
+            map.getParent().getScene().setCursor(new ImageCursor(eraserImage));
             eraserBool = true;
         } else if (eraserBool) {
-            eraser.getScene().setCursor(Cursor.DEFAULT);
+            map.getParent().getScene().setCursor(Cursor.DEFAULT);
             eraserBool = false;
         }
     }
