@@ -41,6 +41,7 @@ public class DBConstants {
 					// 0: Staff member, 1: Nurse, 2: Doctor, 3: Admin
 					"acct_type CHAR(1) NOT NULL, " +
 					"services VARCHAR(512), " +
+					"manager VARCHAR(16), " +
 					"PRIMARY KEY (username))";
 
 	public static final String CREATE_DOCTOR_TABLE =
@@ -78,7 +79,7 @@ public class DBConstants {
 					"patient_id INT NOT NULL REFERENCES Patients(id), " +
 					"sender_name VARCHAR(32) NOT NULL, " +
 					"request_username VARCHAR(32) NOT NULL REFERENCES Users(username), " +
-					"assignee_username VARCHAR(32) NOT NULL REFERENCES Users(username), " +
+					"assignee_username VARCHAR(32) REFERENCES Users(username), " +
 					"gift1_id INT NOT NULL REFERENCES Gifts(id), " +
 					"gift2_id INT REFERENCES Gifts(id), " +
 					"gift3_id INT REFERENCES Gifts(id), " +
@@ -108,8 +109,8 @@ public class DBConstants {
 					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
 					"patient_id INT REFERENCES Patients(id), " +
 					"request_username VARCHAR(32) REFERENCES Users(username), " +
-					"assignee_username VARCHAR(32) NOT NULL REFERENCES Users(username), " +
-					"location VARCHAR(16) NOT NULL REFERENCES Nodes(id), " +
+					"assignee_username VARCHAR(32) REFERENCES Users(username), " +
+					"location VARCHAR(16) REFERENCES Nodes(id), " +
 					"service VARCHAR(64) NOT NULL, " +
 					"type VARCHAR(64), " +
 					"notes VARCHAR(256), " +
@@ -153,8 +154,8 @@ public class DBConstants {
 					"VALUES(?, ?, ?)";
 
 	public static final String ADD_USER =
-			"INSERT INTO Users(f_name, l_name, username, password, acct_type, services)" +
-					"VALUES(?, ?, ?, ?, ?, ?)";
+			"INSERT INTO Users(f_name, l_name, username, password, acct_type, services, manager)" +
+					"VALUES(?, ?, ?, ?, ?, ?, ?)";
 
 	public static final String ADD_DOCTOR =
 			"INSERT INTO Doctors(id, f_name, l_name, username, office_id, addl_info)" +
@@ -169,7 +170,7 @@ public class DBConstants {
 					"VALUES(?, ?, ?, ?)";
 
 	public static final String ADD_GIFT_DELIVERY_REQUEST =
-			"INSERT INTO Gift_Delivery_Requests(patient_id, request_username, assignee_username, gift_id, message, notes, status, date_and_time)" +
+			"INSERT INTO Gift_Delivery_Requests(patient_id, sender_name, request_username, assignee_username, gift1_id, gift2_id, gift3_id, message, notes, status, date_and_time)" +
 					"VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 
 	public static final String ADD_MEDICATION_REQUEST =
@@ -202,7 +203,7 @@ public class DBConstants {
 					"WHERE id = ?";
 
 	public static final String GET_USER =
-			"SELECT id, f_name, l_name, username, acct_type, services " +
+			"SELECT id, f_name, l_name, username, acct_type, services, manager " +
 					"FROM Users " +
 					"WHERE username = ? AND password = ?";
 
@@ -258,7 +259,7 @@ public class DBConstants {
 			"SELECT * " +
 					"FROM Gift_Delivery_Requests";
 
-	public static final String SELECT_ALL_GIFT_DELIVERY_REQUESTS_FOR_USER =
+	public static final String SELECT_ALL_GIFT_DELIVERY_REQUESTS_FOR_ASSIGNEE =
 			"SELECT * " +
 					"FROM Gift_Delivery_Requests " +
 					"WHERE assignee_username = ?";
@@ -281,10 +282,15 @@ public class DBConstants {
 			"SELECT * " +
 					"FROM Service_Requests";
 
-	public static final String SELECT_ALL_SERVICE_REQUESTS_FOR_USER =
+	public static final String SELECT_ALL_SERVICE_REQUESTS_FOR_ASSIGNEE =
 			"SELECT * " +
 					"FROM Service_Requests " +
 					"WHERE assignee_username = ?";
+
+	public static final String SELECT_ALL_SERVICE_REQUESTS_FOR_MANAGER =
+			"SELECT * " +
+					"FROM Service_Requests " +
+					"WHERE service = ?";
 
 	public static final String UPDATE_NODE =
 			"UPDATE Nodes " +

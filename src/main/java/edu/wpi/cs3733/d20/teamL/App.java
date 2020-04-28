@@ -1,10 +1,6 @@
 package edu.wpi.cs3733.d20.teamL;
 
 import java.io.IOException;
-import java.sql.Connection;
-
-import com.google.inject.Inject;
-import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;

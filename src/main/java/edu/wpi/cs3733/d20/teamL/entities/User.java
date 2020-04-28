@@ -11,17 +11,22 @@ public class User {
 	private String username;
 	private String acctType;
 	private List<String> services;
+	private boolean isManager;
+	private String dept;
 
-	public User(String id, String fName, String lName, String username, String acctType, String services) {
+	public User(String id, String fName, String lName, String username, String acctType, String services, String manager) {
 		this.id = id;
 		this.fName = fName;
 		this.lName = lName;
 		this.username = username;
 		this.acctType = acctType;
-		if (services != null)
+		if (services != null) {
 			this.services = Arrays.asList(services.split(","));
-		else
+		} else {
 			this.services = new ArrayList<>();
+		}
+		this.isManager = manager != null;
+		this.dept = isManager ? manager : null;
 	}
 
 	public String getID() {
@@ -66,5 +71,13 @@ public class User {
 
 	public List<String> getServices() {
 		return services;
+	}
+
+	public boolean isManager() {
+		return isManager;
+	}
+
+	public String getDept() {
+		return dept;
 	}
 }

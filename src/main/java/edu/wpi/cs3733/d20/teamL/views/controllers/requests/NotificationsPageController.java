@@ -35,7 +35,9 @@ public class NotificationsPageController implements Initializable {
    	private ObservableList<GiftDeliveryRequest> giftReqList = FXCollections.observableArrayList();
    	private ObservableList<ServiceRequest> serviceReqList = FXCollections.observableArrayList();
 	private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
-	private MedicationRequest currentRequest;
+	private MedicationRequest currentMedicationRequest;
+	private GiftDeliveryRequest currentGiftRequest;
+	private ServiceRequest currentServiceRequest;
 	@Inject
 	private IDatabaseService db;
 	@Inject
@@ -161,11 +163,11 @@ public class NotificationsPageController implements Initializable {
      */
     @FXML
     private void loadRequests(String type) {
-        medReqList.removeAll();
 		String username = user.getUsername();
 		ArrayList<ArrayList<String>> requests = new ArrayList<>();
 		switch (type) {
 			case "medication": {
+				medReqList.removeAll();
 				switch (user.getAcctType()) {
 					// Staff member
 					default:
@@ -196,7 +198,13 @@ public class NotificationsPageController implements Initializable {
 			}
 			break;
 			case "gift": {
-				requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_GIFT_DELIVERY_REQUESTS_FOR_USER, new ArrayList<>(Collections.singletonList(username)))));
+				giftReqList.removeAll();
+				if (user.isManager() && user.getDept().equals("gift_shop")) {
+					requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_GIFT_DELIVERY_REQUESTS)));
+				} else {
+					requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_GIFT_DELIVERY_REQUESTS_FOR_ASSIGNEE, new ArrayList<>(Collections.singletonList(username)))));
+				}
+
 				for (ArrayList<String> row : requests) {
 					String patientID = row.get(1);
 					String patientName = getPatientFullName(patientID);
@@ -216,7 +224,12 @@ public class NotificationsPageController implements Initializable {
 			break;
 			default:
 			case "service": {
-				requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_SERVICE_REQUESTS_FOR_USER, new ArrayList<>(Collections.singletonList(username)))));
+				serviceReqList.removeAll();
+				if (user.isManager()) {
+					requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_SERVICE_REQUESTS_FOR_MANAGER, new ArrayList<>(Collections.singletonList(user.getDept())))));
+				} else {
+					requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_SERVICE_REQUESTS_FOR_ASSIGNEE, new ArrayList<>(Collections.singletonList(username)))));
+				}
 				for (ArrayList<String> row : requests) {
 					String patientID = row.get(1);
 					String patientName = getPatientFullName(patientID);
@@ -233,24 +246,25 @@ public class NotificationsPageController implements Initializable {
     @FXML
     private void displaySelectedMedReq() {
         MedicationRequest req = medReqs.getSelectionModel().getSelectedItem();
-        setCurrentRequest(req);
+        setCurrentMedicationRequest(req);
         try {
 			if (req != null) {
 				reqMessage.setWrapText(true);
 				addInfo.setWrapText(true);
-				addInfo.setText(req.getNotes());
+				addInfo.setText("Notes: " + req.getNotes());
 				String message;
 				ArrayList<String> doctorNameRow = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_DOCTOR_NAME, new ArrayList<>(Collections.singletonList(req.getDoctorID()))))).get(0);
 				String doctorName = doctorNameRow.get(0) + " " + doctorNameRow.get(1);
 				if (user.getAcctType().equals("2") && (user.getFName() + " " + user.getLName()).equals(doctorName)) {
 					log.info("logged in as doctor");
-					message = getUserFullName(req.getNurseUsername()) + " requests " + req.getDose() + " of " + req.getMedType() + " for " + req.getPatientName() + "(" + req.getPatientID() +")" + " in room " + req.getRoomNum();
+					message = getUserFullName(req.getNurseUsername()) + " requests " + req.getDose() + " of " + req.getMedType() + " for " +
+							req.getPatientName() + "(" + req.getPatientID() +")" + " in room " + req.getRoomNum();
  				} else {
 					log.info("logged in as non doctor");
-					message = doctorName + " requests " + req.getDose() + " of " + req.getMedType() + " to be delivered to " + req.getPatientName() + "(" + req.getPatientID() +")" + " in room " + req.getRoomNum();
+					message = doctorName + " has assigned you to " + req.getDose() + " of " + req.getMedType() + " to be delivered to " +
+							req.getPatientName() + "(" + req.getPatientID() +")" + " in room " + req.getRoomNum();
 				}
 				reqMessage.setText(message);
-				meds = true;
 			} else {
 				log.warn("Attempted to display an empty or invalid request.");
 			}
@@ -262,20 +276,84 @@ public class NotificationsPageController implements Initializable {
 
     @FXML
 	private void displaySelectedGiftReq() {
+		GiftDeliveryRequest req = giftReqs.getSelectionModel().getSelectedItem();
+		setCurrentGiftRequest(req);
+		try {
+			if (req != null) {
+				reqMessage.setWrapText(true);
+				addInfo.setWrapText(true);
+				addInfo.setText("Message: " + req.getMessage() + "\r\n" + "Notes: " + req.getNotes());
+				String message;
+				ArrayList<Gift> gifts = req.getGifts();
+				Gift gift = gifts.get(0);
+				String gift1Text = gift.getType() + ": " + gift.getSubtype() + "(" + gift.getId() + ")";
+				String gift2Text = "";
+				String gift3Text = "";
+				if (gifts.get(1) != null) {
+					gift = gifts.get(1);
+					gift2Text = gift.getType() + ": " + gift.getSubtype() + "(" + gift.getId() + ")";
+				}
+				if (gifts.get(2) != null) {
+					gift = gifts.get(2);
+					gift3Text = gift.getType() + ": " + gift.getSubtype() + "(" + gift.getId() + ")";
+				}
+				String allGiftsText = gift1Text + (!gift2Text.isEmpty() ? ", " + gift2Text : "") + (!gift3Text.isEmpty() ? ", " + gift3Text : "");
+				if (user.isManager()) {
+					log.info("logged in as manager");
+					message = getUserFullName(req.getRequestUsername()) + " requests " + allGiftsText + "for " +
+							req.getPatientName() + "(" + req.getPatientID() +")" + " in room " + req.getRoomNum();
+				} else {
+					log.info("logged in as gift shop worker");
+					message = "You have been assigned to deliver " + allGiftsText + "to " +
+							req.getPatientName() + "(" + req.getPatientID() +")" + " in room " + req.getRoomNum();
+				}
+				reqMessage.setText(message);
+			} else {
+				log.warn("Attempted to display an empty or invalid request.");
+			}
+		} catch (NullPointerException ex) {
+			log.info("No notification currently selected");
+		}
+		meds = false;
 		buttonBox.getChildren().remove(delivered);
 		buttonBox.getChildren().add(approve);
 		approve.setText("Approve");
 		approve.setOnAction(markedApproved);
-		meds = false;
 	}
 
 	@FXML
 	private void displaySelectedServiceReq() {
+		ServiceRequest req = serviceReqs.getSelectionModel().getSelectedItem();
+		setCurrentServiceRequest(req);
+		try {
+			if (req != null) {
+				reqMessage.setWrapText(true);
+				addInfo.setWrapText(true);
+				addInfo.setText("Notes: " + req.getNotes());
+				String message;
+				if (user.isManager()) {
+					log.info("logged in as manager");
+					message = getUserFullName(req.getRequestUsername()) + " requests " + (req.getType() != null ? req.getType() : "") + " " + req.getService() + "service " +
+							((req.getPatientName() != null && req.getPatientID() != null) ? "for " + req.getPatientName() + "(" + req.getPatientID() + ")" : "") +
+							(req.getLocation() != null ? " at location " + req.getLocation() : "");
+				} else {
+					log.info("logged in as service worker");
+					message = "You have been assigned to complete a " + (req.getType() != null ? req.getType() : "") + " " + req.getService() + " service " +
+							((req.getPatientName() != null && req.getPatientID() != null) ? "for " + req.getPatientName() + "(" + req.getPatientID() + ")" : "") +
+							(req.getLocation() != null ? " at location " + req.getLocation() : "");
+				}
+				reqMessage.setText(message);
+			} else {
+				log.warn("Attempted to display an empty or invalid request.");
+			}
+		} catch (NullPointerException ex) {
+			log.info("No notification currently selected");
+		}
+		meds = false;
 		buttonBox.getChildren().remove(delivered);
 		buttonBox.getChildren().add(approve);
 		approve.setText("Approve");
 		approve.setOnAction(markedApproved);
-		meds = false;
 	}
 
 
@@ -304,23 +382,39 @@ public class NotificationsPageController implements Initializable {
 			delivered.setText("Delivered");
 			delivered.setOnAction(markedDelivered);
 			String status = "1";
-			db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_STATUS, new ArrayList<>(Arrays.asList(status, getCurrentRequest().getID()))));
-			getCurrentRequest().setStatus(status);
+			db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_STATUS, new ArrayList<>(Arrays.asList(status, getCurrentMedicationRequest().getID()))));
+			getCurrentMedicationRequest().setStatus(status);
 		}
 	};
 
     @FXML
     private void btnDeclineClicked() {
         String status = "3";
-        db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_STATUS, new ArrayList<>(Arrays.asList(status, getCurrentRequest().getID()))));
-        getCurrentRequest().setStatus(status);
+        db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_STATUS, new ArrayList<>(Arrays.asList(status, getCurrentMedicationRequest().getID()))));
+        getCurrentMedicationRequest().setStatus(status);
     }
 
-    public MedicationRequest getCurrentRequest() {
-        return currentRequest;
+    public MedicationRequest getCurrentMedicationRequest() {
+        return currentMedicationRequest;
     }
 
-    public void setCurrentRequest(MedicationRequest currentRequest) {
-        this.currentRequest = currentRequest;
+    public void setCurrentMedicationRequest(MedicationRequest currentMedicationRequest) {
+        this.currentMedicationRequest = currentMedicationRequest;
     }
+
+	public GiftDeliveryRequest getCurrentGiftRequest() {
+		return currentGiftRequest;
+	}
+
+	public void setCurrentGiftRequest(GiftDeliveryRequest currentGiftRequest) {
+		this.currentGiftRequest = currentGiftRequest;
+	}
+
+	public ServiceRequest getCurrentServiceRequest() {
+		return currentServiceRequest;
+	}
+
+	public void setCurrentServiceRequest(ServiceRequest currentServiceRequest) {
+		this.currentServiceRequest = currentServiceRequest;
+	}
 }
