@@ -55,7 +55,7 @@ public class GiftCheckoutController implements Initializable {
         formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_DOCTORS)));
         formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_PATIENTS)));
 
-        StringBuilder sb = new StringBuilder("Gift Service Request Cart:\r\n");
+        StringBuilder sb = new StringBuilder(/*"Gift Service Request Cart:\r\n"*/);
         cart = cache.getCartCache();
         for(Gift gift : cart) {
             sb.append("1x " + gift.getSubtype() + ", of type " + gift.getType() + ".\r\n");
