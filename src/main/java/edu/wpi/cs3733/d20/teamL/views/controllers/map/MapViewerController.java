@@ -248,6 +248,16 @@ public class MapViewerController {
         if (!path.getPathNodes().isEmpty()) highLightPath();
     }
 
+    @FXML
+    private void zoomIn() {
+        map.setZoomLevel(map.getZoomLevel() * 1.2);
+    }
+
+    @FXML
+    private void zoomOut() {
+        map.setZoomLevel(map.getZoomLevel() * 0.8);
+    }
+
     public void setFloor(int newFloor) {
         map.setFloor(Math.max(1, Math.min(newFloor, map.getBuilding().getMaxFloor())));
 

@@ -45,6 +45,8 @@ public class MapEditorController {
     @FXML
     JFXButton pathFind, btnCancel, btnSave, saveToDB, saveToCSV, open, node, saveOptions, loadOptions, pathfindingOptions, floorUp, floorDown;
     @FXML
+    JFXButton hall, elev, rest, stai, dept, labs, info, conf, exit, retl, serv;
+    @FXML
     JFXToggleNode eraser;
     @FXML
     BorderPane root;
@@ -400,6 +402,37 @@ public class MapEditorController {
         }
 
         if (!path.getPathNodes().isEmpty()) highlightPath();
+    }
+
+    @FXML
+    private void handleAdd(ActionEvent event) {
+        // hall, elev, rest, stai, dept, labs, info, conf, exit, retl, serv
+
+        //Node newNode = new Node("Not_unique", );
+
+        if (event.getSource() == hall) {
+
+        } else if (event.getSource() == elev) {
+
+        } else if (event.getSource() == rest) {
+
+        } else if (event.getSource() == stai) {
+
+        } else if (event.getSource() == dept) {
+
+        } else if (event.getSource() == labs) {
+
+        } else if (event.getSource() == info) {
+
+        } else if (event.getSource() == conf) {
+
+        } else if (event.getSource() == exit) {
+
+        } else if (event.getSource() == retl) {
+
+        } else if (event.getSource() == serv) {
+
+        }
     }
 
     public void setFloor(int newFloor) {
