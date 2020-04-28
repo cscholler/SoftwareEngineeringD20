@@ -12,7 +12,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <BorderPane styleClass="background" stylesheets="@../css/GlobalStyles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.AddUserController">
    <center>
       <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" styleClass="background">
@@ -23,7 +22,7 @@
                      <children>
                         <JFXTextField fx:id="fNameText" labelFloat="true" prefHeight="40.0" promptText="First Name" />
                         <JFXTextField fx:id="lNameText" labelFloat="true" prefHeight="40.0" promptText="Last Name" />
-                        <JFXComboBox fx:id="serviceCombo" onAction="#serviceSelected" prefHeight="41.0" promptText="Service" styleClass="text-field" />
+                        <JFXComboBox fx:id="serviceCombo" disable="true" prefHeight="41.0" promptText="Service" styleClass="text-field" visible="false" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" spacing="20.0">
@@ -35,14 +34,14 @@
                   <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="1080.0" spacing="20.0">
                      <children>
                         <JFXComboBox fx:id="userCombo" onAction="#userSelected" promptText="Type of User" styleClass="text-field" />
-                        <JFXTextField fx:id="doctorIDText" labelFloat="true" maxWidth="100.0" prefHeight="40.0" prefWidth="50.0" promptText="Doctor ID" />
-                        <JFXCheckBox fx:id="managerBox" checkedColor="WHITE" onAction="#checkManager" text="Manager" />
+                        <JFXTextField fx:id="doctorIDText" disable="true" labelFloat="true" maxWidth="100.0" prefHeight="40.0" prefWidth="50.0" promptText="Doctor ID" visible="false" />
+                        <JFXCheckBox fx:id="managerBox" checkedColor="WHITE" disable="true" onAction="#userSelected" text="Manager" visible="false" />
                      </children>
                      <VBox.margin>
                         <Insets left="140.0" />
                      </VBox.margin>
                   </HBox>
-                  <JFXTextField fx:id="languages" promptText=" Language(s), separate by comma">
+                  <JFXTextField fx:id="languages" disable="true" promptText=" Language(s), separate by comma" visible="false">
                      <VBox.margin>
                         <Insets right="10.0" />
                      </VBox.margin>
@@ -73,73 +72,66 @@
             </HBox>
          </bottom>
          <left>
-            <VBox BorderPane.alignment="CENTER">
+            <VBox fx:id="boxOService" disable="true" prefHeight="475.0" prefWidth="128.0" spacing="25.0" visible="false">
                <children>
-                  <VBox prefHeight="475.0" prefWidth="128.0" spacing="25.0">
+                  <HBox alignment="BOTTOM_LEFT" prefHeight="40.0" prefWidth="248.0" spacing="2.0">
                      <children>
-                        <HBox alignment="BOTTOM_LEFT" prefHeight="40.0" prefWidth="248.0" spacing="2.0">
-                           <children>
-                              <Label fx:id="serviceLbl" text="Service Request Capabilities:" textFill="WHITE">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </HBox>
-                        <JFXCheckBox fx:id="securityBox" checkedColor="WHITE" onAction="#securityCheck" text="Security">
-                           <VBox.margin>
-                              <Insets left="80.0" />
-                           </VBox.margin>
-                        </JFXCheckBox>
-                        <JFXCheckBox fx:id="inTransportBox" checkedColor="WHITE" onAction="#inTransportCheck" text="Internal Transport">
-                           <VBox.margin>
-                              <Insets left="80.0" />
-                           </VBox.margin>
-                        </JFXCheckBox>
-                        <JFXCheckBox fx:id="extTransportBox" checkedColor="WHITE" onAction="#checkExTransport" text="External Transport">
-                           <VBox.margin>
-                              <Insets left="80.0" />
-                           </VBox.margin>
-                        </JFXCheckBox>
-                        <JFXCheckBox fx:id="maintenanceBox" checkedColor="WHITE" onAction="#checkMaintenance" text="Maintenance">
-                           <VBox.margin>
-                              <Insets left="80.0" />
-                           </VBox.margin>
-                        </JFXCheckBox>
-                        <JFXCheckBox fx:id="sanitationBox" checkedColor="WHITE" onAction="#checkSanitation" text="Sanitation">
-                           <VBox.margin>
-                              <Insets left="80.0" />
-                           </VBox.margin>
-                        </JFXCheckBox>
-                        <JFXCheckBox fx:id="pharmacistBox" checkedColor="WHITE" text="Pharmacist">
-                           <VBox.margin>
-                              <Insets left="80.0" />
-                           </VBox.margin>
-                        </JFXCheckBox>
-                        <JFXCheckBox fx:id="giftShopBox" checkedColor="WHITE" onAction="#checkGiftShop" text="Gift Shop">
-                           <VBox.margin>
-                              <Insets left="80.0" />
-                           </VBox.margin>
-                        </JFXCheckBox>
-                        <JFXCheckBox fx:id="itBox" checkedColor="WHITE" onAction="#checkIT" text="Information Technology">
-                           <VBox.margin>
-                              <Insets left="80.0" />
-                           </VBox.margin>
-                        </JFXCheckBox>
-                        <JFXCheckBox fx:id="interpreterBox" checkedColor="WHITE" onAction="#checkInterpreter" text="Interpreter">
-                           <VBox.margin>
-                              <Insets left="80.0" />
-                           </VBox.margin>
-                        </JFXCheckBox>
+                        <Label fx:id="serviceLbl" text="Service Request Capabilities:" textFill="WHITE">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
                      </children>
+                  </HBox>
+                  <JFXCheckBox fx:id="securityBox" checkedColor="WHITE" text="Security">
                      <VBox.margin>
-                        <Insets left="10.0" top="30.0" />
+                        <Insets left="80.0" />
                      </VBox.margin>
-                  </VBox>
+                  </JFXCheckBox>
+                  <JFXCheckBox fx:id="inTransportBox" checkedColor="WHITE" text="Internal Transport">
+                     <VBox.margin>
+                        <Insets left="80.0" />
+                     </VBox.margin>
+                  </JFXCheckBox>
+                  <JFXCheckBox fx:id="extTransportBox" checkedColor="WHITE" text="External Transport">
+                     <VBox.margin>
+                        <Insets left="80.0" />
+                     </VBox.margin>
+                  </JFXCheckBox>
+                  <JFXCheckBox fx:id="maintenanceBox" checkedColor="WHITE" text="Maintenance">
+                     <VBox.margin>
+                        <Insets left="80.0" />
+                     </VBox.margin>
+                  </JFXCheckBox>
+                  <JFXCheckBox fx:id="sanitationBox" checkedColor="WHITE" text="Sanitation">
+                     <VBox.margin>
+                        <Insets left="80.0" />
+                     </VBox.margin>
+                  </JFXCheckBox>
+                  <JFXCheckBox fx:id="pharmacistBox" checkedColor="WHITE" text="Pharmacist">
+                     <VBox.margin>
+                        <Insets left="80.0" />
+                     </VBox.margin>
+                  </JFXCheckBox>
+                  <JFXCheckBox fx:id="giftShopBox" checkedColor="WHITE" text="Gift Shop">
+                     <VBox.margin>
+                        <Insets left="80.0" />
+                     </VBox.margin>
+                  </JFXCheckBox>
+                  <JFXCheckBox fx:id="itBox" checkedColor="WHITE" text="Information Technology">
+                     <VBox.margin>
+                        <Insets left="80.0" />
+                     </VBox.margin>
+                  </JFXCheckBox>
+                  <JFXCheckBox fx:id="interpreterBox" checkedColor="WHITE" onAction="#userSelected" text="Interpreter">
+                     <VBox.margin>
+                        <Insets left="80.0" />
+                     </VBox.margin>
+                  </JFXCheckBox>
                </children>
-               <padding>
-                  <Insets top="50.0" />
-               </padding>
+               <BorderPane.margin>
+                  <Insets left="10.0" top="80.0" />
+               </BorderPane.margin>
             </VBox>
          </left>
       </BorderPane>
