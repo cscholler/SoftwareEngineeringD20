@@ -1,5 +1,10 @@
 package edu.wpi.cs3733.d20.teamL.services.messaging;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
@@ -15,6 +20,8 @@ import edu.wpi.cs3733.d20.teamL.services.Service;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.util.regex.Pattern;
 
 @Slf4j
@@ -105,6 +112,15 @@ public class MessengerService extends Service implements IMessengerService {
             log.error("Encountered IOException", ex);
 			return "An Error Occurred";
         }
+    }
+
+    public void generateQRCodeImage(String text)
+            throws WriterException, IOException {
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, 1000, 1000);
+
+        Path path = FileSystems.getDefault().getPath("src/main/resources/edu/wpi/cs3733/d20/teamL/assets/QRCode.png");
+        MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
     }
 
     @Override

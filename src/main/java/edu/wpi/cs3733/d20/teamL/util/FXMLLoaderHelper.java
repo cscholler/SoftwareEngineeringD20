@@ -19,7 +19,7 @@ import java.util.Stack;
 
 public class FXMLLoaderHelper {
 	private static final String ROOT_DIR = "/edu/wpi/cs3733/d20/teamL/views/";
-	private static Injector injector = Guice.createInjector(new ServiceProvider());
+	public static Injector injector = Guice.createInjector(new ServiceProvider());
 
 	private static Stack<Scene> history = new Stack<>();
 

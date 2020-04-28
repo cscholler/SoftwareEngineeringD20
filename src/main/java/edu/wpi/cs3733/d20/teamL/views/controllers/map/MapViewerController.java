@@ -55,12 +55,14 @@ public class MapViewerController {
     VBox instructions;
 
     @FXML
-    JFXButton btnTextMe;
+    JFXButton btnTextMe, btnQR;
 
     @Inject
     private IDatabaseCache cache;
     @Inject
     private IPathfinderService pathfinderService;
+    @Inject
+    private IMessengerService messenger;
     @Inject
     private IMessengerService messengerService;
 
@@ -138,6 +140,7 @@ public class MapViewerController {
             String directions = highlightSourceToDestination(startNode, destNode);
             messengerService.setDirections(directions);
 
+            messenger.setDirections(directions);
             Label directionsLabel = new Label();
             directionsLabel.setFont(new Font(14));
             directionsLabel.setText(directions);
@@ -149,6 +152,8 @@ public class MapViewerController {
             scroll.setVisible(true);
             btnTextMe.setDisable(false);
             btnTextMe.setVisible(true);
+            btnQR.setDisable(false);
+            btnQR.setVisible(true);
         }
     }
 
@@ -204,6 +209,16 @@ public class MapViewerController {
     public void handleText(){
         try {
             Parent root = loaderHelper.getFXMLLoader("SendDirectionsPage").load();
+            loaderHelper.setupPopup(new Stage(), new Scene(root));
+        } catch (IOException e) {
+            log.error("Encountered IOException", e);
+        }
+    }
+
+    @FXML
+    public void genQR(){
+        try {
+            Parent root = loaderHelper.getFXMLLoader("QRCode").load();
             loaderHelper.setupPopup(new Stage(), new Scene(root));
         } catch (IOException e) {
             log.error("Encountered IOException", e);

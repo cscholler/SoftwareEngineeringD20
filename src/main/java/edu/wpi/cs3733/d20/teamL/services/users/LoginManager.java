@@ -26,7 +26,6 @@ public class LoginManager extends Service implements ILoginManager {
 
 	@Override
 	public void startService() {
-		System.out.println("Starting login manager service");
 		logOut();
 	}
 
@@ -41,7 +40,7 @@ public class LoginManager extends Service implements ILoginManager {
 		ArrayList<ArrayList<String>> results = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_USER, new ArrayList<>(Arrays.asList(username, getHashedPassword(password))))));
 		if (results.size() == 1) {
 			ArrayList<String> userInfo = results.get(0);
-			currentUser = new User(userInfo.get(0), userInfo.get(1), userInfo.get(2), userInfo.get(3), userInfo.get(4), userInfo.get(5));
+			currentUser = new User(userInfo.get(0), userInfo.get(1), userInfo.get(2), userInfo.get(3), userInfo.get(4), userInfo.get(5), userInfo.get(6));
 			isAuthenticated = true;
 			log.info("Logged in as " + currentUser.getUsername());
 		} else {

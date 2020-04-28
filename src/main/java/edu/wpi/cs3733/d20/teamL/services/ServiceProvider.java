@@ -20,6 +20,5 @@ public class ServiceProvider extends AbstractModule {
 		bind(IPathfinderService.class).to(PathfinderService.class).asEagerSingleton();
 		bind(ILoginManager.class).to(LoginManager.class).asEagerSingleton();
 		bind(IMessengerService.class).to(MessengerService.class).asEagerSingleton();
-		//bind(IPathfinderService.class).to(PathfinderService.class).asEagerSingleton();
 	}
 }
