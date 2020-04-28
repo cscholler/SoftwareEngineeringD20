@@ -54,6 +54,8 @@ public class MapViewerController {
 
     @FXML
     VBox instructions;
+    @FXML
+	VBox floorSelector;
 
     @FXML
     JFXButton btnTextMe, btnQR;
