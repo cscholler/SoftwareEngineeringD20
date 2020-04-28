@@ -331,11 +331,11 @@ public class MapEditorController {
         if (index == 1) {
             numberlbl.setText("Elevator Number:");
             multiFloorConnection.setVisible(true);
-            numberText.setText(selected.getShaft());
+            numberText.setText("" + selected.getShaft());
         } else if (index == 3) {
             numberlbl.setText("Stairwell Number:");
             multiFloorConnection.setVisible(true);
-            numberText.setText(selected.getShaft());
+            numberText.setText("" + selected.getShaft());
         } else {
             multiFloorConnection.setVisible(false);
             numberText.setText("");
@@ -360,7 +360,7 @@ public class MapEditorController {
 
         //selectedNode.setId(map.getBuilding().getUniqueNodeID(selectedNode));
 
-        if (Integer.parseInt(selectedNode.getShaft()) > 0) {
+        if (selectedNode.getShaft() > 0) {
             addMultiFloorEdge(selectedNode);
         }
 
@@ -380,7 +380,7 @@ public class MapEditorController {
     private void addMultiFloorEdge(Node node) {
         if (node.getType().equals("ELEV") || node.getType().equals("STAI")) {
             for (Node adj : map.getBuilding().getNodes()) {
-                if (node.getType().equals(adj.getType()) && node.getShaft().equals(adj.getShaft()) && !node.equals(adj)) {
+                if (node.getType().equals(adj.getType()) && node.getShaft() == adj.getShaft() && !node.equals(adj)) {
                     node.addEdgeTwoWay(adj);
                 }
             }
@@ -399,7 +399,7 @@ public class MapEditorController {
             setFloor(Integer.parseInt(sourceButton.getText()));
         }
 
-        highlightPath();
+        if (!path.getPathNodes().isEmpty()) highlightPath();
     }
 
     public void setFloor(int newFloor) {

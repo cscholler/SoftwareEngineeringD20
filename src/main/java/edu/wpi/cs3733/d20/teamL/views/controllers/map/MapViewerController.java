@@ -15,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -195,6 +196,27 @@ public class MapViewerController {
 
             currentNode = nextNode;
         }
+
+        NodeGUI start = map.getNodeGUI(path.getPathNodes().get(0));
+        NodeGUI end = map.getNodeGUI(path.getPathNodes().get(path.getPathNodes().size() - 1));
+
+        if (start != null) {
+            start.setVisible(true);
+            labelNode(start, new Label("Start"));
+        }
+        if (end != null) {
+            end.setVisible(true);
+            labelNode(end, new Label("Destination"));
+        }
+    }
+
+    private void labelNode(NodeGUI nodeGUI, Label label) {
+        AnchorPane parent = (AnchorPane) nodeGUI.getParent();
+
+        parent.getChildren().add(label);
+
+        label.setLayoutX(nodeGUI.getLayoutX());
+        label.setLayoutY(nodeGUI.getLayoutY());
     }
 
     public MapPane getMap() {
@@ -223,7 +245,7 @@ public class MapViewerController {
             setFloor(Integer.parseInt(sourceButton.getText()));
         }
 
-        highLightPath();
+        if (!path.getPathNodes().isEmpty()) highLightPath();
     }
 
     public void setFloor(int newFloor) {
