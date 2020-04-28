@@ -617,8 +617,20 @@ public class MapPane extends StackPane {
 
         Edge edge = edgeGUI.getEdge();
 
-        edge.getDestination().removeEdge(edge.getSource());
-        edge.getSource().removeEdge(edge);
+        if (edge.getDestination() != null) edge.getDestination().removeEdge(edge.getSource());
+        if (edge.getSource() != null) edge.getSource().removeEdge(edge);
+    }
+
+
+    /**
+     * Removes an Edges GUI element without removing the edge entity
+     *
+     * @param edgeGUI
+     */
+    public void removeEdgeGUI(EdgeGUI edgeGUI) {
+        body.getChildren().removeAll(edgeGUI.getAllNodes());
+
+        Edge edge = edgeGUI.getEdge();
     }
 
     public NodeGUI getNodeGUI(Node node) {

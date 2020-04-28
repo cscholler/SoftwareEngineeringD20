@@ -1,7 +1,6 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 
 import com.jfoenix.controls.*;
-import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
@@ -27,12 +26,12 @@ import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
 
 import javafx.geometry.Point2D;
-import javafx.scene.paint.Color;
 
 import java.util.*;
 import java.util.List;
 import javax.inject.Inject;
 
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 
@@ -53,13 +52,13 @@ public class MapEditorController {
     @FXML
     MapPane map;
     @FXML
-    Label nodeIDText, numberlbl, edgeText;
+    Label nodeIDText, numberlbl;
     @FXML
     JFXTextField numberText, xCoordText, yCoordText, buildingText, nodeTypeText, shortNameText, longNameText;
     @FXML
     ComboBox nodeTypeValue;
     @FXML
-    VBox editor, multiFloorConnection, nodeConnectionsTab, floorSelector;
+    VBox editor, multiFloorConnection, nodeConnectionsTab, floorSelector, edgeList;
     @FXML
     JFXNodesList saveNodesList, loadNodesList, pathNodesList;
     @FXML
@@ -75,9 +74,7 @@ public class MapEditorController {
     private Scene scene;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
     private SearchFields sf;
-    private SearchFields edgesSf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
-    private JFXAutoCompletePopup<String> edgesAutoCompletePopup;
     private boolean eraserBool = false;
     private char pathFindingAlg = 'A';
     private Path path = new Path();
@@ -105,12 +102,6 @@ public class MapEditorController {
         sf.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
-
-        edgesSf = new SearchFields(cache.getNodeCache());
-        edgesSf.getFields().add(SearchFields.Field.nodeID);
-        edgesSf.populateSearchFields();
-        edgesAutoCompletePopup = new JFXAutoCompletePopup<>();
-        edgesAutoCompletePopup.getSuggestions().addAll(edgesSf.getSuggestions());
 
         map.setEditable(true);
         map.init();
@@ -318,11 +309,7 @@ public class MapEditorController {
             nodeTypeChanged();
         }
 
-        // Clear node connections tab
-        nodeConnectionsTab.setPrefWidth(0);
-        nodeConnectionsTab.setVisible(false);
-
-        edgeText.setText("");
+        closeConnections();
     }
 
     @FXML
@@ -408,7 +395,7 @@ public class MapEditorController {
     private void handleAdd(ActionEvent event) {
         // hall, elev, rest, stai, dept, labs, info, conf, exit, retl, serv
 
-        //Node newNode = new Node("Not_unique", );
+        //Node newNode = new Node("not_unique", );
 
         if (event.getSource() == hall) {
 
@@ -470,9 +457,12 @@ public class MapEditorController {
         nodeConnectionsTab.setPrefWidth(200);
         nodeConnectionsTab.setVisible(true);
 
-        edgeText.setText("");
-        for (Edge edge : map.getSelectedNode().getEdges())
-            edgeText.setText(edgeText.getText() + edge.getDestination().getShortName() + "\n");
+        for (Edge edge : map.getSelectedNode().getEdges()) {
+            EdgeField newEdgeField = new EdgeField(map.getBuilding());
+            newEdgeField.setText(edge.getDestination().getID());
+
+            edgeList.getChildren().add(newEdgeField);
+        }
     }
 
     /**
@@ -480,10 +470,44 @@ public class MapEditorController {
      */
     @FXML
     private void saveConnections() {
+        Node selectedNode = map.getSelectedNode();
+
+        // Remove all the edges so the new set of edges can be added
+        Iterator<Edge> iterator = selectedNode.getEdges().iterator();
+        while (iterator.hasNext()) {
+            Edge edge = iterator.next();
+            EdgeGUI edgeGUITo = map.getEdgeGUI(edge);
+            EdgeGUI edgeGUIFrom = map.getEdgeGUI(edge.getDestination().getEdge(selectedNode));
+
+            if (edgeGUITo != null) map.removeEdgeGUI(edgeGUITo);
+            if (edgeGUIFrom != null) map.removeEdgeGUI(edgeGUIFrom);
+
+            edge.getDestination().removeEdge(selectedNode);
+            iterator.remove();
+        }
+
+        // Add the new set of edges from the connection editing pane
+        for (javafx.scene.Node node : edgeList.getChildren()) {
+            EdgeField edgeField = (EdgeField) node;
+            Node destination = map.getBuilding().getNode(edgeField.getText());
+
+            selectedNode.addEdgeTwoWay(destination);
+            map.addEdge(selectedNode.getEdge(destination));
+        }
+
+        closeConnections();
+    }
+
+    @FXML
+    private void addConnection() {
+        edgeList.getChildren().add(new EdgeField(map.getBuilding()));
+    }
+
+    private void closeConnections() {
         nodeConnectionsTab.setPrefWidth(0);
         nodeConnectionsTab.setVisible(false);
 
-        edgeText.setText("");
+        edgeList.getChildren().clear();
     }
 
     /**

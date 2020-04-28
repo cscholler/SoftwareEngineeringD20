@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import java.net.URL?>
+<?import javafx.scene.layout.HBox?>
+
+
+<fx:root type="javafx.scene.layout.HBox" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <JFXTextField fx:id="text" style="-fx-pref-width: 150; -fx-border-color: #405784; -fx-border-width: 3; -fx-background-radius: 11;"/>
+      <JFXButton fx:id="close" style="-fx-background-color: transparent; -fx-text-alignment: center;" text="x"/>
+   </children>
+   <stylesheets>
+      <URL value="@../../css/GlobalStyles.css" />
+      <URL value="@../../css/MapStyles.css" />
+   </stylesheets>
+</fx:root>

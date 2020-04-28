@@ -26,7 +26,7 @@
    <right>
       <HBox BorderPane.alignment="CENTER">
          <children>
-            <VBox fx:id="nodeConnectionsTab" minWidth="-Infinity" prefWidth="200.0" style="-fx-background-color: #0D2E57 #0D2E57; -fx-border-color: white; -fx-border-width: 3;">
+            <VBox fx:id="nodeConnectionsTab" alignment="TOP_CENTER" minWidth="-Infinity" prefWidth="200.0" spacing="5.0" style="-fx-background-color: #0D2E57 #0D2E57; -fx-border-color: white; -fx-border-width: 3;">
                <children>
                   <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: #00032E;">
                      <children>
@@ -36,11 +36,8 @@
                            </font>
                         </Label>
                      </children></HBox>
-                  <Label fx:id="edgeText" style="-fx-text-fill: white;">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
+                  <VBox fx:id="edgeList" spacing="2.0" />
+                  <JFXButton onAction="#addConnection" text="Add Connection" />
                   <VBox alignment="BOTTOM_CENTER" prefHeight="702.0" prefWidth="194.0">
                      <children>
                         <JFXButton buttonType="RAISED" onAction="#saveConnections" prefHeight="7.0" prefWidth="145.0" text="Save Connections">
