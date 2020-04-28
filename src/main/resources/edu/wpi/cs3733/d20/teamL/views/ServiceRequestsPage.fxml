@@ -22,7 +22,7 @@
       <URL value="@../css/ServiceRequestStyles.css" />
    </stylesheets>
    <center>
-      <GridPane alignment="CENTER" hgap="5.0" BorderPane.alignment="CENTER">
+      <GridPane alignment="CENTER" hgap="10.0" vgap="10.0" BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -38,14 +38,15 @@
                <children>
                   <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#securityClicked" style="-fx-background-radius: 125; -fx-border-radius: 125; -fx-border-color: white;" styleClass="circle-button" text=" ">
                      <graphic>
-                        <ImageView fitHeight="106.0" fitWidth="108.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="106.0" fitWidth="108.0" pickOnBounds="true" preserveRatio="true" translateY="-2.5">
                            <image>
                               <Image url="@../assets/Services/security.png" />
                            </image>
                         </ImageView>
                      </graphic>
                   </JFXButton>
-                  <Label text="Security&#10;(Caleb Farwell)" textAlignment="CENTER" />
+                  <Label style="-fx-pref-width: 400; -fx-alignment: CENTER; -fx-font-size: 25;" text="Security" textAlignment="CENTER" />
+                  <Label layoutX="10.0" layoutY="167.0" style="-fx-pref-width: 400; -fx-alignment: CENTER; -fx-font-size: 15;" text="(Caleb Farwell)" textAlignment="CENTER" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
@@ -59,7 +60,8 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
-                  <Label alignment="CENTER" text="Gift&#10;(Conrad Tulig)" textAlignment="CENTER" />
+                  <Label alignment="CENTER" style="-fx-pref-width: 400; -fx-alignment: CENTER; -fx-font-size: 25;" text="Gift" textAlignment="CENTER" />
+                  <Label alignment="CENTER" layoutX="10.0" layoutY="162.0" style="-fx-pref-width: 400; -fx-alignment: CENTER; -fx-font-size: 15;" text="Conrad Tulig" textAlignment="CENTER" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2">
@@ -73,7 +75,8 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
-                  <Label text="Maintenance&#10;(Cameron Jacobson)" textAlignment="CENTER" />
+                  <Label style="-fx-pref-width: 400; -fx-alignment: CENTER; -fx-font-size: 25;" text="Maintenance" textAlignment="CENTER" />
+                  <Label layoutX="10.0" layoutY="174.0" style="-fx-pref-width: 400; -fx-alignment: CENTER; -fx-font-size: 15;" text="(Cameron Jacobson)" textAlignment="CENTER" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
@@ -87,7 +90,8 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
-                  <Label text="Transport Out&#10;(Zaiyang Zhong)" textAlignment="CENTER" />
+                  <Label style="-fx-pref-width: 400; -fx-alignment: CENTER; -fx-font-size: 25;" text="External Transport" textAlignment="CENTER" />
+                  <Label layoutX="10.0" layoutY="167.0" style="-fx-pref-width: 400; -fx-alignment: CENTER; -fx-font-size: 15;" text="(Zaiyang Zhong)" textAlignment="CENTER" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -101,7 +105,8 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
-                  <Label text="Medication&#10;(Luke Bodwell)" textAlignment="CENTER" />
+                  <Label style="-fx-alignment: CENTER; -fx-font-size: 25; -fx-pref-width: 400;" text="Medication" textAlignment="CENTER" />
+                  <Label layoutX="10.0" layoutY="167.0" style="-fx-alignment: CENTER; -fx-font-size: 15; -fx-pref-width: 400;" text="(Luke Bodwell)" textAlignment="CENTER" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
@@ -115,21 +120,23 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
-                  <Label text="Transport In&#10;(Joshua Hoy)" />
+                  <Label style="-fx-font-size: 25; -fx-pref-width: 400; -fx-alignment: CENTER;" text="Internal Transport" />
+                  <Label layoutX="10.0" layoutY="167.0" style="-fx-font-size: 15; -fx-pref-width: 400; -fx-alignment: CENTER;" text="(Joshua Hoy)" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2">
                <children>
                   <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#sanitationClicked" style="-fx-background-radius: 125; -fx-border-radius: 125; -fx-border-color: white;" styleClass="circle-button" text=" ">
                      <graphic>
-                        <ImageView fitHeight="124.0" fitWidth="104.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="124.0" fitWidth="104.0" pickOnBounds="true" preserveRatio="true" scaleX="0.75" scaleY="0.75">
                            <image>
                               <Image url="@../assets/Services/mop.png" />
                            </image>
                         </ImageView>
                      </graphic>
                   </JFXButton>
-                  <Label text="Sanitation&#10;(Colin Scholler)" textAlignment="CENTER" />
+                  <Label style="-fx-font-size: 25; -fx-alignment: CENTER; -fx-pref-width: 400;" text="Sanitation" textAlignment="CENTER" />
+                  <Label layoutX="10.0" layoutY="167.0" style="-fx-font-size: 15; -fx-alignment: CENTER; -fx-pref-width: 400;" text="(Colin Scholler)" textAlignment="CENTER" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
@@ -143,7 +150,8 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
-                  <Label text="Interpreter&#10;(Tori Buyck)" textAlignment="CENTER" />
+                  <Label style="-fx-alignment: CENTER; -fx-pref-width: 400; -fx-font-size: 25;" text="Interpreter" textAlignment="CENTER" />
+                  <Label layoutX="10.0" layoutY="167.0" style="-fx-alignment: CENTER; -fx-pref-width: 400; -fx-font-size: 15;" text="(Tory Buyck)" textAlignment="CENTER" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
@@ -153,7 +161,7 @@
                         <Font name="System Bold" size="13.0" />
                      </font>
                      <graphic>
-                        <ImageView fitHeight="119.0" fitWidth="90.0" nodeOrientation="INHERIT">
+                        <ImageView fitHeight="119.0" fitWidth="90.0" nodeOrientation="INHERIT" translateX="3.0" translateY="13.0">
                            <image>
                               <Image url="@../assets/nodes/IT.png" />
                            </image>
@@ -163,21 +171,22 @@
                         <Insets />
                      </VBox.margin>
                   </JFXButton>
-                  <Label text="Info Technology&#10;(Winnie Ly)" textAlignment="CENTER" />
+                  <Label style="-fx-alignment: CENTER; -fx-pref-width: 400; -fx-font-size: 25;" text="Info Technology" textAlignment="CENTER" />
+                  <Label layoutX="10.0" layoutY="167.0" style="-fx-alignment: CENTER; -fx-pref-width: 400; -fx-font-size: 15;" text="(Winnie Ly)" textAlignment="CENTER" />
                </children>
             </VBox>
          </children>
          <padding>
-            <Insets left="5.0" right="5.0" />
+            <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
          </padding>
       </GridPane>
    </center>
    <top>
-      <HBox alignment="CENTER" prefHeight="53.0" prefWidth="1080.0" spacing="550.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="53.0" prefWidth="1080.0" spacing="10.0" style="-fx-background-color: #00032E;" BorderPane.alignment="CENTER">
          <children>
-            <HBox prefHeight="62.0" prefWidth="80.0">
+            <HBox alignment="CENTER" prefHeight="62.0" prefWidth="80.0" scaleX="1.5" scaleY="1.5" spacing="10.0">
                <children>
-                  <JFXButton buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" onAction="#backClicked" prefHeight="60.0" prefWidth="74.0" style="-fx-background-color: #0d2e57; -jfx-button-type: FLAT;" text="Back">
+                  <JFXButton buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" onAction="#backClicked" prefHeight="60.0" prefWidth="74.0" style="-fx-background-color: transparent; -jfx-button-type: FLAT;" text="Back">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
@@ -207,6 +216,9 @@
          <BorderPane.margin>
             <Insets />
          </BorderPane.margin>
+         <padding>
+            <Insets left="10.0" />
+         </padding>
       </HBox>
    </top>
 </BorderPane>

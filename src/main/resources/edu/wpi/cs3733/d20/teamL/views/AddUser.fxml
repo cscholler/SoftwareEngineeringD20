@@ -18,17 +18,17 @@
          <children>
             <HBox alignment="CENTER" spacing="20.0">
                <children>
-                  <JFXTextField fx:id="fName" labelFloat="true" prefHeight="40.0" promptText="First Name" />
-                  <JFXTextField fx:id="lName" labelFloat="true" prefHeight="40.0" promptText="Last Name" />
+                  <JFXTextField fx:id="fNameText" labelFloat="true" prefHeight="40.0" promptText="First Name" />
+                  <JFXTextField fx:id="lNameText" labelFloat="true" prefHeight="40.0" promptText="Last Name" />
                </children>
             </HBox>
             <HBox alignment="CENTER" spacing="20.0">
                <children>
-                  <JFXTextField fx:id="username" labelFloat="true" prefHeight="40.0" promptText="Username" />
-                  <JFXTextField fx:id="password" labelFloat="true" prefHeight="40.0" promptText="Password" />
+                  <JFXTextField fx:id="usernameText" labelFloat="true" prefHeight="40.0" promptText="Username" />
+                  <JFXTextField fx:id="passwordText" labelFloat="true" prefHeight="40.0" promptText="Password" />
                </children>
             </HBox>
-            <JFXTextField fx:id="services" labelFloat="true" maxWidth="600.0" prefHeight="30.0" prefWidth="400.0" promptText="Services">
+            <JFXTextField fx:id="servicesText" labelFloat="true" maxWidth="600.0" prefHeight="30.0" prefWidth="400.0" promptText="Services">
                <VBox.margin>
                   <Insets left="100.0" right="100.0" />
                </VBox.margin>
@@ -42,7 +42,7 @@
                         <MenuItem mnemonicParsing="false" onAction="#adminSelected" text="Admin" />
                     </items>
                   </MenuButton>
-                  <JFXTextField fx:id="docID" labelFloat="true" maxWidth="100.0" prefHeight="40.0" prefWidth="50.0" promptText="Doctor ID" visible="false" />
+                  <JFXTextField fx:id="doctorIDText" labelFloat="true" maxWidth="100.0" prefHeight="40.0" prefWidth="50.0" promptText="Doctor ID" visible="false" />
                </children>
             </HBox>
          </children>
