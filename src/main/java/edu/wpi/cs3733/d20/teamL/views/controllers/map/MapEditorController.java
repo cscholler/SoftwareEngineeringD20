@@ -252,7 +252,7 @@ public class MapEditorController {
         newBuilding.addAllNodes(cache.getNodeCache());
 
         map.setBuilding(newBuilding);
-        map.setFloor(2);
+        setFloor(2);
     }
 
     @FXML
@@ -372,14 +372,16 @@ public class MapEditorController {
         JFXButton sourceButton = (JFXButton) event.getSource();
 
         if (event.getSource() == floorUp && map.getFloor() < 5) {
-            map.setFloor(map.getFloor() + 1);
-            openFromDB();
+            setFloor(map.getFloor() + 1);
         } else if (event.getSource() == floorDown && map.getFloor() > 1) {
-            map.setFloor(map.getFloor() - 1);
-            openFromDB();
+            setFloor(map.getFloor() - 1);
         } else if (isNumeric(sourceButton.getText())) {
-            map.setFloor(Integer.parseInt(sourceButton.getText()));
+            setFloor(Integer.parseInt(sourceButton.getText()));
         }
+    }
+
+    public void setFloor(int newFloor) {
+        map.setFloor(newFloor);
 
         for (javafx.scene.Node node : floorSelector.getChildren()) {
             JFXButton floorButton = (JFXButton) node;
