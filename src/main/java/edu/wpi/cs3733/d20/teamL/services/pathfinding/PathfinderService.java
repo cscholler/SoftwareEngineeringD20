@@ -138,7 +138,7 @@ public class PathfinderService implements IPathfinderService {
         List<Node> path = new LinkedList<>();
         LinkedList<Node> visitedNodes = new LinkedList<>();
         Stack<Node> stack = new Stack<Node>();
-        stack.add(source);
+        stack.push(source);
 
         //Loops until the stack is empty
         while (!stack.isEmpty()) {
@@ -165,7 +165,7 @@ public class PathfinderService implements IPathfinderService {
 
                         if(!visitedNodes.contains(next)) {
 
-                            stack.add(next);
+                            stack.push(next);
                         }
                     }
                 }
@@ -173,6 +173,7 @@ public class PathfinderService implements IPathfinderService {
         }
         for(Node node : path) {
 
+            System.out.print("Path: ");
             System.out.println(node.getID());
         }
         return Path.listToPath(path);
