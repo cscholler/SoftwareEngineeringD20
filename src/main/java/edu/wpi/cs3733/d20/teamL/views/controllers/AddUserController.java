@@ -119,7 +119,7 @@ public class AddUserController implements Initializable {
     @FXML
     private void userSelected(){
         user = (String) userCombo.getValue();
-        if(!(user == "Admin")){
+        if(user == "Staff"){
             managerBox.setVisible(true);
             managerBox.setDisable(false);
             if(managerBox.isSelected()){
