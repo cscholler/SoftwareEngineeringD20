@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import edu.wpi.cs3733.d20.teamL.entities.Building;
+import edu.wpi.cs3733.d20.teamL.services.IMessengerService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import javafx.event.Event;
 import javafx.event.ActionEvent;
@@ -62,6 +63,8 @@ public class MapViewerController {
     private IDatabaseCache cache;
     @Inject
     private IPathfinderService pathfinderService;
+    @Inject
+    private IMessengerService messenger;
 
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
@@ -135,7 +138,7 @@ public class MapViewerController {
 
         if (startNode != null && destNode != null) {
             String directions = highlightSourceToDestination(startNode, destNode);
-
+            messenger.setDirections(directions);
             Label directionsLabel = new Label();
             directionsLabel.setFont(new Font(14));
             directionsLabel.setText(directions);
