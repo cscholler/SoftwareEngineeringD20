@@ -9,15 +9,15 @@ import java.util.Collection;
 public interface Highlightable {
     void setHighlighted(boolean newHighlighted);
 
-    void setHighlightRadius(double radius);
+    double getHighlightThickness();
+
+    void setHighlightThickness(double radius);
 
     void setHighlightColor(Paint newColor);
 
     void setSelected(boolean selected);
 
     boolean getHighlighted();
-
-    double getHighlightRadius();
 
     boolean getSelected();
 

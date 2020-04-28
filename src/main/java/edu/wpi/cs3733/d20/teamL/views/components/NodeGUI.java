@@ -87,7 +87,7 @@ public class NodeGUI extends Circle implements Highlightable {
         else getCircle().setStrokeWidth(0);
     }
 
-    public void setHighlightRadius(double highlightRadius) {
+    public void setHighlightThickness(double highlightRadius) {
         this.highlightRadius = highlightRadius;
     }
 
@@ -114,7 +114,7 @@ public class NodeGUI extends Circle implements Highlightable {
         return retList;
     }
 
-    public double getHighlightRadius() {
+    public double getHighlightThickness() {
         return highlightRadius;
     }
 

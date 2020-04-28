@@ -64,6 +64,7 @@ public class MapPane extends StackPane {
     private EdgeGUI tempEdge;
     private int nodeRadius = 12;
     private Color nodeColor = Color.DARKBLUE;
+    private Color edgeColor = Color.DARKBLUE;
     private Color highLightColor = Color.rgb(20, 194, 247);
     private double edgeThickness = 3;
     private double highlightThickness = 2;
@@ -197,7 +198,6 @@ public class MapPane extends StackPane {
 
     //---------- Getters/Setters ----------//
 
-
     public ScrollPane getScroller() {
         return scroller;
     }
@@ -226,16 +226,8 @@ public class MapPane extends StackPane {
         return selector;
     }
 
-    public void setSelector(Selector selector) {
-        this.selector = selector;
-    }
-
     public SelectionBox getSelectionBox() {
         return selectionBox;
-    }
-
-    public void setSelectionBox(SelectionBox selectionBox) {
-        this.selectionBox = selectionBox;
     }
 
     public Building getBuilding() {
@@ -244,6 +236,8 @@ public class MapPane extends StackPane {
 
     public void setBuilding(Building currentBuilding) {
         this.currentBuilding = currentBuilding;
+
+        currentFloor = currentBuilding.getFloor(Math.min(getFloor(), currentBuilding.getMaxFloor()));
     }
 
     public void setSelectedNode(Node selectedNode) {
@@ -264,6 +258,18 @@ public class MapPane extends StackPane {
 
     public void setNodeColor(Color nodeColor) {
         this.nodeColor = nodeColor;
+        for (NodeGUI nodeGUI : nodes.values())
+            nodeGUI.getCircle().setFill(nodeColor);
+    }
+
+    public Color getEdgeColor() {
+        return edgeColor;
+    }
+
+    public void setEdgeColor(Color edgeColor) {
+        this.edgeColor = edgeColor;
+        for (EdgeGUI edgeGUI : edges.values())
+            edgeGUI.setFill(edgeColor);
     }
 
     public Paint getHighLightColor() {
@@ -272,6 +278,10 @@ public class MapPane extends StackPane {
 
     public void setHighLightColor(Color highLightColor) {
         this.highLightColor = highLightColor;
+        for (NodeGUI nodeGUI : nodes.values())
+            nodeGUI.setHighlightColor(highLightColor);
+        for (EdgeGUI edgeGUI : edges.values())
+            edgeGUI.setHighlightColor(highLightColor);
     }
 
     public double getHighlightThickness() {
@@ -280,6 +290,10 @@ public class MapPane extends StackPane {
 
     public void setHighlightThickness(double highlightThickness) {
         this.highlightThickness = highlightThickness;
+        for (NodeGUI nodeGUI : nodes.values())
+            nodeGUI.setHighlightThickness(this.highlightThickness);
+        for (EdgeGUI edgeGUI : edges.values())
+            setHighlightThickness(highlightThickness);
     }
 
     public double getEdgeThickness() {
@@ -288,6 +302,8 @@ public class MapPane extends StackPane {
 
     public void setEdgeThickness(double edgeThickness) {
         this.edgeThickness = edgeThickness;
+        for (EdgeGUI edgeGUI : edges.values())
+            edgeGUI.setStrokeWidth(this.edgeThickness);
     }
 
     /**
@@ -402,7 +418,7 @@ public class MapPane extends StackPane {
         nodeGUI.getCircle().setRadius(nodeRadius);
         nodeGUI.getCircle().fillProperty().setValue(nodeColor);
         nodeGUI.setHighlightColor(highLightColor);
-        nodeGUI.setHighlightRadius(highlightThickness);
+        nodeGUI.setHighlightThickness(highlightThickness);
 
         Point2D zoomedPos = new Point2D(nodeGUI.getXProperty().get() * zoomLevel, nodeGUI.getYProperty().get() * zoomLevel);
         nodeGUI.setLayoutPos(zoomedPos);
@@ -564,9 +580,9 @@ public class MapPane extends StackPane {
      */
     public void addEdge(Edge edge) {
         EdgeGUI edgeGUI = new EdgeGUI(edge);
-        edgeGUI.strokeProperty().setValue(nodeColor);
+        edgeGUI.strokeProperty().setValue(edgeColor);
         edgeGUI.setHighlightColor(highLightColor);
-        edgeGUI.setHighlightRadius(highlightThickness);
+        edgeGUI.setHighlightThickness(highlightThickness);
         edgeGUI.setStrokeWidth(edgeThickness);
 
         // Set start position of the line to the source node
