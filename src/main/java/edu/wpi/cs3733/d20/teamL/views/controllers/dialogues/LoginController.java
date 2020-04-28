@@ -84,19 +84,19 @@ public class LoginController {
             loginManager.logIn(username, password);
             if (loginManager.isAuthenticated()) {
 				((Stage) login.getScene().getWindow()).close();
-				String view;
-            	switch (loginManager.getCurrentUser().getAcctType()) {
-					default:
-					case "0":
-					case "1":
-					case "2": {
-						view = "StaffView";
-					}
-					break;
-					case "3": {
-						view = "AdminView";
-					}
-				}
+				String view = "LoggedInView";
+//            	switch (loginManager.getCurrentUser().getAcctType()) {
+//					default:
+//					case "0":
+//					case "1":
+//					case "2": {
+//						view = "StaffView";
+//					}
+//					break;
+//					case "3": {
+//						view = "AdminView";
+//					}
+//				}
 				loaderHelper.setupScene(new Scene(loaderHelper.getFXMLLoader(view).load()));
 			} else {
 				incorrectText.setVisible(true);
