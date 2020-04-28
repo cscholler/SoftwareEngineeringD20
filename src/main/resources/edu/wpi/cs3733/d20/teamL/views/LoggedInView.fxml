@@ -84,7 +84,7 @@
             </JFXButton>
             <JFXButton fx:id="btnAddUser" alignment="CENTER" contentDisplay="CENTER" maxHeight="250.0" maxWidth="250.0" minHeight="250.0" minWidth="250.0" onAction="#addUserClicked" style="-fx-background-radius: 200; -fx-border-color: white; -fx-border-radius: 200;" styleClass="circle-button" text=" ">
                <graphic>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="116.0" fitWidth="104.0" pickOnBounds="true" preserveRatio="true" translateX="-2.0">
                      <image>
                         <Image url="@../assets/staff%20view/AddUser.png" />
                      </image>
@@ -93,7 +93,7 @@
             </JFXButton>
             <JFXButton fx:id="btnServiceRequest" alignment="CENTER" contentDisplay="CENTER" maxHeight="250.0" maxWidth="250.0" minHeight="250.0" minWidth="250.0" onAction="#serviceRequestsClicked" style="-fx-background-radius: 200; -fx-border-color: white; -fx-border-radius: 200;" styleClass="circle-button" text=" ">
                <graphic>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="125.0" fitWidth="108.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../assets/home%20page/baseline_room_service_white_48dp.png" />
                      </image>
