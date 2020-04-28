@@ -50,16 +50,15 @@ public class Path implements Iterable<Node> {
     public void add(Node node) {
         Edge lastEdge = null;
         if (pathNodes.size() > 0) {
-            lastEdge = pathNodes.get(pathNodes.size() - 1).getEdge(node);
-            length += lastEdge.getLength();
+            Node lastNode = pathNodes.get(pathNodes.size() - 1);
+            lastEdge = lastNode.getEdge(node);
+            if (lastEdge != null)
+                length += lastEdge.getLength();
+            else
+                throw new IllegalArgumentException("Tried to add " + node.getID() + " to the path, but there was no edge between " + lastNode.getID() + " and " + node.getID());
         }
 
-        if (pathNodes.size() == 0 || lastEdge != null) {
-            pathNodes.add(node);
-        } else {
-            throw new IllegalArgumentException(
-                    "Last node does not have an Edge pointing to the given node");
-        }
+        pathNodes.add(node);
     }
 
     /**

@@ -1,12 +1,11 @@
 package edu.wpi.cs3733.d20.teamL.entities;
 
-import edu.wpi.cs3733.d20.teamL.entities.Node;
-import edu.wpi.cs3733.d20.teamL.entities.Edge;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Graph {
+public class Graph implements Iterable<Node> {
 
     protected Map<String, Node> nodes = new ConcurrentHashMap<>();
 
@@ -115,13 +114,13 @@ public class Graph {
 
     public String getUniqueNodeID() { // TODO: require the user to put in a nodeID instead of generating it
         String id = "new_node1";
-        Integer curr = 1;
+        int curr = 1;
         boolean unique = false;
         while(!unique) {
             if(this.getNode(id) == null) unique = true;
             else {
                 curr ++;
-                id = "new_node" + curr.toString();
+                id = "new_node" + curr;
             }
         }
         return id;
@@ -140,7 +139,7 @@ public class Graph {
         String floor = (node.getFloor() < 10 ? "0" : "") + node.getFloor();
 
         String id = "new_node";
-        Integer curr = 0;
+        int curr = 0;
         boolean unique = false;
         while(!unique) {
             curr ++;
@@ -150,6 +149,11 @@ public class Graph {
             if(this.getNode(id) == null) unique = true;
         }
         return id;
+    }
+
+    @Override @NotNull
+    public Iterator<Node> iterator() {
+        return getNodes().iterator();
     }
 
 }

@@ -65,6 +65,8 @@ public class MapViewerController {
     private IPathfinderService pathfinderService;
     @Inject
     private IMessengerService messenger;
+    @Inject
+    private IMessengerService messengerService;
 
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
@@ -138,6 +140,8 @@ public class MapViewerController {
 
         if (startNode != null && destNode != null) {
             String directions = highlightSourceToDestination(startNode, destNode);
+            messengerService.setDirections(directions);
+
             messenger.setDirections(directions);
             Label directionsLabel = new Label();
             directionsLabel.setFont(new Font(14));
