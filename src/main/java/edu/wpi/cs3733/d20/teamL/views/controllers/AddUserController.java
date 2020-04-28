@@ -136,6 +136,7 @@ public class AddUserController implements Initializable {
 				usernameText.setText("");
 				passwordText.setText("");
 				doctorIDText.setText("");
+				languages.setText("");
 			} else {
 				log.error("SQL update affected more than 1 row.");
 			}
