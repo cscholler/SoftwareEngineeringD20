@@ -138,4 +138,9 @@ public class InterpreterController implements Initializable {
 
 
     }
+
+    @FXML
+    private void backClicked(){
+        loaderHelper.goBack();
+    }
 }
