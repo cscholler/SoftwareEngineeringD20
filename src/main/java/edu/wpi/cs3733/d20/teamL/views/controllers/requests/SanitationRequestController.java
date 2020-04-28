@@ -1,6 +1,9 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 
-import com.jfoenix.controls.*;
+import com.jfoenix.controls.JFXAutoCompletePopup;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
@@ -25,7 +28,7 @@ import java.util.ResourceBundle;
 public class SanitationRequestController {
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
     private SearchFields sf;
-    private JFXAutoCompletePopup<String> autoCompletePopup;
+    private JFXAutoCompletePopup<String> autoCompletePopup = new JFXAutoCompletePopup<>();
     @Inject
     private IDatabaseService db;
     @Inject
@@ -41,12 +44,9 @@ public class SanitationRequestController {
 
     @FXML
     public void initialize(){
-        dbCache.cacheAllFromDB();
-
         sf = new SearchFields(dbCache.getNodeCache());
         sf.getFields().add(SearchFields.Field.nodeID);
         sf.populateSearchFields();
-        autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
     }
 

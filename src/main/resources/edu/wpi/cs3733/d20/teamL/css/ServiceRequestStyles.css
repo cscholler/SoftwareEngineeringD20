@@ -15,6 +15,7 @@
 
 .title {
     -fx-font-size: 70;
+    -fx-text-fill: white;
 }
 
 .button{
@@ -38,6 +39,9 @@
     -fx-pref-height: 150px;
 }
 
+.title-background {
+    -fx-background-color:  #00032E;
+}
 .jfx-combo-box {
     -fx-text-inner-color: white;
     -fx-prompt-text-fill: lightgrey;
@@ -46,4 +50,21 @@
 
 .combo-box > .cell {
     -fx-text-fill: white;
+}
+
+.labelTrans{
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+}
+
+
+.translateButtons{
+    -fx-text-fill: black;
+    -jfx-button-type: FLAT;
+
+}
+
+.back{
+    -fx-background-color: white;
+    -jfx-button-type: FLAT;
 }
