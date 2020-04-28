@@ -22,6 +22,12 @@
     -fx-padding: 10;
 }
 
+.check-box{
+    -fx-text-fill: white;
+    -fx-font-size: 14;
+}
+
+
 .topBorder {
     -fx-background-color: #00032E;
 }

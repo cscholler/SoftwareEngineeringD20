@@ -107,6 +107,4 @@ public class ServiceRequestController {
             log.error("Encountered IOException", ex);
         }
     }
-
-
 }
