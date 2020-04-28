@@ -49,22 +49,22 @@ public class MapEditorController {
     @FXML
     MapPane map;
     @FXML
-    Label nodeIDText,  numberlbl;
+    Label nodeIDText, numberlbl;
     @FXML
     JFXTextField numberText, xCoordText, yCoordText, buildingText, nodeTypeText, shortNameText, longNameText;
     @FXML
     ComboBox nodeTypeValue;
     @FXML
     VBox editor, multiFloorConnection, nodeConnectionsTab, floorSelector;
-	@FXML
+    @FXML
     JFXNodesList saveNodesList, loadNodesList, pathNodesList;
-	@FXML
+    @FXML
     Tooltip saveTooltip, loadTooltip, pathfindTooltip;
-	@FXML
+    @FXML
     ImageView saveOptImg, loadOptionsImage, pathfindImage;
 
     @Inject
-	private IDatabaseCache cache;
+    private IDatabaseCache cache;
     @Inject
     private IPathfinderService pathfinder;
 
@@ -102,13 +102,13 @@ public class MapEditorController {
                 map.getSelector().add(nodeGUI);
                 map.getSelector().add(edgeGUI);
 
-				currentNode = nextNode;
-			}
-			// The above loop does not highlight the last node, this does that
-			NodeGUI nodeGUI = map.getNodeGUI(currentNode);
-			map.getSelector().add(nodeGUI);
-			nodeGUI.setHighlighted(true);
-		});
+                currentNode = nextNode;
+            }
+            // The above loop does not highlight the last node, this does that
+            NodeGUI nodeGUI = map.getNodeGUI(currentNode);
+            map.getSelector().add(nodeGUI);
+            nodeGUI.setHighlighted(true);
+        });
 
         cache.cacheAllFromDB();
 
@@ -150,7 +150,7 @@ public class MapEditorController {
         eraser.setDisableAnimation(true);
 
         //saveNodesList.addAnimatedNode(saveDBButton);
-	}
+    }
 
     /**
      * Creates and allows keyboard shortcuts on the map Editor
@@ -212,26 +212,26 @@ public class MapEditorController {
 
     @FXML
     public void saveToCSV() {
-    	DataDialogue data = new DataDialogue();
-    	data.setSaving(true);
-    	data.showDialogue(pathFind.getScene().getWindow());
-    	String nodeFilePath = data.getNodeFile().getAbsolutePath();
-		String edgeFilePath = data.getEdgeFile().getAbsolutePath();
-		CSVHelper csvHelper = new CSVHelper();
-		ArrayList<ArrayList<String>> nodeTable = new ArrayList<>();
-		ArrayList<ArrayList<String>> edgeTable = new ArrayList<>();
-		ArrayList<Node> nodes = new ArrayList<>(map.getBuilding().getNodes());
-		ArrayList<Edge> edges = new ArrayList<>(map.getBuilding().getEdges());
-		nodeTable.add(new ArrayList<>(Arrays.asList("nodeID", "xCoord", "yCoord", "floor", "building", "nodeType", "longName", "shortName")));
-		for (Node node : nodes) {
-			nodeTable.add(node.toArrayList());
-		}
-		edgeTable.add(new ArrayList<>(Arrays.asList("edgeID", "startNode", "endNode")));
-		for (Edge edge : edges) {
-			edgeTable.add(edge.toArrayList());
-		}
-		csvHelper.writeToCSV(nodeFilePath, nodeTable);
-		csvHelper.writeToCSV(edgeFilePath, edgeTable);
+        DataDialogue data = new DataDialogue();
+        data.setSaving(true);
+        data.showDialogue(pathFind.getScene().getWindow());
+        String nodeFilePath = data.getNodeFile().getAbsolutePath();
+        String edgeFilePath = data.getEdgeFile().getAbsolutePath();
+        CSVHelper csvHelper = new CSVHelper();
+        ArrayList<ArrayList<String>> nodeTable = new ArrayList<>();
+        ArrayList<ArrayList<String>> edgeTable = new ArrayList<>();
+        ArrayList<Node> nodes = new ArrayList<>(map.getBuilding().getNodes());
+        ArrayList<Edge> edges = new ArrayList<>(map.getBuilding().getEdges());
+        nodeTable.add(new ArrayList<>(Arrays.asList("nodeID", "xCoord", "yCoord", "floor", "building", "nodeType", "longName", "shortName")));
+        for (Node node : nodes) {
+            nodeTable.add(node.toArrayList());
+        }
+        edgeTable.add(new ArrayList<>(Arrays.asList("edgeID", "startNode", "endNode")));
+        for (Edge edge : edges) {
+            edgeTable.add(edge.toArrayList());
+        }
+        csvHelper.writeToCSV(nodeFilePath, nodeTable);
+        csvHelper.writeToCSV(edgeFilePath, edgeTable);
     }
 
     @FXML
@@ -257,7 +257,7 @@ public class MapEditorController {
 
     @FXML
     private void insertNode() {
-        Node node = new Node(map.getBuilding().getUniqueNodeID(), new Point2D(100,100), map.getFloor(), map.getBuilding().getName());
+        Node node = new Node(map.getBuilding().getUniqueNodeID(), new Point2D(100, 100), map.getFloor(), map.getBuilding().getName());
         map.addNode(node);
     }
 
@@ -273,7 +273,7 @@ public class MapEditorController {
     @FXML
     private void backToMain() {
         try {
-			loaderHelper.goBack();
+            loaderHelper.goBack();
         } catch (Exception ex) {
             log.error("Encountered Exception.", ex);
         }
@@ -283,7 +283,7 @@ public class MapEditorController {
     private void myCustomAction(MouseEvent event) {
         Node selectedNode = map.getSelectedNode();
 
-        if(selectedNode == null) {
+        if (selectedNode == null) {
             editor.setPrefWidth(0);
             editor.setVisible(false);
         } else {
@@ -294,7 +294,7 @@ public class MapEditorController {
             Double y = selectedNode.getPosition().getY();
             xCoordText.setText(x.toString());
             yCoordText.setText(y.toString());
-            nodeTypeValue.getSelectionModel().select(types.indexOf(selectedNode.getType())+1);
+            nodeTypeValue.getSelectionModel().select(types.indexOf(selectedNode.getType()) + 1);
             shortNameText.setText(selectedNode.getShortName());
             longNameText.setText(selectedNode.getLongName());
             nodeTypeChanged();
@@ -306,7 +306,7 @@ public class MapEditorController {
         int index = nodeTypeValue.getSelectionModel().getSelectedIndex();
         Node selected = map.getSelectedNode();
 
-        if(index == 1) {
+        if (index == 1) {
             numberlbl.setText("Elevator Number:");
             multiFloorConnection.setVisible(true);
             numberText.setText(selected.getShaft());
@@ -331,7 +331,7 @@ public class MapEditorController {
         double y = Double.parseDouble(yCoordText.getText());
         selectedNode.setPosition(new Point2D(x, y));
         selectedNode.setBuilding(map.getBuilding().getName());
-        selectedNode.setType(types.get(nodeTypeValue.getSelectionModel().getSelectedIndex()-1));
+        selectedNode.setType(types.get(nodeTypeValue.getSelectionModel().getSelectedIndex() - 1));
         selectedNode.setShortName(shortNameText.getText());
         selectedNode.setLongName(longNameText.getText());
         selectedNode.setShaft(numberText.getText());
@@ -343,7 +343,7 @@ public class MapEditorController {
         map.removeNode(selectedNodeGUI);
         map.addNode(selectedNode);
 
-        for(Node neighbor : neighbors) {
+        for (Node neighbor : neighbors) {
             Edge edge = new Edge(selectedNode, neighbor);
             selectedNode.addEdgeTwoWay(edge);
             map.addEdge(edge);
@@ -356,10 +356,10 @@ public class MapEditorController {
      * @param node The new node to add
      */
     private void addMultiFloorEdge(Node node) {
-        if(node.getType().equals("ELEV") || node.getType().equals("STAI")) {
-            for(Node adj : map.getBuilding().getNodes()) {
-                if(node.getType().equals(adj.getType()) && node.getShaft().equals(adj.getShaft())) {
-                    if((node.getFloor() == adj.getFloor() + 1) || (node.getFloor() == adj.getFloor() - 1)) {
+        if (node.getType().equals("ELEV") || node.getType().equals("STAI")) {
+            for (Node adj : map.getBuilding().getNodes()) {
+                if (node.getType().equals(adj.getType()) && node.getShaft().equals(adj.getShaft())) {
+                    if ((node.getFloor() == adj.getFloor() + 1) || (node.getFloor() == adj.getFloor() - 1)) {
                         node.addEdgeTwoWay(new Edge(node, adj));
                     }
                 }
@@ -371,7 +371,7 @@ public class MapEditorController {
     private void changeFloor(ActionEvent event) {
         JFXButton sourceButton = (JFXButton) event.getSource();
 
-        if(event.getSource() == floorUp && map.getFloor() < 5) {
+        if (event.getSource() == floorUp && map.getFloor() < 5) {
             map.setFloor(map.getFloor() + 1);
             openFromDB();
         } else if (event.getSource() == floorDown && map.getFloor() > 1) {
@@ -379,6 +379,20 @@ public class MapEditorController {
             openFromDB();
         } else if (isNumeric(sourceButton.getText())) {
             map.setFloor(Integer.parseInt(sourceButton.getText()));
+        }
+
+        for (javafx.scene.Node node : floorSelector.getChildren()) {
+            JFXButton floorButton = (JFXButton) node;
+            if (!floorButton.getText().equals(String.valueOf(map.getFloor()))) {
+                if (floorButton.getStyleClass().contains("selected-floor")) {
+                    floorButton.getStyleClass().clear();
+                    floorButton.getStyleClass().add("button");
+                    floorButton.getStyleClass().add("floor-buttons");
+                }
+            } else {
+                if (!floorButton.getStyleClass().contains("selected-floor"))
+                    floorButton.getStyleClass().add("selected-floor");
+            }
         }
     }
 
@@ -427,7 +441,7 @@ public class MapEditorController {
     @FXML
     private void saveOptionsClicked() {
         //show/hide options image
-        if(saveNodesList.isExpanded()) {
+        if (saveNodesList.isExpanded()) {
             saveTooltip.setText("Click to Close");
             saveOptImg.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/xButton.png", 40, 0, true, false));
         } else {
@@ -439,7 +453,7 @@ public class MapEditorController {
     @FXML
     private void loadOptionsClicked() {
         //show/hide options image
-        if(loadNodesList.isExpanded()) {
+        if (loadNodesList.isExpanded()) {
             loadTooltip.setText("Click to Close");
             loadOptionsImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/xButton.png"));
         } else {
@@ -451,33 +465,36 @@ public class MapEditorController {
     @FXML
     private void pathfindOptionsClicked() {
         //show/hide options image
-        if(pathNodesList.isExpanded()) {
+        if (pathNodesList.isExpanded()) {
             pathfindTooltip.setText("Click to Close");
             pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/xButton.png", 40, 0, true, false));
         } else {
             pathfindTooltip.setText("Switch Pathfinding Algorithm");
-            if (pathFindingAlg == 'A') pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/AStar.png"));
-            if (pathFindingAlg == 'B') pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/Breath First.png", 60, 0, true, false));
-            if (pathFindingAlg == 'D') pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/DepthFirst.png"));
+            if (pathFindingAlg == 'A')
+                pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/AStar.png"));
+            if (pathFindingAlg == 'B')
+                pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/Breath First.png", 60, 0, true, false));
+            if (pathFindingAlg == 'D')
+                pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/DepthFirst.png"));
         }
     }
 
     @FXML
-    private void aStarSelected(){
+    private void aStarSelected() {
         pathFindingAlg = 'A';
         pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/AStar.png", 40, 0, true, false));
         pathNodesList.animateList(false);
     }
 
     @FXML
-    private void depthSelected(){
+    private void depthSelected() {
         pathFindingAlg = 'D';
         pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/DepthFirst.png", 40, 0, true, false));
         pathNodesList.animateList(false);
     }
 
     @FXML
-    private void breadthSelected(){
+    private void breadthSelected() {
         pathFindingAlg = 'B';
         pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/Breath First.png", 60, 0, true, false));
         pathNodesList.animateList(false);

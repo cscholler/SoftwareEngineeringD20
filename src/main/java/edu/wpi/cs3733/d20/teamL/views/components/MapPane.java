@@ -47,7 +47,7 @@ public class MapPane extends StackPane {
 
     private SelectionBox selectionBox = new SelectionBox(new Point2D(0, 0), selector, (Collection<Highlightable>) (Collection<?>) nodes.values());
 
-    private Floor currentFloor = new Floor();
+    private Floor currentFloor = new Floor(1);
     private Node selectedNode = null;
     private NodeGUI selectedNodeGUI = null;
 

@@ -218,5 +218,19 @@ public class MapViewerController {
         JFXButton button = (JFXButton) event.getSource();
 
         map.setFloor(Integer.parseInt(button.getText()));
+
+        for (javafx.scene.Node node : floorSelector.getChildren()) {
+            JFXButton floorButton = (JFXButton) node;
+            if (!floorButton.getText().equals(String.valueOf(map.getFloor()))) {
+                if (floorButton.getStyleClass().contains("selected-floor")) {
+                    floorButton.getStyleClass().clear();
+                    floorButton.getStyleClass().add("button");
+                    floorButton.getStyleClass().add("floor-buttons");
+                }
+            } else {
+                if (!floorButton.getStyleClass().contains("selected-floor"))
+                    floorButton.getStyleClass().add("selected-floor");
+            }
+        }
     }
 }
