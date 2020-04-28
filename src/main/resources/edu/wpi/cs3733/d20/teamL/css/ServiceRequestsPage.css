@@ -11,6 +11,11 @@
 }
 
 .label{
-    -fx-font-size: 40;
+    -fx-font-size: 20;
     -fx-text-fill: white;
+}
+
+.title{
+     -fx-font-size: 40;
+     -fx-text-fill: white;
 }

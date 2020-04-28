@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -17,8 +18,8 @@
 <BorderPane prefHeight="720.0" prefWidth="1080.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.ServiceRequestController">
    <stylesheets>
       <URL value="@../css/GlobalStyles.css" />
-      <URL value="@../css/ServiceRequestStyles.css" />
       <URL value="@../css/ServiceRequestsPage.css" />
+      <URL value="@../css/ServiceRequestStyles.css" />
    </stylesheets>
    <center>
       <GridPane alignment="CENTER" hgap="5.0" BorderPane.alignment="CENTER">
@@ -44,7 +45,7 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
-                  <Label text="Security" />
+                  <Label text="Security&#10;(Caleb Farwell)" textAlignment="CENTER" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
@@ -58,7 +59,7 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
-                  <Label text="Gift" />
+                  <Label alignment="CENTER" text="Gift&#10;(Conrad Tulig)" textAlignment="CENTER" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2">
@@ -72,7 +73,7 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
-                  <Label text="Maintenance" />
+                  <Label text="Maintenance&#10;(Cameron Jacobson)" textAlignment="CENTER" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
@@ -86,7 +87,7 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
-                  <Label text="Transport Out" />
+                  <Label text="Transport Out&#10;(Zaiyang Zhong)" textAlignment="CENTER" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -100,7 +101,7 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
-                  <Label text="Medication" />
+                  <Label text="Medication&#10;(Luke Bodwell)" textAlignment="CENTER" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
@@ -114,7 +115,7 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
-                  <Label text="Transport In" />
+                  <Label text="Transport In&#10;(Joshua Hoy)" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2">
@@ -128,7 +129,7 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
-                  <Label text="Sanitation" />
+                  <Label text="Sanitation&#10;(Colin Scholler)" textAlignment="CENTER" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
@@ -142,7 +143,7 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
-                  <Label text="Interpreter" />
+                  <Label text="Interpreter&#10;(Tori Buyck)" textAlignment="CENTER" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
@@ -162,7 +163,7 @@
                         <Insets />
                      </VBox.margin>
                   </JFXButton>
-                  <Label text="Info Technology" />
+                  <Label text="Info Technology&#10;(Winnie Ly)" textAlignment="CENTER" />
                </children>
             </VBox>
          </children>
@@ -172,20 +173,34 @@
       </GridPane>
    </center>
    <top>
-      <HBox alignment="CENTER" prefHeight="53.0" prefWidth="1080.0" spacing="320.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="53.0" prefWidth="1080.0" spacing="550.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox prefHeight="58.0" prefWidth="623.0">
+            <HBox prefHeight="62.0" prefWidth="80.0">
                <children>
-                  <JFXButton onAction="#backClicked" text="Back">
+                  <JFXButton buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" onAction="#backClicked" prefHeight="60.0" prefWidth="74.0" style="-fx-background-color: #0d2e57; -jfx-button-type: FLAT;" text="Back">
                      <HBox.margin>
-                        <Insets left="10.0" top="10.0" />
+                        <Insets />
                      </HBox.margin>
+                     <graphic>
+                        <ImageView fitHeight="43.0" fitWidth="50.0">
+                           <image>
+                              <Image url="@../assets/baseline_arrow_back_white_48dp.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <styleClass>
+                        <String fx:value="back" />
+                        <String fx:value="back" />
+                     </styleClass>
                   </JFXButton>
                </children>
             </HBox>
-            <HBox>
+            <HBox alignment="CENTER">
                <children>
-                  <Label prefHeight="58.0" prefWidth="1226.0" text="Service Requests" textFill="WHITE" />
+                  <Label prefHeight="58.0" prefWidth="1226.0" styleClass="title" text="Service Requests" textFill="WHITE">
+                     <font>
+                        <Font size="1.0" />
+                     </font></Label>
                </children>
             </HBox>
          </children>
