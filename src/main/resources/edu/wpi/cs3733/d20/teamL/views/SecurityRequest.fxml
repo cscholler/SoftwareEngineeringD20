@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" stylesheets="@../css/ServiceRequestStyles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.MedicationRequestController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" stylesheets="@../css/ServiceRequestStyles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.SecurityRequestController">
    <top>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="title-background" BorderPane.alignment="CENTER">
          <children>
@@ -27,19 +27,19 @@
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0" styleClass="background">
                <children>
-                  <JFXButton prefWidth="112.0" styleClass="cancel" text="Back">
+                  <JFXButton fx:id="btnBack" onAction="#handleBack" prefWidth="112.0" styleClass="cancel" text="Back">
                      <font>
                         <Font size="20.0" />
                      </font></JFXButton>
-                  <JFXButton prefWidth="112.0" styleClass="confirm" text="Submit">
+                  <JFXButton fx:id="btnSubmit" onAction="#handleSubmit" prefWidth="112.0" styleClass="confirm" text="Submit">
                      <font>
                         <Font size="20.0" />
                      </font></JFXButton>
                </children>
             </HBox>
-            <Label style="-fx-font-size: 20;" text="Submitted!" textFill="WHITE">
+            <Label fx:id="lblSubmitted" style="-fx-font-size: 20;" text="Submitted!                                " textFill="WHITE" visible="false">
                <StackPane.margin>
-                  <Insets right="150.0" />
+                  <Insets right="200.0" />
                </StackPane.margin>
                <font>
                   <Font size="1.0" />
@@ -63,7 +63,7 @@
                               <Insets top="50.0" />
                            </VBox.margin>
                         </Label>
-                        <JFXTextField promptText="Enter Patient Id..." />
+                        <JFXTextField fx:id="patientIDText" promptText="Enter Patient Id..." />
                      </children>
                      <VBox.margin>
                         <Insets />
@@ -79,7 +79,7 @@
                               <Font size="24.0" />
                            </font>
                         </Label>
-                        <JFXTextArea promptText="Enter Reason..." styleClass="text-area" />
+                        <JFXTextArea fx:id="reasonText" promptText="Enter Reason..." styleClass="text-area" />
                      </children>
                   </VBox>
                </children></VBox>
@@ -95,7 +95,7 @@
                               <Insets top="50.0" />
                            </VBox.margin>
                         </Label>
-                        <JFXTextField promptText="Enter Location..." />
+                        <JFXTextField fx:id="locationText" promptText="Enter Location..." />
                      </children>
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0">
@@ -105,7 +105,7 @@
                               <Font size="24.0" />
                            </font>
                         </Label>
-                        <JFXTextArea promptText="Enter Additional Notes..." />
+                        <JFXTextArea fx:id="notesText" promptText="Enter Additional Notes..." />
                      </children>
                      <VBox.margin>
                         <Insets bottom="50.0" />
