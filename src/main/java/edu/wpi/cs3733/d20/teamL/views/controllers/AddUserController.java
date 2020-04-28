@@ -137,6 +137,17 @@ public class AddUserController implements Initializable {
 				passwordText.setText("");
 				doctorIDText.setText("");
 				languages.setText("");
+				managerBox.setSelected(false);
+				managerBox.setVisible(false);
+				serviceCombo.setVisible(false);
+				serviceCombo.setDisable(false);
+				boxOService.setVisible(false);
+				boxOService.setDisable(false);
+				languages.setVisible(false);
+				languages.setDisable(false);
+				doctorIDText.setVisible(false);
+				doctorIDText.setDisable(false);
+				userCombo.setValue("");
 			} else {
 				log.error("SQL update affected more than 1 row.");
 			}
