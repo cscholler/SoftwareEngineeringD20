@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -23,7 +24,9 @@ public class LoggedInViewController implements Initializable{
     @FXML
     HBox buttonBox;
     @FXML
-    Label lblName;
+    Label lblName, lblMap;
+    @FXML
+    private VBox vMap, vPatient, vDoc, vService, vUser;
     @Inject
     ILoginManager loggin;
     String map;
@@ -34,13 +37,15 @@ public class LoggedInViewController implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {
         lblName.setText(loggin.getCurrentUser().getFName());
         if(loggin.getCurrentUser().getAcctType().equals("3")){
-            buttonBox.getChildren().remove(btnAddPatient);
-            buttonBox.getChildren().remove(btnServiceRequest);
+            buttonBox.getChildren().remove(vPatient);
+            buttonBox.getChildren().remove(vService);
             map = "MapEditor";
+            lblMap.setText("Map Editor");
         } else {
-            buttonBox.getChildren().remove(btnAddUser);
-            buttonBox.getChildren().remove(btnAddDoctor);
+            buttonBox.getChildren().remove(vUser);
+            buttonBox.getChildren().remove(vDoc);
             map = "MapViewer";
+            lblMap.setText("Map Viewer");
         }
     }
 
