@@ -16,6 +16,7 @@
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.InternalTransportController">
    <stylesheets>
       <URL value="@../css/GlobalStyles.css" />
+      <URL value="@../css/ServiceRequestStyles.css" />
       <URL value="@../css/TransportServiceStyles.css" />
    </stylesheets>
    <center>
@@ -45,7 +46,7 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0" BorderPane.alignment="CENTER">
          <children>
-            <JFXButton buttonType="RAISED" onAction="#closeClicked" text="Close" />
+            <JFXButton buttonType="RAISED" onAction="#closeClicked" text="Cancel" />
             <JFXButton buttonType="RAISED" onAction="#submitClicked" text="Submit" />
             <Label fx:id="confirmation" prefHeight="20.0" prefWidth="250.0" text="Label" visible="false">
                <font>
@@ -64,7 +65,7 @@
    <top>
       <HBox alignment="CENTER" prefHeight="81.0" prefWidth="1080.0" styleClass="topBorder" BorderPane.alignment="CENTER">
          <children>
-            <Label text="In-Hospital Transport Request" textFill="WHITE">
+            <Label styleClass="title" text="In-Hospital Transport Request" textFill="WHITE">
                <font>
                   <Font size="40.0" />
                </font>
