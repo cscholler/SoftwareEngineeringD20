@@ -28,7 +28,8 @@ dependencies {
             'com.twilio.sdk:twilio:7.49.1',
             'com.sendgrid:sendgrid-java:4.4.1',
             'com.github.kenglxn.QRGen:javase:2.6.0',
-            'org.jetbrains:annotations:15.0'
+            'org.jetbrains:annotations:15.0',
+            'com.github.kenglxn.QRGen:javase:2.6.0'
     )
 
     testImplementation(
@@ -38,7 +39,6 @@ dependencies {
     testRuntimeOnly(
             'org.testfx:openjfx-monocle:jdk-11+26'
     )
-    compile 'com.github.kenglxn.QRGen:javase:2.6.0'
 }
 
 javafx {
