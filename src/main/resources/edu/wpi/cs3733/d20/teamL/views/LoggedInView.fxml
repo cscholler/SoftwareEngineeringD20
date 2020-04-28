@@ -74,7 +74,7 @@
    <center>
       <HBox fx:id="buttonBox" alignment="TOP_CENTER" prefHeight="498.0" prefWidth="1650.0" spacing="100.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox alignment="TOP_CENTER">
+            <VBox fx:id="vMap" alignment="TOP_CENTER">
                <children>
                   <JFXButton fx:id="btnMapEditor" alignment="CENTER" contentDisplay="CENTER" maxHeight="250.0" maxWidth="250.0" minHeight="250.0" minWidth="250.0" onAction="#mapEditorClicked" style="-fx-background-radius: 200; -fx-border-color: white; -fx-border-radius: 200;" styleClass="circle-button" text=" ">
                      <graphic>
@@ -85,10 +85,10 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
-                  <Label text="Map Editor" />
+                  <Label fx:id="lblMap" text="Map Editor" />
                </children>
             </VBox>
-            <VBox alignment="TOP_CENTER">
+            <VBox fx:id="vUser" alignment="TOP_CENTER">
                <children>
                   <JFXButton fx:id="btnAddUser" alignment="CENTER" contentDisplay="CENTER" maxHeight="250.0" maxWidth="250.0" minHeight="250.0" minWidth="250.0" onAction="#addUserClicked" style="-fx-background-radius: 200; -fx-border-color: white; -fx-border-radius: 200;" styleClass="circle-button" text=" ">
                      <graphic>
@@ -102,7 +102,7 @@
                   <Label text="Add User" />
                </children>
             </VBox>
-            <VBox alignment="TOP_CENTER" prefHeight="480.0" prefWidth="250.0">
+            <VBox fx:id="vService" alignment="TOP_CENTER" prefHeight="480.0" prefWidth="250.0">
                <children>
                   <JFXButton fx:id="btnServiceRequest" alignment="CENTER" contentDisplay="CENTER" maxHeight="250.0" maxWidth="250.0" minHeight="250.0" minWidth="250.0" onAction="#serviceRequestsClicked" style="-fx-background-radius: 200; -fx-border-color: white; -fx-border-radius: 200;" styleClass="circle-button" text=" ">
                      <graphic>
@@ -116,7 +116,7 @@
                   <Label text="Service Requests" />
                </children>
             </VBox>
-            <VBox alignment="TOP_CENTER">
+            <VBox fx:id="vDoc" alignment="TOP_CENTER">
                <children>
                   <JFXButton fx:id="btnAddDoctor" alignment="CENTER" contentDisplay="CENTER" maxHeight="250.0" maxWidth="250.0" minHeight="250.0" minWidth="250.0" onAction="#addDoctorClicked" style="-fx-background-radius: 200; -fx-border-color: white; -fx-border-radius: 200;" styleClass="circle-button" text=" ">
                      <graphic>
@@ -130,7 +130,7 @@
                   <Label text="Add Doctor" />
                </children>
             </VBox>
-            <VBox alignment="TOP_CENTER">
+            <VBox fx:id="vPatient" alignment="TOP_CENTER">
                <children>
                   <JFXButton fx:id="btnAddPatient" alignment="CENTER" contentDisplay="CENTER" maxHeight="250.0" maxWidth="250.0" minHeight="250.0" minWidth="250.0" onAction="#addPatientClicked" style="-fx-background-radius: 200; -fx-border-color: white; -fx-border-radius: 200;" styleClass="circle-button" text=" ">
                      <graphic>
