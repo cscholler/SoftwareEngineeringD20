@@ -78,7 +78,7 @@ public class DBConstants {
 					"patient_id INT NOT NULL REFERENCES Patients(id), " +
 					"sender_name VARCHAR(32) NOT NULL, " +
 					"request_username VARCHAR(32) NOT NULL REFERENCES Users(username), " +
-					"assignee_username VARCHAR(32) NOT NULL REFERENCES Users(username), " +
+					"assignee_username VARCHAR(32) REFERENCES Users(username), " +
 					"gift1_id INT NOT NULL REFERENCES Gifts(id), " +
 					"gift2_id INT REFERENCES Gifts(id), " +
 					"gift3_id INT REFERENCES Gifts(id), " +
@@ -168,8 +168,8 @@ public class DBConstants {
 					"VALUES(?, ?, ?, ?)";
 
 	public static final String ADD_GIFT_DELIVERY_REQUEST =
-			"INSERT INTO Gift_Delivery_Requests(patient_id, request_username, assignee_username, gift_id, message, notes, status, date_and_time)" +
-					"VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+			"INSERT INTO Gift_Delivery_Requests(patient_id, sender_name, request_username, assignee_username, gift1_id, gift2_id, gift3_id, message, notes, status, date_and_time)" +
+					"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	public static final String ADD_MEDICATION_REQUEST =
 			"INSERT INTO Medication_Requests(doctor_id, patient_id, nurse_username, deliverer_username, dose, type, notes, status, date_and_time)" +

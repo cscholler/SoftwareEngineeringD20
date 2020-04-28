@@ -6,13 +6,14 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
-<?import javafx.scene.shape.Line?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.GiftCartController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="482.0" prefWidth="687.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.GiftCartController">
    <left>
       <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="111.0" styleClass="background" BorderPane.alignment="CENTER">
          <children>
@@ -27,6 +28,25 @@
    <right>
       <VBox alignment="BOTTOM_CENTER" prefHeight="400.0" prefWidth="134.0" styleClass="background" BorderPane.alignment="CENTER">
          <children>
+            <Label fx:id="error" disable="true" style="-fx-text-fill: red;" text="MAX CART OF 3 ITEMS" textAlignment="CENTER" textFill="RED" />
+            <HBox alignment="CENTER" prefHeight="9.0" prefWidth="134.0">
+               <children>
+                  <Label fx:id="checkout3" styleClass="label-cart" text="Label" />
+                  <JFXButton fx:id="remove3" buttonType="RAISED" onAction="#removeItem" styleClass="button-x" text="X" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="9.0" prefWidth="134.0">
+               <children>
+                  <Label fx:id="checkout2" styleClass="label-cart" text="Label" />
+                  <JFXButton fx:id="remove2" buttonType="RAISED" onAction="#removeItem" styleClass="button-x" text="X" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="9.0" prefWidth="134.0">
+               <children>
+                  <Label fx:id="checkout1" styleClass="label-cart" text="Label" />
+                  <JFXButton fx:id="remove1" buttonType="RAISED" onAction="#removeItem" styleClass="button-x" text="X" />
+               </children>
+            </HBox>
             <JFXButton onAction="#checkoutBtnPressed" text="Checkout" />
          </children>
       </VBox>
@@ -39,7 +59,7 @@
    <center>
       <ScrollPane hbarPolicy="NEVER" prefHeight="400.0" prefWidth="321.0" BorderPane.alignment="TOP_CENTER">
          <content>
-            <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="319.0" spacing="50.0">
+            <VBox alignment="TOP_CENTER" prefHeight="319.0" spacing="50.0">
                <children>
                   <VBox alignment="TOP_CENTER" maxWidth="300.0" prefHeight="319.0" prefWidth="344.0">
                      <children>
@@ -63,7 +83,6 @@
                            </children>
                         </VBox>
                         <JFXButton fx:id="addCart1Btn" onAction="#addCartPressed" text="Add to Cart" />
-                        <Line endX="100.0" startX="-100.0" />
                      </children>
                   </VBox>
                   <VBox alignment="TOP_CENTER" maxWidth="300.0" prefHeight="319.0" prefWidth="344.0">
@@ -88,7 +107,6 @@
                            </children>
                         </VBox>
                         <JFXButton fx:id="addCart2Btn" onAction="#addCartPressed" text="Add to Cart" />
-                        <Line endX="100.0" startX="-100.0" />
                      </children>
                   </VBox>
                   <VBox alignment="TOP_CENTER" maxWidth="300.0" prefHeight="319.0" prefWidth="344.0">
@@ -113,7 +131,6 @@
                            </children>
                         </VBox>
                         <JFXButton fx:id="addCart3Btn" onAction="#addCartPressed" text="Add to Cart" />
-                        <Line endX="100.0" startX="-100.0" />
                      </children>
                   </VBox>
                </children>
@@ -124,4 +141,20 @@
          </content>
       </ScrollPane>
    </center>
+   <top>
+      <HBox style="-fx-background-color: #00032E #00032E;" BorderPane.alignment="CENTER">
+         <children>
+            <JFXButton onAction="#backBtn" style="-fx-background-color: #00032E #00032E;" text=" ">
+            <graphic>
+               <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../assets/baseline_arrow_back_white_48dp.png" />
+                  </image>
+               </ImageView>
+            </graphic>
+            </JFXButton>
+            <Label styleClass="title" stylesheets="@../css/ServiceRequestStyles.css" text="Gift Delivery Service" textFill="WHITE" />
+         </children>
+      </HBox>
+   </top>
 </BorderPane>

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import edu.wpi.cs3733.d20.teamL.entities.Gift;
 import javafx.geometry.Point2D;
 
 import com.google.inject.Inject;
@@ -20,6 +21,10 @@ public class DatabaseCache implements IDatabaseCache {
     private ArrayList<Edge> addedEdges = new ArrayList<>();
     private ArrayList<Node> deletedNodes = new ArrayList<>();
     private ArrayList<Edge> deletedEdges = new ArrayList<>();
+
+    private ArrayList<Gift> giftsCache = new ArrayList<>();
+    private ArrayList<Gift> cartCache = new ArrayList<>();
+
     @Inject
     private IDatabaseService db;
 
@@ -27,6 +32,7 @@ public class DatabaseCache implements IDatabaseCache {
 	public void cacheAllFromDB() {
 		cacheNodesFromDB();
 		cacheEdgesFromDB();
+		cacheGiftsFromDB();
 	}
 
     /**
@@ -203,5 +209,45 @@ public class DatabaseCache implements IDatabaseCache {
     @Override
 	public void clearEdgeCache() {
         edgeCache.clear();
+    }
+
+    @Override
+    public void cacheGiftsFromDB() {
+        ArrayList<ArrayList<String>> giftsDB = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_GIFTS)));
+        clearGiftsCache();
+        for(ArrayList<String> g : giftsDB) {
+            giftsCache.add(new Gift(g.get(0), g.get(1), g.get(2), g.get(3), g.get(4)));
+        }
+    }
+
+    @Override
+    public void cacheCart(ArrayList<Gift> cart) {
+        cartCache = cart;
+    }
+
+    @Override
+    public ArrayList<Gift> getCartCacheNull() {
+        if(cartCache.size() == 1) cartCache.add(null);
+        if(cartCache.size() == 2) cartCache.add(null);
+        return cartCache;
+    }
+
+    @Override
+    public ArrayList<Gift> getCartCache() {
+        return cartCache;
+    }
+
+    @Override
+    public ArrayList<Gift> getGiftsCache() { return giftsCache; }
+
+    @Override
+    public void clearGiftsCache() {
+        giftsCache.clear();
+        cartCache.clear();
+    }
+
+    @Override
+    public void clearCartCache() {
+        cartCache.clear();
     }
 }
