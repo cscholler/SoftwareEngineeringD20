@@ -118,8 +118,8 @@ public class AddUserController implements Initializable {
 				servicesList.setLength(servicesList.length() - 1);
 			}
 			manager = managerBox.isSelected() ? serviceCombo.getSelectionModel().getSelectedItem().toLowerCase().replace(" ", "_") : null;
-			System.out.println(manager);
-			services = servicesList.toString();
+
+			services = managerBox.isSelected() ? null : servicesList.toString();
 			rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(firstName, lastName, username, password, type, services, manager))));
 			formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_USERS)));
 			if (doctorIDText.getText() != null && !(doctorIDText.getText().isEmpty())) {
@@ -148,6 +148,15 @@ public class AddUserController implements Initializable {
 				doctorIDText.setVisible(false);
 				doctorIDText.setDisable(false);
 				userCombo.setValue("");
+				securityBox.setSelected(false);
+				inTransportBox.setSelected(false);
+				exTransportBox.setSelected(false);
+				maintenanceBox.setSelected(false);
+				sanitationBox.setSelected(false);
+				pharmacistBox.setSelected(false);
+				giftShopBox.setSelected(false);
+				itBox.setSelected(false);
+				interpreterBox.setSelected(false);
 			} else {
 				log.error("SQL update affected more than 1 row.");
 			}
