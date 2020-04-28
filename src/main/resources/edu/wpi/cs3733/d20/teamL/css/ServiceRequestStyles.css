@@ -47,3 +47,20 @@
 .combo-box > .cell {
     -fx-text-fill: white;
 }
+
+.labelTrans{
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+}
+
+
+.translateButtons{
+    -fx-text-fill: black;
+    -jfx-button-type: FLAT;
+
+}
+
+.back{
+    -fx-background-color: white;
+    -jfx-button-type: FLAT;
+}

@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -17,25 +18,21 @@
   <items>
       <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: white;">
          <children>
-            <HBox alignment="CENTER_LEFT" spacing="120.0">
+            <HBox alignment="CENTER_LEFT" spacing="80.0">
                <children>
-                  <JFXButton fx:id="btnBack" style="-fx-background-color: white;" text=" ">
+                  <JFXButton fx:id="btnBack" prefHeight="48.0" prefWidth="60.0" style="-fx-background-color: white;" styleClass="back" text=" ">
                      <graphic>
-                        <ImageView fitHeight="63.0" fitWidth="62.0">
+                        <ImageView fitHeight="53.0" fitWidth="55.0">
                            <image>
                               <Image url="@../assets/baseline_arrow_back_black_48dp.png" />
                            </image>
                         </ImageView>
                      </graphic>
                   </JFXButton>
-                  <Label alignment="CENTER" prefHeight="80.0" prefWidth="188.0" text="Languages">
-                     <font>
-                        <Font name="Segoe UI Bold" size="30.0" />
-                     </font>
-                  </Label>
+                  <Label styleClass="labelTrans" text="Languages" />
                </children>
             </HBox>
-            <JFXButton fx:id="btnSpanish" alignment="TOP_LEFT" maxWidth="1000.0" onAction="#autoFillLanguage" style="-fx-background-color: lightgray; -fx-border-color: gray;" text="     Español (Spanish)" VBox.vgrow="ALWAYS">
+            <JFXButton fx:id="btnSpanish" alignment="TOP_LEFT" maxWidth="1000.0" onAction="#autoFillLanguage" prefHeight="80.0" style="-fx-background-color: lightgray; -fx-border-color: gray;" styleClass="translateButtons" text="     Español (Spanish)" VBox.vgrow="ALWAYS">
                <graphic>
                   <ImageView fitHeight="60.0" fitWidth="100.0">
                      <image>
@@ -46,8 +43,11 @@
                <padding>
                   <Insets bottom="7.5" left="7.5" right="7.5" top="20.0" />
                </padding>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
             </JFXButton>
-            <JFXButton fx:id="btnFrench" alignment="TOP_LEFT" maxWidth="1000.0" onAction="#autoFillLanguage" prefHeight="95.0" style="-fx-background-color: lightgray; -fx-border-color: gray;" text="     Français (French)">
+            <JFXButton fx:id="btnFrench" alignment="TOP_LEFT" maxWidth="1000.0" onAction="#autoFillLanguage" prefHeight="80.0" style="-fx-background-color: lightgray; -fx-border-color: gray;" styleClass="translateButtons" text="     Français (French)">
                <graphic>
                   <ImageView fitHeight="60.0" fitWidth="100.0">
                      <image>
@@ -58,8 +58,11 @@
                <padding>
                   <Insets bottom="7.5" left="7.5" right="7.5" top="20.0" />
                </padding>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
             </JFXButton>
-            <JFXButton fx:id="btnItalian" alignment="TOP_LEFT" maxWidth="1000.0" onAction="#autoFillLanguage" prefHeight="95.0" style="-fx-background-color: lightgray; -fx-border-color: gray;" text="     Italiano (Italian)">
+            <JFXButton fx:id="btnItalian" alignment="TOP_LEFT" maxWidth="1000.0" onAction="#autoFillLanguage" prefHeight="80.0" style="-fx-background-color: lightgray; -fx-border-color: gray;" styleClass="translateButtons" text="     Italiano (Italian)">
                <graphic>
                   <ImageView fitHeight="60.0" fitWidth="100.0">
                      <image>
@@ -70,8 +73,11 @@
                <padding>
                   <Insets bottom="7.5" left="7.5" right="7.5" top="20.0" />
                </padding>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
             </JFXButton>
-            <JFXButton fx:id="btnASL" alignment="TOP_LEFT" maxWidth="1000.0" onAction="#autoFillLanguage" prefHeight="95.0" style="-fx-background-color: lightgray; -fx-border-color: gray;" text="     American Sign Language">
+            <JFXButton fx:id="btnASL" alignment="TOP_LEFT" maxWidth="1000.0" onAction="#autoFillLanguage" prefHeight="80.0" style="-fx-background-color: lightgray; -fx-border-color: gray;" styleClass="translateButtons" text="     American Sign Language">
                <graphic>
                   <ImageView fitHeight="60.0" fitWidth="100.0">
                      <image>
@@ -82,8 +88,11 @@
                <padding>
                   <Insets bottom="7.5" left="7.5" right="7.5" top="20.0" />
                </padding>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
             </JFXButton>
-            <JFXButton fx:id="btnChinese" alignment="TOP_LEFT" maxWidth="1000.0" onAction="#autoFillLanguage" prefHeight="95.0" style="-fx-background-color: lightgray; -fx-border-color: gray;" text="     中文 (Chinese)">
+            <JFXButton fx:id="btnChinese" alignment="TOP_LEFT" maxWidth="1000.0" onAction="#autoFillLanguage" prefHeight="80.0" prefWidth="513.0" style="-fx-background-color: lightgray; -fx-border-color: gray;" styleClass="translateButtons" text="     中文 (Chinese)">
                <graphic>
                   <ImageView fitHeight="60.0" fitWidth="100.0">
                      <image>
@@ -94,17 +103,25 @@
                <padding>
                   <Insets bottom="7.5" left="7.5" right="7.5" top="20.0" />
                </padding>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
             </JFXButton>
          </children></VBox>
       <BorderPane prefHeight="200.0" prefWidth="200.0">
          <top>
-            <Label stylesheets="@../css/FormStyles.css" text="Request an Interpreter" textFill="WHITE" BorderPane.alignment="CENTER">
+            <Label alignment="CENTER" prefHeight="103.0" prefWidth="952.0" stylesheets="@../css/FormStyles.css" text="Request an Interpreter" textFill="WHITE" BorderPane.alignment="CENTER">
                <font>
                   <Font size="39.0" />
                </font>
                <BorderPane.margin>
-                  <Insets top="20.0" />
+                  <Insets />
                </BorderPane.margin>
+               <styleClass>
+                  <String fx:value="label" />
+                  <String fx:value="topBorder" />
+                  <String fx:value="title" />
+               </styleClass>
             </Label>
          </top>
          <center>
@@ -177,5 +194,6 @@
    <stylesheets>
       <URL value="@../css/GlobalStyles.css" />
       <URL value="@../css/FormStyles.css" />
+      <URL value="@../css/ServiceRequestStyles.css" />
    </stylesheets>
 </SplitPane>

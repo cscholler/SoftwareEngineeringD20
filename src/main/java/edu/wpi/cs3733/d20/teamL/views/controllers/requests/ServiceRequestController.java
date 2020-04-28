@@ -40,12 +40,12 @@ public class ServiceRequestController {
 
     @FXML
     private void translateClicked() {
-//        try {
-//            Parent root = loaderHelper.getFXMLLoader("TranslateRequest").load();
-//            loaderHelper.setupScene(new Scene(root));
-//        } catch (IOException ex) {
-//            log.error("Encountered IOException", ex);
-//        }
+        try {
+            Parent root = loaderHelper.getFXMLLoader("Interpreter").load();
+            loaderHelper.setupScene(new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
     }
 
     @FXML

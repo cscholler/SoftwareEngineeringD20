@@ -93,7 +93,7 @@ public class MapViewerController {
             newButton.setOnAction(this::handleFloor);
             newButton.getStyleClass().add("floor-buttons");
 
-            floorSelector.getChildren().add(1, newButton);
+            //floorSelector.getChildren().add(1, newButton);
         }
 
         map.setZoomLevel(1);
