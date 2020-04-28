@@ -20,15 +20,17 @@ import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
 
 import javafx.geometry.Point2D;
-
+import javafx.scene.paint.Color;
 
 import java.util.*;
+import java.util.List;
 import javax.inject.Inject;
 
 import javafx.scene.layout.VBox;
@@ -49,7 +51,7 @@ public class MapEditorController {
     @FXML
     MapPane map;
     @FXML
-    Label nodeIDText, numberlbl;
+    Label nodeIDText, numberlbl, edgeText;
     @FXML
     JFXTextField numberText, xCoordText, yCoordText, buildingText, nodeTypeText, shortNameText, longNameText;
     @FXML
@@ -71,11 +73,14 @@ public class MapEditorController {
     private Scene scene;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
     private SearchFields sf;
+    private SearchFields edgesSf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
+    private JFXAutoCompletePopup<String> edgesAutoCompletePopup;
     private boolean eraserBool = false;
     private char pathFindingAlg = 'A';
+    private Path path = new Path();
 
-    private final List<String> types = Arrays.asList("ELEV", "REST", "STAI", "DEPT", "LABS", "INFO", "CONF", "EXIT", "RETL", "SERV");
+    private final List<String> types = Arrays.asList("HALL", "ELEV", "REST", "STAI", "DEPT", "LABS", "INFO", "CONF", "EXIT", "RETL", "SERV");
     private int floor = 2;
 
     @FXML
@@ -85,29 +90,9 @@ public class MapEditorController {
         coreShortcuts();
 
         pathFind.setOnAction(event -> {
-            Path path = pathfinder.pathfind(map.getBuilding(), sf.getNode(startNode.getText()), sf.getNode(endNode.getText()));
-            System.out.println(path.generateTextMessage());
+            path = pathfinder.pathfind(map.getBuilding(), sf.getNode(startNode.getText()), sf.getNode(endNode.getText()));
 
-            Iterator<Node> nodeIterator = path.iterator();
-
-            // Loop through each node in the path and select it as well as the edge pointing to the next node
-            Node currentNode = nodeIterator.next();
-            Node nextNode;
-            while (nodeIterator.hasNext()) {
-                nextNode = nodeIterator.next();
-
-                NodeGUI nodeGUI = map.getNodeGUI(currentNode);
-                EdgeGUI edgeGUI = map.getEdgeGUI(currentNode.getEdge(nextNode));
-
-                map.getSelector().add(nodeGUI);
-                map.getSelector().add(edgeGUI);
-
-                currentNode = nextNode;
-            }
-            // The above loop does not highlight the last node, this does that
-            NodeGUI nodeGUI = map.getNodeGUI(currentNode);
-            map.getSelector().add(nodeGUI);
-            nodeGUI.setHighlighted(true);
+            highlightPath();
         });
 
         cache.cacheAllFromDB();
@@ -118,6 +103,12 @@ public class MapEditorController {
         sf.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
+
+        edgesSf = new SearchFields(cache.getNodeCache());
+        edgesSf.getFields().add(SearchFields.Field.nodeID);
+        edgesSf.populateSearchFields();
+        edgesAutoCompletePopup = new JFXAutoCompletePopup<>();
+        edgesAutoCompletePopup.getSuggestions().addAll(edgesSf.getSuggestions());
 
         map.setEditable(true);
         map.init();
@@ -150,6 +141,31 @@ public class MapEditorController {
         eraser.setDisableAnimation(true);
 
         //saveNodesList.addAnimatedNode(saveDBButton);
+    }
+
+    private void highlightPath() {
+        Iterator<Node> nodeIterator = path.iterator();
+
+        // Loop through each node in the path and select it as well as the edge pointing to the next node
+        Node currentNode = nodeIterator.next();
+        Node nextNode;
+        while (nodeIterator.hasNext()) {
+            nextNode = nodeIterator.next();
+
+            NodeGUI nodeGUI = map.getNodeGUI(currentNode);
+            EdgeGUI edgeGUI = map.getEdgeGUI(currentNode.getEdge(nextNode));
+
+            if (nodeGUI != null) map.getSelector().add(nodeGUI);
+            if (edgeGUI != null) map.getSelector().add(edgeGUI);
+
+            currentNode = nextNode;
+        }
+        // The above loop does not highlight the last node, this does that
+        NodeGUI nodeGUI = map.getNodeGUI(currentNode);
+        if (nodeGUI != null) {
+            map.getSelector().add(nodeGUI);
+            nodeGUI.setHighlighted(true);
+        }
     }
 
     /**
@@ -294,11 +310,17 @@ public class MapEditorController {
             Double y = selectedNode.getPosition().getY();
             xCoordText.setText(x.toString());
             yCoordText.setText(y.toString());
-            nodeTypeValue.getSelectionModel().select(types.indexOf(selectedNode.getType()) + 1);
+            nodeTypeValue.getSelectionModel().select(types.indexOf(selectedNode.getType()));
             shortNameText.setText(selectedNode.getShortName());
             longNameText.setText(selectedNode.getLongName());
             nodeTypeChanged();
         }
+
+        // Clear node connections tab
+        nodeConnectionsTab.setPrefWidth(0);
+        nodeConnectionsTab.setVisible(false);
+
+        edgeText.setText("");
     }
 
     @FXML
@@ -326,26 +348,26 @@ public class MapEditorController {
         NodeGUI selectedNodeGUI = map.getNodeGUI(selectedNode);
         Collection<Node> neighbors = selectedNode.getNeighbors();
 
-        selectedNode.setId(nodeIDText.getText());
+        //selectedNode.setId(nodeIDText.getText());
         double x = Double.parseDouble(xCoordText.getText());
         double y = Double.parseDouble(yCoordText.getText());
         selectedNode.setPosition(new Point2D(x, y));
         selectedNode.setBuilding(map.getBuilding().getName());
-        selectedNode.setType(types.get(nodeTypeValue.getSelectionModel().getSelectedIndex() - 1));
+        selectedNode.setType(types.get(nodeTypeValue.getSelectionModel().getSelectedIndex()));
         selectedNode.setShortName(shortNameText.getText());
         selectedNode.setLongName(longNameText.getText());
         selectedNode.setShaft(numberText.getText());
 
-        selectedNode.setId(map.getBuilding().getUniqueNodeID(selectedNode));
+        //selectedNode.setId(map.getBuilding().getUniqueNodeID(selectedNode));
+
+        if (Integer.parseInt(selectedNode.getShaft()) > 0) {
+            addMultiFloorEdge(selectedNode);
+        }
+
         nodeIDText.setText(selectedNode.getID());
 
-        addMultiFloorEdge(selectedNode);
-        map.removeNode(selectedNodeGUI);
-        map.addNode(selectedNode);
-
         for (Node neighbor : neighbors) {
-            Edge edge = new Edge(selectedNode, neighbor);
-            selectedNode.addEdgeTwoWay(edge);
+            Edge edge = selectedNode.addEdgeTwoWay(neighbor);
             map.addEdge(edge);
         }
     }
@@ -358,10 +380,8 @@ public class MapEditorController {
     private void addMultiFloorEdge(Node node) {
         if (node.getType().equals("ELEV") || node.getType().equals("STAI")) {
             for (Node adj : map.getBuilding().getNodes()) {
-                if (node.getType().equals(adj.getType()) && node.getShaft().equals(adj.getShaft())) {
-                    if ((node.getFloor() == adj.getFloor() + 1) || (node.getFloor() == adj.getFloor() - 1)) {
-                        node.addEdgeTwoWay(new Edge(node, adj));
-                    }
+                if (node.getType().equals(adj.getType()) && node.getShaft().equals(adj.getShaft()) && !node.equals(adj)) {
+                    node.addEdgeTwoWay(adj);
                 }
             }
         }
@@ -378,6 +398,8 @@ public class MapEditorController {
         } else if (isNumeric(sourceButton.getText())) {
             setFloor(Integer.parseInt(sourceButton.getText()));
         }
+
+        highlightPath();
     }
 
     public void setFloor(int newFloor) {
@@ -414,6 +436,10 @@ public class MapEditorController {
     private void editConnections() {
         nodeConnectionsTab.setPrefWidth(200);
         nodeConnectionsTab.setVisible(true);
+
+        edgeText.setText("");
+        for (Edge edge : map.getSelectedNode().getEdges())
+            edgeText.setText(edgeText.getText() + edge.getDestination().getShortName() + "\n");
     }
 
     /**
@@ -423,6 +449,8 @@ public class MapEditorController {
     private void saveConnections() {
         nodeConnectionsTab.setPrefWidth(0);
         nodeConnectionsTab.setVisible(false);
+
+        edgeText.setText("");
     }
 
     /**

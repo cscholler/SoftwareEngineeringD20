@@ -88,21 +88,19 @@ public class PathfinderService implements IPathfinderService {
         // Calculate the distance of each node from the destination if coordinates are in the data
         if (hasCoords) {
             for (NodeEntry entry : priorityQueue) {
-                double x1 = entry.node.getPosition().getX();
-                double y1 = entry.node.getPosition().getY();
-                double x2 = destination.getPosition().getX();
-                double y2 = destination.getPosition().getY();
+                double twoDimensionalDistance = entry.node.getPosition().distance(destination.getPosition());
 
-                int distance = (int) Math.round(Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
-
-                entry.distFromDest = distance;
+                entry.distFromDest = twoDimensionalDistance + Math.abs(entry.node.getFloor() - destination.getFloor()) * 100;
             }
         }
 
         // Start from the source Node and recursively update the priority Queue
         NodeEntry destNode = aStarPathFindHelper(destination);
 
-        return Path.listToPath(entryToList(destNode));
+        if (destNode != null)
+            return Path.listToPath(entryToList(destNode));
+
+        return null;
     }
 
     private NodeEntry aStarPathFindHelper(Node destination) {

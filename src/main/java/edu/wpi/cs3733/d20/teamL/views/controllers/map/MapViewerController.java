@@ -69,6 +69,7 @@ public class MapViewerController {
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    private Path path = new Path();
 
     @FXML
     private void initialize() {
@@ -165,27 +166,9 @@ public class MapViewerController {
     private String highlightSourceToDestination(Node source, Node destination) {
         map.getSelector().clear();
 
-        Path path = pathfinderService.pathfind(map.getBuilding(), source, destination);
-        Iterator<Node> nodeIterator = path.iterator();
+        path = pathfinderService.pathfind(map.getBuilding(), source, destination);
 
-        // Loop through each node in the path and select it as well as the edge pointing to the next node
-        Node currentNode = nodeIterator.next();
-        Node nextNode;
-
-        while (nodeIterator.hasNext()) {
-            nextNode = nodeIterator.next();
-            NodeGUI nodeGUI = map.getNodeGUI(currentNode);
-            EdgeGUI edgeGUI = map.getEdgeGUI(currentNode.getEdge(nextNode));
-
-            map.getSelector().add(edgeGUI);
-
-            currentNode = nextNode;
-        }
-
-        // The above loop does not highlight the last node, this does that
-        NodeGUI nodeGUI = map.getNodeGUI(currentNode);
-        map.getSelector().add(nodeGUI);
-        nodeGUI.setHighlighted(true);
+        highLightPath();
 
         ArrayList<String> message = path.generateTextMessage();
         StringBuilder builder = new StringBuilder();
@@ -195,6 +178,23 @@ public class MapViewerController {
         }
 
         return builder.toString();
+    }
+
+    private void highLightPath() {
+        Iterator<Node> nodeIterator = path.iterator();
+
+        // Loop through each node in the path and select it as well as the edge pointing to the next node
+        Node currentNode = nodeIterator.next();
+        Node nextNode;
+
+        while (nodeIterator.hasNext()) {
+            nextNode = nodeIterator.next();
+            EdgeGUI edgeGUI = map.getEdgeGUI(currentNode.getEdge(nextNode));
+
+            if (edgeGUI != null) map.getSelector().add(edgeGUI);
+
+            currentNode = nextNode;
+        }
     }
 
     public MapPane getMap() {
@@ -222,6 +222,8 @@ public class MapViewerController {
         } else if (MapEditorController.isNumeric(sourceButton.getText())) {
             setFloor(Integer.parseInt(sourceButton.getText()));
         }
+
+        highLightPath();
     }
 
     public void setFloor(int newFloor) {

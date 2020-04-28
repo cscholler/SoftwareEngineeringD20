@@ -169,9 +169,9 @@ public class MapPane extends StackPane {
                             removeNode(node);
                         }
                     }
-                    for (EdgeGUI edge : getEdges()) {
-                        if (edge.contains(mousePos)) {
-                            body.getChildren().removeAll(edge.getAllNodes());
+                    for (EdgeGUI edgeGUI : getEdges()) {
+                        if (edgeGUI.contains(mousePos)) {
+                            removeEdge(edgeGUI);
                         }
                     }
                 }
@@ -342,7 +342,8 @@ public class MapPane extends StackPane {
 
         // Add lines to the scene
         for (Edge edge : currentFloor.getEdges()) {
-            addEdge(edge);
+            if (edge.getDestination().getFloor() == getFloor() && edge.getSource().getFloor() == getFloor())
+                addEdge(edge);
         }
 
         setMapImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/Floor" + getFloor() + "LM.png"));
@@ -423,6 +424,9 @@ public class MapPane extends StackPane {
         Point2D zoomedPos = new Point2D(nodeGUI.getXProperty().get() * zoomLevel, nodeGUI.getYProperty().get() * zoomLevel);
         nodeGUI.setLayoutPos(zoomedPos);
 
+        // Set node icon based on the node type
+
+
         // Highlight and unhighlight as the node is moused over, set the cursor to arrows if it is movable
         nodeGUI.getCircle().setOnMouseEntered(event -> {
             if (!erasing) {
@@ -497,7 +501,9 @@ public class MapPane extends StackPane {
 
             //Dragging
             nodeGUI.setOnMouseDragged(event -> {
-                if (event.isPrimaryButtonDown() && !erasing) draggingNode = true;
+                if (event.isPrimaryButtonDown() && !erasing) {
+                    draggingNode = true;
+                }
             });
 
             //Handles the case where you just want to select 1 node and deselect the rest
@@ -558,7 +564,7 @@ public class MapPane extends StackPane {
     public void removeNode(NodeGUI nodeGUI) {
         // Remove all the Edges and EdgeGUIs going to and from the node
         for (Node neighbor : nodeGUI.getNode().getNeighbors()) {
-            Edge edgeToNode = neighbor.edgeFromDest(nodeGUI.getNode());
+            Edge edgeToNode = neighbor.getEdge(nodeGUI.getNode());
             Edge edgeFromNode = nodeGUI.getNode().getEdge(neighbor);
             neighbor.removeEdge(edgeToNode);
             nodeGUI.getNode().removeEdge(edgeFromNode);
@@ -603,7 +609,12 @@ public class MapPane extends StackPane {
     }
 
     public void removeEdge(EdgeGUI edgeGUI) {
+        body.getChildren().removeAll(edgeGUI.getAllNodes());
 
+        Edge edge = edgeGUI.getEdge();
+
+        edge.getDestination().removeEdge(edge.getSource());
+        edge.getSource().removeEdge(edge);
     }
 
     public NodeGUI getNodeGUI(Node node) {
