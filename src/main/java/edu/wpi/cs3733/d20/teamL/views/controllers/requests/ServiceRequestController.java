@@ -20,12 +20,12 @@ public class ServiceRequestController {
 
     @FXML
     private void securityClicked() {
-//        try {
-//            Parent root = loaderHelper.getFXMLLoader("SecurityPage").load();
-//            loaderHelper.setupScene(new Scene(root));
-//        } catch (IOException ex) {
-//            log.error("Encountered IOException", ex);
-//        }
+        try {
+            Parent root = loaderHelper.getFXMLLoader("SecurityRequest").load();
+            loaderHelper.setupScene(new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
     }
 
     @FXML
