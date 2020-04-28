@@ -47,7 +47,7 @@ public class SecurityRequestController {
     private ILoginManager manager;
 
     @FXML
-    public void initialize(URL location, ResourceBundle resources){
+    public void initialize(){
         dbCache.cacheAllFromDB();
 
         sf = new SearchFields(dbCache.getNodeCache());
@@ -71,8 +71,7 @@ public class SecurityRequestController {
      */
     @FXML
     private void handleBack() throws IOException {
-        Parent root = loaderHelper.getFXMLLoader("ServiceRequestsPage").load();
-        loaderHelper.setupScene(new Scene(root));
+        loaderHelper.goBack();
     }
 
     /**
