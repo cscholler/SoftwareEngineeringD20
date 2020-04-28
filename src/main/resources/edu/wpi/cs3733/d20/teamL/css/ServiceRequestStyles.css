@@ -15,6 +15,7 @@
 
 .title {
     -fx-font-size: 70;
+    -fx-text-fill: white;
 }
 
 .button{
@@ -38,6 +39,9 @@
     -fx-pref-height: 150px;
 }
 
+.title-background {
+    -fx-background-color:  #00032E;
+}
 .jfx-combo-box {
     -fx-text-inner-color: white;
     -fx-prompt-text-fill: lightgrey;
