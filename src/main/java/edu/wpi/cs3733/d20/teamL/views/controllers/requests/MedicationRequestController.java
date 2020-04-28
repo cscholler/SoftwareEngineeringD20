@@ -50,7 +50,7 @@ public class MedicationRequestController implements Initializable {
 
 	@FXML
 	public void initialize(URL location, ResourceBundle resources) {
-        cache.cacheAllFromDB();
+
         sf = new SearchFields(cache.getNodeCache());
         sf.getFields().add(SearchFields.Field.nodeID);
         sf.populateSearchFields();

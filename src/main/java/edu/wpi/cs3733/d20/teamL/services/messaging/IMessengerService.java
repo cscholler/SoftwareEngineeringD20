@@ -1,7 +1,10 @@
-package edu.wpi.cs3733.d20.teamL.services;
+package edu.wpi.cs3733.d20.teamL.services.messaging;
 
+import com.google.zxing.WriterException;
 import com.sendgrid.helpers.mail.objects.Email;
 import com.twilio.type.PhoneNumber;
+
+import java.io.IOException;
 
 public interface IMessengerService {
 
@@ -13,4 +16,6 @@ public interface IMessengerService {
 	String getDirections();
 
 	void setDirections(String directions);
+
+	void generateQRCodeImage(String text) throws WriterException, IOException;
 }

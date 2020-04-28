@@ -19,7 +19,6 @@ public class AdminViewController {
 	@Inject
 	private ILoginManager loginManager;
 
-
     /**
      * goes to notifications page when notifications button is clicked
      */
@@ -28,10 +27,9 @@ public class AdminViewController {
         try {
             Parent root = loaderHelper.getFXMLLoader("NotificationsPage").load();
             loaderHelper.setupScene(new Scene(root));
-        } catch (IOException e) {
-            log.error("Encountered IOException", e);
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
         }
-
     }
 
     /**
