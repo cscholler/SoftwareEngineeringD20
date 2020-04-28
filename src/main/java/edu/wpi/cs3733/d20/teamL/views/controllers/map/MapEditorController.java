@@ -123,7 +123,7 @@ public class MapEditorController {
         map.init();
         openFromDB();
 
-        map.setZoomLevel(1);
+        map.setZoomLevel(0.65);
 
         // Add floor buttons
         for (int i = 1; i <= map.getBuilding().getMaxFloor(); i++) {
@@ -373,7 +373,7 @@ public class MapEditorController {
 
         if (event.getSource() == floorUp && map.getFloor() < 5) {
             setFloor(map.getFloor() + 1);
-        } else if (event.getSource() == floorDown && map.getFloor() > 1) {
+        } else if (event.getSource() == floorDown) {
             setFloor(map.getFloor() - 1);
         } else if (isNumeric(sourceButton.getText())) {
             setFloor(Integer.parseInt(sourceButton.getText()));
@@ -381,7 +381,7 @@ public class MapEditorController {
     }
 
     public void setFloor(int newFloor) {
-        map.setFloor(newFloor);
+        map.setFloor(Math.max(1, Math.min(newFloor, map.getBuilding().getMaxFloor())));
 
         for (javafx.scene.Node node : floorSelector.getChildren()) {
             JFXButton floorButton = (JFXButton) node;
@@ -398,7 +398,7 @@ public class MapEditorController {
         }
     }
 
-    private boolean isNumeric(String string) {
+    public static boolean isNumeric(String string) {
         try {
             Double.parseDouble(string);
             return true;

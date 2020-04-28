@@ -48,7 +48,7 @@ public class MapViewerController {
     JFXTextField startingPoint, destination;
 
     @FXML
-    JFXButton btnNavigate;
+    JFXButton btnNavigate, floorUp, floorDown;
 
     @FXML
     ScrollPane scroll;
@@ -81,7 +81,7 @@ public class MapViewerController {
         Building startBuilding = new Building("Faulkner");
         startBuilding.addAllNodes(cache.getNodeCache());
         map.setBuilding(startBuilding);
-        map.setFloor(2);
+        setFloor(2);
 
         // Add floor buttons
         for (int i = 1; i <= startBuilding.getMaxFloor(); i++) {
@@ -95,10 +95,8 @@ public class MapViewerController {
             floorSelector.getChildren().add(1, newButton);
         }
 
-        map.setZoomLevel(1);
+        map.setZoomLevel(0.65);
         map.init();
-        map.getScroller().setVvalue(0.5);
-        map.getScroller().setHvalue(0.5);
 
 
         sf = new SearchFields(cache.getNodeCache());
@@ -215,9 +213,19 @@ public class MapViewerController {
 
     @FXML
     public void handleFloor(ActionEvent event) {
-        JFXButton button = (JFXButton) event.getSource();
+        JFXButton sourceButton = (JFXButton) event.getSource();
 
-        map.setFloor(Integer.parseInt(button.getText()));
+        if (event.getSource() == floorUp && map.getFloor() < 5) {
+            setFloor(map.getFloor() + 1);
+        } else if (event.getSource() == floorDown) {
+            setFloor(map.getFloor() - 1);
+        } else if (MapEditorController.isNumeric(sourceButton.getText())) {
+            setFloor(Integer.parseInt(sourceButton.getText()));
+        }
+    }
+
+    public void setFloor(int newFloor) {
+        map.setFloor(Math.max(1, Math.min(newFloor, map.getBuilding().getMaxFloor())));
 
         for (javafx.scene.Node node : floorSelector.getChildren()) {
             JFXButton floorButton = (JFXButton) node;
