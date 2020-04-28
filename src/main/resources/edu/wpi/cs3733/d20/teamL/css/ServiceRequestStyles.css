@@ -5,10 +5,17 @@
 
 .label {
     -fx-font-size: 30;
+    -fx-text-fill: white;
+}
+
+.error-label {
+    -fx-font-size: 16;
+    -fx-text-fill: red;
 }
 
 .title {
     -fx-font-size: 70;
+    -fx-text-fill: white;
 }
 
 .button{
@@ -16,7 +23,8 @@
     -fx-padding: 10;
     -fx-background-color: #405784;
     -fx-text-fill: white;
-    -fx-pref-width: 100
+    -fx-pref-width: 100;
+    -jfx-button-type: RAISED;
 }
 
 .text-field {
@@ -31,3 +39,32 @@
     -fx-pref-height: 150px;
 }
 
+.title-background {
+    -fx-background-color:  #00032E;
+}
+.jfx-combo-box {
+    -fx-text-inner-color: white;
+    -fx-prompt-text-fill: lightgrey;
+    -fx-text-fill: white;
+}
+
+.combo-box > .cell {
+    -fx-text-fill: white;
+}
+
+.labelTrans{
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+}
+
+
+.translateButtons{
+    -fx-text-fill: black;
+    -jfx-button-type: FLAT;
+
+}
+
+.back{
+    -fx-background-color: white;
+    -jfx-button-type: FLAT;
+}
