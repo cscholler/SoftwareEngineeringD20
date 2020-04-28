@@ -20,32 +20,32 @@ public class ServiceRequestController {
 
     @FXML
     private void securityClicked() {
-//        try {
-//            Parent root = loaderHelper.getFXMLLoader("SecurityPage").load();
-//            loaderHelper.setupScene(new Scene(root));
-//        } catch (IOException ex) {
-//            log.error("Encountered IOException", ex);
-//        }
+        try {
+            Parent root = loaderHelper.getFXMLLoader("SecurityRequest").load();
+            loaderHelper.setupScene(new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
     }
 
     @FXML
     private void outTransClicked() {
-//        try {
-//            Parent root = loaderHelper.getFXMLLoader("OuthospitalTransport").load();
-//            loaderHelper.setupScene(new Scene(root));
-//        } catch (IOException ex) {
-//            log.error("Encountered IOException", ex);
-//        }
+        try {
+            Parent root = loaderHelper.getFXMLLoader("ExternalTransportRequestForm").load();
+            loaderHelper.setupScene(new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
     }
 
     @FXML
     private void translateClicked() {
-//        try {
-//            Parent root = loaderHelper.getFXMLLoader("TranslateRequest").load();
-//            loaderHelper.setupScene(new Scene(root));
-//        } catch (IOException ex) {
-//            log.error("Encountered IOException", ex);
-//        }
+        try {
+            Parent root = loaderHelper.getFXMLLoader("Interpreter").load();
+            loaderHelper.setupScene(new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
     }
 
     @FXML
@@ -60,18 +60,18 @@ public class ServiceRequestController {
 
     @FXML
     private void itClicked() {
-//        try {
-//            Parent root = loaderHelper.getFXMLLoader("ITPage").load();
-//            loaderHelper.setupScene(new Scene(root));
-//        } catch (IOException ex) {
-//            log.error("Encountered IOException", ex);
-//        }
+        try {
+            Parent root = loaderHelper.getFXMLLoader("ITService").load();
+            loaderHelper.setupScene(new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
     }
 
     @FXML
     private void maintainanceClicked() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("MaintenanceRequest").load();
+            Parent root = loaderHelper.getFXMLLoader("requests/MaintenanceRequest").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);

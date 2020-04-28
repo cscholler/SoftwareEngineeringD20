@@ -9,6 +9,7 @@ import edu.wpi.cs3733.d20.teamL.entities.Building;
 import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import javafx.event.ActionEvent;
+import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -52,7 +53,9 @@ public class MapViewerController {
     ScrollPane scroll;
 
     @FXML
-    VBox instructions, floorSelector;
+    VBox instructions;
+    @FXML
+	VBox floorSelector;
 
     @FXML
     JFXButton btnTextMe, btnQR;
@@ -93,7 +96,7 @@ public class MapViewerController {
             newButton.setOnAction(this::handleFloor);
             newButton.getStyleClass().add("floor-buttons");
 
-            floorSelector.getChildren().add(1, newButton);
+            //floorSelector.getChildren().add(1, newButton);
         }
 
         map.setZoomLevel(0.65);
