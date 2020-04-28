@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamL.services;
+package edu.wpi.cs3733.d20.teamL.services.messaging;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
@@ -16,6 +16,7 @@ import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 
+import edu.wpi.cs3733.d20.teamL.services.Service;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;

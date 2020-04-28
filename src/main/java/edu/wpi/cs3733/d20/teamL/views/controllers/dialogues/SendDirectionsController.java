@@ -1,19 +1,14 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.dialogues;
 
 import com.google.inject.Inject;
-import com.google.zxing.WriterException;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import edu.wpi.cs3733.d20.teamL.services.IMessengerService;
+import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import javafx.fxml.FXML;
-import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
-
-import java.io.IOException;
-
 
 public class SendDirectionsController {
 	@Inject
@@ -26,8 +21,6 @@ public class SendDirectionsController {
     private JFXTextField phoneNumberField;
     @FXML
     private Label confirmation;
-
-
 
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 
@@ -46,34 +39,30 @@ public class SendDirectionsController {
      */
 
     @FXML
-	void sendText(){
+	void sendText() {
         String phoneNumber = phoneNumberField.getText();
-        //TODO: replace with Twilio implementation
         confirmation.setText(messenger.sendText(messenger.getDirections(), phoneNumber));
-        if(confirmation.getText().equals("Message Sent")){
+        if (confirmation.getText().equals("Message Sent")) {
             confirmation.setTextFill(Color.WHITE);
             phoneNumberField.setText("");
             emailField.setText("");
-        } else{
+        } else {
             confirmation.setTextFill(Color.RED);
         }
         loaderHelper.showAndFade(confirmation);
     }
 
     @FXML
-    void sendEmail(){
-        //TODO: replace with SendGrid implementation
+    void sendEmail() {
         String emailAddress = emailField.getText();
         confirmation.setText(messenger.sendEmail(messenger.getDirections(), emailAddress));
-        if(confirmation.getText().equals("Message Sent")){
+        if (confirmation.getText().equals("Message Sent")) {
             confirmation.setTextFill(Color.WHITE);
             emailField.setText("");
             phoneNumberField.setText("");
-        } else{
+        } else {
             confirmation.setTextFill(Color.RED);
         }
         loaderHelper.showAndFade(confirmation);
     }
-
-
 }
