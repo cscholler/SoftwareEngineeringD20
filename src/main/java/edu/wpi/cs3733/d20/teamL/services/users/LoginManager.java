@@ -43,7 +43,7 @@ public class LoginManager extends Service implements ILoginManager {
 			ArrayList<String> userInfo = results.get(0);
 			currentUser = new User(userInfo.get(0), userInfo.get(1), userInfo.get(2), userInfo.get(3), userInfo.get(4), userInfo.get(5));
 			isAuthenticated = true;
-			log.info("Signed in as " + currentUser.getUsername());
+			log.info("Logged in as " + currentUser.getUsername());
 		} else {
 			// No user found
 			log.warn("No user found with the given username and password");

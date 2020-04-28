@@ -67,6 +67,7 @@ public class DBConstants {
 			"CREATE TABLE Gifts(" +
 					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
 					"type VARCHAR(16) NOT NULL, " +
+					"subtype VARCHAR(16) NOT NULL, " +
 					"description VARCHAR(128) NOT NULL, " +
 					"inventory INT NOT NULL, " +
 					"PRIMARY KEY (id))";
@@ -75,9 +76,12 @@ public class DBConstants {
 			"CREATE TABLE Gift_Delivery_Requests(" +
 					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
 					"patient_id INT NOT NULL REFERENCES Patients(id), " +
+					"sender_name VARCHAR(32) NOT NULL, " +
 					"request_username VARCHAR(32) NOT NULL REFERENCES Users(username), " +
-					"assignee_username VARCHAR(32) NOT NULL REFERENCES Users(username), " +
-					"gift_id INT NOT NULL REFERENCES Gifts(id), " +
+					"assignee_username VARCHAR(32) REFERENCES Users(username), " +
+					"gift1_id INT NOT NULL REFERENCES Gifts(id), " +
+					"gift2_id INT REFERENCES Gifts(id), " +
+					"gift3_id INT REFERENCES Gifts(id), " +
 					"message VARCHAR(128), " +
 					"notes VARCHAR(256), " +
 					"status CHAR(1) NOT NULL, " +
@@ -87,8 +91,8 @@ public class DBConstants {
 	public static final String CREATE_MEDICATION_REQUEST_TABLE =
 			"CREATE TABLE Medication_Requests(" +
 					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
-					"doctor_id INT NOT NULL REFERENCES Doctors(id), " +
 					"patient_id INT NOT NULL REFERENCES Patients(id), " +
+					"doctor_id INT NOT NULL REFERENCES Doctors(id), " +
 					"nurse_username VARCHAR(32) NOT NULL REFERENCES Users(username), " +
 					"deliverer_username VARCHAR(32) REFERENCES Users(username), " +
 					"dose VARCHAR(64) NOT NULL, " +
@@ -103,7 +107,7 @@ public class DBConstants {
 					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
 					"patient_id INT REFERENCES Patients(id), " +
 					"request_username VARCHAR(32) REFERENCES Users(username), " +
-					"assignee_username VARCHAR(32) NOT NULL REFERENCES Users(username), " +
+					"assignee_username VARCHAR(32) REFERENCES Users(username), " +
 					"location VARCHAR(16) NOT NULL REFERENCES Nodes(id), " +
 					"service VARCHAR(64) NOT NULL, " +
 					"type VARCHAR(64), " +
@@ -159,9 +163,13 @@ public class DBConstants {
 			"INSERT INTO Patients(id, f_name, l_name, doctor_id, room_id, addl_info)" +
 					"VALUES(?, ?, ?, ?, ?, ?)";
 
+	public static final String ADD_GIFT =
+			"INSERT INTO Gifts(type, subtype, description, inventory)" +
+					"VALUES(?, ?, ?, ?)";
+
 	public static final String ADD_GIFT_DELIVERY_REQUEST =
-			"INSERT INTO Gift_Delivery_Requests(patient_id, request_username, assignee_username, gift_id, message, notes, status, date_and_time)" +
-					"VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+			"INSERT INTO Gift_Delivery_Requests(patient_id, sender_name, request_username, assignee_username, gift1_id, gift2_id, gift3_id, message, notes, status, date_and_time)" +
+					"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	public static final String ADD_MEDICATION_REQUEST =
 			"INSERT INTO Medication_Requests(doctor_id, patient_id, nurse_username, deliverer_username, dose, type, notes, status, date_and_time)" +
@@ -183,6 +191,15 @@ public class DBConstants {
 			"SELECT * " +
 					"FROM Users";
 
+	public static final String SELECT_ALL_GIFTS =
+			"SELECT * " +
+					"FROM Gifts";
+
+	public static final String GET_GIFT =
+			"SELECT * " +
+					"FROM Gifts " +
+					"WHERE id = ?";
+
 	public static final String GET_USER =
 			"SELECT id, f_name, l_name, username, acct_type, services " +
 					"FROM Users " +
@@ -192,6 +209,11 @@ public class DBConstants {
 			"SELECT id, username, f_name, l_name, acct_type " +
 					"FROM Users " +
 					"WHERE id = ?";
+
+	public static final String GET_NAME_BY_USERNAME =
+			"SELECT f_name, l_name " +
+					"FROM Users " +
+					"WHERE username = ?";
 
 	public static final String SELECT_ALL_DOCTORS =
 			"SELECT * " +
