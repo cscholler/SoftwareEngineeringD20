@@ -1,7 +1,5 @@
 package edu.wpi.cs3733.d20.teamL.entities;
 
-import java.util.regex.Pattern;
-
 public class ServiceRequest {
 	private String id;
 	private String patientID;
@@ -26,9 +24,64 @@ public class ServiceRequest {
 		this.location = location;
 		this.service = service;
 		this.type = type;
+		this.notes = notes;
+		this.status = status;
+		this.dateAndTime = dateAndTime;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public String getPatientID() {
+		return patientID;
+	}
+
+	public String getPatientName() {
+		return patientName;
+	}
+
+	public String getRequestUsername() {
+		return requestUsername;
+	}
+
+	public String getAssigneeUsername() {
+		return assigneeUsername;
+	}
+
+	public void setAssigneeUsername(String assigneeUsername) {
+		this.assigneeUsername = assigneeUsername;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public String getService() {
+		return service;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public String getNotes() {
+		return notes;
+	}
+
+	public void setNotes(String notes) {
+		this.notes = notes;
 	}
 
 	public String getStatus() {
 		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getDateAndTime() {
+		return dateAndTime;
 	}
 }
