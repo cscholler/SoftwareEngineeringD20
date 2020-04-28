@@ -25,7 +25,7 @@ import java.util.ResourceBundle;
 public class SanitationRequestController {
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
     private SearchFields sf;
-    private JFXAutoCompletePopup<String> autoCompletePopup;
+    private JFXAutoCompletePopup<String> autoCompletePopup = new JFXAutoCompletePopup<>();
     @Inject
     private IDatabaseService db;
     @Inject
@@ -41,12 +41,9 @@ public class SanitationRequestController {
 
     @FXML
     public void initialize(){
-        dbCache.cacheAllFromDB();
-
         sf = new SearchFields(dbCache.getNodeCache());
         sf.getFields().add(SearchFields.Field.nodeID);
         sf.populateSearchFields();
-        autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
     }
 
