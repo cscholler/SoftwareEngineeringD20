@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,6 +15,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 
@@ -22,6 +25,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
@@ -370,6 +374,12 @@ public class NotificationsPageController implements Initializable {
 	}
 
     EventHandler<ActionEvent> assignTask = event -> {
+		try {
+			Parent root = loaderHelper.getFXMLLoader("AssignPopup").load();
+			loaderHelper.setupPopup(new Stage(), new Scene(root));
+		} catch (IOException ex) {
+			log.error("Encountered IOException", ex);
+		}
 	};
 
     EventHandler<ActionEvent> markedApproved = event ->  {
