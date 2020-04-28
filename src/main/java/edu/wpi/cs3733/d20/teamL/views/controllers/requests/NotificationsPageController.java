@@ -60,7 +60,7 @@ public class NotificationsPageController implements Initializable {
     private String doctorUsername;
     private boolean meds;
     JFXButton approve = new JFXButton();
-    JFXButton delivered = new JFXButton();
+    JFXButton assign = new JFXButton();
 
 	/**
 	 * Calls loadData and sets up the cellFactory
@@ -70,13 +70,20 @@ public class NotificationsPageController implements Initializable {
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
         approve = btnCompleted;
-        delivered = btnCompleted;
-		buttonBox.getChildren().remove(btnCompleted);
-		buttonBox.getChildren().add(approve);
-		approve.setText("Approve");
-		approve.setOnAction(markedApproved);
+        assign = btnCompleted;
+		user = loginManager.getCurrentUser();
 
-	    user = loginManager.getCurrentUser();
+		if(user.isManager()){
+			buttonBox.getChildren().remove(btnCompleted);
+			buttonBox.getChildren().add(approve);
+			approve.setText("Approve");
+			approve.setOnAction(markedApproved);
+		} else {
+			buttonBox.getChildren().remove(btnDecline);
+		}
+
+
+
 		loadRequests("medication");
 		loadRequests("gift");
 		loadRequests("service");
@@ -323,11 +330,6 @@ public class NotificationsPageController implements Initializable {
 		} catch (NullPointerException ex) {
 			log.info("No notification currently selected");
 		}
-		meds = false;
-		buttonBox.getChildren().remove(delivered);
-		buttonBox.getChildren().add(approve);
-		approve.setText("Approve");
-		approve.setOnAction(markedApproved);
 	}
 
 	@FXML
@@ -360,11 +362,6 @@ public class NotificationsPageController implements Initializable {
 		} catch (NullPointerException ex) {
 			log.info("No notification currently selected");
 		}
-		meds = false;
-		buttonBox.getChildren().remove(delivered);
-		buttonBox.getChildren().add(approve);
-		approve.setText("Approve");
-		approve.setOnAction(markedApproved);
 	}
 
 	private String getPatientFullName(String patientID) {
@@ -382,20 +379,25 @@ public class NotificationsPageController implements Initializable {
 		loaderHelper.goBack();
 	}
 
-    EventHandler<ActionEvent> markedDelivered = event -> {
+    EventHandler<ActionEvent> assignTask = event -> {
 	};
 
     EventHandler<ActionEvent> markedApproved = event ->  {
-		if (meds) {
+		if (user.isManager()) {
 			buttonBox.getChildren().remove(approve);
-			buttonBox.getChildren().add(delivered);
-			delivered.setText("Delivered");
-			delivered.setOnAction(markedDelivered);
+			buttonBox.getChildren().add(assign);
+			assign.setText("Assign");
+			assign.setOnAction(assignTask);
 			String status = "1";
 			db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_STATUS, new ArrayList<>(Arrays.asList(status, getCurrentMedicationRequest().getID()))));
 			getCurrentMedicationRequest().setStatus(status);
 		}
 	};
+
+    @FXML
+	private void btnCompletedClicked(){
+
+	}
 
     @FXML
     private void btnDeclineClicked() {
