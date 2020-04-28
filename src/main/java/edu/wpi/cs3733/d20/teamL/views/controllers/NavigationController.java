@@ -140,7 +140,7 @@ public class NavigationController implements Initializable {
     @FXML
     private void servicesBtnClicked() {
         /*try {
-            Parent root = loaderHelper.getFXMLLoader("Services").load();
+            Parent root = loaderHelper.getFXMLLoader("requests/MaintenanceRequest").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException e) {
             log.error("Encountered IOException", e);

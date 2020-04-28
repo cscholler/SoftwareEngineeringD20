@@ -60,18 +60,18 @@ public class ServiceRequestController {
 
     @FXML
     private void itClicked() {
-//        try {
-//            Parent root = loaderHelper.getFXMLLoader("ITPage").load();
-//            loaderHelper.setupScene(new Scene(root));
-//        } catch (IOException ex) {
-//            log.error("Encountered IOException", ex);
-//        }
+        try {
+            Parent root = loaderHelper.getFXMLLoader("ITService").load();
+            loaderHelper.setupScene(new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
     }
 
     @FXML
     private void maintainanceClicked() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("MaintenanceRequest").load();
+            Parent root = loaderHelper.getFXMLLoader("requests/MaintenanceRequest").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
