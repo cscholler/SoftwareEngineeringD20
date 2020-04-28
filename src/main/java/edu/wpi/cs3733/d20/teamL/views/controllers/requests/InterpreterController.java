@@ -105,12 +105,12 @@ public class InterpreterController implements Initializable {
 
             if (rows == 0) {
                 confirmation.setTextFill(Color.RED);
-                confirmation.setText("Submission failed      ");
+                confirmation.setText("Submission failed");
             } else {
                 confirmation.setTextFill(Color.WHITE);
-                confirmation.setText("Interpreter Request Sent");
+                confirmation.setText("Request Sent");
 
-                interpType.setText("Interpreter Type:");
+                interpType.setText("");
                 pNameText.setText("");
                 roomNumText.setText("");
                 userIDText.setText("");

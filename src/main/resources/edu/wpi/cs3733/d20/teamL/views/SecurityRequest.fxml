@@ -13,7 +13,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" stylesheets="@../css/ServiceRequestStyles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.SecurityRequestController">
    <top>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="title-background" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="83.0" prefWidth="1080.0" styleClass="title-background" BorderPane.alignment="CENTER">
          <children>
             <Label styleClass="title" text="Security Request" textFill="#0d2e57">
                <font>

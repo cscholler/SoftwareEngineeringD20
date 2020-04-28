@@ -62,11 +62,11 @@
       </HBox>
    </bottom>
    <top>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="topBorder" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="81.0" prefWidth="1080.0" styleClass="topBorder" BorderPane.alignment="CENTER">
          <children>
             <Label text="In-Hospital Transport Request" textFill="WHITE">
                <font>
-                  <Font size="60.0" />
+                  <Font size="40.0" />
                </font>
             </Label>
          </children>

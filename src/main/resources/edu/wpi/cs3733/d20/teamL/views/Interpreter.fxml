@@ -109,14 +109,90 @@
             </JFXButton>
          </children></VBox>
       <BorderPane prefHeight="200.0" prefWidth="200.0">
+         <center>
+            <BorderPane BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets left="40.0" right="40.0" top="50.0" />
+               </BorderPane.margin>
+               <center>
+                  <VBox alignment="CENTER_LEFT" prefHeight="574.0" prefWidth="679.0" spacing="50.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <HBox>
+                           <children>
+                              <Label text="Interpreter Type: " textFill="WHITE">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="interpType" textFill="WHITE">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <JFXTextField fx:id="pNameText" labelFloat="true" onAction="#handleButtonAction" prefHeight="40.0" promptText="Patient Name " unFocusColor="BLACK">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </JFXTextField>
+                        <JFXTextField fx:id="roomNumText" labelFloat="true" onAction="#handleButtonAction" onKeyPressed="#autocomplete" prefHeight="40.0" promptText="Patient Room Number " unFocusColor="BLACK">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </JFXTextField>
+                        <JFXTextField fx:id="userIDText" labelFloat="true" onAction="#handleButtonAction" prefHeight="40.0" promptText="User ID" unFocusColor="BLACK">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </JFXTextField>
+                        <JFXTextField fx:id="assignedToText" labelFloat="true" onAction="#handleButtonAction" prefHeight="40.0" promptText="Assigned Staff Member " unFocusColor="BLACK">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </JFXTextField>
+                        <JFXTextField fx:id="additionalText" labelFloat="true" onAction="#handleButtonAction" prefHeight="40.0" promptText="Additional Information" unFocusColor="BLACK">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </JFXTextField>
+                     </children>
+                  </VBox>
+               </center>
+               <bottom>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="118.0" prefWidth="679.0" spacing="90.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <JFXButton fx:id="btnSubmit" onAction="#handleButtonAction" style="-fx-background-color: #405784;" text="Submit" textFill="WHITE" />
+                        <Label fx:id="confirmation" maxHeight="45.0" maxWidth="240.0" prefHeight="45.0" prefWidth="240.0" textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+               </bottom>
+            </BorderPane>
+         </center>
          <top>
-            <Label alignment="CENTER" prefHeight="103.0" prefWidth="952.0" stylesheets="@../css/FormStyles.css" text="Request an Interpreter" textFill="WHITE" BorderPane.alignment="CENTER">
+            <Label alignment="CENTER" prefHeight="88.0" prefWidth="759.0" stylesheets="@../css/FormStyles.css" text="Request an Interpreter" textFill="WHITE" BorderPane.alignment="CENTER">
                <font>
                   <Font size="39.0" />
                </font>
-               <BorderPane.margin>
-                  <Insets />
-               </BorderPane.margin>
                <styleClass>
                   <String fx:value="label" />
                   <String fx:value="topBorder" />
@@ -124,71 +200,6 @@
                </styleClass>
             </Label>
          </top>
-         <center>
-            <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="50.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Label fx:id="interpType" text="Interpreter Type: " textFill="WHITE">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-                  <JFXTextField fx:id="pNameText" labelFloat="true" onAction="#handleButtonAction" prefHeight="40.0" promptText="Patient Name " unFocusColor="BLACK">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </JFXTextField>
-                  <JFXTextField fx:id="roomNumText" labelFloat="true" onAction="#handleButtonAction" onKeyPressed="#autocomplete" prefHeight="40.0" promptText="Patient Room Number " unFocusColor="BLACK">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </JFXTextField>
-                  <JFXTextField fx:id="userIDText" labelFloat="true" onAction="#handleButtonAction" prefHeight="40.0" promptText="User ID" unFocusColor="BLACK">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </JFXTextField>
-                  <JFXTextField fx:id="assignedToText" labelFloat="true" onAction="#handleButtonAction" prefHeight="40.0" promptText="Assigned Staff Member " unFocusColor="BLACK">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </JFXTextField>
-                  <JFXTextField fx:id="additionalText" labelFloat="true" onAction="#handleButtonAction" prefHeight="40.0" promptText="Additional Information" unFocusColor="BLACK">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </JFXTextField>
-                  <HBox alignment="CENTER_RIGHT" spacing="90.0">
-                     <children>
-                        <JFXButton fx:id="btnSubmit" onAction="#handleButtonAction" style="-fx-background-color: #405784;" text="Submit" textFill="WHITE" />
-                        <Label fx:id="confirmation" prefHeight="17.0" prefWidth="196.0" text="Label" visible="false">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="100.0" prefWidth="200.0" />
-               </children>
-               <BorderPane.margin>
-                  <Insets left="40.0" right="40.0" top="50.0" />
-               </BorderPane.margin>
-            </VBox>
-         </center>
       </BorderPane>
   </items>
    <stylesheets>
