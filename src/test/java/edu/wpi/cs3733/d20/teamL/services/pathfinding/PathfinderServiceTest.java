@@ -58,8 +58,8 @@ class PathfinderServiceTest {
         for (Node n : path1) {
             System.out.println(n.getID());
         }
-       // assertEquals(2, path1.getLength());
-        //assertEquals(new ArrayList<Node>(Arrays.asList(n8, n1)), path1.getPathNodes());
+        assertEquals(2, path1.getLength());
+        assertEquals(new ArrayList<Node>(Arrays.asList(n8, n1)), path1.getPathNodes());
         System.out.println(path1.generateTextMessage());
 
         Path path2 = pathfinderService.pathfind(newGraph, n6, n1);

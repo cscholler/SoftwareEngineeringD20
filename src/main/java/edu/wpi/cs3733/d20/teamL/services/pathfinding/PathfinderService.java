@@ -182,7 +182,11 @@ public class PathfinderService implements IPathfinderService {
     }
 
     /**
-     * Breadth First Search!
+     * Finds a path between source and destination nodes using a breadth first search algorithm
+     * @param graph the graph of nodes
+     * @param source the starting node
+     * @param destination the destination node
+     * @return
      */
     private Path breadthFirstSearch(Graph graph, Node source, Node destination) {
 
@@ -191,7 +195,6 @@ public class PathfinderService implements IPathfinderService {
         List<Node> path = new ArrayList<>();
         LinkedList<Node> queue = new LinkedList<>();
         LinkedList<Node> visited = new LinkedList<>();
-        //LinkedList<Node> visitedNodes = new LinkedList<>();
 
         for( Node n : graph.getNodes()) {
             nodes.put(n, new NodeEntry(n));
@@ -200,16 +203,15 @@ public class PathfinderService implements IPathfinderService {
         queue.add(source);
         boolean finished = false;
         Node parent = null;
+        nodes.get(source).parent = parent;
 
         while (!queue.isEmpty() && !finished) {
             Node current = queue.removeFirst();
-
 
             if (destination == current) {
                 finished = true;
 
                 NodeEntry n = nodes.get(current);
-                n.parent = parent;
 
                 while (n.parent != null) {
                     path.add(n.node);
@@ -222,26 +224,25 @@ public class PathfinderService implements IPathfinderService {
                     }
                 }
 
+                path.add(n.node);
+
             }
 
-            if (!visited.contains(nodes.get(current))) {
+            if (!visited.contains(current)) {
                 visited.add(current);
-                //System.out.println(current.getID());
-                //path.add(current);
 
                 Collection<Node> neighbors = current.getNeighbors();
 
                 if (!neighbors.isEmpty()) {
+                    parent = current;
                     for (Node n : neighbors) {
-                        if (!visited.contains(nodes.get(n))) {
+                        if (!visited.contains(n)) {
                             queue.add(n);
+                            nodes.get(n).parent = parent;
                         }
                     }
                 }
-
             }
-            //System.out.println();
-            parent = current;
         }
 
         Collections.reverse(path);
