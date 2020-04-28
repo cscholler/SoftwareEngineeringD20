@@ -43,21 +43,19 @@ public class AddUserController implements Initializable {
     private JFXComboBox serviceCombo, userCombo;
     @FXML
     private JFXCheckBox securityBox, inTransportBox, exTransportBox, interpreterBox, giftShopBox, pharmacistBox, managerBox, itBox, maintenanceBox, sanitationBox;
+    private ArrayList<JFXCheckBox> serviceCheckboxes = new ArrayList<>(Arrays.asList(securityBox, inTransportBox, exTransportBox, interpreterBox, giftShopBox, pharmacistBox, itBox, maintenanceBox, sanitationBox));
     @FXML
     private VBox boxOService;
     @Inject
     private IDatabaseService db;
     @Inject
     private IDatabaseCache cache;
-//    @Inject
-//    private ILoginManager loginManager;
     String user;
 
     @FXML
     private void submitClicked() {
 		String firstName = fNameText.getText();
 		String lastName = lNameText.getText();
-		String service = servicesText.getText();
 		String username = usernameText.getText();
 		String password = passwordText.getText();
 		String doctorID = doctorIDText.getText();
@@ -76,10 +74,14 @@ public class AddUserController implements Initializable {
 		}
 
         formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_DOCTORS)));
-
         int rows = 0;
+
 		if (firstName != null) {
-			rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(firstName, lastName, username, password, type, service))));
+			StringBuilder servicesList = new StringBuilder();
+			for (int i = 0; i < serviceCheckboxes.size(); i++) {
+				servicesList.append(serviceCheckboxes.get(i).getText()).append(serviceCheckboxes.);
+			}
+			rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(firstName, lastName, username, password, type, services))));
 			formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_USERS)));
 			if (doctorIDText.getText() != null && !(doctorIDText.getText().isEmpty())) {
 				rows = db.executeUpdate(new SQLEntry(DBConstants.UPDATE_DOCTOR_USERNAME, new ArrayList<>(Arrays.asList(username, doctorID))));
@@ -89,7 +91,7 @@ public class AddUserController implements Initializable {
 				lblConfirmation.setText("Submission failed");
 			} else if (rows == 1) {
 				lblConfirmation.setTextFill(Color.BLACK);
-				lblConfirmation.setText("Medication Request Sent");
+				lblConfirmation.setText("User added");
 				lNameText.setText("");
 				fNameText.setText("");
 				servicesText.setText("");

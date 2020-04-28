@@ -93,7 +93,7 @@
                         <Insets left="80.0" />
                      </VBox.margin>
                   </JFXCheckBox>
-                  <JFXCheckBox fx:id="extTransportBox" checkedColor="WHITE" text="External Transport">
+                  <JFXCheckBox fx:id="exTransportBox" checkedColor="WHITE" text="External Transport">
                      <VBox.margin>
                         <Insets left="80.0" />
                      </VBox.margin>
