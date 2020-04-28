@@ -1,25 +1,26 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXNodesList;
-import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.JFXToggleNode;
+import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamL.entities.*;
+import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
-import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
-import edu.wpi.cs3733.d20.teamL.services.pathfinding.MapParser;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.MapParser;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
+import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import edu.wpi.cs3733.d20.teamL.views.components.*;
 import edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.DataDialogue;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
+import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
 
@@ -53,9 +54,14 @@ public class MapEditorController {
     @FXML
     ComboBox nodeTypeValue;
     @FXML
-    VBox editor, floorSelector, multiFloorConnection;
+    VBox editor, multiFloorConnection, nodeConnectionsTab, floorSelector;
 	@FXML
     JFXNodesList saveNodesList, loadNodesList, pathNodesList;
+	@FXML
+    Tooltip saveTooltip, loadTooltip, pathfindTooltip;
+	@FXML
+    ImageView saveOptImg, loadOptionsImage, pathfindImage;
+
     @Inject
 	private IDatabaseCache cache;
     @Inject
@@ -63,6 +69,10 @@ public class MapEditorController {
 
     private Scene scene;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    private SearchFields sf;
+    private JFXAutoCompletePopup<String> autoCompletePopup;
+    private boolean eraserBool = false;
+    private char pathFindingAlg = 'A';
 
     private final List<String> types = Arrays.asList("ELEV", "REST", "STAI", "DEPT", "LABS", "INFO", "CONF", "EXIT", "RETL", "SERV");
     private int floor = 2;
@@ -74,7 +84,7 @@ public class MapEditorController {
         coreShortcuts();
 
         pathFind.setOnAction(event -> {
-            Path path = pathfinder.pathfind(map.getBuilding(), map.getBuilding().getNode(startNode.getText()), map.getBuilding().getNode(endNode.getText()));
+            Path path = pathfinder.pathfind(map.getBuilding(), sf.getNode(startNode.getText()), sf.getNode(endNode.getText()));
             System.out.println(path.generateTextMessage());
 
             Iterator<Node> nodeIterator = path.iterator();
@@ -101,6 +111,13 @@ public class MapEditorController {
 
         cache.cacheAllFromDB();
 
+        sf = new SearchFields(cache.getNodeCache());
+        sf.getFields().add(SearchFields.Field.nodeID);
+        sf.getFields().add(SearchFields.Field.longName);
+        sf.populateSearchFields();
+        autoCompletePopup = new JFXAutoCompletePopup<>();
+        autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
+
         map.setEditable(true);
         map.init();
         openFromDB();
@@ -123,7 +140,13 @@ public class MapEditorController {
         editor.setPrefWidth(0);
         editor.setVisible(false);
 
+        //Hides the edges editor VBox
+        nodeConnectionsTab.setPrefWidth(0);
+        nodeConnectionsTab.setVisible(false);
+
         map.recalculatePositions();
+
+        eraser.setDisableAnimation(true);
 
         //saveNodesList.addAnimatedNode(saveDBButton);
 	}
@@ -149,6 +172,15 @@ public class MapEditorController {
         return map;
     }
 
+    @FXML
+    private void autocompletestart() {
+        sf.applyAutocomplete(startNode, autoCompletePopup);
+    }
+
+    @FXML
+    private void autocompleteend() {
+        sf.applyAutocomplete(endNode, autoCompletePopup);
+    }
 
     @FXML
     private void quit() {
@@ -357,4 +389,98 @@ public class MapEditorController {
             return false;
         }
     }
+
+    /**
+     * Show editConnects tab
+     */
+    @FXML
+    private void editConnections() {
+        nodeConnectionsTab.setPrefWidth(200);
+        nodeConnectionsTab.setVisible(true);
+    }
+
+    /**
+     * Hides editConnections tab
+     */
+    @FXML
+    private void saveConnections() {
+        nodeConnectionsTab.setPrefWidth(0);
+        nodeConnectionsTab.setVisible(false);
+    }
+
+    /**
+     * toggles mouse between normal mouse and eraser
+     */
+    @FXML
+    private void eraserMouse() {
+        if (!eraserBool) {
+            Image eraserImage = new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/eraserMouse.png");  //pass in the image path
+            map.getScene().setCursor(new ImageCursor(eraserImage));
+            eraserBool = true;
+        } else if (eraserBool) {
+            eraser.getScene().setCursor(Cursor.DEFAULT);
+            eraserBool = false;
+        }
+    }
+
+    @FXML
+    private void saveOptionsClicked() {
+        //show/hide options image
+        if(saveNodesList.isExpanded()) {
+            saveTooltip.setText("Click to Close");
+            saveOptImg.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/xButton.png", 40, 0, true, false));
+        } else {
+            saveTooltip.setText("Click to Show Save Options");
+            saveOptImg.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/SaveToFile.png"));
+        }
+    }
+
+    @FXML
+    private void loadOptionsClicked() {
+        //show/hide options image
+        if(loadNodesList.isExpanded()) {
+            loadTooltip.setText("Click to Close");
+            loadOptionsImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/xButton.png"));
+        } else {
+            loadTooltip.setText("Click to Show Load Options");
+            loadOptionsImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/UploadFromFolder.png"));
+        }
+    }
+
+    @FXML
+    private void pathfindOptionsClicked() {
+        //show/hide options image
+        if(pathNodesList.isExpanded()) {
+            pathfindTooltip.setText("Click to Close");
+            pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/xButton.png", 40, 0, true, false));
+        } else {
+            pathfindTooltip.setText("Switch Pathfinding Algorithm");
+            if (pathFindingAlg == 'A') pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/AStar.png"));
+            if (pathFindingAlg == 'B') pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/Breath First.png", 60, 0, true, false));
+            if (pathFindingAlg == 'D') pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/DepthFirst.png"));
+        }
+    }
+
+    @FXML
+    private void aStarSelected(){
+        pathFindingAlg = 'A';
+        pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/AStar.png", 40, 0, true, false));
+        pathNodesList.animateList(false);
+    }
+
+    @FXML
+    private void depthSelected(){
+        pathFindingAlg = 'D';
+        pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/DepthFirst.png", 40, 0, true, false));
+        pathNodesList.animateList(false);
+    }
+
+    @FXML
+    private void breadthSelected(){
+        pathFindingAlg = 'B';
+        pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/Breath First.png", 60, 0, true, false));
+        pathNodesList.animateList(false);
+    }
+
+
 }

@@ -38,17 +38,17 @@ class PathfinderServiceTest {
         newGraph.addNode(n8);
         newGraph.addNode(n9);
 
-        n1.addEdgeTwoWay(new Edge(n1, n8));
-        n1.addEdgeTwoWay(new Edge(n1, n9));
-        n2.addEdgeTwoWay(new Edge(n2, n9));
-        n3.addEdge(new Edge(n3, n2));
-        n3.addEdgeTwoWay(new Edge(n3, n4));
-        n4.addEdgeTwoWay(new Edge(n4, n9));
-        n4.addEdge(new Edge(n4, n5));
-        n5.addEdgeTwoWay(new Edge(n5, n6));
-        n6.addEdge(new Edge(n6, n9));
-        n6.addEdgeTwoWay(new Edge(n6, n7));
-        n7.addEdge(new Edge(n7, n8));
+        n1.addEdgeTwoWay(n8);
+        n1.addEdgeTwoWay(n9);
+        n2.addEdgeTwoWay(n9);
+        n3.addEdge(n2);
+        n3.addEdgeTwoWay(n4);
+        n4.addEdgeTwoWay(n9);
+        n4.addEdge(n5);
+        n5.addEdgeTwoWay(n6);
+        n6.addEdge(n9);
+        n6.addEdgeTwoWay(n7);
+        n7.addEdge(n8);
 
         assertEquals(newGraph.getNode("n1").getID(), "n1");
         assertEquals(newGraph.getNode("n2").getNeighbors(), new ArrayList<Node>(Arrays.asList(n9)));
