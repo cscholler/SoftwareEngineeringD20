@@ -16,7 +16,7 @@ public class Node {
     private String longName;
     private String building;
     private String type;
-    private String shaft = "0";
+    private int shaft = 0;
     private int floor;
 
     private HashMap<String, Object> data = new HashMap<>(); //TODO remove Hashmap and add NodeGUI Field
@@ -128,11 +128,15 @@ public class Node {
         this.floor = floor;
     }
 
-    public String getShaft() {
+    public int getShaft() {
         return shaft;
     }
 
     public void setShaft(String shaft) {
+        this.shaft = Integer.parseInt(shaft);
+    }
+
+    public void setShaft(int shaft) {
         this.shaft = shaft;
     }
 
@@ -150,9 +154,11 @@ public class Node {
      *
      * @param otherNode The node this edge leads to
      */
-    public void addEdge(Node otherNode) {
+    public Edge addEdge(Node otherNode) {
         Edge newEdge = new Edge(this, otherNode);
         newEdge.setSource(this);
+
+        return getEdge(otherNode);
     }
 
     /**
@@ -173,10 +179,12 @@ public class Node {
      *
      * @param otherNode The node to add a two way edge to
      */
-    public void addEdgeTwoWay(Node otherNode) {
+    public Edge addEdgeTwoWay(Node otherNode) {
         addEdge(otherNode);
 
         otherNode.addEdge(this);
+
+        return getEdge(otherNode);
     }
 
     /**
@@ -200,16 +208,12 @@ public class Node {
     }
 
     /**
-     * Finds an edge in this Node that leads to a specified Node.
+     * Removes specified edge
      *
-     * @return the Edge that leads to the specified Node, null if it is not found.
+     * @param dest The destination node of the edge to be removed
      */
-    public Edge edgeFromDest(Node otherNode) {
-        Edge result = null;
-        for (Edge edge : edges) {
-            if (edge.getDestination().equals(otherNode)) result = edge;
-        }
-        return result;
+    public void removeEdge(Node dest) {
+        removeEdge(getEdge(dest));
     }
 
     /**

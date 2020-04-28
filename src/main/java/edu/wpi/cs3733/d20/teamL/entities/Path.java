@@ -130,57 +130,74 @@ public class Path implements Iterable<Node> {
             end = delta(curr, next);
             angle = start.angle(end);
 
-            if(angle > 10) {
-                StringBuilder builder = new StringBuilder();
-                sign = determineDirection(start, end);
-
-                if(lastRoom != null) {
-                    builder.append("After you pass the " + parseLongName(lastRoom) + ", take ");
-                } else builder.append("Continue forward and take ");
-
-                if(lefts > 0 && sign.equals("left")) {
-                    builder.append("the " + enumCounter(lefts+1) + " left");
-                } else if (rights > 0 && sign.equals("right")) {
-                    builder.append("the " + enumCounter(rights+1) + " right");
-                } else {
-                    builder.append("the next " + turnAmount(angle) + sign);
-                }
-
-                if (next.equals(goal)) {
-                    builder.append(" to the " + parseLongName(goal.getLongName()));
-                    lastStatement = false;
-                }
-                builder.append(".");
+            if(curr.getType().equals("ELEV") && next.getType().equals("ELEV")) {
+                message.add("Take the elevator to floor " + next.getFloor() + ".");
 
                 lastRoom = null;
                 rights = 0;
                 lefts = 0;
+            }
+            else if (curr.getType().equals("STAI") && next.getType().equals("STAI")) {
+                message.add("Take the stairs to floor " + next.getFloor() + ".");
 
-                message.add(builder.toString());
+                lastRoom = null;
+                rights = 0;
+                lefts = 0;
+            }
+            else {
+                if (angle > 10) {
+                    StringBuilder builder = new StringBuilder();
+                    sign = determineDirection(start, end);
 
-            } else {
-                if(!curr.getType().equals("HALL")) {
-                    lefts = 0;
+                    if (lastRoom != null) {
+                        builder.append("After you pass the " + parseLongName(lastRoom) + ", take ");
+                    } else builder.append("Continue forward and take ");
+
+                    if (lefts > 0 && sign.equals("left")) {
+                        builder.append("the " + enumCounter(lefts + 1) + " left");
+                    } else if (rights > 0 && sign.equals("right")) {
+                        builder.append("the " + enumCounter(rights + 1) + " right");
+                    } else {
+                        builder.append("the next " + turnAmount(angle) + sign);
+                    }
+
+                    if (next.equals(goal)) {
+                        builder.append(" to the " + parseLongName(goal.getLongName()));
+                        lastStatement = false;
+                    }
+                    builder.append(".");
+
+                    lastRoom = null;
                     rights = 0;
-                    message.add("Cut straight through the " + curr.getLongName() + ".");
-                }
-                else {
-                    foundAdjRoom = false;
-                    for (Node adj : curr.getNeighbors()) {
-                        if (!adj.equals(prev) && !adj.equals(next)) {
-                            if(adj.getType().equals("HALL")) {
-                                Point2D adjEnd = delta(curr, adj);
-                                String adjSign = determineDirection(start, adjEnd);
-                                if(adjSign.equals("right")) rights ++;
-                                else lefts ++;
-                            } else {
-                                lastRoom = adj.getLongName();
-                                foundAdjRoom = true;
-                            }
-                        }
-                    } if(foundAdjRoom) {
+                    lefts = 0;
+
+                    message.add(builder.toString());
+
+                } else {
+                    if (!curr.getType().equals("HALL")) {
                         lefts = 0;
                         rights = 0;
+
+                        message.add("Cut straight through the " + curr.getLongName() + ".");
+                    } else {
+                        foundAdjRoom = false;
+                        for (Node adj : curr.getNeighbors()) {
+                            if (!adj.equals(prev) && !adj.equals(next)) {
+                                if (adj.getType().equals("HALL")) {
+                                    Point2D adjEnd = delta(curr, adj);
+                                    String adjSign = determineDirection(start, adjEnd);
+                                    if (adjSign.equals("right")) rights++;
+                                    else lefts++;
+                                } else {
+                                    lastRoom = adj.getLongName();
+                                    foundAdjRoom = true;
+                                }
+                            }
+                        }
+                        if (foundAdjRoom) {
+                            lefts = 0;
+                            rights = 0;
+                        }
                     }
                 }
             }

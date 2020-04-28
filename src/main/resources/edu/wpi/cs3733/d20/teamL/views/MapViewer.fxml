@@ -147,7 +147,7 @@
                 <MapPane fx:id="map" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                 <VBox fx:id="floorSelector" maxHeight="300.0" maxWidth="40.0" prefHeight="720.0" prefWidth="855.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="0.0">
                     <children>
-                        <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" prefWidth="0.0" ripplerFill="WHITE" style="-fx-background-color: #0d2e57; -fx-background-radius: 20 20 0 0;" styleClass="floor-buttons" text="▲" textAlignment="CENTER" textFill="WHITE">
+                        <JFXButton fx:id="floorUp" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#handleFloor" prefWidth="0.0" ripplerFill="WHITE" style="-fx-background-color: #0d2e57; -fx-background-radius: 20 20 0 0;" styleClass="floor-buttons" text="▲" textAlignment="CENTER" textFill="WHITE">
                             <VBox.margin>
                                 <Insets top="5.0" />
                             </VBox.margin>
@@ -155,7 +155,7 @@
                                 <Font name="System Bold" size="18.0" />
                             </font>
                         </JFXButton>
-                        <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" ripplerFill="WHITE" style="-fx-background-color: #0d2e57; -fx-background-radius: 0 0 20 20;" styleClass="floor-buttons" text="▼" textAlignment="CENTER" textFill="WHITE">
+                        <JFXButton fx:id="floorDown" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#handleFloor" ripplerFill="WHITE" style="-fx-background-color: #0d2e57; -fx-background-radius: 0 0 20 20;" styleClass="floor-buttons" text="▼" textAlignment="CENTER" textFill="WHITE">
                             <VBox.margin>
                                 <Insets />
                             </VBox.margin>
@@ -167,7 +167,7 @@
                 </VBox>
                 <VBox alignment="BOTTOM_RIGHT" cache="true" maxHeight="100.0" maxWidth="50.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
                     <children>
-                        <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" minHeight="40.0" minWidth="40.0" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 20 20 0 0; -fx-pref-width: 40; -fx-pref-height: 40;" text="+" textAlignment="CENTER">
+                        <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" minHeight="40.0" minWidth="40.0" onAction="#zoomIn" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 20 20 0 0;" text="+" textAlignment="CENTER">
                             <font>
                                 <Font name="System Bold" size="18.0" />
                             </font>
@@ -175,7 +175,7 @@
                                 <Insets right="20.0" />
                             </padding>
                         </JFXButton>
-                        <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" minHeight="40.0" minWidth="40.0" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 0 0 20 20; -fx-pref-height: 40; -fx-pref-width: 40;" text="-" textAlignment="CENTER">
+                        <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" minHeight="40.0" minWidth="40.0" onAction="#zoomOut" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 0 0 20 20;" text="-" textAlignment="CENTER">
                             <font>
                                 <Font name="System Bold" size="18.0" />
                             </font>

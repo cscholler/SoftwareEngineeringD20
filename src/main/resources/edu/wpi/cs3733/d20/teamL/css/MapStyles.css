@@ -34,6 +34,11 @@
     -fx-pref-height: 40;
     -fx-background-radius: 0;
 }
+
+.selected-floor {
+    -fx-background-color: #00032E;
+}
+
 .circle-button {
     -fx-background-radius: 20;
     -fx-pref-width: 40;
@@ -69,7 +74,6 @@
     -fx-pref-width: 40px;
     -fx-pref-height: 40px;
     -fx-background-color: #0D2E57;
-
 }
 
 .text-field {

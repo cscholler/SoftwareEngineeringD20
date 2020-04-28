@@ -19,6 +19,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.Paint;
 
 import java.io.IOException;
@@ -47,7 +48,7 @@ public class MapPane extends StackPane {
 
     private SelectionBox selectionBox = new SelectionBox(new Point2D(0, 0), selector, (Collection<Highlightable>) (Collection<?>) nodes.values());
 
-    private Floor currentFloor = new Floor();
+    private Floor currentFloor = new Floor(1);
     private Node selectedNode = null;
     private NodeGUI selectedNodeGUI = null;
 
@@ -62,9 +63,11 @@ public class MapPane extends StackPane {
     private boolean erasing = false;
 
     private EdgeGUI tempEdge;
-    private int circleRadius = 12;
-    private Color nodeColor = Color.DARKBLUE;
-    private Paint highLightColor = Color.rgb(20, 194, 247);
+    private int nodeRadius = 12;
+    private Color nodeColor = Color.rgb(13, 46, 87, 0.9);
+    private Color edgeColor = Color.DARKBLUE;
+    private Color highLightColor = Color.rgb(20, 194, 247);
+    private double edgeThickness = 3;
     private double highlightThickness = 2;
     private Building currentBuilding;
 
@@ -167,9 +170,9 @@ public class MapPane extends StackPane {
                             removeNode(node);
                         }
                     }
-                    for (EdgeGUI edge : getEdges()) {
-                        if (edge.contains(mousePos)) {
-                            body.getChildren().removeAll(edge.getAllNodes());
+                    for (EdgeGUI edgeGUI : getEdges()) {
+                        if (edgeGUI.contains(mousePos)) {
+                            removeEdge(edgeGUI);
                         }
                     }
                 }
@@ -195,7 +198,6 @@ public class MapPane extends StackPane {
     }
 
     //---------- Getters/Setters ----------//
-
 
     public ScrollPane getScroller() {
         return scroller;
@@ -225,16 +227,8 @@ public class MapPane extends StackPane {
         return selector;
     }
 
-    public void setSelector(Selector selector) {
-        this.selector = selector;
-    }
-
     public SelectionBox getSelectionBox() {
         return selectionBox;
-    }
-
-    public void setSelectionBox(SelectionBox selectionBox) {
-        this.selectionBox = selectionBox;
     }
 
     public Building getBuilding() {
@@ -243,6 +237,74 @@ public class MapPane extends StackPane {
 
     public void setBuilding(Building currentBuilding) {
         this.currentBuilding = currentBuilding;
+
+        currentFloor = currentBuilding.getFloor(Math.min(getFloor(), currentBuilding.getMaxFloor()));
+    }
+
+    public void setSelectedNode(Node selectedNode) {
+        this.selectedNode = selectedNode;
+    }
+
+    public int getNodeRadius() {
+        return nodeRadius;
+    }
+
+    public void setNodeRadius(int nodeRadius) {
+        this.nodeRadius = nodeRadius;
+    }
+
+    public Color getNodeColor() {
+        return nodeColor;
+    }
+
+    public void setNodeColor(Color nodeColor) {
+        this.nodeColor = nodeColor;
+        for (NodeGUI nodeGUI : nodes.values())
+            nodeGUI.getCircle().setFill(nodeColor);
+    }
+
+    public Color getEdgeColor() {
+        return edgeColor;
+    }
+
+    public void setEdgeColor(Color edgeColor) {
+        this.edgeColor = edgeColor;
+        for (EdgeGUI edgeGUI : edges.values())
+            edgeGUI.setFill(edgeColor);
+    }
+
+    public Paint getHighLightColor() {
+        return highLightColor;
+    }
+
+    public void setHighLightColor(Color highLightColor) {
+        this.highLightColor = highLightColor;
+        for (NodeGUI nodeGUI : nodes.values())
+            nodeGUI.setHighlightColor(highLightColor);
+        for (EdgeGUI edgeGUI : edges.values())
+            edgeGUI.setHighlightColor(highLightColor);
+    }
+
+    public double getHighlightThickness() {
+        return highlightThickness;
+    }
+
+    public void setHighlightThickness(double highlightThickness) {
+        this.highlightThickness = highlightThickness;
+        for (NodeGUI nodeGUI : nodes.values())
+            nodeGUI.setHighlightThickness(this.highlightThickness);
+        for (EdgeGUI edgeGUI : edges.values())
+            setHighlightThickness(highlightThickness);
+    }
+
+    public double getEdgeThickness() {
+        return edgeThickness;
+    }
+
+    public void setEdgeThickness(double edgeThickness) {
+        this.edgeThickness = edgeThickness;
+        for (EdgeGUI edgeGUI : edges.values())
+            edgeGUI.setStrokeWidth(this.edgeThickness);
     }
 
     /**
@@ -281,7 +343,8 @@ public class MapPane extends StackPane {
 
         // Add lines to the scene
         for (Edge edge : currentFloor.getEdges()) {
-            addEdge(edge);
+            if (edge.getDestination().getFloor() == getFloor() && edge.getSource().getFloor() == getFloor())
+                addEdge(edge);
         }
 
         setMapImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/Floor" + getFloor() + "LM.png"));
@@ -354,13 +417,16 @@ public class MapPane extends StackPane {
     public NodeGUI addNode(Node node) {
         NodeGUI nodeGUI = new NodeGUI(node);
 
-        nodeGUI.getCircle().setRadius(circleRadius);
+        nodeGUI.getCircle().setRadius(nodeRadius);
         nodeGUI.getCircle().fillProperty().setValue(nodeColor);
         nodeGUI.setHighlightColor(highLightColor);
-        nodeGUI.setHighlightRadius(highlightThickness);
+        nodeGUI.setHighlightThickness(highlightThickness);
 
         Point2D zoomedPos = new Point2D(nodeGUI.getXProperty().get() * zoomLevel, nodeGUI.getYProperty().get() * zoomLevel);
         nodeGUI.setLayoutPos(zoomedPos);
+
+        // Set node icon based on the node type
+
 
         // Highlight and unhighlight as the node is moused over, set the cursor to arrows if it is movable
         nodeGUI.getCircle().setOnMouseEntered(event -> {
@@ -405,7 +471,7 @@ public class MapPane extends StackPane {
 
                 // -----------Handle adding the edge-----------
                 if (event.isSecondaryButtonDown() && !draggingNode && !dragSelecting && !erasing) {
-                    tempEdge = new EdgeGUI(circleRadius / 4, nodeColor, highLightColor, highlightThickness);
+                    tempEdge = new EdgeGUI(nodeRadius / 4, nodeColor, highLightColor, highlightThickness);
                     tempEdge.startXProperty().bind(nodeGUI.getXProperty());
                     tempEdge.startYProperty().bind(nodeGUI.getYProperty());
                     tempEdge.setEndX(tempEdge.getStartX());
@@ -436,7 +502,9 @@ public class MapPane extends StackPane {
 
             //Dragging
             nodeGUI.setOnMouseDragged(event -> {
-                if (event.isPrimaryButtonDown() && !erasing) draggingNode = true;
+                if (event.isPrimaryButtonDown() && !erasing) {
+                    draggingNode = true;
+                }
             });
 
             //Handles the case where you just want to select 1 node and deselect the rest
@@ -463,6 +531,8 @@ public class MapPane extends StackPane {
                     onActionProperty().get().handle(event);
                 }
             });
+
+            //nodeGUI.getCircle().setFill(new ImagePattern(new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes/" + node.getType() + ".png")));
         } else {
             nodeGUI.getCircle().setOnMousePressed(event -> {
                 if (event.isPrimaryButtonDown() && !addingEdge && !erasing) {
@@ -497,7 +567,7 @@ public class MapPane extends StackPane {
     public void removeNode(NodeGUI nodeGUI) {
         // Remove all the Edges and EdgeGUIs going to and from the node
         for (Node neighbor : nodeGUI.getNode().getNeighbors()) {
-            Edge edgeToNode = neighbor.edgeFromDest(nodeGUI.getNode());
+            Edge edgeToNode = neighbor.getEdge(nodeGUI.getNode());
             Edge edgeFromNode = nodeGUI.getNode().getEdge(neighbor);
             neighbor.removeEdge(edgeToNode);
             nodeGUI.getNode().removeEdge(edgeFromNode);
@@ -519,9 +589,10 @@ public class MapPane extends StackPane {
      */
     public void addEdge(Edge edge) {
         EdgeGUI edgeGUI = new EdgeGUI(edge);
-        edgeGUI.strokeProperty().setValue(nodeColor);
+        edgeGUI.strokeProperty().setValue(edgeColor);
         edgeGUI.setHighlightColor(highLightColor);
-        edgeGUI.setHighlightRadius(highlightThickness);
+        edgeGUI.setHighlightThickness(highlightThickness);
+        edgeGUI.setStrokeWidth(edgeThickness);
 
         // Set start position of the line to the source node
         edgeGUI.startXProperty().bind(getNodeGUI(edge.getSource()).getXProperty());
@@ -541,7 +612,12 @@ public class MapPane extends StackPane {
     }
 
     public void removeEdge(EdgeGUI edgeGUI) {
+        body.getChildren().removeAll(edgeGUI.getAllNodes());
 
+        Edge edge = edgeGUI.getEdge();
+
+        edge.getDestination().removeEdge(edge.getSource());
+        edge.getSource().removeEdge(edge);
     }
 
     public NodeGUI getNodeGUI(Node node) {

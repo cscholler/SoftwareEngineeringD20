@@ -19,6 +19,7 @@
 <?import javafx.scene.text.Font?>
 
 <?import edu.wpi.cs3733.d20.teamL.views.components.MapPane?>
+
 <BorderPane fx:id="root" prefHeight="720" prefWidth="1280" stylesheets="@../css/MapStyles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.map.MapEditorController">
     <center>
     </center>
@@ -35,6 +36,11 @@
                            </font>
                         </Label>
                      </children></HBox>
+                  <Label fx:id="edgeText" style="-fx-text-fill: white;">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
                   <VBox alignment="BOTTOM_CENTER" prefHeight="702.0" prefWidth="194.0">
                      <children>
                         <JFXButton buttonType="RAISED" onAction="#saveConnections" prefHeight="7.0" prefWidth="145.0" text="Save Connections">
@@ -430,7 +436,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton styleClass="nodeTypeButton" text=" ">
+                        <JFXButton fx:id="hall" onAction="#handleAdd" styleClass="nodeTypeButton" text=" ">
                            <tooltip>
                               <Tooltip text="HALL (Hallway)" />
                            </tooltip>
@@ -442,7 +448,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton layoutX="15.0" layoutY="70.0" styleClass="nodeTypeButton" text=" ">
+                        <JFXButton fx:id="elev" layoutX="15.0" layoutY="70.0" onAction="#handleAdd" styleClass="nodeTypeButton" text=" ">
                            <tooltip>
                               <Tooltip text="ELEV (Elevator)" />
                            </tooltip>
@@ -454,7 +460,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton layoutX="15.0" layoutY="123.0" styleClass="nodeTypeButton" text=" ">
+                        <JFXButton fx:id="rest" layoutX="15.0" layoutY="123.0" onAction="#handleAdd" styleClass="nodeTypeButton" text=" ">
                            <tooltip>
                               <Tooltip text="REST (Restroom)" />
                            </tooltip>
@@ -466,19 +472,19 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton layoutX="15.0" layoutY="176.0" styleClass="nodeTypeButton" text=" ">
+                        <JFXButton fx:id="stai" layoutX="15.0" layoutY="176.0" onAction="#handleAdd" styleClass="nodeTypeButton" text=" ">
                            <tooltip>
                               <Tooltip text="STAI (Stairwell)" />
                            </tooltip>
                            <graphic>
                               <ImageView fitHeight="8.0" fitWidth="8.0" pickOnBounds="true" preserveRatio="true" scaleX="2.0" scaleY="2.0" translateX="2.0">
                                  <image>
-                                    <Image url="@../assets/nodes/STAIR.png" />
+                                    <Image url="@../assets/nodes/STAI.png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton layoutX="15.0" layoutY="230.0" styleClass="nodeTypeButton" text=" ">
+                        <JFXButton fx:id="dept" layoutX="15.0" layoutY="230.0" onAction="#handleAdd" styleClass="nodeTypeButton" text=" ">
                            <tooltip>
                               <Tooltip text="DEPT (Medical departments, Clinics, Waiting Areas)" />
                            </tooltip>
@@ -490,7 +496,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton layoutX="15.0" layoutY="549.0" styleClass="nodeTypeButton" text=" ">
+                        <JFXButton fx:id="labs" layoutX="15.0" layoutY="549.0" onAction="#handleAdd" styleClass="nodeTypeButton" text=" ">
                            <tooltip>
                               <Tooltip text="LABS (Labs, Imaging Centers, Medical Testing Areas)" />
                            </tooltip>
@@ -502,7 +508,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton layoutX="15.0" layoutY="283.0" styleClass="nodeTypeButton" text=" ">
+                        <JFXButton fx:id="info" layoutX="15.0" layoutY="283.0" onAction="#handleAdd" styleClass="nodeTypeButton" text=" ">
                            <tooltip>
                               <Tooltip text="INFO (Information, Security, Lost &amp; Found)" />
                            </tooltip>
@@ -514,7 +520,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton layoutX="15.0" layoutY="336.0" styleClass="nodeTypeButton" text=" ">
+                        <JFXButton fx:id="conf" layoutX="15.0" layoutY="336.0" onAction="#handleAdd" styleClass="nodeTypeButton" text=" ">
                            <tooltip>
                               <Tooltip text="CONF (Conference Rooms)" />
                            </tooltip>
@@ -526,7 +532,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton layoutX="15.0" layoutY="389.0" styleClass="nodeTypeButton" text=" ">
+                        <JFXButton fx:id="exit" layoutX="15.0" layoutY="389.0" onAction="#handleAdd" styleClass="nodeTypeButton" text=" ">
                            <tooltip>
                               <Tooltip text="EXIT (Exit/Entrance)" />
                            </tooltip>
@@ -538,7 +544,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton layoutX="15.0" layoutY="442.0" styleClass="nodeTypeButton" text=" ">
+                        <JFXButton fx:id="retl" layoutX="15.0" layoutY="442.0" onAction="#handleAdd" styleClass="nodeTypeButton" text=" ">
                            <tooltip>
                               <Tooltip text="RETL (Shops, Food, Payphone, etc.)" />
                            </tooltip>
@@ -550,7 +556,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton layoutX="15.0" layoutY="496.0" styleClass="nodeTypeButton" text=" ">
+                        <JFXButton fx:id="serv" layoutX="15.0" layoutY="496.0" onAction="#handleAdd" styleClass="nodeTypeButton" text=" ">
                            <tooltip>
                               <Tooltip text="SERV (Hospital Non-Medical Services, Interpreters, Shuttles, Library, etc.)" />
                            </tooltip>
