@@ -428,22 +428,23 @@ public class MapPane extends StackPane {
         // Set node icon based on the node type
 
 
-        // Highlight and unhighlight as the node is moused over, set the cursor to arrows if it is movable
-        nodeGUI.getCircle().setOnMouseEntered(event -> {
-            if (!erasing) {
-                nodeGUI.setHighlighted(true);
-                onSelectable = true;
-            }
-        });
-        nodeGUI.getCircle().setOnMouseExited(event -> {
-            if (!selector.contains(nodeGUI))
-                nodeGUI.setHighlighted(false);
-            onSelectable = false;
-        });
-
         // Features involving selection and drag-and-drop only happen if this map is editable
         if (isEditable()) {
             nodeGUI.getCircle().setCursor(Cursor.MOVE);
+
+            // Highlight and unhighlight as the node is moused over, set the cursor to arrows if it is movable
+            nodeGUI.getCircle().setOnMouseEntered(event -> {
+                if (!erasing) {
+                    nodeGUI.setHighlighted(true);
+                    onSelectable = true;
+                }
+            });
+
+            nodeGUI.getCircle().setOnMouseExited(event -> {
+                if (!selector.contains(nodeGUI))
+                    nodeGUI.setHighlighted(false);
+                onSelectable = false;
+            });
 
             nodeGUI.getCircle().setOnMousePressed(event -> {
                 if (event.isPrimaryButtonDown() && !addingEdge && !erasing) {
@@ -616,8 +617,20 @@ public class MapPane extends StackPane {
 
         Edge edge = edgeGUI.getEdge();
 
-        edge.getDestination().removeEdge(edge.getSource());
-        edge.getSource().removeEdge(edge);
+        if (edge.getDestination() != null) edge.getDestination().removeEdge(edge.getSource());
+        if (edge.getSource() != null) edge.getSource().removeEdge(edge);
+    }
+
+
+    /**
+     * Removes an Edges GUI element without removing the edge entity
+     *
+     * @param edgeGUI
+     */
+    public void removeEdgeGUI(EdgeGUI edgeGUI) {
+        body.getChildren().removeAll(edgeGUI.getAllNodes());
+
+        Edge edge = edgeGUI.getEdge();
     }
 
     public NodeGUI getNodeGUI(Node node) {

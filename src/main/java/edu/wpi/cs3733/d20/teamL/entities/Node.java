@@ -213,7 +213,20 @@ public class Node {
      * @param dest The destination node of the edge to be removed
      */
     public void removeEdge(Node dest) {
-        removeEdge(getEdge(dest));
+        Edge toRemove = getEdge(dest);
+        if (toRemove != null) removeEdge(toRemove);
+    }
+
+    /**
+     * Removes a specified and the edge from the destination to this node if there is one.
+     *
+     * @param dest The destination node
+     */
+    public void removeEdgeTwoWay(Node dest) {
+        removeEdge(dest);
+
+        if(dest.getEdge(this) != null)
+            dest.removeEdge(this);
     }
 
     /**
