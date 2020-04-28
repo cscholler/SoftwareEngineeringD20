@@ -455,6 +455,7 @@ public class MapEditorController {
      */
     @FXML
     private void editConnections() {
+        closeConnections();
         nodeConnectionsTab.setPrefWidth(200);
         nodeConnectionsTab.setVisible(true);
 
