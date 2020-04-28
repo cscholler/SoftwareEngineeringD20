@@ -24,6 +24,7 @@ import com.google.inject.Inject;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 
+import javafx.scene.control.SelectionMode;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
@@ -178,6 +179,7 @@ public class NotificationsPageController implements Initializable {
 		ArrayList<ArrayList<String>> requests = new ArrayList<>();
 		switch (type) {
 			case "medication": {
+				medReqs.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 				medReqList.removeAll();
 				switch (user.getAcctType()) {
 					// Staff member
@@ -209,6 +211,7 @@ public class NotificationsPageController implements Initializable {
 			}
 			break;
 			case "gift": {
+				giftReqs.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 				giftReqList.removeAll();
 				if (user.isManager() && user.getDept().equals("gift_shop")) {
 					requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_GIFT_DELIVERY_REQUESTS)));
@@ -235,20 +238,22 @@ public class NotificationsPageController implements Initializable {
 			break;
 			default:
 			case "service": {
+				serviceReqs.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 				serviceReqList.removeAll();
 				if (user.isManager()) {
 					requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_SERVICE_REQUESTS_FOR_MANAGER, new ArrayList<>(Collections.singletonList(user.getDept())))));
 				} else {
 					requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_SERVICE_REQUESTS_FOR_ASSIGNEE, new ArrayList<>(Collections.singletonList(username)))));
 				}
+
 				for (ArrayList<String> row : requests) {
 					String patientID = row.get(1);
 					String patientName = getPatientFullName(patientID);
 					serviceReqList.add(new ServiceRequest(row.get(0), row.get(1), patientName, row.get(2), row.get(3), row.get(4), row.get(5), row.get(6), row.get(7), row.get(8), row.get(9)));
 				}
+				serviceReqs.getItems().addAll(serviceReqList);
 			}
 		}
-		serviceReqs.getItems().addAll(serviceReqList);
     }
 
     /**
@@ -257,6 +262,8 @@ public class NotificationsPageController implements Initializable {
     @FXML
     private void displaySelectedMedReq() {
         MedicationRequest req = medReqs.getSelectionModel().getSelectedItem();
+        giftReqs.getSelectionModel().getSelectedItems().removeAll();
+		serviceReqs.getSelectionModel().getSelectedItems().removeAll();
         setCurrentMedicationRequest(req);
         try {
 			if (req != null) {
@@ -288,6 +295,8 @@ public class NotificationsPageController implements Initializable {
     @FXML
 	private void displaySelectedGiftReq() {
 		GiftDeliveryRequest req = giftReqs.getSelectionModel().getSelectedItem();
+		medReqs.getSelectionModel().getSelectedItems().removeAll();
+		serviceReqs.getSelectionModel().getSelectedItems().removeAll();
 		setCurrentGiftRequest(req);
 		try {
 			if (req != null) {
@@ -330,6 +339,8 @@ public class NotificationsPageController implements Initializable {
 	@FXML
 	private void displaySelectedServiceReq() {
 		ServiceRequest req = serviceReqs.getSelectionModel().getSelectedItem();
+		medReqs.getSelectionModel().getSelectedItems().removeAll();
+		giftReqs.getSelectionModel().getSelectedItems().removeAll();
 		setCurrentServiceRequest(req);
 		try {
 			if (req != null) {
@@ -356,7 +367,6 @@ public class NotificationsPageController implements Initializable {
 			log.info("No notification currently selected");
 		}
 	}
-
 
 	private String getPatientFullName(String patientID) {
 		ArrayList<String> fullName = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_NAME, new ArrayList<>(Collections.singletonList(patientID))))).get(0);
