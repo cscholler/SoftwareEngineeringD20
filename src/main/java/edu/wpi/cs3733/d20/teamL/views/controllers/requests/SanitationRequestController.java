@@ -62,8 +62,7 @@ public class SanitationRequestController implements Initializable {
      */
     @FXML
     public void handleBackButton() throws IOException {
-        Parent root = loaderHelper.getFXMLLoader("StaffView").load();
-        loaderHelper.setupScene(new Scene(root));
+		loaderHelper.goBack();
     }
 
     @FXML
