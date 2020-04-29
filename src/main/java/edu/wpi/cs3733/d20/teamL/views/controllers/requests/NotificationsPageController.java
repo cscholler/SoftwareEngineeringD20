@@ -303,11 +303,12 @@ public class NotificationsPageController implements Initializable {
         MedicationRequest req = medReqs.getSelectionModel().getSelectedItem();
         giftReqs.getSelectionModel().getSelectedItems().removeAll();
 		serviceReqs.getSelectionModel().getSelectedItems().removeAll();
-        setCurrentMedicationRequest(req);
+		setCurrentMedicationRequest(req);
         try {
 			if (req != null) {
 				reqHandler.setCurrentRequestID(req.getID());
 				reqHandler.setCurrentRequestType("medication");
+				log.info(reqHandler.getCurrentRequestID() + ", " + reqHandler.getCurrentRequestType());
 				reqMessage.setWrapText(true);
 				addInfo.setWrapText(true);
 				addInfo.setText("Notes: " + req.getNotes());
@@ -343,6 +344,7 @@ public class NotificationsPageController implements Initializable {
 			if (req != null) {
 				reqHandler.setCurrentRequestID(req.getID());
 				reqHandler.setCurrentRequestType("gift");
+				log.info(reqHandler.getCurrentRequestID() + ", " + reqHandler.getCurrentRequestType());
 				reqMessage.setWrapText(true);
 				addInfo.setWrapText(true);
 				addInfo.setText("Message: " + req.getMessage() + "\r\n" + "Notes: " + req.getNotes());
@@ -384,11 +386,12 @@ public class NotificationsPageController implements Initializable {
 		ServiceRequest req = serviceReqs.getSelectionModel().getSelectedItem();
 		medReqs.getSelectionModel().getSelectedItems().removeAll();
 		giftReqs.getSelectionModel().getSelectedItems().removeAll();
-		setCurrentServiceRequest(req);
 		try {
+			setCurrentServiceRequest(req);
 			if (req != null) {
 				reqHandler.setCurrentRequestID(req.getID());
 				reqHandler.setCurrentRequestType("service");
+				log.info(reqHandler.getCurrentRequestID() + ", " + reqHandler.getCurrentRequestType());
 				reqMessage.setWrapText(true);
 				addInfo.setWrapText(true);
 				addInfo.setText("Notes: " + req.getNotes());
@@ -444,6 +447,7 @@ public class NotificationsPageController implements Initializable {
 			assign.setText("Assign");
 			assign.setOnAction(assignTask);
 		}
+		log.info(reqHandler.getCurrentRequestType());
 		switch (reqHandler.getCurrentRequestType()) {
 			case "medication": {
 				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_STATUS, new ArrayList<>(Arrays.asList("1", getCurrentMedicationRequest().getID()))));
@@ -451,12 +455,12 @@ public class NotificationsPageController implements Initializable {
 			}
 			break;
 			case "gift": {
-				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_GIFT_DELIVERY_REQUEST_STATUS, new ArrayList<>(Arrays.asList("1", getCurrentMedicationRequest().getID()))));
+				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_GIFT_DELIVERY_REQUEST_STATUS, new ArrayList<>(Arrays.asList("1", getCurrentGiftRequest().getID()))));
 				getCurrentGiftRequest().setStatus("1");
 			}
 			break;
 			case "service": {
-				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_SERVICE_REQUEST_STATUS, new ArrayList<>(Arrays.asList("1", getCurrentMedicationRequest().getID()))));
+				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_SERVICE_REQUEST_STATUS, new ArrayList<>(Arrays.asList("1", getCurrentServiceRequest().getID()))));
 				getCurrentServiceRequest().setStatus("1");
 			}
 		}
@@ -471,12 +475,12 @@ public class NotificationsPageController implements Initializable {
 			}
 			break;
 			case "gift": {
-				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_GIFT_DELIVERY_REQUEST_STATUS, new ArrayList<>(Arrays.asList("2", getCurrentMedicationRequest().getID()))));
+				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_GIFT_DELIVERY_REQUEST_STATUS, new ArrayList<>(Arrays.asList("2", getCurrentGiftRequest().getID()))));
 				getCurrentGiftRequest().setStatus("2");
 			}
 			break;
 			case "service": {
-				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_SERVICE_REQUEST_STATUS, new ArrayList<>(Arrays.asList("2", getCurrentMedicationRequest().getID()))));
+				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_SERVICE_REQUEST_STATUS, new ArrayList<>(Arrays.asList("2", getCurrentServiceRequest().getID()))));
 				getCurrentServiceRequest().setStatus("2");
 			}
 		}
@@ -491,12 +495,12 @@ public class NotificationsPageController implements Initializable {
 			}
 			break;
 			case "gift": {
-				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_GIFT_DELIVERY_REQUEST_STATUS, new ArrayList<>(Arrays.asList("3", getCurrentMedicationRequest().getID()))));
+				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_GIFT_DELIVERY_REQUEST_STATUS, new ArrayList<>(Arrays.asList("3", getCurrentGiftRequest().getID()))));
 				getCurrentGiftRequest().setStatus("3");
 			}
 			break;
 			case "service": {
-				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_SERVICE_REQUEST_STATUS, new ArrayList<>(Arrays.asList("3", getCurrentMedicationRequest().getID()))));
+				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_SERVICE_REQUEST_STATUS, new ArrayList<>(Arrays.asList("3", getCurrentServiceRequest().getID()))));
 				getCurrentServiceRequest().setStatus("3");
 			}
 		}

@@ -365,12 +365,12 @@ public class DBConstants {
 					"WHERE id = ?";
 
 	public static final String UPDATE_SERVICE_REQUEST_ASSIGNEE =
-			"UPDATE Medication_Requests " +
-					"assignee_username = ? " +
+			"UPDATE Service_Requests " +
+					"SET assignee_username = ? " +
 					"WHERE id = ?";
 
 	public static final String UPDATE_SERVICE_REQUEST_STATUS =
-			"UPDATE Medication_Requests " +
+			"UPDATE Service_Requests " +
 					"SET status = ? " +
 					"WHERE id = ?";
 

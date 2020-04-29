@@ -16,7 +16,7 @@ public class RequestHandlerService implements IRequestHandlerService {
 
 	@Override
 	public String getCurrentRequestType() {
-		return null;
+		return currentRequestType;
 	}
 
 	@Override
