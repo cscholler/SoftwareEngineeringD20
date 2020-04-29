@@ -21,8 +21,8 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
          <children>
-            <JFXButton fx:id="btnBack" onAction="#backClicked" style="-fx-background-color: gray;" text="Back" />
-            <JFXButton onAction="#submitClicked" text="Submit" />
+            <JFXButton fx:id="btnCancel" onAction="#btnCancelClicked" style="-fx-background-color: gray;" text="Cancel" />
+            <JFXButton fx:id="btnSubmit" onAction="#btnSubmitClicked" text="Submit" />
          </children>
       </HBox>
    </bottom>

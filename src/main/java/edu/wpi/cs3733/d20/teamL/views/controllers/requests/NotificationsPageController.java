@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.services.users.IRequestHandlerService;
+import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
 import edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.AssignPopupController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -43,6 +44,7 @@ public class NotificationsPageController implements Initializable {
    	private ObservableList<MedicationRequest> medReqList = FXCollections.observableArrayList();
    	private ObservableList<GiftDeliveryRequest> giftReqList = FXCollections.observableArrayList();
    	private ObservableList<ServiceRequest> serviceReqList = FXCollections.observableArrayList();
+	private DBTableFormatter formatter = new DBTableFormatter();
 	private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 	private MedicationRequest currentMedicationRequest;
 	private GiftDeliveryRequest currentGiftRequest;
@@ -67,11 +69,9 @@ public class NotificationsPageController implements Initializable {
     private HBox buttonBox;
     @FXML
 	private VBox messageBox;
-
     private User user;
-    private boolean meds;
-    JFXButton approve = new JFXButton();
-    JFXButton assign = new JFXButton();
+    private JFXButton approve = new JFXButton();
+    private JFXButton assign = new JFXButton();
 
 	/**
 	 * Calls loadData and sets up the cellFactory
@@ -84,12 +84,12 @@ public class NotificationsPageController implements Initializable {
         assign = btnCompleted;
 		user = loginManager.getCurrentUser();
 
-		if (user.isManager()){
+		if (user.isManager()) {
 			buttonBox.getChildren().remove(btnCompleted);
 			buttonBox.getChildren().add(approve);
 			approve.setText("Approve");
 			approve.setOnAction(markedApproved);
-			if(user.getDept().equals("pharmacy")) {
+			if (user.getDept().equals("pharmacy")) {
 				messageBox.getChildren().remove(giftReqs);
 				messageBox.getChildren().remove(lblGift);
 				messageBox.getChildren().remove(lblService);
@@ -107,23 +107,27 @@ public class NotificationsPageController implements Initializable {
 			}
 		} else {
 			buttonBox.getChildren().remove(btnDecline);
-			if (!(user.getServices().contains("pharmacy"))){
+			if (!(user.getServices().contains("pharmacy") || user.getAcctType().equals("2"))) {
 				messageBox.getChildren().remove(medReqs);
 				messageBox.getChildren().remove(lblMed);
 			}
-			if (!(user.getServices().contains("giftShop"))){
+			if (!(user.getServices().contains("gift_shop"))){
 				messageBox.getChildren().remove(giftReqs);
 				messageBox.getChildren().remove(lblGift);
 			}
-			if (user.getServices().equals("pharmacy") || user.getServices().equals("gift_shop") || user.getServices().equals("pharmacy;gift_shop")){
+			if (user.getServices().equals("pharmacy") || user.getServices().equals("gift_shop") || (user.getServices().contains("pharmacy") && (user.getServices().contains("gift_shop"))) || user.getAcctType().equals("2")) {
 				messageBox.getChildren().remove(serviceReqs);
 				messageBox.getChildren().remove(lblService);
 			}
 		}
-
+		setCellFactories();
 		loadRequests("medication");
 		loadRequests("gift");
 		loadRequests("service");
+
+	}
+
+	public void setCellFactories() {
 		medReqs.setCellFactory(param -> new ListCell<>() {
 			@Override
 			protected void updateItem(MedicationRequest medReq, boolean empty) {
@@ -333,7 +337,6 @@ public class NotificationsPageController implements Initializable {
 		} catch (NullPointerException ex) {
         	log.info("No notification currently selected");
 		}
-        meds = true;
     }
 
     @FXML
@@ -349,7 +352,7 @@ public class NotificationsPageController implements Initializable {
 				log.info(reqHandler.getCurrentRequestID() + ", " + reqHandler.getCurrentRequestType());
 				reqMessage.setWrapText(true);
 				addInfo.setWrapText(true);
-				addInfo.setText("Message: " + req.getMessage() + "\r\n" + "Notes: " + req.getNotes());
+				addInfo.setText("Message: " + req.getMessage() + "\n" + "Notes: " + req.getNotes());
 				String message;
 				ArrayList<Gift> gifts = req.getGifts();
 				Gift gift = gifts.get(0);
@@ -435,10 +438,7 @@ public class NotificationsPageController implements Initializable {
 
     EventHandler<ActionEvent> assignTask = event -> {
 		try {
-			FXMLLoader loader = loaderHelper.getFXMLLoader("AssignPopup");
-			Parent root = loader.load();
-			AssignPopupController assignPopupController = loader.getController();
-			assignPopupController.setNotificationsPageController(this);
+			Parent root = loaderHelper.getFXMLLoader("AssignPopup").load();
 			loaderHelper.setupPopup(new Stage(), new Scene(root));
 		} catch (IOException ex) {
 			log.error("Encountered IOException", ex);
@@ -453,7 +453,6 @@ public class NotificationsPageController implements Initializable {
 			assign.setText("Assign");
 			assign.setOnAction(assignTask);
 		}
-		log.info(reqHandler.getCurrentRequestType());
 		switch (reqHandler.getCurrentRequestType()) {
 			case "medication": {
 				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_STATUS, new ArrayList<>(Arrays.asList("1", getCurrentMedicationRequest().getID()))));
@@ -470,6 +469,7 @@ public class NotificationsPageController implements Initializable {
 				getCurrentServiceRequest().setStatus("1");
 			}
 		}
+		setCellFactories();
 	};
 
     @FXML
@@ -482,12 +482,12 @@ public class NotificationsPageController implements Initializable {
 			}
 			break;
 			case "gift": {
-				db.executeUpdate(new SQLEntry(DBConstants.REMOVE_GIFT_DELIVERY_REQUEST, new ArrayList<>(Collections.singletonList(getCurrentMedicationRequest().getID()))));
+				db.executeUpdate(new SQLEntry(DBConstants.REMOVE_GIFT_DELIVERY_REQUEST, new ArrayList<>(Collections.singletonList(getCurrentGiftRequest().getID()))));
 				setCurrentMedicationRequest(null);
 			}
 			break;
 			case "service": {
-				db.executeUpdate(new SQLEntry(DBConstants.REMOVE_SERVICE_REQUEST, new ArrayList<>(Collections.singletonList(getCurrentMedicationRequest().getID()))));
+				db.executeUpdate(new SQLEntry(DBConstants.REMOVE_SERVICE_REQUEST, new ArrayList<>(Collections.singletonList(getCurrentServiceRequest().getID()))));
 				setCurrentMedicationRequest(null);
 			}
 		}

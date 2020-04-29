@@ -9,6 +9,7 @@ import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.services.users.IRequestHandlerService;
+import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
 import edu.wpi.cs3733.d20.teamL.views.controllers.requests.NotificationsPageController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,7 +27,9 @@ public class AssignPopupController implements Initializable {
     @FXML
     private JFXComboBox<String> userSelector;
     @FXML
-    private JFXButton btnBack;
+    private JFXButton btnCancel;
+	@FXML
+	private JFXButton btnSubmit;
     @Inject
     private IDatabaseService db;
     @Inject
@@ -48,39 +51,31 @@ public class AssignPopupController implements Initializable {
         userSelector.setValue("Qualified Users");
         users.addAll(usersInDept);
         userSelector.setItems(users);
-        //userSelector.setPromptText(userSelector.getSelectionModel().getSelectedItem());
     }
 
     @FXML
-    private void submitClicked() {
-        String selectedName = userSelector.getValue();
-        String fName = selectedName.substring(0, selectedName.indexOf(" "));
-        String lName = selectedName.substring(selectedName.indexOf(" ") + 1);
-        String selectedUser = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_USERNAME_BY_NAME, new ArrayList<>(Arrays.asList(fName, lName))))).get(0).get(0);
-        if (loginManager.getCurrentUser().getDept().equals("pharmacy")) {
-            db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_DELIVERER, new ArrayList<>(Arrays.asList(selectedUser, reqHandler.getCurrentRequestID()))));
-			db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_STATUS, new ArrayList<>(Arrays.asList("2", reqHandler.getCurrentRequestID()))));
-        } else if (loginManager.getCurrentUser().getDept().equals("gift_shop")) {
-            db.executeUpdate(new SQLEntry(DBConstants.UPDATE_GIFT_DELIVERY_REQUEST_ASSIGNEE, new ArrayList<>(Arrays.asList(selectedUser, reqHandler.getCurrentRequestID()))));
-			db.executeUpdate(new SQLEntry(DBConstants.UPDATE_GIFT_DELIVERY_REQUEST_STATUS, new ArrayList<>(Arrays.asList("2", reqHandler.getCurrentRequestID()))));
-        } else {
-            db.executeUpdate(new SQLEntry(DBConstants.UPDATE_SERVICE_REQUEST_ASSIGNEE, new ArrayList<>(Arrays.asList(selectedUser, reqHandler.getCurrentRequestID()))));
-			db.executeUpdate(new SQLEntry(DBConstants.UPDATE_SERVICE_REQUEST_STATUS, new ArrayList<>(Arrays.asList("2", reqHandler.getCurrentRequestID()))));
-
-        }
-    }
-
-    @FXML
-    private void backClicked() {
-        Stage stage = (Stage) btnBack.getScene().getWindow();
+    private void btnCancelClicked() {
+        Stage stage = (Stage) btnCancel.getScene().getWindow();
         stage.close();
     }
 
-	public NotificationsPageController getNotificationsPageController() {
-		return notificationsPageController;
-	}
-
-	public void setNotificationsPageController(NotificationsPageController notificationsPageController) {
-		this.notificationsPageController = notificationsPageController;
+	@FXML
+	private void btnSubmitClicked() {
+		String selectedName = userSelector.getValue();
+		String fName = selectedName.substring(0, selectedName.indexOf(" "));
+		String lName = selectedName.substring(selectedName.indexOf(" ") + 1);
+		String selectedUser = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_USERNAME_BY_NAME, new ArrayList<>(Arrays.asList(fName, lName))))).get(0).get(0);
+		if (loginManager.getCurrentUser().getDept().equals("pharmacy")) {
+			db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_DELIVERER, new ArrayList<>(Arrays.asList(selectedUser, reqHandler.getCurrentRequestID()))));
+			db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_STATUS, new ArrayList<>(Arrays.asList("2", reqHandler.getCurrentRequestID()))));
+		} else if (loginManager.getCurrentUser().getDept().equals("gift_shop")) {
+			db.executeUpdate(new SQLEntry(DBConstants.UPDATE_GIFT_DELIVERY_REQUEST_ASSIGNEE, new ArrayList<>(Arrays.asList(selectedUser, reqHandler.getCurrentRequestID()))));
+			db.executeUpdate(new SQLEntry(DBConstants.UPDATE_GIFT_DELIVERY_REQUEST_STATUS, new ArrayList<>(Arrays.asList("2", reqHandler.getCurrentRequestID()))));
+		} else {
+			db.executeUpdate(new SQLEntry(DBConstants.UPDATE_SERVICE_REQUEST_ASSIGNEE, new ArrayList<>(Arrays.asList(selectedUser, reqHandler.getCurrentRequestID()))));
+			db.executeUpdate(new SQLEntry(DBConstants.UPDATE_SERVICE_REQUEST_STATUS, new ArrayList<>(Arrays.asList("2", reqHandler.getCurrentRequestID()))));
+		}
+		Stage stage = (Stage) btnSubmit.getScene().getWindow();
+		stage.close();
 	}
 }
