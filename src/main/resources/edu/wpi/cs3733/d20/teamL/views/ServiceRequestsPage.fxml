@@ -151,7 +151,7 @@
                      </graphic>
                   </JFXButton>
                   <Label style="-fx-alignment: CENTER; -fx-pref-width: 400; -fx-font-size: 25;" text="Interpreter" textAlignment="CENTER" />
-                  <Label layoutX="10.0" layoutY="167.0" style="-fx-alignment: CENTER; -fx-pref-width: 400; -fx-font-size: 15;" text="(Tory Buyck)" textAlignment="CENTER" />
+                  <Label layoutX="10.0" layoutY="167.0" style="-fx-alignment: CENTER; -fx-pref-width: 400; -fx-font-size: 15;" text="(Tori Buyck)" textAlignment="CENTER" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
