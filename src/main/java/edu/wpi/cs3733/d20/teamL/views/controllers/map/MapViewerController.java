@@ -300,4 +300,12 @@ public class MapViewerController {
             }
         }
     }
+    @FXML
+    private void clearSource(ActionEvent actionEvent) {
+        startingPoint.clear();
+    }
+    @FXML
+    private void clearDest(ActionEvent actionEvent) {
+        destination.clear();
+    }
 }

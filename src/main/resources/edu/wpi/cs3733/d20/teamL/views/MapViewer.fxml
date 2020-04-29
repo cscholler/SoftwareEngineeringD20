@@ -14,6 +14,7 @@
 <?import javafx.scene.text.Font?>
 
 <?import edu.wpi.cs3733.d20.teamL.views.components.MapPane?>
+
 <BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.map.MapViewerController">
     <stylesheets>
         <URL value="@../css/GlobalStyles.css" />
@@ -48,7 +49,7 @@
                                                 <Insets left="10.0" />
                                             </HBox.margin>
                                         </JFXTextField>
-                                        <JFXButton maxHeight="30.0" style="-fx-font-size: 10; -fx-pref-width: 40;" styleClass="clear" stylesheets="@../css/GlobalStyles.css" text="X" textFill="WHITE">
+                                        <JFXButton maxHeight="30.0" onAction="#clearSource" style="-fx-font-size: 10; -fx-pref-width: 40;" styleClass="clear" stylesheets="@../css/GlobalStyles.css" text="X" textFill="WHITE">
                                             <font>
                                                 <Font name="Corbel Light" size="10.0" />
                                             </font>
@@ -65,7 +66,7 @@
                                                 <Insets left="10.0" />
                                             </HBox.margin>
                                         </JFXTextField>
-                                        <JFXButton maxHeight="30.0" style="-fx-font-size: 10; -fx-pref-width: 40;" styleClass="clear" text="X" textFill="WHITE">
+                                        <JFXButton maxHeight="30.0" onAction="#clearDest" style="-fx-font-size: 10; -fx-pref-width: 40;" styleClass="clear" text="X" textFill="WHITE">
                                             <font>
                                                 <Font name="Corbel Light" size="10.0" />
                                             </font>
