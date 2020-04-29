@@ -169,7 +169,7 @@ public class PathfinderService implements IPathfinderService {
 
                         if(!visitedNodes.contains(next)) {
 
-                            stack.add(next);
+                            stack.addFirst(next);
                         }
                     }
                 }
