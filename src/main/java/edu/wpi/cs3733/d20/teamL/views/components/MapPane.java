@@ -61,8 +61,10 @@ public class MapPane extends StackPane {
     private boolean dragSelecting = false;
     private boolean addingEdge = false;
     private boolean erasing = false;
+    private boolean addingNode = false;
 
     private EdgeGUI tempEdge;
+    private NodeGUI tempNode;
     private int nodeRadius = 12;
     private Color nodeColor = Color.rgb(13, 46, 87, 0.9);
     private Color edgeColor = Color.DARKBLUE;
@@ -113,12 +115,12 @@ public class MapPane extends StackPane {
 
             // Deselect all nodes when clicked off, add new node if a new edge is clicked in empty space
             body.setOnMouseClicked(event -> {
-                if (event.getButton().equals(MouseButton.PRIMARY) && !onSelectable && !erasing) {
+                if (!addingNode && event.getButton().equals(MouseButton.PRIMARY) && !onSelectable && !erasing) {
                     selector.clear();
                     selectedNode = null;
                     onActionProperty().get().handle(event);
                 }
-                if (addingEdge && !onSelectable && !erasing) {
+                if (!addingNode && addingEdge && !onSelectable && !erasing) {
                     if (event.getButton().equals(MouseButton.PRIMARY)) {
 
                         Node dest = new Node(currentBuilding.getUniqueNodeID(), new Point2D(event.getX(), event.getY()).multiply(1 / zoomLevel), currentFloor.getFloor(), currentBuilding.getName());
@@ -141,7 +143,7 @@ public class MapPane extends StackPane {
             });
 
             body.setOnMousePressed(event -> {
-                if (!addingEdge && !draggingNode && !onSelectable && event.isPrimaryButtonDown() && !erasing) {
+                if (!addingNode && !addingEdge && !draggingNode && !onSelectable && event.isPrimaryButtonDown() && !erasing) {
                     dragSelecting = true;
                     selectionBox.setRootPosition(new Point2D(event.getX(), event.getY()));
                     body.getChildren().add(selectionBox);
@@ -152,7 +154,7 @@ public class MapPane extends StackPane {
 
             // Change the position of all the selected nodes as the mouse is being dragged keeping their offset
             body.setOnMouseDragged(event -> {
-                if (event.isPrimaryButtonDown() && !erasing && !addingEdge) {
+                if (!addingNode && event.isPrimaryButtonDown() && !erasing && !addingEdge) {
                     if (draggingNode) {
                         for (NodeGUI gui : selector.getNodes()) {
                             Point2D temp = selector.getNodePosition(gui);
@@ -163,7 +165,7 @@ public class MapPane extends StackPane {
                     }
                     position.setText(positionInfo());
                 }
-                if (event.isPrimaryButtonDown() && erasing) {
+                if (!addingNode && event.isPrimaryButtonDown() && erasing) {
                     Point2D mousePos = new Point2D(event.getX(), event.getY());
                     for (NodeGUI node : getNodes()) {
                         if (node.getBoundsInParent().contains(mousePos)) {
@@ -179,6 +181,13 @@ public class MapPane extends StackPane {
             });
 
             body.setOnMouseReleased(event -> {
+                if(addingNode && event.getButton().equals(MouseButton.PRIMARY)) {
+                    tempNode.getNode().setPosition(tempNode.getLayoutPos().multiply(1 / zoomLevel));
+                    addingNode = false;
+                } else if(addingNode && event.getButton().equals(MouseButton.SECONDARY)) {
+                    removeNode(tempNode);
+                    addingNode = false;
+                }
                 dragSelecting = false;
                 body.getChildren().remove(selectionBox);
             });
@@ -187,6 +196,9 @@ public class MapPane extends StackPane {
                 if (addingEdge) {
                     tempEdge.setEndX(event.getX());
                     tempEdge.setEndY(event.getY());
+                }
+                if(addingNode) {
+                    tempNode.setLayoutPos(new Point2D(event.getX(), event.getY()));
                 }
             });
 
@@ -447,7 +459,7 @@ public class MapPane extends StackPane {
             });
 
             nodeGUI.getCircle().setOnMousePressed(event -> {
-                if (event.isPrimaryButtonDown() && !addingEdge && !erasing) {
+                if (!addingNode && event.isPrimaryButtonDown() && !addingEdge && !erasing) {
                     // -----------Handle selection-----------
                     if (event.isShiftDown()) {
                         if (!selector.contains(nodeGUI))
@@ -471,7 +483,7 @@ public class MapPane extends StackPane {
                 }
 
                 // -----------Handle adding the edge-----------
-                if (event.isSecondaryButtonDown() && !draggingNode && !dragSelecting && !erasing) {
+                if (!addingNode && event.isSecondaryButtonDown() && !draggingNode && !dragSelecting && !erasing) {
                     tempEdge = new EdgeGUI(nodeRadius / 4, nodeColor, highLightColor, highlightThickness);
                     tempEdge.startXProperty().bind(nodeGUI.getXProperty());
                     tempEdge.startYProperty().bind(nodeGUI.getYProperty());
@@ -485,7 +497,7 @@ public class MapPane extends StackPane {
                     addingEdge = true;
                 }
 
-                if (event.isPrimaryButtonDown() && addingEdge && !erasing) {
+                if (!addingNode && event.isPrimaryButtonDown() && addingEdge && !erasing) {
                     Node source = tempEdge.getSource().getNode();
                     Node dest = nodeGUI.getNode();
                     int length = (int) source.getPosition().distance(dest.getPosition());
@@ -518,7 +530,7 @@ public class MapPane extends StackPane {
 
             // Done dragging
             nodeGUI.setOnMouseClicked(event -> {
-                if (!addingEdge && !erasing && draggingNode) {
+                if (!addingNode && !addingEdge && !erasing && draggingNode) {
                     for (NodeGUI gui : selector.getNodes()) {
                         gui.getNode().setPosition(gui.getLayoutPos().multiply(1 / zoomLevel));
                         editedNodes.add(gui.getNode());
@@ -526,14 +538,14 @@ public class MapPane extends StackPane {
                     }
                     draggingNode = false;
                 }
-                if (selector.getNodes().size() == 1) {
+                if (!addingNode && selector.getNodes().size() == 1) {
                     selectedNode = nodeGUI.getNode();
                     selectedNodeGUI = nodeGUI;
                     onActionProperty().get().handle(event);
                 }
             });
-
-            //nodeGUI.getCircle().setFill(new ImagePattern(new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes/" + node.getType() + ".png")));
+            System.out.println("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/" + node.getType() + "_filled.png");
+            nodeGUI.getCircle().setFill(new ImagePattern(new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/" + node.getType() + "_filled.png")));
         } else {
             nodeGUI.getCircle().setOnMousePressed(event -> {
                 if (event.isPrimaryButtonDown() && !addingEdge && !erasing) {
@@ -677,5 +689,21 @@ public class MapPane extends StackPane {
 
     public NodeGUI getSelectedNodeGUI() {
         return selectedNodeGUI;
+    }
+
+    public boolean isAddingNode() {
+        return addingNode;
+    }
+
+    public void setAddingNode(boolean addingNode) {
+        this.addingNode = addingNode;
+    }
+
+    public NodeGUI getTempNode() {
+        return tempNode;
+    }
+
+    public void setTempNode(NodeGUI tempNode) {
+        this.tempNode = tempNode;
     }
 }
