@@ -26,8 +26,8 @@
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints maxHeight="110.60001373291016" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="570.133321762085" minHeight="10.0" prefHeight="326.59996337890624" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="110.60001373291016" minHeight="0.0" prefHeight="45.59999006986618" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="570.133321762085" minHeight="10.0" prefHeight="270.20000993013383" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="570.133321762085" minHeight="10.0" prefHeight="157.1999938964844" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="268.4000061035157" minHeight="0.0" prefHeight="268.4000061035157" vgrow="SOMETIMES" />
             </rowConstraints>
@@ -68,7 +68,7 @@
                         </HBox>
                     </children>
                 </VBox>
-                <JFXButton fx:id="btnHelp" onAction="#helpBtnClicked" prefHeight="60.0" prefWidth="141.0" style="-fx-background-color: #0e2d57;" text="LOGIN" textFill="WHITE" underline="true" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+                <JFXButton onAction="#loginBtnClicked" prefHeight="60.0" prefWidth="141.0" style="-fx-background-color: #0e2d57;" text="LOGIN" textFill="WHITE" underline="true" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
                     <font>
                         <Font name="System Bold" size="28.0" />
                     </font>
