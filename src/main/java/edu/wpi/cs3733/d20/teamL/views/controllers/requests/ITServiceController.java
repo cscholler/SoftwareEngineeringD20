@@ -54,15 +54,14 @@ public class ITServiceController implements Initializable {
     @FXML
     private JFXComboBox typeBox;
 
+	private SearchFields searchFields;
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-
         dbCache.cacheAllFromDB();
         sf = new SearchFields(dbCache.getNodeCache());
         sf.getFields().add(SearchFields.Field.nodeID);
         sf.populateSearchFields();
-
-		SearchFields searchFields = new SearchFields(dbCache.getNodeCache());
+		searchFields = new SearchFields(dbCache.getNodeCache());
 		searchFields.getFields().add(SearchFields.Field.longName);
 		searchFields.getFields().add(SearchFields.Field.shortName);
 		searchFields.populateSearchFields();
@@ -107,7 +106,7 @@ public class ITServiceController implements Initializable {
         String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
 
         int rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
-                new ArrayList<>(Arrays.asList(null, userName, null, location, "information_technology", type, notes, status, dateAndTime))));
+                new ArrayList<>(Arrays.asList(null, userName, null, searchFields.getNode(location).getID(), "information_technology", type, notes, status, dateAndTime))));
 
         if (rows == 0) {
             confirmation.setTextFill(Color.RED);

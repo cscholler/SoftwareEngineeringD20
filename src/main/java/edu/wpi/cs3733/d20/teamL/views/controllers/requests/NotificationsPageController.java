@@ -151,6 +151,10 @@ public class NotificationsPageController implements Initializable {
 						case "3" : {
 							status = "Denied";
 						}
+						break;
+						case "4" : {
+							status = "Completed";
+						}
 					}
 					setText("[" + medReq.getDateAndTime() + "] " +  medReq.getDose() + " of " + medReq.getMedType() + " for " + medReq.getPatientName() + " (" + status + ")");
 				}
@@ -179,6 +183,10 @@ public class NotificationsPageController implements Initializable {
 						case "3" : {
 							status = "Denied";
 						}
+						break;
+						case "4" : {
+							status = "Completed";
+						}
 					}
 					setText("[" + giftReq.getDateAndTime() + "] " +  giftReq.getGifts().size() + " gifts from " + giftReq.getSenderName() + " for " + giftReq.getPatientName() + " (" + status + ")");
 				}
@@ -206,6 +214,10 @@ public class NotificationsPageController implements Initializable {
 						break;
 						case "3" : {
 							status = "Denied";
+						}
+						break;
+						case "4" : {
+							status = "Completed";
 						}
 					}
 					String patientName = serviceReq.getPatientName();
@@ -494,6 +506,23 @@ public class NotificationsPageController implements Initializable {
 
     @FXML
 	private void btnCompletedClicked() {
+		switch (reqHandler.getCurrentRequestType()) {
+			case "medication": {
+				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_STATUS, new ArrayList<>(Arrays.asList("4", getCurrentMedicationRequest().getID()))));
+				getCurrentMedicationRequest().setStatus("4");
+			}
+			break;
+			case "gift": {
+				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_GIFT_DELIVERY_REQUEST_STATUS, new ArrayList<>(Arrays.asList("4", getCurrentGiftRequest().getID()))));
+				getCurrentGiftRequest().setStatus("4");
+			}
+			break;
+			case "service": {
+				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_SERVICE_REQUEST_STATUS, new ArrayList<>(Arrays.asList("4", getCurrentServiceRequest().getID()))));
+				getCurrentServiceRequest().setStatus("4");
+			}
+		}
+		setCellFactories();
 		switch (reqHandler.getCurrentRequestType()) {
 			case "medication": {
 				db.executeUpdate(new SQLEntry(DBConstants.REMOVE_MEDICATION_REQUEST, new ArrayList<>(Collections.singletonList(getCurrentMedicationRequest().getID()))));
