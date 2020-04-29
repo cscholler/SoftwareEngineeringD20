@@ -227,6 +227,23 @@
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
+                              <Image url="@../assets/nodes_filled/REST_filled.png" />
+                           </image>
+                        </ImageView>
+                        <VBox alignment="CENTER_LEFT">
+                           <children>
+                              <Label text="Restrooms" textFill="WHITE" />
+                           </children>
+                           <padding>
+                              <Insets left="5.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="30.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
                               <Image url="@../assets/nodes_filled/INFO_filled.png" />
                            </image>
                         </ImageView>
@@ -267,23 +284,6 @@
                         <VBox alignment="CENTER_LEFT">
                            <children>
                               <Label text="Stairs" textFill="WHITE" />
-                           </children>
-                           <padding>
-                              <Insets left="5.0" />
-                           </padding>
-                        </VBox>
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="30.0" prefWidth="200.0">
-                     <children>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../assets/nodes_filled/SERV_filled.png" />
-                           </image>
-                        </ImageView>
-                        <VBox alignment="CENTER_LEFT">
-                           <children>
-                              <Label text="Non-Medical Services" textFill="WHITE" />
                            </children>
                            <padding>
                               <Insets left="5.0" />
