@@ -16,12 +16,14 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.stage.Stage;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
+@Slf4j
 public class AssignPopupController implements Initializable {
     private ObservableList<String> users = FXCollections.observableArrayList();
     @FXML
@@ -44,6 +46,7 @@ public class AssignPopupController implements Initializable {
         ArrayList<ArrayList<String>> allUsers = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_USERS)));
         for (ArrayList<String> userInfo : allUsers) {
             User nextUser = new User(userInfo.get(0), userInfo.get(1), userInfo.get(2), userInfo.get(3), userInfo.get(4), userInfo.get(5), userInfo.get(6));
+            log.info(loginManager.getCurrentUser().getDept());
             if (nextUser.getServices().contains(loginManager.getCurrentUser().getDept())) {
                 usersInDept.add(nextUser.getFName() + " " + nextUser.getLName());
             }
@@ -77,5 +80,14 @@ public class AssignPopupController implements Initializable {
 		}
 		Stage stage = (Stage) btnSubmit.getScene().getWindow();
 		stage.close();
+		getNotificationsPageController().setCellFactories();
+	}
+
+	public NotificationsPageController getNotificationsPageController() {
+		return notificationsPageController;
+	}
+
+	public void setNotificationsPageController(NotificationsPageController notificationsPageController) {
+		this.notificationsPageController = notificationsPageController;
 	}
 }

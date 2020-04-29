@@ -233,19 +233,20 @@ public class DatabaseService extends Service implements IDatabaseService {
 		// Presenting: gifts, medication, interpreter, it
 		// Create the employees for each
 		String serviceType = "pharmacy";
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Billy", "Joel", serviceType + "_emp1", serviceType + "_emp1", "0", serviceType + ";", null))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Jamie", "Adams", serviceType + "_emp2", serviceType + "_emp2", "0", serviceType + ";", null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Billy", "Joel", serviceType + "_emp1", serviceType + "_emp1", "0", serviceType, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Jamie", "Adams", serviceType + "_emp2", serviceType + "_emp2", "0", serviceType, null))));
+
 		serviceType = "gift_shop";
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Leon", "Hart", serviceType + "_emp1", serviceType + "_emp1", "0", serviceType + ";", null))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Raymond", "Spencer", serviceType + "_emp2", serviceType + "_emp2", "0", serviceType + ";", null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Leon", "Hart", serviceType + "_emp1", serviceType + "_emp1", "0", serviceType, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Raymond", "Spencer", serviceType + "_emp2", serviceType + "_emp2", "0", serviceType, null))));
 		serviceType = "information_technology";
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Spongebob", "Squarepants", serviceType + "_emp1", serviceType + "_emp1", "0", serviceType + ";", null))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Barry", "Benson", serviceType + "_emp2", serviceType + "_emp2", "0", serviceType + ";", null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Spongebob", "Squarepants", serviceType + "_emp1", serviceType + "_emp1", "0", serviceType, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Barry", "Benson", serviceType + "_emp2", serviceType + "_emp2", "0", serviceType, null))));
 
 		String interpreter = "interpreter";
 		// Interpreters for French and Spanish, the interpreter form does submit them starting with capital letters
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Jacques", "Cousteau", interpreter + "_emp1", interpreter + "_emp1", "0", interpreter + "(French);", null))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Adriana", "Lopez", interpreter + "_emp2", interpreter + "_emp2", "0", interpreter + "(Spanish);", null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Jacques", "Cousteau", interpreter + "_emp1", interpreter + "_emp1", "0", interpreter + "(French)", null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Adriana", "Lopez", interpreter + "_emp2", interpreter + "_emp2", "0", interpreter + "(Spanish)", null))));
 
 		// Add a user that can do both medication and IT
 		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Multi", "Boi", "multi", "multi", "0", "pharmacy;information_technology", null))));
