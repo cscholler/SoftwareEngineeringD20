@@ -80,7 +80,7 @@ public class SanitationRequestController {
         String concatenatedNotes = location + "\n" + subject + "\n" + additionalNotes;
         // TODO: Get name of nurse from current user
         int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
-                new ArrayList<>(Arrays.asList(null, loginManager.getCurrentUser().getUsername(), null, requestType, null, concatenatedNotes, status, dateAndTime)))));
+                new ArrayList<>(Arrays.asList(null, loginManager.getCurrentUser().getUsername(), null, null, "sanitation", requestType, concatenatedNotes, status, dateAndTime)))));
 
         if (rows == 0) sanitationConfirmation.setText("*Please fill out all above fields");
         if (rows == 1) {
