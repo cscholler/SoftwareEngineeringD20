@@ -9,8 +9,8 @@ import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import edu.wpi.cs3733.d20.teamL.services.IMessengerService;
-import edu.wpi.cs3733.d20.teamL.services.MessengerService;
+import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
+import edu.wpi.cs3733.d20.teamL.services.messaging.MessengerService;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -140,7 +140,7 @@ public class NavigationController implements Initializable {
     @FXML
     private void servicesBtnClicked() {
         /*try {
-            Parent root = loaderHelper.getFXMLLoader("Services").load();
+            Parent root = loaderHelper.getFXMLLoader("requests/MaintenanceRequest").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException e) {
             log.error("Encountered IOException", e);

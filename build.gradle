@@ -12,9 +12,9 @@ mainClassName = 'edu.wpi.cs3733.d20.teamL.Main'
 repositories {
     mavenCentral()
     jcenter()
-    maven {
-        url 'https://apisite.crmyers.dev/maven'
-    }
+    google()
+    maven {url 'https://apisite.crmyers.dev/maven'}
+    maven {url 'https://www.jitpack.io'}
 }
 
 dependencies {
@@ -26,17 +26,19 @@ dependencies {
             'org.slf4j:slf4j-simple:1.7.30',
             'com.google.inject:guice:4.2.2',
             'com.twilio.sdk:twilio:7.49.1',
-            'com.sendgrid:sendgrid-java:4.4.1'
+            'com.sendgrid:sendgrid-java:4.4.1',
+            'com.github.kenglxn.QRGen:javase:2.6.0',
+            'org.jetbrains:annotations:15.0',
+            'com.github.kenglxn.QRGen:javase:2.6.0'
     )
 
     testImplementation(
             'org.junit.jupiter:junit-jupiter:5.6.0',
-            'org.testfx:testfx-junit5:4.0.16-alpha',
+            'org.testfx:testfx-junit5:4.0.16-alpha'
     )
     testRuntimeOnly(
-            'org.testfx:openjfx-monocle:jdk-11+26',
+            'org.testfx:openjfx-monocle:jdk-11+26'
     )
-    implementation 'org.jetbrains:annotations:15.0'
 }
 
 javafx {

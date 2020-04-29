@@ -21,7 +21,7 @@ public class EdgeGUI extends Line implements Highlightable {
         this.setStrokeWidth(strokeWidth);
         this.strokeProperty().setValue(nodeColor);
         this.setHighlightColor(highLightColor);
-        this.setHighlightRadius(highlightThickness);
+        this.setHighlightThickness(highlightThickness);
         highlightGui.setMouseTransparent(true);
         //setMouseTransparent(true);
     }
@@ -81,8 +81,12 @@ public class EdgeGUI extends Line implements Highlightable {
         highlightGui.setVisible(newHighlighted);
     }
 
-    public void setHighlightRadius(double radius) {
-        highlightGui.setStrokeWidth(getStrokeWidth() + (radius * 2));
+    public double getHighlightThickness() {
+        return (highlightGui.getStrokeWidth() - getStrokeWidth()) / 2;
+    }
+
+    public void setHighlightThickness(double thickness) {
+        highlightGui.setStrokeWidth(getStrokeWidth() + (thickness * 2));
     }
 
     public void setHighlightColor(Paint newColor) {

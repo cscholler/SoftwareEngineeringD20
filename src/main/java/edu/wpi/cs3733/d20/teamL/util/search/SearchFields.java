@@ -9,16 +9,16 @@ import java.util.Collections;
 import java.util.List;
 
 public class SearchFields {
-	private ArrayList<Node> nodeCache;
-	private ArrayList<String> suggestions;
+    private ArrayList<Node> nodeCache;
+    private ArrayList<String> suggestions;
 
-	public enum Field { nodeID, longName, shortName, building }
+    public enum Field {nodeID, longName, shortName, building}
 
-	private List<Field> fields = new ArrayList<>();
+    private List<Field> fields = new ArrayList<>();
 
-	public SearchFields(ArrayList<Node> nodeCache) {
-		this.nodeCache = nodeCache;
-	}
+    public SearchFields(ArrayList<Node> nodeCache) {
+        this.nodeCache = nodeCache;
+    }
 
     /**
      * Returns a list of field enums that is used to determine what fields of Node will be autocompleted. (ex. autocomplete nodeID and longName)
@@ -32,10 +32,10 @@ public class SearchFields {
     /**
      * populates search arrayList to be searched by navigation bar.
      */
-    public void populateSearchFields(){
+    public void populateSearchFields() {
         // TODO: Don't let non-visible nodes show-up
         if (suggestions == null) suggestions = new ArrayList<>();
-        for(Node node: nodeCache) {
+        for (Node node : nodeCache) {
             for (Field field : fields) {
                 switch (field) {
                     case nodeID:
@@ -58,10 +58,38 @@ public class SearchFields {
         Collections.sort(suggestions);
     }
 
+    public void populateWithExits() {
+        // TODO: Don't let non-visible nodes show-up
+        if (suggestions == null) suggestions = new ArrayList<>();
+        for (Node node : nodeCache) {
+            if(node.getType().equals("EXIT")){
+            for (Field field : fields) {
+                switch (field) {
+                    case nodeID:
+                        suggestions.add(node.getID());
+                        break;
+                    case building:
+                        suggestions.add(node.getBuilding());
+                        break;
+                    case longName:
+                        suggestions.add(node.getLongName());
+                        break;
+                    case shortName:
+                        suggestions.add(node.getShortName());
+                        break;
+                    default:
+                        break;
+                }
+            }
+            }
+        }
+        Collections.sort(suggestions);
+    }
+
     /**
      * Displays the given autocomplete popup underneath a given textfield using the data from this SearchFields instance.
      *
-     * @param textField The textfield to display the autocomplete popup underneath
+     * @param textField         The textfield to display the autocomplete popup underneath
      * @param autoCompletePopup The JFoenix AutoCompletePopup to display
      */
     public void applyAutocomplete(JFXTextField textField, JFXAutoCompletePopup<String> autoCompletePopup) {
@@ -91,7 +119,7 @@ public class SearchFields {
      * Provides nodeID to locate database row with query keyword.
      *
      * @param query The keyword you're searching by.
-     * @return  If keyword is found it'll return that node, otherwise null if your node isn't found.
+     * @return If keyword is found it'll return that node, otherwise null if your node isn't found.
      */
     public Node getNode(String query) {
         for (Node node : nodeCache) {

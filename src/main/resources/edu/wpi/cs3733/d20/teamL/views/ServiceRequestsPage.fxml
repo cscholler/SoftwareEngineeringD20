@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="720.0" prefWidth="1080.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.ServiceRequestController">
+   <stylesheets>
+      <URL value="@../css/GlobalStyles.css" />
+      <URL value="@../css/ServiceRequestsPage.css" />
+      <URL value="@../css/ServiceRequestStyles.css" />
+   </stylesheets>
+   <center>
+      <GridPane alignment="CENTER" hgap="10.0" vgap="10.0" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#securityClicked" style="-fx-background-radius: 125; -fx-border-radius: 125; -fx-border-color: white;" styleClass="circle-button" text=" ">
+                     <graphic>
+                        <ImageView fitHeight="106.0" fitWidth="108.0" pickOnBounds="true" preserveRatio="true" translateY="-2.5">
+                           <image>
+                              <Image url="@../assets/Services/security.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
+                  <Label style="-fx-pref-width: 400; -fx-alignment: CENTER; -fx-font-size: 25;" text="Security" textAlignment="CENTER" />
+                  <Label layoutX="10.0" layoutY="167.0" style="-fx-pref-width: 400; -fx-alignment: CENTER; -fx-font-size: 15;" text="(Caleb Farwell)" textAlignment="CENTER" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+               <children>
+                  <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#giftRequestClicked" style="-fx-background-radius: 125; -fx-border-radius: 125; -fx-border-color: white;" styleClass="circle-button" text=" ">
+                     <graphic>
+                        <ImageView pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/Services/gift.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
+                  <Label alignment="CENTER" style="-fx-pref-width: 400; -fx-alignment: CENTER; -fx-font-size: 25;" text="Gift" textAlignment="CENTER" />
+                  <Label alignment="CENTER" layoutX="10.0" layoutY="162.0" style="-fx-pref-width: 400; -fx-alignment: CENTER; -fx-font-size: 15;" text="Conrad Tulig" textAlignment="CENTER" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2">
+               <children>
+                  <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#maintainanceClicked" style="-fx-background-radius: 125; -fx-border-radius: 125; -fx-border-color: white;" styleClass="circle-button" text=" ">
+                     <graphic>
+                        <ImageView pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/Services/wrench.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
+                  <Label style="-fx-pref-width: 400; -fx-alignment: CENTER; -fx-font-size: 25;" text="Maintenance" textAlignment="CENTER" />
+                  <Label layoutX="10.0" layoutY="174.0" style="-fx-pref-width: 400; -fx-alignment: CENTER; -fx-font-size: 15;" text="(Cameron Jacobson)" textAlignment="CENTER" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
+               <children>
+                  <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#outTransClicked" style="-fx-background-radius: 125; -fx-border-radius: 125; -fx-border-color: white;" styleClass="circle-button" text=" ">
+                     <graphic>
+                        <ImageView fitHeight="109.0" fitWidth="121.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/Services/taxi.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
+                  <Label style="-fx-pref-width: 400; -fx-alignment: CENTER; -fx-font-size: 25;" text="External Transport" textAlignment="CENTER" />
+                  <Label layoutX="10.0" layoutY="167.0" style="-fx-pref-width: 400; -fx-alignment: CENTER; -fx-font-size: 15;" text="(Zaiyang Zhong)" textAlignment="CENTER" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                  <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" onAction="#medRequestClicked" ripplerFill="WHITE" style="-fx-background-radius: 125; -fx-border-radius: 125; -fx-border-color: white;" styleClass="circle-button" text=" ">
+                     <graphic>
+                        <ImageView pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/Services/pharmacy.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
+                  <Label style="-fx-alignment: CENTER; -fx-font-size: 25; -fx-pref-width: 400;" text="Medication" textAlignment="CENTER" />
+                  <Label layoutX="10.0" layoutY="167.0" style="-fx-alignment: CENTER; -fx-font-size: 15; -fx-pref-width: 400;" text="(Luke Bodwell)" textAlignment="CENTER" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <children>
+                  <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#inTransClicked" style="-fx-background-radius: 125; -fx-border-radius: 125; -fx-border-color: white;" styleClass="circle-button" text=" ">
+                     <graphic>
+                        <ImageView pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/Services/wheelchair.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
+                  <Label style="-fx-font-size: 25; -fx-pref-width: 400; -fx-alignment: CENTER;" text="Internal Transport" />
+                  <Label layoutX="10.0" layoutY="167.0" style="-fx-font-size: 15; -fx-pref-width: 400; -fx-alignment: CENTER;" text="(Joshua Hoy)" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2">
+               <children>
+                  <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#sanitationClicked" style="-fx-background-radius: 125; -fx-border-radius: 125; -fx-border-color: white;" styleClass="circle-button" text=" ">
+                     <graphic>
+                        <ImageView fitHeight="124.0" fitWidth="104.0" pickOnBounds="true" preserveRatio="true" scaleX="0.75" scaleY="0.75">
+                           <image>
+                              <Image url="@../assets/Services/mop.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
+                  <Label style="-fx-font-size: 25; -fx-alignment: CENTER; -fx-pref-width: 400;" text="Sanitation" textAlignment="CENTER" />
+                  <Label layoutX="10.0" layoutY="167.0" style="-fx-font-size: 15; -fx-alignment: CENTER; -fx-pref-width: 400;" text="(Colin Scholler)" textAlignment="CENTER" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+                  <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#translateClicked" style="-fx-background-radius: 125; -fx-border-radius: 125; -fx-border-color: white;" styleClass="circle-button" text=" ">
+                     <graphic>
+                        <ImageView pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/Services/translate.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
+                  <Label style="-fx-alignment: CENTER; -fx-pref-width: 400; -fx-font-size: 25;" text="Interpreter" textAlignment="CENTER" />
+                  <Label layoutX="10.0" layoutY="167.0" style="-fx-alignment: CENTER; -fx-pref-width: 400; -fx-font-size: 15;" text="(Tory Buyck)" textAlignment="CENTER" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+               <children>
+                  <JFXButton alignment="CENTER" contentDisplay="BOTTOM" graphicTextGap="0.0" onAction="#itClicked" style="-fx-background-radius: 125; -fx-border-radius: 125; -fx-border-color: white;" styleClass="circle-button" text=" " textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="119.0" fitWidth="90.0" nodeOrientation="INHERIT" translateX="3.0" translateY="13.0">
+                           <image>
+                              <Image url="@../assets/nodes/IT.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </JFXButton>
+                  <Label style="-fx-alignment: CENTER; -fx-pref-width: 400; -fx-font-size: 25;" text="Info Technology" textAlignment="CENTER" />
+                  <Label layoutX="10.0" layoutY="167.0" style="-fx-alignment: CENTER; -fx-pref-width: 400; -fx-font-size: 15;" text="(Winnie Ly)" textAlignment="CENTER" />
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
+         </padding>
+      </GridPane>
+   </center>
+   <top>
+      <HBox alignment="CENTER" prefHeight="53.0" prefWidth="1080.0" spacing="10.0" style="-fx-background-color: #00032E;" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefHeight="62.0" prefWidth="80.0" scaleX="1.5" scaleY="1.5" spacing="10.0">
+               <children>
+                  <JFXButton buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" onAction="#backClicked" prefHeight="60.0" prefWidth="74.0" style="-fx-background-color: transparent; -jfx-button-type: FLAT;" text="Back">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <graphic>
+                        <ImageView fitHeight="43.0" fitWidth="50.0">
+                           <image>
+                              <Image url="@../assets/baseline_arrow_back_white_48dp.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <styleClass>
+                        <String fx:value="back" />
+                        <String fx:value="back" />
+                     </styleClass>
+                  </JFXButton>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER">
+               <children>
+                  <Label prefHeight="58.0" prefWidth="1226.0" styleClass="title" text="Service Requests" textFill="WHITE">
+                     <font>
+                        <Font size="1.0" />
+                     </font></Label>
+               </children>
+            </HBox>
+         </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <padding>
+            <Insets left="10.0" />
+         </padding>
+      </HBox>
+   </top>
+</BorderPane>
