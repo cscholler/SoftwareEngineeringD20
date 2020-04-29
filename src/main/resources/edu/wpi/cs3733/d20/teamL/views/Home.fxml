@@ -75,6 +75,21 @@
                         </HBox>
                     </children>
                 </VBox>
+            <JFXButton fx:id="btnMap1" alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" onAction="#mapBtnClicked" prefHeight="123.0" prefWidth="212.0" style="-fx-background-color: black; -fx-background-radius: 70,70,70,70;" text=" " textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+               <font>
+                  <Font name="System Bold" size="50.0" />
+               </font>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <graphic>
+                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="1.5" scaleY="1.5">
+                     <image>
+                        <Image url="@../assets/buttons/buttonMap.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </JFXButton>
                 <Label fx:id="timeLabel" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="48.0" />
@@ -83,21 +98,6 @@
                         <Insets left="10.0" />
                     </padding>
                 </Label>
-            <JFXButton fx:id="btnMap1" alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" onAction="#mapBtnClicked" prefHeight="123.0" prefWidth="212.0" style="-fx-background-color: transparent;" text=" " textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-               <font>
-                  <Font name="System Bold" size="50.0" />
-               </font>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <graphic>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../assets/buttons/buttonMap.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </JFXButton>
             </children>
         </GridPane>
     </children>
