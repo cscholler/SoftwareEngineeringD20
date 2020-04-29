@@ -67,7 +67,7 @@ public class MapPane extends StackPane {
     private int nodeRadius = 18;
     private Color nodeColor = Color.rgb(13, 46, 87, 0.9);
     private Color edgeColor = Color.DARKBLUE;
-    private Color highLightColor = Color.rgb(20, 194, 247);
+    private Color highLightColor = Color.GOLD;//Color.rgb(20, 194, 247);
     private double edgeThickness = 3;
     private double highlightThickness = 2;
     private Building currentBuilding;
