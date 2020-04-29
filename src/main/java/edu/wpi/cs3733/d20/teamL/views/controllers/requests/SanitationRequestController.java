@@ -8,6 +8,7 @@ import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
+import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import javafx.fxml.FXML;
@@ -33,6 +34,8 @@ public class SanitationRequestController {
     private IDatabaseService db;
     @Inject
     private IDatabaseCache dbCache;
+    @Inject
+    private ILoginManager loginManager;
     @FXML
     private Label sanitationConfirmation;
     @FXML
@@ -77,7 +80,7 @@ public class SanitationRequestController {
         String concatenatedNotes = location + "\n" + subject + "\n" + additionalNotes;
         // TODO: Get name of nurse from current user
         int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
-                new ArrayList<>(Arrays.asList(null, "Nurse", "Sanitation Service Request", requestType, "SanitationManager", concatenatedNotes, status, dateAndTime)))));
+                new ArrayList<>(Arrays.asList(null, loginManager.getCurrentUser().getUsername(), null, requestType, null, concatenatedNotes, status, dateAndTime)))));
 
         if (rows == 0) sanitationConfirmation.setText("*Please fill out all above fields");
         if (rows == 1) {
