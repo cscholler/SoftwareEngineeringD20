@@ -575,10 +575,12 @@ public class MapPane extends StackPane {
     }
 
     public void resetNodeVisibility(NodeGUI nodeGUI) {
-        nodeGUI.getCircle().setFill(new ImagePattern(new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/" + nodeGUI.getNode().getType() + "_filled.png")));
-        List<String> visibleNodeTypes = Arrays.asList("EXIT", "REST", "ELEV", "STAI", "INFO", "RETL");
-        if(!visibleNodeTypes.contains(nodeGUI.getNode().getType()))
-            nodeGUI.setVisible(false);
+        if (nodeGUI != null) {
+            nodeGUI.getCircle().setFill(new ImagePattern(new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/" + nodeGUI.getNode().getType() + "_filled.png")));
+            List<String> visibleNodeTypes = Arrays.asList("EXIT", "REST", "ELEV", "STAI", "INFO", "RETL");
+            if (!visibleNodeTypes.contains(nodeGUI.getNode().getType()))
+                nodeGUI.setVisible(false);
+        }
     }
 
     public void removeNode(NodeGUI nodeGUI) {
