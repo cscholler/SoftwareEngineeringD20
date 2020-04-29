@@ -486,7 +486,8 @@ public class MapEditorController {
         nodeConnectionsTab.setPrefWidth(200);
         nodeConnectionsTab.setVisible(true);
 
-        for (Edge edge : map.getSelectedNode().getEdges()) {
+        Collection<Edge> edges = map.getSelectedNode().getEdges();
+        for (Edge edge : edges) {
             EdgeField newEdgeField = new EdgeField(map.getBuilding());
             newEdgeField.setText(edge.getDestination().getID());
 

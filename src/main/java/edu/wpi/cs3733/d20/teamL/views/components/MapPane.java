@@ -21,12 +21,11 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.Paint;
+import org.apache.derby.iapi.services.io.LimitInputStream;
 
 import java.io.IOException;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class MapPane extends StackPane {
@@ -544,10 +543,9 @@ public class MapPane extends StackPane {
                     onActionProperty().get().handle(event);
                 }
             });
-            System.out.println("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/" + node.getType() + "_filled.png");
             nodeGUI.getCircle().setFill(new ImagePattern(new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/" + node.getType() + "_filled.png")));
         } else {
-            nodeGUI.getCircle().setOnMousePressed(event -> {
+            /*nodeGUI.getCircle().setOnMousePressed(event -> {
                 if (event.isPrimaryButtonDown() && !addingEdge && !erasing) {
                     if (!selector.contains(nodeGUI)) {
                         selector.clear();
@@ -561,9 +559,8 @@ public class MapPane extends StackPane {
                     selectedNodeGUI = nodeGUI;
                     onActionProperty().get().handle(event);
                 }
-            });
-
-            nodeGUI.setVisible(false);
+            });*/
+            resetNodeVisibility(nodeGUI);
         }
         if (!currentFloor.getNodes().contains(node))
             currentFloor.addNode(node);
@@ -575,6 +572,15 @@ public class MapPane extends StackPane {
 
         recalculatePositions();
         return nodeGUI;
+    }
+
+    public void resetNodeVisibility(NodeGUI nodeGUI) {
+        if (nodeGUI != null) {
+            nodeGUI.getCircle().setFill(new ImagePattern(new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/" + nodeGUI.getNode().getType() + "_filled.png")));
+            List<String> visibleNodeTypes = Arrays.asList("EXIT", "REST", "ELEV", "STAI", "INFO", "RETL");
+            if (!visibleNodeTypes.contains(nodeGUI.getNode().getType()))
+                nodeGUI.setVisible(false);
+        }
     }
 
     public void removeNode(NodeGUI nodeGUI) {

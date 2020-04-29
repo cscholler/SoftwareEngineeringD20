@@ -52,14 +52,15 @@ public class ITServiceController implements Initializable {
     @FXML
     private JFXTextField locationText, notesText;
     @FXML
-    private JFXComboBox typeBox;
+    private JFXComboBox<String> typeBox;
 
 	private SearchFields searchFields;
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
         dbCache.cacheAllFromDB();
         sf = new SearchFields(dbCache.getNodeCache());
-        sf.getFields().add(SearchFields.Field.nodeID);
+        sf.getFields().add(SearchFields.Field.longName);
+        sf.getFields().add(SearchFields.Field.shortName);
         sf.populateSearchFields();
 		searchFields = new SearchFields(dbCache.getNodeCache());
 		searchFields.getFields().add(SearchFields.Field.longName);
@@ -99,7 +100,7 @@ public class ITServiceController implements Initializable {
     private void submitClicked() {
         String userName = loginManager.getCurrentUser().getUsername();
         String location = locationText.getText();
-        String type = typeBox.getValue().toString();
+        String type = typeBox.getValue();
         String notes = notesText.getText();
 
         String status = "0";

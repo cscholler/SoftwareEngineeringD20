@@ -48,7 +48,8 @@ public class SanitationRequestController {
     @FXML
     public void initialize(){
         sf = new SearchFields(dbCache.getNodeCache());
-        sf.getFields().add(SearchFields.Field.nodeID);
+        sf.getFields().add(SearchFields.Field.longName);
+        sf.getFields().add(SearchFields.Field.shortName);
         sf.populateSearchFields();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
     }
@@ -71,7 +72,7 @@ public class SanitationRequestController {
     @FXML
     public void handleSubmitButton() throws IOException {
         String subject = subjectText.getText();
-        String location = locationText.getText();
+        String location = sf.getNode(locationText.getText()).getID();
         String requestType = reqTypeText.getPromptText();
         String additionalNotes = addNotesText.getText();
 

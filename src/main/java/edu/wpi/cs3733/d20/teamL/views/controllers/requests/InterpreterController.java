@@ -57,7 +57,8 @@ public class InterpreterController implements Initializable {
         dbCache.cacheAllFromDB();
 
         sf = new SearchFields(dbCache.getNodeCache());
-        sf.getFields().add(SearchFields.Field.nodeID);
+        sf.getFields().add(SearchFields.Field.longName);
+        sf.getFields().add(SearchFields.Field.shortName);
         sf.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
@@ -87,7 +88,7 @@ public class InterpreterController implements Initializable {
         } else if (e.getSource() == btnSubmit){
             String interpreterType = interpType.getText();
             String patientID = patientIDText.getText();
-            String roomNumber = roomNumText.getText();
+            String roomNumber = sf.getNode(roomNumText.getText()).getID();
             String additionalInfo = additionalText.getText();
 
 
