@@ -27,9 +27,8 @@
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints maxHeight="110.60001373291016" minHeight="0.0" prefHeight="45.59999006986618" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="570.133321762085" minHeight="10.0" prefHeight="270.20000993013383" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="570.133321762085" minHeight="10.0" prefHeight="157.1999938964844" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="268.4000061035157" minHeight="0.0" prefHeight="268.4000061035157" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="570.133321762085" minHeight="10.0" prefHeight="448.3005737304687" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="570.133321762085" minHeight="10.0" prefHeight="161.69942626953127" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
                 <VBox alignment="CENTER" prefHeight="233.0" prefWidth="1280.0" GridPane.rowIndex="1">
@@ -81,19 +80,14 @@
                         <Insets left="10.0" top="10.0" />
                     </padding>
                 </Label>
-            <Label alignment="CENTER" prefHeight="126.0" prefWidth="730.0" text="OR" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+            <JFXButton fx:id="btnMap1" alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" onAction="#mapBtnClicked" prefHeight="123.0" prefWidth="212.0" style="-fx-background-color: #0d2e57; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-color: ffffff; -fx-border-width: 8;" text="MAP" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                <font>
-                  <Font name="System Bold" size="86.0" />
+                  <Font name="System Bold" size="50.0" />
                </font>
-            </Label>
-                <JFXButton fx:id="btnMap" alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" onAction="#mapBtnClicked" prefHeight="168.0" prefWidth="602.0" style="-fx-background-color: #0d2e57; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-color: ffffff; -fx-border-width: 8;" text="Go to the Map" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="3">
-                    <font>
-                        <Font name="System Bold" size="71.0" />
-                    </font>
-                    <opaqueInsets>
-                        <Insets />
-                    </opaqueInsets>
-                </JFXButton>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </JFXButton>
             </children>
         </GridPane>
     </children>

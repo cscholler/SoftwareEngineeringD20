@@ -48,7 +48,8 @@ public class GiftCheckoutController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         sf = new SearchFields(cache.getNodeCache());
-        sf.getFields().add(SearchFields.Field.nodeID);
+        sf.getFields().add(SearchFields.Field.longName);
+        sf.getFields().add(SearchFields.Field.shortName);
         sf.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
@@ -81,7 +82,7 @@ public class GiftCheckoutController implements Initializable {
         String message = messageText.getText();
         String patientFName = patFNameText.getText();
         String patientLName = patLNameText.getText();
-        String roomNum = roomNumText.getText();
+        String roomNum = sf.getNode(roomNumText.getText()).getID();
         String additionalInfo = addInfoText.getText();
 
         // Status codes-- 0: pending, 1: approved, 2: delivered, 3: denied,
@@ -96,7 +97,7 @@ public class GiftCheckoutController implements Initializable {
         //TODO: add more verification checks
         int rows = 0;
 
-        rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_GIFT_DELIVERY_REQUEST, new ArrayList<>(Arrays.asList(patientID, "Bob", request_username, null, cart.get(0).getId(), cart.get(1).getId(), cart.get(2).getId(), message, additionalInfo, status, dateAndTime))));
+        rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_GIFT_DELIVERY_REQUEST, new ArrayList<>(Arrays.asList(patientID, loginManager.getCurrentUser().getUsername(), request_username, roomNum, cart.get(0).getId(), cart.get(1).getId(), cart.get(2).getId(), message, additionalInfo, status, dateAndTime))));
 
         formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_MEDICATION_REQUESTS)));
         if (rows == 0) {

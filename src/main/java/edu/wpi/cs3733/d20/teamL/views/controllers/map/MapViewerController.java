@@ -15,9 +15,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -79,7 +81,7 @@ public class MapViewerController {
         cache.cacheAllFromDB();
 
         map.setEditable(false);
-        map.setHighLightColor(Color.BLUE);
+        map.setHighLightColor(Color.GOLD);
         btnNavigate.setDisableVisualFocus(true);
 
         Building startBuilding = new Building("Faulkner");
@@ -96,7 +98,7 @@ public class MapViewerController {
             newButton.setOnAction(this::handleFloor);
             newButton.getStyleClass().add("floor-buttons");
 
-            //floorSelector.getChildren().add(1, newButton);
+            floorSelector.getChildren().add(1, newButton);
         }
 
         map.setZoomLevel(0.65);
@@ -169,11 +171,29 @@ public class MapViewerController {
         }
     }
 
+    @FXML
+    private void showLegend() {
+        try {
+            Parent root = loaderHelper.getFXMLLoader("keyPopUp").load();
+            loaderHelper.setupPopup(new Stage(), new Scene(root));
+        } catch (IOException ex) {
+            log.error("Couldn't load keyPopUp.fxml", ex);
+        }
+    }
+
     private String highlightSourceToDestination(Node source, Node destination) {
         map.getSelector().clear();
 
-        path = pathfinderService.pathfind(map.getBuilding(), source, destination);
+        if(!path.getPathNodes().isEmpty()) {
+            NodeGUI start = map.getNodeGUI(path.getPathNodes().get(0));
+            NodeGUI end = map.getNodeGUI(path.getPathNodes().get(path.getPathNodes().size()-1));
 
+            map.resetNodeVisibility(start);
+            map.resetNodeVisibility(end);
+        }
+
+
+        path = pathfinderService.pathfind(map.getBuilding(), source, destination);
         highLightPath();
 
         ArrayList<String> message = path.generateTextMessage();
@@ -207,11 +227,11 @@ public class MapViewerController {
 
         if (start != null) {
             start.setVisible(true);
-            labelNode(start, new Label("Start"));
+            start.getCircle().setFill(new ImagePattern(new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/START_filled.png")));
         }
         if (end != null) {
             end.setVisible(true);
-            labelNode(end, new Label("Destination"));
+            end.getCircle().setFill(new ImagePattern(new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/END_filled.png")));
         }
     }
 
@@ -289,5 +309,13 @@ public class MapViewerController {
                     floorButton.getStyleClass().add("selected-floor");
             }
         }
+    }
+    @FXML
+    private void clearSource(ActionEvent actionEvent) {
+        startingPoint.clear();
+    }
+    @FXML
+    private void clearDest(ActionEvent actionEvent) {
+        destination.clear();
     }
 }

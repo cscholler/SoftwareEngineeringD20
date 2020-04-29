@@ -59,14 +59,11 @@ public class ITServiceController implements Initializable {
 
         dbCache.cacheAllFromDB();
         sf = new SearchFields(dbCache.getNodeCache());
-        sf.getFields().add(SearchFields.Field.nodeID);
+        sf.getFields().add(SearchFields.Field.longName);
+        sf.getFields().add(SearchFields.Field.shortName);
         sf.populateSearchFields();
 
-		SearchFields searchFields = new SearchFields(dbCache.getNodeCache());
-		searchFields.getFields().add(SearchFields.Field.longName);
-		searchFields.getFields().add(SearchFields.Field.shortName);
-		searchFields.populateSearchFields();
-		autoCompletePopup.getSuggestions().addAll(searchFields.getSuggestions());
+        autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
 
         typeBox.setPromptText("Request Type:");
         typeBox.setItems(options);
@@ -99,7 +96,7 @@ public class ITServiceController implements Initializable {
     @FXML
     private void submitClicked() {
         String userName = loginManager.getCurrentUser().getUsername();
-        String location = locationText.getText();
+        String location = sf.getNode(locationText.getText()).getID();
         String type = typeBox.getValue().toString();
         String notes = notesText.getText();
 
