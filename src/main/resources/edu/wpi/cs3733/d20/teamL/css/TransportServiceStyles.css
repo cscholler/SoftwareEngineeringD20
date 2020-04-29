@@ -5,3 +5,15 @@
     -fx-pref-width: 250;
 }
 
+.fieldLabel {
+    -fx-text-fill: white;
+    -fx-font-size: 30;
+}
+
+.combo-box > .cell {
+    -fx-text-fill: black;
+}
+
+.jfx-combo-box {
+    -fx-prompt-text-fill: black;
+}

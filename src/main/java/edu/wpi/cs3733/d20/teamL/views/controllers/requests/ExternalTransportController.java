@@ -56,7 +56,6 @@ public class ExternalTransportController implements Initializable {
         autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
 
-        transportSelector.setValue("Type of Transport");
         transportSelector.setItems(transportOptions);
     }
 
