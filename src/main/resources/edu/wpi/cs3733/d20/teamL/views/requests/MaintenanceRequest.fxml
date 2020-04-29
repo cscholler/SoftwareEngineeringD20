@@ -9,39 +9,47 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="629.0" prefWidth="946.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.MaintenanceRequestController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.MaintenanceRequestController">
    <top>
-      <Label styleClass="title" text="Maintenance Request" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" styleClass="title-background" BorderPane.alignment="CENTER">
          <BorderPane.margin>
-            <Insets bottom="10.0" top="10.0" />
-         </BorderPane.margin></Label>
+            <Insets bottom="10.0" />
+         </BorderPane.margin>
+         <children>
+            <Label styleClass="title" text="Maintenance Request" />
+         </children>
+      </HBox>
    </top>
    <center>
-      <VBox alignment="TOP_CENTER" maxWidth="550.0" spacing="20.0" BorderPane.alignment="TOP_CENTER">
+      <VBox maxWidth="550.0" spacing="75.0" BorderPane.alignment="CENTER">
          <children>
             <VBox styleClass="field-box">
                <children>
-                  <Label text="Location" />
-                  <JFXTextField fx:id="location" maxWidth="200.0" onKeyTyped="#autocomplete" />
+                  <Label text="Location:" />
+                  <JFXTextField fx:id="location" maxWidth="200.0" onKeyTyped="#autocomplete" promptText="Enter Location..." style="-fx-prompt-text-fill: gray;" />
+               </children>
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
+            </VBox>
+            <VBox styleClass="field-box">
+               <children>
+                  <Label text="Urgency:" />
+                  <JFXComboBox fx:id="urgency" prefHeight="40.0" prefWidth="200.0" promptText="Select Urgency Level" styleClass="maintenanceComboBox" />
                </children>
             </VBox>
             <VBox styleClass="field-box">
                <children>
-                  <Label text="Urgency" />
-                  <JFXComboBox fx:id="urgency" promptText="Select Urgency Level" />
+                  <Label text="Maintenance Type:" />
+                  <JFXComboBox fx:id="type" prefHeight="40.0" prefWidth="200.0" promptText="Select Type" styleClass="maintenanceComboBox" />
                </children>
             </VBox>
             <VBox styleClass="field-box">
                <children>
-                  <Label text="Maintenance Type" />
-                  <JFXComboBox fx:id="type" promptText="Select Type" />
-               </children>
-            </VBox>
-            <VBox styleClass="field-box">
-               <children>
-                  <Label text="Description" />
-                  <JFXTextField fx:id="description" maxWidth="500.0" styleClass="text-area" />
+                  <Label text="Description:" />
+                  <JFXTextField fx:id="description" alignment="TOP_LEFT" maxWidth="500.0" promptText="Enter Discription..." style="-fx-prompt-text-fill: gray;" styleClass="text-area" />
                </children>
             </VBox>
          </children>
@@ -59,8 +67,14 @@
          <children>
             <HBox alignment="CENTER" prefWidth="200.0" spacing="100.0">
                <children>
-                  <JFXButton onAction="#back" style="-fx-background-color: grey;" text="Back" />
-                  <JFXButton onAction="#submit" text="Submit" />
+                  <JFXButton onAction="#back" text="Back">
+                     <font>
+                        <Font size="20.0" />
+                     </font></JFXButton>
+                  <JFXButton onAction="#submit" text="Submit">
+                     <font>
+                        <Font size="20.0" />
+                     </font></JFXButton>
                </children>
             </HBox>
             <Label fx:id="error" styleClass="error-label" text="Submission Failed" visible="false" />
