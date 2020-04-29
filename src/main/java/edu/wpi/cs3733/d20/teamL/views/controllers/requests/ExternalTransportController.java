@@ -74,7 +74,7 @@ public class ExternalTransportController implements Initializable {
         String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
         int rows = 0;
         if (!(start.isEmpty() || end.isEmpty() || type.isEmpty())) {
-            rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST, new ArrayList<>(Arrays.asList(null, manager.getCurrentUser().getUsername(), null, start, "Inhospital Transport", type, end, status, dateAndTime))));
+            rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST, new ArrayList<>(Arrays.asList(null, manager.getCurrentUser().getUsername(), null, start, "external_transportation", type, end, status, dateAndTime))));
         }
 
         if (rows == 0) {

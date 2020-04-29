@@ -96,7 +96,7 @@ public class SecurityRequestController {
         } else {
 
             int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
-                    new ArrayList<>(Arrays.asList(null, null, manager.getCurrentUser().getUsername(), location, "Security", null, concatenatedNotes, status, dateAndTime)))));
+                    new ArrayList<>(Arrays.asList(null, manager.getCurrentUser().getUsername(), null, location, "security", null, concatenatedNotes, status, dateAndTime)))));
 
             if(rows == 0) {
                 lblSubmitted.setText("Submission Failed!                        ");
