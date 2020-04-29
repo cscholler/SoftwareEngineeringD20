@@ -75,7 +75,7 @@ public class MaintenanceRequestController implements Initializable {
             String notes = urgency.getSelectionModel().getSelectedItem().toString() + "|" + description.getText();
             String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
 
-            ArrayList<String> params = new ArrayList<>(Arrays.asList(null, loginManager.getCurrentUser().getUsername(), "maintenance", location.getText(),
+            ArrayList<String> params = new ArrayList<>(Arrays.asList(null, loginManager.getCurrentUser().getUsername(), null, location.getText(),
                     "maintenance", type.getSelectionModel().getSelectedItem().toString(), notes, "0", dateAndTime));
             int rows = dbService.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST, params));
 

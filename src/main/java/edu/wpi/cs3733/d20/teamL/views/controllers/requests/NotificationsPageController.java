@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 
 import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
+import edu.wpi.cs3733.d20.teamL.services.users.IRequestHandlerService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -43,10 +44,6 @@ public class NotificationsPageController implements Initializable {
 	private MedicationRequest currentMedicationRequest;
 	private GiftDeliveryRequest currentGiftRequest;
 	private ServiceRequest currentServiceRequest;
-	@Inject
-	private IDatabaseService db;
-	@Inject
-	private ILoginManager loginManager;
 	@FXML
     private JFXButton btnBack, btnCompleted, btnDecline;
     @FXML
@@ -58,10 +55,14 @@ public class NotificationsPageController implements Initializable {
     @FXML
     private Label reqMessage, addInfo;
     @FXML
-    HBox buttonBox;
-
+    private HBox buttonBox;
+	@Inject
+	private IDatabaseService db;
+	@Inject
+	private ILoginManager loginManager;
+	@Inject
+	private IRequestHandlerService reqHandler;
     private User user;
-    private String doctorUsername;
     private boolean meds;
     JFXButton approve = new JFXButton();
     JFXButton assign = new JFXButton();
@@ -77,7 +78,7 @@ public class NotificationsPageController implements Initializable {
         assign = btnCompleted;
 		user = loginManager.getCurrentUser();
 
-		if(user.isManager()){
+		if (user.isManager()){
 			buttonBox.getChildren().remove(btnCompleted);
 			buttonBox.getChildren().add(approve);
 			approve.setText("Approve");
@@ -256,7 +257,7 @@ public class NotificationsPageController implements Initializable {
 
 				for (ArrayList<String> row : requests) {
 					String patientID = row.get(1);
-					String patientName = getPatientFullName(patientID);
+					String patientName = patientID != null ? getPatientFullName(patientID) : null;
 					serviceReqList.add(new ServiceRequest(row.get(0), row.get(1), patientName, row.get(2), row.get(3), row.get(4), row.get(5), row.get(6), row.get(7), row.get(8), row.get(9)));
 				}
 				serviceReqs.getItems().addAll(serviceReqList);
@@ -275,6 +276,8 @@ public class NotificationsPageController implements Initializable {
         setCurrentMedicationRequest(req);
         try {
 			if (req != null) {
+				reqHandler.setCurrentRequestID(req.getID());
+				reqHandler.setCurrentRequestType("medication");
 				reqMessage.setWrapText(true);
 				addInfo.setWrapText(true);
 				addInfo.setText("Notes: " + req.getNotes());
@@ -308,6 +311,8 @@ public class NotificationsPageController implements Initializable {
 		setCurrentGiftRequest(req);
 		try {
 			if (req != null) {
+				reqHandler.setCurrentRequestID(req.getID());
+				reqHandler.setCurrentRequestType("gift");
 				reqMessage.setWrapText(true);
 				addInfo.setWrapText(true);
 				addInfo.setText("Message: " + req.getMessage() + "\r\n" + "Notes: " + req.getNotes());
@@ -352,13 +357,15 @@ public class NotificationsPageController implements Initializable {
 		setCurrentServiceRequest(req);
 		try {
 			if (req != null) {
+				reqHandler.setCurrentRequestID(req.getID());
+				reqHandler.setCurrentRequestType("service");
 				reqMessage.setWrapText(true);
 				addInfo.setWrapText(true);
 				addInfo.setText("Notes: " + req.getNotes());
 				String message;
 				if (user.isManager()) {
 					log.info("logged in as manager");
-					message = getUserFullName(req.getRequestUsername()) + " requests " + (req.getType() != null ? req.getType() : "") + " " + req.getService() + "service " +
+					message = getUserFullName(req.getRequestUsername()) + " requests a " + (req.getType() != null ? req.getType() : "") + " " + req.getService() + " service " +
 							((req.getPatientName() != null && req.getPatientID() != null) ? "for " + req.getPatientName() + "(" + req.getPatientID() + ")" : "") +
 							(req.getLocation() != null ? " at location " + req.getLocation() : "");
 				} else {
@@ -406,22 +413,63 @@ public class NotificationsPageController implements Initializable {
 			buttonBox.getChildren().add(assign);
 			assign.setText("Assign");
 			assign.setOnAction(assignTask);
-			String status = "1";
-			db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_STATUS, new ArrayList<>(Arrays.asList(status, getCurrentMedicationRequest().getID()))));
-			getCurrentMedicationRequest().setStatus(status);
+		}
+		switch (reqHandler.getCurrentRequestType()) {
+			case "medication": {
+				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_STATUS, new ArrayList<>(Arrays.asList("1", getCurrentMedicationRequest().getID()))));
+				getCurrentMedicationRequest().setStatus("1");
+			}
+			break;
+			case "gift": {
+				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_GIFT_DELIVERY_REQUEST_STATUS, new ArrayList<>(Arrays.asList("1", getCurrentMedicationRequest().getID()))));
+				getCurrentGiftRequest().setStatus("1");
+			}
+			break;
+			case "service": {
+				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_SERVICE_REQUEST_STATUS, new ArrayList<>(Arrays.asList("1", getCurrentMedicationRequest().getID()))));
+				getCurrentServiceRequest().setStatus("1");
+			}
 		}
 	};
 
     @FXML
-	private void btnCompletedClicked(){
-
+	private void btnCompletedClicked() {
+		switch (reqHandler.getCurrentRequestType()) {
+			case "medication": {
+				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_STATUS, new ArrayList<>(Arrays.asList("2", getCurrentMedicationRequest().getID()))));
+				getCurrentMedicationRequest().setStatus("2");
+			}
+			break;
+			case "gift": {
+				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_GIFT_DELIVERY_REQUEST_STATUS, new ArrayList<>(Arrays.asList("2", getCurrentMedicationRequest().getID()))));
+				getCurrentGiftRequest().setStatus("2");
+			}
+			break;
+			case "service": {
+				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_SERVICE_REQUEST_STATUS, new ArrayList<>(Arrays.asList("2", getCurrentMedicationRequest().getID()))));
+				getCurrentServiceRequest().setStatus("2");
+			}
+		}
 	}
 
     @FXML
     private void btnDeclineClicked() {
-        String status = "3";
-        db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_STATUS, new ArrayList<>(Arrays.asList(status, getCurrentMedicationRequest().getID()))));
-        getCurrentMedicationRequest().setStatus(status);
+		switch (reqHandler.getCurrentRequestType()) {
+			case "medication": {
+				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_STATUS, new ArrayList<>(Arrays.asList("3", getCurrentMedicationRequest().getID()))));
+				getCurrentMedicationRequest().setStatus("3");
+			}
+			break;
+			case "gift": {
+				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_GIFT_DELIVERY_REQUEST_STATUS, new ArrayList<>(Arrays.asList("3", getCurrentMedicationRequest().getID()))));
+				getCurrentGiftRequest().setStatus("3");
+			}
+			break;
+			case "service": {
+				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_SERVICE_REQUEST_STATUS, new ArrayList<>(Arrays.asList("3", getCurrentMedicationRequest().getID()))));
+				getCurrentServiceRequest().setStatus("3");
+			}
+		}
     }
 
     public MedicationRequest getCurrentMedicationRequest() {

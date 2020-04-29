@@ -29,7 +29,7 @@ public class ServiceRequest {
 		this.dateAndTime = dateAndTime;
 	}
 
-	public String getId() {
+	public String getID() {
 		return id;
 	}
 
