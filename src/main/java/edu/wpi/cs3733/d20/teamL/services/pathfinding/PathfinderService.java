@@ -25,6 +25,11 @@ public class PathfinderService implements IPathfinderService {
             shortestPath = p_shortestPath;
         }
 
+        public NodeEntry (Node n, Node p) {
+            node = n;
+            parent = p;
+        }
+
         public double absoluteDist() {
             if (Integer.MAX_VALUE - shortestPath < distFromDest) return Integer.MAX_VALUE;
 
@@ -37,9 +42,11 @@ public class PathfinderService implements IPathfinderService {
     private Map<Node, NodeEntry> priorityQueueKey = new HashMap<>();
 
     private boolean hasCoords = false;
+
     public enum PathfindingMethod {
         Astar, BFS, DFS
-    };
+    }
+
 
     private PathfindingMethod pathfindingMethod = PathfindingMethod.Astar;
 
@@ -53,14 +60,14 @@ public class PathfinderService implements IPathfinderService {
      */
     public Path pathfind(Graph graph, Node source, Node destination) {
         switch (pathfindingMethod) {
+            default:
             case Astar:
                 return aStarPathFind(graph, source, destination);
             case BFS:
-                return null;
+                return breadthFirstSearch(graph, source, destination);
             case DFS:
                 return depthFirstFind(graph, source, destination);
-            default:
-                return aStarPathFind(graph, source, destination);
+
         }
     }
 
@@ -84,21 +91,19 @@ public class PathfinderService implements IPathfinderService {
         // Calculate the distance of each node from the destination if coordinates are in the data
         if (hasCoords) {
             for (NodeEntry entry : priorityQueue) {
-                double x1 = entry.node.getPosition().getX();
-                double y1 = entry.node.getPosition().getY();
-                double x2 = destination.getPosition().getX();
-                double y2 = destination.getPosition().getY();
+                double twoDimensionalDistance = entry.node.getPosition().distance(destination.getPosition());
 
-                int distance = (int) Math.round(Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
-
-                entry.distFromDest = distance;
+                entry.distFromDest = twoDimensionalDistance + Math.abs(entry.node.getFloor() - destination.getFloor()) * 100;
             }
         }
 
         // Start from the source Node and recursively update the priority Queue
         NodeEntry destNode = aStarPathFindHelper(destination);
 
-        return Path.listToPath(entryToList(destNode));
+        if (destNode != null)
+            return Path.listToPath(entryToList(destNode));
+
+        return null;
     }
 
     private NodeEntry aStarPathFindHelper(Node destination) {
@@ -137,21 +142,20 @@ public class PathfinderService implements IPathfinderService {
 
         List<Node> path = new LinkedList<>();
         LinkedList<Node> visitedNodes = new LinkedList<>();
-        Stack<Node> stack = new Stack<Node>();
+        LinkedList<Node> stack = new LinkedList<>();
         stack.push(source);
 
         //Loops until the stack is empty
         while (!stack.isEmpty()) {
 
-            Node currentNode = stack.pop();
-
+            Node currentNode = stack.removeFirst();
             //Mark destination is visited if the node popped is the destination node
             if (destination == currentNode) {
                 path.add(destination);
                 break;
             }
             //If the node is not in the list of visited nodes, add it to the list
-            if (visitedNodes.contains(currentNode) == false) {
+            if (!visitedNodes.contains(currentNode)) {
 
                 visitedNodes.add(currentNode);
                 path.add(currentNode);
@@ -165,7 +169,7 @@ public class PathfinderService implements IPathfinderService {
 
                         if(!visitedNodes.contains(next)) {
 
-                            stack.push(next);
+                            stack.add(next);
                         }
                     }
                 }
@@ -218,12 +222,83 @@ public class PathfinderService implements IPathfinderService {
         nodeEntry.shortestPath = newShortestPath;
         priorityQueue.add(nodeEntry);
     }
-
+    @Override
     public PathfindingMethod getPathfindingMethod() {
         return pathfindingMethod;
     }
 
+    @Override
     public void setPathfindingMethod(PathfindingMethod pathfindingMethod) {
         this.pathfindingMethod = pathfindingMethod;
     }
+
+    /**
+     * Finds a path between source and destination nodes using a breadth first search algorithm
+     * @param graph the graph of nodes
+     * @param source the starting node
+     * @param destination the destination node
+     * @return
+     */
+    private Path breadthFirstSearch(Graph graph, Node source, Node destination) {
+
+        HashMap<Node, NodeEntry> nodes = new HashMap<>();
+
+        List<Node> path = new ArrayList<>();
+        LinkedList<Node> queue = new LinkedList<>();
+        LinkedList<Node> visited = new LinkedList<>();
+
+        for( Node n : graph.getNodes()) {
+            nodes.put(n, new NodeEntry(n));
+        }
+
+        queue.add(source);
+        boolean finished = false;
+        Node parent = null;
+        nodes.get(source).parent = parent;
+
+        while (!queue.isEmpty() && !finished) {
+            Node current = queue.removeFirst();
+
+            if (destination == current) {
+                finished = true;
+
+                NodeEntry n = nodes.get(current);
+
+                while (n.parent != null) {
+                    path.add(n.node);
+
+                    for (Node ne : visited) {
+                        if (ne == n.parent) {
+                            n = nodes.get(ne);
+                            break;
+                        }
+                    }
+                }
+
+                path.add(n.node);
+
+            }
+
+            if (!visited.contains(current)) {
+                visited.add(current);
+
+                Collection<Node> neighbors = current.getNeighbors();
+
+                if (!neighbors.isEmpty()) {
+                    parent = current;
+                    for (Node n : neighbors) {
+                        if (!visited.contains(n)) {
+                            queue.add(n);
+                            nodes.get(n).parent = parent;
+                        }
+                    }
+                }
+            }
+        }
+
+        Collections.reverse(path);
+
+        return Path.listToPath(path);
+    }
 }
+

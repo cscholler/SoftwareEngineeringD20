@@ -3,6 +3,16 @@ package edu.wpi.cs3733.d20.teamL.entities;
 public class Floor extends Graph {
     private int floor = 0;
 
+    public Floor() {
+        super();
+    }
+
+    public Floor(int floor) {
+        super();
+
+        setFloor(floor);
+    }
+
     /**
      * Gets the floor this floor graph is currently set to. Any node added must belong to this floor.
      *

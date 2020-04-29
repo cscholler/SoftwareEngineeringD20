@@ -7,10 +7,14 @@
     -fx-font-family: "Roboto";
 }
 
-.button {
-   -fx-font-family: Roboto;
-    -fx-font-size: 14;
+
+.button{
     -fx-background-radius: 5px;
+    -fx-padding: 10;
+    -fx-background-color: #405784;
+    -fx-text-fill: white;
+    -fx-pref-width: 100;
+    -jfx-button-type: RAISED;
 }
 
 .notification-list {
@@ -18,3 +22,12 @@
     -fx-padding: 10;
 }
 
+.check-box{
+    -fx-text-fill: white;
+    -fx-font-size: 14;
+}
+
+
+.topBorder {
+    -fx-background-color: #00032E;
+}

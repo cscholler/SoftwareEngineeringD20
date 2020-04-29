@@ -135,7 +135,7 @@ public class Graph implements Iterable<Node> {
     public String getUniqueNodeID(Node node) {
         String team = "L";
         String type = node.getType();
-        String shaft = node.getShaft();
+        String shaft = String.valueOf(node.getShaft());
         String floor = (node.getFloor() < 10 ? "0" : "") + node.getFloor();
 
         String id = "new_node";

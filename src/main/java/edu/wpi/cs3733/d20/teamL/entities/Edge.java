@@ -20,7 +20,7 @@ public class Edge {
     }
 
     public double getLength() {
-        return source.getPosition().distance(destination.getPosition());
+        return source.getPosition().distance(destination.getPosition()) + (Math.abs(source.getFloor() - destination.getFloor()) * 100);
     }
 
     public Node getDestination() {

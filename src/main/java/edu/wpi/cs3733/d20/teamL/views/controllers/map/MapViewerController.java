@@ -6,15 +6,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import edu.wpi.cs3733.d20.teamL.entities.Building;
-import edu.wpi.cs3733.d20.teamL.services.IMessengerService;
+import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
-import javafx.event.Event;
 import javafx.event.ActionEvent;
+import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -30,9 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
-import edu.wpi.cs3733.d20.teamL.entities.Graph;
 import edu.wpi.cs3733.d20.teamL.entities.Path;
-import edu.wpi.cs3733.d20.teamL.services.pathfinding.PathfinderService;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
@@ -48,40 +47,45 @@ public class MapViewerController {
     JFXTextField startingPoint, destination;
 
     @FXML
-    JFXButton btnNavigate;
+    JFXButton btnNavigate, floorUp, floorDown;
 
     @FXML
     ScrollPane scroll;
 
     @FXML
-    VBox instructions, floorSelector;
+    VBox instructions;
+    @FXML
+	VBox floorSelector;
 
     @FXML
-    JFXButton btnTextMe;
+    JFXButton btnTextMe, btnQR;
 
     @Inject
     private IDatabaseCache cache;
     @Inject
     private IPathfinderService pathfinderService;
     @Inject
+    private IMessengerService messenger;
+    @Inject
     private IMessengerService messengerService;
 
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    private Path path = new Path();
 
     @FXML
     private void initialize() {
         cache.cacheAllFromDB();
 
         map.setEditable(false);
+        map.setHighLightColor(Color.BLUE);
         btnNavigate.setDisableVisualFocus(true);
 
         Building startBuilding = new Building("Faulkner");
         startBuilding.addAllNodes(cache.getNodeCache());
         map.setBuilding(startBuilding);
-
-        map.setFloor(2);
+        setFloor(2);
 
         // Add floor buttons
         for (int i = 1; i <= startBuilding.getMaxFloor(); i++) {
@@ -92,13 +96,12 @@ public class MapViewerController {
             newButton.setOnAction(this::handleFloor);
             newButton.getStyleClass().add("floor-buttons");
 
-            floorSelector.getChildren().add(1, newButton);
+            //floorSelector.getChildren().add(1, newButton);
         }
 
-        map.setZoomLevel(1);
+        map.setZoomLevel(0.65);
         map.init();
-        map.getScroller().setVvalue(0.5);
-        map.getScroller().setHvalue(0.5);
+
 
         sf = new SearchFields(cache.getNodeCache());
         sf.getFields().addAll(Arrays.asList(SearchFields.Field.shortName, SearchFields.Field.longName));
@@ -140,6 +143,7 @@ public class MapViewerController {
             String directions = highlightSourceToDestination(startNode, destNode);
             messengerService.setDirections(directions);
 
+            messenger.setDirections(directions);
             Label directionsLabel = new Label();
             directionsLabel.setFont(new Font(14));
             directionsLabel.setText(directions);
@@ -151,6 +155,8 @@ public class MapViewerController {
             scroll.setVisible(true);
             btnTextMe.setDisable(false);
             btnTextMe.setVisible(true);
+            btnQR.setDisable(false);
+            btnQR.setVisible(true);
         }
     }
 
@@ -166,27 +172,9 @@ public class MapViewerController {
     private String highlightSourceToDestination(Node source, Node destination) {
         map.getSelector().clear();
 
-        Path path = pathfinderService.pathfind(map.getBuilding(), source, destination);
-        Iterator<Node> nodeIterator = path.iterator();
+        path = pathfinderService.pathfind(map.getBuilding(), source, destination);
 
-        // Loop through each node in the path and select it as well as the edge pointing to the next node
-        Node currentNode = nodeIterator.next();
-        Node nextNode;
-
-        while (nodeIterator.hasNext()) {
-            nextNode = nodeIterator.next();
-            NodeGUI nodeGUI = map.getNodeGUI(currentNode);
-            EdgeGUI edgeGUI = map.getEdgeGUI(currentNode.getEdge(nextNode));
-
-            map.getSelector().add(edgeGUI);
-
-            currentNode = nextNode;
-        }
-
-        // The above loop does not highlight the last node, this does that
-        NodeGUI nodeGUI = map.getNodeGUI(currentNode);
-        map.getSelector().add(nodeGUI);
-        nodeGUI.setHighlighted(true);
+        highLightPath();
 
         ArrayList<String> message = path.generateTextMessage();
         StringBuilder builder = new StringBuilder();
@@ -196,6 +184,44 @@ public class MapViewerController {
         }
 
         return builder.toString();
+    }
+
+    private void highLightPath() {
+        Iterator<Node> nodeIterator = path.iterator();
+
+        // Loop through each node in the path and select it as well as the edge pointing to the next node
+        Node currentNode = nodeIterator.next();
+        Node nextNode;
+
+        while (nodeIterator.hasNext()) {
+            nextNode = nodeIterator.next();
+            EdgeGUI edgeGUI = map.getEdgeGUI(currentNode.getEdge(nextNode));
+
+            if (edgeGUI != null) map.getSelector().add(edgeGUI);
+
+            currentNode = nextNode;
+        }
+
+        NodeGUI start = map.getNodeGUI(path.getPathNodes().get(0));
+        NodeGUI end = map.getNodeGUI(path.getPathNodes().get(path.getPathNodes().size() - 1));
+
+        if (start != null) {
+            start.setVisible(true);
+            labelNode(start, new Label("Start"));
+        }
+        if (end != null) {
+            end.setVisible(true);
+            labelNode(end, new Label("Destination"));
+        }
+    }
+
+    private void labelNode(NodeGUI nodeGUI, Label label) {
+        AnchorPane parent = (AnchorPane) nodeGUI.getParent();
+
+        parent.getChildren().add(label);
+
+        label.setLayoutX(nodeGUI.getLayoutX());
+        label.setLayoutY(nodeGUI.getLayoutY());
     }
 
     public MapPane getMap() {
@@ -213,9 +239,55 @@ public class MapViewerController {
     }
 
     @FXML
-    public void handleFloor(ActionEvent event) {
-        JFXButton button = (JFXButton) event.getSource();
+    public void genQR(){
+        try {
+            Parent root = loaderHelper.getFXMLLoader("QRCode").load();
+            loaderHelper.setupPopup(new Stage(), new Scene(root));
+        } catch (IOException e) {
+            log.error("Encountered IOException", e);
+        }
+    }
 
-        map.setFloor(Integer.parseInt(button.getText()));
+    @FXML
+    public void handleFloor(ActionEvent event) {
+        JFXButton sourceButton = (JFXButton) event.getSource();
+
+        if (event.getSource() == floorUp && map.getFloor() < 5) {
+            setFloor(map.getFloor() + 1);
+        } else if (event.getSource() == floorDown) {
+            setFloor(map.getFloor() - 1);
+        } else if (MapEditorController.isNumeric(sourceButton.getText())) {
+            setFloor(Integer.parseInt(sourceButton.getText()));
+        }
+
+        if (!path.getPathNodes().isEmpty()) highLightPath();
+    }
+
+    @FXML
+    private void zoomIn() {
+        map.setZoomLevel(map.getZoomLevel() * 1.2);
+    }
+
+    @FXML
+    private void zoomOut() {
+        map.setZoomLevel(map.getZoomLevel() * 0.8);
+    }
+
+    public void setFloor(int newFloor) {
+        map.setFloor(Math.max(1, Math.min(newFloor, map.getBuilding().getMaxFloor())));
+
+        for (javafx.scene.Node node : floorSelector.getChildren()) {
+            JFXButton floorButton = (JFXButton) node;
+            if (!floorButton.getText().equals(String.valueOf(map.getFloor()))) {
+                if (floorButton.getStyleClass().contains("selected-floor")) {
+                    floorButton.getStyleClass().clear();
+                    floorButton.getStyleClass().add("button");
+                    floorButton.getStyleClass().add("floor-buttons");
+                }
+            } else {
+                if (!floorButton.getStyleClass().contains("selected-floor"))
+                    floorButton.getStyleClass().add("selected-floor");
+            }
+        }
     }
 }

@@ -17,6 +17,7 @@ class PathfinderServiceTest {
     public void createGraph() throws Exception {
         PathfinderService pathfinderService = new PathfinderService();
         pathfinderService.setPathfindingMethod(PathfinderService.PathfindingMethod.Astar);
+
         Graph newGraph = new Graph();
         Node n1 = new Node("n1", new Point2D(1, 2), 1, "A");
         Node n2 = new Node("n2", new Point2D(2, 1), 1, "A");
@@ -55,13 +56,19 @@ class PathfinderServiceTest {
         assertEquals(newGraph.getNode("n9").getNeighbors(), new ArrayList<Node>(Arrays.asList(n1, n2, n4)));
 
         Path path1 = pathfinderService.pathfind(newGraph, n8, n1);
+        for (Node n : path1) {
+            System.out.println(n.getID());
+        }
         assertEquals(2, path1.getLength());
         assertEquals(new ArrayList<Node>(Arrays.asList(n8, n1)), path1.getPathNodes());
         System.out.println(path1.generateTextMessage());
 
         Path path2 = pathfinderService.pathfind(newGraph, n6, n1);
+        for (Node n : path2) {
+            System.out.println(n.getID());
+        }
         assertEquals(4, path2.getLength());
-        assertEquals(new ArrayList<>(Arrays.asList(n6, n9, n1)), path2.getPathNodes());
+        assertEquals(new ArrayList<Node>(Arrays.asList(n6, n9, n1)), path2.getPathNodes());
         System.out.println(path2.generateTextMessage());
     }
 }
