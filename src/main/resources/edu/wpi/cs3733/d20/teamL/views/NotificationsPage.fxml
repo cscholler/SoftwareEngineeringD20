@@ -37,7 +37,7 @@
             <HBox fx:id="buttonBox" alignment="CENTER" prefHeight="74.0" prefWidth="540.0" spacing="50.0">
                <children>
 
-                        <JFXButton fx:id="btnDecline" onAction="#btnDeclineClicked" prefHeight="40.0" prefWidth="175.0" style="-fx-background-color: gray;" text="Decline" textFill="WHITE">
+                        <JFXButton fx:id="btnDecline" minWidth="200.0" onAction="#btnDeclineClicked" prefHeight="40.0" prefWidth="300.0" style="-fx-background-color: gray;" text="Decline" textFill="WHITE">
 
                            <font>
                         <Font size="26.0" />
@@ -47,7 +47,7 @@
                      </HBox.margin>
                   </JFXButton>
 
-                        <JFXButton fx:id="btnCompleted" onAction="#btnCompletedClicked" prefHeight="40.0" prefWidth="175.0" style="-fx-background-color: #0D2E57;" text="Completed" textFill="WHITE">
+                        <JFXButton fx:id="btnCompleted" minWidth="200.0" onAction="#btnCompletedClicked" prefHeight="40.0" prefWidth="300.0" style="-fx-background-color: #0D2E57;" text="Completed" textFill="WHITE">
 
                            <font>
                         <Font size="26.0" />
@@ -98,7 +98,7 @@
       </VBox>
    </top>
    <left>
-      <VBox fx:id="messageBox" alignment="CENTER" prefHeight="200.0" prefWidth="500.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="messageBox" alignment="CENTER" prefHeight="200.0" prefWidth="500.0" BorderPane.alignment="TOP_LEFT">
          <children>
             <Label fx:id="lblMed" text="Medication Requests" textFill="WHITE">
                <VBox.margin>
@@ -108,7 +108,7 @@
                   <Font size="15.0" />
                </font>
             </Label>
-            <JFXListView fx:id="medReqs" onMouseClicked="#displaySelectedMedReq" prefHeight="400.0" prefWidth="163.0" styleClass="notification-list">
+            <JFXListView fx:id="medReqs" minHeight="200.0" onMouseClicked="#displaySelectedMedReq" prefHeight="400.0" prefWidth="163.0" styleClass="notification-list">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -121,7 +121,7 @@
                   <Font size="15.0" />
                </font>
             </Label>
-            <JFXListView fx:id="giftReqs" onMouseClicked="#displaySelectedGiftReq" styleClass="notification-list" />
+            <JFXListView fx:id="giftReqs" minHeight="200.0" onMouseClicked="#displaySelectedGiftReq" styleClass="notification-list" />
             <Label fx:id="lblService" text="Service Requests" textFill="WHITE">
                <VBox.margin>
                   <Insets top="10.0" />
@@ -130,7 +130,7 @@
                   <Font size="15.0" />
                </font>
             </Label>
-            <JFXListView fx:id="serviceReqs" onMouseClicked="#displaySelectedServiceReq" styleClass="notification-list">
+            <JFXListView fx:id="serviceReqs" minHeight="200.0" onMouseClicked="#displaySelectedServiceReq" styleClass="notification-list">
                <VBox.margin>
                   <Insets bottom="20.0" />
                </VBox.margin>
