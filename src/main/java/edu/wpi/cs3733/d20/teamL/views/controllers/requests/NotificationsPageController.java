@@ -325,6 +325,12 @@ public class NotificationsPageController implements Initializable {
 					log.info("logged in as doctor");
 					message = getUserFullName(req.getNurseUsername()) + " requests " + req.getDose() + " of " + req.getMedType() + " for " +
 							req.getPatientName() + "(" + req.getPatientID() +")" + " in room " + req.getRoomNum();
+					if(req.getStatus() == "1"){
+						buttonBox.getChildren().remove(approve);
+						buttonBox.getChildren().add(assign);
+						assign.setText("Assign");
+						assign.setOnAction(assignTask);
+					}
  				} else {
 					log.info("logged in as non doctor");
 					message = doctorName + " has assigned you to " + req.getDose() + " of " + req.getMedType() + " to be delivered to " +
@@ -372,6 +378,12 @@ public class NotificationsPageController implements Initializable {
 					log.info("logged in as manager");
 					message = getUserFullName(req.getRequestUsername()) + " requests " + allGiftsText + "for " +
 							req.getPatientName() + "(" + req.getPatientID() +")" + " in room " + req.getRoomNum();
+					if(req.getStatus() == "1"){
+						buttonBox.getChildren().remove(approve);
+						buttonBox.getChildren().add(assign);
+						assign.setText("Assign");
+						assign.setOnAction(assignTask);
+					}
 				} else {
 					log.info("logged in as gift shop worker");
 					message = "You have been assigned to deliver " + allGiftsText + "to " +
@@ -406,6 +418,12 @@ public class NotificationsPageController implements Initializable {
 					message = getUserFullName(req.getRequestUsername()) + " requests a " + (req.getType() != null ? req.getType() : "") + " " + req.getService() + " service " +
 							((req.getPatientName() != null && req.getPatientID() != null) ? "for " + req.getPatientName() + "(" + req.getPatientID() + ")" : "") +
 							(req.getLocation() != null ? " at location " + req.getLocation() : "");
+					if(req.getStatus() == "1"){
+						buttonBox.getChildren().remove(approve);
+						buttonBox.getChildren().add(assign);
+						assign.setText("Assign");
+						assign.setOnAction(assignTask);
+					}
 				} else {
 					log.info("logged in as service worker");
 					message = "You have been assigned to complete a " + (req.getType() != null ? req.getType() : "") + " " + req.getService() + " service " +
