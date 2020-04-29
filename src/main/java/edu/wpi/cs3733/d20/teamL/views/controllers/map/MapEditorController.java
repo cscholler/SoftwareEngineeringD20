@@ -267,8 +267,8 @@ public class MapEditorController {
 
     @FXML
     private void insertNode() {
-        Node node = new Node(map.getBuilding().getUniqueNodeID(), new Point2D(100, 100), map.getFloor(), map.getBuilding().getName());
-        map.addNode(node);
+        //Node node = new Node(map.getBuilding().getUniqueNodeID(), new Point2D(100, 100), map.getFloor(), map.getBuilding().getName());
+        //map.addNode(node);
     }
 
     @FXML
@@ -396,31 +396,58 @@ public class MapEditorController {
     private void handleAdd(ActionEvent event) {
         // hall, elev, rest, stai, dept, labs, info, conf, exit, retl, serv
 
-        //Node newNode = new Node("not_unique", );
+        Node newNode = new Node("not_unique", new Point2D(hall.getLayoutX(),hall.getLayoutY()), map.getCurrentFloor().getFloor(), (map.getBuilding().getName()));
 
         if (event.getSource() == hall) {
-
+            newNode.setType("HALL");
+            newNode.setLongName("Hall");
+            newNode.setShortName("Hall");
         } else if (event.getSource() == elev) {
-
+            newNode.setType("ELEV");
+            newNode.setLongName("Elevator");
+            newNode.setShortName("Elevator");
         } else if (event.getSource() == rest) {
-
+            newNode.setType("REST");
+            newNode.setLongName("restroom");
+            newNode.setShortName("restroom");
         } else if (event.getSource() == stai) {
-
+            newNode.setType("STAI");
+            newNode.setLongName("stairs");
+            newNode.setShortName("stairs");
         } else if (event.getSource() == dept) {
-
+            newNode.setType("DEPT");
+            newNode.setLongName("New Department Room");
+            newNode.setShortName("Department Room");
         } else if (event.getSource() == labs) {
-
+            newNode.setType("LABS");
+            newNode.setLongName("New Lab");
+            newNode.setShortName("Lab");
         } else if (event.getSource() == info) {
-
+            newNode.setType("INFO");
+            newNode.setLongName("New Informational Room");
+            newNode.setShortName("Informational Room");
         } else if (event.getSource() == conf) {
-
+            newNode.setType("CONF");
+            newNode.setLongName("New Conference Room");
+            newNode.setShortName("Conference Room");
         } else if (event.getSource() == exit) {
-
+            newNode.setType("EXIT");
+            newNode.setLongName("Exit");
+            newNode.setShortName("Exit");
         } else if (event.getSource() == retl) {
-
+            newNode.setType("RETL");
+            newNode.setLongName("New Retail Room");
+            newNode.setShortName("Retail Room");
         } else if (event.getSource() == serv) {
-
+            newNode.setType("SERV");
+            newNode.setLongName("New Service Room");
+            newNode.setShortName("Service Room");
         }
+
+        newNode.setId(map.getCurrentFloor().getUniqueNodeID(newNode));
+        NodeGUI newNodeGUI = map.addNode(newNode);
+        map.setAddingNode(true);
+        map.setTempNode(newNodeGUI);
     }
 
     public void setFloor(int newFloor) {
