@@ -1,17 +1,17 @@
 nodeID,xCoord,yCoord,floor,building,nodeType,longName,shortName
-KHALL00801,1113.0,515.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection K00801,Hallway K0801
 KDEPT00501,1244.0,770.0,1,Brigham & Women's Faulkner Hospital,DEPT,Special testing,Department K0501
+KHALL00801,1113.0,515.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection K00801,Hallway K0801
 KDEPT00301,2243.0,1113.0,1,Brigham & Women's Faulkner Hospital,DEPT,Operation Room,Department K0301
-KHALL00401,1400.0,1113.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 4 Level 1,Hallway K0401
-KDEPT00101,922.0,832.0,1,Brigham & Women's Faulkner Hospital,DEPT,Emergency Department,Department K0101
 KHALL02501,1752.0,1113.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 25 Level 1,Hallway K2501
+KDEPT00101,922.0,832.0,1,Brigham & Women's Faulkner Hospital,DEPT,Emergency Department,Department K0101
+KHALL00401,1400.0,1113.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 4 Level 1,Hallway K0401
 KSTAI00101,1240.0,1080.0,1,Brigham & Women's Faulkner Hospital,STAI,Staircase Intersection 1 Level 1,Stair K0101
 KHALL00601,1400.0,528.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 6 Level 1,Hallway K0601
 KDEPT00701,1257.0,218.0,1,Brigham & Women's Faulkner Hospital,DEPT,Waiting area,Department K0701
-KELEV00X01,1219.0,414.0,1,Brigham & Women's Faulkner Hospital,ELEV,Elevator X Level 1,Elevator 0X01
+KELEV00X01,1219.0,414.0,1,Faulkner,ELEV,Elevator X Level 1,Elevator 0X01
 KHALL02101,1257.0,863.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 21 Level 1,Hallway K2101
-KHALL00201,937.0,832.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 2 Level 1,Hallway K0201
 KHALL02301,1257.0,1101.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 23 Level 1,Hallway K2301
+KHALL00201,937.0,832.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 2 Level 1,Hallway K0201
 KHALL01801,1113.0,586.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 18 Level 1,Hallway K1801
 KHALL01401,1257.0,554.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 14 Level 1,Hallway K1401
 KHALL01601,1257.0,301.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 16 Level 1,Hallway K1601
@@ -19,8 +19,7 @@ KSERV00301,1054.0,502.0,1,Brigham & Women's Faulkner Hospital,SERV,Admitting,Ser
 KREST00201,1113.0,504.0,1,Brigham & Women's Faulkner Hospital,REST,Restroom 2 Level 1,Restroom K0201
 KSERV00101,1388.0,942.0,1,Brigham & Women's Faulkner Hospital,SERV,Linens,Service K0101
 KLABS00801,1186.0,520.0,1,Brigham & Women's Faulkner Hospital,LABS,Cardiac Rehab,Labs K0801
-LEXIT0101,1257.0,128.0,1,Faulkner,EXIT,Exit 1 Level 1,Exit K0101
-KSTAI00301,1286.0,414.0,1,Brigham & Women's Faulkner Hospital,STAI,Staircase Intersection 3 Level 1,Staircase K0301
+KSTAI00301,1286.0,414.0,1,Faulkner,STAI,Staircase Intersection 3 Level 1,Staircase K0301
 KHALL01001,867.0,511.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection K01001,Hallway K1001
 KLABS00201,937.0,866.0,1,Brigham & Women's Faulkner Hospital,LABS,Endoscopy,Labs K0201
 KHALL01201,1257.0,1080.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 12 Level 1,Hallway K1201
@@ -28,13 +27,14 @@ KLABS00601,1400.0,512.0,1,Brigham & Women's Faulkner Hospital,LABS,MRI/CT,Labs K
 KLABS00401,1264.0,863.0,1,Brigham & Women's Faulkner Hospital,LABS,PULM Lab,Labs K0401
 KHALL00701,1257.0,515.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 7 Level 1,Hallway K0701
 KDEPT00601,1268.0,554.0,1,Brigham & Women's Faulkner Hospital,DEPT,Pre-Admittance Screening,Department K0601
+LEXIT0101,1257.0,128.0,1,Faulkner,EXIT,Exit 1 Level 1,Exit K0101
 KHALL00901,947.0,511.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection K00901,Hallway K0901
 KDEPT00401,1784.0,740.0,1,Brigham & Women's Faulkner Hospital,DEPT,Recovery,Department K0401
 KHALL00301,1400.0,832.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 3 Level 1,Hallway K0301
 KDEPT00201,1752.0,1095.0,1,Brigham & Women's Faulkner Hospital,DEPT,Operation Rooms,Department K0201
 KHALL00501,1400.0,740.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 5 Level 1,Hallway K0501
 KSTAI00201,1284.0,301.0,1,Brigham & Women's Faulkner Hospital,STAI,Staircase Intersection 2 Level 1,Stair K0201
-KELEV00Y01,1196.0,1157.0,1,Brigham & Women's Faulkner Hospital,ELEV,Elevator Y Level 1,Elevator 0Y01
+KELEV00Y01,1196.0,1157.0,1,Faulkner,ELEV,Elevator Y Level 1,Elevator 0Y01
 KHALL02201,1257.0,931.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 22 Level 1,Hallway K2201
 KHALL00101,1253.0,832.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 1 Level 1,Hallway K0101
 KHALL02401,1400.0,942.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 24 Level 1,Hallway K2401
@@ -66,12 +66,6 @@ LELEV00Y02,1151.0,1184.0,2,Faulkner,ELEV,Elevator 1 Level 2,ELEV L2001
 LELEV00X02,1211.0,410.0,2,Faulkner,ELEV,Elevator 3 Level 2,ELEV L2003
 LELEV00Z02,1380.0,1124.0,2,Faulkner,ELEV,Elevator 2 Level 2,ELEV L2002
 LSTAI00102,1290.0,410.0,2,Faulkner,STAI,Staircase 1 Level 2,STAIR L2001
-LSERV00302,737.0,981.0,2,Faulkner,SERV,Facilities 2,SERVF L2003
-LSERV00202,757.0,937.0,2,Faulkner,SERV,Central Sterile Supply,SERVF L2002
-LSERV00102,737.0,713.0,2,Faulkner,SERV,Facilities 1,SERVF L2001
-LSERV00602,667.0,1205.0,2,Faulkner,SERV,Mechanical Space,SERVF L2006
-LSERV00502,747.0,646.0,2,Faulkner,SERV,Material Management,SERVF L2005
-LSERV00402,1423.0,944.0,2,Faulkner,SERV,Central Sterile Supply 2,SERVF L2004
 LHALL00902,1200.0,1205.0,2,Faulkner,HALL,Hallway Intersection 9 Level 2,HALL L2009
 LHALL00702,747.0,1205.0,2,Faulkner,HALL,Hallway Intersection 7 Level 2,HALL L2007
 LHALL00802,1151.0,1205.0,2,Faulkner,HALL,Hallway Intersection 8 Level 2,HALL L2008
@@ -89,16 +83,22 @@ LDEPT00402,1450.0,1066.0,2,Faulkner,DEPT,Occupational Therapy,DEPT L2004
 LHALL02002,1250.0,410.0,2,Faulkner,HALL,Hallway Intersection 20 Level 2,HALL L2020
 LDEPT00502,1166.0,288.0,2,Faulkner,DEPT,Otolaryngology,DEPT L2005
 LDEPT00602,757.0,713.0,2,Faulkner,DEPT,Pharmacy,DEPT L2006
+LSERV00102,737.0,713.0,2,Faulkner,SERV,Facilities 1,SERVF L2001
 LDEPT00702,1450.0,861.0,2,Faulkner,DEPT,Physical Therapy,DEPT L2007
 LDEPT00802,1363.0,474.0,2,Faulkner,DEPT,Plastic Surgery,DEPT L2008
+LSERV00302,737.0,981.0,2,Faulkner,SERV,Facilities 2,SERVF L2003
 LDEPT00902,1200.0,1234.0,2,Faulkner,DEPT,Psych/Addiction Care,DEPT L2009
+LSERV00202,757.0,937.0,2,Faulkner,SERV,Central Sterile Supply,SERVF L2002
+LSERV00502,747.0,646.0,2,Faulkner,SERV,Material Management,SERVF L2005
 LRETL00102,1349.0,507.0,2,Faulkner,RETL,Food Service,FOOD L2001
+LSERV00402,1423.0,944.0,2,Faulkner,SERV,Central Sterile Supply 2,SERVF L2004
+LSERV00602,667.0,1205.0,2,Faulkner,SERV,Mechanical Space,SERVF L2006
 MSERV00302,1135.0,1340.0,3,Faulkner,SERV,Chapel,Chapel
 MSERV00303,1380.0,1340.0,3,Faulkner,SERV,Volunteer Room,Volunteer
 MELEV00322,1220.0,390.0,3,Faulkner,ELEV,Elevator,Elevator
 MSERV00301,1255.0,1380.0,3,Faulkner,SERV,Shuttle Pickup,Shuttle
 MSERV00304,1125.0,1250.0,3,Faulkner,SERV,Mechanical Space,MechSpace
-MSERV00305,1330.0,1250.0,3,Faulkner,SERV,Mechanical Space,MechSpace
+MSERV00305,1328.4615384615383,1250.0,3,Faulkner,SERV,Mechanical Space,MechSpace
 MHALL00335,1180.0,690.0,3,Faulkner,HALL,Hall,Hall
 MHALL00312,1230.0,690.0,3,Faulkner,HALL,Hall,Hall
 MHALL00334,2130.0,710.0,3,Faulkner,HALL,Hall,Hall
@@ -115,7 +115,7 @@ MHALL00336,1090.0,690.0,3,Faulkner,HALL,HALL,hall
 MREST00344,1225.0,270.0,3,Faulkner,REST,Restroom,Restroom
 MELEV00307,1180.0,1160.0,3,Faulkner,ELEV,Elevator,Elevator
 MDEPT00324,1365.0,340.0,3,Faulkner,DEPT,Division of GYN,GYN
-MELEV00308,1325.0,1160.0,3,Faulkner,ELEV,Elevator,Elevator
+MELEV00308,1324.9999999999998,1160.0,3,Faulkner,ELEV,Elevator,Elevator
 MREST00343,1295.0,270.0,3,Faulkner,REST,Restroom,Restroom
 MDEPT00327,1250.0,265.0,3,Faulkner,DEPT,Roslindale Pediatric Association,Pediatrics
 MDEPT00325,1365.0,290.0,3,Faulkner,DEPT,OB/GYN Association,OB/GYN
@@ -141,8 +141,8 @@ NDEPT00104,382.0,1201.0,4,Faulkner,DEPT,Urology,DEPT N0104
 NHALL00404,911.0,1219.0,4,Faulkner,HALL,Hall 4,HALL N0404
 NHALL02504,1580.0,1219.0,4,Faulkner,HALL,Hall 25,HALL N2504
 NHALL00604,1078.0,1219.0,4,Faulkner,HALL,Hall 6,HALL N0604
-NELEV00X04,1210.0,415.0,4,Faulkner,ELEV,Elevator 1 Level 4,ELEV N0304
 NHALL02704,1782.0,1219.0,4,Faulkner,HALL,Hall 27,HALL N2704
+NELEV00X04,1210.0,415.0,4,Faulkner,ELEV,Elevator 1 Level 4,ELEV N0304
 NHALL00804,1250.0,1153.0,4,Faulkner,HALL,Hall 8,HALL N0804
 NDEPT00504,1130.0,441.0,4,Faulkner,DEPT,Cardiology,DEPT N0504
 NHALL02904,1913.0,1219.0,4,Faulkner,HALL,Hall 29,HALL N2904
@@ -171,7 +171,7 @@ NSERV00404,1270.0,908.0,4,Faulkner,SERV,Nurses Suite,SERV N0404
 NSERV00604,1864.0,1200.0,4,Faulkner,SERV,HR,SERV N0604
 NDEPT01804,2110.0,1200.0,4,Faulkner,DEPT,Foot and Ankle Center,DEPT N1804
 NSERV00204,1250.0,1230.0,4,Faulkner,SERV,Administration,SERV N0204
-NSTAI00404,1290.0,415.0,4,Faulkner,STAI,Stair 4,STAI N0404
+NSTAI00404,1289.9999999999998,414.99999999999994,4,Faulkner,STAI,Stair 4,STAI N0404
 NSTAI00604,2315.0,1205.0,4,Faulkner,STAI,Stair 6,STAI N0604
 NLABS00104,256.0,1230.0,4,Faulkner,LABS,Medical Records,LABS N0104
 NHALL03004,1954.0,1219.0,4,Faulkner,HALL,Hall 30,HALL N3004
@@ -223,17 +223,17 @@ NDEPT02004,2192.0,1200.0,4,Faulkner,DEPT,Spine FAC,DEPT N2004
 NHALL01004,1250.0,975.0,4,Faulkner,HALL,Hall 10,HALL N1004
 NHALL01204,1250.0,848.0,4,Faulkner,HALL,Hall 12,HALL N1204
 NHALL03304,2192.0,1219.0,4,Faulkner,HALL,Hall 33,HALL N3304
-PSTAI00405,1209.0,1053.0,5,Faulkner,STAI,Staircase D,STAIRD
 PELEV00205,1149.0,1162.0,5,Faulkner,ELEV,Elevator Y,ELEVY
+PSTAI00405,1209.0,1053.0,5,Faulkner,STAI,Staircase D,STAIRD
 PHALL01205,1250.0,478.0,5,Faulkner,HALL,Hall 12,HALL012
 PHALL01405,1250.0,553.0,5,Faulkner,HALL,Hall 14,HALL014
-PHALL01005,1355.0,479.0,5,Faulkner,HALL,Hall 10,HALL010
 PHALL03105,701.0,1214.0,5,Faulkner,HALL,Hall 31,HALL031
+PHALL01005,1355.0,479.0,5,Faulkner,HALL,Hall 10,HALL010
 PDEPT00605,1264.0,691.0,5,Faulkner,DEPT,Abulatory Care 1,DEPT006
 PDEPT00405,1264.0,519.0,5,Faulkner,DEPT,Endocrinology/Diabetes/Hem-Onc,DEPT004
 PDEPT00205,1250.0,267.0,5,Faulkner,DEPT,Orthopedic Association,DEPT002
-PREST00105,1217.0,1169.0,5,Faulkner,REST,Restroom A,RESTA
 PHALL01605,1250.0,691.0,5,Faulkner,HALL,Hall 16,HALL016
+PREST00105,1217.0,1169.0,5,Faulkner,REST,Restroom A,RESTA
 PHALL01805,1250.0,788.0,5,Faulkner,HALL,Hall 18,HALL018
 PDEPT00805,1264.0,788.0,5,Faulkner,DEPT,Abulatory Care 3,DEPT008
 PHALL02205,1250.0,1110.0,5,Faulkner,HALL,Hall 22,HALL022

@@ -49,7 +49,7 @@
 }
 
 .combo-box > .cell {
-    -fx-text-fill: white;
+    -fx-text-fill: black;
 }
 
 .labelTrans{
@@ -67,4 +67,11 @@
 .back{
     -fx-background-color: white;
     -jfx-button-type: FLAT;
+}
+
+.maintenanceComboBox {
+    -fx-text-inner-color: black;
+    -fx-prompt-text-fill: gray;
+    -fx-text-fill: black;
+    -fx-background-color: white;
 }

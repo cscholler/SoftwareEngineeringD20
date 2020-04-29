@@ -23,30 +23,53 @@
             <children>
                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
                     <children>
-                        <JFXTextField fx:id="startLoc" labelFloat="true" onKeyTyped="#autocompleteS" promptText="Pickup Location">
-                            <font>
-                                <Font size="14.0" />
-                            </font></JFXTextField>
+                  <VBox>
+                     <children>
+                        <Label styleClass="fieldLabel" text="Pickup:" />
+                              <JFXTextField fx:id="startLoc" onKeyTyped="#autocompleteS" promptText="Enter Pickup Location...">
+                                  <font>
+                                      <Font size="14.0" />
+                                  </font>
+                        </JFXTextField>
+                     </children>
+                  </VBox>
                         <ImageView pickOnBounds="true" preserveRatio="true" rotate="180.0">
                             <image>
                                 <Image url="@../assets/baseline_arrow_back_white_48dp.png" />
                             </image>
                         </ImageView>
-                        <JFXTextField fx:id="endLoc" labelFloat="true" promptText="Destination">
-                            <font>
-                                <Font size="14.0" />
-                            </font></JFXTextField>
+                  <VBox>
+                     <children>
+                        <Label styleClass="fieldLabel" text="Destination:" />
+                              <JFXTextField fx:id="endLoc" promptText="Enter Destination...">
+                                  <font>
+                                      <Font size="14.0" />
+                                  </font>
+                        </JFXTextField>
+                     </children>
+                  </VBox>
                     </children>
                 </HBox>
-                <JFXComboBox fx:id="transportSelector" minWidth="300.0" promptText="Transport Type" styleClass="text-field" />
+            <VBox alignment="CENTER">
+               <children>
+                  <Label styleClass="fieldLabel" text="Transportation Type:" />
+                      <JFXComboBox fx:id="transportSelector" minWidth="300.0" promptText="Select Transport Type" style="-fx-prompt-text-fill: #4d4d4d;" styleClass="text-field" />
+               </children>
+            </VBox>
             </children>
         </VBox>
     </center>
     <bottom>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0" BorderPane.alignment="CENTER">
             <children>
-                <JFXButton buttonType="RAISED" onAction="#closeClicked" text="Close" />
-                <JFXButton buttonType="RAISED" onAction="#submitClicked" text="Submit" />
+                <JFXButton buttonType="RAISED" onAction="#closeClicked" text="Close">
+               <font>
+                  <Font size="20.0" />
+               </font></JFXButton>
+                <JFXButton buttonType="RAISED" onAction="#submitClicked" text="Submit">
+               <font>
+                  <Font size="20.0" />
+               </font></JFXButton>
                 <Label fx:id="confirmation" prefHeight="20.0" prefWidth="250.0" text="Label" visible="false">
                     <font>
                         <Font size="14.0" />
