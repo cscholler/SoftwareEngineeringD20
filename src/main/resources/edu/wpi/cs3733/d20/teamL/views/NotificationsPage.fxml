@@ -15,7 +15,7 @@
    <center>
       <BorderPane style="-fx-background-radius: 10; -fx-background-color: white;" stylesheets="@../css/GlobalStyles.css" BorderPane.alignment="CENTER">
          <top>
-            <Label fx:id="reqMessage" text="Request" BorderPane.alignment="CENTER">
+            <Label fx:id="reqMessage" BorderPane.alignment="CENTER">
                <font>
                   <Font size="20.0" />
                </font></Label>
