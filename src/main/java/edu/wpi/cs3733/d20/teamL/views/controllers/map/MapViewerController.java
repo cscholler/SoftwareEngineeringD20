@@ -96,7 +96,7 @@ public class MapViewerController {
             newButton.setOnAction(this::handleFloor);
             newButton.getStyleClass().add("floor-buttons");
 
-            //floorSelector.getChildren().add(1, newButton);
+            floorSelector.getChildren().add(1, newButton);
         }
 
         map.setZoomLevel(0.65);
@@ -172,8 +172,16 @@ public class MapViewerController {
     private String highlightSourceToDestination(Node source, Node destination) {
         map.getSelector().clear();
 
-        path = pathfinderService.pathfind(map.getBuilding(), source, destination);
+        if(!path.getPathNodes().isEmpty()) {
+            NodeGUI start = map.getNodeGUI(path.getPathNodes().get(0));
+            NodeGUI end = map.getNodeGUI(path.getPathNodes().get(path.getPathNodes().size()-1));
 
+            map.resetNodeVisibility(start);
+            map.resetNodeVisibility(end);
+        }
+
+
+        path = pathfinderService.pathfind(map.getBuilding(), source, destination);
         highLightPath();
 
         ArrayList<String> message = path.generateTextMessage();
@@ -207,11 +215,11 @@ public class MapViewerController {
 
         if (start != null) {
             start.setVisible(true);
-            labelNode(start, new Label("Start"));
+            //labelNode(start, new Label("Start"));
         }
         if (end != null) {
             end.setVisible(true);
-            labelNode(end, new Label("Destination"));
+            //labelNode(end, new Label("Destination"));
         }
     }
 
