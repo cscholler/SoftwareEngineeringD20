@@ -51,7 +51,8 @@ public class SecurityRequestController {
         dbCache.cacheAllFromDB();
 
         sf = new SearchFields(dbCache.getNodeCache());
-        sf.getFields().add(SearchFields.Field.nodeID);
+        sf.getFields().add(SearchFields.Field.longName);
+        sf.getFields().add(SearchFields.Field.shortName);
         sf.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
@@ -81,7 +82,7 @@ public class SecurityRequestController {
     @FXML
     private void handleSubmit() throws IOException {
         String id = patientIDText.getText();
-        String location = locationText.getText();
+        String location = sf.getNode(locationText.getText()).getID();
         String reason = reasonText.getText();
         String notes = notesText.getText();
 
