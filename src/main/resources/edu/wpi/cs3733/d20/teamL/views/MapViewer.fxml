@@ -191,6 +191,7 @@
                         </JFXButton>
                     </children>
                 </VBox>
+            <JFXButton layoutX="825.0" layoutY="14.0" onAction="#showLegend" style="-fx-pref-width: 75;" text="Legend" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
             </children>
         </AnchorPane>
     </center>

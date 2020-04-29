@@ -171,6 +171,16 @@ public class MapViewerController {
         }
     }
 
+    @FXML
+    private void showLegend() {
+        try {
+            Parent root = loaderHelper.getFXMLLoader("keyPopUp").load();
+            loaderHelper.setupPopup(new Stage(), new Scene(root));
+        } catch (IOException ex) {
+            log.error("Couldn't load keyPopUp.fxml", ex);
+        }
+    }
+
     private String highlightSourceToDestination(Node source, Node destination) {
         map.getSelector().clear();
 
