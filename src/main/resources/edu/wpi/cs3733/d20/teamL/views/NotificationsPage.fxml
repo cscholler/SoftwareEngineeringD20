@@ -98,9 +98,9 @@
       </VBox>
    </top>
    <left>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="500.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="messageBox" alignment="CENTER" prefHeight="200.0" prefWidth="500.0" BorderPane.alignment="CENTER">
          <children>
-            <Label text="Medication Requests" textFill="WHITE">
+            <Label fx:id="lblMed" text="Medication Requests" textFill="WHITE">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -113,7 +113,7 @@
                   <Insets />
                </VBox.margin>
             </JFXListView>
-            <Label text="Gift Requests" textFill="WHITE">
+            <Label fx:id="lblGift" text="Gift Requests" textFill="WHITE">
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
@@ -122,7 +122,7 @@
                </font>
             </Label>
             <JFXListView fx:id="giftReqs" onMouseClicked="#displaySelectedGiftReq" styleClass="notification-list" />
-            <Label text="Other Requests" textFill="WHITE">
+            <Label fx:id="lblService" text="Service Requests" textFill="WHITE">
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
