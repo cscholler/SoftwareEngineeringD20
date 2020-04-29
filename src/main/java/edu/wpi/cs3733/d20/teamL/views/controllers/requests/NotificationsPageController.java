@@ -107,7 +107,7 @@ public class NotificationsPageController implements Initializable {
 			}
 		} else {
 			buttonBox.getChildren().remove(btnDecline);
-			if (!(user.getServices().contains("pharmacy") || user.getAcctType().equals("2"))) {
+			if (!(user.getServices().contains("pharmacy"))) {
 				messageBox.getChildren().remove(medReqs);
 				messageBox.getChildren().remove(lblMed);
 			}
@@ -115,7 +115,7 @@ public class NotificationsPageController implements Initializable {
 				messageBox.getChildren().remove(giftReqs);
 				messageBox.getChildren().remove(lblGift);
 			}
-			if (user.getServices().equals("pharmacy") || user.getServices().equals("gift_shop") || user.getServices().equals("pharmacy;gift_shop") || user.getServices().equals("gift_shop;pharmacy") || user.getAcctType().equals("2")) {
+			if (user.getServices().equals("pharmacy") || user.getServices().equals("gift_shop") || user.getServices().equals("pharmacy;gift_shop") || user.getServices().equals("gift_shop;pharmacy")) {
 				messageBox.getChildren().remove(serviceReqs);
 				messageBox.getChildren().remove(lblService);
 			}
@@ -229,9 +229,9 @@ public class NotificationsPageController implements Initializable {
 				switch (user.getAcctType()) {
 					// Staff member
 					default:
-					case "0":
+					case "1":
 					case "3":
-					case "1": {
+					case "0": {
 						log.info("Viewing notifications as staff member with username {}", username);
 						requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_MEDICATION_REQUESTS_FOR_DELIVERER, new ArrayList<>(Collections.singletonList(username)))));
 					}
@@ -324,8 +324,8 @@ public class NotificationsPageController implements Initializable {
 				if (user.getAcctType().equals("2") && (user.getFName() + " " + user.getLName()).equals(doctorName)) {
 					log.info("logged in as doctor");
 					message = getUserFullName(req.getNurseUsername()) + " requests " + req.getDose() + " of " + req.getMedType() + " for " +
-							req.getPatientName() + "(" + req.getPatientID() +")" + " in room " + req.getRoomNum();
-					if(req.getStatus() == "1"){
+							req.getPatientName() + "(" + req.getPatientID() +")" + (req.getRoomNum() != null ? " in room " + req.getRoomNum() : "");
+					if (req.getStatus().equals("1")) {
 						buttonBox.getChildren().remove(approve);
 						buttonBox.getChildren().add(assign);
 						assign.setText("Assign");
@@ -334,7 +334,7 @@ public class NotificationsPageController implements Initializable {
  				} else {
 					log.info("logged in as non doctor");
 					message = doctorName + " has assigned you to " + req.getDose() + " of " + req.getMedType() + " to be delivered to " +
-							req.getPatientName() + "(" + req.getPatientID() +")" + " in room " + req.getRoomNum();
+							req.getPatientName() + "(" + req.getPatientID() +")" + (req.getRoomNum() != null ? " in room " + req.getRoomNum() : "");
 				}
 				reqMessage.setText(message);
 			} else {
@@ -376,9 +376,9 @@ public class NotificationsPageController implements Initializable {
 				String allGiftsText = gift1Text + (!gift2Text.isEmpty() ? ", " + gift2Text : "") + (!gift3Text.isEmpty() ? ", " + gift3Text : "");
 				if (user.isManager()) {
 					log.info("logged in as manager");
-					message = getUserFullName(req.getRequestUsername()) + " requests " + allGiftsText + "for " +
-							req.getPatientName() + "(" + req.getPatientID() +")" + " in room " + req.getRoomNum();
-					if(req.getStatus() == "1"){
+					message = getUserFullName(req.getRequestUsername()) + " requests " + allGiftsText + " for " +
+							req.getPatientName() + "(" + req.getPatientID() +")" + (req.getRoomNum() != null ? " in room " + req.getRoomNum() : "");
+					if(req.getStatus().equals("1")) {
 						buttonBox.getChildren().remove(approve);
 						buttonBox.getChildren().add(assign);
 						assign.setText("Assign");
@@ -386,8 +386,8 @@ public class NotificationsPageController implements Initializable {
 					}
 				} else {
 					log.info("logged in as gift shop worker");
-					message = "You have been assigned to deliver " + allGiftsText + "to " +
-							req.getPatientName() + "(" + req.getPatientID() +")" + " in room " + req.getRoomNum();
+					message = "You have been assigned to deliver " + allGiftsText + " to " +
+							req.getPatientName() + "(" + req.getPatientID() +")" + (req.getRoomNum() != null ? " in room " + req.getRoomNum() : "");
 				}
 				reqMessage.setText(message);
 			} else {
@@ -418,7 +418,7 @@ public class NotificationsPageController implements Initializable {
 					message = getUserFullName(req.getRequestUsername()) + " requests a " + (req.getType() != null ? req.getType() : "") + " " + req.getService() + " service " +
 							((req.getPatientName() != null && req.getPatientID() != null) ? "for " + req.getPatientName() + "(" + req.getPatientID() + ")" : "") +
 							(req.getLocation() != null ? " at location " + req.getLocation() : "");
-					if(req.getStatus() == "1"){
+					if (req.getStatus().equals("1")) {
 						buttonBox.getChildren().remove(approve);
 						buttonBox.getChildren().add(assign);
 						assign.setText("Assign");

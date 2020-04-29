@@ -62,7 +62,11 @@ public class ITServiceController implements Initializable {
         sf.getFields().add(SearchFields.Field.nodeID);
         sf.populateSearchFields();
 
-        autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
+		SearchFields searchFields = new SearchFields(dbCache.getNodeCache());
+		searchFields.getFields().add(SearchFields.Field.longName);
+		searchFields.getFields().add(SearchFields.Field.shortName);
+		searchFields.populateSearchFields();
+		autoCompletePopup.getSuggestions().addAll(searchFields.getSuggestions());
 
         typeBox.setPromptText("Request Type:");
         typeBox.setItems(options);
@@ -96,7 +100,7 @@ public class ITServiceController implements Initializable {
     private void submitClicked() {
         String userName = loginManager.getCurrentUser().getUsername();
         String location = locationText.getText();
-        String type = typeBox.getPromptText();
+        String type = typeBox.getValue().toString();
         String notes = notesText.getText();
 
         String status = "0";

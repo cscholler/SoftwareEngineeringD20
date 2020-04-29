@@ -120,6 +120,9 @@ public class AddUserController implements Initializable {
 			manager = managerBox.isSelected() ? serviceCombo.getSelectionModel().getSelectedItem().toLowerCase().replace(" ", "_") : null;
 
 			services = managerBox.isSelected() ? null : servicesList.toString();
+			if (type.equals("1") || type.equals("2")) {
+				services = "pharmacy";
+			}
 			rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(firstName, lastName, username, password, type, services, manager))));
 			formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_USERS)));
 			if (doctorIDText.getText() != null && !(doctorIDText.getText().isEmpty())) {
