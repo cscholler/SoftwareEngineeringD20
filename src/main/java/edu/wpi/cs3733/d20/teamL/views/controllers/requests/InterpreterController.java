@@ -50,7 +50,7 @@ public class InterpreterController implements Initializable {
     @FXML
     private JFXButton btnBack, btnSubmit;
     @FXML
-    private JFXTextField patientIDText, roomNumText, userIDText , additionalText;
+    private JFXTextField patientIDText, roomNumText, additionalText;
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
@@ -113,7 +113,6 @@ public class InterpreterController implements Initializable {
                 interpType.setText("");
                 patientIDText.setText("");
                 roomNumText.setText("");
-                userIDText.setText("");
                 additionalText.setText("");
             }
 
