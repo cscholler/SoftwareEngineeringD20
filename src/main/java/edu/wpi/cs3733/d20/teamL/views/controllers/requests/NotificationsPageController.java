@@ -10,11 +10,13 @@ import java.util.ResourceBundle;
 import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.services.users.IRequestHandlerService;
+import edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.AssignPopupController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -139,7 +141,7 @@ public class NotificationsPageController implements Initializable {
 						}
 						break;
 						case "2" : {
-							status = "Completed";
+							status = "Assigned";
 						}
 						break;
 						case "3" : {
@@ -167,7 +169,7 @@ public class NotificationsPageController implements Initializable {
 						}
 						break;
 						case "2" : {
-							status = "Completed";
+							status = "Assigned";
 						}
 						break;
 						case "3" : {
@@ -195,7 +197,7 @@ public class NotificationsPageController implements Initializable {
 						}
 						break;
 						case "2" : {
-							status = "Completed";
+							status = "Assigned";
 						}
 						break;
 						case "3" : {
@@ -451,7 +453,10 @@ public class NotificationsPageController implements Initializable {
 
     EventHandler<ActionEvent> assignTask = event -> {
 		try {
-			Parent root = loaderHelper.getFXMLLoader("AssignPopup").load();
+			FXMLLoader loader = loaderHelper.getFXMLLoader("AssignPopup");
+			Parent root = loader.load();
+			AssignPopupController assignPopupController = loader.getController();
+			assignPopupController.setNotificationsPageController(this);
 			loaderHelper.setupPopup(new Stage(), new Scene(root));
 		} catch (IOException ex) {
 			log.error("Encountered IOException", ex);
@@ -459,6 +464,7 @@ public class NotificationsPageController implements Initializable {
 	};
 
     EventHandler<ActionEvent> markedApproved = event ->  {
+    	// TODO: update name in list view
 		if (user.isManager()) {
 			buttonBox.getChildren().remove(approve);
 			buttonBox.getChildren().add(assign);
@@ -487,19 +493,20 @@ public class NotificationsPageController implements Initializable {
     @FXML
 	private void btnCompletedClicked() {
 		switch (reqHandler.getCurrentRequestType()) {
+			// TODO: actually remove requests from list view
 			case "medication": {
-				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_STATUS, new ArrayList<>(Arrays.asList("2", getCurrentMedicationRequest().getID()))));
-				getCurrentMedicationRequest().setStatus("2");
+				db.executeUpdate(new SQLEntry(DBConstants.REMOVE_MEDICATION_REQUEST, new ArrayList<>(Collections.singletonList(getCurrentMedicationRequest().getID()))));
+				setCurrentMedicationRequest(null);
 			}
 			break;
 			case "gift": {
-				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_GIFT_DELIVERY_REQUEST_STATUS, new ArrayList<>(Arrays.asList("2", getCurrentGiftRequest().getID()))));
-				getCurrentGiftRequest().setStatus("2");
+				db.executeUpdate(new SQLEntry(DBConstants.REMOVE_GIFT_DELIVERY_REQUEST, new ArrayList<>(Collections.singletonList(getCurrentMedicationRequest().getID()))));
+				setCurrentMedicationRequest(null);
 			}
 			break;
 			case "service": {
-				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_SERVICE_REQUEST_STATUS, new ArrayList<>(Arrays.asList("2", getCurrentServiceRequest().getID()))));
-				getCurrentServiceRequest().setStatus("2");
+				db.executeUpdate(new SQLEntry(DBConstants.REMOVE_SERVICE_REQUEST, new ArrayList<>(Collections.singletonList(getCurrentMedicationRequest().getID()))));
+				setCurrentMedicationRequest(null);
 			}
 		}
 	}

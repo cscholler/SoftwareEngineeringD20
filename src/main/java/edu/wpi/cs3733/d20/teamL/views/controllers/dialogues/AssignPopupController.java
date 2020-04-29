@@ -9,6 +9,7 @@ import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.services.users.IRequestHandlerService;
+import edu.wpi.cs3733.d20.teamL.views.controllers.requests.NotificationsPageController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -22,7 +23,6 @@ import java.util.ResourceBundle;
 
 public class AssignPopupController implements Initializable {
     private ObservableList<String> users = FXCollections.observableArrayList();
-    ;
     @FXML
     private JFXComboBox<String> userSelector;
     @FXML
@@ -33,6 +33,7 @@ public class AssignPopupController implements Initializable {
     private ILoginManager loginManager;
     @Inject
     private IRequestHandlerService reqHandler;
+    private NotificationsPageController notificationsPageController;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -42,7 +43,6 @@ public class AssignPopupController implements Initializable {
             User nextUser = new User(userInfo.get(0), userInfo.get(1), userInfo.get(2), userInfo.get(3), userInfo.get(4), userInfo.get(5), userInfo.get(6));
             if (nextUser.getServices().contains(loginManager.getCurrentUser().getDept())) {
                 usersInDept.add(nextUser.getFName() + " " + nextUser.getLName());
-                System.out.println(nextUser.getFName() + " " + nextUser.getLName());
             }
         }
         userSelector.setValue("Qualified Users");
@@ -59,10 +59,14 @@ public class AssignPopupController implements Initializable {
         String selectedUser = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_USERNAME_BY_NAME, new ArrayList<>(Arrays.asList(fName, lName))))).get(0).get(0);
         if (loginManager.getCurrentUser().getDept().equals("pharmacy")) {
             db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_DELIVERER, new ArrayList<>(Arrays.asList(selectedUser, reqHandler.getCurrentRequestID()))));
+			db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_STATUS, new ArrayList<>(Arrays.asList("2", reqHandler.getCurrentRequestID()))));
         } else if (loginManager.getCurrentUser().getDept().equals("gift_shop")) {
             db.executeUpdate(new SQLEntry(DBConstants.UPDATE_GIFT_DELIVERY_REQUEST_ASSIGNEE, new ArrayList<>(Arrays.asList(selectedUser, reqHandler.getCurrentRequestID()))));
+			db.executeUpdate(new SQLEntry(DBConstants.UPDATE_GIFT_DELIVERY_REQUEST_STATUS, new ArrayList<>(Arrays.asList("2", reqHandler.getCurrentRequestID()))));
         } else {
             db.executeUpdate(new SQLEntry(DBConstants.UPDATE_SERVICE_REQUEST_ASSIGNEE, new ArrayList<>(Arrays.asList(selectedUser, reqHandler.getCurrentRequestID()))));
+			db.executeUpdate(new SQLEntry(DBConstants.UPDATE_SERVICE_REQUEST_STATUS, new ArrayList<>(Arrays.asList("2", reqHandler.getCurrentRequestID()))));
+
         }
     }
 
@@ -71,4 +75,12 @@ public class AssignPopupController implements Initializable {
         Stage stage = (Stage) btnBack.getScene().getWindow();
         stage.close();
     }
+
+	public NotificationsPageController getNotificationsPageController() {
+		return notificationsPageController;
+	}
+
+	public void setNotificationsPageController(NotificationsPageController notificationsPageController) {
+		this.notificationsPageController = notificationsPageController;
+	}
 }

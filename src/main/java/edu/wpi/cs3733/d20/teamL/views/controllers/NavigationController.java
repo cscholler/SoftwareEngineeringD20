@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers;
 
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -21,6 +22,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -79,6 +81,12 @@ public class NavigationController implements Initializable {
         });
     }
 
+    @FXML
+    private void clearOnClick(MouseEvent e) {
+        if(e.getSource() == searchBox){
+            searchBox.setPromptText("");
+        }
+    }
     /**
      * goes to map viewer page when a room is searched in the search bar
      */
