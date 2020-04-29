@@ -27,6 +27,7 @@ import com.jfoenix.controls.JFXListView;
 
 import javafx.scene.control.SelectionMode;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
@@ -53,15 +54,18 @@ public class NotificationsPageController implements Initializable {
 	@FXML
 	private JFXListView<GiftDeliveryRequest> giftReqs;
     @FXML
-    private Label reqMessage, addInfo;
-    @FXML
-    private HBox buttonBox;
+    private Label reqMessage, addInfo, lblMed, lblService, lblGift;
 	@Inject
 	private IDatabaseService db;
 	@Inject
 	private ILoginManager loginManager;
 	@Inject
 	private IRequestHandlerService reqHandler;
+	@FXML
+    private HBox buttonBox;
+    @FXML
+	private VBox messageBox;
+
     private User user;
     private boolean meds;
     JFXButton approve = new JFXButton();
@@ -83,11 +87,37 @@ public class NotificationsPageController implements Initializable {
 			buttonBox.getChildren().add(approve);
 			approve.setText("Approve");
 			approve.setOnAction(markedApproved);
+			if(user.getDept().equals("pharmacy")) {
+				messageBox.getChildren().remove(giftReqs);
+				messageBox.getChildren().remove(lblGift);
+				messageBox.getChildren().remove(lblService);
+				messageBox.getChildren().remove(serviceReqs);
+			} else if(user.getDept().equals("gift_shop")) {
+				messageBox.getChildren().remove(serviceReqs);
+				messageBox.getChildren().remove(medReqs);
+				messageBox.getChildren().remove(lblMed);
+				messageBox.getChildren().remove(lblService);
+			} else {
+				messageBox.getChildren().remove(giftReqs);
+				messageBox.getChildren().remove(medReqs);
+				messageBox.getChildren().remove(lblGift);
+				messageBox.getChildren().remove(lblMed);
+			}
 		} else {
 			buttonBox.getChildren().remove(btnDecline);
+			if (!(user.getServices().contains("pharmacy"))){
+				messageBox.getChildren().remove(medReqs);
+				messageBox.getChildren().remove(lblMed);
+			}
+			if (!(user.getServices().contains("giftShop"))){
+				messageBox.getChildren().remove(giftReqs);
+				messageBox.getChildren().remove(lblGift);
+			}
+			if (user.getServices().equals("pharmacy") || user.getServices().equals("gift_shop") || user.getServices().equals("pharmacy;gift_shop")){
+				messageBox.getChildren().remove(serviceReqs);
+				messageBox.getChildren().remove(lblService);
+			}
 		}
-
-
 
 		loadRequests("medication");
 		loadRequests("gift");
