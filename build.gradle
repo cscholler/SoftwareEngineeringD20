@@ -13,7 +13,6 @@ repositories {
     mavenCentral()
     jcenter()
     google()
-    maven {url 'https://apisite.crmyers.dev/maven'}
     maven {url 'https://www.jitpack.io'}
 }
 
@@ -43,7 +42,7 @@ dependencies {
 
 javafx {
     version = "11.0.1"
-    modules = ['javafx.controls', 'javafx.fxml']
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.swing']
 
 }
 

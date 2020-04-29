@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.zxing.WriterException;
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
@@ -29,9 +30,9 @@ public class QRCodeController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
        try {
-           messenger.generateQRCodeImage(messenger.getDirections());
-           FileInputStream input = new FileInputStream("src/main/resources/edu/wpi/cs3733/d20/teamL/assets/QRCode.png");
-           Image image = new Image(input);
+
+           messenger.getQRCodeImage(messenger.getDirections());
+           Image image = SwingFXUtils.toFXImage(messenger.getQRCodeImage(messenger.getDirections()), null);
            qrImage.setImage(image);
            //TODO make it actual directions
        } catch (IOException | WriterException e){

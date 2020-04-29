@@ -88,7 +88,7 @@ public class InterpreterController implements Initializable {
         } else if (e.getSource() == btnSubmit){
             String interpreterType = interpType.getText();
             String patientID = patientIDText.getText();
-            String roomNumber = sf.getNode(roomNumText.getText()).getID();
+            String roomNumber = roomNumText.getText() == null ? sf.getNode(roomNumText.getText()).getID() : null;
             String additionalInfo = additionalText.getText();
 
 
