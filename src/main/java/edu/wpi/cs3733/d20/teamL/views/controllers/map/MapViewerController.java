@@ -15,9 +15,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -79,7 +81,7 @@ public class MapViewerController {
         cache.cacheAllFromDB();
 
         map.setEditable(false);
-        map.setHighLightColor(Color.BLUE);
+        map.setHighLightColor(Color.GOLD);
         btnNavigate.setDisableVisualFocus(true);
 
         Building startBuilding = new Building("Faulkner");
@@ -215,11 +217,11 @@ public class MapViewerController {
 
         if (start != null) {
             start.setVisible(true);
-            //labelNode(start, new Label("Start"));
+            start.getCircle().setFill(new ImagePattern(new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/START_filled.png")));
         }
         if (end != null) {
             end.setVisible(true);
-            //labelNode(end, new Label("Destination"));
+            end.getCircle().setFill(new ImagePattern(new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/END_filled.png")));
         }
     }
 
