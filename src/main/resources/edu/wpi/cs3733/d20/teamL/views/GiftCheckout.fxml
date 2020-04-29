@@ -39,7 +39,7 @@
                         <Insets left="10.0" />
                      </padding>
                         </JFXTextField>
-                        <JFXTextField fx:id="roomNumText" onKeyTyped="#autocomplete" prefHeight="40.0" prefWidth="300.0" promptText="Room Number" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
+                        <JFXTextField fx:id="senderText" prefHeight="40.0" prefWidth="300.0" promptText="Sender" style="-fx-border-color: #000000; -jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
                             <font>
                                 <Font size="15.0" />
                             </font>
