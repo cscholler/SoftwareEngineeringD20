@@ -52,18 +52,21 @@ public class ITServiceController implements Initializable {
     @FXML
     private JFXTextField locationText, notesText;
     @FXML
-    private JFXComboBox typeBox;
+    private JFXComboBox<String> typeBox;
 
+	private SearchFields searchFields;
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-
         dbCache.cacheAllFromDB();
         sf = new SearchFields(dbCache.getNodeCache());
         sf.getFields().add(SearchFields.Field.longName);
         sf.getFields().add(SearchFields.Field.shortName);
         sf.populateSearchFields();
-
-        autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
+		searchFields = new SearchFields(dbCache.getNodeCache());
+		searchFields.getFields().add(SearchFields.Field.longName);
+		searchFields.getFields().add(SearchFields.Field.shortName);
+		searchFields.populateSearchFields();
+		autoCompletePopup.getSuggestions().addAll(searchFields.getSuggestions());
 
         typeBox.setPromptText("Request Type:");
         typeBox.setItems(options);
@@ -96,15 +99,15 @@ public class ITServiceController implements Initializable {
     @FXML
     private void submitClicked() {
         String userName = loginManager.getCurrentUser().getUsername();
-        String location = sf.getNode(locationText.getText()).getID();
-        String type = typeBox.getPromptText();
+        String location = locationText.getText();
+        String type = typeBox.getValue();
         String notes = notesText.getText();
 
         String status = "0";
         String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
 
         int rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
-                new ArrayList<>(Arrays.asList(null, userName, null, location, "information_technology", type, notes, status, dateAndTime))));
+                new ArrayList<>(Arrays.asList(null, userName, null, searchFields.getNode(location).getID(), "information_technology", type, notes, status, dateAndTime))));
 
         if (rows == 0) {
             confirmation.setTextFill(Color.RED);

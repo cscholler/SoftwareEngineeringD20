@@ -33,7 +33,7 @@ public class GiftDeliveryRequest {
 		this.dateAndTime = dateAndTime;
 	}
 
-	public String getId() {
+	public String getID() {
 		return id;
 	}
 
@@ -75,6 +75,10 @@ public class GiftDeliveryRequest {
 
 	public String getStatus() {
 		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public String getDateAndTime() {
