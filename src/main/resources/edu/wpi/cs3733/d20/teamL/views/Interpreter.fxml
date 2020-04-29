@@ -136,7 +136,7 @@
                               </Label>
                            </children>
                         </HBox>
-                        <JFXTextField fx:id="pNameText" labelFloat="true" onAction="#handleButtonAction" prefHeight="40.0" promptText="Patient ID" unFocusColor="BLACK">
+                        <JFXTextField fx:id="patientIDText" labelFloat="true" onAction="#handleButtonAction" prefHeight="40.0" promptText="Patient ID" unFocusColor="BLACK">
                            <font>
                               <Font size="20.0" />
                            </font>
