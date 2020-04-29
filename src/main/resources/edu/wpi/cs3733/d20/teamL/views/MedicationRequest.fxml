@@ -10,13 +10,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="720.0" prefWidth="1080.0" styleClass="background" stylesheets="@../css/ServiceRequestStyles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.MedicationRequestController">
+
     <center>
         <HBox alignment="CENTER" prefHeight="568.0" prefWidth="1080.0" spacing="200.0">
             <children>
-                <VBox prefHeight="562.0" prefWidth="380.0" spacing="50.0">
+                <VBox prefHeight="562.0" prefWidth="380.0" spacing="40.0">
                     <children>
-                        <Label alignment="CENTER" prefHeight="35.0" prefWidth="416.0" text="Patient Information">
+                        <Label alignment="CENTER" prefHeight="35.0" prefWidth="416.0" text="Patient Information" textFill="WHITE">
                             <font>
                                 <Font name="System Bold" size="24.0" />
                             </font>
@@ -24,7 +26,9 @@
                         <Insets top="50.0" />
                      </VBox.margin>
                         </Label>
+
                         <JFXTextField fx:id="patFNameText" labelFloat="true" minHeight="40.0" minWidth="300.0" prefHeight="40.0" prefWidth="300.0" promptText="Patient First Name" style="-jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
+
                             <font>
                                 <Font size="14.0" />
                             </font>
@@ -35,17 +39,22 @@
                                 <Insets right="5.0" />
                             </padding>
                         </JFXTextField>
+
                         <JFXTextField fx:id="patLNameText" labelFloat="true" prefHeight="40.0" prefWidth="300.0" promptText="Patient Last Name" style="-jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
+
                             <font>
                                 <Font size="14.0" />
                             </font>
                         </JFXTextField>
                         <JFXTextField fx:id="roomNumText" labelFloat="true" onKeyTyped="#autocomplete" prefHeight="40.0" prefWidth="300.0" promptText="  Room Number" style="-jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
+
                             <font>
                                 <Font size="14.0" />
                             </font>
                         </JFXTextField>
+
                         <JFXTextField fx:id="addInfoText" alignment="TOP_LEFT" prefHeight="149.0" prefWidth="380.0" promptText="  Additonal Information" style="-jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
+
                             <font>
                                 <Font size="14.0" />
                             </font>
@@ -55,9 +64,9 @@
                         </JFXTextField>
                     </children>
                 </VBox>
-                <VBox prefHeight="562.0" prefWidth="380.0" spacing="50.0">
+                <VBox prefHeight="562.0" prefWidth="380.0" spacing="40.0">
                     <children>
-                        <Label alignment="CENTER" prefHeight="35.0" prefWidth="452.0" text="Medication Information">
+                        <Label alignment="CENTER" prefHeight="35.0" prefWidth="452.0" text="Medication Information" textFill="WHITE">
                             <font>
                                 <Font name="System Bold" size="24.0" />
                             </font>
@@ -65,22 +74,30 @@
                         <Insets top="50.0" />
                      </VBox.margin>
                         </Label>
+
                         <JFXTextField fx:id="docFNameText" labelFloat="true" prefHeight="40.0" prefWidth="356.0" promptText="  Doctor First Name" style="-jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
+
                             <font>
                                 <Font size="14.0" />
                             </font>
                         </JFXTextField>
+
                         <JFXTextField fx:id="docLNameText" labelFloat="true" prefHeight="40.0" prefWidth="300.0" promptText="Doctor Last Name" style="-jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
+
                             <font>
                                 <Font size="14.0" />
                             </font>
                         </JFXTextField>
+
                         <JFXTextField fx:id="medTypeText" labelFloat="true" prefHeight="40.0" prefWidth="356.0" promptText="  Medication Type" style="-jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
+
                             <font>
                                 <Font size="14.0" />
                             </font>
                         </JFXTextField>
+
                         <JFXTextField fx:id="doseText" labelFloat="true" prefHeight="40.0" prefWidth="356.0" promptText="  Dosage" style="-jfx-focus-color: #0D2e57; -fx-background-color: #ffffff;">
+
                             <font>
                                 <Font size="14.0" />
                             </font>
@@ -88,12 +105,17 @@
                     </children>
                 </VBox>
             </children>
+         <padding>
+            <Insets top="10.0" />
+         </padding>
         </HBox>
     </center>
     <top>
+
       <HBox alignment="CENTER" styleClass="title-background" BorderPane.alignment="CENTER">
          <children>
               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="109.0" prefWidth="677.0" styleClass="title" text="Medication Request" textFill="#0d2e57">
+
                   <font>
                       <Font name="System Bold" size="50.0" />
                   </font>
@@ -102,6 +124,7 @@
       </HBox>
     </top>
     <bottom>
+
       <StackPane BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="20.0" />
@@ -123,13 +146,16 @@
             </HBox>
                 <Label fx:id="lblConfirmation" styleClass="error-label" text="Medication Request Sent" visible="false">
                     <font>
+
                         <Font size="16.0" />
                     </font>
                <StackPane.margin>
                   <Insets left="700.0" />
                </StackPane.margin>
                 </Label>
+
          </children>
       </StackPane>
+
     </bottom>
 </BorderPane>
