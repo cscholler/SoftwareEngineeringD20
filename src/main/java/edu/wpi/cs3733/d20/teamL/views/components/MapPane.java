@@ -64,7 +64,7 @@ public class MapPane extends StackPane {
 
     private EdgeGUI tempEdge;
     private NodeGUI tempNode;
-    private int nodeRadius = 12;
+    private int nodeRadius = 18;
     private Color nodeColor = Color.rgb(13, 46, 87, 0.9);
     private Color edgeColor = Color.DARKBLUE;
     private Color highLightColor = Color.rgb(20, 194, 247);
