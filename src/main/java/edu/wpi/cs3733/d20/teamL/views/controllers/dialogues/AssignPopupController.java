@@ -46,10 +46,11 @@ public class AssignPopupController implements Initializable {
         ArrayList<ArrayList<String>> allUsers = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_USERS)));
         for (ArrayList<String> userInfo : allUsers) {
             User nextUser = new User(userInfo.get(0), userInfo.get(1), userInfo.get(2), userInfo.get(3), userInfo.get(4), userInfo.get(5), userInfo.get(6));
-            log.info(loginManager.getCurrentUser().getDept());
-            if (nextUser.getServices().contains(loginManager.getCurrentUser().getDept())) {
-                usersInDept.add(nextUser.getFName() + " " + nextUser.getLName());
-            }
+            if (nextUser.getServices() != null) {
+				if (nextUser.getServices().contains(loginManager.getCurrentUser().getDept())) {
+					usersInDept.add(nextUser.getFName() + " " + nextUser.getLName());
+				}
+			}
         }
         userSelector.setValue("Qualified Users");
         users.addAll(usersInDept);
@@ -80,6 +81,22 @@ public class AssignPopupController implements Initializable {
 		}
 		Stage stage = (Stage) btnSubmit.getScene().getWindow();
 		stage.close();
+		switch (reqHandler.getCurrentRequestType()) {
+			case "medication": {
+				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_STATUS, new ArrayList<>(Arrays.asList("2", getNotificationsPageController().getCurrentMedicationRequest().getID()))));
+				getNotificationsPageController().getCurrentMedicationRequest().setStatus("1");
+			}
+			break;
+			case "gift": {
+				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_GIFT_DELIVERY_REQUEST_STATUS, new ArrayList<>(Arrays.asList("2", getNotificationsPageController().getCurrentGiftRequest().getID()))));
+				getNotificationsPageController().getCurrentGiftRequest().setStatus("2");
+			}
+			break;
+			case "service": {
+				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_SERVICE_REQUEST_STATUS, new ArrayList<>(Arrays.asList("2", getNotificationsPageController().getCurrentServiceRequest().getID()))));
+				getNotificationsPageController().getCurrentServiceRequest().setStatus("2");
+			}
+		}
 		getNotificationsPageController().setCellFactories();
 	}
 
