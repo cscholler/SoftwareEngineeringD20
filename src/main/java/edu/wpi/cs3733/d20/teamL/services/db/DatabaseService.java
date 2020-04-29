@@ -229,8 +229,6 @@ public class DatabaseService extends Service implements IDatabaseService {
 		for (String serviceType : serviceTypes) {
 			executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(serviceType, "Manager", serviceType, serviceType, "0", null, serviceType))));
 		}
-		String interpreter = "interpreter";
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(interpreter, "Manager", interpreter, interpreter, "0", null, interpreter))));
 
 		// Presenting: gifts, medication, interpreter, it
 		// Create the employees for each
@@ -241,6 +239,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 		}
 
 		// Interpreters for French and Spanish, the interpreter form does submit them starting with capital letters
+		String interpreter = "interpreter";
 		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Jacques", "Cousteau", interpreter + "_emp1", interpreter + "_emp1", "0", interpreter + "(French);", null))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Adriana", "Lopez", interpreter + "_emp2", interpreter + "_emp2", "0", interpreter + "(Spanish);", null))));
 
