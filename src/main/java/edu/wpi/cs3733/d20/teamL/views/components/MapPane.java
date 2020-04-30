@@ -249,7 +249,7 @@ public class MapPane extends StackPane {
     public void setBuilding(Building currentBuilding) {
         this.currentBuilding = currentBuilding;
 
-        currentFloor = currentBuilding.getFloor(Math.min(getFloor(), currentBuilding.getMaxFloor()));
+        setFloor(Math.min(getFloor(), currentBuilding.getMaxFloor()));
     }
 
     public void setSelectedNode(Node selectedNode) {

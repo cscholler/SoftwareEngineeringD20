@@ -9,14 +9,14 @@ import java.util.Collections;
 import java.util.List;
 
 public class SearchFields {
-    private ArrayList<Node> nodeCache;
-    private ArrayList<String> suggestions;
+    private List<Node> nodeCache;
+    private List<String> suggestions;
 
     public enum Field {nodeID, longName, shortName, building}
 
     private List<Field> fields = new ArrayList<>();
 
-    public SearchFields(ArrayList<Node> nodeCache) {
+    public SearchFields(List<Node> nodeCache) {
         this.nodeCache = nodeCache;
     }
 
@@ -111,7 +111,7 @@ public class SearchFields {
      *
      * @return ArrayList<String> That can be displayed and searched with the search bar.
      */
-    public ArrayList<String> getSuggestions() {
+    public List<String> getSuggestions() {
         return suggestions;
     }
 

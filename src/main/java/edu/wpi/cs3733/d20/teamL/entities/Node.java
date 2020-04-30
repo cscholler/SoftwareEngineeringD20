@@ -169,9 +169,7 @@ public class Node {
     public void addEdgeTwoWay(Edge newEdge) {
         addEdge(newEdge);
 
-        Edge otherEdge = new Edge(newEdge.getDestination(), this);
-
-        newEdge.getDestination().addEdge(otherEdge);
+        newEdge.getDestination().addEdge(this);
     }
 
     /**

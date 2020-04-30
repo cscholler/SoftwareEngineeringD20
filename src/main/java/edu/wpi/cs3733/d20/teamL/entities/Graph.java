@@ -9,6 +9,43 @@ public class Graph implements Iterable<Node> {
 
     protected Map<String, Node> nodes = new ConcurrentHashMap<>();
 
+    public static Graph graphFromCache(List<Node> nodes, List<Edge> edges) {
+        Graph newGraph = new Graph();
+        for (Node node : nodes) {
+            newGraph.addNode(node);
+        }
+
+        for (Edge edge : edges) {
+            edge.getSource().addEdgeTwoWay(edge);
+        }
+
+        return newGraph;
+    }
+
+    /**
+     * Gets a collection of edges removing one from each pair of two-way-edges.
+     *
+     * @return A collection of edges with none that are inverses of each other
+     */
+    public Collection<Edge> getEdgesOneWay() {
+        Collection<Edge> oneWayEdges = new ArrayList<>();
+
+        for (Edge edge : getEdges()) {
+            // Check the edges that have already been edges for an edge with the same source and destination but reversed
+            boolean otherWayExists = false;
+            for (Edge existingEdge : oneWayEdges) {
+                if (edge.getSource() == existingEdge.getDestination() && edge.getDestination() == existingEdge.getSource())
+                    otherWayExists = true;
+            }
+
+            // Only add an edge if the reversed edge wasn't already added
+            if(!otherWayExists)
+                oneWayEdges.add(edge);
+        }
+
+        return oneWayEdges;
+    }
+
     /**
      * Gets the collection of Nodes contained in this graph.
      *
