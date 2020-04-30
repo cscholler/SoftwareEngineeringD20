@@ -9,8 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
+import java.util.Collection;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,13 +19,6 @@ import edu.wpi.cs3733.d20.teamL.services.Service;
 @Slf4j
 public class DatabaseService extends Service implements IDatabaseService {
 	private Connection connection;
-	private Properties props = null;
-
-	public DatabaseService(Properties props) {
-		super();
-		this.serviceName = DBConstants.SERVICE_NAME;
-		this.props = props;
-	}
 
 	public DatabaseService() {
 		super();
@@ -39,7 +31,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 	@Override
 	public void startService() {
 		if (connection == null) {
-			connect(props);
+			connect();
 		}
 		// Uncomment if database needs to be rebuilt
 		//rebuildDatabase();
@@ -55,11 +47,9 @@ public class DatabaseService extends Service implements IDatabaseService {
 
 	/**
 	 * Connects to the database with optional username and password
-	 *
-	 * @param props Username and password properties
 	 */
 	@Override
-	public void connect(Properties props) {
+	public void connect() {
 		try {
 			Class.forName(DBConstants.DB_DRIVER);
 		} catch (ClassNotFoundException ex) {
@@ -67,11 +57,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 			return;
 		}
 		try {
-			if (props != null) {
-				connection = DriverManager.getConnection(DBConstants.DB_URL, props);
-			} else {
-				connection = DriverManager.getConnection(DBConstants.DB_URL);
-			}
+			connection = DriverManager.getConnection( DBConstants.DB_PREFIX + DBConstants.DB_URL + DBConstants.DB_PORT + DBConstants.DB_NAME_DEV, DBConstants.DB_USER, DBConstants.DB_PASSWORD);
 			log.info("Connection established.");
 		} catch (SQLException ex) {
 			log.error("Encountered SQLException.", ex);
@@ -225,7 +211,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Wilson", "Wong", "doctor", "doctor", "2", "pharmacy", null))));
 
 		// Managers for each department
-		List<String> serviceTypes = new ArrayList<>(Arrays.asList("security", "internal_transportation", "external_transportation", "maintenance", "interpreter", "sanitation", "gift_shop", "information_technology"));
+		Collection<String> serviceTypes = new ArrayList<>(Arrays.asList("security", "internal_transportation", "external_transportation", "maintenance", "interpreter", "sanitation", "gift_shop", "information_technology"));
 		for (String serviceType : serviceTypes) {
 			executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(serviceType, "Manager", serviceType, serviceType, "0", null, serviceType))));
 		}
@@ -271,7 +257,6 @@ public class DatabaseService extends Service implements IDatabaseService {
 		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Movies", "LOTR", "The three Lord of the Rings movies from the trilogy", "100"))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Movies", "Star Wars", "All 6 Canon Star Wars movies", "100"))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Movies", "Pulp Fiction", "A copy of the movie Pulp Fiction", "3"))));
-
 	}
 
 	@Override
@@ -289,33 +274,17 @@ public class DatabaseService extends Service implements IDatabaseService {
 	 */
 	@Override
 	public void dropTables() {
-		ResultSet resSet;
-		ArrayList<String> dropTableUpdates = new ArrayList<>();
-		ArrayList<String> tablesToDrop = new ArrayList<>();
 		ArrayList<SQLEntry> updates = new ArrayList<>();
-		dropTableUpdates.add(DBConstants.DROP_NODE_TABLE);
-		dropTableUpdates.add(DBConstants.DROP_EDGE_TABLE);
-		dropTableUpdates.add(DBConstants.DROP_USER_TABLE);
-		dropTableUpdates.add(DBConstants.DROP_DOCTOR_TABLE);
-		dropTableUpdates.add(DBConstants.DROP_PATIENT_TABLE);
-		dropTableUpdates.add(DBConstants.DROP_GIFT_TABLE);
-		dropTableUpdates.add(DBConstants.DROP_GIFT_DELIVER_REQUEST_TABLE);
-		dropTableUpdates.add(DBConstants.DROP_MEDICATION_REQUEST_TABLE);
-		dropTableUpdates.add(DBConstants.DROP_SERVICE_REQUEST_TABLE);
-		try {
-			for (int i = 0; i < DBConstants.GET_TABLE_NAMES().size(); i++) {
-				resSet = connection.getMetaData().getTables(null, "APP", DBConstants.GET_TABLE_NAMES().get(i).toUpperCase(), null);
-				if (resSet.next()) {
-					tablesToDrop.add(dropTableUpdates.get((dropTableUpdates.size() - 1) - i));
-				}
-			}
-			for (String entry : tablesToDrop) {
-				updates.add(new SQLEntry(entry));
-			}
-			executeUpdates(updates);
-		} catch (SQLException ex) {
-			log.error("Encountered SQLException.", ex);
-		}
+		updates.add(new SQLEntry(DBConstants.DROP_SERVICE_REQUEST_TABLE));
+		updates.add(new SQLEntry(DBConstants.DROP_MEDICATION_REQUEST_TABLE));
+		updates.add(new SQLEntry(DBConstants.DROP_GIFT_DELIVER_REQUEST_TABLE));
+		updates.add(new SQLEntry(DBConstants.DROP_GIFT_TABLE));
+		updates.add(new SQLEntry(DBConstants.DROP_PATIENT_TABLE));
+		updates.add(new SQLEntry(DBConstants.DROP_DOCTOR_TABLE));
+		updates.add(new SQLEntry(DBConstants.DROP_USER_TABLE));
+		updates.add(new SQLEntry(DBConstants.DROP_EDGE_TABLE));
+		updates.add(new SQLEntry(DBConstants.DROP_NODE_TABLE));
+		executeUpdates(updates);
 	}
 
 	/**

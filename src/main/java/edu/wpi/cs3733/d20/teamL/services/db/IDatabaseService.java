@@ -12,7 +12,7 @@ public interface IDatabaseService {
 
 	void stopService();
 
-	void connect(Properties props);
+	void connect();
 
 	ResultSet executeQuery(SQLEntry query);
 
