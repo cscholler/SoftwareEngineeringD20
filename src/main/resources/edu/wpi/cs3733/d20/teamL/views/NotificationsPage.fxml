@@ -131,7 +131,7 @@
                   <Font size="15.0" />
                </font>
             </Label>
-            <JFXListView fx:id="giftReqs" onMouseClicked="#displaySelectedGiftReq" styleClass="notification-list" />
+            <JFXListView fx:id="giftReqs" onMouseClicked="#displaySelectedGiftReq" prefHeight="400.0" prefWidth="163.0" styleClass="notification-list" />
             <Label fx:id="lblService" text="Other Requests" textFill="WHITE">
                <VBox.margin>
                   <Insets top="10.0" />
@@ -140,7 +140,7 @@
                   <Font size="15.0" />
                </font>
             </Label>
-            <JFXListView fx:id="serviceReqs" onMouseClicked="#displaySelectedServiceReq" styleClass="notification-list">
+            <JFXListView fx:id="serviceReqs" onMouseClicked="#displaySelectedServiceReq" prefHeight="400.0" prefWidth="163.0" styleClass="notification-list">
                <VBox.margin>
                   <Insets bottom="20.0" />
                </VBox.margin>
