@@ -202,14 +202,19 @@ public class MapEditorController {
     @FXML
     private void saveToDB() {
         ArrayList<Node> nodes = new ArrayList<>(map.getBuilding().getNodes());
-        ArrayList<Edge> blackList = new ArrayList<>();
         ArrayList<Edge> newEdges = new ArrayList<>();
 
         for (Node node : nodes) {
             for (Edge edge : node.getEdges()) {
-                if (!newEdges.contains(edge) && blackList.contains(edge)) newEdges.add(edge);
-                if (edge.getDestination().getNeighbors().contains(node))
-                    blackList.add(edge.getDestination().getEdge(node));
+                if (!newEdges.contains(edge)) {
+                    for(Node adjNode : node.getNeighbors()) {
+                        for (Edge adjEdge : adjNode.getEdges()) {
+                            if(edge.getSource().equals(adjEdge.getDestination()) && edge.getDestination().equals(adjEdge.getSource())) {
+                                if (!newEdges.contains(adjEdge)) newEdges.add(edge);
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -292,7 +297,7 @@ public class MapEditorController {
     @FXML
     private void myCustomAction(MouseEvent event) {
         Node selectedNode = map.getSelectedNode();
-
+        path.getPathNodes().clear();
         if (selectedNode == null) {
             editor.setPrefWidth(0);
             editor.setVisible(false);
