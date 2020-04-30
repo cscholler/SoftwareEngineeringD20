@@ -32,6 +32,7 @@ import java.util.*;
 import java.util.List;
 import javax.inject.Inject;
 
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 
@@ -76,19 +77,11 @@ public class MapEditorController {
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
     private boolean eraserBool = false;
-    private char pathFindingAlg;
+    private char pathFindingAlg = 'A';
     private Path path = new Path();
 
     private final List<String> types = Arrays.asList("HALL", "ELEV", "REST", "STAI", "DEPT", "LABS", "INFO", "CONF", "EXIT", "RETL", "SERV");
     private int floor = 2;
-
-    private Image breadthFirstIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/Breath First.png", 100, 0, true, false, true);
-    private Image depthFirstIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/DepthFirst.png", 100, 0, true, false, true);
-    private Image aStarIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/AStar.png", 60, 0, true, false, true);
-    private Image xButtonIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/xButton.png", 40, 0, true, false, true);
-    private Image saveToFileIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/SaveToFile.png", 40, 0, true, false, true);
-    private Image uploadFromFolderIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/UploadFromFolder.png", 40, 0, true, false, true);
-
 
     @FXML
     public void initialize() {
@@ -141,18 +134,7 @@ public class MapEditorController {
 
         eraser.setDisableAnimation(true);
 
-        if (pathfinder.getPathfindingMethod() == PathfinderService.PathfindingMethod.Astar){
-            pathFindingAlg = 'A';
-            pathfindImage.setImage(aStarIcon);
-        }
-        if (pathfinder.getPathfindingMethod() == PathfinderService.PathfindingMethod.BFS){
-            pathFindingAlg = 'B';
-            pathfindImage.setImage(breadthFirstIcon);
-        }
-        if (pathfinder.getPathfindingMethod() == PathfinderService.PathfindingMethod.DFS){
-            pathFindingAlg = 'D';
-            pathfindImage.setImage((depthFirstIcon));
-        }
+        //saveNodesList.addAnimatedNode(saveDBButton);
     }
 
     private void highlightPath() {
@@ -220,24 +202,10 @@ public class MapEditorController {
     @FXML
     private void saveToDB() {
         ArrayList<Node> nodes = new ArrayList<>(map.getBuilding().getNodes());
-        ArrayList<Edge> newEdges = new ArrayList<>();
-
-        for (Node node : nodes) {
-            for (Edge edge : node.getEdges()) {
-                if (!newEdges.contains(edge)) {
-                    for(Node adjNode : node.getNeighbors()) {
-                        for (Edge adjEdge : adjNode.getEdges()) {
-                            if(edge.getSource().equals(adjEdge.getDestination()) && edge.getDestination().equals(adjEdge.getSource())) {
-                                if (!newEdges.contains(adjEdge)) newEdges.add(edge);
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        ArrayList<Edge> edges = new ArrayList<>(map.getBuilding().getEdgesOneWay());
 
         cache.cacheNodes(nodes, map.getEditedNodes());
-        cache.cacheEdges(newEdges);
+        cache.cacheEdges(edges);
         cache.updateDB();
 
         map.getEditedNodes().clear();
@@ -250,11 +218,13 @@ public class MapEditorController {
         data.showDialogue(pathFind.getScene().getWindow());
         String nodeFilePath = data.getNodeFile().getAbsolutePath();
         String edgeFilePath = data.getEdgeFile().getAbsolutePath();
+
         CSVHelper csvHelper = new CSVHelper();
         ArrayList<ArrayList<String>> nodeTable = new ArrayList<>();
         ArrayList<ArrayList<String>> edgeTable = new ArrayList<>();
         ArrayList<Node> nodes = new ArrayList<>(map.getBuilding().getNodes());
-        ArrayList<Edge> edges = new ArrayList<>(map.getBuilding().getEdges());
+        ArrayList<Edge> edges = new ArrayList<>(map.getBuilding().getEdgesOneWay());
+
         nodeTable.add(new ArrayList<>(Arrays.asList("nodeID", "xCoord", "yCoord", "floor", "building", "nodeType", "longName", "shortName")));
         for (Node node : nodes) {
             nodeTable.add(node.toArrayList());
@@ -282,7 +252,8 @@ public class MapEditorController {
     private void openFromDB() {
         cache.cacheAllFromDB();
         Building newBuilding = new Building("Faulkner");
-        newBuilding.addAllNodes(cache.getNodeCache());
+        Graph nodes = Graph.graphFromCache(cache.getNodeCache(), cache.getEdgeCache());
+        newBuilding.addAllNodes(nodes.getNodes());
 
         map.setBuilding(newBuilding);
         setFloor(2);
@@ -583,10 +554,10 @@ public class MapEditorController {
         //show/hide options image
         if (saveNodesList.isExpanded()) {
             saveTooltip.setText("Click to Close");
-            saveOptImg.setImage(xButtonIcon);
+            saveOptImg.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/xButton.png", 40, 0, true, false));
         } else {
             saveTooltip.setText("Click to Show Save Options");
-            saveOptImg.setImage(saveToFileIcon);
+            saveOptImg.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/SaveToFile.png"));
         }
     }
 
@@ -595,10 +566,10 @@ public class MapEditorController {
         //show/hide options image
         if (loadNodesList.isExpanded()) {
             loadTooltip.setText("Click to Close");
-            loadOptionsImage.setImage(xButtonIcon);
+            loadOptionsImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/xButton.png"));
         } else {
             loadTooltip.setText("Click to Show Load Options");
-            loadOptionsImage.setImage(uploadFromFolderIcon);
+            loadOptionsImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/UploadFromFolder.png"));
         }
     }
 
@@ -607,22 +578,22 @@ public class MapEditorController {
         //show/hide options image
         if (pathNodesList.isExpanded()) {
             pathfindTooltip.setText("Click to Close");
-            pathfindImage.setImage(xButtonIcon);
+            pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/xButton.png", 40, 0, true, false));
         } else {
             pathfindTooltip.setText("Switch Pathfinding Algorithm");
             if (pathFindingAlg == 'A')
-                pathfindImage.setImage(aStarIcon);
+                pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/AStar.png"));
             if (pathFindingAlg == 'B')
-                pathfindImage.setImage(breadthFirstIcon);
+                pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/Breath First.png", 60, 0, true, false));
             if (pathFindingAlg == 'D')
-                pathfindImage.setImage(depthFirstIcon);
+                pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/DepthFirst.png"));
         }
     }
 
     @FXML
     private void aStarSelected() {
         pathFindingAlg = 'A';
-        pathfindImage.setImage(aStarIcon);
+        pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/AStar.png", 40, 0, true, false));
         pathNodesList.animateList(false);
         pathfinder.setPathfindingMethod(PathfinderService.PathfindingMethod.Astar);
     }
@@ -630,15 +601,15 @@ public class MapEditorController {
     @FXML
     private void depthSelected() {
         pathFindingAlg = 'D';
-        pathfindImage.setImage(depthFirstIcon);
+        pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/DepthFirst.png", 40, 0, true, false));
         pathNodesList.animateList(false);
-		pathfinder.setPathfindingMethod(PathfinderService.PathfindingMethod.DFS);
+		//pathfinder.setPathfindingMethod(PathfinderService.PathfindingMethod.DFS);
     }
 
     @FXML
     private void breadthSelected() {
         pathFindingAlg = 'B';
-        pathfindImage.setImage(breadthFirstIcon);
+        pathfindImage.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/Breath First.png", 60, 0, true, false));
         pathNodesList.animateList(false);
 		pathfinder.setPathfindingMethod(PathfinderService.PathfindingMethod.BFS);
     }

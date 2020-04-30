@@ -142,7 +142,6 @@ public class MapViewerController {
         Node destNode = sf.getNode(destination.getText());
 
         setFloor(startNode.getFloor());
-
         if (startNode != null && destNode != null) {
             String directions = highlightSourceToDestination(startNode, destNode);
             messengerService.setDirections(directions);
