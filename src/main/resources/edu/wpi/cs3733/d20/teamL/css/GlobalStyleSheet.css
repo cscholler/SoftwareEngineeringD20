@@ -36,10 +36,10 @@
     -fx-background-color: #DCDCDC;
     -fx-background-radius: 0;
     -jfx-unfocus-color: white;
-    -jfx-focus-color: #0D2E57;
-    -fx-pref-width: 200;
+    -jfx-focus-color: #405784;
+    -fx-pref-width: 300;
     -fx-pref-height: 40;
-    -fx-max-width: 200;
+    -fx-max-width: 300;
     -fx-max-height: 40;
 
     -fx-font-size: 15;
@@ -50,7 +50,7 @@
     -fx-background-color: #DCDCDC;
     -fx-background-radius: 0;
     -jfx-unfocus-color: white;
-    -jfx-focus-color: #0D2E57;
+    -jfx-focus-color: #405784;
     -fx-pref-width: 200;
     -fx-pref-height: 40;
     -fx-max-width: 200;
@@ -66,13 +66,13 @@
     -fx-alignment: center;
 }
 
-.bottom-bar-time-label-jfx {
+.bottom-bar-time-label-fx {
     -fx-text-fill: white;
     -fx-font-size:30;
     -fx-padding: 0 0 0 30;
 }
 
-.bottom-bar-logout-label-jfx {
+.bottom-bar-logout-label-fx {
     -fx-text-fill: white;
     -fx-underline: true;
     -fx-font-size:30;
@@ -80,7 +80,7 @@
     -fx-text-alignment: justify;
 }
 
-.service-request-header-label-jfx {
+.service-request-header-label-fx {
     -fx-text-fill: #00043B;
     -fx-font-size: 40;
     -fx-font-weight: bold;
@@ -88,17 +88,17 @@
 
 .check-box-jfx {
     -fx-font-size: 15;
-    -jfx-checked-color: #0D2E57;
+    -jfx-checked-color: #405784;
 }
 
 .text-area-jfx {
     -fx-background-color: #DCDCDC;
     -fx-background-radius: 0;
     -jfx-unfocus-color: white;
-    -jfx-focus-color: #0D2E57;
-    -fx-pref-width: 400;
+    -jfx-focus-color: #405784;
+    -fx-pref-width: 300;
     -fx-pref-height: 150;
-    -fx-max-width: 400;
+    -fx-max-width: 300;
     -fx-max-height: 150;
 
     -fx-font-size: 15;
@@ -137,3 +137,26 @@
     -fx-pref-width: 895;
     -fx-background-color: white;
 }
+
+.flags-button-jfx{
+    -fx-background-color: white;
+    -fx-pref-height: 80;
+    -fx-graphic: top;
+}
+
+.time-text-field-jfx{
+    -fx-font-size: 14;
+    -jfx-unfocus-color: black;
+    -jfx-focus-color: #405784;
+    -fx-max-width: 40;
+    -fx-alignment: center;
+}
+
+.time-combo-box-jfx{
+    -fx-font-size: 15;
+    -jfx-unfocus-color: white;
+    -jfx-focus-color: white;
+    -fx-background-radius: 0;
+}
+
+

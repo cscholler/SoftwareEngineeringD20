@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 import com.google.inject.Inject;
 import com.jfoenix.controls.JFXAutoCompletePopup;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
@@ -50,7 +51,9 @@ public class InterpreterController implements Initializable {
     @FXML
     private JFXButton btnBack, btnSubmit;
     @FXML
-    private JFXTextField patientIDText, roomNumText, additionalText;
+    private JFXTextField patientIDText, roomNumText;
+    @FXML
+    private JFXTextArea additionalText;
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
@@ -138,8 +141,4 @@ public class InterpreterController implements Initializable {
 
     }
 
-    @FXML
-    private void backClicked(){
-        loaderHelper.goBack();
-    }
 }
