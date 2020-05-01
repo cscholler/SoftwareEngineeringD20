@@ -235,10 +235,8 @@ public class MapPane extends ScrollPane {
 
         if(minNode != null) {
             if (minAngle < Math.PI / 4) {
-                System.out.println("Horizontal: (" + mousePos.getX() + "," + minNode.getLayoutY());
                 return new Point2D(mousePos.getX(), minNode.getLayoutY());
             }
-            System.out.println("Vetical: (" + minNode.getLayoutX() + "," + mousePos.getY());
             return new Point2D(minNode.getLayoutX(), mousePos.getY());
         }
         return mousePos;
