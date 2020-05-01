@@ -122,6 +122,8 @@ public class MapEditorController {
             floorSelector.getChildren().add(1, newButton);
         }
 
+        setFloor(2);
+
         //Hides the node editor VBox
         editor.setPrefWidth(0);
         editor.setVisible(false);
@@ -256,7 +258,6 @@ public class MapEditorController {
         newBuilding.addAllNodes(nodes.getNodes());
 
         map.setBuilding(newBuilding);
-        setFloor(2);
     }
 
     @FXML
