@@ -120,7 +120,11 @@ public class MapPane extends ScrollPane {
                 if (!addingNode && addingEdge && !onSelectable && !erasing) {
                     if (event.getButton().equals(MouseButton.PRIMARY)) {
 
-                        Node dest = new Node(currentBuilding.getUniqueNodeID(), new Point2D(event.getX(), event.getY()).multiply(1 / zoomLevel), currentFloor.getFloor(), currentBuilding.getName());
+                        Node dest = new Node(currentBuilding.getUniqueNodeID(), new Point2D(event.getX(),
+                                event.getY()).multiply(1 / zoomLevel), currentFloor.getFloor(), currentBuilding.getName(),
+                                "HALL","Hall", "Hall");
+
+                        dest.setId(currentBuilding.getUniqueNodeID(dest));
 
                         addNode(dest);
 
