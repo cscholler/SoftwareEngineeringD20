@@ -48,6 +48,17 @@
                </children>
             </AnchorPane>
          </center>
+         <right>
+            <AnchorPane prefHeight="200.0" prefWidth="25.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fx:id="btnClose" fitHeight="25.0" fitWidth="25.0" onMouseClicked="#launchDefaultPane" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
+                     <image>
+                        <Image url="@../../assets/close.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+         </right>
       </BorderPane>
    </center>
    <left>

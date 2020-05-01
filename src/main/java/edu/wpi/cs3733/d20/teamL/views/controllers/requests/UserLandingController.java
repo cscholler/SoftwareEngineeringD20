@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ import java.util.TimerTask;
 
 @Slf4j
 public class UserLandingController {
+    public ImageView btnClose;
     FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 
     @FXML
@@ -34,7 +36,7 @@ public class UserLandingController {
     ILoginManager login;
 
     @FXML
-    public void initialize(){
+    public void initialize() throws IOException {
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -42,12 +44,15 @@ public class UserLandingController {
                 Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("h:mm aa").format(new Date())));
             }
         }, 0, 1000);
+
+        launchDefaultPane();
     }
 
     @FXML
     public void launchDefaultPane() throws IOException{
-        resetPage("defaultPane", " ");
+        resetPage("DefaultPane", " ");
         requestLabel.setVisible(false);
+        btnClose.setVisible(false);
     }
 
     @FXML
@@ -124,6 +129,8 @@ public class UserLandingController {
 
         requestLabel.setText(labelText);
         requestLabel.setVisible(true);
+
+        btnClose.setVisible(true);
     }
 
     @FXML
@@ -146,6 +153,7 @@ public class UserLandingController {
             log.error("Encountered IOException", ex);
         }
     }
+
 }
 
 
