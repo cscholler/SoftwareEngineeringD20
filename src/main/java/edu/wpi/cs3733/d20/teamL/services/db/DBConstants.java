@@ -6,11 +6,11 @@ import java.util.Arrays;
 public class DBConstants {
 	public static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
 	public static final String DB_PREFIX = "jdbc:mysql://";
-	public static final String DB_URL = "cs3733-teaml-bwh-db.cqqsqwjmcbj4.us-east-2.rds.amazonaws.com";
-	public static final String DB_PORT = ":3306";
+	public static final String DB_URL = "cs3733-bwh-db.cqqsqwjmcbj4.us-east-2.rds.amazonaws.com";
+	public static final String DB_PORT = ":5008";
 	public static final String DB_NAME_DEV = "/bwh_dev";
 	public static final String DB_NAME_PROD = "/bwh_prod";
-	public static final String DB_USER = "root";
+	public static final String DB_USER = "teaml";
 	public static final String DB_PASSWORD = "linenleviathans";
 	public static final String SERVICE_NAME = "mysql-db-01";
 
