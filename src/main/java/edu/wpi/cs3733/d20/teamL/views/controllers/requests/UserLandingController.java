@@ -4,10 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import lombok.extern.slf4j.Slf4j;
 
@@ -69,6 +66,10 @@ public class UserLandingController {
     @FXML
     public void launchITPane(ActionEvent actionEvent) {
         System.out.println("IT Request");
+    }
+
+    @FXML
+    public void launchNotifPage(ActionEvent actionEvent) {
     }
 }
 

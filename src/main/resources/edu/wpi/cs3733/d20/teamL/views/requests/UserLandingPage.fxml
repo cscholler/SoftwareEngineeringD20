@@ -26,7 +26,7 @@
          <top>
             <HBox prefHeight="60.0" prefWidth="895.0" style="-fx-background-color: white; -fx-alignment: TOP-RIGHT;" styleClass="bottom-bar-hbox-fx" BorderPane.alignment="CENTER">
                <children>
-                  <JFXButton prefHeight="60.0" prefWidth="240.0" styleClass="notifications-button-jfx" text="Notifications">
+                  <JFXButton fx:id="btnNotif" onAction="#launchNotifPage" prefHeight="60.0" prefWidth="240.0" styleClass="notifications-button-jfx" text="Notifications">
                      <font>
                         <Font size="30.0" />
                      </font>
