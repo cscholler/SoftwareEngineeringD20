@@ -7,7 +7,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.ResourceBundle;
 
-import edu.wpi.cs3733.d20.teamL.entities.*;
+import edu.wpi.cs3733.d20.teamL.entities.Gift;
+import edu.wpi.cs3733.d20.teamL.entities.GiftDeliveryRequest;
+import edu.wpi.cs3733.d20.teamL.entities.MedicationRequest;
+import edu.wpi.cs3733.d20.teamL.entities.ServiceRequest;
+import edu.wpi.cs3733.d20.teamL.entities.User;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.services.users.IRequestHandlerService;
 import edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.AssignPopupController;
@@ -292,7 +296,6 @@ public class NotificationsPageController implements Initializable {
 		setCurrentMedicationRequest(req);
 		try {
 			if (req != null) {
-				reqHandler.setCurrentRequestID(req.getID());
 				reqHandler.setCurrentRequestType("medication");
 				reqMessage.setWrapText(true);
 				addInfo.setWrapText(true);
@@ -336,7 +339,6 @@ public class NotificationsPageController implements Initializable {
 		setCurrentGiftRequest(req);
 		try {
 			if (req != null) {
-				reqHandler.setCurrentRequestID(req.getID());
 				reqHandler.setCurrentRequestType("gift");
 				reqMessage.setWrapText(true);
 				addInfo.setWrapText(true);
@@ -396,7 +398,6 @@ public class NotificationsPageController implements Initializable {
 		try {
 			setCurrentServiceRequest(req);
 			if (req != null) {
-				reqHandler.setCurrentRequestID(req.getID());
 				reqHandler.setCurrentRequestType("service");
 				reqMessage.setWrapText(true);
 				addInfo.setWrapText(true);

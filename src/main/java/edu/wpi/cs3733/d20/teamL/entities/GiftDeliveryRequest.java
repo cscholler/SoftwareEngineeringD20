@@ -73,6 +73,10 @@ public class GiftDeliveryRequest {
 		return notes;
 	}
 
+	public void setNotes(String notes) {
+		this.notes = notes;
+	}
+
 	public String getStatus() {
 		return status;
 	}

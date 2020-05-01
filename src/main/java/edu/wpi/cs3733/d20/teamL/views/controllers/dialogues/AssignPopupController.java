@@ -3,6 +3,9 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.dialogues;
 import com.google.inject.Inject;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import edu.wpi.cs3733.d20.teamL.entities.GiftDeliveryRequest;
+import edu.wpi.cs3733.d20.teamL.entities.MedicationRequest;
+import edu.wpi.cs3733.d20.teamL.entities.ServiceRequest;
 import edu.wpi.cs3733.d20.teamL.entities.User;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
@@ -27,6 +30,7 @@ import java.util.ResourceBundle;
 
 @Slf4j
 public class AssignPopupController implements Initializable {
+	private NotificationsPageController notificationsPageController;
     private ObservableList<String> users = FXCollections.observableArrayList();
     @FXML
     private JFXComboBox<String> userSelector;
@@ -39,8 +43,7 @@ public class AssignPopupController implements Initializable {
     @Inject
     private ILoginManager loginManager;
     @Inject
-    private IRequestHandlerService reqHandler;
-    private NotificationsPageController notificationsPageController;
+	private IRequestHandlerService reqHandler;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -87,22 +90,30 @@ public class AssignPopupController implements Initializable {
 		updatedNotes = updatedNotes.concat("\nAssigned to " + selectedName + " at " + dateAndTime);
 		switch (reqHandler.getCurrentRequestType()) {
 			case "medication": {
-				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_DELIVERER, new ArrayList<>(Arrays.asList(selectedUser, reqHandler.getCurrentRequestID()))));
-				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_STATUS, new ArrayList<>(Arrays.asList("2", getNotificationsPageController().getCurrentMedicationRequest().getID()))));
-				getNotificationsPageController().getCurrentMedicationRequest().setStatus("1");
+				MedicationRequest currentMedReq = getNotificationsPageController().getCurrentMedicationRequest();
+				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_DELIVERER, new ArrayList<>(Arrays.asList(selectedUser, currentMedReq.getID()))));
+				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_STATUS, new ArrayList<>(Arrays.asList("2", currentMedReq.getID()))));
+				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_NOTES, new ArrayList<>(Arrays.asList(updatedNotes, currentMedReq.getID()))));
+				currentMedReq.setStatus("2");
+				currentMedReq.setNotes(updatedNotes);
 			}
 			break;
 			case "gift": {
-				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_GIFT_DELIVERY_REQUEST_ASSIGNEE, new ArrayList<>(Arrays.asList(selectedUser, reqHandler.getCurrentRequestID()))));
-				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_GIFT_DELIVERY_REQUEST_STATUS, new ArrayList<>(Arrays.asList("2", getNotificationsPageController().getCurrentGiftRequest().getID()))));
-				getNotificationsPageController().getCurrentGiftRequest().setStatus("2");
+				GiftDeliveryRequest currentGiftReq = getNotificationsPageController().getCurrentGiftRequest();
+				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_GIFT_DELIVERY_REQUEST_ASSIGNEE, new ArrayList<>(Arrays.asList(selectedUser, currentGiftReq.getID()))));
+				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_GIFT_DELIVERY_REQUEST_STATUS, new ArrayList<>(Arrays.asList("2", currentGiftReq.getID()))));
+				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_GIFT_DELIVERY_REQUEST_NOTES, new ArrayList<>(Arrays.asList(updatedNotes, currentGiftReq.getID()))));
+				currentGiftReq.setStatus("2");
+				currentGiftReq.setNotes(updatedNotes);
 			}
 			break;
 			case "service": {
-				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_SERVICE_REQUEST_ASSIGNEE, new ArrayList<>(Arrays.asList(selectedUser, reqHandler.getCurrentRequestID()))));
-				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_SERVICE_REQUEST_STATUS, new ArrayList<>(Arrays.asList("2", getNotificationsPageController().getCurrentServiceRequest().getID()))));
-				//db.executeUpdate(new SQLEntry(DBConstants.UPDATE_SERVICE_REQUEST_NOTES, new ArrayList<>(Arrays.asList(updatedNotes, getNotificationsPageController().getCurrentServiceRequest().getID()))));
-				getNotificationsPageController().getCurrentServiceRequest().setStatus("2");
+				ServiceRequest currentServiceReq = getNotificationsPageController().getCurrentServiceRequest();
+				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_SERVICE_REQUEST_ASSIGNEE, new ArrayList<>(Arrays.asList(selectedUser, currentServiceReq.getID()))));
+				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_SERVICE_REQUEST_STATUS, new ArrayList<>(Arrays.asList("2", currentServiceReq.getID()))));
+				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_SERVICE_REQUEST_NOTES, new ArrayList<>(Arrays.asList(updatedNotes, currentServiceReq.getID()))));
+				currentServiceReq.setStatus("2");
+				currentServiceReq.setNotes(updatedNotes);
 			}
 		}
 		addInfo.setText(updatedNotes);
