@@ -104,7 +104,7 @@ public class ITServiceController implements Initializable {
         String notes = notesText.getText();
 
         String status = "0";
-        String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
+        String dateAndTime = new SimpleDateFormat("M-dd-yyyy | h:mm aa").format(new Date());
 
         int rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
                 new ArrayList<>(Arrays.asList(null, userName, null, searchFields.getNode(location).getID(), "information_technology", type, notes, status, dateAndTime))));
