@@ -34,7 +34,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 			connect();
 		}
 		// Uncomment if database needs to be rebuilt
-		rebuildDatabase();
+		//rebuildDatabase();
 	}
 
 	/**
