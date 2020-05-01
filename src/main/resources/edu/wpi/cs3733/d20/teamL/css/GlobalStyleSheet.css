@@ -129,7 +129,18 @@
     -fx-max-height: 300;
     -fx-alignment: center-left;
     -jfx-button-type: RAISED;
+}
 
+.services-button-jfx {
+    -fx-font-size: 30;
+    -fx-text-fill: #00043B;
+
+    -fx-background-color: WHITE;
+    -fx-pref-width: 385;
+    -fx-pref-height: 300;
+    -fx-max-height: 300;
+    -fx-alignment: center-left;
+    -jfx-button-type: RAISED;
 }
 
 .services-pane-jfx{

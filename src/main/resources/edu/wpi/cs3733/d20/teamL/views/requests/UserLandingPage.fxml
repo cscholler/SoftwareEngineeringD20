@@ -86,7 +86,7 @@
                                     <Image url="@../../assets/serviceIcons/externalTransport.png" />
                                  </image></ImageView>
                            </graphic></JFXButton>
-                        <JFXButton fx:id="btnInterpreter" prefWidth="361.0" styleClass="services-button-jfx" text="Interpreter">
+                        <JFXButton fx:id="btnInterpreter" onAction="#launchInterpreterPane" prefWidth="361.0" styleClass="services-button-jfx" text="Interpreter">
                            <graphic>
                               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
