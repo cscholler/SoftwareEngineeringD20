@@ -10,12 +10,9 @@ import java.util.ResourceBundle;
 import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.services.users.IRequestHandlerService;
-import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
 import edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.AssignPopupController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -44,13 +41,12 @@ public class NotificationsPageController implements Initializable {
 	private ObservableList<MedicationRequest> medReqList = FXCollections.observableArrayList();
 	private ObservableList<GiftDeliveryRequest> giftReqList = FXCollections.observableArrayList();
 	private ObservableList<ServiceRequest> serviceReqList = FXCollections.observableArrayList();
-	private DBTableFormatter formatter = new DBTableFormatter();
 	private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 	private MedicationRequest currentMedicationRequest;
 	private GiftDeliveryRequest currentGiftRequest;
 	private ServiceRequest currentServiceRequest;
 	@FXML
-	private JFXButton btnBack, btnCompleted, btnDecline, btnApprove, btnAssign;
+	private JFXButton btnCompleted, btnDecline, btnApprove, btnAssign;
 	@FXML
 	private JFXListView<ServiceRequest> serviceReqs;
 	@FXML
@@ -231,6 +227,7 @@ public class NotificationsPageController implements Initializable {
 					String roomID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ROOM, new ArrayList<>(Collections.singletonList(patientID))))).get(0).get(0);
 					medReqList.add(new MedicationRequest(row.get(0), row.get(1), patientName, row.get(2), roomID, row.get(3), row.get(4), row.get(5), row.get(6), row.get(7), row.get(8), row.get(9)));
 				}
+				Collections.reverse(medReqList);
 				medReqs.getItems().addAll(medReqList);
 			}
 			break;
@@ -260,6 +257,7 @@ public class NotificationsPageController implements Initializable {
 					}
 					giftReqList.add(new GiftDeliveryRequest(row.get(0), row.get(1), patientName, roomID, row.get(2), row.get(3), row.get(4), gifts, row.get(8), row.get(9), row.get(10), row.get(11)));
 				}
+				Collections.reverse(giftReqList);
 				giftReqs.getItems().addAll(giftReqList);
 			}
 			break;
@@ -278,6 +276,7 @@ public class NotificationsPageController implements Initializable {
 					String patientName = patientID != null ? getPatientFullName(patientID) : null;
 					serviceReqList.add(new ServiceRequest(row.get(0), row.get(1), patientName, row.get(2), row.get(3), row.get(4), row.get(5), row.get(6), row.get(7), row.get(8), row.get(9)));
 				}
+				Collections.reverse(serviceReqList);
 				serviceReqs.getItems().addAll(serviceReqList);
 			}
 		}
@@ -464,7 +463,6 @@ public class NotificationsPageController implements Initializable {
 	@FXML
 	private void btnAssignClicked() {
 		try {
-			btnAssign.setText("Re-Assign");
 			FXMLLoader loader = loaderHelper.getFXMLLoader("AssignPopup");
 			Parent root = loader.load();
 			AssignPopupController assignPopupController = loader.getController();
@@ -474,8 +472,6 @@ public class NotificationsPageController implements Initializable {
 			log.error("Encountered IOException", ex);
 		}
 	}
-
-	;
 
 	@FXML
 	private void btnApproveClicked() {
@@ -586,6 +582,10 @@ public class NotificationsPageController implements Initializable {
 
 	public void setCurrentServiceRequest(ServiceRequest currentServiceRequest) {
 		this.currentServiceRequest = currentServiceRequest;
+	}
+
+	public JFXButton getBtnAssign() {
+		return btnAssign;
 	}
 
 	private void resetButtons() {

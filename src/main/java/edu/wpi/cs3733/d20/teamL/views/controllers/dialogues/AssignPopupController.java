@@ -90,6 +90,7 @@ public class AssignPopupController implements Initializable {
 			}
 		}
 		getNotificationsPageController().setCellFactories();
+		getNotificationsPageController().getBtnAssign().setText("Re-Assign");
 	}
 
 	public NotificationsPageController getNotificationsPageController() {
