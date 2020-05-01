@@ -35,8 +35,8 @@
 .text-field-jfx {
     -fx-background-color: #DCDCDC;
     -fx-background-radius: 0;
-    -jfx-unfocused-color: white;
-    -jfx-focused-color: #0D2E57;
+    -jfx-unfocus-color: white;
+    -jfx-focus-color: #0D2E57;
     -fx-pref-width: 200;
     -fx-pref-height: 40;
     -fx-max-width: 200;
@@ -49,8 +49,8 @@
 .combo-box-jfx {
     -fx-background-color: #DCDCDC;
     -fx-background-radius: 0;
-    -jfx-unfocused-color: white;
-    -jfx-focused-color: #0D2E57;
+    -jfx-unfocus-color: white;
+    -jfx-focus-color: #0D2E57;
     -fx-pref-width: 200;
     -fx-pref-height: 40;
     -fx-max-width: 200;
@@ -94,4 +94,18 @@
 .check-box-jfx {
     -fx-font-size: 15;
     -jfx-checked-color: #0D2E57;
+}
+
+.text-area-jfx {
+    -fx-background-color: #DCDCDC;
+    -fx-background-radius: 0;
+    -jfx-unfocus-color: white;
+    -jfx-focus-color: #0D2E57;
+    -fx-pref-width: 400;
+    -fx-pref-height: 150;
+    -fx-max-width: 400;
+    -fx-max-height: 150;
+
+    -fx-font-size: 15;
+    -jfx-label-float: true;
 }
