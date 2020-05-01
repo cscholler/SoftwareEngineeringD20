@@ -82,7 +82,7 @@ public class AssignPopupController implements Initializable {
 		String lName = selectedName.substring(selectedName.indexOf(" ") + 1);
 		String selectedUser = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_USERNAME_BY_NAME, new ArrayList<>(Arrays.asList(fName, lName))))).get(0).get(0);
 		Label addInfo = getNotificationsPageController().getAddInfo();
-		String dateAndTime = new SimpleDateFormat("M-dd-yyyy | h:mm aa").format(new Date());
+		String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm aa").format(new Date());
 		String updatedNotes = addInfo.getText();
 		if (updatedNotes.contains("Assigned to ")) {
 			updatedNotes = updatedNotes.substring(0, updatedNotes.indexOf("\nAssigned to "));

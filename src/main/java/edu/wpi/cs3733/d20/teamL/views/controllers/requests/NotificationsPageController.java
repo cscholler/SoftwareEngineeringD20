@@ -42,10 +42,10 @@ import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 
 @Slf4j
 public class NotificationsPageController implements Initializable {
-	private ObservableList<MedicationRequest> medReqList = FXCollections.observableArrayList();
-	private ObservableList<GiftDeliveryRequest> giftReqList = FXCollections.observableArrayList();
-	private ObservableList<ServiceRequest> serviceReqList = FXCollections.observableArrayList();
-	private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+	private final ObservableList<MedicationRequest> medReqList = FXCollections.observableArrayList();
+	private final ObservableList<GiftDeliveryRequest> giftReqList = FXCollections.observableArrayList();
+	private final ObservableList<ServiceRequest> serviceReqList = FXCollections.observableArrayList();
+	private final FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 	private MedicationRequest currentMedicationRequest;
 	private GiftDeliveryRequest currentGiftRequest;
 	private ServiceRequest currentServiceRequest;
