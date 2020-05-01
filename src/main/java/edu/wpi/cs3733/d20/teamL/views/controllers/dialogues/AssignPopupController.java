@@ -100,7 +100,7 @@ public class AssignPopupController implements Initializable {
 			}
 		}
 		Label addInfo = getNotificationsPageController().getAddInfo();
-		String dateAndTime = new SimpleDateFormat("MM-dd-yyyy|h:mm aa").format(new Date());
+		String dateAndTime = new SimpleDateFormat("M-dd-yyyy | h:mm aa").format(new Date());
 		addInfo.setText(addInfo.getText().concat("\nAssigned to " + selectedName + " at " + dateAndTime));
 		getNotificationsPageController().setCellFactories();
 		getNotificationsPageController().getBtnAssign().setText("Re-Assign");
