@@ -279,7 +279,8 @@ public class MapEditorController {
     private void openFromDB() {
         cache.cacheAllFromDB();
         Building newBuilding = new Building("Faulkner");
-        newBuilding.addAllNodes(cache.getNodeCache());
+        Graph graph = Graph.graphFromCache(cache.getNodeCache(), cache.getEdgeCache());
+        newBuilding.addAllNodes(graph.getNodes());
 
         map.setBuilding(newBuilding);
     }
