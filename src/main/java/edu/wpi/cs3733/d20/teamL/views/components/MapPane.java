@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class MapPane extends StackPane {
+public class MapPane extends ScrollPane {
     @FXML
     private Label position;
     @FXML
@@ -84,7 +84,6 @@ public class MapPane extends StackPane {
             throw new RuntimeException(exception);
         }
 
-        position.setText(positionInfo());
         scroller.setPannable(true);
         body.setFocusTraversable(true);
 
@@ -96,7 +95,6 @@ public class MapPane extends StackPane {
             // Change the zoom level
             setZoomLevelToPosition(prevZoomLevel * (1 + event.getDeltaY() / 500), new Point2D(event.getX(), event.getY()));
 
-            position.setText(positionInfo());
             event.consume();
         });
     }
@@ -143,11 +141,12 @@ public class MapPane extends StackPane {
             body.setOnMousePressed(event -> {
                 if (!addingNode && !addingEdge && !draggingNode && !onSelectable && event.isPrimaryButtonDown() && !erasing) {
                     dragSelecting = true;
+                    selector.clear();
                     selectionBox.setRootPosition(new Point2D(event.getX(), event.getY()));
                     body.getChildren().add(selectionBox);
                     selectedNode = null;
-                    onActionProperty().get().handle(event);
                 }
+                onActionProperty().get().handle(event);
             });
 
             // Change the position of all the selected nodes as the mouse is being dragged keeping their offset
@@ -161,7 +160,6 @@ public class MapPane extends StackPane {
                     } else if (dragSelecting) {
                         selectionBox.mouseDrag(new Point2D(event.getX(), event.getY()), event.isShiftDown());
                     }
-                    position.setText(positionInfo());
                 }
                 if (!addingNode && event.isPrimaryButtonDown() && erasing) {
                     Point2D mousePos = new Point2D(event.getX(), event.getY());
@@ -248,7 +246,7 @@ public class MapPane extends StackPane {
     public void setBuilding(Building currentBuilding) {
         this.currentBuilding = currentBuilding;
 
-        currentFloor = currentBuilding.getFloor(Math.min(getFloor(), currentBuilding.getMaxFloor()));
+        setFloor(Math.min(getFloor(), currentBuilding.getMaxFloor()));
     }
 
     public void setSelectedNode(Node selectedNode) {
@@ -656,17 +654,6 @@ public class MapPane extends StackPane {
 
     public EdgeGUI getEdgeGUI(Edge edge) {
         return edges.get(edge);
-    }
-
-    /**
-     * Generates a string to display information about the cameras current location and zoom.
-     *
-     * @return A string containing the zoom level and the H and V values of the scrollbar.
-     */
-    private String positionInfo() {
-        return "+" + round(getZoomLevel(), 3) + "\n(" +
-                round(scroller.getHvalue(), 3) +
-                ", " + round(scroller.getVvalue(), 3) + ")";
     }
 
     double round(double num, int place) {
