@@ -19,7 +19,51 @@ public class Graph implements Iterable<Node> {
             edge.getSource().addEdgeTwoWay(edge);
         }
 
+        // Search for nodes connected between floors and set each chain of connected nodes to a separate shaft value.
+        // Didn't want to store shaft in the database so this is the solution.
+        int currentElev = 0;
+        int currentStair = 0;
+
+        for (Node node : nodes) {
+            if (node.getType().equals("ELEV")) {
+                currentElev = stairOrElev(node, currentElev);
+            } else if (node.getType().equals("STAI")) {
+                currentStair = stairOrElev(node, currentStair);
+            }
+        }
+
         return newGraph;
+    }
+
+    private static int stairOrElev(Node node, int currentShaft) {
+        boolean foundShaft = false;
+        if(node.getShaft() == 0) {
+            for (Node neighbor : node.getNeighbors()) {
+                if (neighbor.getFloor() != node.getFloor()) {
+                    if (!foundShaft) {
+                        foundShaft = true;
+                        currentShaft++;
+                    }
+                    neighbor.setShaft(currentShaft);
+                }
+            }
+        }
+
+        if (foundShaft) {
+            node.setShaft(currentShaft);
+        }
+
+        return currentShaft;
+    }
+
+    public int getMaxShaft(String type) {
+        int maxShaft = 0;
+        for (Node node : getNodes()) {
+            if(node.getType().equals(type) && node.getShaft() > maxShaft)
+                maxShaft = node.getShaft();
+        }
+
+        return maxShaft;
     }
 
     /**

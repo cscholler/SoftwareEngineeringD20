@@ -33,32 +33,6 @@ public class DatabaseCache implements IDatabaseCache {
         cacheNodesFromDB();
         cacheEdgesFromDB();
         cacheGiftsFromDB();
-
-        // Search for nodes connected between floors and set each chain of connected nodes to a separate shaft value.
-        // Didn't want to store shaft in the database so this is the solution.
-        int currentShaft = 0;
-        boolean foundShaft = false;
-
-        for (Node node : nodeCache) {
-            if (node.getType().equals("ELEV") || node.getType().equals("STAI")) {
-
-                for (Node neighbor : node.getNeighbors()) {
-                    if (neighbor.getFloor() != node.getFloor()) {
-                        if (!foundShaft) {
-                            foundShaft = true;
-                            currentShaft++;
-                        }
-                        neighbor.setShaft(currentShaft);
-                    }
-                }
-
-                if (foundShaft) {
-                    node.setShaft(currentShaft);
-                    foundShaft = false;
-                }
-            }
-        }
-
     }
 
     /**
