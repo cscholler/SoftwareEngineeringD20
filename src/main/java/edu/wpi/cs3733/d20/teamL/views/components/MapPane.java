@@ -154,7 +154,11 @@ public class MapPane extends ScrollPane {
             body.setOnMouseDragged(event -> {
                 if (!addingNode && event.isPrimaryButtonDown() && !erasing && !addingEdge) {
                     if (draggingNode) {
-                        for (NodeGUI gui : selector.getNodes()) {
+                        if(event.isShiftDown() && selector.getNodes().size() == 1) {
+                            NodeGUI curr = selector.getNodes().get(0);
+                            curr.setLayoutPos(snapNode(curr, new Point2D(event.getX(), event.getY())));
+                        }
+                        else for (NodeGUI gui : selector.getNodes()) {
                             Point2D temp = selector.getNodePosition(gui);
                             if (temp != null) gui.setLayoutPos(temp.add(new Point2D(event.getX(), event.getY())));
                         }
@@ -204,6 +208,40 @@ public class MapPane extends ScrollPane {
                 if (event.getButton() != MouseButton.MIDDLE) event.consume();
             });
         }
+    }
+
+    private Point2D snapNode(NodeGUI curr, Point2D mousePos) {
+        ArrayList<NodeGUI> adjacents = new ArrayList<>();
+        for(Edge edge : curr.getNode().getEdges()) {
+            if(getNodeGUI(edge.getDestination()) != null)
+                adjacents.add(getNodeGUI(edge.getDestination()));
+        }
+
+        double minAngle = Math.PI / 4;
+        NodeGUI minNode = null;
+        for(NodeGUI adj : adjacents) {
+            double currAngle = Math.abs(Math.atan((mousePos.getY() - adj.getLayoutY()) / (mousePos.getX() - adj.getLayoutX())));
+            double tempAngle = currAngle;
+            double tempMin = minAngle;
+
+            if (tempAngle > Math.PI / 4) tempAngle = (Math.PI / 2) - tempAngle;
+            if (tempMin > Math.PI / 4) tempMin = (Math.PI / 2) - tempMin;
+
+            if (tempAngle < tempMin) {
+                minAngle = currAngle;
+                minNode = adj;
+            }
+        }
+
+        if(minNode != null) {
+            if (minAngle < Math.PI / 4) {
+                System.out.println("Horizontal: (" + mousePos.getX() + "," + minNode.getLayoutY());
+                return new Point2D(mousePos.getX(), minNode.getLayoutY());
+            }
+            System.out.println("Vetical: (" + minNode.getLayoutX() + "," + mousePos.getY());
+            return new Point2D(minNode.getLayoutX(), mousePos.getY());
+        }
+        return mousePos;
     }
 
     //---------- Getters/Setters ----------//
@@ -473,9 +511,8 @@ public class MapPane extends ScrollPane {
 
                     // -----------Handle moving the nodes-----------
                     if (selector.contains(nodeGUI) && event.isPrimaryButtonDown()) {
-                        for (NodeGUI gui : selector.getNodes()) {
+                        for (NodeGUI gui : selector.getNodes())
                             selector.setNodePosition(gui, gui.getLayoutPos().subtract(body.sceneToLocal(new Point2D(event.getSceneX(), event.getSceneY()))));
-                        }
                     }
                 }
 
