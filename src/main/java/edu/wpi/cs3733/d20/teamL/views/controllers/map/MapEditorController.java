@@ -143,15 +143,15 @@ public class MapEditorController {
 
         eraser.setDisableAnimation(true);
 
-        if (pathfinder.getPathfindingMethod() == PathfinderService.PathfindingMethod.Astar){
+        if (pathfinder.getPathfindingMethod() == PathfinderService.PathfindingMethod.Astar) {
             pathFindingAlg = 'A';
             pathfindImage.setImage(aStarIcon);
         }
-        if (pathfinder.getPathfindingMethod() == PathfinderService.PathfindingMethod.BFS){
+        if (pathfinder.getPathfindingMethod() == PathfinderService.PathfindingMethod.BFS) {
             pathFindingAlg = 'B';
             pathfindImage.setImage(breadthFirstIcon);
         }
-        if (pathfinder.getPathfindingMethod() == PathfinderService.PathfindingMethod.DFS){
+        if (pathfinder.getPathfindingMethod() == PathfinderService.PathfindingMethod.DFS) {
             pathFindingAlg = 'D';
             pathfindImage.setImage((depthFirstIcon));
         }
@@ -357,7 +357,7 @@ public class MapEditorController {
         numberText.getItems().add("No Connection");
 
         int i;
-        for(i = 1; i <= map.getBuilding().getMaxShaft(selected.getType()); i++) {
+        for (i = 1; i <= map.getBuilding().getMaxShaft(selected.getType()); i++) {
             numberText.getItems().add(String.valueOf(i));
         }
 
@@ -392,7 +392,8 @@ public class MapEditorController {
 
         for (Node neighbor : neighbors) {
             Edge edge = selectedNode.addEdgeTwoWay(neighbor);
-            map.addEdge(edge);
+            if (neighbor.getFloor() == map.getFloor())
+                map.addEdge(edge);
         }
     }
 
@@ -402,13 +403,18 @@ public class MapEditorController {
      * @param node The new node to add
      */
     private void addMultiFloorEdge(Node node) {
-        if (node.getType().equals("ELEV") || node.getType().equals("STAI")) {
-            for (Node adj : map.getBuilding().getNodes()) {
-                if (node.getType().equals(adj.getType()) && node.getShaft() == adj.getShaft() && !node.equals(adj)) {
-                    node.addEdgeTwoWay(adj);
-                }
+        Iterator<Edge> iterator = node.getEdges().iterator();
+        while (iterator.hasNext()) {
+            Edge edge = iterator.next();
+            if (edge.getDestination().getFloor() != node.getFloor()) {
+                edge.getDestination().removeEdge(node);
+                iterator.remove();
             }
         }
+        if (node.getType().equals("ELEV") || node.getType().equals("STAI"))
+            for (Node adj : map.getBuilding().getNodes())
+                if (node.getType().equals(adj.getType()) && node.getShaft() == adj.getShaft() && !node.equals(adj))
+                    node.addEdgeTwoWay(adj);
     }
 
     @FXML
@@ -430,7 +436,7 @@ public class MapEditorController {
     private void handleAdd(ActionEvent event) {
         // hall, elev, rest, stai, dept, labs, info, conf, exit, retl, serv
 
-        Node newNode = new Node("not_unique", new Point2D(hall.getLayoutX(),hall.getLayoutY()), map.getCurrentFloor().getFloor(), (map.getBuilding().getName()));
+        Node newNode = new Node("not_unique", new Point2D(hall.getLayoutX(), hall.getLayoutY()), map.getCurrentFloor().getFloor(), (map.getBuilding().getName()));
 
         if (event.getSource() == hall) {
             newNode.setType("HALL");
