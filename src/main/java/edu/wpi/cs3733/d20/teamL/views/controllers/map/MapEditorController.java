@@ -286,7 +286,7 @@ public class MapEditorController {
     @FXML
     private void myCustomAction(MouseEvent event) {
         Node selectedNode = map.getSelectedNode();
-
+        path.getPathNodes().clear();
         if (selectedNode == null) {
             editor.setPrefWidth(0);
             editor.setVisible(false);
