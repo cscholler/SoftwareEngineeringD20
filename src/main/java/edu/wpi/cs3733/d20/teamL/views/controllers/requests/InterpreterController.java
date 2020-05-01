@@ -134,8 +134,6 @@ public class InterpreterController implements Initializable {
         }else{
             interpType.setText("Spanish");
         }
-
-
     }
 
     @FXML

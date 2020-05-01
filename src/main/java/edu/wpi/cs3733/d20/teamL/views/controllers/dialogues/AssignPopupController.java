@@ -50,9 +50,9 @@ public class AssignPopupController implements Initializable {
         for (ArrayList<String> userInfo : allUsers) {
             User nextUser = new User(userInfo.get(0), userInfo.get(1), userInfo.get(2), userInfo.get(3), userInfo.get(4), userInfo.get(5), userInfo.get(6));
             if (nextUser.getServices() != null) {
-				if (nextUser.getServices().contains(dept)) {
+				if (nextUser.getServices().toUpperCase().contains(dept.toUpperCase())) {
 					if (dept.equals("interpreter")) {
-						if (nextUser.getServices().contains(reqHandler.getInterpreterReqLanguage())) {
+						if (nextUser.getServices().toUpperCase().contains(reqHandler.getInterpreterReqLanguage().toUpperCase())) {
 							usersInDept.add(nextUser.getFName() + " " + nextUser.getLName());
 						}
 					} else {
@@ -78,8 +78,13 @@ public class AssignPopupController implements Initializable {
 		String fName = selectedName.substring(0, selectedName.indexOf(" "));
 		String lName = selectedName.substring(selectedName.indexOf(" ") + 1);
 		String selectedUser = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_USERNAME_BY_NAME, new ArrayList<>(Arrays.asList(fName, lName))))).get(0).get(0);
-		Stage stage = (Stage) btnSubmit.getScene().getWindow();
-		stage.close();
+		Label addInfo = getNotificationsPageController().getAddInfo();
+		String dateAndTime = new SimpleDateFormat("M-dd-yyyy | h:mm aa").format(new Date());
+		String updatedNotes = addInfo.getText();
+		if (updatedNotes.contains("Assigned to ")) {
+			updatedNotes = updatedNotes.substring(0, updatedNotes.indexOf("\nAssigned to "));
+		}
+		updatedNotes = updatedNotes.concat("\nAssigned to " + selectedName + " at " + dateAndTime);
 		switch (reqHandler.getCurrentRequestType()) {
 			case "medication": {
 				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_DELIVERER, new ArrayList<>(Arrays.asList(selectedUser, reqHandler.getCurrentRequestID()))));
@@ -96,14 +101,14 @@ public class AssignPopupController implements Initializable {
 			case "service": {
 				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_SERVICE_REQUEST_ASSIGNEE, new ArrayList<>(Arrays.asList(selectedUser, reqHandler.getCurrentRequestID()))));
 				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_SERVICE_REQUEST_STATUS, new ArrayList<>(Arrays.asList("2", getNotificationsPageController().getCurrentServiceRequest().getID()))));
+				//db.executeUpdate(new SQLEntry(DBConstants.UPDATE_SERVICE_REQUEST_NOTES, new ArrayList<>(Arrays.asList(updatedNotes, getNotificationsPageController().getCurrentServiceRequest().getID()))));
 				getNotificationsPageController().getCurrentServiceRequest().setStatus("2");
 			}
 		}
-		Label addInfo = getNotificationsPageController().getAddInfo();
-		String dateAndTime = new SimpleDateFormat("M-dd-yyyy | h:mm aa").format(new Date());
-		addInfo.setText(addInfo.getText().concat("\nAssigned to " + selectedName + " at " + dateAndTime));
+		addInfo.setText(updatedNotes);
 		getNotificationsPageController().setCellFactories();
 		getNotificationsPageController().getBtnAssign().setText("Re-Assign");
+		((Stage) btnSubmit.getScene().getWindow()).close();
 	}
 
 	public NotificationsPageController getNotificationsPageController() {
