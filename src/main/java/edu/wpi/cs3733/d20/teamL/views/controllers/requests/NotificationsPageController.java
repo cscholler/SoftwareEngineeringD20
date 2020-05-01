@@ -41,24 +41,24 @@ import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 
 @Slf4j
 public class NotificationsPageController implements Initializable {
-   	private ObservableList<MedicationRequest> medReqList = FXCollections.observableArrayList();
-   	private ObservableList<GiftDeliveryRequest> giftReqList = FXCollections.observableArrayList();
-   	private ObservableList<ServiceRequest> serviceReqList = FXCollections.observableArrayList();
+	private ObservableList<MedicationRequest> medReqList = FXCollections.observableArrayList();
+	private ObservableList<GiftDeliveryRequest> giftReqList = FXCollections.observableArrayList();
+	private ObservableList<ServiceRequest> serviceReqList = FXCollections.observableArrayList();
 	private DBTableFormatter formatter = new DBTableFormatter();
 	private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 	private MedicationRequest currentMedicationRequest;
 	private GiftDeliveryRequest currentGiftRequest;
 	private ServiceRequest currentServiceRequest;
 	@FXML
-    private JFXButton btnBack, btnCompleted, btnDecline;
-    @FXML
-    private JFXListView<ServiceRequest> serviceReqs;
+	private JFXButton btnBack, btnCompleted, btnDecline, btnApprove, btnAssign;
 	@FXML
-    private JFXListView<MedicationRequest> medReqs;
+	private JFXListView<ServiceRequest> serviceReqs;
+	@FXML
+	private JFXListView<MedicationRequest> medReqs;
 	@FXML
 	private JFXListView<GiftDeliveryRequest> giftReqs;
-    @FXML
-    private Label reqMessage, addInfo, lblMed, lblService, lblGift;
+	@FXML
+	private Label reqMessage, addInfo, lblMed, lblService, lblGift;
 	@Inject
 	private IDatabaseService db;
 	@Inject
@@ -66,66 +66,32 @@ public class NotificationsPageController implements Initializable {
 	@Inject
 	private IRequestHandlerService reqHandler;
 	@FXML
-    private HBox buttonBox;
-    @FXML
+	private HBox buttonBox;
+	@FXML
 	private VBox messageBox;
-    private User user;
-    private JFXButton approve = new JFXButton();
-    private JFXButton assign = new JFXButton();
+	private User user;
 
 	/**
 	 * Calls loadData and sets up the cellFactory
+	 *
 	 * @param url
 	 * @param resourceBundle
 	 */
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-        approve = btnCompleted;
-        assign = btnCompleted;
 		user = loginManager.getCurrentUser();
+		resetButtons();
 
-		if (user.isManager()) {
-			buttonBox.getChildren().remove(btnCompleted);
-			buttonBox.getChildren().add(approve);
-			approve.setText("Approve");
-			approve.setOnAction(markedApproved);
-			if (user.getDept().equals("pharmacy")) {
-				messageBox.getChildren().remove(giftReqs);
-				messageBox.getChildren().remove(lblGift);
-				messageBox.getChildren().remove(lblService);
-				messageBox.getChildren().remove(serviceReqs);
-			} else if(user.getDept().equals("gift_shop")) {
-				messageBox.getChildren().remove(serviceReqs);
-				messageBox.getChildren().remove(medReqs);
-				messageBox.getChildren().remove(lblMed);
-				messageBox.getChildren().remove(lblService);
-			} else {
-				messageBox.getChildren().remove(giftReqs);
-				messageBox.getChildren().remove(medReqs);
-				messageBox.getChildren().remove(lblGift);
-				messageBox.getChildren().remove(lblMed);
-			}
-		} else {
-			buttonBox.getChildren().remove(btnDecline);
-			if (!(user.getServices().contains("pharmacy"))) {
-				messageBox.getChildren().remove(medReqs);
-				messageBox.getChildren().remove(lblMed);
-			}
-			if (!(user.getServices().contains("gift_shop"))){
-				messageBox.getChildren().remove(giftReqs);
-				messageBox.getChildren().remove(lblGift);
-			}
-			if (user.getServices().equals("pharmacy") || user.getServices().equals("gift_shop") || user.getServices().equals("pharmacy;gift_shop") || user.getServices().equals("gift_shop;pharmacy")) {
-				messageBox.getChildren().remove(serviceReqs);
-				messageBox.getChildren().remove(lblService);
-			}
-		}
+		setMessageLists(user);
+
+
 		setCellFactories();
 		loadRequests("medication");
 		loadRequests("gift");
 		loadRequests("service");
 
 	}
+
 
 	public void setCellFactories() {
 		medReqs.setCellFactory(param -> new ListCell<>() {
@@ -135,28 +101,28 @@ public class NotificationsPageController implements Initializable {
 				if (medReq != null) {
 					String status;
 					switch (medReq.getStatus()) {
-						default :
-						case "0" : {
+						default:
+						case "0": {
 							status = "Pending";
 						}
 						break;
-						case "1" : {
+						case "1": {
 							status = "Approved";
 						}
 						break;
-						case "2" : {
+						case "2": {
 							status = "Assigned";
 						}
 						break;
-						case "3" : {
+						case "3": {
 							status = "Denied";
 						}
 						break;
-						case "4" : {
+						case "4": {
 							status = "Completed";
 						}
 					}
-					setText("[" + medReq.getDateAndTime() + "] " +  medReq.getDose() + " of " + medReq.getMedType() + " for " + medReq.getPatientName() + " (" + status + ")");
+					setText("[" + medReq.getDateAndTime() + "] " + medReq.getDose() + " of " + medReq.getMedType() + " for " + medReq.getPatientName() + " (" + status + ")");
 				}
 			}
 		});
@@ -167,28 +133,28 @@ public class NotificationsPageController implements Initializable {
 				if (giftReq != null) {
 					String status;
 					switch (giftReq.getStatus()) {
-						default :
-						case "0" : {
+						default:
+						case "0": {
 							status = "Pending";
 						}
 						break;
-						case "1" : {
+						case "1": {
 							status = "Approved";
 						}
 						break;
-						case "2" : {
+						case "2": {
 							status = "Assigned";
 						}
 						break;
-						case "3" : {
+						case "3": {
 							status = "Denied";
 						}
 						break;
-						case "4" : {
+						case "4": {
 							status = "Completed";
 						}
 					}
-					setText("[" + giftReq.getDateAndTime() + "] " +  giftReq.getGifts().size() + " gifts from " + giftReq.getSenderName() + " for " + giftReq.getPatientName() + " (" + status + ")");
+					setText("[" + giftReq.getDateAndTime() + "] " + giftReq.getGifts().size() + " gifts from " + giftReq.getSenderName() + " for " + giftReq.getPatientName() + " (" + status + ")");
 				}
 			}
 		});
@@ -199,39 +165,40 @@ public class NotificationsPageController implements Initializable {
 				if (serviceReq != null) {
 					String status;
 					switch (serviceReq.getStatus()) {
-						default :
-						case "0" : {
+						default:
+						case "0": {
 							status = "Pending";
 						}
 						break;
-						case "1" : {
+						case "1": {
 							status = "Approved";
 						}
 						break;
-						case "2" : {
+						case "2": {
 							status = "Assigned";
 						}
 						break;
-						case "3" : {
+						case "3": {
 							status = "Denied";
 						}
 						break;
-						case "4" : {
+						case "4": {
 							status = "Completed";
 						}
 					}
 					String patientName = serviceReq.getPatientName();
-					setText("[" + serviceReq.getDateAndTime() + "] " +  serviceReq.getType() + " " + serviceReq.getService() + " service" + (patientName != null ? " for " + patientName : "") + " (" + status + ")");
+					setText("[" + serviceReq.getDateAndTime() + "] " + serviceReq.getType() + " " + serviceReq.getService() + " service" + (patientName != null ? " for " + patientName : "") + " (" + status + ")");
 				}
 			}
 		});
 	}
 
-    /**
-     * Loads data to the list view in the form of MedicineRequest Objects
-     */
-    @FXML
-    private void loadRequests(String type) {
+	/**
+	 * Loads data to the list view in the form of MedicineRequest Objects
+	 */
+	@FXML
+	private void loadRequests(String type) {
+		resetButtons();
 		String username = user.getUsername();
 		ArrayList<ArrayList<String>> requests = new ArrayList<>();
 		switch (type) {
@@ -314,18 +281,19 @@ public class NotificationsPageController implements Initializable {
 				serviceReqs.getItems().addAll(serviceReqList);
 			}
 		}
-    }
+	}
 
-    /**
-     * Checks for anyone clicking on the listView of medReq and opens them in the pane to the right
-     */
-    @FXML
-    private void displaySelectedMedReq() {
-        MedicationRequest req = medReqs.getSelectionModel().getSelectedItem();
-        giftReqs.getSelectionModel().getSelectedItems().removeAll();
+	/**
+	 * Checks for anyone clicking on the listView of medReq and opens them in the pane to the right
+	 */
+	@FXML
+	private void displaySelectedMedReq() {
+		resetButtons();
+		MedicationRequest req = medReqs.getSelectionModel().getSelectedItem();
+		giftReqs.getSelectionModel().getSelectedItems().removeAll();
 		serviceReqs.getSelectionModel().getSelectedItems().removeAll();
 		setCurrentMedicationRequest(req);
-        try {
+		try {
 			if (req != null) {
 				reqHandler.setCurrentRequestID(req.getID());
 				reqHandler.setCurrentRequestType("medication");
@@ -339,29 +307,35 @@ public class NotificationsPageController implements Initializable {
 				if (user.getAcctType().equals("2") && (user.getFName() + " " + user.getLName()).equals(doctorName)) {
 					log.info("logged in as doctor");
 					message = getUserFullName(req.getNurseUsername()) + " requests " + req.getDose() + " of " + req.getMedType() + " for " +
-							req.getPatientName() + "(" + req.getPatientID() +")" + (req.getRoomNum() != null ? " in room " + req.getRoomNum() : "");
-					if (req.getStatus().equals("1")) {
-						buttonBox.getChildren().remove(approve);
-						buttonBox.getChildren().add(assign);
-						assign.setText("Assign");
-						assign.setOnAction(assignTask);
+							req.getPatientName() + "(" + req.getPatientID() + ")" + (req.getRoomNum() != null ? " in room " + req.getRoomNum() : "");
+					if (req.getStatus().equals("1") || req.getStatus().equals("2")) {
+						buttonBox.getChildren().add(btnAssign);
+						btnAssign.setText("Assign");
+						if (req.getStatus().equals("2")) {
+							btnAssign.setText("Re-Assign");
+						}
+					} else if (req.getStatus().equals("0")) {
+						buttonBox.getChildren().add(btnDecline);
+						buttonBox.getChildren().add(btnApprove);
 					}
- 				} else {
+				} else {
 					log.info("logged in as non doctor");
 					message = doctorName + " has assigned you to " + req.getDose() + " of " + req.getMedType() + " to be delivered to " +
-							req.getPatientName() + "(" + req.getPatientID() +")" + (req.getRoomNum() != null ? " in room " + req.getRoomNum() : "");
+							req.getPatientName() + "(" + req.getPatientID() + ")" + (req.getRoomNum() != null ? " in room " + req.getRoomNum() : "");
+					buttonBox.getChildren().add(btnCompleted);
 				}
 				reqMessage.setText(message);
 			} else {
 				log.warn("Attempted to display an empty or invalid request.");
 			}
 		} catch (NullPointerException ex) {
-        	log.info("No notification currently selected");
+			log.info("No notification currently selected");
 		}
-    }
+	}
 
-    @FXML
+	@FXML
 	private void displaySelectedGiftReq() {
+		resetButtons();
 		GiftDeliveryRequest req = giftReqs.getSelectionModel().getSelectedItem();
 		medReqs.getSelectionModel().getSelectedItems().removeAll();
 		serviceReqs.getSelectionModel().getSelectedItems().removeAll();
@@ -396,17 +370,22 @@ public class NotificationsPageController implements Initializable {
 				if (user.isManager()) {
 					log.info("logged in as manager");
 					message = getUserFullName(req.getRequestUsername()) + " requests " + allGiftsText + " for " +
-							req.getPatientName() + "(" + req.getPatientID() +")" + (req.getRoomNum() != null ? " in room " + req.getRoomNum() : "");
-					if(req.getStatus().equals("1")) {
-						buttonBox.getChildren().remove(approve);
-						buttonBox.getChildren().add(assign);
-						assign.setText("Assign");
-						assign.setOnAction(assignTask);
+							req.getPatientName() + "(" + req.getPatientID() + ")" + (req.getRoomNum() != null ? " in room " + req.getRoomNum() : "");
+					if (req.getStatus().equals("1") || req.getStatus().equals("2")) {
+						buttonBox.getChildren().add(btnAssign);
+						btnAssign.setText("Assign");
+						if (req.getStatus().equals("2")) {
+							btnAssign.setText("Re-Assign");
+						}
+					} else if (req.getStatus().equals("0")) {
+						buttonBox.getChildren().add(btnDecline);
+						buttonBox.getChildren().add(btnApprove);
 					}
 				} else {
 					log.info("logged in as gift shop worker");
 					message = "You have been assigned to deliver " + allGiftsText + " to " +
-							req.getPatientName() + "(" + req.getPatientID() +")" + (req.getRoomNum() != null ? " in room " + req.getRoomNum() : "");
+							req.getPatientName() + "(" + req.getPatientID() + ")" + (req.getRoomNum() != null ? " in room " + req.getRoomNum() : "");
+					buttonBox.getChildren().add(btnCompleted);
 				}
 				reqMessage.setText(message);
 			} else {
@@ -419,6 +398,7 @@ public class NotificationsPageController implements Initializable {
 
 	@FXML
 	private void displaySelectedServiceReq() {
+		resetButtons();
 		ServiceRequest req = serviceReqs.getSelectionModel().getSelectedItem();
 		medReqs.getSelectionModel().getSelectedItems().removeAll();
 		giftReqs.getSelectionModel().getSelectedItems().removeAll();
@@ -437,17 +417,25 @@ public class NotificationsPageController implements Initializable {
 					message = getUserFullName(req.getRequestUsername()) + " requests a " + (req.getType() != null ? req.getType() : "") + " " + req.getService() + " service " +
 							((req.getPatientName() != null && req.getPatientID() != null) ? "for " + req.getPatientName() + "(" + req.getPatientID() + ")" : "") +
 							(req.getLocation() != null ? " at location " + req.getLocation() : "");
-					if (req.getStatus().equals("1")) {
-						buttonBox.getChildren().remove(approve);
-						buttonBox.getChildren().add(assign);
-						assign.setText("Assign");
-						assign.setOnAction(assignTask);
+					if (req.getStatus().equals("1") || req.getStatus().equals("2")) {
+						buttonBox.getChildren().add(btnAssign);
+						btnAssign.setText("Assign");
+						if (req.getStatus().equals("2")) {
+							btnAssign.setText("Re-Assign");
+						}
+					} else if (req.getStatus().equals("0")) {
+						buttonBox.getChildren().add(btnDecline);
+						buttonBox.getChildren().add(btnApprove);
 					}
 				} else {
 					log.info("logged in as service worker");
 					message = "You have been assigned to complete a " + (req.getType() != null ? req.getType() : "") + " " + req.getService() + " service " +
 							((req.getPatientName() != null && req.getPatientID() != null) ? "for " + req.getPatientName() + "(" + req.getPatientID() + ")" : "") +
 							(req.getLocation() != null ? " at location " + req.getLocation() : "");
+
+					resetButtons();
+					buttonBox.getChildren().add(btnCompleted);
+					btnCompleted.setText("Completed");
 				}
 				reqMessage.setText(message);
 			} else {
@@ -464,17 +452,19 @@ public class NotificationsPageController implements Initializable {
 	}
 
 	private String getUserFullName(String username) {
-    	ArrayList<String> fullName =  db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_NAME_BY_USERNAME, new ArrayList<>(Collections.singletonList(username))))).get(0);
-    	return fullName.get(0) + " " + fullName.get(1);
-    }
+		ArrayList<String> fullName = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_NAME_BY_USERNAME, new ArrayList<>(Collections.singletonList(username))))).get(0);
+		return fullName.get(0) + " " + fullName.get(1);
+	}
 
 	@FXML
 	private void btnBackClicked() {
 		loaderHelper.goBack();
 	}
 
-    EventHandler<ActionEvent> assignTask = event -> {
+	@FXML
+	private void btnAssignClicked() {
 		try {
+			btnAssign.setText("Re-Assign");
 			FXMLLoader loader = loaderHelper.getFXMLLoader("AssignPopup");
 			Parent root = loader.load();
 			AssignPopupController assignPopupController = loader.getController();
@@ -483,14 +473,15 @@ public class NotificationsPageController implements Initializable {
 		} catch (IOException ex) {
 			log.error("Encountered IOException", ex);
 		}
-	};
+	}
 
-    EventHandler<ActionEvent> markedApproved = event ->  {
+	;
+
+	@FXML
+	private void btnApproveClicked() {
 		if (user.isManager()) {
-			buttonBox.getChildren().remove(approve);
-			buttonBox.getChildren().add(assign);
-			assign.setText("Assign");
-			assign.setOnAction(assignTask);
+			resetButtons();
+			buttonBox.getChildren().add(btnAssign);
 		}
 		switch (reqHandler.getCurrentRequestType()) {
 			case "medication": {
@@ -509,9 +500,9 @@ public class NotificationsPageController implements Initializable {
 			}
 		}
 		setCellFactories();
-	};
+	}
 
-    @FXML
+	@FXML
 	private void btnCompletedClicked() {
 		switch (reqHandler.getCurrentRequestType()) {
 			case "medication": {
@@ -552,8 +543,8 @@ public class NotificationsPageController implements Initializable {
 		setCellFactories();
 	}
 
-    @FXML
-    private void btnDeclineClicked() {
+	@FXML
+	private void btnDeclineClicked() {
 		switch (reqHandler.getCurrentRequestType()) {
 			case "medication": {
 				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_MEDICATION_REQUEST_STATUS, new ArrayList<>(Arrays.asList("3", getCurrentMedicationRequest().getID()))));
@@ -571,15 +562,15 @@ public class NotificationsPageController implements Initializable {
 			}
 		}
 		setCellFactories();
-    }
+	}
 
-    public MedicationRequest getCurrentMedicationRequest() {
-        return currentMedicationRequest;
-    }
+	public MedicationRequest getCurrentMedicationRequest() {
+		return currentMedicationRequest;
+	}
 
-    public void setCurrentMedicationRequest(MedicationRequest currentMedicationRequest) {
-        this.currentMedicationRequest = currentMedicationRequest;
-    }
+	public void setCurrentMedicationRequest(MedicationRequest currentMedicationRequest) {
+		this.currentMedicationRequest = currentMedicationRequest;
+	}
 
 	public GiftDeliveryRequest getCurrentGiftRequest() {
 		return currentGiftRequest;
@@ -595,5 +586,49 @@ public class NotificationsPageController implements Initializable {
 
 	public void setCurrentServiceRequest(ServiceRequest currentServiceRequest) {
 		this.currentServiceRequest = currentServiceRequest;
+	}
+
+	private void resetButtons() {
+		buttonBox.getChildren().remove(btnCompleted);
+		buttonBox.getChildren().remove(btnAssign);
+		buttonBox.getChildren().remove(btnDecline);
+		buttonBox.getChildren().remove(btnApprove);
+		btnAssign.setText("Assign");
+	}
+
+	private void setMessageLists(User user) {
+		if (user.isManager()) {
+
+			if (user.getDept().equals("pharmacy")) {
+				messageBox.getChildren().remove(giftReqs);
+				messageBox.getChildren().remove(lblGift);
+				messageBox.getChildren().remove(lblService);
+				messageBox.getChildren().remove(serviceReqs);
+			} else if (user.getDept().equals("gift_shop")) {
+				messageBox.getChildren().remove(serviceReqs);
+				messageBox.getChildren().remove(medReqs);
+				messageBox.getChildren().remove(lblMed);
+				messageBox.getChildren().remove(lblService);
+			} else {
+				messageBox.getChildren().remove(giftReqs);
+				messageBox.getChildren().remove(medReqs);
+				messageBox.getChildren().remove(lblGift);
+				messageBox.getChildren().remove(lblMed);
+			}
+		} else {
+			if (!(user.getServices().contains("pharmacy"))) {
+				messageBox.getChildren().remove(medReqs);
+				messageBox.getChildren().remove(lblMed);
+			}
+			if (!(user.getServices().contains("gift_shop"))) {
+				messageBox.getChildren().remove(giftReqs);
+				messageBox.getChildren().remove(lblGift);
+			}
+			if (user.getServices().equals("pharmacy") || user.getServices().equals("gift_shop") || user.getServices().equals("pharmacy;gift_shop") || user.getServices().equals("gift_shop;pharmacy")) {
+				messageBox.getChildren().remove(serviceReqs);
+				messageBox.getChildren().remove(lblService);
+			}
+		}
+
 	}
 }

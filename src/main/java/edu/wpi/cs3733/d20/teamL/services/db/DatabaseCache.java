@@ -194,8 +194,12 @@ public class DatabaseCache implements IDatabaseCache {
     }
 
     @Override
-    public ArrayList<Node> getNodeCache() {
+    public List<Node> getNodeCache() {
         return nodeCache;
+    }
+
+    public List<Edge> getEdgeCache() {
+        return edgeCache;
     }
 
     /**
@@ -209,7 +213,6 @@ public class DatabaseCache implements IDatabaseCache {
 
         for (ArrayList<String> row : edgeData) {
             Edge newEdge = new Edge(searchNodeCache(row.get(1)), searchNodeCache(row.get(2)));
-            newEdge.getSource().addEdgeTwoWay(newEdge);
             edgeCache.add(newEdge);
         }
     }
@@ -225,8 +228,7 @@ public class DatabaseCache implements IDatabaseCache {
         for (Node node : nodeCache) {
             if (node.getID().equals(nodeID)) return node;
         }
-        System.out.println("Did not find node");
-        return null;
+        throw new RuntimeException("Did not find node " + nodeID);
     }
 
     /**
@@ -241,7 +243,7 @@ public class DatabaseCache implements IDatabaseCache {
     public void cacheGiftsFromDB() {
         ArrayList<ArrayList<String>> giftsDB = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_GIFTS)));
         clearGiftsCache();
-        for(ArrayList<String> g : giftsDB) {
+        for (ArrayList<String> g : giftsDB) {
             giftsCache.add(new Gift(g.get(0), g.get(1), g.get(2), g.get(3), g.get(4)));
         }
     }
@@ -253,8 +255,8 @@ public class DatabaseCache implements IDatabaseCache {
 
     @Override
     public ArrayList<Gift> getCartCacheNull() {
-        if(cartCache.size() == 1) cartCache.add(null);
-        if(cartCache.size() == 2) cartCache.add(null);
+        if (cartCache.size() == 1) cartCache.add(null);
+        if (cartCache.size() == 2) cartCache.add(null);
         return cartCache;
     }
 
@@ -264,7 +266,9 @@ public class DatabaseCache implements IDatabaseCache {
     }
 
     @Override
-    public ArrayList<Gift> getGiftsCache() { return giftsCache; }
+    public ArrayList<Gift> getGiftsCache() {
+        return giftsCache;
+    }
 
     @Override
     public void clearGiftsCache() {
