@@ -283,7 +283,10 @@ public class NotificationsPageController implements Initializable {
 					ArrayList<Gift> gifts = new ArrayList<>();
 					ArrayList<ArrayList<String>> giftEntries = new ArrayList<>();
 					for (int i = 5; i < 8; i++) {
-						giftEntries.add(db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_GIFT, new ArrayList<>(Collections.singletonList(row.get(i)))))).get(0));
+						ArrayList<ArrayList<String>> giftTable = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_GIFT, new ArrayList<>(Collections.singletonList(row.get(i))))));
+						if (giftTable.size() != 0) {
+							giftEntries.add(giftTable.get(0));
+						}
 					}
 					for (ArrayList<String> giftEntry : giftEntries) {
 						gifts.add(new Gift(giftEntry.get(0), giftEntry.get(1), giftEntry.get(2), giftEntry.get(3), giftEntry.get(4)));
