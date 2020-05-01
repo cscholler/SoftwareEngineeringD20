@@ -82,7 +82,7 @@
 
 .service-request-header-label-jfx {
     -fx-text-fill: #00043B;
-    -fx-font-size: 75;
+    -fx-font-size: 40;
     -fx-font-weight: bold;
 }
 
@@ -120,14 +120,20 @@
 }
 
 .services-button-jfx {
-    -fx-font-size: 35;
+    -fx-font-size: 30;
     -fx-text-fill: #00043B;
 
     -fx-background-color: WHITE;
     -fx-pref-width: 385;
-    -fx-pref-height: 100;
+    -fx-pref-height: 300;
+    -fx-max-height: 300;
     -fx-alignment: center-left;
-    -jfx-button-type: FLAT;
+    -jfx-button-type: RAISED;
 
+}
 
+.services-pane-jfx{
+    -fx-pref-height: 585;
+    -fx-pref-width: 895;
+    -fx-background-color: white;
 }
