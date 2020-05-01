@@ -92,7 +92,7 @@ public class InterpreterController implements Initializable {
             String additionalInfo = additionalText.getText();
 
 
-            // Status codes-- 0: pending, 1: approved, 2: denied
+            // Status codes-- 0: pending, 1: approved, 2: assigned, 3: denied
             String status = "0";
             String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
             String user = loginManager.getCurrentUser().getUsername();

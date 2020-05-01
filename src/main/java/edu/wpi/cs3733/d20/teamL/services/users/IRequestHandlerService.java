@@ -8,4 +8,8 @@ public interface IRequestHandlerService {
 	String getCurrentRequestType();
 
 	void setCurrentRequestType(String currentReqType);
+
+	String getInterpreterReqLanguage();
+
+	void setInterpreterReqLanguage(String interpreterReqLanguage);
 }

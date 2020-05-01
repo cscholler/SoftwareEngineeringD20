@@ -207,13 +207,11 @@ public class NotificationsPageController implements Initializable {
 					case "1":
 					case "3":
 					case "0": {
-						log.info("Viewing notifications as staff member with username {}", username);
 						requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_MEDICATION_REQUESTS_FOR_DELIVERER, new ArrayList<>(Collections.singletonList(username)))));
 					}
 					break;
 					// Doctor
 					case "2": {
-						log.info("Viewing notifications as doctor with username: {}", username);
 						ArrayList<ArrayList<String>> doctorIDTable = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_DOCTOR_ID_BY_USERNAME, new ArrayList<>(Collections.singletonList(username)))));
 						if (doctorIDTable.size() == 1) {
 							requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_MEDICATION_REQUESTS_FOR_DOCTOR, new ArrayList<>(Collections.singletonList(doctorIDTable.get(0).get(0))))));
@@ -296,7 +294,6 @@ public class NotificationsPageController implements Initializable {
 			if (req != null) {
 				reqHandler.setCurrentRequestID(req.getID());
 				reqHandler.setCurrentRequestType("medication");
-				log.info(reqHandler.getCurrentRequestID() + ", " + reqHandler.getCurrentRequestType());
 				reqMessage.setWrapText(true);
 				addInfo.setWrapText(true);
 				addInfo.setText("Notes: " + req.getNotes());
@@ -304,7 +301,6 @@ public class NotificationsPageController implements Initializable {
 				ArrayList<String> doctorNameRow = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_DOCTOR_NAME, new ArrayList<>(Collections.singletonList(req.getDoctorID()))))).get(0);
 				String doctorName = doctorNameRow.get(0) + " " + doctorNameRow.get(1);
 				if (user.getAcctType().equals("2") && (user.getFName() + " " + user.getLName()).equals(doctorName)) {
-					log.info("logged in as doctor");
 					message = getUserFullName(req.getNurseUsername()) + " requests " + req.getDose() + " of " + req.getMedType() + " for " +
 							req.getPatientName() + "(" + req.getPatientID() + ")" + (req.getRoomNum() != null ? " in room " + req.getRoomNum() : "");
 					if (req.getStatus().equals("1") || req.getStatus().equals("2")) {
@@ -318,7 +314,6 @@ public class NotificationsPageController implements Initializable {
 						buttonBox.getChildren().add(btnApprove);
 					}
 				} else {
-					log.info("logged in as non doctor");
 					message = doctorName + " has assigned you to " + req.getDose() + " of " + req.getMedType() + " to be delivered to " +
 							req.getPatientName() + "(" + req.getPatientID() + ")" + (req.getRoomNum() != null ? " in room " + req.getRoomNum() : "");
 					buttonBox.getChildren().add(btnCompleted);
@@ -343,7 +338,6 @@ public class NotificationsPageController implements Initializable {
 			if (req != null) {
 				reqHandler.setCurrentRequestID(req.getID());
 				reqHandler.setCurrentRequestType("gift");
-				log.info(reqHandler.getCurrentRequestID() + ", " + reqHandler.getCurrentRequestType());
 				reqMessage.setWrapText(true);
 				addInfo.setWrapText(true);
 				addInfo.setText("Message: " + req.getMessage() + "\n" + "Notes: " + req.getNotes());
@@ -367,7 +361,6 @@ public class NotificationsPageController implements Initializable {
 				}
 				String allGiftsText = gift1Text + (!gift2Text.isEmpty() ? ", " + gift2Text : "") + (!gift3Text.isEmpty() ? ", " + gift3Text : "");
 				if (user.isManager()) {
-					log.info("logged in as manager");
 					message = getUserFullName(req.getRequestUsername()) + " requests " + allGiftsText + " for " +
 							req.getPatientName() + "(" + req.getPatientID() + ")" + (req.getRoomNum() != null ? " in room " + req.getRoomNum() : "");
 					if (req.getStatus().equals("1") || req.getStatus().equals("2")) {
@@ -381,7 +374,6 @@ public class NotificationsPageController implements Initializable {
 						buttonBox.getChildren().add(btnApprove);
 					}
 				} else {
-					log.info("logged in as gift shop worker");
 					message = "You have been assigned to deliver " + allGiftsText + " to " +
 							req.getPatientName() + "(" + req.getPatientID() + ")" + (req.getRoomNum() != null ? " in room " + req.getRoomNum() : "");
 					buttonBox.getChildren().add(btnCompleted);
@@ -406,13 +398,14 @@ public class NotificationsPageController implements Initializable {
 			if (req != null) {
 				reqHandler.setCurrentRequestID(req.getID());
 				reqHandler.setCurrentRequestType("service");
-				log.info(reqHandler.getCurrentRequestID() + ", " + reqHandler.getCurrentRequestType());
 				reqMessage.setWrapText(true);
 				addInfo.setWrapText(true);
 				addInfo.setText("Notes: " + req.getNotes());
 				String message;
 				if (user.isManager()) {
-					log.info("logged in as manager");
+					if (user.getDept().equals("interpreter")) {
+						reqHandler.setInterpreterReqLanguage(req.getType());
+					}
 					message = getUserFullName(req.getRequestUsername()) + " requests a " + (req.getType() != null ? req.getType() : "") + " " + req.getService() + " service " +
 							((req.getPatientName() != null && req.getPatientID() != null) ? "for " + req.getPatientName() + "(" + req.getPatientID() + ")" : "") +
 							(req.getLocation() != null ? " at location " + req.getLocation() : "");
@@ -427,12 +420,9 @@ public class NotificationsPageController implements Initializable {
 						buttonBox.getChildren().add(btnApprove);
 					}
 				} else {
-					log.info("logged in as service worker");
 					message = "You have been assigned to complete a " + (req.getType() != null ? req.getType() : "") + " " + req.getService() + " service " +
 							((req.getPatientName() != null && req.getPatientID() != null) ? "for " + req.getPatientName() + "(" + req.getPatientID() + ")" : "") +
 							(req.getLocation() != null ? " at location " + req.getLocation() : "");
-
-					resetButtons();
 					buttonBox.getChildren().add(btnCompleted);
 					btnCompleted.setText("Completed");
 				}
@@ -586,6 +576,10 @@ public class NotificationsPageController implements Initializable {
 
 	public JFXButton getBtnAssign() {
 		return btnAssign;
+	}
+
+	public Label getAddInfo() {
+		return addInfo;
 	}
 
 	private void resetButtons() {

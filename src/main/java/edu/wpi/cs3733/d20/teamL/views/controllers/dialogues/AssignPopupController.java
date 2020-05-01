@@ -14,12 +14,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 @Slf4j
@@ -43,11 +46,18 @@ public class AssignPopupController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         ArrayList<String> usersInDept = new ArrayList<>();
         ArrayList<ArrayList<String>> allUsers = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_USERS)));
+        String dept = loginManager.getCurrentUser().getDept();
         for (ArrayList<String> userInfo : allUsers) {
             User nextUser = new User(userInfo.get(0), userInfo.get(1), userInfo.get(2), userInfo.get(3), userInfo.get(4), userInfo.get(5), userInfo.get(6));
             if (nextUser.getServices() != null) {
-				if (nextUser.getServices().contains(loginManager.getCurrentUser().getDept())) {
-					usersInDept.add(nextUser.getFName() + " " + nextUser.getLName());
+				if (nextUser.getServices().contains(dept)) {
+					if (dept.equals("interpreter")) {
+						if (nextUser.getServices().contains(reqHandler.getInterpreterReqLanguage())) {
+							usersInDept.add(nextUser.getFName() + " " + nextUser.getLName());
+						}
+					} else {
+						usersInDept.add(nextUser.getFName() + " " + nextUser.getLName());
+					}
 				}
 			}
         }
@@ -89,6 +99,9 @@ public class AssignPopupController implements Initializable {
 				getNotificationsPageController().getCurrentServiceRequest().setStatus("2");
 			}
 		}
+		Label addInfo = getNotificationsPageController().getAddInfo();
+		String dateAndTime = new SimpleDateFormat("MM-dd-yyyy|h:mm aa").format(new Date());
+		addInfo.setText(addInfo.getText().concat("\nAssigned to " + selectedName + " at " + dateAndTime));
 		getNotificationsPageController().setCellFactories();
 		getNotificationsPageController().getBtnAssign().setText("Re-Assign");
 	}

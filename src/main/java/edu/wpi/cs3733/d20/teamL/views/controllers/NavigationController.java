@@ -166,6 +166,6 @@ public class NavigationController implements Initializable {
 	}
 
 	private void updateTime() {
-		;Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("h:mm aa").format(new Date())));
+		;Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("E, MMM d | h:mm aa").format(new Date())));
 	}
 }
