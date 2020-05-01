@@ -21,7 +21,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.Paint;
-import org.apache.derby.iapi.services.io.LimitInputStream;
 
 import java.io.IOException;
 

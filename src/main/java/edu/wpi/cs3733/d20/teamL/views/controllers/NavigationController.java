@@ -1,6 +1,5 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers;
 
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -49,21 +48,15 @@ public class NavigationController implements Initializable {
     private Label timeLabel;
     @Inject
     private IDatabaseCache cache;
-    private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
-    private IMessengerService messenger = new MessengerService();
+    private final FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+	private final Timer timer = new Timer();
     private JFXAutoCompletePopup<String> autoCompletePopup;
     private SearchFields sf;
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-        Timer timer = new Timer();
-		timer.scheduleAtFixedRate(new TimerTask() {
-			@Override
-			public void run() {
-				Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("h:mm aa").format(new Date())));
-			}
-		}, 0, 1000);
-
+		timer.scheduleAtFixedRate(timerWrapper(this::updateTime), 0, 1000);
+		// This should be the only place where the cache is rebuilt
         cache.cacheAllFromDB();
         sf = new SearchFields(cache.getNodeCache());
         sf.getFields().addAll(Arrays.asList(SearchFields.Field.shortName, SearchFields.Field.longName));
@@ -163,11 +156,16 @@ public class NavigationController implements Initializable {
         sf.applyAutocomplete(searchBox, autoCompletePopup);
     }
 
-    public Label getTimeLabel() {
-        return timeLabel;
-    }
+	private TimerTask timerWrapper(Runnable r) {
+		return new TimerTask() {
+			@Override
+			public void run() {
+				r.run();
+			}
+		};
+	}
 
-    public void setTimeLabel(Label timeLabel) {
-        this.timeLabel = timeLabel;
-    }
+	private void updateTime() {
+		;Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("E, MMM d | h:mm aa").format(new Date())));
+	}
 }

@@ -1,18 +1,8 @@
 package edu.wpi.cs3733.d20.teamL.services.users;
 
 public class RequestHandlerService implements IRequestHandlerService {
-	public String currentRequestID;
 	public String currentRequestType;
-
-	@Override
-	public String getCurrentRequestID() {
-		return currentRequestID;
-	}
-
-	@Override
-	public void setCurrentRequestID(String currentRequestID) {
-		this.currentRequestID = currentRequestID;
-	}
+	public String interpreterReqLanguage;
 
 	@Override
 	public String getCurrentRequestType() {
@@ -22,5 +12,15 @@ public class RequestHandlerService implements IRequestHandlerService {
 	@Override
 	public void setCurrentRequestType(String currentRequestType) {
 		this.currentRequestType = currentRequestType;
+	}
+
+	@Override
+	public String getInterpreterReqLanguage() {
+		return interpreterReqLanguage;
+	}
+
+	@Override
+	public void setInterpreterReqLanguage(String interpreterReqLanguage) {
+		this.interpreterReqLanguage = interpreterReqLanguage;
 	}
 }
