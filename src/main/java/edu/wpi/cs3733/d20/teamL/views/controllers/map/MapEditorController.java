@@ -340,7 +340,7 @@ public class MapEditorController {
         selectedNode.setType(types.get(nodeTypeValue.getSelectionModel().getSelectedIndex()));
         selectedNode.setShortName(shortNameText.getText());
         selectedNode.setLongName(longNameText.getText());
-        selectedNode.setShaft(numberText.getText());
+        if (!numberText.getText().isEmpty()) selectedNode.setShaft(numberText.getText());
 
         //selectedNode.setId(map.getBuilding().getUniqueNodeID(selectedNode));
 
