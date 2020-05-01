@@ -17,9 +17,8 @@
 
 <BorderPane prefHeight="720.0" prefWidth="1080.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.ServiceRequestController">
    <stylesheets>
-      <URL value="@../css/GlobalStyles.css" />
-      <URL value="@../css/ServiceRequestsPage.css" />
-      <URL value="@../css/ServiceRequestStyles.css" />
+      <URL value="@../../css/GlobalStyles.css" />
+      <URL value="@../../css/ServiceRequestStyles.css" />
    </stylesheets>
    <center>
       <GridPane alignment="CENTER" hgap="10.0" vgap="10.0" BorderPane.alignment="CENTER">
@@ -40,7 +39,7 @@
                      <graphic>
                         <ImageView fitHeight="106.0" fitWidth="108.0" pickOnBounds="true" preserveRatio="true" translateY="-2.5">
                            <image>
-                              <Image url="@../assets/Services/security.png" />
+                              <Image url="@../../assets/Services/security.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -55,7 +54,7 @@
                      <graphic>
                         <ImageView pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../assets/Services/gift.png" />
+                              <Image url="@../../assets/Services/gift.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -70,7 +69,7 @@
                      <graphic>
                         <ImageView pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../assets/Services/wrench.png" />
+                              <Image url="@../../assets/Services/wrench.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -85,7 +84,7 @@
                      <graphic>
                         <ImageView fitHeight="109.0" fitWidth="121.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../assets/Services/taxi.png" />
+                              <Image url="@../../assets/Services/taxi.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -100,7 +99,7 @@
                      <graphic>
                         <ImageView pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../assets/Services/pharmacy.png" />
+                              <Image url="@../../assets/Services/pharmacy.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -115,7 +114,7 @@
                      <graphic>
                         <ImageView pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../assets/Services/wheelchair.png" />
+                              <Image url="@../../assets/Services/wheelchair.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -130,7 +129,7 @@
                      <graphic>
                         <ImageView fitHeight="124.0" fitWidth="104.0" pickOnBounds="true" preserveRatio="true" scaleX="0.75" scaleY="0.75">
                            <image>
-                              <Image url="@../assets/Services/mop.png" />
+                              <Image url="@../../assets/Services/mop.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -145,7 +144,7 @@
                      <graphic>
                         <ImageView pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../assets/Services/translate.png" />
+                              <Image url="@../../assets/Services/translate.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -163,7 +162,7 @@
                      <graphic>
                         <ImageView fitHeight="119.0" fitWidth="90.0" nodeOrientation="INHERIT" translateX="3.0" translateY="13.0">
                            <image>
-                              <Image url="@../assets/nodes/IT.png" />
+                              <Image url="@../../assets/nodes/IT.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -193,7 +192,7 @@
                      <graphic>
                         <ImageView fitHeight="43.0" fitWidth="50.0">
                            <image>
-                              <Image url="@../assets/baseline_arrow_back_white_48dp.png" />
+                              <Image url="@../../assets/baseline_arrow_back_white_48dp.png" />
                            </image>
                         </ImageView>
                      </graphic>

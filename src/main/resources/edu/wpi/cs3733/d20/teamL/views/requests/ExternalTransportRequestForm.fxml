@@ -15,8 +15,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.ExternalTransportController">
     <stylesheets>
-        <URL value="@../css/GlobalStyles.css" />
-        <URL value="@../css/TransportServiceStyles.css" />
+        <URL value="@../../css/GlobalStyles.css" />
     </stylesheets>
     <center>
         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="100.0" BorderPane.alignment="CENTER">
@@ -35,7 +34,7 @@
                   </VBox>
                         <ImageView pickOnBounds="true" preserveRatio="true" rotate="180.0">
                             <image>
-                                <Image url="@../assets/baseline_arrow_back_white_48dp.png" />
+                                <Image url="@../../assets/baseline_arrow_back_white_48dp.png" />
                             </image>
                         </ImageView>
                   <VBox>

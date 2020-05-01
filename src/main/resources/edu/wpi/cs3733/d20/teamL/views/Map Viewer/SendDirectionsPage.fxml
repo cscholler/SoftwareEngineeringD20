@@ -66,8 +66,8 @@
       </VBox>
    </center>
    <stylesheets>
-      <URL value="@../css/GlobalStyles.css" />
-      <URL value="@../css/MapStyles.css" />
+      <URL value="@../../css/GlobalStyles.css" />
+      <URL value="@../../css/MapStyles.css" />
    </stylesheets>
    <bottom>
       <VBox alignment="CENTER" BorderPane.alignment="CENTER">

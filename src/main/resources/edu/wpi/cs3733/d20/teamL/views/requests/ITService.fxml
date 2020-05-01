@@ -95,7 +95,7 @@
                <children>
                   <ImageView fitHeight="523.0" fitWidth="447.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../assets/computer.png" />
+                        <Image url="@../../assets/computer.png" />
                      </image>
                      <VBox.margin>
                         <Insets left="50.0" top="50.0" />
@@ -109,8 +109,8 @@
       </HBox>
    </center>
    <stylesheets>
-      <URL value="@../css/GlobalStyles.css" />
-      <URL value="@../css/MapStyles.css" />
-      <URL value="@../css/ServiceRequestStyles.css" />
+      <URL value="@../../css/GlobalStyles.css" />
+      <URL value="@../../css/MapStyles.css" />
+      <URL value="@../../css/ServiceRequestStyles.css" />
    </stylesheets>
 </BorderPane>

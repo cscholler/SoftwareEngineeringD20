@@ -210,7 +210,7 @@
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../assets/nodes_filled/EXIT_filled.png" />
+                              <Image url="@../../assets/nodes_filled/EXIT_filled.png" />
                            </image>
                         </ImageView>
                         <VBox alignment="CENTER_LEFT">
@@ -227,7 +227,7 @@
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../assets/nodes_filled/REST_filled.png" />
+                              <Image url="@../../assets/nodes_filled/REST_filled.png" />
                            </image>
                         </ImageView>
                         <VBox alignment="CENTER_LEFT">
@@ -244,7 +244,7 @@
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../assets/nodes_filled/INFO_filled.png" />
+                              <Image url="@../../assets/nodes_filled/INFO_filled.png" />
                            </image>
                         </ImageView>
                         <VBox alignment="CENTER_LEFT">
@@ -261,7 +261,7 @@
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../assets/nodes_filled/ELEV_filled.png" />
+                              <Image url="@../../assets/nodes_filled/ELEV_filled.png" />
                            </image>
                         </ImageView>
                         <VBox alignment="CENTER_LEFT">
@@ -278,7 +278,7 @@
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../assets/nodes_filled/STAI_filled.png" />
+                              <Image url="@../../assets/nodes_filled/STAI_filled.png" />
                            </image>
                         </ImageView>
                         <VBox alignment="CENTER_LEFT">
@@ -295,7 +295,7 @@
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../assets/nodes_filled/RETL_filled.png" />
+                              <Image url="@../../assets/nodes_filled/RETL_filled.png" />
                            </image>
                         </ImageView>
                         <VBox alignment="CENTER_LEFT">

@@ -59,34 +59,29 @@
     -fx-font-size: 15;
 }
 
-.bottom-bar-hbox-fx {
-    -fx-background-color: #00032E;
-    -fx-pref-height: 100;
-    -fx-max-height: 100;
+.bottom-bar-anchor-pane-fx {
+    -fx-background-color: #00043B;
+    -fx-pref-height: 30;
+    -fx-max-height: 30;
     -fx-alignment: center;
 }
 
 .bottom-bar-time-label-jfx {
     -fx-text-fill: white;
-    -fx-font-size: 50;
+    -fx-font-size:30;
     -fx-padding: 0 0 0 30;
-}
-
-.bottom-bar-spacing-hbox-fx {
-    -fx-orientation: CENTER;
-    -fx-pref-width: 857.6;
-    -fx-max-width: 857.6;
 }
 
 .bottom-bar-logout-label-jfx {
     -fx-text-fill: white;
     -fx-underline: true;
-    -fx-font-size: 50;
-    -fx-padding: 0 30 0 0;
+    -fx-font-size:30;
+    -fx-padding: 0 30 0 30;
+    -fx-text-alignment: justify;
 }
 
 .service-request-header-label-jfx {
-    -fx-text-fill: #00032E;
+    -fx-text-fill: #00043B;
     -fx-font-size: 75;
     -fx-font-weight: bold;
 }
@@ -108,4 +103,31 @@
 
     -fx-font-size: 15;
     -jfx-label-float: true;
+}
+
+.notifications-button-jfx {
+    -fx-font-size: 30;
+    -fx-text-fill: #00043B;
+    -fx-padding: 0 10 0 10;
+    -fx-underline: true;
+
+    -fx-background-color: WHITE;
+    -fx-pref-width: 260;
+    -fx-pref-height: 60;
+    -fx-max-width: 260;
+    -fx-max-height: 60;
+    -jfx-button-type: FLAT;
+}
+
+.services-button-jfx {
+    -fx-font-size: 35;
+    -fx-text-fill: #00043B;
+
+    -fx-background-color: WHITE;
+    -fx-pref-width: 385;
+    -fx-pref-height: 100;
+    -fx-alignment: center-left;
+    -jfx-button-type: FLAT;
+
+
 }

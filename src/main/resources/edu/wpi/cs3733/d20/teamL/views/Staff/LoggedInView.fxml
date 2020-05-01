@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #0D2E57;" stylesheets="@../css/ServiceRequestsPage.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.LoggedInViewController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #0D2E57;" stylesheets="" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.LoggedInViewController">
     <top>
         <GridPane prefHeight="173.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
             <columnConstraints>
@@ -56,7 +56,7 @@
                             <graphic>
                                 <ImageView fitHeight="30.0" fitWidth="36.0">
                                     <image>
-                                        <Image url="@../assets/staff view/baseline_notifications_white_48dp.png" />
+                                        <Image url="@../../assets/staff view/baseline_notifications_white_48dp.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -79,9 +79,6 @@
                   <JFXButton fx:id="btnMapEditor" alignment="CENTER" contentDisplay="CENTER" maxHeight="250.0" maxWidth="250.0" minHeight="250.0" minWidth="250.0" onAction="#mapEditorClicked" style="-fx-background-radius: 200; -fx-border-color: white; -fx-border-radius: 200;" styleClass="circle-button" text=" ">
                      <graphic>
                         <ImageView fitHeight="241.0" fitWidth="152.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../assets/home%20page/baseline_explore_white_48dp.png" />
-                           </image>
                         </ImageView>
                      </graphic>
                   </JFXButton>
@@ -93,9 +90,6 @@
                   <JFXButton fx:id="btnAddUser" alignment="CENTER" contentDisplay="CENTER" maxHeight="250.0" maxWidth="250.0" minHeight="250.0" minWidth="250.0" onAction="#addUserClicked" style="-fx-background-radius: 200; -fx-border-color: white; -fx-border-radius: 200;" styleClass="circle-button" text=" ">
                      <graphic>
                         <ImageView pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../assets/staff%20view/AddUser.png" />
-                           </image>
                         </ImageView>
                      </graphic>
                   </JFXButton>
@@ -107,9 +101,6 @@
                   <JFXButton fx:id="btnServiceRequest" alignment="CENTER" contentDisplay="CENTER" maxHeight="250.0" maxWidth="250.0" minHeight="250.0" minWidth="250.0" onAction="#serviceRequestsClicked" style="-fx-background-radius: 200; -fx-border-color: white; -fx-border-radius: 200;" styleClass="circle-button" text=" ">
                      <graphic>
                         <ImageView pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../assets/home%20page/baseline_room_service_white_48dp.png" />
-                           </image>
                         </ImageView>
                      </graphic>
                   </JFXButton>
@@ -121,9 +112,6 @@
                   <JFXButton fx:id="btnAddDoctor" alignment="CENTER" contentDisplay="CENTER" maxHeight="250.0" maxWidth="250.0" minHeight="250.0" minWidth="250.0" onAction="#addDoctorClicked" style="-fx-background-radius: 200; -fx-border-color: white; -fx-border-radius: 200;" styleClass="circle-button" text=" ">
                      <graphic>
                         <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../assets/staff%20view/Add.png" />
-                           </image>
                         </ImageView>
                      </graphic>
                   </JFXButton>
@@ -135,9 +123,6 @@
                   <JFXButton fx:id="btnAddPatient" alignment="CENTER" contentDisplay="CENTER" maxHeight="250.0" maxWidth="250.0" minHeight="250.0" minWidth="250.0" onAction="#addPatientClicked" style="-fx-background-radius: 200; -fx-border-color: white; -fx-border-radius: 200;" styleClass="circle-button" text=" ">
                      <graphic>
                         <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../assets/staff%20view/Add.png" />
-                           </image>
                         </ImageView>
                      </graphic>
                   </JFXButton>

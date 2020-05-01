@@ -178,8 +178,8 @@
         </GridPane>
     </center>
    <stylesheets>
-      <URL value="@../css/GlobalStyles.css" />
-      <URL value="@../css/FormStyles.css" />
-      <URL value="@../css/ServiceRequestStyles.css" />
+      <URL value="@../../css/GlobalStyles.css" />
+      <URL value="@../../css/FormStyles.css" />
+      <URL value="@../../css/ServiceRequestStyles.css" />
    </stylesheets>
 </BorderPane>

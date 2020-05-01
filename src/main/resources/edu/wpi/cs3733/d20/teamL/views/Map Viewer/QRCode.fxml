@@ -24,8 +24,8 @@
       </VBox>
    </top>
    <stylesheets>
-      <URL value="@../css/GlobalStyles.css" />
-      <URL value="@../css/MapStyles.css" />
+      <URL value="@../../css/GlobalStyles.css" />
+      <URL value="@../../css/MapStyles.css" />
    </stylesheets>
    <bottom>
       <VBox alignment="CENTER" BorderPane.alignment="CENTER">
@@ -55,7 +55,7 @@
             </HBox>
             <ImageView fx:id="qrImage" fitHeight="1.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../assets/QRCode.png" />
+                  <Image url="@../../assets/QRCode.png" />
                </image>
             </ImageView>
          </children>
@@ -64,7 +64,7 @@
    <center>
       <ImageView fx:id="qrImage" fitHeight="371.0" fitWidth="383.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
          <image>
-            <Image url="@../assets/QRCode.png" />
+            <Image url="@../../assets/QRCode.png" />
          </image>
       </ImageView>
    </center>

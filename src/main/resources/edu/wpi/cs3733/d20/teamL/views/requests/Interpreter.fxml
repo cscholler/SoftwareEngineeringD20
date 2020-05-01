@@ -24,7 +24,7 @@
                      <graphic>
                         <ImageView fitHeight="53.0" fitWidth="55.0">
                            <image>
-                              <Image url="@../assets/baseline_arrow_back_black_48dp.png" />
+                              <Image url="@../../assets/baseline_arrow_back_black_48dp.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -36,7 +36,7 @@
                <graphic>
                   <ImageView fitHeight="60.0" fitWidth="100.0">
                      <image>
-                        <Image url="@../assets/flags/spain_flag-300x193.png" />
+                        <Image url="@../../assets/flags/spain_flag-300x193.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -51,7 +51,7 @@
                <graphic>
                   <ImageView fitHeight="60.0" fitWidth="100.0">
                      <image>
-                        <Image url="@../assets/flags/France.png" />
+                        <Image url="@../../assets/flags/France.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -66,7 +66,7 @@
                <graphic>
                   <ImageView fitHeight="60.0" fitWidth="100.0">
                      <image>
-                        <Image url="@../assets/flags/italian.png" />
+                        <Image url="@../../assets/flags/italian.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -81,7 +81,7 @@
                <graphic>
                   <ImageView fitHeight="60.0" fitWidth="100.0">
                      <image>
-                        <Image url="@../assets/flags/ASL.png" />
+                        <Image url="@../../assets/flags/ASL.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -96,7 +96,7 @@
                <graphic>
                   <ImageView fitHeight="60.0" fitWidth="100.0">
                      <image>
-                        <Image url="@../assets/flags/China.jpg" />
+                        <Image url="@../../assets/flags/China.jpg" />
                      </image>
                   </ImageView>
                </graphic>
@@ -173,7 +173,7 @@
             </BorderPane>
          </center>
          <top>
-            <Label alignment="CENTER" prefHeight="88.0" prefWidth="1297.0" stylesheets="@../css/FormStyles.css" text="Request an Interpreter" textFill="WHITE" BorderPane.alignment="CENTER">
+            <Label alignment="CENTER" prefHeight="88.0" prefWidth="1297.0" stylesheets="@../../css/FormStyles.css" text="Request an Interpreter" textFill="WHITE" BorderPane.alignment="CENTER">
                <font>
                   <Font size="39.0" />
                </font>
@@ -187,8 +187,8 @@
       </BorderPane>
   </items>
    <stylesheets>
-      <URL value="@../css/GlobalStyles.css" />
-      <URL value="@../css/FormStyles.css" />
-      <URL value="@../css/ServiceRequestStyles.css" />
+      <URL value="@../../css/GlobalStyles.css" />
+      <URL value="@../../css/FormStyles.css" />
+      <URL value="@../../css/ServiceRequestStyles.css" />
    </stylesheets>
 </SplitPane>
