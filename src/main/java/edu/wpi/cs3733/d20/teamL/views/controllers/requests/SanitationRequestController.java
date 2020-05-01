@@ -77,7 +77,7 @@ public class SanitationRequestController {
         String additionalNotes = addNotesText.getText();
 
         String status = "0";
-        String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
+        String dateAndTime = new SimpleDateFormat("M-dd-yyyy | h:mm aa").format(new Date());
         String concatenatedNotes = location + "\n" + subject + "\n" + additionalNotes;
         // TODO: Get name of nurse from current user
         int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
