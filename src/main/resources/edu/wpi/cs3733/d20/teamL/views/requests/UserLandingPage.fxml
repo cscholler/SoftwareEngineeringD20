@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background-pane-fx" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background-pane-fx" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.UserLandingController">
    <bottom>
       <AnchorPane styleClass="bottom-bar-anchor-pane-fx" BorderPane.alignment="CENTER">
          <children>
@@ -42,7 +42,7 @@
             </HBox>
          </top>
          <center>
-            <Pane prefHeight="895.0" prefWidth="585.0" BorderPane.alignment="CENTER" />
+            <Pane fx:id="servicePane" prefHeight="895.0" prefWidth="585.0" BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
    </center>
@@ -65,7 +65,7 @@
                                     <Image url="@../../assets/serviceIcons/giftDelivery.png" />
                                  </image></ImageView>
                            </graphic></JFXButton>
-                        <JFXButton prefWidth="361.0" styleClass="services-button-jfx" text="Security">
+                        <JFXButton onAction="#securitySelected" prefWidth="361.0" styleClass="services-button-jfx" text="Security">
                            <graphic>
                               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>

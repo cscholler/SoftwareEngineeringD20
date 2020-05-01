@@ -84,7 +84,7 @@ public class LoginController {
             loginManager.logIn(username, password);
             if (loginManager.isAuthenticated()) {
 				((Stage) login.getScene().getWindow()).close();
-				String view = "LoggedInView";
+				String view = "UserLandingPage";
 //            	switch (loginManager.getCurrentUser().getAcctType()) {
 //					default:
 //					case "0":
