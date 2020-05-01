@@ -11,8 +11,8 @@ public class Selector {
 
     private Collection<Highlightable> selected = new ArrayList<>();
 
-    public Collection<NodeGUI> getNodes() {
-        return selectedNodes.keySet();
+    public List<NodeGUI> getNodes() {
+        return new ArrayList<>(selectedNodes.keySet());
     }
 
     public Collection<EdgeGUI> getEdges() {

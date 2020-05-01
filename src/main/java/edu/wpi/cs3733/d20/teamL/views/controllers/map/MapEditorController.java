@@ -54,9 +54,9 @@ public class MapEditorController {
     @FXML
     Label nodeIDText, numberlbl;
     @FXML
-    JFXTextField numberText, xCoordText, yCoordText, buildingText, nodeTypeText, shortNameText, longNameText;
+    JFXTextField xCoordText, yCoordText, buildingText, nodeTypeText, shortNameText, longNameText;
     @FXML
-    ComboBox nodeTypeValue;
+    ComboBox nodeTypeValue, numberText;
     @FXML
     VBox editor, multiFloorConnection, nodeConnectionsTab, floorSelector, edgeList;
     @FXML
@@ -128,6 +128,8 @@ public class MapEditorController {
 
             floorSelector.getChildren().add(1, newButton);
         }
+
+        setFloor(2);
 
         //Hides the node editor VBox
         editor.setPrefWidth(0);
@@ -280,7 +282,6 @@ public class MapEditorController {
         newBuilding.addAllNodes(cache.getNodeCache());
 
         map.setBuilding(newBuilding);
-        setFloor(2);
     }
 
     @FXML
@@ -338,16 +339,30 @@ public class MapEditorController {
 
         if (index == 1) {
             numberlbl.setText("Elevator Number:");
-            multiFloorConnection.setVisible(true);
-            numberText.setText("" + selected.getShaft());
+            updateShaftList(selected);
+            numberText.getSelectionModel().select(selected.getShaft());
         } else if (index == 3) {
             numberlbl.setText("Stairwell Number:");
-            multiFloorConnection.setVisible(true);
-            numberText.setText("" + selected.getShaft());
+            updateShaftList(selected);
         } else {
             multiFloorConnection.setVisible(false);
-            numberText.setText("");
+            numberText.getSelectionModel().select(selected.getShaft());
         }
+    }
+
+    private void updateShaftList(Node selected) {
+        multiFloorConnection.setVisible(true);
+        numberText.getItems().clear();
+        numberText.getItems().add("No Connection");
+
+        int i;
+        for(i = 1; i <= map.getBuilding().getMaxShaft(selected.getType()); i++) {
+            numberText.getItems().add(String.valueOf(i));
+        }
+
+        numberText.getItems().add(i + " (new shaft)");
+
+        numberText.getSelectionModel().select(selected.getShaft());
     }
 
     @FXML
@@ -364,7 +379,7 @@ public class MapEditorController {
         selectedNode.setType(types.get(nodeTypeValue.getSelectionModel().getSelectedIndex()));
         selectedNode.setShortName(shortNameText.getText());
         selectedNode.setLongName(longNameText.getText());
-        if (!numberText.getText().isEmpty()) selectedNode.setShaft(numberText.getText());
+        selectedNode.setShaft(numberText.getSelectionModel().getSelectedIndex());
 
         //selectedNode.setId(map.getBuilding().getUniqueNodeID(selectedNode));
 

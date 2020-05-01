@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import edu.wpi.cs3733.d20.teamL.entities.Building;
+import edu.wpi.cs3733.d20.teamL.entities.Graph;
 import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import javafx.event.ActionEvent;
@@ -85,9 +86,9 @@ public class MapViewerController {
         btnNavigate.setDisableVisualFocus(true);
 
         Building startBuilding = new Building("Faulkner");
-        startBuilding.addAllNodes(cache.getNodeCache());
+        Graph nodes = Graph.graphFromCache(cache.getNodeCache(), cache.getEdgeCache());
+        startBuilding.addAllNodes(nodes.getNodes());
         map.setBuilding(startBuilding);
-        setFloor(2);
 
         // Add floor buttons
         for (int i = 1; i <= startBuilding.getMaxFloor(); i++) {
@@ -100,6 +101,8 @@ public class MapViewerController {
 
             floorSelector.getChildren().add(1, newButton);
         }
+
+        setFloor(2);
 
         map.setZoomLevel(0.65);
         map.init();
