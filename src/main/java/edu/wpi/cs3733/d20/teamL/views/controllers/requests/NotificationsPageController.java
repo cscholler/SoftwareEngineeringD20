@@ -2,7 +2,11 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.ResourceBundle;
 
 import edu.wpi.cs3733.d20.teamL.entities.Gift;
 import edu.wpi.cs3733.d20.teamL.entities.GiftDeliveryRequest;
@@ -21,15 +25,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import com.google.inject.Inject;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 
-import javafx.scene.control.SelectionMode;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
@@ -78,7 +82,7 @@ public class NotificationsPageController implements Initializable {
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		user = loginManager.getCurrentUser();
 		resetButtons();
-		setMessageLists(user);
+		determineNotificationsToDisplay(user);
 		setCellFactories();
 		loadRequests("medication");
 		loadRequests("gift");
@@ -88,7 +92,6 @@ public class NotificationsPageController implements Initializable {
 	/**
 	 * Loads data to the list view in the form of MedicineRequest Objects
 	 */
-	@FXML
 	private void loadRequests(String type) {
 		resetButtons();
 		String username = user.getUsername();
@@ -298,14 +301,21 @@ public class NotificationsPageController implements Initializable {
 				Collection<String> vowels = new ArrayList<>(Arrays.asList("a", "e", "i", "o", "u"));
 				boolean doesTypeStartWithVowel = false;
 				boolean doesServiceStartWithVowel = false;
-				for (String vowel : vowels) {
-					if (req.getType() != null) {
-						if (req.getType().toLowerCase().startsWith(vowel)) {
-							doesTypeStartWithVowel = true;
+				if (req.getType() != null) {
+					if (!(req.getType().isEmpty() && req.getType().isBlank())) {
+						for (String vowel : vowels) {
+							if (req.getType().toLowerCase().startsWith(vowel)) {
+								doesTypeStartWithVowel = true;
+								break;
+							}
 						}
 					}
-					if (req.getService().toLowerCase().startsWith(vowel)) {
-						doesServiceStartWithVowel = true;
+				} else {
+					for (String vowel : vowels) {
+						if (req.getService().toLowerCase().startsWith(vowel)) {
+							doesServiceStartWithVowel = true;
+							break;
+						}
 					}
 				}
 				if (user.isManager()) {
@@ -314,8 +324,8 @@ public class NotificationsPageController implements Initializable {
 					}
 					// TODO: Fix vowel checking
 					message = getUserFullName(req.getRequestUsername()) + " requests " + (req.getType() != null ? ((doesTypeStartWithVowel ? "an " : "a ") +
-							req.getType()) : (doesServiceStartWithVowel ? "an" : "a")) + " " + req.getService() + " service " +
-							((req.getPatientName() != null && req.getPatientID() != null) ? "for " + req.getPatientName() + "(" + req.getPatientID() + ")" : "") +
+							req.getType()) : (doesServiceStartWithVowel ? "an" : "a")) + " " + req.getService() + " service" +
+							((req.getPatientName() != null && req.getPatientID() != null) ? " for " + req.getPatientName() + "(" + req.getPatientID() + ")" : "") +
 							(req.getLocation() != null ? " at location " + req.getLocation() : "");
 					if (req.getStatus().equals("1") || req.getStatus().equals("2")) {
 						buttonBox.getChildren().add(btnAssign);
@@ -329,8 +339,8 @@ public class NotificationsPageController implements Initializable {
 					}
 				} else {
 					message = "You have been assigned to complete " + (req.getType() != null ? ((doesTypeStartWithVowel ? "an " : "a ") +
-							req.getType()) : (doesServiceStartWithVowel ? "an " : "a ")) + req.getService() + " service " +
-							((req.getPatientName() != null && req.getPatientID() != null) ? "for " + req.getPatientName() + "(" + req.getPatientID() + ")" : "") +
+							req.getType()) : (doesServiceStartWithVowel ? "an" : "a")) + " " + req.getService() + " service " +
+							((req.getPatientName() != null && req.getPatientID() != null) ? " for " + req.getPatientName() + "(" + req.getPatientID() + ")" : "") +
 							(req.getLocation() != null ? " at location " + req.getLocation() : "");
 					buttonBox.getChildren().add(btnCompleted);
 					btnCompleted.setText("Completed");
@@ -397,6 +407,9 @@ public class NotificationsPageController implements Initializable {
 		setCellFactories();
 	}
 
+	/**
+	 * Marks a service request as completed and removes it from the database when the completed button is clicked
+	 */
 	@FXML
 	private void btnCompletedClicked() {
 		switch (reqHandler.getCurrentRequestType()) {
@@ -438,6 +451,9 @@ public class NotificationsPageController implements Initializable {
 		setCellFactories();
 	}
 
+	/**
+	 * Denies a service request when the decline button is clicked
+	 */
 	@FXML
 	private void btnDeclineClicked() {
 		switch (reqHandler.getCurrentRequestType()) {
@@ -459,6 +475,9 @@ public class NotificationsPageController implements Initializable {
 		setCellFactories();
 	}
 
+	/**
+	 * Resets all buttons to their default positions, visibility, and text
+	 */
 	private void resetButtons() {
 		buttonBox.getChildren().remove(btnCompleted);
 		buttonBox.getChildren().remove(btnAssign);
@@ -467,6 +486,9 @@ public class NotificationsPageController implements Initializable {
 		btnAssign.setText("Assign");
 	}
 
+	/**
+	 * Sets the cell factories of the three categories of service request notifications
+	 */
 	public void setCellFactories() {
 		medReqs.setCellFactory(param -> new ListCell<>() {
 			@Override
@@ -567,7 +589,12 @@ public class NotificationsPageController implements Initializable {
 		});
 	}
 
-	private void setMessageLists(User user) {
+	/**
+	 * Determines which sets of notifications to display based on the status of the currently logged-in user
+	 *
+	 * @param user The current user
+	 */
+	private void determineNotificationsToDisplay(User user) {
 		if (user.isManager()) {
 			if (user.getDept().equals("pharmacy")) {
 				messageBox.getChildren().remove(giftReqs);

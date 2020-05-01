@@ -47,7 +47,7 @@
                      </HBox.margin>
                   </JFXButton>
 
-                        <JFXButton fx:id="btnCompleted" minWidth="150.0" onAction="#btnCompletedClicked" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #0D2E57;" text="Completed" textFill="WHITE">
+                        <JFXButton fx:id="btnCompleted" minWidth="150.0" onAction="#btnCompletedClicked" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #0D2E57;" text="Mark Completed" textFill="WHITE">
 
                            <font>
                         <Font size="26.0" />
