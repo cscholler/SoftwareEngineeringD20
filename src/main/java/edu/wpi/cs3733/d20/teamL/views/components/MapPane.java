@@ -147,6 +147,7 @@ public class MapPane extends ScrollPane {
                     body.getChildren().add(selectionBox);
                     selectedNode = null;
                 }
+                onActionProperty().get().handle(event);
             });
 
             // Change the position of all the selected nodes as the mouse is being dragged keeping their offset
