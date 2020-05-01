@@ -84,6 +84,7 @@
     -fx-text-fill: #00043B;
     -fx-font-size: 40;
     -fx-font-weight: bold;
+    -fx-padding: 0 0 0 30;
 }
 
 .check-box-jfx {
@@ -144,7 +145,7 @@
 }
 
 .services-pane-jfx{
-    -fx-pref-height: 585;
-    -fx-pref-width: 895;
     -fx-background-color: white;
+    -fx-pref-width: 895;
+    -fx-pref-height: 585;
 }

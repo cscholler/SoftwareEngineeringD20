@@ -6,18 +6,16 @@ import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -27,7 +25,7 @@ public class UserLandingController {
     FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 
     @FXML
-    private Label timeLabel;
+    private Label timeLabel, requestLabel;
     @FXML
     private Pane servicePane;
     @FXML
@@ -47,82 +45,89 @@ public class UserLandingController {
     }
 
     @FXML
+    public void launchDefaultPane() throws IOException{
+        resetPage("defaultPane", " ");
+        requestLabel.setVisible(false);
+    }
+
+    @FXML
     public void launchSecurityPane() throws IOException{
-        try {
-            servicePane.getChildren().clear();
-            servicePane.getChildren().add(loaderHelper.getFXMLLoader("requests/SecurityPane").load());
-            resetButtons();
-            btnSecurity.setStyle("-fx-background-color: #DCDCDC;");
-        } catch (IOException ex) {
-            log.error("Encountered IOException", ex);
-        }
+        resetPage("SecurityPane", "Security Request");
+        btnSecurity.setStyle("-fx-background-color: #DCDCDC");
     }
 
     @FXML
-    public void launchSanitationPane(ActionEvent actionEvent) {
-        resetButtons();
-        btnSanitation.setStyle("-fx-background-color: #DCDCDC;");
-        System.out.println("Sanitation Request");
+    public void launchSanitationPane() throws IOException {
+        resetPage("SanitationPane", "Sanitation Request");
+        btnSanitation.setStyle("-fx-background-color: #DCDCDC");
     }
 
     @FXML
-    public void launchGiftPane(ActionEvent actionEvent) {
-        resetButtons();
-        btnGift.setStyle("-fx-background-color: #DCDCDC;");
-        System.out.println("Gift Request");
+    public void launchGiftPane() throws IOException {
+        resetPage("SanitationPane", "Sanitation Request");
+        btnSanitation.setStyle("-fx-background-color: #DCDCDC");
     }
 
     @FXML
-    public void launchMaintenancePane(ActionEvent actionEvent) {
-        resetButtons();
-        btnMaintenance.setStyle("-fx-background-color: #DCDCDC;");
-        System.out.println("Maintenance Request");
+    public void launchMaintenancePane() throws IOException {
+        resetPage("MaintenancePane", "Maintenance Request");
+        btnMaintenance.setStyle("-fx-background-color: #DCDCDC");
     }
 
     @FXML
-    public void launchMedicationPane(ActionEvent actionEvent) {
-        resetButtons();
-        btnMedication.setStyle("-fx-background-color: #DCDCDC;");
-        System.out.println("Medication Request");
+    public void launchMedicationPane() throws IOException {
+        resetPage("MedicationPane", "Medication Request");
+        btnMedication.setStyle("-fx-background-color: #DCDCDC");
     }
 
     @FXML
-    public void launchInternalPane(ActionEvent actionEvent) {
-        resetButtons();
-        btnInternal.setStyle("-fx-background-color: #DCDCDC;");
-        System.out.println("Internal Transport");
+    public void launchInternalPane() throws IOException {
+        resetPage("InternalPane", "Internal Transport");
+        btnInternal.setStyle("-fx-background-color: #DCDCDC");
     }
 
     @FXML
-    public void launchExternalPane(ActionEvent actionEvent) {
-        resetButtons();
-        btnExternal.setStyle("-fx-background-color: #DCDCDC;");
-        System.out.println("External Transport");
+    public void launchExternalPane() throws IOException {
+        resetPage("ExternalPane", "External Transport");
+        btnExternal.setStyle("-fx-background-color: #DCDCDC");
     }
 
     @FXML
-    public void launchITPane(ActionEvent actionEvent) {
-        resetButtons();
-        btnIT.setStyle("-fx-background-color: #DCDCDC;");
-        System.out.println("IT Request");
+    public void launchITPane() throws IOException {
+        resetPage("ITPane", "IT Request");
+        btnIT.setStyle("-fx-background-color: #DCDCDC");
     }
 
     @FXML
-    public void launchInterpreterPane(ActionEvent actionEvent) {
-        resetButtons();
-        btnInterpreter.setStyle("-fx-background-color: #DCDCDC;");
-        System.out.println("Interpreter Request");
+    public void launchInterpreterPane() throws IOException {
+        resetPage("InterpreterPane", "Interpreter Request");
+        btnInterpreter.setStyle("-fx-background-color: #DCDCDC");
     }
 
-    private void resetButtons() {
+    private void resetPage(String regionName, String labelText) throws IOException {
         JFXButton[] allButtons = new JFXButton[]{btnGift, btnSecurity, btnSanitation, btnMaintenance, btnIT, btnInternal, btnExternal, btnInterpreter, btnMedication};
         for (JFXButton currButton:allButtons) {
             currButton.setStyle("-fx-background-color: white;");
         }
+
+        try {
+            servicePane.getChildren().clear();
+            Region n = loaderHelper.getFXMLLoader("requests/" + regionName).load();
+
+            servicePane.getChildren().add(n);
+            n.prefWidthProperty().bind(servicePane.widthProperty());
+            n.prefHeightProperty().bind(servicePane.heightProperty());
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+            launchDefaultPane();
+        }
+
+        requestLabel.setText(labelText);
+        requestLabel.setVisible(true);
     }
 
     @FXML
-    public void launchNotifPage(ActionEvent actionEvent) {
+    public void launchNotifPage() {
         try {
             Parent root = loaderHelper.getFXMLLoader("Staff/NotificationsPage").load();
             loaderHelper.setupScene(new Scene(root));
@@ -131,7 +136,7 @@ public class UserLandingController {
         }
     }
 
-    public void logoutBtn(ActionEvent actionEvent) {
+    public void logoutBtn() {
         log.info("here");
         login.logOut();
         try {

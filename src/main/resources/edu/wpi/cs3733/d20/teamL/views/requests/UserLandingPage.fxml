@@ -7,7 +7,6 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -24,9 +23,10 @@
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <top>
-            <HBox prefHeight="60.0" prefWidth="895.0" style="-fx-background-color: white; -fx-alignment: TOP-RIGHT;" styleClass="bottom-bar-hbox-fx" BorderPane.alignment="CENTER">
+            <AnchorPane BorderPane.alignment="CENTER">
                <children>
-                  <JFXButton fx:id="btnNotif" onAction="#launchNotifPage" prefHeight="60.0" prefWidth="240.0" styleClass="notifications-button-jfx" text="Notifications">
+                  <Label fx:id="requestLabel" styleClass="service-request-header-label-jfx" text="Label" visible="false" AnchorPane.leftAnchor="0.0" />
+                  <JFXButton fx:id="btnNotif" onAction="#launchNotifPage" prefHeight="60.0" prefWidth="240.0" styleClass="notifications-button-jfx" text="Notifications" AnchorPane.rightAnchor="0.0">
                      <font>
                         <Font size="30.0" />
                      </font>
@@ -39,10 +39,14 @@
                      </graphic>
                   </JFXButton>
                </children>
-            </HBox>
+            </AnchorPane>
          </top>
          <center>
-            <Pane fx:id="servicePane" prefHeight="895.0" prefWidth="585.0" BorderPane.alignment="CENTER" />
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Pane fx:id="servicePane" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               </children>
+            </AnchorPane>
          </center>
       </BorderPane>
    </center>
