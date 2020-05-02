@@ -69,7 +69,7 @@
                   <Font size="40.0" />
                </font>
             </Label>
-            <ScrollPane hbarPolicy="NEVER" prefHeight="1000.0" prefWidth="385.0" stylesheets="@../../css/JFX Scroll bar.css">
+            <ScrollPane hbarPolicy="NEVER" prefHeight="1000.0" prefWidth="385.0" stylesheets="@../../css/JFXScrollBar.css">
                <content>
                   <VBox alignment="CENTER_LEFT" maxHeight="1000.0" prefHeight="677.0" prefWidth="385.0">
                      <children>
