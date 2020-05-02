@@ -46,12 +46,12 @@ public class LoggedInViewController implements Initializable{
         if (loginManager.getCurrentUser().getAcctType().equals("3")) {
             buttonBox.getChildren().remove(vPatient);
             buttonBox.getChildren().remove(vService);
-            map = "MapEditor";
+            map = "admin/MapEditor";
             lblMap.setText("Map Editor");
         } else {
             buttonBox.getChildren().remove(vUser);
             buttonBox.getChildren().remove(vDoc);
-            map = "MapViewer";
+            map = "map_viewer/MapViewer";
             lblMap.setText("Map Viewer");
         }
     }
@@ -125,10 +125,9 @@ public class LoggedInViewController implements Initializable{
      */
     @FXML
     private void logoutClicked() {
-        log.info("here");
         loginManager.logOut(true);
         try {
-            Parent root = loaderHelper.getFXMLLoader("Home").load();
+            Parent root = loaderHelper.getFXMLLoader("map_viewer/MapViewer").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);

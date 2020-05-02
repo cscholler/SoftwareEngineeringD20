@@ -83,7 +83,7 @@ public class NavigationController implements Initializable {
     @FXML
     private void searchMap() {
         try {
-            FXMLLoader loader = loaderHelper.getFXMLLoader("MapViewer");
+            FXMLLoader loader = loaderHelper.getFXMLLoader("map_viewer/MapViewer");
             loaderHelper.setupScene(new Scene(loader.load()));
             MapViewerController controller = loader.getController();
             controller.setDestination(searchBox.getText());
@@ -99,7 +99,7 @@ public class NavigationController implements Initializable {
     @FXML
     private void loginBtnClicked() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("LoginPage").load();
+            Parent root = loaderHelper.getFXMLLoader("staff/LoginPage").load();
             loaderHelper.setupPopup(new Stage(), new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
@@ -112,7 +112,7 @@ public class NavigationController implements Initializable {
     @FXML
     private void mapBtnClicked() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("MapViewer").load();
+            Parent root = loaderHelper.getFXMLLoader("/Map Viewer/MapViewer").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
@@ -163,6 +163,6 @@ public class NavigationController implements Initializable {
 	}
 
 	private void updateTime() {
-		;Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("E, MMM d | h:mm aa").format(new Date())));
-	}
+        ;Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("E, MMM d | h:mm aa").format(new Date())));
+    }
 }

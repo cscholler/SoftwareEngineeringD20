@@ -64,6 +64,7 @@ public class MapPane extends ScrollPane {
     private EdgeGUI tempEdge;
     private NodeGUI tempNode;
     private int nodeRadius = 18;
+    private int hallwayNodeRadius = 12;
     private Color nodeColor = Color.rgb(13, 46, 87, 0.9);
     private Color edgeColor = Color.DARKBLUE;
     private Color highLightColor = Color.GOLD;//Color.rgb(20, 194, 247);
@@ -119,7 +120,11 @@ public class MapPane extends ScrollPane {
                 if (!addingNode && addingEdge && !onSelectable && !erasing) {
                     if (event.getButton().equals(MouseButton.PRIMARY)) {
 
-                        Node dest = new Node(currentBuilding.getUniqueNodeID(), new Point2D(event.getX(), event.getY()).multiply(1 / zoomLevel), currentFloor.getFloor(), currentBuilding.getName());
+                        Node dest = new Node(currentBuilding.getUniqueNodeID(), new Point2D(event.getX(),
+                                event.getY()).multiply(1 / zoomLevel), currentFloor.getFloor(), currentBuilding.getName(),
+                                "HALL","Hall", "Hall");
+
+                        dest.setId(currentBuilding.getUniqueNodeID(dest));
 
                         addNode(dest);
 
@@ -153,7 +158,11 @@ public class MapPane extends ScrollPane {
             body.setOnMouseDragged(event -> {
                 if (!addingNode && event.isPrimaryButtonDown() && !erasing && !addingEdge) {
                     if (draggingNode) {
-                        for (NodeGUI gui : selector.getNodes()) {
+                        if(event.isShiftDown() && selector.getNodes().size() == 1) {
+                            NodeGUI curr = selector.getNodes().get(0);
+                            curr.setLayoutPos(snapNode(curr, new Point2D(event.getX(), event.getY())));
+                        }
+                        else for (NodeGUI gui : selector.getNodes()) {
                             Point2D temp = selector.getNodePosition(gui);
                             if (temp != null) gui.setLayoutPos(temp.add(new Point2D(event.getX(), event.getY())));
                         }
@@ -203,6 +212,38 @@ public class MapPane extends ScrollPane {
                 if (event.getButton() != MouseButton.MIDDLE) event.consume();
             });
         }
+    }
+
+    private Point2D snapNode(NodeGUI curr, Point2D mousePos) {
+        ArrayList<NodeGUI> adjacents = new ArrayList<>();
+        for(Edge edge : curr.getNode().getEdges()) {
+            if(getNodeGUI(edge.getDestination()) != null)
+                adjacents.add(getNodeGUI(edge.getDestination()));
+        }
+
+        double minAngle = Math.PI / 4;
+        NodeGUI minNode = null;
+        for(NodeGUI adj : adjacents) {
+            double currAngle = Math.abs(Math.atan((mousePos.getY() - adj.getLayoutY()) / (mousePos.getX() - adj.getLayoutX())));
+            double tempAngle = currAngle;
+            double tempMin = minAngle;
+
+            if (tempAngle > Math.PI / 4) tempAngle = (Math.PI / 2) - tempAngle;
+            if (tempMin > Math.PI / 4) tempMin = (Math.PI / 2) - tempMin;
+
+            if (tempAngle < tempMin) {
+                minAngle = currAngle;
+                minNode = adj;
+            }
+        }
+
+        if(minNode != null) {
+            if (minAngle < Math.PI / 4) {
+                return new Point2D(mousePos.getX(), minNode.getLayoutY());
+            }
+            return new Point2D(minNode.getLayoutX(), mousePos.getY());
+        }
+        return mousePos;
     }
 
     //---------- Getters/Setters ----------//
@@ -259,6 +300,14 @@ public class MapPane extends ScrollPane {
 
     public void setNodeRadius(int nodeRadius) {
         this.nodeRadius = nodeRadius;
+    }
+
+    public int getHallwayNodeRadius() {
+        return hallwayNodeRadius;
+    }
+
+    public void setHallwayNodeRadius(int hallwayNodeRadius) {
+        this.hallwayNodeRadius = hallwayNodeRadius;
     }
 
     public Color getNodeColor() {
@@ -425,7 +474,9 @@ public class MapPane extends ScrollPane {
     public NodeGUI addNode(Node node) {
         NodeGUI nodeGUI = new NodeGUI(node);
 
-        nodeGUI.getCircle().setRadius(nodeRadius);
+        if (node.getType().equals("HALL")) nodeGUI.getCircle().setRadius(getHallwayNodeRadius());
+        else nodeGUI.getCircle().setRadius(getNodeRadius());
+
         nodeGUI.getCircle().fillProperty().setValue(nodeColor);
         nodeGUI.setHighlightColor(highLightColor);
         nodeGUI.setHighlightThickness(highlightThickness);
@@ -472,15 +523,14 @@ public class MapPane extends ScrollPane {
 
                     // -----------Handle moving the nodes-----------
                     if (selector.contains(nodeGUI) && event.isPrimaryButtonDown()) {
-                        for (NodeGUI gui : selector.getNodes()) {
+                        for (NodeGUI gui : selector.getNodes())
                             selector.setNodePosition(gui, gui.getLayoutPos().subtract(body.sceneToLocal(new Point2D(event.getSceneX(), event.getSceneY()))));
-                        }
                     }
                 }
 
                 // -----------Handle adding the edge-----------
                 if (!addingNode && event.isSecondaryButtonDown() && !draggingNode && !dragSelecting && !erasing) {
-                    tempEdge = new EdgeGUI(nodeRadius / 4, nodeColor, highLightColor, highlightThickness);
+                    tempEdge = new EdgeGUI((int) edgeThickness, nodeColor, highLightColor, highlightThickness);
                     tempEdge.startXProperty().bind(nodeGUI.getXProperty());
                     tempEdge.startYProperty().bind(nodeGUI.getYProperty());
                     tempEdge.setEndX(tempEdge.getStartX());
@@ -496,7 +546,6 @@ public class MapPane extends ScrollPane {
                 if (!addingNode && event.isPrimaryButtonDown() && addingEdge && !erasing) {
                     Node source = tempEdge.getSource().getNode();
                     Node dest = nodeGUI.getNode();
-                    int length = (int) source.getPosition().distance(dest.getPosition());
 
                     Edge edge = new Edge(source, dest);
                     source.addEdgeTwoWay(edge);

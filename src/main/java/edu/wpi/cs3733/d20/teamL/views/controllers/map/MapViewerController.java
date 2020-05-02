@@ -5,29 +5,33 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.jfoenix.controls.*;
+import com.twilio.twiml.voice.Echo;
 import edu.wpi.cs3733.d20.teamL.entities.Building;
+import edu.wpi.cs3733.d20.teamL.entities.Graph;
 import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import javafx.event.ActionEvent;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import com.google.inject.Inject;
-
-import com.jfoenix.controls.JFXAutoCompletePopup;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTextField;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -62,6 +66,9 @@ public class MapViewerController {
     @FXML
     JFXButton btnTextMe, btnQR;
 
+    @FXML
+    StackPane stackPane;
+
     @Inject
     private IDatabaseCache cache;
     @Inject
@@ -85,9 +92,9 @@ public class MapViewerController {
         btnNavigate.setDisableVisualFocus(true);
 
         Building startBuilding = new Building("Faulkner");
-        startBuilding.addAllNodes(cache.getNodeCache());
+        Graph nodes = Graph.graphFromCache(cache.getNodeCache(), cache.getEdgeCache());
+        startBuilding.addAllNodes(nodes.getNodes());
         map.setBuilding(startBuilding);
-        setFloor(2);
 
         // Add floor buttons
         for (int i = 1; i <= startBuilding.getMaxFloor(); i++) {
@@ -100,6 +107,8 @@ public class MapViewerController {
 
             floorSelector.getChildren().add(1, newButton);
         }
+
+        setFloor(2);
 
         map.setZoomLevel(0.65);
         map.init();
@@ -163,19 +172,14 @@ public class MapViewerController {
         }
     }
 
-    @FXML
-    private void backToMain() {
-        try {
-            loaderHelper.goBack();
-        } catch (Exception ex) {
-            log.error("Encountered Exception.", ex);
-        }
-    }
-
+    /**
+     * Shows the key popup
+     *
+     */
     @FXML
     private void showLegend() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("keyPopUp").load();
+            Parent root = loaderHelper.getFXMLLoader("Map Viewer/keyPopUp").load();
             loaderHelper.setupPopup(new Stage(), new Scene(root));
         } catch (IOException ex) {
             log.error("Couldn't load LegendPopup.fxml", ex);
@@ -252,7 +256,7 @@ public class MapViewerController {
     @FXML
     public void handleText(){
         try {
-            Parent root = loaderHelper.getFXMLLoader("SendDirectionsPage").load();
+            Parent root = loaderHelper.getFXMLLoader("Map Viewer/SendDirectionsPage").load();
             loaderHelper.setupPopup(new Stage(), new Scene(root));
         } catch (IOException e) {
             log.error("Encountered IOException", e);
@@ -262,7 +266,7 @@ public class MapViewerController {
     @FXML
     public void genQR(){
         try {
-            Parent root = loaderHelper.getFXMLLoader("QRCode").load();
+            Parent root = loaderHelper.getFXMLLoader("Map Viewer/QRCode").load();
             loaderHelper.setupPopup(new Stage(), new Scene(root));
         } catch (IOException e) {
             log.error("Encountered IOException", e);
@@ -311,12 +315,68 @@ public class MapViewerController {
             }
         }
     }
+
+    /**
+     * Clears the text in source textfield
+     *
+     */
     @FXML
-    private void clearSource(ActionEvent actionEvent) {
+    private void clearSource() {
         startingPoint.clear();
     }
+
+    /**
+     * Clears the text in destination textfield
+     *
+     */
     @FXML
-    private void clearDest(ActionEvent actionEvent) {
-        destination.clear();
+    private void clearDest() { destination.clear(); }
+
+    /**
+     * login pops up when login button is clicked
+     */
+    @FXML
+    private void loginBtnClicked() {
+        try {
+            Parent root = loaderHelper.getFXMLLoader("Staff/LoginPage").load();
+            loaderHelper.setupPopup(new Stage(), new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
+    }
+
+    /**
+     * Displays the About page of the application
+     *
+     */
+    @FXML
+    public void handleAbout() {
+
+        JFXDialogLayout content = new JFXDialogLayout();
+        content.setHeading(new Text("About"));
+        content.setBody(new Text("WPI Computer Science Department\n" +
+                "CS3733-D20 Software Engineering\n" +
+                "Prof. Wilson Wong\n" +
+                "Team Coach: Chris Myers\n" +
+                "Lead Software Engineer: Conrad Tulig\n" +
+                "Assistant Lead Software Engineer: Luke Bodwell\n" +
+                "Assistant Lead Software Engineer: Caleb Farwell\n" +
+                "Project Manager: Joshua Hoy\n" +
+                "Scrum Master: Colin Scholler\n" +
+                "Product Owner: Tori Buyck\n" +
+                "Algorithms Specialist: Cameron Jacobson\n" +
+                "UI Engineer: Winnie Ly\n" +
+                "Documentation Analyst: Zaiyang Zhong\n" +
+                "Thank you Brigham and Women’s Hospital and Andrew Shinn for your time and input."));
+        JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
+        JFXButton btnDone = new JFXButton("Done");
+        btnDone.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                dialog.close();
+            }
+        });
+        content.setActions(btnDone);
+        dialog.show();
     }
 }

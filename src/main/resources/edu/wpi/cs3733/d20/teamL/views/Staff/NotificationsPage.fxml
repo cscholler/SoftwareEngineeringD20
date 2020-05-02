@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="720.0" prefWidth="1080.0" styleClass="background" stylesheets="@../../css/GlobalStyles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.NotificationsPageController">
+   <center>
+      <BorderPane style="-fx-background-radius: 10; -fx-background-color: white;" stylesheets="@../../css/GlobalStyles.css" BorderPane.alignment="CENTER">
+         <top>
+            <Label fx:id="reqMessage" text="Request" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font></Label>
+         </top>
+         <center>
+            <Label fx:id="addInfo" alignment="CENTER" contentDisplay="CENTER" text="Click on a notification to view the full message." BorderPane.alignment="TOP_LEFT">
+               <BorderPane.margin>
+                  <Insets bottom="30.0" left="10.0" right="10.0" top="30.0" />
+               </BorderPane.margin>
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+         </center>
+         <bottom>
+            <HBox fx:id="buttonBox" alignment="CENTER" prefHeight="74.0" prefWidth="540.0" spacing="50.0">
+               <children>
+
+                        <JFXButton fx:id="btnDecline" minWidth="150.0" onAction="#btnDeclineClicked" prefHeight="40.0" prefWidth="400.0" style="-fx-background-color: gray;" text="Decline" textFill="WHITE">
+
+                           <font>
+                        <Font size="26.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </JFXButton>
+
+                        <JFXButton fx:id="btnCompleted" minWidth="150.0" onAction="#btnCompletedClicked" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #0D2E57;" text="Mark Completed" textFill="WHITE">
+
+                           <font>
+                        <Font size="26.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton fx:id="btnAssign" minWidth="150.0" onAction="#btnAssignClicked" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #0D2E57;" text="Assign" textFill="WHITE">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton fx:id="btnApprove" minWidth="150.0" onAction="#btnApproveClicked" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #0D2E57;" text="Approve" textFill="WHITE">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+            </HBox>
+         </bottom>
+         <BorderPane.margin>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="15.0" />
+         </BorderPane.margin>
+      </BorderPane>
+   </center>
+   <top>
+      <VBox alignment="CENTER" prefHeight="66.0" prefWidth="1080.0" BorderPane.alignment="TOP_CENTER">
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="65.0" prefWidth="1080.0" spacing="15.0">
+               <children>
+                  <JFXButton fx:id="btnBack" alignment="CENTER" contentDisplay="CENTER" onAction="#btnBackClicked" prefHeight="29.0" prefWidth="22.0" text=" ">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                     <graphic>
+                        <ImageView fitHeight="45.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../assets/baseline_arrow_back_white_48dp.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
+                  <Label text="Notifications" textFill="WHITE">
+                     <font>
+                        <Font size="40.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="325.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+   <left>
+      <VBox fx:id="messageBox" alignment="CENTER" prefHeight="200.0" prefWidth="500.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="lblMed" text="Medication Requests" textFill="WHITE">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <JFXListView fx:id="medReqs" onMouseClicked="#displaySelectedMedReq" prefHeight="400.0" prefWidth="163.0" styleClass="notification-list">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </JFXListView>
+            <Label fx:id="lblGift" text="Gift Requests" textFill="WHITE">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <JFXListView fx:id="giftReqs" onMouseClicked="#displaySelectedGiftReq" prefHeight="400.0" prefWidth="163.0" styleClass="notification-list" />
+            <Label fx:id="lblService" text="Other Requests" textFill="WHITE">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <JFXListView fx:id="serviceReqs" onMouseClicked="#displaySelectedServiceReq" prefHeight="400.0" prefWidth="163.0" styleClass="notification-list">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </JFXListView>
+         </children>
+         <padding>
+            <Insets left="20.0" />
+         </padding>
+      </VBox>
+   </left>
+</BorderPane>

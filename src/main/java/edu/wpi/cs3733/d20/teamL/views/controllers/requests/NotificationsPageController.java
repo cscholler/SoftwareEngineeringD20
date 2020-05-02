@@ -101,7 +101,7 @@ public class NotificationsPageController implements Initializable {
 				medReqs.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 				medReqList.removeAll();
 				switch (user.getAcctType()) {
-					// Staff member
+					// staff member
 					default:
 					case "1":
 					case "3":
