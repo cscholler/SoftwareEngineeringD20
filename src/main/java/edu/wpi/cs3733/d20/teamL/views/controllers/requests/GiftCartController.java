@@ -44,18 +44,18 @@ public class GiftCartController {
     private ArrayList<Gift> cart = new ArrayList<>();
     private ArrayList<Image> images = new ArrayList<>();
 
-    Image loadedImage1 = new Image("/edu/wpi/cs3733/d20/teamL/assets/giftDelivery/roses.png", 0, 200, true, false, true);
-    Image loadedImage2 = new Image("/edu/wpi/cs3733/d20/teamL/assets/giftDelivery/tulips.png", 0, 200, true, false, true);
-    Image loadedImage3 = new Image("/edu/wpi/cs3733/d20/teamL/assets/giftDelivery/flowers.png", 0, 200, true, false, true);
-    Image loadedImage4 = new Image("/edu/wpi/cs3733/d20/teamL/assets/giftDelivery/buildingBlocks.png", 0, 200, true, false, true);
-    Image loadedImage5 = new Image("/edu/wpi/cs3733/d20/teamL/assets/giftDelivery/playDo.png", 0, 200, true, false, true);
+    Image loadedImage1 = new Image("/edu/wpi/cs3733/d20/teamL/assets/giftDelivery/Roses.png", 0, 200, true, false, true);
+    Image loadedImage2 = new Image("/edu/wpi/cs3733/d20/teamL/assets/giftDelivery/Tulips.png", 0, 200, true, false, true);
+    Image loadedImage3 = new Image("/edu/wpi/cs3733/d20/teamL/assets/giftDelivery/Dandelion.png", 0, 200, true, false, true);
+    Image loadedImage4 = new Image("/edu/wpi/cs3733/d20/teamL/assets/giftDelivery/Building blocks.png", 0, 200, true, false, true);
+    Image loadedImage5 = new Image("/edu/wpi/cs3733/d20/teamL/assets/giftDelivery/Play-Do.png", 0, 200, true, false, true);
     Image loadedImage6 = new Image("/edu/wpi/cs3733/d20/teamL/assets/giftDelivery/hotWheels.png", 0, 200, true, false, true);
-    Image loadedImage7 = new Image("/edu/wpi/cs3733/d20/teamL/assets/giftDelivery/lotr.png", 0, 200, true, false, true);
-    Image loadedImage8 = new Image("/edu/wpi/cs3733/d20/teamL/assets/giftDelivery/harryPotter.png", 0, 200, true, false, true);
-    Image loadedImage9 = new Image("/edu/wpi/cs3733/d20/teamL/assets/giftDelivery/inheritance.png", 0, 200, true, false, true);
-    Image loadedImage10 = new Image("/edu/wpi/cs3733/d20/teamL/assets/giftDelivery/lotrMovies.png", 0, 200, true, false, true);
-    Image loadedImage11 = new Image("/edu/wpi/cs3733/d20/teamL/assets/giftDelivery/starWars.png", 0, 200, true, false, true);
-    Image loadedImage12 = new Image("/edu/wpi/cs3733/d20/teamL/assets/giftDelivery/pulpFiction.png", 0, 200, true, false, true);
+    Image loadedImage7 = new Image("/edu/wpi/cs3733/d20/teamL/assets/giftDelivery/LOTR.png", 0, 200, true, false, true);
+    Image loadedImage8 = new Image("/edu/wpi/cs3733/d20/teamL/assets/giftDelivery/Harry Potter.png", 0, 200, true, false, true);
+    Image loadedImage9 = new Image("/edu/wpi/cs3733/d20/teamL/assets/giftDelivery/Inheritance.png", 0, 200, true, false, true);
+    Image loadedImage10 = new Image("/edu/wpi/cs3733/d20/teamL/assets/giftDelivery/LOTR Films.png", 0, 200, true, false, true);
+    Image loadedImage11 = new Image("/edu/wpi/cs3733/d20/teamL/assets/giftDelivery/Star Wars.png", 0, 200, true, false, true);
+    Image loadedImage12 = new Image("/edu/wpi/cs3733/d20/teamL/assets/giftDelivery/Pulp Fiction.png", 0, 200, true, false, true);
 
 
     @FXML

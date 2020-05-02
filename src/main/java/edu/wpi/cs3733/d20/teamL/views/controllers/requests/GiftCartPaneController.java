@@ -3,19 +3,21 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733.d20.teamL.entities.Gift;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import javax.inject.Inject;
-import javax.swing.text.Element;
-import javax.swing.text.html.ImageView;
 import java.util.ArrayList;
 
 public class GiftCartPaneController {
@@ -34,28 +36,46 @@ public class GiftCartPaneController {
 
         for (Gift gift : gifts) { loadImage(gift.getSubtype()); }
 
-        String previousGiftType = gifts.get(0).getType();
-
         for (int i = 0; i < gifts.size(); i++) {
+            String previousGiftType = gifts.get(i).getType();
             Tab tab = new Tab();
             tab.setText(gifts.get(i).getType());
+            tab.setClosable(false);
+
+            ScrollPane scrollPane = new ScrollPane();
+            VBox vBox = new VBox();
+
             while (gifts.get(i).getType().equals(previousGiftType)) {
-
+                int numColumns = 1;
+                HBox giftRow = new HBox();
+                while (numColumns <= 3){
+                    if (!gifts.get(i).getType().equals(previousGiftType)) break;
+                    giftRow.getChildren().add(makeGift(gifts.get(i), i));
+                    numColumns++;
+                    previousGiftType = gifts.get(i).getType();
+                    if (i < gifts.size() - 1) i++;
+                    else break;
+                }
+                vBox.getChildren().add(giftRow);
+                //previousGiftType = gifts.get(i).getType();
+                if (i < gifts.size() - 1) i++;
+                else break;
             }
-
-
-                giftTabPane.getTabs().add(tab);
+            scrollPane.setContent(vBox);
+            tab.setContent(scrollPane);
+            giftTabPane.getTabs().add(tab);
             }
 
         }
 
-    private void addGift(Gift gift, int i) {
+    private VBox makeGift(Gift gift, int i) {
         VBox vbox = new VBox();
         vbox.setAlignment(Pos.TOP_CENTER);
         vbox.prefWidth(300);
         vbox.prefHeight(375);
 
-        ImageView imageView = new ImageView(images.get(i)); //this doesn't see right
+        ImageView imageView = new ImageView(new Image("/edu/wpi/cs3733/d20/teamL/assets/giftDelivery/noImage.png", 0, 200, true, false, true));
+        imageView.setImage(images.get(i));
         VBox imageVBox = new VBox(imageView);
         imageVBox.setAlignment(Pos.TOP_CENTER);
         imageVBox.setMargin(imageView, new Insets(0,0,30,0));
@@ -75,11 +95,20 @@ public class GiftCartPaneController {
         giftDescription.setWrapText(true);
         VBox descriptionVBox = new VBox(description,giftDescription);
 
-        JFXButton addToCart = new JFXButton("Add to Cart");
-        addToCart.getStyleClass().add("save-button-jfx");
+        EventHandler<ActionEvent> addToCart = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e)
+            {
+                System.out.println(giftName);
+            }
+        };
 
-        vbox.getChildren().addAll(imageView,nameHBox,quantityHBox,descriptionVBox,addToCart);
+        JFXButton addToCartButton = new JFXButton("Add to Cart");
+        addToCartButton.getStyleClass().add("save-button-jfx");
+        addToCartButton.setOnAction(addToCart);
 
+        vbox.getChildren().addAll(imageView,nameHBox,quantityHBox,descriptionVBox,addToCartButton);
+
+        return vbox;
     }
 
 

@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 public class DBConstants {
 	public static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
-	public static final String DB_PREFIX = "jdbc:mysql://";
+	public static final String DB_PREFIX = "jdbc:mysql: . .";
 	public static final String DB_URL = "cs3733-bwh-db.cqqsqwjmcbj4.us-east-2.rds.amazonaws.com";
 	public static final String DB_PORT = ":5008";
 	public static final String DB_NAME_DEV = "/bwh_dev";
