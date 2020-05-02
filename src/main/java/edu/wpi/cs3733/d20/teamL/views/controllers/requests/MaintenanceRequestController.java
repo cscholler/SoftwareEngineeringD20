@@ -14,6 +14,9 @@ import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
 import java.net.URL;
@@ -24,6 +27,13 @@ import java.util.Date;
 import java.util.ResourceBundle;
 
 public class MaintenanceRequestController implements Initializable {
+    @FXML
+    private ImageView requestReceived;
+    @FXML
+    private BorderPane borderPane;
+    @FXML
+    private StackPane stackPane;
+
     @FXML
     private JFXComboBox urgency, type;
     @FXML
@@ -54,6 +64,8 @@ public class MaintenanceRequestController implements Initializable {
         searchFields.getFields().add(SearchFields.Field.shortName);
         searchFields.populateSearchFields();
         autoCompletePopup.getSuggestions().addAll(searchFields.getSuggestions());
+        borderPane.prefWidthProperty().bind(stackPane.widthProperty());
+        borderPane.prefHeightProperty().bind(stackPane.heightProperty());
 
         urgency.getItems().addAll(
                 "Minor",
@@ -85,9 +97,8 @@ public class MaintenanceRequestController implements Initializable {
                 error.setTextFill(Color.RED);
                 loaderHelper.showAndFade(error);
             } else {
-                error.setText("Maintenance request sent");
-                error.setTextFill(Color.WHITE);
-                loaderHelper.showAndFade(error);
+
+                loaderHelper.showAndFade(requestReceived);
             }
         } else {
             error.setText("Please fill in all fields");

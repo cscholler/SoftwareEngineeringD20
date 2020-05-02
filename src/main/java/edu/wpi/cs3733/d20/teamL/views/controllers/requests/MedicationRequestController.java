@@ -17,6 +17,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
 import com.google.inject.Inject;
@@ -47,7 +50,12 @@ public class MedicationRequestController implements Initializable {
     private Label lblConfirmation;
     @FXML
     private JFXTextField docFNameText, docLNameText, medTypeText, doseText, patFNameText, patLNameText, roomNumText, addInfoText;
-
+	@FXML
+	private ImageView requestReceived;
+	@FXML
+	private BorderPane borderPane;
+	@FXML
+	private StackPane stackPane;
 	@FXML
 	public void initialize(URL location, ResourceBundle resources) {
 
@@ -58,6 +66,8 @@ public class MedicationRequestController implements Initializable {
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
 		formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_DOCTORS)));
 		formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_PATIENTS)));
+		borderPane.prefWidthProperty().bind(stackPane.widthProperty());
+		borderPane.prefHeightProperty().bind(stackPane.heightProperty());
 	}
 
     /**
@@ -99,8 +109,6 @@ public class MedicationRequestController implements Initializable {
 			lblConfirmation.setTextFill(Color.RED);
 			lblConfirmation.setText("Submission failed");
 		} else if (rows == 1) {
-			lblConfirmation.setTextFill(Color.BLACK);
-			lblConfirmation.setText("Medication Request Sent");
 			docFNameText.setText("");
 			docLNameText.setText("");
 			medTypeText.setText("");
@@ -109,6 +117,7 @@ public class MedicationRequestController implements Initializable {
 			patLNameText.setText("");
 			roomNumText.setText("");
 			addInfoText.setText("");
+			loaderHelper.showAndFade(requestReceived);
 		} else {
 			log.error("SQL update affected more than 1 row.");
 		}

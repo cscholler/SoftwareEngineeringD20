@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.MaintenanceRequestController">
+   <children>
+      <BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" styleClass="services-pane-jfx" stylesheets="@../../css/GlobalStyleSheet.css">
+         <top>
+            <HBox alignment="CENTER" styleClass="title-background" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="10.0" />
+               </BorderPane.margin>
+            </HBox>
+         </top>
+         <center>
+            <VBox alignment="CENTER" maxWidth="550.0" spacing="30.0" BorderPane.alignment="CENTER">
+               <children>
+                  <JFXComboBox fx:id="urgency" prefHeight="40.0" prefWidth="200.0" promptText="Select Urgency Level" styleClass="combo-box-jfx" />
+                  <JFXComboBox fx:id="type" prefHeight="40.0" prefWidth="200.0" promptText="Select Type" styleClass="combo-box-jfx" />
+                  <JFXTextField fx:id="location" maxWidth="200.0" onKeyTyped="#autocomplete" promptText="Location" styleClass="text-field-jfx" />
+                  <JFXTextField fx:id="description" alignment="TOP_LEFT" maxWidth="500.0" promptText="Description" styleClass="text-area-jfx" />
+               </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+               <padding>
+                  <Insets top="30.0" />
+               </padding>
+            </VBox>
+         </center>
+         <bottom>
+            <HBox alignment="CENTER" prefHeight="87.0" prefWidth="895.0" spacing="100.0" BorderPane.alignment="CENTER">
+               <children>
+                  <JFXButton onAction="#submit" styleClass="save-button-jfx" text="Submit">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </JFXButton>
+                  <Label fx:id="error" styleClass="submission-failed-label-fx" text="Submission Failed" visible="false" />
+               </children>
+               <padding>
+                  <Insets left="350.0" />
+               </padding>
+            </HBox>
+         </bottom>
+      </BorderPane>
+      <ImageView fx:id="requestRecieved" fitHeight="209.0" fitWidth="270.0" visible="false">
+         <image>
+            <Image url="@../../assets/Services/serviceRecieved.png" />
+         </image>
+      </ImageView>
+   </children>
+</StackPane>

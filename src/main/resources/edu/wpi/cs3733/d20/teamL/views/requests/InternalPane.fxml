@@ -41,7 +41,7 @@
                               <Font size="18.0" />
                            </font>
                         </JFXTextField>
-                        <JFXComboBox prefHeight="31.0" prefWidth="62.0" promptText="AM" styleClass="time-combo-box-jfx" />
+                        <JFXComboBox fx:id="AMPM" prefHeight="31.0" prefWidth="62.0" promptText="AM" styleClass="time-combo-box-jfx" />
                      </children>
                   </HBox>
                </children>
