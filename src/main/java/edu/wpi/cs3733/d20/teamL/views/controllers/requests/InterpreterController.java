@@ -19,6 +19,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
 import java.io.IOException;
@@ -35,6 +38,9 @@ public class InterpreterController implements Initializable {
     public JFXButton btnItalian;
     public JFXButton btnASL;
     public JFXButton btnChinese;
+    public StackPane stackPane;
+    public BorderPane borderPane;
+    public ImageView requestReceived;
 
     DBTableFormatter formatter = new DBTableFormatter();
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
@@ -65,6 +71,8 @@ public class InterpreterController implements Initializable {
         sf.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
+        borderPane.prefWidthProperty().bind(stackPane.widthProperty());
+        borderPane.prefHeightProperty().bind(stackPane.heightProperty());
     }
 
     /**

@@ -15,8 +15,8 @@
    <bottom>
       <AnchorPane styleClass="bottom-bar-anchor-pane-fx" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="timeLabel" layoutY="14.0" prefHeight="76.0" prefWidth="236.0" styleClass="bottom-bar-time-label-jfx" text="25:74 PM" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" />
-            <JFXButton alignment="CENTER" contentDisplay="CENTER" layoutX="1178.0" layoutY="19.0" onAction="#logoutBtn" styleClass="bottom-bar-logout-label-jfx" text="Logout" textAlignment="CENTER" AnchorPane.bottomAnchor="21.0" AnchorPane.rightAnchor="-6.7999999999999545" />
+            <Label fx:id="timeLabel" layoutY="14.0" prefHeight="76.0" prefWidth="236.0" styleClass="bottom-bar-time-label-fx" text="25:74 PM" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" />
+            <JFXButton alignment="CENTER" contentDisplay="CENTER" layoutX="1178.0" layoutY="19.0" onAction="#logoutBtn" styleClass="bottom-bar-logout-label-fx" text="Logout" textAlignment="CENTER" AnchorPane.bottomAnchor="21.0" AnchorPane.rightAnchor="-6.7999999999999545" />
          </children>
       </AnchorPane>
    </bottom>
@@ -25,7 +25,7 @@
          <top>
             <AnchorPane BorderPane.alignment="CENTER">
                <children>
-                  <Label fx:id="requestLabel" styleClass="service-request-header-label-jfx" text="Label" visible="false" AnchorPane.leftAnchor="0.0" />
+                  <Label fx:id="requestLabel" styleClass="service-request-header-label-fx" text="hello" visible="false" AnchorPane.leftAnchor="0.0" />
                   <JFXButton fx:id="btnNotif" onAction="#launchNotifPage" prefHeight="60.0" prefWidth="240.0" styleClass="notifications-button-jfx" text="Notifications" AnchorPane.rightAnchor="0.0">
                      <font>
                         <Font size="30.0" />

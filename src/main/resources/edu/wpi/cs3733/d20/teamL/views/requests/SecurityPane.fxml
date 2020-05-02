@@ -7,51 +7,66 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="services-pane-jfx" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.SecurityPaneController">
-   <bottom>
-      <AnchorPane prefHeight="70.0" prefWidth="895.0" BorderPane.alignment="CENTER">
-         <children>
-            <JFXButton fx:id="btnSubmit" onAction="#handleSubmit" styleClass="save-button-jfx" text="Submit" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
-         </children>
-      </AnchorPane>
-   </bottom>
-   <center>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" BorderPane.alignment="CENTER">
-         <children>
-            <JFXTextField fx:id="patientIDText" promptText="Patient ID" styleClass="text-field-jfx" />
-            <JFXTextField fx:id="locationText" onAction="#autocomplete" promptText="Location" styleClass="text-field-jfx" />
-            <Label text="Priority Level:">
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <VBox.margin>
-                  <Insets bottom="-15.0" />
-               </VBox.margin>
-            </Label>
-            <HBox alignment="CENTER" prefHeight="20.0" prefWidth="459.0" spacing="10.0">
+
+<StackPane fx:id="stackPane" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.SecurityPaneController">
+   <children>
+      <BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="services-pane-jfx">
+         <bottom>
+            <HBox alignment="CENTER">
                <children>
-                  <JFXRadioButton styleClass="radio-button-jfx" text="High Priority">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="urgency" />
-                     </toggleGroup>
-                  </JFXRadioButton>
-                  <JFXRadioButton styleClass="radio-button-jfx" text="Medium Priority" toggleGroup="$urgency" />
-                  <JFXRadioButton styleClass="radio-button-jfx" text="Low Priority" toggleGroup="$urgency" />
+                  <JFXButton fx:id="btnSubmit" onAction="#handleSubmit" styleClass="save-button-jfx" text="Submit" />
                </children>
+               <BorderPane.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" />
+               </BorderPane.margin>
             </HBox>
-            <JFXTextField fx:id="personnelText" promptText="Personnel Needed" styleClass="text-field-jfx" />
-            <JFXTextArea fx:id="reasonText" promptText="Reason" styleClass="text-area-jfx" />
-            <JFXTextArea fx:id="notesText" promptText="Additional Notes" styleClass="text-area-jfx" />
-         </children>
-         <BorderPane.margin>
-            <Insets left="20.0" top="20.0" />
-         </BorderPane.margin>
-      </VBox>
-   </center>
-</BorderPane>
+         </bottom>
+         <center>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" BorderPane.alignment="CENTER">
+               <children>
+                  <JFXTextField fx:id="patientIDText" promptText="Patient ID" styleClass="text-field-jfx" />
+                  <JFXTextField fx:id="locationText" onKeyTyped="#autocomplete" promptText="Location" styleClass="text-field-jfx" />
+                  <Label text="Priority Level:">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="-15.0" />
+                     </VBox.margin>
+                  </Label>
+                  <HBox alignment="CENTER" prefHeight="20.0" prefWidth="459.0" spacing="10.0">
+                     <children>
+                        <JFXRadioButton styleClass="radio-button-jfx" text="High Priority">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="urgency" />
+                           </toggleGroup>
+                        </JFXRadioButton>
+                        <JFXRadioButton styleClass="radio-button-jfx" text="Medium Priority" toggleGroup="$urgency" />
+                        <JFXRadioButton styleClass="radio-button-jfx" text="Low Priority" toggleGroup="$urgency" />
+                     </children>
+                  </HBox>
+                  <JFXTextField fx:id="personnelText" promptText="Personnel Needed" styleClass="text-field-jfx" />
+                  <JFXTextArea fx:id="reasonText" promptText="Reason" styleClass="text-area-jfx" />
+                  <JFXTextArea fx:id="notesText" promptText="Additional Notes" styleClass="text-area-jfx" />
+               </children>
+               <BorderPane.margin>
+                  <Insets left="20.0" right="20.0" top="20.0" />
+               </BorderPane.margin>
+            </VBox>
+         </center>
+      </BorderPane>
+      <ImageView fx:id="requestReceived" fitHeight="150.0" fitWidth="206.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../../assets/Services/serviceRecieved.png" />
+         </image>
+      </ImageView>
+   </children>
+</StackPane>
