@@ -3,10 +3,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 import com.google.inject.Inject;
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733.d20.teamL.entities.Gift;
-import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
-import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
-import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,10 +12,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
 import javafx.scene.paint.Paint;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.derby.iapi.sql.ResultSet;
 
 
 import java.io.IOException;

@@ -85,7 +85,7 @@ public class GiftCheckoutController implements Initializable {
 
         // Status codes-- 0: pending, 1: approved, 2: delivered, 3: denied,
         String status = "0";
-        String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
+        String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm aa").format(new Date());
 
         cart = cache.getCartCacheNull();
 

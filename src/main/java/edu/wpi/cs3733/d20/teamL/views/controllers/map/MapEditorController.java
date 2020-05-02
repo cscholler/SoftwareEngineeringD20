@@ -54,9 +54,9 @@ public class MapEditorController {
     @FXML
     Label nodeIDText, numberlbl;
     @FXML
-    JFXTextField numberText, xCoordText, yCoordText, buildingText, nodeTypeText, shortNameText, longNameText;
+    JFXTextField xCoordText, yCoordText, buildingText, nodeTypeText, shortNameText, longNameText;
     @FXML
-    ComboBox nodeTypeValue;
+    ComboBox nodeTypeValue, numberText;
     @FXML
     VBox editor, multiFloorConnection, nodeConnectionsTab, floorSelector, edgeList;
     @FXML
@@ -129,6 +129,8 @@ public class MapEditorController {
             floorSelector.getChildren().add(1, newButton);
         }
 
+        setFloor(2);
+
         //Hides the node editor VBox
         editor.setPrefWidth(0);
         editor.setVisible(false);
@@ -141,15 +143,15 @@ public class MapEditorController {
 
         eraser.setDisableAnimation(true);
 
-        if (pathfinder.getPathfindingMethod() == PathfinderService.PathfindingMethod.Astar){
+        if (pathfinder.getPathfindingMethod() == PathfinderService.PathfindingMethod.Astar) {
             pathFindingAlg = 'A';
             pathfindImage.setImage(aStarIcon);
         }
-        if (pathfinder.getPathfindingMethod() == PathfinderService.PathfindingMethod.BFS){
+        if (pathfinder.getPathfindingMethod() == PathfinderService.PathfindingMethod.BFS) {
             pathFindingAlg = 'B';
             pathfindImage.setImage(breadthFirstIcon);
         }
-        if (pathfinder.getPathfindingMethod() == PathfinderService.PathfindingMethod.DFS){
+        if (pathfinder.getPathfindingMethod() == PathfinderService.PathfindingMethod.DFS) {
             pathFindingAlg = 'D';
             pathfindImage.setImage((depthFirstIcon));
         }
@@ -277,10 +279,10 @@ public class MapEditorController {
     private void openFromDB() {
         cache.cacheAllFromDB();
         Building newBuilding = new Building("Faulkner");
-        newBuilding.addAllNodes(cache.getNodeCache());
+        Graph graph = Graph.graphFromCache(cache.getNodeCache(), cache.getEdgeCache());
+        newBuilding.addAllNodes(graph.getNodes());
 
         map.setBuilding(newBuilding);
-        setFloor(2);
     }
 
     @FXML
@@ -338,16 +340,30 @@ public class MapEditorController {
 
         if (index == 1) {
             numberlbl.setText("Elevator Number:");
-            multiFloorConnection.setVisible(true);
-            numberText.setText("" + selected.getShaft());
+            updateShaftList(selected);
+            numberText.getSelectionModel().select(selected.getShaft());
         } else if (index == 3) {
             numberlbl.setText("Stairwell Number:");
-            multiFloorConnection.setVisible(true);
-            numberText.setText("" + selected.getShaft());
+            updateShaftList(selected);
         } else {
             multiFloorConnection.setVisible(false);
-            numberText.setText("");
+            numberText.getSelectionModel().select(selected.getShaft());
         }
+    }
+
+    private void updateShaftList(Node selected) {
+        multiFloorConnection.setVisible(true);
+        numberText.getItems().clear();
+        numberText.getItems().add("No Connection");
+
+        int i;
+        for (i = 1; i <= map.getBuilding().getMaxShaft(selected.getType()); i++) {
+            numberText.getItems().add(String.valueOf(i));
+        }
+
+        numberText.getItems().add(i + " (new shaft)");
+
+        numberText.getSelectionModel().select(selected.getShaft());
     }
 
     @FXML
@@ -364,7 +380,7 @@ public class MapEditorController {
         selectedNode.setType(types.get(nodeTypeValue.getSelectionModel().getSelectedIndex()));
         selectedNode.setShortName(shortNameText.getText());
         selectedNode.setLongName(longNameText.getText());
-        if (!numberText.getText().isEmpty()) selectedNode.setShaft(numberText.getText());
+        selectedNode.setShaft(numberText.getSelectionModel().getSelectedIndex());
 
         //selectedNode.setId(map.getBuilding().getUniqueNodeID(selectedNode));
 
@@ -376,7 +392,8 @@ public class MapEditorController {
 
         for (Node neighbor : neighbors) {
             Edge edge = selectedNode.addEdgeTwoWay(neighbor);
-            map.addEdge(edge);
+            if (neighbor.getFloor() == map.getFloor())
+                map.addEdge(edge);
         }
     }
 
@@ -386,13 +403,18 @@ public class MapEditorController {
      * @param node The new node to add
      */
     private void addMultiFloorEdge(Node node) {
-        if (node.getType().equals("ELEV") || node.getType().equals("STAI")) {
-            for (Node adj : map.getBuilding().getNodes()) {
-                if (node.getType().equals(adj.getType()) && node.getShaft() == adj.getShaft() && !node.equals(adj)) {
-                    node.addEdgeTwoWay(adj);
-                }
+        Iterator<Edge> iterator = node.getEdges().iterator();
+        while (iterator.hasNext()) {
+            Edge edge = iterator.next();
+            if (edge.getDestination().getFloor() != node.getFloor()) {
+                edge.getDestination().removeEdge(node);
+                iterator.remove();
             }
         }
+        if (node.getType().equals("ELEV") || node.getType().equals("STAI"))
+            for (Node adj : map.getBuilding().getNodes())
+                if (node.getType().equals(adj.getType()) && node.getShaft() == adj.getShaft() && !node.equals(adj))
+                    node.addEdgeTwoWay(adj);
     }
 
     @FXML
@@ -414,7 +436,7 @@ public class MapEditorController {
     private void handleAdd(ActionEvent event) {
         // hall, elev, rest, stai, dept, labs, info, conf, exit, retl, serv
 
-        Node newNode = new Node("not_unique", new Point2D(hall.getLayoutX(),hall.getLayoutY()), map.getCurrentFloor().getFloor(), (map.getBuilding().getName()));
+        Node newNode = new Node("not_unique", new Point2D(hall.getLayoutX(), hall.getLayoutY()), map.getCurrentFloor().getFloor(), (map.getBuilding().getName()));
 
         if (event.getSource() == hall) {
             newNode.setType("HALL");

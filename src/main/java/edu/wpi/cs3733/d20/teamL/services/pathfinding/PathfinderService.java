@@ -111,10 +111,12 @@ public class PathfinderService implements IPathfinderService {
         while (!priorityQueue.isEmpty()) {
             NodeEntry currentNode = priorityQueue.poll();
 
+            // If you poll the destination from the priority Queue, you have found the shortest path.
             if (currentNode.node.equals(destination)) {
                 return currentNode;
             }
 
+            // Loop through each of the current nodes neighbors and set their shortest path
             for (Edge edge : currentNode.node.getEdges()) {
                 Node otherNode = edge.getDestination();
 
