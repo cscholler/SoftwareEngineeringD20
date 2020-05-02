@@ -16,6 +16,8 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -44,6 +46,10 @@ public class SecurityPaneController {
     private JFXAutoCompletePopup<String> autoCompletePopup;
     @Inject
     private ILoginManager manager;
+    @FXML
+    StackPane stackPane;
+    @FXML
+    BorderPane borderPane;
 
     public void initialize() throws IOException {
         // restrict key input to numerals on personnel needed textfield
@@ -61,6 +67,9 @@ public class SecurityPaneController {
         sf.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
+
+        borderPane.prefWidthProperty().bind(stackPane.widthProperty());
+        borderPane.prefHeightProperty().bind(stackPane.heightProperty());
     }
 
     /**
@@ -85,12 +94,9 @@ public class SecurityPaneController {
         RadioButton rb = (RadioButton)urgency.getSelectedToggle();
         String urgencyText = rb.getText();
 
-        System.out.println(urgencyText);
-
         String status = "0";
         String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm aa").format(new Date());
-
-        String concatenatedNotes = "Personnel Needed: " + personnel + "\nReason: " + reason + "\nAdditional Notes: " + notes;
+        String concatenatedNotes = "Urgency: " + urgencyText + "\nPersonnel Needed: " + personnel + "\nReason: " + reason + "\nAdditional Notes: " + notes;
 
         if(id.isEmpty() || location.isEmpty() || reason.isEmpty() || personnel.isEmpty()) {
             //TODO invalid input window
@@ -102,14 +108,13 @@ public class SecurityPaneController {
             if(rows == 0) {
                 //TODO database error window
             } else {
-                //TODO show successful window
                 patientIDText.setText("");
                 locationText.setText("");
                 reasonText.setText("");
                 notesText.setText("");
                 personnelText.setText("");
 
-
+                loaderHelper.showAndFade(requestReceived);
             }
         }
     }
