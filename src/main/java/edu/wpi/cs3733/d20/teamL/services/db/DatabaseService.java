@@ -253,7 +253,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 		// Managers for each department
 		Collection<String> serviceTypes = new ArrayList<>(Arrays.asList("security", "internal_transportation", "external_transportation", "maintenance", "interpreter", "sanitation", "gift_shop", "information_technology"));
 		for (String serviceType : serviceTypes) {
-			executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(serviceType, "Manager", serviceType, serviceType, "0", null, serviceType))));
+			executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(serviceType, "Manager", serviceType, PasswordEncrypter.hashPassword(serviceType), "0", null, serviceType))));
 		}
 
 		// Create test employees for some departments
