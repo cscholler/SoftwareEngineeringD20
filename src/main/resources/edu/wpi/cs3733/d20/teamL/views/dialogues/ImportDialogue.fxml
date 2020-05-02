@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<BorderPane fx:id="root" prefHeight="400.0" prefWidth="600.0" styleClass="background" stylesheets="@../../css/GlobalStyles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.ImportDialogue">
+    <top>
+        <Label alignment="CENTER" prefWidth="600.0" style="-fx-font-size: 24; -fx-text-fill: white;" styleClass="topBorder" text="Import a CSV to a table" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="20.0" top="20.0" />
+            </padding>
+        </Label>
+    </top>
+    <center>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" BorderPane.alignment="CENTER">
+            <children>
+                <JFXComboBox fx:id="tableSelector" promptText="Choose table to import to" style="-fx-prompt-text-fill: lightgrey; -fx-text-fill: white;" />
+                <JFXButton onAction="#importClicked" text="Import" />
+            </children>
+        </HBox>
+    </center>
+    <bottom>
+        <Label fx:id="message" style="-fx-text-fill: white; -fx-font-size: 16;" text="Label" visible="false" BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+                <Insets bottom="20.0" />
+            </BorderPane.margin>
+        </Label>
+    </bottom>
+</BorderPane>
