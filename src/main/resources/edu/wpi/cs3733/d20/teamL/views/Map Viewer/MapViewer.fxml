@@ -10,16 +10,13 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <?import edu.wpi.cs3733.d20.teamL.views.components.MapPane?>
 
 <BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.map.MapViewerController">
-    <stylesheets>
-        <URL value="@../../css/GlobalStyles.css" />
-        <URL value="@../../css/MapStyles.css" />
-    </stylesheets>
     <left>
         <HBox prefHeight="720.0" prefWidth="343.0" BorderPane.alignment="CENTER">
             <children>
@@ -82,9 +79,22 @@
                                 <JFXButton fx:id="btnQR" alignment="CENTER" buttonType="RAISED" onAction="#genQR" prefHeight="40.0" prefWidth="85.0" text="QR Code" textFill="WHITE" visible="false" />
                             </children>
                         </HBox>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="40.0">
                      <children>
-                        <JFXButton onAction="#loginBtnClicked" text="Login" />
+                        <StackPane fx:id="stackPane" prefHeight="150.0" prefWidth="200.0">
+                           <children>
+                              <JFXButton fx:id="btnAbout" contentDisplay="CENTER" maxHeight="20.0" maxWidth="20.0" onAction="#handleAbout" prefHeight="20.0" prefWidth="20.0" style="-fx-background-radius: 50;" text=" ">
+                                 <graphic>
+                                    <ImageView fitHeight="34.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../assets/black-info-icon.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </JFXButton>
+                           </children>
+                        </StackPane>
+                        <JFXButton onAction="#loginBtnClicked" prefHeight="40.0" prefWidth="144.0" text="Login" />
                      </children></HBox>
                     </children>
                     <padding>
@@ -162,7 +172,7 @@
                                     <Insets />
                                 </opaqueInsets>
                             </JFXTextField>
-                            <JFXButton maxHeight="30.0" onAction="#clearSource" style="-fx-font-size: 10; -fx-pref-width: 40;" styleClass="clear" stylesheets="@../../css/GlobalStyles.css" text="X" textFill="WHITE">
+                            <JFXButton maxHeight="30.0" onAction="#clearSource" style="-fx-font-size: 10; -fx-pref-width: 40;" styleClass="clear" text="X" textFill="WHITE">
                                 <font>
                                     <Font name="Corbel Light" size="10.0" />
                                 </font>
@@ -188,7 +198,7 @@
                      <graphic>
                         <ImageView fitHeight="106.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../assets/home page/Search-button-home.png" />
+                              <Image url="@../../assets/home%20page/Search-button-home.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -198,4 +208,8 @@
          </children>
       </HBox>
    </top>
+   <stylesheets>
+      <URL value="@../../css/GlobalStyleSheet.css" />
+      <URL value="@../../css/MapStyles.css" />
+   </stylesheets>
 </BorderPane>
