@@ -5,10 +5,12 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import edu.wpi.cs3733.d20.teamL.entities.Building;
-import edu.wpi.cs3733.d20.teamL.entities.Graph;
+import com.jfoenix.controls.JFXListView;
+import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import javafx.fxml.FXML;
@@ -32,9 +34,7 @@ import com.jfoenix.controls.JFXTextField;
 
 import lombok.extern.slf4j.Slf4j;
 
-import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
-import edu.wpi.cs3733.d20.teamL.entities.Path;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
@@ -61,6 +61,9 @@ public class MapViewerController {
 	VBox floorSelector;
 
     @FXML
+    JFXListView dirList;
+
+    @FXML
     JFXButton btnTextMe, btnQR;
 
     @Inject
@@ -76,6 +79,7 @@ public class MapViewerController {
     private JFXAutoCompletePopup<String> autoCompletePopup;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
     private Path path = new Path();
+    private final ObservableList<String> direct = FXCollections.observableArrayList();
 
     @FXML
     private void initialize() {
@@ -204,9 +208,8 @@ public class MapViewerController {
         ArrayList<String> message = path.getMessage();
         StringBuilder builder = new StringBuilder();
 
-        for(String direction : message) {
-            builder.append(direction + "\n\n");
-        }
+        direct.addAll(message);
+        dirList.getItems().addAll(direct);
 
         return builder.toString();
     }
@@ -322,5 +325,10 @@ public class MapViewerController {
     @FXML
     private void clearDest(ActionEvent actionEvent) {
         destination.clear();
+    }
+
+    @FXML
+    private void goToSelected(){
+        dirList.getSelectionModel().getSelectedItem();
     }
 }
