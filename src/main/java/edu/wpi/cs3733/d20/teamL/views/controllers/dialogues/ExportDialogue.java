@@ -11,6 +11,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,14 +39,18 @@ public class ExportDialogue {
         tables.put("Nodes", DBConstants.SELECT_ALL_NODES);
         tables.put("Edges", DBConstants.SELECT_ALL_EDGES);
         tables.put("Users", DBConstants.SELECT_ALL_USERS);
+        tables.put("Doctors", DBConstants.SELECT_ALL_DOCTORS);
+        tables.put("Gifts", DBConstants.SELECT_ALL_GIFTS);
     }
 
     @FXML
     private void exportClicked() {
         String selected = tableSelector.getSelectionModel().getSelectedItem();
 
-        ArrayList<ArrayList<String>> dbTable =
-                dbService.getTableFromResultSet(dbService.executeQuery(new SQLEntry(tables.get(selected))));
+        ResultSet resultSet = dbService.executeQuery(new SQLEntry(tables.get(selected)));
+        ArrayList<ArrayList<String>> dbTable = new ArrayList<>();
+        dbTable.add(dbService.getColumnNames(resultSet));
+        dbTable.addAll(dbService.getTableFromResultSet(resultSet));
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV files .csv", "*.csv"));

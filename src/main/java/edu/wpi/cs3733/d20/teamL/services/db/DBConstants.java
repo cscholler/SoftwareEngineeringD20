@@ -184,15 +184,18 @@ public class DBConstants {
 
 	public static final String SELECT_ALL_NODES =
 			"SELECT * " +
-					"FROM Nodes";
+					"FROM Nodes " +
+					"ORDER BY id";
 
 	public static final String SELECT_ALL_EDGES =
 			"SELECT * " +
-					"FROM Edges";
+					"FROM Edges " +
+					"ORDER BY id";
 
 	public static final String SELECT_ALL_USERS =
 			"SELECT id, f_name, l_name, username, acct_type, services, manager " +
-					"FROM Users";
+					"FROM Users " +
+					"ORDER BY id";
 
 	public static final String GET_USER =
 			"SELECT id, f_name, l_name, username, acct_type, services, manager " +
@@ -216,7 +219,8 @@ public class DBConstants {
 
 	public static final String SELECT_ALL_DOCTORS =
 			"SELECT * " +
-					"FROM Doctors";
+					"FROM Doctors " +
+					"ORDER BY id";
 
 	public static final String GET_DOCTOR_NAME =
 			"SELECT f_name, l_name " +
@@ -235,7 +239,8 @@ public class DBConstants {
 
 	public static final String SELECT_ALL_PATIENTS =
 			"SELECT * " +
-					"FROM Patients";
+					"FROM Patients " +
+					"ORDER BY id";
 
 	public static final String GET_PATIENT_ID =
 			"SELECT id " +
@@ -254,7 +259,8 @@ public class DBConstants {
 
 	public static final String SELECT_ALL_GIFTS =
 			"SELECT * " +
-					"FROM Gifts";
+					"FROM Gifts " +
+					"ORDER BY id";
 
 	public static final String GET_GIFT =
 			"SELECT * " +
@@ -263,7 +269,8 @@ public class DBConstants {
 
 	public static final String SELECT_ALL_GIFT_DELIVERY_REQUESTS =
 			"SELECT * " +
-					"FROM Gift_Delivery_Requests";
+					"FROM Gift_Delivery_Requests " +
+					"ORDER BY id";
 
 	public static final String SELECT_ALL_GIFT_DELIVERY_REQUESTS_FOR_ASSIGNEE =
 			"SELECT * " +
@@ -272,7 +279,8 @@ public class DBConstants {
 
 	public static final String SELECT_ALL_MEDICATION_REQUESTS =
 			"SELECT * " +
-					"FROM Medication_Requests";
+					"FROM Medication_Requests " +
+					"ORDER BY id";
 
 	public static final String SELECT_ALL_MEDICATION_REQUESTS_FOR_DOCTOR =
 			"SELECT * " +
@@ -286,7 +294,8 @@ public class DBConstants {
 
 	public static final String SELECT_ALL_SERVICE_REQUESTS =
 			"SELECT * " +
-					"FROM Service_Requests";
+					"FROM Service_Requests " +
+					"ORDER BY id";
 
 	public static final String SELECT_ALL_SERVICE_REQUESTS_FOR_ASSIGNEE =
 			"SELECT * " +
