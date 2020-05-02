@@ -111,7 +111,7 @@ public class AddUserController implements Initializable {
 				anyServicesSelected = true;
 			}
 			if (interpreterBox.isSelected()) {
-				servicesList.append("interpreter(").append(languages.getText().toLowerCase().replace(" ", "")).append(");");
+				servicesList.append("interpreter(").append(languages.getText().replace(" ", "")).append(");");
 				anyServicesSelected = true;
 			}
 			if (anyServicesSelected) {

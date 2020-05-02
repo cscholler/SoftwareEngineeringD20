@@ -141,6 +141,7 @@ public class MapViewerController {
         Node startNode = sf.getNode(startingPoint.getText());
         Node destNode = sf.getNode(destination.getText());
 
+        setFloor(startNode.getFloor());
         if (startNode != null && destNode != null) {
             String directions = highlightSourceToDestination(startNode, destNode);
             messengerService.setDirections(directions);
@@ -177,7 +178,7 @@ public class MapViewerController {
             Parent root = loaderHelper.getFXMLLoader("keyPopUp").load();
             loaderHelper.setupPopup(new Stage(), new Scene(root));
         } catch (IOException ex) {
-            log.error("Couldn't load keyPopUp.fxml", ex);
+            log.error("Couldn't load LegendPopup.fxml", ex);
         }
     }
 

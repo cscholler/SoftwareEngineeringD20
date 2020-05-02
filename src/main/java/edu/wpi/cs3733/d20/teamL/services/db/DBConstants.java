@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class DBConstants {
-
 	static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
 	static final String DB_PREFIX = "jdbc:mysql://";
 	static final String DB_URL = "cs3733-bwh-db.cqqsqwjmcbj4.us-east-2.rds.amazonaws.com";
