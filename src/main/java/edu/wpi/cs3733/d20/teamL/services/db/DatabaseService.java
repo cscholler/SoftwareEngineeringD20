@@ -57,7 +57,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 			return;
 		}
 		try {
-			connection = DriverManager.getConnection( DBConstants.DB_PREFIX + DBConstants.DB_URL + DBConstants.DB_PORT + DBConstants.DB_NAME_DEV, DBConstants.DB_USER, DBConstants.DB_PASSWORD);
+			connection = DriverManager.getConnection( DBConstants.DB_PREFIX + DBConstants.DB_URL + DBConstants.DB_PORT + DBConstants.DB_NAME_CANARY, DBConstants.DB_USER, DBConstants.DB_PASSWORD);
 			log.info("Connection established.");
 		} catch (SQLException ex) {
 			log.error("Encountered SQLException.", ex);

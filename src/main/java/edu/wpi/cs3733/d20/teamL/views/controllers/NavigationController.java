@@ -115,7 +115,7 @@ public class NavigationController implements Initializable {
     @FXML
     private void mapBtnClicked() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("MapViewer").load();
+            Parent root = loaderHelper.getFXMLLoader("/Map Viewer/MapViewer").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
@@ -166,6 +166,6 @@ public class NavigationController implements Initializable {
 	}
 
 	private void updateTime() {
-		;Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("E, MMM d | h:mm aa").format(new Date())));
-	}
+        ;Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("E, MMM d | h:mm aa").format(new Date())));
+    }
 }
