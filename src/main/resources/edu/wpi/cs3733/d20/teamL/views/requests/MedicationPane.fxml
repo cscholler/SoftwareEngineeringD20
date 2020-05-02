@@ -12,7 +12,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.MedicationRequestController">
    <children>
       <BorderPane fx:id="borderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="720.0" prefWidth="1080.0" styleClass="services-pane-jfx" stylesheets="@../../css/GlobalStyleSheet.css">
@@ -136,7 +135,7 @@
       
           </bottom>
       </BorderPane>
-      <ImageView fx:id="requestReceived" fitHeight="200.0" fitWidth="262.0">
+      <ImageView fx:id="requestReceived" fitHeight="200.0" fitWidth="262.0" visible="false">
          <image>
             <Image url="@../../assets/Services/serviceRecieved.png" />
          </image>
