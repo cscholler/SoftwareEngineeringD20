@@ -78,6 +78,15 @@ public class DatabaseCache implements IDatabaseCache {
     public void updateDB() {
         // Concatenate the node and edges lists for one update on the cache
         ArrayList<SQLEntry> updates = new ArrayList<>();
+
+        // Delete edges
+        for (Edge edge : deletedEdges) {
+            updates.add(new SQLEntry(DBConstants.REMOVE_EDGE, new ArrayList<>(Collections.singletonList(edge.getID()))));
+        }
+        // Delete nodes
+        for (ArrayList<String> currentNode : convertNodesToValuesList(deletedNodes)) {
+            updates.add(new SQLEntry(DBConstants.REMOVE_NODE, new ArrayList<>(Collections.singletonList(currentNode.get(0)))));
+        }
         // Add nodes
         for (ArrayList<String> nodeInfo : convertNodesToValuesList(addedNodes)) {
             updates.add(new SQLEntry(DBConstants.ADD_NODE, nodeInfo));
@@ -86,10 +95,6 @@ public class DatabaseCache implements IDatabaseCache {
         for (ArrayList<String> edgeInfo : convertEdgesToValuesList(addedEdges)) {
             updates.add(new SQLEntry(DBConstants.ADD_EDGE, edgeInfo));
         }
-        // Delete edges
-        for (Edge edge : deletedEdges) {
-            updates.add(new SQLEntry(DBConstants.REMOVE_EDGE, new ArrayList<>(Collections.singletonList(edge.getID()))));
-        }
         // Edit nodes
         for (ArrayList<String> currentNode : convertNodesToValuesList(editedNodes)) {
             String nodeID = currentNode.get(0);
@@ -97,10 +102,7 @@ public class DatabaseCache implements IDatabaseCache {
             currentNode.add(nodeID);
             updates.add(new SQLEntry(DBConstants.UPDATE_NODE, currentNode));
         }
-        // Delete nodes
-        for (ArrayList<String> currentNode : convertNodesToValuesList(deletedNodes)) {
-            updates.add(new SQLEntry(DBConstants.REMOVE_NODE, new ArrayList<>(Collections.singletonList(currentNode.get(0)))));
-        }
+
         db.executeUpdates(updates); // TODO: Fix SQL error by preventing from adding duplicate nodes
         // Clear added, edited, and deleted nodes from cache
         addedNodes.clear();
