@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.jfoenix.controls.JFXListView;
+import com.mysql.cj.x.protobuf.MysqlxCrud;
 import edu.wpi.cs3733.d20.teamL.entities.Building;
 import edu.wpi.cs3733.d20.teamL.entities.Graph;
 import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
@@ -18,12 +19,14 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -43,6 +46,7 @@ import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
 import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
 import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
+import org.apache.xmlgraphics.image.codec.png.PNGEncodeParam;
 
 @Slf4j
 public class MapViewerController {
@@ -155,19 +159,12 @@ public class MapViewerController {
             messengerService.setDirections(directions);
 
             messenger.setDirections(directions);
-            Label directionsLabel = new Label();
-            directionsLabel.setFont(new Font(14));
-            directionsLabel.setText(directions);
-            directionsLabel.setTextFill(Color.WHITE);
-            directionsLabel.setWrapText(true);
 
-            instructions.getChildren().clear();
-            instructions.getChildren().add(directionsLabel);
-            scroll.setVisible(true);
             btnTextMe.setDisable(false);
             btnTextMe.setVisible(true);
             btnQR.setDisable(false);
             btnQR.setVisible(true);
+
         }
     }
 
@@ -208,6 +205,32 @@ public class MapViewerController {
         path.generateTextMessage();
         ArrayList<String> message = path.getMessage();
         StringBuilder builder = new StringBuilder();
+
+        dirList.setCellFactory(param -> {
+            return new ListCell<String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setGraphic(null);
+                        setText(null);
+                        // other stuff to do...
+
+                    } else {
+                        setMinWidth(getWidth());
+                        setMaxWidth(getWidth());
+                        setPrefWidth(getWidth());
+
+                        // allow wrapping
+                        setWrapText(true);
+
+                        setText(item);
+
+
+                    }
+                }
+            };
+        });
 
         direct.addAll(message);
         dirList.getItems().addAll(direct);
