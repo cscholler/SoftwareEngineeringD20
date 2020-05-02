@@ -15,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -209,6 +210,7 @@ public class MapViewerController {
         ArrayList<String> message = path.getMessage();
         StringBuilder builder = new StringBuilder();
 
+        dirList.getItems().clear();
         direct.addAll(message);
         dirList.getItems().addAll(direct);
 
@@ -349,7 +351,43 @@ public class MapViewerController {
 
     @FXML
     private void goToSelected(){
-       int index = dirList.getSelectionModel().getSelectedIndex();
+        int index = dirList.getSelectionModel().getSelectedIndex();
+        ArrayList<Node> subpath = path.getSubpaths().get(index);
+        setFloor(subpath.get(0).getFloor());
 
+        double totalX = 0;
+        double totalY = 0;
+        double minX = 200000;
+        double maxX = 0;
+        double minY = 200000;
+        double maxY = 0;
+        for(Node node : subpath) {
+            double xPos = node.getPosition().getX();
+            double yPos = node.getPosition().getY();
+            double xPosGui = map.getNodeGUI(node).getLayoutX();
+            double yPosGui = map.getNodeGUI(node).getLayoutY();
+
+            totalX += xPosGui;
+            totalY += yPosGui;
+
+            if(xPos > maxX) maxX = xPos;
+            if(xPos < minX) minX = xPos;
+            if(yPos > maxY) maxY = yPos;
+            if(yPos < minY) minY = yPos;
+        }
+
+        double diffX = maxX - minX;
+        double diffY = maxY - minY;
+        double scale;
+
+        if(diffX > diffY) scale = Math.min(400 / diffX, 5);
+        else scale = Math.min(400 / diffY, 5);
+        System.out.println(scale);
+
+        totalX = totalX / subpath.size();
+        totalY = totalY / subpath.size();
+
+        map.setZoomLevelToPosition(scale, new Point2D(totalX, totalY));
+        highLightPath();
     }
 }

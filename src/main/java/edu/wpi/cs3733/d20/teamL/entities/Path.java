@@ -141,7 +141,7 @@ public class Path implements Iterable<Node> {
                 lastRoom = null;
                 rights = 0;
                 lefts = 0;
-                subpaths.add(subpath);
+                subpaths.add(addSubPath(subpath));
                 subpath.clear();
             }
             else if (curr.getType().equals("STAI") && next.getType().equals("STAI")) {
@@ -150,7 +150,7 @@ public class Path implements Iterable<Node> {
                 lastRoom = null;
                 rights = 0;
                 lefts = 0;
-                subpaths.add(subpath);
+                subpaths.add(addSubPath(subpath));
                 subpath.clear();
             }
             else {
@@ -182,7 +182,7 @@ public class Path implements Iterable<Node> {
 
                     subpath.add(next);
                     message.add(builder.toString());
-                    subpaths.add(subpath);
+                    subpaths.add(addSubPath(subpath));
                     subpath.clear();
 
                 } else {
@@ -192,7 +192,7 @@ public class Path implements Iterable<Node> {
 
                         subpath.add(next);
                         message.add("Cut straight through the " + curr.getLongName() + ".");
-                        subpaths.add(subpath);
+                        subpaths.add(addSubPath(subpath));
                         subpath.clear();
                     } else {
                         foundAdjRoom = false;
@@ -221,9 +221,18 @@ public class Path implements Iterable<Node> {
         if(lastStatement) {
             message.add("Continue straight until your destination at " + goal.getLongName() + ".");
             subpath.add(pathNodes.get(pathNodes.size()-1));
-            subpaths.add(subpath);
+            subpaths.add(addSubPath(subpath));
             subpath.clear();
         }
+    }
+
+    private ArrayList<Node> addSubPath(ArrayList<Node> nodes) {
+        ArrayList<Node> retPath = new ArrayList<>();
+
+        for(Node node : nodes)
+            retPath.add(node);
+
+        return retPath;
     }
 
     private Point2D delta(Node curr, Node next) {
