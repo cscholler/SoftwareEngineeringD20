@@ -72,82 +72,108 @@
         </GridPane>
     </top>
    <center>
-      <HBox fx:id="buttonBox" alignment="TOP_CENTER" prefHeight="498.0" prefWidth="1650.0" spacing="100.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox fx:id="vMap" alignment="TOP_CENTER">
+            <HBox fx:id="buttonBox" alignment="TOP_CENTER" spacing="100.0">
                <children>
-                  <JFXButton fx:id="btnMapEditor" alignment="CENTER" contentDisplay="CENTER" maxHeight="250.0" maxWidth="250.0" minHeight="250.0" minWidth="250.0" onAction="#mapEditorClicked" style="-fx-background-radius: 200; -fx-border-color: white; -fx-border-radius: 200;" styleClass="circle-button" text=" ">
-                     <graphic>
-                        <ImageView fitHeight="241.0" fitWidth="152.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../assets/home%20page/baseline_explore_white_48dp.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </JFXButton>
-                  <Label fx:id="lblMap" text="Map Editor" />
+                  <VBox fx:id="vMap" alignment="TOP_CENTER">
+                     <children>
+                        <JFXButton fx:id="btnMapEditor" alignment="CENTER" contentDisplay="CENTER" maxHeight="250.0" maxWidth="250.0" minHeight="250.0" minWidth="250.0" onAction="#mapEditorClicked" style="-fx-background-radius: 200; -fx-border-color: white; -fx-border-radius: 200;" styleClass="circle-button" text=" ">
+                           <graphic>
+                              <ImageView fitHeight="241.0" fitWidth="152.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../assets/home%20page/baseline_explore_white_48dp.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
+                        <Label fx:id="lblMap" text="Map Editor" />
+                     </children>
+                  </VBox>
+                  <VBox fx:id="vUser" alignment="TOP_CENTER">
+                     <children>
+                        <JFXButton fx:id="btnAddUser" alignment="CENTER" contentDisplay="CENTER" maxHeight="250.0" maxWidth="250.0" minHeight="250.0" minWidth="250.0" onAction="#addUserClicked" style="-fx-background-radius: 200; -fx-border-color: white; -fx-border-radius: 200;" styleClass="circle-button" text=" ">
+                           <graphic>
+                              <ImageView pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../assets/staff%20view/AddUser.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
+                        <Label text="Add User" />
+                     </children>
+                  </VBox>
+                  <VBox fx:id="vService" alignment="TOP_CENTER">
+                     <children>
+                        <JFXButton fx:id="btnServiceRequest" alignment="CENTER" contentDisplay="CENTER" maxHeight="250.0" maxWidth="250.0" minHeight="250.0" minWidth="250.0" onAction="#serviceRequestsClicked" style="-fx-background-radius: 200; -fx-border-color: white; -fx-border-radius: 200;" styleClass="circle-button" text=" ">
+                           <graphic>
+                              <ImageView pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../assets/home%20page/baseline_room_service_white_48dp.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
+                        <Label text="Service Requests" />
+                     </children>
+                  </VBox>
+                  <VBox fx:id="vDoc" alignment="TOP_CENTER">
+                     <children>
+                        <JFXButton fx:id="btnAddDoctor" alignment="CENTER" contentDisplay="CENTER" maxHeight="250.0" maxWidth="250.0" minHeight="250.0" minWidth="250.0" onAction="#addDoctorClicked" style="-fx-background-radius: 200; -fx-border-color: white; -fx-border-radius: 200;" styleClass="circle-button" text=" ">
+                           <graphic>
+                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../assets/staff%20view/Add.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
+                        <Label text="Add Doctor" />
+                     </children>
+                  </VBox>
+                  <VBox fx:id="vPatient" alignment="TOP_CENTER">
+                     <children>
+                        <JFXButton fx:id="btnAddPatient" alignment="CENTER" contentDisplay="CENTER" maxHeight="250.0" maxWidth="250.0" minHeight="250.0" minWidth="250.0" onAction="#addPatientClicked" style="-fx-background-radius: 200; -fx-border-color: white; -fx-border-radius: 200;" styleClass="circle-button" text=" ">
+                           <graphic>
+                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../assets/staff%20view/Add.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
+                        <Label text="Add Patient" />
+                     </children>
+                  </VBox>
                </children>
-            </VBox>
-            <VBox fx:id="vUser" alignment="TOP_CENTER">
+            </HBox>
+            <HBox alignment="TOP_CENTER" spacing="100.0">
                <children>
-                  <JFXButton fx:id="btnAddUser" alignment="CENTER" contentDisplay="CENTER" maxHeight="250.0" maxWidth="250.0" minHeight="250.0" minWidth="250.0" onAction="#addUserClicked" style="-fx-background-radius: 200; -fx-border-color: white; -fx-border-radius: 200;" styleClass="circle-button" text=" ">
-                     <graphic>
-                        <ImageView pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../assets/staff%20view/AddUser.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </JFXButton>
-                  <Label text="Add User" />
+                  <VBox fx:id="vMap1" alignment="TOP_CENTER">
+                     <children>
+                        <JFXButton alignment="CENTER" contentDisplay="CENTER" maxHeight="250.0" maxWidth="250.0" minHeight="250.0" minWidth="250.0" onAction="#importClicked" style="-fx-background-radius: 200; -fx-border-color: white; -fx-border-radius: 200; -fx-text-fill: white; -fx-font-size: 48;" styleClass="circle-button" text="⬆" />
+                        <Label fx:id="lblMap1" text="Import DB" />
+                     </children>
+                  </VBox>
+                  <VBox fx:id="vMap11" alignment="TOP_CENTER">
+                     <children>
+                        <JFXButton alignment="CENTER" contentDisplay="CENTER" maxHeight="250.0" maxWidth="250.0" minHeight="250.0" minWidth="250.0" onAction="#exportClicked" style="-fx-background-radius: 200; -fx-border-color: white; -fx-border-radius: 200; -fx-text-fill: white; -fx-font-size: 48;" styleClass="circle-button" text="⬇" />
+                        <Label fx:id="lblMap11" text="Export DB" />
+                     </children>
+                  </VBox>
+                  <VBox fx:id="vMap111" alignment="TOP_CENTER">
+                     <children>
+                        <JFXButton alignment="CENTER" contentDisplay="CENTER" maxHeight="250.0" maxWidth="250.0" minHeight="250.0" minWidth="250.0" onAction="#clearClicked" style="-fx-background-radius: 200; -fx-border-color: white; -fx-border-radius: 200; -fx-text-fill: white; -fx-font-size: 48;" styleClass="circle-button" text="☢" />
+                        <Label fx:id="lblMap111" text="Clear DB" />
+                     </children>
+                  </VBox>
                </children>
-            </VBox>
-            <VBox fx:id="vService" alignment="TOP_CENTER">
-               <children>
-                  <JFXButton fx:id="btnServiceRequest" alignment="CENTER" contentDisplay="CENTER" maxHeight="250.0" maxWidth="250.0" minHeight="250.0" minWidth="250.0" onAction="#serviceRequestsClicked" style="-fx-background-radius: 200; -fx-border-color: white; -fx-border-radius: 200;" styleClass="circle-button" text=" ">
-                     <graphic>
-                        <ImageView pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../assets/home%20page/baseline_room_service_white_48dp.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </JFXButton>
-                  <Label text="Service Requests" />
-               </children>
-            </VBox>
-            <VBox fx:id="vDoc" alignment="TOP_CENTER">
-               <children>
-                  <JFXButton fx:id="btnAddDoctor" alignment="CENTER" contentDisplay="CENTER" maxHeight="250.0" maxWidth="250.0" minHeight="250.0" minWidth="250.0" onAction="#addDoctorClicked" style="-fx-background-radius: 200; -fx-border-color: white; -fx-border-radius: 200;" styleClass="circle-button" text=" ">
-                     <graphic>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../assets/staff%20view/Add.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </JFXButton>
-                  <Label text="Add Doctor" />
-               </children>
-            </VBox>
-            <VBox fx:id="vPatient" alignment="TOP_CENTER">
-               <children>
-                  <JFXButton fx:id="btnAddPatient" alignment="CENTER" contentDisplay="CENTER" maxHeight="250.0" maxWidth="250.0" minHeight="250.0" minWidth="250.0" onAction="#addPatientClicked" style="-fx-background-radius: 200; -fx-border-color: white; -fx-border-radius: 200;" styleClass="circle-button" text=" ">
-                     <graphic>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../assets/staff%20view/Add.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </JFXButton>
-                  <Label text="Add Patient" />
-               </children>
-            </VBox>
+               <VBox.margin>
+                  <Insets bottom="100.0" left="100.0" right="100.0" top="100.0" />
+               </VBox.margin>
+            </HBox>
          </children>
-         <BorderPane.margin>
-            <Insets top="50.0" />
-         </BorderPane.margin>
-      </HBox>
+      </VBox>
    </center>
 </BorderPane>

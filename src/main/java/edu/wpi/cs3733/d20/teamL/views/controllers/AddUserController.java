@@ -8,6 +8,7 @@ import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
+import edu.wpi.cs3733.d20.teamL.services.users.PasswordEncrypter;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
 import javafx.collections.FXCollections;
@@ -27,10 +28,10 @@ import java.util.ResourceBundle;
 @Slf4j
 public class AddUserController implements Initializable {
     ObservableList<String> serviceOptions = FXCollections.observableArrayList("Security", "Internal Transport", "External Transport", "Sanitation", "Maintenance", "Pharmacist", "Gift Shop", "Interpreter", "Information Technology");
-    ObservableList<String> userOptions = FXCollections.observableArrayList("Staff", "Nurse", "Doctor", "Admin");
+    ObservableList<String> userOptions = FXCollections.observableArrayList("staff", "Nurse", "Doctor", "admin");
 
     DBTableFormatter formatter = new DBTableFormatter();
-    private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    private final FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 
     @FXML
     JFXTextField doctorIDText, fNameText, lNameText, servicesText, usernameText, passwordText, languages;
@@ -61,7 +62,7 @@ public class AddUserController implements Initializable {
 
 		switch (userCombo.getValue()) {
 			default:
-			case "Staff Member":
+			case "staff Member":
 				type = "0";
 				break;
 			case "Nurse":
@@ -70,7 +71,7 @@ public class AddUserController implements Initializable {
 			case "Doctor":
 				type = "2";
 				break;
-			case "Admin":
+			case "admin":
 				type = "3";
 		}
         int rows = 0;
@@ -123,7 +124,9 @@ public class AddUserController implements Initializable {
 			if (type.equals("1") || type.equals("2")) {
 				services = "pharmacy";
 			}
-			rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(firstName, lastName, username, password, type, services, manager))));
+			if (!(firstName.isBlank() || lastName.isBlank() || username.isBlank() || password.isBlank() || userCombo.getValue().isBlank())) {
+				rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(firstName, lastName, username, PasswordEncrypter.hashPassword(password), type, services, manager))));
+			}
 			formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_USERS)));
 			if (doctorIDText.getText() != null && !(doctorIDText.getText().isEmpty())) {
 				rows = db.executeUpdate(new SQLEntry(DBConstants.UPDATE_DOCTOR_USERNAME, new ArrayList<>(Arrays.asList(username, doctorID))));
@@ -185,7 +188,7 @@ public class AddUserController implements Initializable {
     @FXML
     private void userSelected() {
         user = userCombo.getValue();
-        if (user.equals("Staff")) {
+        if (user.equals("staff")) {
             managerBox.setVisible(true);
             managerBox.setDisable(false);
             if (managerBox.isSelected()) {
@@ -196,7 +199,7 @@ public class AddUserController implements Initializable {
                 languages.setVisible(false);
                 languages.setDisable(true);
             } else {
-                System.out.println("Services");
+                System.out.println("services");
                 serviceCombo.setVisible(false);
                 serviceCombo.setDisable(true);
                 boxOService.setVisible(true);

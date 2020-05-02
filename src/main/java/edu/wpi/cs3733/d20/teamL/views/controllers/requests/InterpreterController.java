@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 import com.google.inject.Inject;
 import com.jfoenix.controls.JFXAutoCompletePopup;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
@@ -50,7 +51,9 @@ public class InterpreterController implements Initializable {
     @FXML
     private JFXButton btnBack, btnSubmit;
     @FXML
-    private JFXTextField patientIDText, roomNumText, additionalText;
+    private JFXTextField patientIDText, roomNumText;
+    @FXML
+    private JFXTextArea additionalText;
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
@@ -79,7 +82,7 @@ public class InterpreterController implements Initializable {
      */
     @FXML
     public void handleButtonAction(ActionEvent e) throws IOException {
-        //goe back to Staff View
+        //goe back to staff View
         if (e.getSource() == btnBack) {
             Parent root = loaderHelper.getFXMLLoader("StaffView").load();
             loaderHelper.setupScene(new Scene(root));
@@ -102,7 +105,7 @@ public class InterpreterController implements Initializable {
             int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
                     new ArrayList<>(Arrays.asList(patientID, user, null, roomNumber, "interpreter", interpreterType, concatenatedNotes, status, dateAndTime)))));
 
-            if (rows == 0) {
+            if(rows == 0) {
                 confirmation.setVisible(true);
                 confirmation.setTextFill(Color.RED);
                 confirmation.setText("Submission failed");
@@ -136,8 +139,4 @@ public class InterpreterController implements Initializable {
         }
     }
 
-    @FXML
-    private void backClicked(){
-        loaderHelper.goBack();
-    }
 }

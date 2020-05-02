@@ -120,7 +120,11 @@ public class MapPane extends ScrollPane {
                 if (!addingNode && addingEdge && !onSelectable && !erasing) {
                     if (event.getButton().equals(MouseButton.PRIMARY)) {
 
-                        Node dest = new Node(currentBuilding.getUniqueNodeID(), new Point2D(event.getX(), event.getY()).multiply(1 / zoomLevel), currentFloor.getFloor(), currentBuilding.getName());
+                        Node dest = new Node(currentBuilding.getUniqueNodeID(), new Point2D(event.getX(),
+                                event.getY()).multiply(1 / zoomLevel), currentFloor.getFloor(), currentBuilding.getName(),
+                                "HALL","Hall", "Hall");
+
+                        dest.setId(currentBuilding.getUniqueNodeID(dest));
 
                         addNode(dest);
 
@@ -235,10 +239,8 @@ public class MapPane extends ScrollPane {
 
         if(minNode != null) {
             if (minAngle < Math.PI / 4) {
-                System.out.println("Horizontal: (" + mousePos.getX() + "," + minNode.getLayoutY());
                 return new Point2D(mousePos.getX(), minNode.getLayoutY());
             }
-            System.out.println("Vetical: (" + minNode.getLayoutX() + "," + mousePos.getY());
             return new Point2D(minNode.getLayoutX(), mousePos.getY());
         }
         return mousePos;

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+import edu.wpi.cs3733.d20.teamL.services.users.PasswordEncrypter;
 import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
@@ -19,6 +20,11 @@ import edu.wpi.cs3733.d20.teamL.services.Service;
 @Slf4j
 public class DatabaseService extends Service implements IDatabaseService {
 	private Connection connection;
+	public enum DB_TYPE {
+		MY_SQL,
+		DERBY
+	}
+	private DB_TYPE dbType;
 
 	public DatabaseService() {
 		super();
@@ -33,8 +39,11 @@ public class DatabaseService extends Service implements IDatabaseService {
 		if (connection == null) {
 			connect();
 		}
-		// Uncomment if database needs to be rebuilt
-		//rebuildDatabase();
+		// Rebuild the database if using Derby
+		// TODO: only rebuild if db doesn't exist and tables dont' exist
+		if (dbType == DB_TYPE.DERBY) {
+			rebuildDatabase();
+		}
 	}
 
 	/**
@@ -46,21 +55,36 @@ public class DatabaseService extends Service implements IDatabaseService {
 	}
 
 	/**
-	 * Connects to the database with optional username and password
+	 * Attempts to connect to the remote MySQL database and falls back to an embedded Derby database if unsuccessful
 	 */
 	@Override
 	public void connect() {
 		try {
 			Class.forName(DBConstants.DB_DRIVER);
 		} catch (ClassNotFoundException ex) {
-			log.error("ClassNotFoundException", ex);
-			return;
+			log.error("Encountered ClassNotFoundException", ex);
 		}
 		try {
 			connection = DriverManager.getConnection( DBConstants.DB_PREFIX + DBConstants.DB_URL + DBConstants.DB_PORT + DBConstants.DB_NAME_DEV, DBConstants.DB_USER, DBConstants.DB_PASSWORD);
 			log.info("Connection established.");
+			dbType = DB_TYPE.MY_SQL;
 		} catch (SQLException ex) {
 			log.error("Encountered SQLException.", ex);
+		}
+		if (dbType != DB_TYPE.MY_SQL) {
+			log.info("Unable to connect to remote MySQL database. Attempting to connect to fallback embedded Derby Database...");
+			try {
+				Class.forName(DerbyConstants.DB_DRIVER);
+			} catch (ClassNotFoundException ex) {
+				log.error("Encountered ClassNotFoundException", ex);
+			}
+			try {
+				connection = DriverManager.getConnection(DerbyConstants.DB_PREFIX + DerbyConstants.DB_URL);
+				log.info("Connection established.");
+				dbType = DB_TYPE.DERBY;
+			} catch (SQLException ex) {
+				log.error("Encountered SQLException.", ex);
+			}
 		}
 	}
 
@@ -191,51 +215,67 @@ public class DatabaseService extends Service implements IDatabaseService {
 	public void rebuildDatabase() {
 		dropTables();
 		ArrayList<SQLEntry> updates = new ArrayList<>();
-		updates.add(new SQLEntry(DBConstants.CREATE_NODE_TABLE));
-		updates.add(new SQLEntry(DBConstants.CREATE_EDGE_TABLE));
-		updates.add(new SQLEntry(DBConstants.CREATE_USER_TABLE));
-		updates.add(new SQLEntry(DBConstants.CREATE_DOCTOR_TABLE));
-		updates.add(new SQLEntry(DBConstants.CREATE_PATIENT_TABLE));
-		updates.add(new SQLEntry(DBConstants.CREATE_GIFT_TABLE));
-		updates.add(new SQLEntry(DBConstants.CREATE_GIFT_DELIVERY_REQUEST_TABLE));
-		updates.add(new SQLEntry(DBConstants.CREATE_MEDICATION_REQUEST_TABLE));
-		updates.add(new SQLEntry(DBConstants.CREATE_SERVICE_REQUEST_TABLE));
+		if (dbType == DB_TYPE.MY_SQL) {
+			updates.add(new SQLEntry(DBConstants.CREATE_NODE_TABLE));
+			updates.add(new SQLEntry(DBConstants.CREATE_EDGE_TABLE));
+			updates.add(new SQLEntry(DBConstants.CREATE_USER_TABLE));
+			updates.add(new SQLEntry(DBConstants.CREATE_DOCTOR_TABLE));
+			updates.add(new SQLEntry(DBConstants.CREATE_PATIENT_TABLE));
+			updates.add(new SQLEntry(DBConstants.CREATE_GIFT_TABLE));
+			updates.add(new SQLEntry(DBConstants.CREATE_GIFT_DELIVERY_REQUEST_TABLE));
+			updates.add(new SQLEntry(DBConstants.CREATE_MEDICATION_REQUEST_TABLE));
+			updates.add(new SQLEntry(DBConstants.CREATE_SERVICE_REQUEST_TABLE));
+		} else if (dbType == DB_TYPE.DERBY) {
+			updates.add(new SQLEntry(DerbyConstants.CREATE_NODE_TABLE));
+			updates.add(new SQLEntry(DerbyConstants.CREATE_EDGE_TABLE));
+			updates.add(new SQLEntry(DerbyConstants.CREATE_USER_TABLE));
+			updates.add(new SQLEntry(DerbyConstants.CREATE_DOCTOR_TABLE));
+			updates.add(new SQLEntry(DerbyConstants.CREATE_PATIENT_TABLE));
+			updates.add(new SQLEntry(DerbyConstants.CREATE_GIFT_TABLE));
+			updates.add(new SQLEntry(DerbyConstants.CREATE_GIFT_DELIVERY_REQUEST_TABLE));
+			updates.add(new SQLEntry(DerbyConstants.CREATE_MEDICATION_REQUEST_TABLE));
+			updates.add(new SQLEntry(DerbyConstants.CREATE_SERVICE_REQUEST_TABLE));
+		} else {
+			log.error("Invalid database type.");
+		}
 		executeUpdates(updates);
+
+		// Add nodes and edges from CSV files
 		populateFromCSV("MapLAllNodes", DBConstants.ADD_NODE);
 		populateFromCSV("MapLAllEdges", DBConstants.ADD_EDGE);
 
-		// Users
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Admin", "Admin", "admin", "admin", "3", null, null))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Nurse", "Joy", "nurse", "nurse", "1", "pharmacy", null))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Staff", "Member", "staff", "staff", "0", null, null))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Wilson", "Wong", "doctor", "doctor", "2", "pharmacy", null))));
+		// Add default users
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Admin", "Admin", "admin", PasswordEncrypter.hashPassword("admin"), "3", null, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Nurse", "Joy", "nurse", PasswordEncrypter.hashPassword("nurse"), "1", "pharmacy", null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Staff", "Member", "staff", PasswordEncrypter.hashPassword("staff"), "0", null, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Wilson", "Wong", "doctor", PasswordEncrypter.hashPassword("doctor"), "2", "pharmacy", null))));
 
 		// Managers for each department
 		Collection<String> serviceTypes = new ArrayList<>(Arrays.asList("security", "internal_transportation", "external_transportation", "maintenance", "interpreter", "sanitation", "gift_shop", "information_technology"));
 		for (String serviceType : serviceTypes) {
-			executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(serviceType, "Manager", serviceType, serviceType, "0", null, serviceType))));
+			executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(serviceType, "Manager", serviceType, PasswordEncrypter.hashPassword(serviceType), "0", null, serviceType))));
 		}
 
-		// Presenting: gifts, medication, interpreter, it
-		// Create the employees for each
+		// Create test employees for some departments
 		String serviceType = "pharmacy";
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Billy", "Joel", serviceType + "_emp1", serviceType + "_emp1", "0", serviceType, null))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Jamie", "Adams", serviceType + "_emp2", serviceType + "_emp2", "0", serviceType, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Billy", "Joel", serviceType + "_emp1", PasswordEncrypter.hashPassword(serviceType + "_emp1"), "0", serviceType, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Jamie", "Adams", serviceType + "_emp2", PasswordEncrypter.hashPassword(serviceType + "_emp2"), "0", serviceType, null))));
 
 		serviceType = "gift_shop";
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Leon", "Hart", serviceType + "_emp1", serviceType + "_emp1", "0", serviceType, null))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Raymond", "Spencer", serviceType + "_emp2", serviceType + "_emp2", "0", serviceType, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Leon", "Hart", serviceType + "_emp1", PasswordEncrypter.hashPassword(serviceType + "_emp1"), "0", serviceType, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Raymond", "Spencer", serviceType + "_emp2", PasswordEncrypter.hashPassword(serviceType + "_emp2"), "0", serviceType, null))));
 		serviceType = "information_technology";
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Spongebob", "Squarepants", serviceType + "_emp1", serviceType + "_emp1", "0", serviceType, null))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Barry", "Benson", serviceType + "_emp2", serviceType + "_emp2", "0", serviceType, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Spongebob", "Squarepants", serviceType + "_emp1", PasswordEncrypter.hashPassword(serviceType + "_emp1"), "0", serviceType, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Barry", "Benson", serviceType + "_emp2", PasswordEncrypter.hashPassword(serviceType + "_emp2"), "0", serviceType, null))));
 
-		String interpreter = "interpreter";
+
 		// Interpreters for French and Spanish, the interpreter form does submit them starting with capital letters
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Jacques", "Cousteau", interpreter + "_emp1", interpreter + "_emp1", "0", interpreter + "(French)", null))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Adriana", "Lopez", interpreter + "_emp2", interpreter + "_emp2", "0", interpreter + "(Spanish)", null))));
+		String interpreter = "interpreter";
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Jacques", "Cousteau", interpreter + "_emp1", PasswordEncrypter.hashPassword(interpreter + "_emp1"), "0", interpreter + "(French)", null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Adriana", "Lopez", interpreter + "_emp2", PasswordEncrypter.hashPassword(interpreter + "_emp2"), "0", interpreter + "(Spanish)", null))));
 
 		// Add a user that can do both medication and IT
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Multi", "Boi", "multi", "multi", "0", "pharmacy;information_technology", null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Multi", "Boi", "multi", PasswordEncrypter.hashPassword("multi"), "0", "pharmacy;information_technology", null))));
 
 		// Example doctor and patient
 		executeUpdate(new SQLEntry(DBConstants.ADD_DOCTOR, new ArrayList<>(Arrays.asList("123", "Wilson", "Wong", "doctor", null, null))));
@@ -275,16 +315,47 @@ public class DatabaseService extends Service implements IDatabaseService {
 	@Override
 	public void dropTables() {
 		ArrayList<SQLEntry> updates = new ArrayList<>();
-		updates.add(new SQLEntry(DBConstants.DROP_SERVICE_REQUEST_TABLE));
-		updates.add(new SQLEntry(DBConstants.DROP_MEDICATION_REQUEST_TABLE));
-		updates.add(new SQLEntry(DBConstants.DROP_GIFT_DELIVER_REQUEST_TABLE));
-		updates.add(new SQLEntry(DBConstants.DROP_GIFT_TABLE));
-		updates.add(new SQLEntry(DBConstants.DROP_PATIENT_TABLE));
-		updates.add(new SQLEntry(DBConstants.DROP_DOCTOR_TABLE));
-		updates.add(new SQLEntry(DBConstants.DROP_USER_TABLE));
-		updates.add(new SQLEntry(DBConstants.DROP_EDGE_TABLE));
-		updates.add(new SQLEntry(DBConstants.DROP_NODE_TABLE));
-		executeUpdates(updates);
+		if (dbType == DB_TYPE.MY_SQL) {
+			updates.add(new SQLEntry(DBConstants.DROP_SERVICE_REQUEST_TABLE));
+			updates.add(new SQLEntry(DBConstants.DROP_MEDICATION_REQUEST_TABLE));
+			updates.add(new SQLEntry(DBConstants.DROP_GIFT_DELIVER_REQUEST_TABLE));
+			updates.add(new SQLEntry(DBConstants.DROP_GIFT_TABLE));
+			updates.add(new SQLEntry(DBConstants.DROP_PATIENT_TABLE));
+			updates.add(new SQLEntry(DBConstants.DROP_DOCTOR_TABLE));
+			updates.add(new SQLEntry(DBConstants.DROP_USER_TABLE));
+			updates.add(new SQLEntry(DBConstants.DROP_EDGE_TABLE));
+			updates.add(new SQLEntry(DBConstants.DROP_NODE_TABLE));
+			executeUpdates(updates);
+		} else if (dbType == DB_TYPE.DERBY) {
+			ResultSet resSet;
+			ArrayList<String> dropTableUpdates = new ArrayList<>();
+			ArrayList<String> tablesToDrop = new ArrayList<>();
+			dropTableUpdates.add(DerbyConstants.DROP_NODE_TABLE);
+			dropTableUpdates.add(DerbyConstants.DROP_EDGE_TABLE);
+			dropTableUpdates.add(DerbyConstants.DROP_USER_TABLE);
+			dropTableUpdates.add(DerbyConstants.DROP_DOCTOR_TABLE);
+			dropTableUpdates.add(DerbyConstants.DROP_PATIENT_TABLE);
+			dropTableUpdates.add(DerbyConstants.DROP_GIFT_TABLE);
+			dropTableUpdates.add(DerbyConstants.DROP_GIFT_DELIVER_REQUEST_TABLE);
+			dropTableUpdates.add(DerbyConstants.DROP_MEDICATION_REQUEST_TABLE);
+			dropTableUpdates.add(DerbyConstants.DROP_SERVICE_REQUEST_TABLE);
+			try {
+				for (int i = 0; i < DBConstants.GET_TABLE_NAMES().size(); i++) {
+					resSet = connection.getMetaData().getTables(null, "APP", DBConstants.GET_TABLE_NAMES().get(i).toUpperCase(), null);
+					if (resSet.next()) {
+						tablesToDrop.add(dropTableUpdates.get((dropTableUpdates.size() - 1) - i));
+					}
+				}
+				for (String entry : tablesToDrop) {
+					updates.add(new SQLEntry(entry));
+				}
+				executeUpdates(updates);
+			} catch (SQLException ex) {
+				log.error("Encountered SQLException.", ex);
+			}
+		} else {
+			log.error("Invalid database type.");
+		}
 	}
 
 	/**
