@@ -366,8 +366,8 @@ public class MapViewerController {
                 "Product Owner: Tori Buyck\n" +
                 "Algorithms Specialist: Cameron Jacobson\n" +
                 "UI Engineer: Winnie Ly\n" +
-                "Documentation Analyst: Zaiyang Zhong\n" +
-                "Thank you Brigham and Women’s Hospital and Andrew Shinn for your time and input."));
+                "Documentation Analyst: Zaiyang Zhong\n\n" +
+                "Thank you Brigham and Women's Hospital and Andrew Shinn for your time and input."));
         JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
         JFXButton btnDone = new JFXButton("Done");
         btnDone.setOnAction(new EventHandler<ActionEvent>() {
