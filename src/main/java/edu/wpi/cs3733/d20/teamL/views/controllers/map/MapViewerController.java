@@ -322,4 +322,17 @@ public class MapViewerController {
     private void clearDest(ActionEvent actionEvent) {
         destination.clear();
     }
+
+    /**
+     * login pops up when login button is clicked
+     */
+    @FXML
+    private void loginBtnClicked() {
+        try {
+            Parent root = loaderHelper.getFXMLLoader("Staff/LoginPage").load();
+            loaderHelper.setupPopup(new Stage(), new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
+    }
 }
