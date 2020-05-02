@@ -19,6 +19,7 @@
 <?import javafx.scene.text.Font?>
 
 <?import edu.wpi.cs3733.d20.teamL.views.components.MapPane?>
+
 <BorderPane fx:id="root" prefHeight="720" prefWidth="1280" stylesheets="@../../css/MapStyles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.map.MapEditorController">
     <center>
     </center>
@@ -158,11 +159,11 @@
                                           <Insets left="10.0" top="25.0" />
                                        </VBox.margin>
                                     </Label>
-                                    <JFXTextField fx:id="numberText" focusColor="#0d2e57" promptText="Enter number..." style="-fx-background-color: #ffffff;" unFocusColor="#ffffff00">
+                                    <ComboBox fx:id="numberText" prefWidth="180.0" promptText="No Connection" style="-fx-background-color: #ffffff;">
                                        <VBox.margin>
                                           <Insets left="10.0" right="10.0" top="5.0" />
                                        </VBox.margin>
-                                    </JFXTextField>
+                                    </ComboBox>
                                  </children>
                               </VBox>
                               <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="200.0" spacing="15.0" styleClass="editorPaneVbox">

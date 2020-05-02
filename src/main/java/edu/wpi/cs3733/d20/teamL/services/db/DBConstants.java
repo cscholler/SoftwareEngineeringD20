@@ -4,9 +4,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class DBConstants {
-	public static final String DB_DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
-	public static final String DB_URL = "jdbc:derby:myDB;create=true";
-	public static final String SERVICE_NAME = "derby-db-embedded-01";
+	public static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
+	public static final String DB_PREFIX = "jdbc:mysql://";
+	public static final String DB_URL = "cs3733-bwh-db.cqqsqwjmcbj4.us-east-2.rds.amazonaws.com";
+	public static final String DB_PORT = ":5008";
+	public static final String DB_NAME_DEV = "/bwh_dev";
+	public static final String DB_NAME_PROD = "/bwh_prod";
+	static final String DB_NAME_CANARY = "/bwh_canary";
+	public static final String DB_USER = "teaml";
+	public static final String DB_PASSWORD = "linenleviathans";
+	public static final String SERVICE_NAME = "mysql-db-01";
 
 	public static ArrayList<String> GET_TABLE_NAMES() {
 		return new ArrayList<>(Arrays.asList("Nodes", "Edges", "Users", "Doctors", "Patients", "Gifts", "Gift_Delivery_Requests", "Medication_Requests", "Service_Requests"));
@@ -14,68 +21,63 @@ public class DBConstants {
 
 	public static final String CREATE_NODE_TABLE =
 			"CREATE TABLE Nodes(" +
-					"id VARCHAR(16) NOT NULL, " +
+					"id VARCHAR(16) NOT NULL PRIMARY KEY, " +
 					"x_pos DOUBLE NOT NULL, " +
 					"y_pos DOUBLE NOT NULL, " +
 					"floor CHAR(1) NOT NULL, " +
 					"building VARCHAR(64) NOT NULL, " +
 					"node_type CHAR(4) NOT NULL, " +
 					"l_name VARCHAR(64) NOT NULL, " +
-					"s_name VARCHAR(32) NOT NULL, " +
-					"PRIMARY KEY (id))";
+					"s_name VARCHAR(32) NOT NULL)";
 
 	public static final String CREATE_EDGE_TABLE =
 			"CREATE TABLE Edges(" +
-					"id VARCHAR(21) NOT NULL, " +
+					"id VARCHAR(21) NOT NULL PRIMARY KEY, " +
 					"node_start VARCHAR(16) NOT NULL REFERENCES Nodes(id), " +
-					"node_end VARCHAR(16) NOT NULL REFERENCES Nodes(id), " +
-					"PRIMARY KEY (id))";
+					"node_end VARCHAR(16) NOT NULL REFERENCES Nodes(id))";
 
 	public static final String CREATE_USER_TABLE =
 			"CREATE TABLE Users(" +
-					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
+					"id INT NOT NULL AUTO_INCREMENT, " +
 					"f_name VARCHAR(32) NOT NULL, " +
 					"l_name VARCHAR(32) NOT NULL, " +
-					"username VARCHAR(32) NOT NULL, " +
+					"username VARCHAR(32) NOT NULL PRIMARY KEY, " +
 					"password VARCHAR(128) NOT NULL, " +
 					// 0: Staff member, 1: Nurse, 2: Doctor, 3: Admin
 					"acct_type CHAR(1) NOT NULL, " +
 					"services VARCHAR(512), " +
 					"manager VARCHAR(32), " +
-					"PRIMARY KEY (username))";
+					"INDEX(id))";
 
 	public static final String CREATE_DOCTOR_TABLE =
 			"CREATE TABLE Doctors(" +
-					"id INT NOT NULL, " +
+					"id INT NOT NULL PRIMARY KEY, " +
 					"f_name VARCHAR(32) NOT NULL, " +
 					"l_name VARCHAR(32) NOT NULL, " +
 					"username VARCHAR(32) REFERENCES Users(username), " +
 					"office_id VARCHAR(16) REFERENCES Nodes(id), " +
-					"addl_info VARCHAR(256), " +
-					"PRIMARY KEY (id))";
+					"addl_info VARCHAR(256))";
 
 	public static final String CREATE_PATIENT_TABLE =
 			"CREATE TABLE Patients(" +
-					"id INT NOT NULL, " +
+					"id INT NOT NULL PRIMARY KEY, " +
 					"f_name VARCHAR(32) NOT NULL, " +
 					"l_name VARCHAR(32) NOT NULL, " +
 					"doctor_id INT REFERENCES Doctors(id), " +
 					"room_id VARCHAR(16) REFERENCES Nodes(id), " +
-					"addl_info VARCHAR(256), " +
-					"PRIMARY KEY (id))";
+					"addl_info VARCHAR(256))";
 
 	public static final String CREATE_GIFT_TABLE =
 			"CREATE TABLE Gifts(" +
-					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
+					"id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
 					"type VARCHAR(16) NOT NULL, " +
 					"subtype VARCHAR(16) NOT NULL, " +
 					"description VARCHAR(128) NOT NULL, " +
-					"inventory INT NOT NULL, " +
-					"PRIMARY KEY (id))";
+					"inventory INT NOT NULL)";
 
 	public static final String CREATE_GIFT_DELIVERY_REQUEST_TABLE =
 			"CREATE TABLE Gift_Delivery_Requests(" +
-					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
+					"id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
 					"patient_id INT NOT NULL REFERENCES Patients(id), " +
 					"sender_name VARCHAR(32) NOT NULL, " +
 					"request_username VARCHAR(32) NOT NULL REFERENCES Users(username), " +
@@ -87,12 +89,11 @@ public class DBConstants {
 					"notes VARCHAR(256), " +
 					// 0: Pending, 1: Approved, 2: Assigned, 3: Denied, 4: Completed
 					"status CHAR(1) NOT NULL, " +
-					"date_and_time CHAR(19) NOT NULL, " +
-					"PRIMARY KEY (id))";
+					"date_and_time CHAR(19) NOT NULL)";
 
 	public static final String CREATE_MEDICATION_REQUEST_TABLE =
 			"CREATE TABLE Medication_Requests(" +
-					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
+					"id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
 					"patient_id INT NOT NULL REFERENCES Patients(id), " +
 					"doctor_id INT NOT NULL REFERENCES Doctors(id), " +
 					"nurse_username VARCHAR(32) NOT NULL REFERENCES Users(username), " +
@@ -102,12 +103,11 @@ public class DBConstants {
 					"notes VARCHAR(256), " +
 					// 0: Pending, 1: Approved, 2: Assigned, 3: Denied, 4: Completed
 					"status CHAR(1) NOT NULL, " +
-					"date_and_time CHAR(19) NOT NULL, " +
-					"PRIMARY KEY (id))";
+					"date_and_time CHAR(19) NOT NULL)";
 
 	public static final String CREATE_SERVICE_REQUEST_TABLE =
 			"CREATE TABLE Service_Requests(" +
-					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
+					"id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
 					"patient_id INT REFERENCES Patients(id), " +
 					"request_username VARCHAR(32) REFERENCES Users(username), " +
 					"assignee_username VARCHAR(32) REFERENCES Users(username), " +
@@ -117,35 +117,34 @@ public class DBConstants {
 					"notes VARCHAR(256), " +
 					// 0: Pending, 1: Approved, 2: Assigned, 3: Denied, 4: Completed
 					"status CHAR(1) NOT NULL, " +
-					"date_and_time CHAR(19) NOT NULL, " +
-					"PRIMARY KEY (id))";
+					"date_and_time CHAR(19) NOT NULL)";
 
 	public static final String DROP_NODE_TABLE =
-			"DROP TABLE Nodes";
+			"DROP TABLE IF EXISTS Nodes";
 
 	public static final String DROP_EDGE_TABLE =
-			"DROP TABLE Edges";
+			"DROP TABLE IF EXISTS Edges";
 
 	public static final String DROP_USER_TABLE =
-			"DROP TABLE Users";
+			"DROP TABLE IF EXISTS Users";
 
 	public static final String DROP_DOCTOR_TABLE =
-			"DROP TABLE Doctors";
+			"DROP TABLE IF EXISTS Doctors";
 
 	public static final String DROP_PATIENT_TABLE =
-			"DROP TABLE Patients";
+			"DROP TABLE IF EXISTS Patients";
 
 	public static final String DROP_GIFT_TABLE =
-			"DROP TABLE Gifts";
+			"DROP TABLE IF EXISTS Gifts";
 
 	public static final String DROP_GIFT_DELIVER_REQUEST_TABLE =
-			"DROP TABLE Gift_Delivery_Requests";
+			"DROP TABLE IF EXISTS Gift_Delivery_Requests";
 
 	public static final String DROP_MEDICATION_REQUEST_TABLE =
-			"DROP TABLE Medication_Requests";
+			"DROP TABLE IF EXISTS Medication_Requests";
 
 	public static final String DROP_SERVICE_REQUEST_TABLE =
-			"DROP TABLE Service_Requests";
+			"DROP TABLE IF EXISTS Service_Requests";
 
 	public static final String ADD_NODE =
 			"INSERT INTO Nodes(id, x_pos, y_pos, floor, building, node_type, l_name, s_name)" +
@@ -344,6 +343,11 @@ public class DBConstants {
 					"SET status = ? " +
 					"WHERE id = ?";
 
+	public static final String UPDATE_GIFT_DELIVERY_REQUEST_NOTES =
+			"UPDATE Gift_Delivery_Requests " +
+					"SET notes = ? " +
+					"WHERE id = ?";
+
 	public static final String UPDATE_MEDICATION_REQUEST =
 			"UPDATE Medication_Requests " +
 					"SET doctor_id = ?, patient_id = ?, nurse_username = ?, deliverer_username = ?, dose = ?, type = ?, notes = ?, status = ?, date_and_time = ? " +
@@ -359,6 +363,11 @@ public class DBConstants {
 					"SET status = ? " +
 					"WHERE id = ?";
 
+	public static final String UPDATE_MEDICATION_REQUEST_NOTES =
+			"UPDATE Medication_Requests " +
+					"SET notes = ? " +
+					"WHERE id = ?";
+
 	public static final String UPDATE_SERVICE_REQUEST =
 			"UPDATE Service_Requests " +
 					"SET patient_id = ?, request_username = ?, assignee_username = ?, location = ?, service = ?, type = ?, notes = ?, status = ?, date_and_time = ? " +
@@ -372,6 +381,11 @@ public class DBConstants {
 	public static final String UPDATE_SERVICE_REQUEST_STATUS =
 			"UPDATE Service_Requests " +
 					"SET status = ? " +
+					"WHERE id = ?";
+
+	public static final String UPDATE_SERVICE_REQUEST_NOTES =
+			"UPDATE Service_Requests " +
+					"SET notes = ? " +
 					"WHERE id = ?";
 
 	public static final String REMOVE_NODE =

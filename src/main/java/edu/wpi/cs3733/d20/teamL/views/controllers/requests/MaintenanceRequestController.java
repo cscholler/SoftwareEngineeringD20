@@ -74,7 +74,7 @@ public class MaintenanceRequestController implements Initializable {
     private void submit() {
         if (fieldsFilled()) {
             String notes = urgency.getSelectionModel().getSelectedItem().toString() + "|" + description.getText();
-            String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
+            String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm aa").format(new Date());
 
             ArrayList<String> params = new ArrayList<>(Arrays.asList(null, loginManager.getCurrentUser().getUsername(), null, searchFields.getNode(location.getText()).getID(),
                     "maintenance", type.getSelectionModel().getSelectedItem().toString(), notes, "0", dateAndTime));

@@ -113,11 +113,11 @@ public class InternalTransportController implements Initializable {
 
 
         String status = "0";
-        String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
+        String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm aa").format(new Date());
         String concatenatedNotes = dateNeeded + "\n" + hourNeeded + " : " + minNeeded;
         int rows = 0;
         if (!(start.isEmpty() || end.isEmpty() || type.isEmpty())) {
-            rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST, new ArrayList<>(Arrays.asList(null, manager.getCurrentUser().getUsername(), null, start, "internal_transportation", type, end, concatenatedNotes, status, dateAndTime))));
+            rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST, new ArrayList<>(Arrays.asList(null, manager.getCurrentUser().getUsername(), null, start, "internal transportation", type, end, concatenatedNotes, status, dateAndTime))));
         }
 
         if (rows == 0) {

@@ -3,8 +3,8 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import javafx.animation.FadeTransition;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,6 +12,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
@@ -25,7 +27,6 @@ import java.util.TimerTask;
 public class UserLandingController {
     public ImageView btnClose;
     FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
-
     @FXML
     private Label timeLabel, requestLabel;
     @FXML
@@ -50,66 +51,66 @@ public class UserLandingController {
 
     @FXML
     public void launchDefaultPane() throws IOException{
-        resetPage("DefaultPane", " ");
+        resetAndLoadPane("DefaultPane", " ");
         requestLabel.setVisible(false);
         btnClose.setVisible(false);
     }
 
     @FXML
     public void launchSecurityPane() throws IOException{
-        resetPage("SecurityPane", "Security Request");
+        resetAndLoadPane("SecurityPane", "Security Request");
         btnSecurity.setStyle("-fx-background-color: #DCDCDC");
     }
 
     @FXML
     public void launchSanitationPane() throws IOException {
-        resetPage("SanitationPane", "Sanitation Request");
+        resetAndLoadPane("SanitationPane", "Sanitation Request");
         btnSanitation.setStyle("-fx-background-color: #DCDCDC");
     }
 
     @FXML
     public void launchGiftPane() throws IOException {
-        resetPage("GiftCart", "Gift Request");
+        resetAndLoadPane("GiftCart", "Gift Request");
         btnSanitation.setStyle("-fx-background-color: #DCDCDC");
     }
 
     @FXML
     public void launchMaintenancePane() throws IOException {
-        resetPage("MaintenancePane", "Maintenance Request");
+        resetAndLoadPane("MaintenancePane", "Maintenance Request");
         btnMaintenance.setStyle("-fx-background-color: #DCDCDC");
     }
 
     @FXML
     public void launchMedicationPane() throws IOException {
-        resetPage("MedicationPane", "Medication Request");
+        resetAndLoadPane("MedicationPane", "Medication Request");
         btnMedication.setStyle("-fx-background-color: #DCDCDC");
     }
 
     @FXML
     public void launchInternalPane() throws IOException {
-        resetPage("InternalPane", "Internal Transport");
+        resetAndLoadPane("InternalPane", "Internal Transport");
         btnInternal.setStyle("-fx-background-color: #DCDCDC");
     }
 
     @FXML
     public void launchExternalPane() throws IOException {
-        resetPage("ExternalPane", "External Transport");
+        resetAndLoadPane("ExternalPane", "External Transport");
         btnExternal.setStyle("-fx-background-color: #DCDCDC");
     }
 
     @FXML
     public void launchITPane() throws IOException {
-        resetPage("ITPane", "IT Request");
+        resetAndLoadPane("ITPane", "IT Request");
         btnIT.setStyle("-fx-background-color: #DCDCDC");
     }
 
     @FXML
     public void launchInterpreterPane() throws IOException {
-        resetPage("InterpreterPane", "Interpreter Request");
+        resetAndLoadPane("InterpreterPane", "Interpreter Request");
         btnInterpreter.setStyle("-fx-background-color: #DCDCDC");
     }
 
-    private void resetPage(String regionName, String labelText) throws IOException {
+    private void resetAndLoadPane(String regionName, String labelText) throws IOException {
         JFXButton[] allButtons = new JFXButton[]{btnGift, btnSecurity, btnSanitation, btnMaintenance, btnIT, btnInternal, btnExternal, btnInterpreter, btnMedication};
         for (JFXButton currButton:allButtons) {
             currButton.setStyle("-fx-background-color: white;");
