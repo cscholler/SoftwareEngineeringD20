@@ -10,6 +10,7 @@ public class DBConstants {
 	public static final String DB_PORT = ":5008";
 	public static final String DB_NAME_DEV = "/bwh_dev";
 	public static final String DB_NAME_PROD = "/bwh_prod";
+	static final String DB_NAME_CANARY = "/bwh_canary";
 	public static final String DB_USER = "teaml";
 	public static final String DB_PASSWORD = "linenleviathans";
 	public static final String SERVICE_NAME = "mysql-db-01";
