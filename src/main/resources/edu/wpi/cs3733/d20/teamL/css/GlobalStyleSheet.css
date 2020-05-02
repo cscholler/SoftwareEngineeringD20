@@ -92,6 +92,11 @@
     -jfx-checked-color: #0D2E57;
 }
 
+.radio-button-jfx {
+    -fx-font-size: 15;
+    -jfx-selected-color: #0D2E57;
+}
+
 .text-area-jfx {
     -fx-background-color: #DCDCDC;
     -fx-background-radius: 0;

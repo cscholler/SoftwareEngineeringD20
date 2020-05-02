@@ -94,25 +94,18 @@
                                     <Image url="@../../assets/serviceIcons/mantinenceRequest.png" />
                                  </image></ImageView>
                            </graphic></JFXButton>
-                        <JFXButton fx:id="btnExternal" onAction="#launchExternalPane" prefHeight="101.0" prefWidth="361.0" styleClass="services-button-jfx" text="External Transport">
-                           <graphic>
-                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../assets/serviceIcons/externalTransport.png" />
-                                 </image></ImageView>
-                           </graphic></JFXButton>
-                        <JFXButton fx:id="btnInterpreter" onAction="#launchInterpreterPane" prefWidth="361.0" styleClass="services-button-jfx" text="Interpreter">
-                           <graphic>
-                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../assets/serviceIcons/interpreterRequest.png" />
-                                 </image></ImageView>
-                           </graphic></JFXButton>
                         <JFXButton fx:id="btnInternal" onAction="#launchInternalPane" prefWidth="361.0" styleClass="services-button-jfx" text="Internal Transport">
                            <graphic>
                               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../assets/serviceIcons/internalTransport.png" />
+                                 </image></ImageView>
+                           </graphic></JFXButton>
+                        <JFXButton fx:id="btnExternal" onAction="#launchExternalPane" prefHeight="101.0" prefWidth="361.0" styleClass="services-button-jfx" text="External Transport">
+                           <graphic>
+                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/serviceIcons/externalTransport.png" />
                                  </image></ImageView>
                            </graphic></JFXButton>
                         <JFXButton fx:id="btnMedication" onAction="#launchMedicationPane" prefWidth="361.0" styleClass="services-button-jfx" text="Medication">
@@ -134,6 +127,13 @@
                               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../assets/serviceIcons/informationTechnology.png" />
+                                 </image></ImageView>
+                           </graphic></JFXButton>
+                        <JFXButton fx:id="btnInterpreter" onAction="#launchInterpreterPane" prefWidth="361.0" styleClass="services-button-jfx" text="Interpreter">
+                           <graphic>
+                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/serviceIcons/interpreterRequest.png" />
                                  </image></ImageView>
                            </graphic></JFXButton>
                      </children>
