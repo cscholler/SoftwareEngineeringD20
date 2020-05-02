@@ -7,7 +7,8 @@ import java.util.List;
 import javafx.geometry.Point2D;
 
 public class Path implements Iterable<Node> {
-
+    private ArrayList<String> message = new ArrayList<>();
+    private ArrayList<ArrayList<Node>> subpaths = new ArrayList<>();
     private List<Node> pathNodes = new LinkedList<>();
     private int length = 0;
 
@@ -108,9 +109,7 @@ public class Path implements Iterable<Node> {
         return newPath;
     }
 
-    public Object[] generateTextMessage() {
-        ArrayList<String> message = new ArrayList<>();
-        ArrayList<ArrayList<Node>> subpaths = new ArrayList<>();
+    public void generateTextMessage() {
         ArrayList<Node> subpath = new ArrayList<>();
 
         Point2D start, end;
@@ -225,8 +224,6 @@ public class Path implements Iterable<Node> {
             subpaths.add(subpath);
             subpath.clear();
         }
-
-        return new Object[]{message, subpaths};
     }
 
     private Point2D delta(Node curr, Node next) {
@@ -271,5 +268,13 @@ public class Path implements Iterable<Node> {
             return false;
         }
         return true;
+    }
+
+    public ArrayList<String> getMessage() {
+        return message;
+    }
+
+    public ArrayList<ArrayList<Node>> getSubpaths() {
+        return subpaths;
     }
 }

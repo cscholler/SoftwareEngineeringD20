@@ -200,7 +200,8 @@ public class MapViewerController {
         path = pathfinderService.pathfind(map.getBuilding(), source, destination);
         highLightPath();
 
-        ArrayList<String> message = path.generateTextMessage();
+        path.generateTextMessage();
+        ArrayList<String> message = path.getMessage();
         StringBuilder builder = new StringBuilder();
 
         for(String direction : message) {
