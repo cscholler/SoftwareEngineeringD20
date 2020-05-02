@@ -31,7 +31,7 @@ public class ServiceRequestController {
     @FXML
     private void outTransClicked() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("ExternalTransportRequestForm").load();
+            Parent root = loaderHelper.getFXMLLoader("requests/ExternalPane").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
@@ -51,7 +51,7 @@ public class ServiceRequestController {
     @FXML
     private void inTransClicked() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("InhospitalTransportRequestForm").load();
+            Parent root = loaderHelper.getFXMLLoader("requests/InternalPane").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
