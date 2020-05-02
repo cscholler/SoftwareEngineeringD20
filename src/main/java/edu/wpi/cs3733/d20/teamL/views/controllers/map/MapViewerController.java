@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.jfoenix.controls.JFXListView;
-import edu.wpi.cs3733.d20.teamL.entities.*;
+import edu.wpi.cs3733.d20.teamL.entities.Building;
+import edu.wpi.cs3733.d20.teamL.entities.Graph;
 import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import javafx.collections.FXCollections;
@@ -34,7 +35,9 @@ import com.jfoenix.controls.JFXTextField;
 
 import lombok.extern.slf4j.Slf4j;
 
+import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
+import edu.wpi.cs3733.d20.teamL.entities.Path;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
@@ -58,11 +61,9 @@ public class MapViewerController {
     @FXML
     VBox instructions;
     @FXML
-	VBox floorSelector;
-
+    VBox floorSelector;
     @FXML
     JFXListView dirList;
-
     @FXML
     JFXButton btnTextMe, btnQR;
 
@@ -192,9 +193,9 @@ public class MapViewerController {
     private String highlightSourceToDestination(Node source, Node destination) {
         map.getSelector().clear();
 
-        if(!path.getPathNodes().isEmpty()) {
+        if (!path.getPathNodes().isEmpty()) {
             NodeGUI start = map.getNodeGUI(path.getPathNodes().get(0));
-            NodeGUI end = map.getNodeGUI(path.getPathNodes().get(path.getPathNodes().size()-1));
+            NodeGUI end = map.getNodeGUI(path.getPathNodes().get(path.getPathNodes().size() - 1));
 
             map.resetNodeVisibility(start);
             map.resetNodeVisibility(end);
@@ -210,6 +211,10 @@ public class MapViewerController {
 
         direct.addAll(message);
         dirList.getItems().addAll(direct);
+
+        for (String direction : message) {
+            builder.append(direction + "\n\n");
+        }
 
         return builder.toString();
     }
@@ -257,7 +262,7 @@ public class MapViewerController {
     }
 
     @FXML
-    public void handleText(){
+    public void handleText() {
         try {
             Parent root = loaderHelper.getFXMLLoader("SendDirectionsPage").load();
             loaderHelper.setupPopup(new Stage(), new Scene(root));
@@ -267,7 +272,7 @@ public class MapViewerController {
     }
 
     @FXML
-    public void genQR(){
+    public void genQR() {
         try {
             Parent root = loaderHelper.getFXMLLoader("Map Viewer/QRCode").load();
             loaderHelper.setupPopup(new Stage(), new Scene(root));
@@ -318,17 +323,33 @@ public class MapViewerController {
             }
         }
     }
+
     @FXML
     private void clearSource(ActionEvent actionEvent) {
         startingPoint.clear();
     }
+
     @FXML
     private void clearDest(ActionEvent actionEvent) {
         destination.clear();
     }
 
+    /**
+     * login pops up when login button is clicked
+     */
+    @FXML
+    private void loginBtnClicked() {
+        try {
+            Parent root = loaderHelper.getFXMLLoader("Staff/LoginPage").load();
+            loaderHelper.setupPopup(new Stage(), new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
+    }
+
     @FXML
     private void goToSelected(){
-        dirList.getSelectionModel().getSelectedItem();
+       int index = dirList.getSelectionModel().getSelectedIndex();
+
     }
 }
