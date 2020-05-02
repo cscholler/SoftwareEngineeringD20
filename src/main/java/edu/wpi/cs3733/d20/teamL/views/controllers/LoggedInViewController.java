@@ -2,7 +2,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers;
 
 import com.google.inject.Inject;
 import com.jfoenix.controls.JFXButton;
-import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
+import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -140,7 +141,12 @@ public class LoggedInViewController implements Initializable{
 
 	@FXML
 	public void exportClicked(ActionEvent actionEvent) {
-
+        try {
+            Parent root = loaderHelper.getFXMLLoader("dialogues/ExportDialogue").load();
+            loaderHelper.setupPopup(new Stage(), new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
 	}
 
 	@FXML
