@@ -14,6 +14,7 @@ import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 
 import javax.inject.Inject;
@@ -32,6 +33,8 @@ public class SecurityPaneController {
     JFXTextArea reasonText, notesText;
     @FXML
     JFXButton btnSubmit;
+    @FXML
+    private ImageView requestReceived;
     @Inject
     private IDatabaseService db;
     @Inject
@@ -64,7 +67,8 @@ public class SecurityPaneController {
      * shows autocomplete options when searching for a location
      */
     @FXML
-    private void autocomplete() { sf.applyAutocomplete(locationText, autoCompletePopup); }
+    private void autocomplete() {
+        sf.applyAutocomplete(locationText, autoCompletePopup); }
 
     /**
      * handles clicking of submit button
@@ -104,6 +108,8 @@ public class SecurityPaneController {
                 reasonText.setText("");
                 notesText.setText("");
                 personnelText.setText("");
+
+
             }
         }
     }
