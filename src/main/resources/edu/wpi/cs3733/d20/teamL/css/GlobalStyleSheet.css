@@ -24,7 +24,7 @@
     -fx-text-fill: white;
     -fx-padding: 10;
 
-    -fx-background-color: #0D2E57;
+    -fx-background-color: #00043B;
     -fx-pref-width: 150;
     -fx-pref-height: 50;
     -fx-max-width: 150;
@@ -139,7 +139,7 @@
 
 .services-button-jfx {
     -fx-font-size: 30;
-    -fx-text-fill: #00043B;
+    -fx-text-fill: #0D2E57;
 
     -fx-background-color: WHITE;
     -fx-pref-width: 385;
