@@ -123,10 +123,9 @@ public class LoggedInViewController implements Initializable{
      */
     @FXML
     private void logoutClicked() {
-        log.info("here");
         loginManager.logOut(true);
         try {
-            Parent root = loaderHelper.getFXMLLoader("Home").load();
+            Parent root = loaderHelper.getFXMLLoader("map_viewer/MapViewer").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
