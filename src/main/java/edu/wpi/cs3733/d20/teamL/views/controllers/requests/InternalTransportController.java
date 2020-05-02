@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 import com.google.inject.Inject;
 import com.jfoenix.controls.JFXAutoCompletePopup;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
@@ -13,10 +14,15 @@ import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
+import javafx.util.Callback;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -27,7 +33,7 @@ import java.util.ResourceBundle;
 
 public class InternalTransportController implements Initializable {
 
-    ObservableList<String> transportOptions = FXCollections.observableArrayList("Wheelchair w/ Operator", "Wheelchair w/o Operator", "Crutches", "Walker", "Stretcher");
+    ObservableList<String> transportOptions = FXCollections.observableArrayList("Wheelchair w/ Operator", "Wheelchair w/o Operator", "Crutches", "Walker", "Gurney");
 
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
@@ -35,9 +41,11 @@ public class InternalTransportController implements Initializable {
     @FXML
     JFXComboBox transportSelector;
     @FXML
-    JFXTextField startLoc, endLoc;
+    JFXTextField startLoc, endLoc, hour, minutes;
     @FXML
     Label confirmation;
+    @FXML
+    JFXDatePicker date;
     @Inject
     private IDatabaseService db;
     @Inject
@@ -56,6 +64,19 @@ public class InternalTransportController implements Initializable {
 
         transportSelector.setValue("Type of Transport");
         transportSelector.setItems(transportOptions);
+
+        hour.addEventFilter(KeyEvent.KEY_TYPED, keyEvent -> {
+            if (!"0123456789".contains(keyEvent.getCharacter())) {
+                keyEvent.consume();
+            }
+        });
+
+        minutes.addEventFilter(KeyEvent.KEY_TYPED, keyEvent -> {
+            if (!"0123456789".contains(keyEvent.getCharacter())) {
+                keyEvent.consume();
+            }
+        });
+
     }
 
     @FXML
@@ -69,16 +90,34 @@ public class InternalTransportController implements Initializable {
     }
 
     @FXML
+    private void timeConstraints(KeyEvent e){
+        if(e.getSource() == hour)
+            if((Integer.parseInt(hour.getText()) > 2)){
+                hour.setText("12");
+        }
+        if(e.getSource() == minutes)
+            if((Integer.parseInt(minutes.getText()) > 2)){
+            minutes.setText("12");
+        }
+
+    }
+
+    @FXML
     private void submitClicked() {
         String start = startLoc.getText();
         String end = endLoc.getText();
         String type = (String) transportSelector.getValue();
+        Callback<DatePicker, DateCell> dateNeeded = date.getDayCellFactory();
+        String hourNeeded = hour.getText();
+        String minNeeded = minutes.getText();
+
 
         String status = "0";
         String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
+        String concatenatedNotes = dateNeeded + "\n" + hourNeeded + " : " + minNeeded;
         int rows = 0;
         if (!(start.isEmpty() || end.isEmpty() || type.isEmpty())) {
-            rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST, new ArrayList<>(Arrays.asList(null, manager.getCurrentUser().getUsername(), null, start, "internal_transportation", type, end, status, dateAndTime))));
+            rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST, new ArrayList<>(Arrays.asList(null, manager.getCurrentUser().getUsername(), null, start, "internal_transportation", type, end, concatenatedNotes, status, dateAndTime))));
         }
 
         if (rows == 0) {
@@ -90,7 +129,7 @@ public class InternalTransportController implements Initializable {
 
             startLoc.setText("");
             endLoc.setText("");
-            transportSelector.setValue("Choose Type pf Transport");
+            transportSelector.setValue("Choose Type of Transport");
         }
 
         loaderHelper.showAndFade(confirmation);
@@ -100,5 +139,7 @@ public class InternalTransportController implements Initializable {
     private void closeClicked() {
         loaderHelper.goBack();
     }
+
+
 }
 

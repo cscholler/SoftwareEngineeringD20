@@ -29,6 +29,7 @@ import java.util.ResourceBundle;
 public class ExternalTransportController implements Initializable {
 
 
+
     ObservableList<String> transportOptions = FXCollections.observableArrayList("Taxi", "Bus", "Uber", "Lift");
 
     private SearchFields sf;
@@ -37,7 +38,7 @@ public class ExternalTransportController implements Initializable {
     @FXML
     JFXComboBox transportSelector;
     @FXML
-    JFXTextField startLoc, endLoc;
+    JFXTextField startLoc, endLoc, hour, minutes;
     @FXML
     Label confirmation;
     @Inject

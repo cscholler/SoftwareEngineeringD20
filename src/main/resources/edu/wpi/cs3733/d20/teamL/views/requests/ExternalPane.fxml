@@ -15,7 +15,7 @@
     <center>
         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="50.0" BorderPane.alignment="CENTER">
             <children>
-                <JFXComboBox fx:id="transportSelector" minWidth="300.0" promptText="Select Transport Type" styleClass="combo-box-jfx" />
+                <JFXComboBox fx:id="transportSelector" minWidth="300.0" promptText="Equipment" styleClass="combo-box-jfx" />
             <HBox alignment="CENTER" spacing="40.0">
                <children>
                   <JFXDatePicker defaultColor="#405784" promptText="Select a Date..." />

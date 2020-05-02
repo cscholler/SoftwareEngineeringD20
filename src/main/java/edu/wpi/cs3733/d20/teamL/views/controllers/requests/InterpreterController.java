@@ -105,7 +105,7 @@ public class InterpreterController implements Initializable {
             int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
                     new ArrayList<>(Arrays.asList(patientID, user, null, roomNumber, "interpreter", interpreterType, concatenatedNotes, status, dateAndTime)))));
 
-            if (rows == 0) {
+            if(rows == 0) {
                 confirmation.setVisible(true);
                 confirmation.setTextFill(Color.RED);
                 confirmation.setText("Submission failed");
