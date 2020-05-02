@@ -5,9 +5,13 @@ import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -22,17 +26,21 @@ public class ExportDialogue {
 
     @Inject
     private IDatabaseService dbService;
+    private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 
     @FXML
     private BorderPane root;
     @FXML
     private JFXComboBox<String> tableSelector;
+    @FXML
+    private Label message;
 
     @FXML
     private void initialize() {
         populateTables();
 
         tableSelector.getItems().addAll(tables.keySet());
+        tableSelector.getItems().add("All");
     }
 
     private void populateTables() {
@@ -47,7 +55,7 @@ public class ExportDialogue {
     private void exportClicked() {
         String selected = tableSelector.getSelectionModel().getSelectedItem();
 
-        if (selected != null) {
+        if (selected != "All") {
             ResultSet resultSet = dbService.executeQuery(new SQLEntry(tables.get(selected)));
             ArrayList<ArrayList<String>> dbTable = new ArrayList<>();
             dbTable.add(dbService.getColumnNames(resultSet));
@@ -62,9 +70,45 @@ public class ExportDialogue {
 
             CSVHelper csvHelper = new CSVHelper();
             csvHelper.writeToCSV(savedFile.getPath(), dbTable);
-        } else {
 
+            showMessage("Saved " + savedFile.getPath());
+        } else if (selected != null){
+            DirectoryChooser directoryChooser = new DirectoryChooser();
+            directoryChooser.setTitle("Save all tables");
+            File directory = directoryChooser.showDialog(root.getScene().getWindow());
+
+            for (String table : tables.keySet()) {
+                String query = tables.get(table);
+
+                ResultSet resultSet = dbService.executeQuery(new SQLEntry(query));
+                ArrayList<ArrayList<String>> dbTable = new ArrayList<>();
+                dbTable.add(dbService.getColumnNames(resultSet));
+                dbTable.addAll(dbService.getTableFromResultSet(resultSet));
+
+                File savedFile = new File(directory.getPath() + "/" + table + "_table.csv");
+
+                CSVHelper csvHelper = new CSVHelper();
+                csvHelper.writeToCSV(savedFile.getPath(), dbTable);
+            }
+
+            showMessage("Saved tables to " + directory.getPath());
+        } else {
+            showErrorMessage("Please select a table to export");
         }
+    }
+
+    private void showMessage(String msg) {
+        message.setTextFill(Color.WHITE);
+        message.setText(msg);
+
+        loaderHelper.showAndFade(message);
+    }
+
+    private void showErrorMessage(String msg) {
+        message.setTextFill(Color.RED);
+        message.setText(msg);
+
+        loaderHelper.showAndFade(message);
     }
 
 }
