@@ -21,9 +21,9 @@
 .button{
     -fx-background-radius: 5px;
     -fx-padding: 10;
-    -fx-background-color: #405784;
+    -fx-background-color: grey;
     -fx-text-fill: white;
-    -fx-pref-width: 100;
+    -fx-pref-width: 150;
     -jfx-button-type: RAISED;
 }
 

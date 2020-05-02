@@ -1,0 +1,156 @@
+.background-pane-fx {
+    -fx-pref-height: 720;
+    -fx-pref-width: 1280;
+    -fx-max-height: 720;
+    -fx-max-width: 1280;
+    -fx-background-color: white;
+}
+
+.cancel-button-jfx {
+    -fx-font-size: 20;
+    -fx-text-fill: white;
+    -fx-padding: 10;
+
+    -fx-background-color: gray;
+    -fx-pref-width: 150;
+    -fx-pref-height: 50;
+    -fx-max-width: 150;
+    -fx-max-height: 150;
+    -jfx-button-type: RAISED;
+}
+
+.save-button-jfx {
+    -fx-font-size: 20;
+    -fx-text-fill: white;
+    -fx-padding: 10;
+
+    -fx-background-color: #0D2E57;
+    -fx-pref-width: 150;
+    -fx-pref-height: 50;
+    -fx-max-width: 150;
+    -fx-max-height: 50;
+    -jfx-button-type: RAISED;
+}
+
+.text-field-jfx {
+    -fx-background-color: #DCDCDC;
+    -fx-background-radius: 0;
+    -jfx-unfocus-color: white;
+    -jfx-focus-color: #0D2E57;
+    -fx-pref-width: 200;
+    -fx-pref-height: 40;
+    -fx-max-width: 200;
+    -fx-max-height: 40;
+
+    -fx-font-size: 15;
+    -jfx-label-float: true;
+}
+
+.combo-box-jfx {
+    -fx-background-color: #DCDCDC;
+    -fx-background-radius: 0;
+    -jfx-unfocus-color: white;
+    -jfx-focus-color: #0D2E57;
+    -fx-pref-width: 200;
+    -fx-pref-height: 40;
+    -fx-max-width: 200;
+    -fx-max-height: 40;
+
+    -fx-font-size: 15;
+}
+
+.bottom-bar-anchor-pane-fx {
+    -fx-background-color: #00043B;
+    -fx-pref-height: 30;
+    -fx-max-height: 30;
+    -fx-alignment: center;
+}
+
+.bottom-bar-time-label-jfx {
+    -fx-text-fill: white;
+    -fx-font-size:30;
+    -fx-padding: 0 0 0 30;
+}
+
+.bottom-bar-logout-label-jfx {
+    -fx-text-fill: white;
+    -fx-underline: true;
+    -fx-font-size:30;
+    -fx-padding: 0 30 0 30;
+    -fx-text-alignment: justify;
+}
+
+.service-request-header-label-jfx {
+    -fx-text-fill: #00043B;
+    -fx-font-size: 40;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 0 30;
+}
+
+.check-box-jfx {
+    -fx-font-size: 15;
+    -jfx-checked-color: #0D2E57;
+}
+
+.radio-button-jfx {
+    -fx-font-size: 15;
+    -jfx-selected-color: #0D2E57;
+}
+
+.text-area-jfx {
+    -fx-background-color: #DCDCDC;
+    -fx-background-radius: 0;
+    -jfx-unfocus-color: white;
+    -jfx-focus-color: #0D2E57;
+    -fx-pref-width: 400;
+    -fx-pref-height: 150;
+    -fx-max-width: 400;
+    -fx-max-height: 150;
+
+    -fx-font-size: 15;
+    -jfx-label-float: true;
+}
+
+.notifications-button-jfx {
+    -fx-font-size: 30;
+    -fx-text-fill: #00043B;
+    -fx-padding: 0 10 0 10;
+    -fx-underline: true;
+
+    -fx-background-color: WHITE;
+    -fx-pref-width: 260;
+    -fx-pref-height: 60;
+    -fx-max-width: 260;
+    -fx-max-height: 60;
+    -jfx-button-type: FLAT;
+}
+
+.services-button-jfx {
+    -fx-font-size: 30;
+    -fx-text-fill: #00043B;
+
+    -fx-background-color: WHITE;
+    -fx-pref-width: 385;
+    -fx-pref-height: 300;
+    -fx-max-height: 300;
+    -fx-alignment: center-left;
+    -jfx-button-type: RAISED;
+}
+
+.services-button-jfx {
+    -fx-font-size: 30;
+    -fx-text-fill: #00043B;
+
+    -fx-background-color: WHITE;
+    -fx-pref-width: 385;
+    -fx-pref-height: 300;
+    -fx-max-height: 300;
+    -fx-alignment: center-left;
+    -jfx-button-type: RAISED;
+}
+
+.services-pane-jfx{
+    -fx-background-color: white;
+    -fx-pref-width: 895;
+    -fx-pref-height: 585;
+}
