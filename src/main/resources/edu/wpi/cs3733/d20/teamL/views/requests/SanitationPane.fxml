@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXRadioButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="546.0" prefWidth="900.0" styleClass="services-pane-jfx" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.SanitationPaneController">
+   <bottom>
+      <AnchorPane BorderPane.alignment="CENTER">
+         <children>
+            <JFXButton layoutX="15.0" layoutY="11.0" onAction="#submitServiceRequest" styleClass="save-button-jfx" text="Submit" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+         </children>
+      </AnchorPane>
+   </bottom>
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets left="20.0" top="20.0" />
+         </BorderPane.margin>
+         <children>
+            <JFXTextField fx:id="incidentLocationText" promptText="Incident Location" styleClass="text-field-jfx" />
+            <HBox alignment="CENTER_LEFT" spacing="20.0">
+               <children>
+                  <Label text="Service Request Tags:">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <JFXCheckBox fx:id="bioHazardCheckBox" styleClass="check-box-jfx" text="Biohazard" />
+                  <JFXCheckBox fx:id="spillCheckBox" styleClass="check-box-jfx" text="Spill" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="20.0">
+               <children>
+                  <Label text="Priority Level:">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <JFXRadioButton styleClass="radio-button-jfx" text="High Priority">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="priorityGroup" />
+                     </toggleGroup>
+                  </JFXRadioButton>
+                  <JFXRadioButton styleClass="radio-button-jfx" text="Non-Emergency" toggleGroup="$priorityGroup" />
+                  <JFXRadioButton styleClass="radio-button-jfx" text="Low Priority" toggleGroup="$priorityGroup" />
+               </children>
+            </HBox>
+            <JFXTextArea fx:id="additionalNotesText" promptText="Additional Notes" styleClass="text-area-jfx" />
+         </children>
+      </VBox>
+   </center>
+</BorderPane>
