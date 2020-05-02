@@ -64,6 +64,7 @@ public class MapPane extends ScrollPane {
     private EdgeGUI tempEdge;
     private NodeGUI tempNode;
     private int nodeRadius = 18;
+    private int hallwayNodeRadius = 12;
     private Color nodeColor = Color.rgb(13, 46, 87, 0.9);
     private Color edgeColor = Color.DARKBLUE;
     private Color highLightColor = Color.GOLD;//Color.rgb(20, 194, 247);
@@ -299,6 +300,14 @@ public class MapPane extends ScrollPane {
         this.nodeRadius = nodeRadius;
     }
 
+    public int getHallwayNodeRadius() {
+        return hallwayNodeRadius;
+    }
+
+    public void setHallwayNodeRadius(int hallwayNodeRadius) {
+        this.hallwayNodeRadius = hallwayNodeRadius;
+    }
+
     public Color getNodeColor() {
         return nodeColor;
     }
@@ -463,7 +472,9 @@ public class MapPane extends ScrollPane {
     public NodeGUI addNode(Node node) {
         NodeGUI nodeGUI = new NodeGUI(node);
 
-        nodeGUI.getCircle().setRadius(nodeRadius);
+        if (node.getType().equals("HALL")) nodeGUI.getCircle().setRadius(getHallwayNodeRadius());
+        else nodeGUI.getCircle().setRadius(getNodeRadius());
+
         nodeGUI.getCircle().fillProperty().setValue(nodeColor);
         nodeGUI.setHighlightColor(highLightColor);
         nodeGUI.setHighlightThickness(highlightThickness);
@@ -517,7 +528,7 @@ public class MapPane extends ScrollPane {
 
                 // -----------Handle adding the edge-----------
                 if (!addingNode && event.isSecondaryButtonDown() && !draggingNode && !dragSelecting && !erasing) {
-                    tempEdge = new EdgeGUI(nodeRadius / 4, nodeColor, highLightColor, highlightThickness);
+                    tempEdge = new EdgeGUI((int) edgeThickness, nodeColor, highLightColor, highlightThickness);
                     tempEdge.startXProperty().bind(nodeGUI.getXProperty());
                     tempEdge.startYProperty().bind(nodeGUI.getYProperty());
                     tempEdge.setEndX(tempEdge.getStartX());
@@ -533,7 +544,6 @@ public class MapPane extends ScrollPane {
                 if (!addingNode && event.isPrimaryButtonDown() && addingEdge && !erasing) {
                     Node source = tempEdge.getSource().getNode();
                     Node dest = nodeGUI.getNode();
-                    int length = (int) source.getPosition().distance(dest.getPosition());
 
                     Edge edge = new Edge(source, dest);
                     source.addEdgeTwoWay(edge);
