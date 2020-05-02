@@ -81,7 +81,7 @@
                         </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="40.0">
                      <children>
-                        <StackPane fx:id="stackPane" prefHeight="150.0" prefWidth="200.0">
+                        <StackPane fx:id="stackPane" prefHeight="150.0" prefWidth="205.0">
                            <children>
                               <JFXButton fx:id="btnAbout" contentDisplay="CENTER" maxHeight="20.0" maxWidth="20.0" onAction="#handleAbout" prefHeight="20.0" prefWidth="20.0" style="-fx-background-radius: 50;" text=" ">
                                  <graphic>
@@ -94,7 +94,10 @@
                               </JFXButton>
                            </children>
                         </StackPane>
-                        <JFXButton onAction="#loginBtnClicked" prefHeight="40.0" prefWidth="144.0" text="Login" />
+                        <JFXButton onAction="#loginBtnClicked" prefHeight="40.0" prefWidth="144.0" text="Login">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin></JFXButton>
                      </children></HBox>
                     </children>
                     <padding>

@@ -172,6 +172,10 @@ public class MapViewerController {
         }
     }
 
+    /**
+     * Shows the key popup
+     *
+     */
     @FXML
     private void showLegend() {
         try {
@@ -311,14 +315,22 @@ public class MapViewerController {
             }
         }
     }
+
+    /**
+     * Clears the text in source textfield
+     *
+     */
     @FXML
-    private void clearSource(ActionEvent actionEvent) {
+    private void clearSource() {
         startingPoint.clear();
     }
+
+    /**
+     * Clears the text in destination textfield
+     *
+     */
     @FXML
-    private void clearDest(ActionEvent actionEvent) {
-        destination.clear();
-    }
+    private void clearDest() { destination.clear(); }
 
     /**
      * login pops up when login button is clicked
@@ -333,6 +345,10 @@ public class MapViewerController {
         }
     }
 
+    /**
+     * Displays the About page of the application
+     *
+     */
     @FXML
     public void handleAbout() {
 
@@ -343,8 +359,8 @@ public class MapViewerController {
                 "Prof. Wilson Wong\n" +
                 "Team Coach: Chris Myers\n" +
                 "Lead Software Engineer: Conrad Tulig\n" +
-                "Assistant Software Engineer: Luke Bodwell\n" +
-                "Assistant Software Engineer: Caleb Farwell\n" +
+                "Assistant Lead Software Engineer: Luke Bodwell\n" +
+                "Assistant Lead Software Engineer: Caleb Farwell\n" +
                 "Project Manager: Joshua Hoy\n" +
                 "Scrum Master: Colin Scholler\n" +
                 "Product Owner: Tori Buyck\n" +
