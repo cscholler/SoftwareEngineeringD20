@@ -83,28 +83,28 @@ public class SecurityPaneController {
 
         System.out.println(urgencyText);
 
-//        String status = "0";
-//        String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm aa").format(new Date());
-//
-//        String concatenatedNotes = "Personnel Needed: " + personnel + "\nReason: " + reason + "\nAdditional Notes: " + notes;
-//
-//        if(id.isEmpty() || location.isEmpty() || reason.isEmpty() || personnel.isEmpty()) {
-//            //TODO invalid input window
-//        } else {
-//
-//            int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
-//                    new ArrayList<>(Arrays.asList(null, manager.getCurrentUser().getUsername(), null, location, "security", null, concatenatedNotes, status, dateAndTime)))));
-//
-//            if(rows == 0) {
-//                //TODO database error window
-//            } else {
-//                //TODO show successful window
-//                patientIDText.setText("");
-//                locationText.setText("");
-//                reasonText.setText("");
-//                notesText.setText("");
-//                personnelText.setText("");
-//            }
-//        }
+        String status = "0";
+        String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm aa").format(new Date());
+
+        String concatenatedNotes = "Personnel Needed: " + personnel + "\nReason: " + reason + "\nAdditional Notes: " + notes;
+
+        if(id.isEmpty() || location.isEmpty() || reason.isEmpty() || personnel.isEmpty()) {
+            //TODO invalid input window
+        } else {
+
+            int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
+                    new ArrayList<>(Arrays.asList(null, manager.getCurrentUser().getUsername(), null, location, "security", null, concatenatedNotes, status, dateAndTime)))));
+
+            if(rows == 0) {
+                //TODO database error window
+            } else {
+                //TODO show successful window
+                patientIDText.setText("");
+                locationText.setText("");
+                reasonText.setText("");
+                notesText.setText("");
+                personnelText.setText("");
+            }
+        }
     }
 }
