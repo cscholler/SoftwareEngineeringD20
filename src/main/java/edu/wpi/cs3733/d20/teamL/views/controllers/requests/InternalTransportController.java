@@ -26,6 +26,7 @@ import javafx.util.Callback;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -34,14 +35,13 @@ import java.util.ResourceBundle;
 public class InternalTransportController implements Initializable {
 
     ObservableList<String> transportOptions = FXCollections.observableArrayList("Wheelchair w/ Operator", "Wheelchair w/o Operator", "Crutches", "Walker", "Gurney");
-
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
     @FXML
     JFXComboBox transportSelector;
     @FXML
-    JFXTextField startLoc, endLoc, hour, minutes;
+    JFXTextField patient, startLoc, endLoc, hour, minutes;
     @FXML
     Label confirmation;
     @FXML
@@ -61,8 +61,7 @@ public class InternalTransportController implements Initializable {
         sf.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
-
-        transportSelector.setValue("Type of Transport");
+        //transportSelector.setPromptText("Select Equipment");
         transportSelector.setItems(transportOptions);
 
         hour.addEventFilter(KeyEvent.KEY_TYPED, keyEvent -> {
@@ -77,6 +76,7 @@ public class InternalTransportController implements Initializable {
             }
         });
 
+
     }
 
     @FXML
@@ -89,13 +89,13 @@ public class InternalTransportController implements Initializable {
         sf.applyAutocomplete(endLoc, autoCompletePopup);
     }
 
-   /* @FXML
+   @FXML
     private boolean timeIsValid() {
         if (Integer.parseInt(hour.getText()) < 13 || (Integer.parseInt(minutes.getText()) < 60)) {
             return true;
         }
         return false;
-    }*/
+    }
 
 
     @FXML
@@ -103,17 +103,18 @@ public class InternalTransportController implements Initializable {
         String start = startLoc.getText();
         String end = endLoc.getText();
         String type = (String) transportSelector.getValue();
-        Callback<DatePicker, DateCell> dateNeeded = date.getDayCellFactory();
+        String dateNeeded = date.getId();
         String hourNeeded = hour.getText();
         String minNeeded = minutes.getText();
+        String patientID = patient.getText();
 
 
         String status = "0";
         String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm:aa").format(new Date());
-        String concatenatedNotes = dateNeeded + "\n" + hourNeeded + " : " + minNeeded;
+        String concatenatedNotes = end + dateNeeded + "\n" + hourNeeded + " : " + minNeeded;
         int rows = 0;
-        if (!(start.isEmpty() || end.isEmpty() || type.isEmpty())) {
-            rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST, new ArrayList<>(Arrays.asList(null, manager.getCurrentUser().getUsername(), null, start, "internal transportation", type, end, concatenatedNotes, status, dateAndTime))));
+        if (!(start.isEmpty() || end.isEmpty() || type.isEmpty()) && timeIsValid()) {
+            rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST, new ArrayList<>(Arrays.asList(patientID, manager.getCurrentUser().getUsername(), null, start, "internal transportation", type, concatenatedNotes, status, dateAndTime))));
         }
 
         if (rows == 0) {
@@ -125,7 +126,11 @@ public class InternalTransportController implements Initializable {
 
             startLoc.setText("");
             endLoc.setText("");
-            transportSelector.setValue("Choose Type of Equipment");
+            transportSelector.setPromptText("Choose Type of Equipment");
+            date.setId("");
+            hour.setText("");
+            minutes.setText("");
+            patient.setText("");
         }
 
         loaderHelper.showAndFade(confirmation);

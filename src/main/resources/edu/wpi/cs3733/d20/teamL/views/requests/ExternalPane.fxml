@@ -6,78 +6,97 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" styleClass="services-pane-jfx" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.ExternalTransportController">
-    <center>
-        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="50.0" BorderPane.alignment="CENTER">
-            <children>
-                <JFXComboBox fx:id="transportSelector" minWidth="300.0" promptText="Select Equipment" styleClass="combo-box-jfx" />
-            <HBox alignment="CENTER" spacing="40.0">
-               <children>
-                  <JFXDatePicker defaultColor="#405784" promptText="Select a Date..." />
-                  <HBox alignment="CENTER" prefHeight="55.0" prefWidth="160.0" spacing="10.0">
+
+<StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.ExternalTransportController">
+   <children>
+      <BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" styleClass="services-pane-jfx" stylesheets="@../../css/GlobalStyleSheet.css">
+          <center>
+              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="50.0" BorderPane.alignment="CENTER">
+                  <children>
+                  <JFXTextField fx:id="patient" promptText="Patient ID" styleClass="text-field-jfx">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </JFXTextField>
+                      <JFXComboBox fx:id="transportSelector" minWidth="300.0" promptText="Select Transportation Type" styleClass="combo-box-jfx" />
+                  <HBox alignment="CENTER" spacing="40.0">
                      <children>
-                        <JFXTextField prefHeight="39.0" prefWidth="40.0" styleClass="time-text-field-jfx">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </JFXTextField>
-                        <Label text=":">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <JFXTextField prefHeight="39.0" prefWidth="50.0" styleClass="time-text-field-jfx">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </JFXTextField>
-                        <JFXComboBox prefHeight="31.0" prefWidth="62.0" promptText="AM" styleClass="time-combo-box-jfx" />
+                        <JFXDatePicker fx:id="date" defaultColor="#405784" promptText="Select a Date..." />
+                        <HBox alignment="CENTER" prefHeight="55.0" prefWidth="160.0" spacing="10.0">
+                           <children>
+                              <JFXTextField fx:id="hour" prefHeight="39.0" prefWidth="40.0" styleClass="time-text-field-jfx">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </JFXTextField>
+                              <Label text=":">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <JFXTextField fx:id="minutes" prefHeight="39.0" prefWidth="50.0" styleClass="time-text-field-jfx">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </JFXTextField>
+                              <JFXComboBox prefHeight="31.0" prefWidth="62.0" promptText="AM" styleClass="time-combo-box-jfx" />
+                           </children>
+                        </HBox>
                      </children>
                   </HBox>
-               </children>
-            </HBox>
-                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
-                    <children>
-                        <JFXTextField fx:id="startLoc" onKeyTyped="#autocompleteS" promptText="Starting Location" styleClass="text-field-jfx">
-                            <font>
-                                <Font size="14.0" />
-                            </font>
-                  </JFXTextField>
-                        <JFXTextField fx:id="endLoc" promptText="Destination" styleClass="text-field-jfx">
-                            <font>
-                                <Font size="14.0" />
-                            </font>
-                  </JFXTextField>
-                    </children>
-                </HBox>
-            <VBox alignment="CENTER" />
-            </children>
-        </VBox>
-    </center>
-    <bottom>
-        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0" BorderPane.alignment="CENTER">
-            <children>
-                <JFXButton buttonType="RAISED" onAction="#submitClicked" prefHeight="44.0" prefWidth="195.0" styleClass="save-button-jfx" text="Submit">
-               <font>
-                  <Font size="20.0" />
-               </font></JFXButton>
-                <Label fx:id="confirmation" prefHeight="20.0" prefWidth="250.0" text="Label" visible="false">
-                    <font>
-                        <Font size="14.0" />
-                    </font>
-                </Label>
-            </children>
-            <BorderPane.margin>
-                <Insets />
-            </BorderPane.margin>
-            <padding>
-                <Insets left="350.0" />
-            </padding>
-        </HBox>
-    </bottom>
-</BorderPane>
+                      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
+                          <children>
+                              <JFXTextField fx:id="startLoc" onKeyTyped="#autocompleteS" promptText="Starting Location" styleClass="text-field-jfx">
+                                  <font>
+                                      <Font size="14.0" />
+                                  </font>
+                        </JFXTextField>
+                              <JFXTextField fx:id="endLoc" promptText="Destination" styleClass="text-field-jfx">
+                                  <font>
+                                      <Font size="14.0" />
+                                  </font>
+                        </JFXTextField>
+                          </children>
+                      </HBox>
+                  <VBox alignment="CENTER" />
+                  </children>
+              </VBox>
+          </center>
+          <bottom>
+              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0" BorderPane.alignment="CENTER">
+                  <children>
+                      <JFXButton buttonType="RAISED" onAction="#submitClicked" prefHeight="44.0" prefWidth="195.0" styleClass="save-button-jfx" text="Submit">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </JFXButton>
+                      <Label fx:id="confirmation" prefHeight="20.0" prefWidth="250.0" text="Label" visible="false">
+                          <font>
+                              <Font size="14.0" />
+                          </font>
+                      </Label>
+                  </children>
+                  <BorderPane.margin>
+                      <Insets />
+                  </BorderPane.margin>
+                  <padding>
+                      <Insets left="350.0" />
+                  </padding>
+              </HBox>
+          </bottom>
+      </BorderPane>
+      <ImageView fx:id="requestReceived" fitHeight="213.0" fitWidth="261.0" visible="false">
+         <image>
+            <Image url="@../../assets/Services/serviceRecieved.png" />
+         </image>
+      </ImageView>
+   </children>
+</StackPane>

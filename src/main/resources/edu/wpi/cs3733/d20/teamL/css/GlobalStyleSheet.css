@@ -169,11 +169,22 @@
     -fx-alignment: center;
 }
 
-.time-combo-box-jfx{
+.time-combo-box-jfx {
     -fx-font-size: 15;
     -jfx-unfocus-color: white;
     -jfx-focus-color: white;
     -fx-background-radius: 0;
+}
+
+.service-request-label-fx{
+    -fx-font-size: 20;
+    -fx-text-fill: #00043B;
+}
+
+.submission-failed-label-fx{
+    -fx-pref-width: 250;
+    -fx-pref-height: 20;
+    -fx-font-size: 14;
 }
 
 

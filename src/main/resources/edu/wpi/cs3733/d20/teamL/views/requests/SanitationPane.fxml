@@ -10,32 +10,29 @@
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <StackPane fx:id="serviceStackPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.SanitationPaneController">
    <children>
       <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="546.0" prefWidth="900.0" styleClass="services-pane-jfx" stylesheets="@../../css/GlobalStyleSheet.css">
          <bottom>
-            <AnchorPane BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER" prefHeight="80.0" prefWidth="895.0">
                <children>
-                  <JFXButton layoutX="15.0" layoutY="11.0" onAction="#submitServiceRequest" styleClass="save-button-jfx" text="Submit" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+                  <JFXButton onAction="#submitServiceRequest" styleClass="save-button-jfx" text="Submit" />
                </children>
-            </AnchorPane>
+            </HBox>
          </bottom>
          <center>
-            <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" BorderPane.alignment="CENTER">
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="30.0" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets left="20.0" top="20.0" />
                </BorderPane.margin>
                <children>
-                  <JFXTextField fx:id="incidentLocationText" onKeyReleased="#autocomplete" promptText="Incident Location" styleClass="text-field-jfx" />
-                  <HBox alignment="CENTER_LEFT" spacing="20.0">
+                  <HBox alignment="CENTER" spacing="20.0">
                      <children>
                         <Label text="Service Request Tags:">
                            <font>
@@ -46,7 +43,7 @@
                         <JFXCheckBox fx:id="spillCheckBox" styleClass="check-box-jfx" text="Spill" />
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER_LEFT" spacing="20.0">
+                  <HBox alignment="CENTER" spacing="20.0">
                      <children>
                         <Label text="Priority Level:">
                            <font>
@@ -62,6 +59,7 @@
                         <JFXRadioButton fx:id="lowPriorityBox" styleClass="radio-button-jfx" text="Low Priority" toggleGroup="$priorityGroup" />
                      </children>
                   </HBox>
+                  <JFXTextField fx:id="incidentLocationText" onKeyReleased="#autocomplete" promptText="Incident Location" styleClass="text-field-jfx" />
                   <JFXTextArea fx:id="additionalNotesText" promptText="Additional Notes" styleClass="text-area-jfx" />
                </children>
             </VBox>

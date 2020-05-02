@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 import com.google.inject.Inject;
 import com.jfoenix.controls.JFXAutoCompletePopup;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
@@ -16,6 +17,10 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
 import java.net.URL;
@@ -28,17 +33,24 @@ import java.util.ResourceBundle;
 
 public class ExternalTransportController implements Initializable {
 
+    @FXML
+    private ImageView requestReceived;
+    @FXML
+    private BorderPane borderPane;
+    @FXML
+    private  StackPane stackPane;
 
-
-    ObservableList<String> transportOptions = FXCollections.observableArrayList("Taxi", "Bus", "Uber", "Lift");
 
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
     @FXML
-    JFXComboBox transportSelector;
+    JFXComboBox transportSelector, AMPM;
+    ObservableList<String> transportOptions = FXCollections.observableArrayList("Taxi", "Bus", "Uber", "Lyft");
+    ObservableList<String> timeOptions = FXCollections.observableArrayList("AM", "PM");
+
     @FXML
-    JFXTextField startLoc, endLoc, hour, minutes;
+    JFXTextField patient, startLoc, endLoc, hour, minutes;
     @FXML
     Label confirmation;
     @Inject
@@ -47,6 +59,8 @@ public class ExternalTransportController implements Initializable {
     private IDatabaseCache dbCache;
     @Inject
     private ILoginManager manager;
+    @FXML
+    JFXDatePicker date;
 
 
     @Override
@@ -58,6 +72,22 @@ public class ExternalTransportController implements Initializable {
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
 
         transportSelector.setItems(transportOptions);
+        AMPM.setItems(timeOptions);
+
+        hour.addEventFilter(KeyEvent.KEY_TYPED, keyEvent -> {
+            if (!"0123456789".contains(keyEvent.getCharacter())) {
+                keyEvent.consume();
+            }
+        });
+
+        minutes.addEventFilter(KeyEvent.KEY_TYPED, keyEvent -> {
+            if (!"0123456789".contains(keyEvent.getCharacter())) {
+                keyEvent.consume();
+            }
+        });
+
+        borderPane.prefWidthProperty().bind(stackPane.widthProperty());
+        borderPane.prefHeightProperty().bind(stackPane.heightProperty());
     }
 
     @FXML
@@ -66,37 +96,48 @@ public class ExternalTransportController implements Initializable {
     }
 
     @FXML
+    private boolean timeIsValid() {
+        if (Integer.parseInt(hour.getText()) < 13 || (Integer.parseInt(minutes.getText()) < 60)) {
+            return true;
+        }
+        return false;
+    }
+
+    @FXML
     private void submitClicked() {
         String start = startLoc.getText();
         String end = endLoc.getText();
         String type = (String) transportSelector.getValue();
+        String dateNeeded = date.getId();
+        String hourNeeded = hour.getText();
+        String minNeeded = minutes.getText();
+        String patientID = patient.getText();
 
         String status = "0";
-        String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm aa").format(new Date());
+        String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm:aa").format(new Date());
+        String concatenatedNotes = end + dateNeeded + "\n" + hourNeeded + " : " + minNeeded;
         int rows = 0;
-        if (!(start.isEmpty() || end.isEmpty() || type.isEmpty())) {
-            rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST, new ArrayList<>(Arrays.asList(null, manager.getCurrentUser().getUsername(), null, start, "external transportation", type, end, status, dateAndTime))));
+        if (!(start.isEmpty() || end.isEmpty() || type.isEmpty()) && timeIsValid()) {
+            rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST, new ArrayList<>(Arrays.asList(patientID, manager.getCurrentUser().getUsername(), null, start, "external transportation", type, concatenatedNotes, status, dateAndTime))));
         }
 
         if (rows == 0) {
             confirmation.setTextFill(Color.RED);
             confirmation.setText("Request failed");
         } else {
-            confirmation.setTextFill(Color.WHITE);
-            confirmation.setText("Transport Request Sent");
-
-            startLoc.setText("");
-            endLoc.setText("");
-            transportSelector.setValue("Choose Type pf Transport");
+            transportSelector.setPromptText("Choose Transport Type");
+            date.setId("");
+            hour.setText("");
+            minutes.setText("");
+            patient.setText("");
+            loaderHelper.showAndFade(requestReceived);
         }
 
         loaderHelper.showAndFade(confirmation);
     }
 
     @FXML
-    private void closeClicked() {
-        loaderHelper.goBack();
-    }
+    private void closeClicked() {loaderHelper.goBack(); }
 }
 
 
