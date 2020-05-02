@@ -9,8 +9,6 @@ import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
-import edu.wpi.cs3733.d20.teamL.services.messaging.MessengerService;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -39,7 +37,6 @@ import edu.wpi.cs3733.d20.teamL.views.controllers.map.MapViewerController;
 
 @Slf4j
 public class NavigationController implements Initializable {
-
     @FXML
     private ImageView backgroundImage;
     @FXML
@@ -86,7 +83,7 @@ public class NavigationController implements Initializable {
     @FXML
     private void searchMap() {
         try {
-            FXMLLoader loader = loaderHelper.getFXMLLoader("Map Viewer/MapViewer");
+            FXMLLoader loader = loaderHelper.getFXMLLoader("map_viewer/MapViewer");
             loaderHelper.setupScene(new Scene(loader.load()));
             MapViewerController controller = loader.getController();
             controller.setDestination(searchBox.getText());
@@ -102,7 +99,7 @@ public class NavigationController implements Initializable {
     @FXML
     private void loginBtnClicked() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("Staff/LoginPage").load();
+            Parent root = loaderHelper.getFXMLLoader("staff/LoginPage").load();
             loaderHelper.setupPopup(new Stage(), new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);

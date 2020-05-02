@@ -82,12 +82,12 @@ public class MapEditorController {
     private final List<String> types = Arrays.asList("HALL", "ELEV", "REST", "STAI", "DEPT", "LABS", "INFO", "CONF", "EXIT", "RETL", "SERV");
     private int floor = 2;
 
-    private Image breadthFirstIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/Breath First.png", 100, 0, true, false, true);
-    private Image depthFirstIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/DepthFirst.png", 100, 0, true, false, true);
-    private Image aStarIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/AStar.png", 60, 0, true, false, true);
-    private Image xButtonIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/xButton.png", 40, 0, true, false, true);
-    private Image saveToFileIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/SaveToFile.png", 40, 0, true, false, true);
-    private Image uploadFromFolderIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/UploadFromFolder.png", 40, 0, true, false, true);
+    private Image breadthFirstIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map_editor/Breath First.png", 100, 0, true, false, true);
+    private Image depthFirstIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map_editor/DepthFirst.png", 100, 0, true, false, true);
+    private Image aStarIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map_editor/AStar.png", 60, 0, true, false, true);
+    private Image xButtonIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map_editor/xButton.png", 40, 0, true, false, true);
+    private Image saveToFileIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map_editor/SaveToFile.png", 40, 0, true, false, true);
+    private Image uploadFromFolderIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map_editor/UploadFromFolder.png", 40, 0, true, false, true);
 
 
     @FXML
@@ -197,7 +197,7 @@ public class MapEditorController {
     }
 
     /**
-     * @return a map pane that is used for both map editor and map viewer
+     * @return a map pane that is used for both map_editor and map viewer
      */
     public MapPane getMap() {
         return map;
@@ -586,7 +586,7 @@ public class MapEditorController {
     @FXML
     private void eraserMouse() {
         if (!eraserBool) {
-            Image eraserImage = new Image("/edu/wpi/cs3733/d20/teamL/assets/map editor/eraserMouse.png");  //pass in the image path
+            Image eraserImage = new Image("/edu/wpi/cs3733/d20/teamL/assets/map_editor/eraserMouse.png");  //pass in the image path
             map.getParent().getScene().setCursor(new ImageCursor(eraserImage));
             eraserBool = true;
         } else if (eraserBool) {

@@ -56,7 +56,7 @@ public class AddPatientController {
     }
 
     /**
-     * goes back to staff view page when back button is clicked
+     * goes back to staff_view page when back button is clicked
      */
     @FXML
     private void btnBackClicked() {

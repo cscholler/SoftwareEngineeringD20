@@ -19,8 +19,8 @@ repositories {
 dependencies {
     implementation(
             'com.jfoenix:jfoenix:9.0.9',
-            //'org.apache.derby:derby:10.14.2.0',
             'mysql:mysql-connector-java:8.0.20',
+            'org.apache.derby:derby:10.14.2.0',
             'org.apache.commons:commons-csv:1.8',
             'org.slf4j:slf4j-api:1.7.30',
             'org.slf4j:slf4j-simple:1.7.30',
@@ -29,7 +29,8 @@ dependencies {
             'com.sendgrid:sendgrid-java:4.4.1',
             'com.github.kenglxn.QRGen:javase:2.6.0',
             'org.jetbrains:annotations:15.0',
-            'com.github.kenglxn.QRGen:javase:2.6.0'
+            'com.github.kenglxn.QRGen:javase:2.6.0',
+            'org.mindrot:jbcrypt:0.3m'
     )
 
     testImplementation(

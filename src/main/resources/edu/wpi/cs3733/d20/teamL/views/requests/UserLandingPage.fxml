@@ -77,7 +77,7 @@
                            <graphic>
                               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../assets/serviceIcons/giftDelivery.png" />
+                                    <Image url="@../../assets/service_icons/giftDelivery.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -86,7 +86,7 @@
                            <graphic>
                               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../assets/serviceIcons/securityRequest.png" />
+                                    <Image url="@../../assets/service_icons/securityRequest.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -95,7 +95,7 @@
                            <graphic>
                               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../assets/serviceIcons/mantinenceRequest.png" />
+                                    <Image url="@../../assets/service_icons/mantinenceRequest.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -104,7 +104,7 @@
                            <graphic>
                               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../assets/serviceIcons/internalTransport.png" />
+                                    <Image url="@../../assets/service_icons/internalTransport.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -113,7 +113,7 @@
                            <graphic>
                               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../assets/serviceIcons/externalTransport.png" />
+                                    <Image url="@../../assets/service_icons/externalTransport.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -122,7 +122,7 @@
                            <graphic>
                               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../assets/serviceIcons/medicationRequest.png" />
+                                    <Image url="@../../assets/service_icons/medicationRequest.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -131,7 +131,7 @@
                            <graphic>
                               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../assets/serviceIcons/sanitationService.png" />
+                                    <Image url="@../../assets/service_icons/sanitationService.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -140,7 +140,7 @@
                            <graphic>
                               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../assets/serviceIcons/informationTechnology.png" />
+                                    <Image url="@../../assets/service_icons/informationTechnology.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -149,7 +149,7 @@
                            <graphic>
                               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../assets/serviceIcons/interpreterRequest.png" />
+                                    <Image url="@../../assets/service_icons/interpreterRequest.png" />
                                  </image>
                               </ImageView>
                            </graphic>

@@ -9,9 +9,7 @@ public interface ILoginManager {
 
 	void logIn(String username, String password);
 
-	void logOut();
-
-	String getHashedPassword(String password);
+	void logOut(boolean verbose);
 
 	void updateUserInfo(ArrayList<String> fieldsToUpdate, ArrayList<String> newValues);
 

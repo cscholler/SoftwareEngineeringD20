@@ -2,8 +2,11 @@ package edu.wpi.cs3733.d20.teamL.views.controllers;
 
 import com.google.inject.Inject;
 import com.jfoenix.controls.JFXButton;
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -28,23 +31,25 @@ public class LoggedInViewController implements Initializable{
     @FXML
     private VBox vMap, vPatient, vDoc, vService, vUser;
     @Inject
-    ILoginManager loggin;
+	IDatabaseService db;
+    @Inject
+    ILoginManager loginManager;
     String map;
     FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        lblName.setText(loggin.getCurrentUser().getFName());
-        if(loggin.getCurrentUser().getAcctType().equals("3")){
+        lblName.setText(loginManager.getCurrentUser().getFName());
+        if (loginManager.getCurrentUser().getAcctType().equals("3")) {
             buttonBox.getChildren().remove(vPatient);
             buttonBox.getChildren().remove(vService);
-            map = "MapEditor";
+            map = "admin/MapEditor";
             lblMap.setText("Map Editor");
         } else {
             buttonBox.getChildren().remove(vUser);
             buttonBox.getChildren().remove(vDoc);
-            map = "MapViewer";
+            map = "map_viewer/MapViewer";
             lblMap.setText("Map Viewer");
         }
     }
@@ -118,13 +123,28 @@ public class LoggedInViewController implements Initializable{
      */
     @FXML
     private void logoutClicked() {
-        log.info("here");
-        loggin.logOut();
+        loginManager.logOut(true);
         try {
-            Parent root = loaderHelper.getFXMLLoader("Home").load();
+            Parent root = loaderHelper.getFXMLLoader("map_viewer/MapViewer").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
         }
     }
+
+    @FXML
+	public void importClicked(ActionEvent actionEvent) {
+
+	}
+
+	@FXML
+	public void exportClicked(ActionEvent actionEvent) {
+
+	}
+
+	@FXML
+	public void clearClicked() {
+    	log.warn("Rebuilding database");
+    	db.rebuildDatabase();
+	}
 }

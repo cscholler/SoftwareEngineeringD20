@@ -90,7 +90,7 @@ public class InterpreterController implements Initializable {
      */
     @FXML
     public void handleButtonAction(ActionEvent e) throws IOException {
-        //goe back to Staff View
+        //goe back to staff View
         if (e.getSource() == btnBack) {
             Parent root = loaderHelper.getFXMLLoader("StaffView").load();
             loaderHelper.setupScene(new Scene(root));

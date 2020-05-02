@@ -74,7 +74,7 @@ public class GiftCartPaneController {
         vbox.prefWidth(300);
         vbox.prefHeight(375);
 
-        ImageView imageView = new ImageView(new Image("/edu/wpi/cs3733/d20/teamL/assets/giftDelivery/noImage.png", 0, 200, true, false, true));
+        ImageView imageView = new ImageView(new Image("/edu/wpi/cs3733/d20/teamL/assets/gift_Delivery/noImage.png", 0, 200, true, false, true));
         imageView.setImage(images.get(i));
         VBox imageVBox = new VBox(imageView);
         imageVBox.setAlignment(Pos.TOP_CENTER);
@@ -115,9 +115,9 @@ public class GiftCartPaneController {
     private void loadImage(String subType) {
         Image image;
         try {
-            image = new Image("/edu/wpi/cs3733/d20/teamL/assets/giftDelivery/" + subType + ".png", 0, 200, true, false, true);
+            image = new Image("/edu/wpi/cs3733/d20/teamL/assets/gift_Delivery/" + subType + ".png", 0, 200, true, false, true);
         } catch (Exception e) {
-            image = new Image("/edu/wpi/cs3733/d20/teamL/assets/giftDelivery/noImage.png", 0, 200, true, false, true);
+            image = new Image("/edu/wpi/cs3733/d20/teamL/assets/gift_Delivery/noImage.png", 0, 200, true, false, true);
         }
         images.add(image);
     }

@@ -50,7 +50,7 @@
                                             <graphic>
                                                 <ImageView fitHeight="14.0" fitWidth="9.0" pickOnBounds="true" preserveRatio="true" scaleX="3.0" scaleY="3.0" translateX="4.0">
                                                     <image>
-                                                        <Image url="@../../assets/home page/round_fastfood_white_18dp.png" />
+                                                        <Image url="@../../assets/home_page/round_fastfood_white_18dp.png" />
                                                     </image>
                                                 </ImageView>
                                             </graphic></JFXButton>
@@ -201,7 +201,7 @@
                      <graphic>
                         <ImageView fitHeight="106.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../assets/home%20page/Search-button-home.png" />
+                              <Image url="@../../assets/home_page/search_button_home.png" />
                            </image>
                         </ImageView>
                      </graphic>
