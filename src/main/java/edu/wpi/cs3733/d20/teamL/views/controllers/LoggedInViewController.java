@@ -31,7 +31,7 @@ public class LoggedInViewController implements Initializable{
     @FXML
     private VBox vMap, vPatient, vDoc, vService, vUser;
     @Inject
-    IDatabaseService db;
+	IDatabaseService db;
     @Inject
     ILoginManager loginManager;
     String map;
@@ -44,12 +44,12 @@ public class LoggedInViewController implements Initializable{
         if (loginManager.getCurrentUser().getAcctType().equals("3")) {
             buttonBox.getChildren().remove(vPatient);
             buttonBox.getChildren().remove(vService);
-            map = "MapEditor";
+            map = "admin/MapEditor";
             lblMap.setText("Map Editor");
         } else {
             buttonBox.getChildren().remove(vUser);
             buttonBox.getChildren().remove(vDoc);
-            map = "MapViewer";
+            map = "map_viewer/MapViewer";
             lblMap.setText("Map Viewer");
         }
     }
@@ -134,18 +134,18 @@ public class LoggedInViewController implements Initializable{
     }
 
     @FXML
-    public void importClicked(ActionEvent actionEvent) {
+	public void importClicked(ActionEvent actionEvent) {
 
-    }
+	}
 
-    @FXML
-    public void exportClicked(ActionEvent actionEvent) {
+	@FXML
+	public void exportClicked(ActionEvent actionEvent) {
 
-    }
+	}
 
-    @FXML
-    public void clearClicked() {
-        log.warn("Rebuilding database");
-        db.rebuildDatabase();
-    }
+	@FXML
+	public void clearClicked() {
+    	log.warn("Rebuilding database");
+    	db.rebuildDatabase();
+	}
 }

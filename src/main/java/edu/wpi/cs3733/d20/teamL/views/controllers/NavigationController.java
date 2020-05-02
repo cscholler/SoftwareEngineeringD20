@@ -9,8 +9,6 @@ import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
-import edu.wpi.cs3733.d20.teamL.services.messaging.MessengerService;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -39,7 +37,6 @@ import edu.wpi.cs3733.d20.teamL.views.controllers.map.MapViewerController;
 
 @Slf4j
 public class NavigationController implements Initializable {
-
     @FXML
     private ImageView backgroundImage;
     @FXML

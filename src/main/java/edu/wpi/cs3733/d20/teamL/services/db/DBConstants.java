@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class DBConstants {
-	public static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
-	public static final String DB_PREFIX = "jdbc:mysql://";
-	public static final String DB_URL = "cs3733-bwh-db.cqqsqwjmcbj4.us-east-2.rds.amazonaws.com";
-	public static final String DB_PORT = ":5008";
-	public static final String DB_NAME_DEV = "/bwh_dev";
-	public static final String DB_NAME_PROD = "/bwh_prod";
+	static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
+	static final String DB_PREFIX = "jdbc:mysql://";
+	static final String DB_URL = "cs3733-bwh-db.cqqsqwjmcbj4.us-east-2.rds.amazonaws.com";
+	static final String DB_PORT = ":5008";
+	static final String DB_NAME_DEV = "/bwh_dev";
+	static final String DB_NAME_PROD = "/bwh_prod";
 	static final String DB_NAME_CANARY = "/bwh_canary";
-	public static final String DB_USER = "teaml";
-	public static final String DB_PASSWORD = "linenleviathans";
+	static final String DB_USER = "teaml";
+	static final String DB_PASSWORD = "linenleviathans";
 	public static final String SERVICE_NAME = "mysql-db-01";
 
 	public static ArrayList<String> GET_TABLE_NAMES() {
@@ -42,8 +42,8 @@ public class DBConstants {
 					"f_name VARCHAR(32) NOT NULL, " +
 					"l_name VARCHAR(32) NOT NULL, " +
 					"username VARCHAR(32) NOT NULL PRIMARY KEY, " +
-					"password VARCHAR(128) NOT NULL, " +
-					// 0: staff member, 1: Nurse, 2: Doctor, 3: admin
+					"password VARCHAR(60) NOT NULL, " +
+					// 0: Staff member, 1: Nurse, 2: Doctor, 3: Admin
 					"acct_type CHAR(1) NOT NULL, " +
 					"services VARCHAR(512), " +
 					"manager VARCHAR(32), " +
@@ -195,9 +195,9 @@ public class DBConstants {
 					"FROM Users";
 
 	public static final String GET_USER =
-			"SELECT id, f_name, l_name, username, acct_type, services, manager " +
+			"SELECT id, f_name, l_name, username, password, acct_type, services, manager " +
 					"FROM Users " +
-					"WHERE username = ? AND password = ?";
+					"WHERE username = ?";
 
 	public static final String GET_USERNAME_BY_NAME =
 			"SELECT username " +

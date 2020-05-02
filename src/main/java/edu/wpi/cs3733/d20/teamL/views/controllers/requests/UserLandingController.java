@@ -145,8 +145,7 @@ public class UserLandingController {
     }
 
     public void logoutBtn() {
-        log.info("here");
-        login.logOut();
+        login.logOut(true);
         try {
             Parent root = loaderHelper.getFXMLLoader("Home").load();
             loaderHelper.setupScene(new Scene(root));
