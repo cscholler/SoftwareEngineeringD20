@@ -342,6 +342,11 @@ public class DBConstants {
 					"SET status = ? " +
 					"WHERE id = ?";
 
+	public static final String UPDATE_GIFT_DELIVERY_REQUEST_NOTES =
+			"UPDATE Gift_Delivery_Requests " +
+					"SET notes = ? " +
+					"WHERE id = ?";
+
 	public static final String UPDATE_MEDICATION_REQUEST =
 			"UPDATE Medication_Requests " +
 					"SET doctor_id = ?, patient_id = ?, nurse_username = ?, deliverer_username = ?, dose = ?, type = ?, notes = ?, status = ?, date_and_time = ? " +
@@ -357,6 +362,11 @@ public class DBConstants {
 					"SET status = ? " +
 					"WHERE id = ?";
 
+	public static final String UPDATE_MEDICATION_REQUEST_NOTES =
+			"UPDATE Medication_Requests " +
+					"SET notes = ? " +
+					"WHERE id = ?";
+
 	public static final String UPDATE_SERVICE_REQUEST =
 			"UPDATE Service_Requests " +
 					"SET patient_id = ?, request_username = ?, assignee_username = ?, location = ?, service = ?, type = ?, notes = ?, status = ?, date_and_time = ? " +
@@ -370,6 +380,11 @@ public class DBConstants {
 	public static final String UPDATE_SERVICE_REQUEST_STATUS =
 			"UPDATE Service_Requests " +
 					"SET status = ? " +
+					"WHERE id = ?";
+
+	public static final String UPDATE_SERVICE_REQUEST_NOTES =
+			"UPDATE Service_Requests " +
+					"SET notes = ? " +
 					"WHERE id = ?";
 
 	public static final String REMOVE_NODE =
