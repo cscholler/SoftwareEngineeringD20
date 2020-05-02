@@ -60,7 +60,8 @@ class PathfinderServiceTest {
         }
         assertEquals(2, path1.getLength());
         assertEquals(new ArrayList<Node>(Arrays.asList(n8, n1)), path1.getPathNodes());
-        System.out.println(path1.generateTextMessage());
+        path1.generateTextMessage();
+        System.out.println(path1.getMessage());
 
         Path path2 = pathfinderService.pathfind(newGraph, n6, n1);
         for (Node n : path2) {
@@ -68,6 +69,7 @@ class PathfinderServiceTest {
         }
         assertEquals(4, path2.getLength());
         assertEquals(new ArrayList<Node>(Arrays.asList(n6, n9, n1)), path2.getPathNodes());
-        System.out.println(path2.generateTextMessage());
+        path2.generateTextMessage();
+        System.out.println(path1.getMessage());
     }
 }

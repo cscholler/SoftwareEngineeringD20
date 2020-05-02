@@ -7,7 +7,8 @@ import java.util.List;
 import javafx.geometry.Point2D;
 
 public class Path implements Iterable<Node> {
-
+    private ArrayList<String> message = new ArrayList<>();
+    private ArrayList<ArrayList<Node>> subpaths = new ArrayList<>();
     private List<Node> pathNodes = new LinkedList<>();
     private int length = 0;
 
@@ -108,8 +109,9 @@ public class Path implements Iterable<Node> {
         return newPath;
     }
 
-    public ArrayList<String> generateTextMessage() {
-        ArrayList<String> message = new ArrayList<>();
+    public void generateTextMessage() {
+        ArrayList<Node> subpath = new ArrayList<>();
+
         Point2D start, end;
         Node prev, curr, next;
         Node goal = pathNodes.get(pathNodes.size()-1);
@@ -121,6 +123,7 @@ public class Path implements Iterable<Node> {
         boolean foundAdjRoom;
         boolean lastStatement = true;
 
+        subpath.add(pathNodes.get(0));
         for (int i = 1; i < pathNodes.size() - 1; i++) {
             prev = pathNodes.get(i-1);
             curr = pathNodes.get(i);
@@ -130,12 +133,16 @@ public class Path implements Iterable<Node> {
             end = delta(curr, next);
             angle = start.angle(end);
 
+            subpath.add(curr);
+
             if(curr.getType().equals("ELEV") && next.getType().equals("ELEV")) {
                 message.add("Take the elevator to floor " + next.getFloor() + ".");
 
                 lastRoom = null;
                 rights = 0;
                 lefts = 0;
+                subpaths.add(subpath);
+                subpath.clear();
             }
             else if (curr.getType().equals("STAI") && next.getType().equals("STAI")) {
                 message.add("Take the stairs to floor " + next.getFloor() + ".");
@@ -143,6 +150,8 @@ public class Path implements Iterable<Node> {
                 lastRoom = null;
                 rights = 0;
                 lefts = 0;
+                subpaths.add(subpath);
+                subpath.clear();
             }
             else {
                 if (angle > 10) {
@@ -171,14 +180,20 @@ public class Path implements Iterable<Node> {
                     rights = 0;
                     lefts = 0;
 
+                    subpath.add(next);
                     message.add(builder.toString());
+                    subpaths.add(subpath);
+                    subpath.clear();
 
                 } else {
                     if (!curr.getType().equals("HALL")) {
                         lefts = 0;
                         rights = 0;
 
+                        subpath.add(next);
                         message.add("Cut straight through the " + curr.getLongName() + ".");
+                        subpaths.add(subpath);
+                        subpath.clear();
                     } else {
                         foundAdjRoom = false;
                         for (Node adj : curr.getNeighbors()) {
@@ -203,9 +218,12 @@ public class Path implements Iterable<Node> {
             }
         }
 
-        if(lastStatement) message.add("Continue straight until your destination at " + goal.getLongName() + ".");
-
-        return message;
+        if(lastStatement) {
+            message.add("Continue straight until your destination at " + goal.getLongName() + ".");
+            subpath.add(pathNodes.get(pathNodes.size()-1));
+            subpaths.add(subpath);
+            subpath.clear();
+        }
     }
 
     private Point2D delta(Node curr, Node next) {
@@ -250,5 +268,13 @@ public class Path implements Iterable<Node> {
             return false;
         }
         return true;
+    }
+
+    public ArrayList<String> getMessage() {
+        return message;
+    }
+
+    public ArrayList<ArrayList<Node>> getSubpaths() {
+        return subpaths;
     }
 }
