@@ -86,7 +86,7 @@ public class NavigationController implements Initializable {
     @FXML
     private void searchMap() {
         try {
-            FXMLLoader loader = loaderHelper.getFXMLLoader("MapViewer/MapViewer");
+            FXMLLoader loader = loaderHelper.getFXMLLoader("Map Viewer/MapViewer");
             loaderHelper.setupScene(new Scene(loader.load()));
             MapViewerController controller = loader.getController();
             controller.setDestination(searchBox.getText());
