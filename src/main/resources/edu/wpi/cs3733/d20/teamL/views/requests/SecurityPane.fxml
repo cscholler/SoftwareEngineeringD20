@@ -17,22 +17,25 @@
    <bottom>
       <AnchorPane prefHeight="70.0" prefWidth="895.0" BorderPane.alignment="CENTER">
          <children>
-            <JFXButton fx:id="btnSubmit" styleClass="save-button-jfx" text="Submit" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+            <JFXButton fx:id="btnSubmit" onAction="#handleSubmit" styleClass="save-button-jfx" text="Submit" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
          </children>
       </AnchorPane>
    </bottom>
    <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
             <JFXTextField fx:id="patientIDText" promptText="Patient ID" styleClass="text-field-jfx" />
             <JFXTextField fx:id="locationText" promptText="Location" styleClass="text-field-jfx" />
-            <HBox prefHeight="0.0" prefWidth="875.0" spacing="10.0">
+            <Label text="Priority Level:">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="-15.0" />
+               </VBox.margin>
+            </Label>
+            <HBox alignment="CENTER" prefHeight="20.0" prefWidth="459.0" spacing="10.0">
                <children>
-                  <Label text="Priority Level:">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
                   <JFXRadioButton styleClass="radio-button-jfx" text="High Priority">
                      <toggleGroup>
                         <ToggleGroup fx:id="urgency" />
