@@ -265,7 +265,7 @@ public class MapViewerController {
     @FXML
     public void genQR(){
         try {
-            Parent root = loaderHelper.getFXMLLoader("QRCode").load();
+            Parent root = loaderHelper.getFXMLLoader("Map Viewer/QRCode").load();
             loaderHelper.setupPopup(new Stage(), new Scene(root));
         } catch (IOException e) {
             log.error("Encountered IOException", e);
