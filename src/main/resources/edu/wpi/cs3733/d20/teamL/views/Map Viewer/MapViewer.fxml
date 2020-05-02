@@ -188,7 +188,7 @@
                      <graphic>
                         <ImageView fitHeight="106.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../assets/home%20page/Search-button-home.png" />
+                              <Image url="@../../assets/home page/Search-button-home.png" />
                            </image>
                         </ImageView>
                      </graphic>
