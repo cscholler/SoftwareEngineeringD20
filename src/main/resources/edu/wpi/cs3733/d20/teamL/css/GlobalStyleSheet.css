@@ -155,6 +155,44 @@
     -fx-pref-height: 585;
 }
 
+/*-----------------------------------------------------*/
+/*this is for tab panes*/
+
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: white;
+}
+
+.jfx-tab-pane .tab-selected-line {
+    -fx-background-color: transparent;
+}
+
+.tab:selected {
+    -fx-background-color: #0d2e57;
+}
+
+.tab:selected .tab-label {
+    -fx-text-fill: white;
+}
+
+.jfx-tab-pane .tab-header-area .jfx-rippler{
+    -jfx-rippler-fill: #0d2e57;
+}
+
+.tab {
+    -fx-pref-width: 200;
+}
+
+.jfx-tab-pane .tab-label {
+    -fx-text-fill: #0D2E57;
+}
+
+.JFX-tab-pane .tab-content-area{
+    -fx-tab-pref-width:300px;
+    -fx-tab-pref-width:40px;
+}
+
+/*------------------------------------------------------*/
+
 .flags-button-jfx{
     -fx-background-color: white;
     -fx-pref-height: 80;

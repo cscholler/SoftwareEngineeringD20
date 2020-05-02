@@ -70,7 +70,7 @@ public class UserLandingController {
 
     @FXML
     public void launchGiftPane() throws IOException {
-        resetAndLoadPane("GiftCart", "Gift Request");
+        resetAndLoadPane("GiftCheckoutPane", "Gift Request");
         btnSanitation.setStyle("-fx-background-color: #DCDCDC");
     }
 

@@ -242,9 +242,9 @@ public class DatabaseService extends Service implements IDatabaseService {
 		executeUpdate(new SQLEntry(DBConstants.ADD_PATIENT, new ArrayList<>(Arrays.asList("456", "Conrad", "Tulig", "123", null, null))));
 
 		// Example Gifts
-		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Flower", "Roses", "A vase of 7 roses", "100"))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Flower", "Tulips", "A vase of 10 tulip", "100"))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Flower", "Dandelion", "A vase of 12 dandelions", "100"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Flowers", "Roses", "A vase of 7 roses", "100"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Flowers", "Tulips", "A vase of 10 tulip", "100"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Flowers", "Dandelion", "A vase of 12 dandelions", "100"))));
 
 		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Toys", "Building blocks", "A container with ", "10"))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Toys", "Play-Do", "A package of 6 Play-do colors in different containers", "10"))));

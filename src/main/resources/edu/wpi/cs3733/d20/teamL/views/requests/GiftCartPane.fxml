@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane styleClass="services-pane-jfx" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.GiftCartPaneController">
+   <children>
+      <JFXTabPane fx:id="giftTabPane" styleClass="services-pane-jfx">
+         <tabs>
+            <Tab text="Untitled Tab">
+              <content>
+                  <BorderPane>
+                     <center>
+                        <HBox prefHeight="375.0">
+                           <children>
+                              <VBox prefHeight="375.0" prefWidth="300.0" />
+                           </children>
+                        </HBox>
+                     </center>
+                  </BorderPane>
+              </content>
+            </Tab>
+         </tabs>
+      </JFXTabPane>
+   </children>
+</AnchorPane>
