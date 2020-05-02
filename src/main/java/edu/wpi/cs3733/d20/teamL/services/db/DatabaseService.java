@@ -371,7 +371,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 		try {
 			ResultSetMetaData resSetMD = resSet.getMetaData();
 			for (int i = 0; i < resSetMD.getColumnCount(); i++) {
-				colLabels.set(i, resSetMD.getColumnLabel(i + 1));
+				colLabels.add(resSetMD.getColumnLabel(i + 1));
 			}
 		} catch (SQLException ex) {
 			log.error("Encountered SQLException.", ex);

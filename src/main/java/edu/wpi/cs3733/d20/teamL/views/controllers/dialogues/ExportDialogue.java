@@ -47,20 +47,24 @@ public class ExportDialogue {
     private void exportClicked() {
         String selected = tableSelector.getSelectionModel().getSelectedItem();
 
-        ResultSet resultSet = dbService.executeQuery(new SQLEntry(tables.get(selected)));
-        ArrayList<ArrayList<String>> dbTable = new ArrayList<>();
-        dbTable.add(dbService.getColumnNames(resultSet));
-        dbTable.addAll(dbService.getTableFromResultSet(resultSet));
+        if (selected != null) {
+            ResultSet resultSet = dbService.executeQuery(new SQLEntry(tables.get(selected)));
+            ArrayList<ArrayList<String>> dbTable = new ArrayList<>();
+            dbTable.add(dbService.getColumnNames(resultSet));
+            dbTable.addAll(dbService.getTableFromResultSet(resultSet));
 
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV files .csv", "*.csv"));
-        fileChooser.setTitle("Save " + selected + " Table");
-        fileChooser.setInitialFileName(selected + "_table");
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV files .csv", "*.csv"));
+            fileChooser.setTitle("Save " + selected + " Table");
+            fileChooser.setInitialFileName(selected + "_table");
 
-        File savedFile = fileChooser.showSaveDialog(root.getScene().getWindow());
+            File savedFile = fileChooser.showSaveDialog(root.getScene().getWindow());
 
-        CSVHelper csvHelper = new CSVHelper();
-        csvHelper.writeToCSV(savedFile.getPath(), dbTable);
+            CSVHelper csvHelper = new CSVHelper();
+            csvHelper.writeToCSV(savedFile.getPath(), dbTable);
+        } else {
+
+        }
     }
 
 }
