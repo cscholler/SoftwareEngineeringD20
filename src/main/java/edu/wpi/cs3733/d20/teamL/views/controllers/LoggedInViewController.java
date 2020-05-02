@@ -124,7 +124,7 @@ public class LoggedInViewController implements Initializable{
     @FXML
     private void logoutClicked() {
         log.info("here");
-        loginManager.logOut();
+        loginManager.logOut(true);
         try {
             Parent root = loaderHelper.getFXMLLoader("Home").load();
             loaderHelper.setupScene(new Scene(root));

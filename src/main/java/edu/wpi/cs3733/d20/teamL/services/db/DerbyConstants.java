@@ -31,7 +31,7 @@ public class DerbyConstants {
 					"f_name VARCHAR(32) NOT NULL, " +
 					"l_name VARCHAR(32) NOT NULL, " +
 					"username VARCHAR(32) NOT NULL, " +
-					"password VARCHAR(128) NOT NULL, " +
+					"password VARCHAR(256) NOT NULL, " +
 					// 0: Staff member, 1: Nurse, 2: Doctor, 3: Admin
 					"acct_type CHAR(1) NOT NULL, " +
 					"services VARCHAR(512), " +
