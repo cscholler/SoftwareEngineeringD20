@@ -25,7 +25,7 @@
          <top>
             <AnchorPane BorderPane.alignment="CENTER">
                <children>
-                  <Label fx:id="requestLabel" styleClass="service-request-header-label-jfx" text="Label" visible="false" AnchorPane.leftAnchor="0.0" />
+                  <Label fx:id="requestLabel" styleClass="service-request-header-label-fx" text="hello" visible="false" AnchorPane.leftAnchor="0.0" />
                   <JFXButton fx:id="btnNotif" onAction="#launchNotifPage" prefHeight="60.0" prefWidth="240.0" styleClass="notifications-button-jfx" text="Notifications" AnchorPane.rightAnchor="0.0">
                      <font>
                         <Font size="30.0" />

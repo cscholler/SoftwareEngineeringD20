@@ -89,18 +89,14 @@ public class InternalTransportController implements Initializable {
         sf.applyAutocomplete(endLoc, autoCompletePopup);
     }
 
-    @FXML
-    private void timeConstraints(KeyEvent e){
-        if(e.getSource() == hour)
-            if((Integer.parseInt(hour.getText()) > 2)){
-                hour.setText("12");
+   /* @FXML
+    private boolean timeIsValid() {
+        if (Integer.parseInt(hour.getText()) < 13 || (Integer.parseInt(minutes.getText()) < 60)) {
+            return true;
         }
-        if(e.getSource() == minutes)
-            if((Integer.parseInt(minutes.getText()) > 2)){
-            minutes.setText("12");
-        }
+        return false;
+    }*/
 
-    }
 
     @FXML
     private void submitClicked() {
@@ -113,7 +109,7 @@ public class InternalTransportController implements Initializable {
 
 
         String status = "0";
-        String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm aa").format(new Date());
+        String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm:aa").format(new Date());
         String concatenatedNotes = dateNeeded + "\n" + hourNeeded + " : " + minNeeded;
         int rows = 0;
         if (!(start.isEmpty() || end.isEmpty() || type.isEmpty())) {
@@ -129,7 +125,7 @@ public class InternalTransportController implements Initializable {
 
             startLoc.setText("");
             endLoc.setText("");
-            transportSelector.setValue("Choose Type of Transport");
+            transportSelector.setValue("Choose Type of Equipment");
         }
 
         loaderHelper.showAndFade(confirmation);
