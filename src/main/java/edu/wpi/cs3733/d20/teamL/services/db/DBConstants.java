@@ -416,4 +416,31 @@ public class DBConstants {
 	public static final String REMOVE_SERVICE_REQUEST =
 			"DELETE FROM Service_Requests " +
 					"WHERE id = ?";
+
+	public static final String DELETE_ALL_NODES =
+			"DELETE FROM Nodes";
+
+	public static final String DELETE_ALL_EDGES =
+			"DELETE FROM Edges";
+
+	public static final String DELETE_ALL_USERS =
+			"DELETE FROM Users";
+
+	public static final String DELETE_ALL_DOCTORS =
+			"DELETE FROM Doctors";
+
+	public static final String DELETE_ALL_PATIENTS =
+			"DELETE FROM Patients";
+
+	public static final String DELETE_ALL_GIFTS =
+			"DELETE FROM Gifts";
+
+	public static final String DELETE_ALL_GIFT_DELIVERY_REQUESTS =
+			"DELETE FROM Gift_Delivery_Requests";
+
+	public static final String DELETE_ALL_MEDICATION_REQUESTS =
+			"DELETE FROM Medication_Requests";
+
+	public static final String DELETE_ALL_SERVICE_REQUESTS =
+			"DELETE FROM SERVICE_REQUESTS";
 }

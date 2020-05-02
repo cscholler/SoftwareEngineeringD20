@@ -16,17 +16,15 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ImportDialogue {
-    private final Map<String, String> tables = new HashMap<>();
-
-    @Inject
+	@Inject
     private IDatabaseService dbService;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
-
     @FXML
     private BorderPane root;
     @FXML
@@ -36,21 +34,13 @@ public class ImportDialogue {
 
     @FXML
     private void initialize() {
-        populateTables();
-
-        tableSelector.getItems().addAll(tables.keySet());
-    }
-
-    private void populateTables() { // TODO: Change these to the queries for replacing the table
-        tables.put("Nodes", DBConstants.SELECT_ALL_NODES);
-        tables.put("Edges", DBConstants.SELECT_ALL_EDGES);
-        tables.put("Users", DBConstants.SELECT_ALL_USERS);
-        tables.put("Doctors", DBConstants.SELECT_ALL_DOCTORS);
-        tables.put("Gifts", DBConstants.SELECT_ALL_GIFTS);
+    	tableSelector.getItems().addAll(dbService.getTableUpdateMappings().keySet());
     }
 
     @FXML
-    private void exportClicked() {
+    private void importClicked() {
+    	// TODO: replace with checkbox
+    	boolean doAppend = true;
         String selected = tableSelector.getSelectionModel().getSelectedItem();
 
         if (selected != null) {
@@ -59,14 +49,15 @@ public class ImportDialogue {
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV files .csv", "*.csv"));
             fileChooser.setTitle("Load " + selected + " Table");
 
-            File loadedFile = fileChooser.showSaveDialog(root.getScene().getWindow());
-
-            CSVHelper csvHelper = new CSVHelper();
-            ArrayList<ArrayList<String>> importedTable = csvHelper.readCSVFile(loadedFile, false);
-            // Replace database table with csv file
-
-        }else {
-            showErrorMessage("Please select a table to import to");
+            File loadedFile = fileChooser.showOpenDialog(root.getScene().getWindow());
+            try {
+				dbService.populateFromCSV(loadedFile, selected, doAppend);
+				showMessage(selected + " table updated successfully");
+			} catch (SQLException ex) {
+				showErrorMessage("Failed to add one or more row(s) to the database");
+			}
+        } else {
+            showErrorMessage("Please select a table update");
         }
     }
 

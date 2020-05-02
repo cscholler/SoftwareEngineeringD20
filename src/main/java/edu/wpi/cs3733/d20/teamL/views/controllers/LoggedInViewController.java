@@ -136,7 +136,12 @@ public class LoggedInViewController implements Initializable{
 
     @FXML
 	public void importClicked(ActionEvent actionEvent) {
-
+		try {
+			Parent root = loaderHelper.getFXMLLoader("dialogues/ImportDialogue").load();
+			loaderHelper.setupPopup(new Stage(), new Scene(root));
+		} catch (IOException ex) {
+			log.error("Encountered IOException", ex);
+		}
 	}
 
 	@FXML
