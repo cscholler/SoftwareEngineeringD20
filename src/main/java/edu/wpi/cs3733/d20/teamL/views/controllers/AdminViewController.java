@@ -61,7 +61,7 @@ public class AdminViewController {
     }
 
     /**
-     * Goes to map editor when button is clicked
+     * Goes to map_editor when button is clicked
      */
     @FXML
     private void mapEditorClicked() {

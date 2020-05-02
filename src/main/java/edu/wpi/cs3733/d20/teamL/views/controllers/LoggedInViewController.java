@@ -45,7 +45,7 @@ public class LoggedInViewController implements Initializable{
             buttonBox.getChildren().remove(vUser);
             buttonBox.getChildren().remove(vDoc);
             map = "MapViewer";
-            lblMap.setText("Map Viewer");
+            lblMap.setText("map_viewer");
         }
     }
 

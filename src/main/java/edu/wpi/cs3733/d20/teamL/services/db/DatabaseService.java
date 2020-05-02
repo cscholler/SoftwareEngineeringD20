@@ -205,9 +205,9 @@ public class DatabaseService extends Service implements IDatabaseService {
 		populateFromCSV("MapLAllEdges", DBConstants.ADD_EDGE);
 
 		// Users
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Admin", "Admin", "admin", "admin", "3", null, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("admin", "admin", "admin", "admin", "3", null, null))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Nurse", "Joy", "nurse", "nurse", "1", "pharmacy", null))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Staff", "Member", "staff", "staff", "0", null, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("staff", "Member", "staff", "staff", "0", null, null))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Wilson", "Wong", "doctor", "doctor", "2", "pharmacy", null))));
 
 		// Managers for each department

@@ -43,7 +43,7 @@ public class DBConstants {
 					"l_name VARCHAR(32) NOT NULL, " +
 					"username VARCHAR(32) NOT NULL PRIMARY KEY, " +
 					"password VARCHAR(128) NOT NULL, " +
-					// 0: Staff member, 1: Nurse, 2: Doctor, 3: Admin
+					// 0: staff member, 1: Nurse, 2: Doctor, 3: admin
 					"acct_type CHAR(1) NOT NULL, " +
 					"services VARCHAR(512), " +
 					"manager VARCHAR(32), " +

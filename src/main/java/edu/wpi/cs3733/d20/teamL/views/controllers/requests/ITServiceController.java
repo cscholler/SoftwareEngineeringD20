@@ -82,7 +82,7 @@ public class ITServiceController implements Initializable {
     }
 
     /**
-     * Goes back to the Staff page when back button is clicked
+     * Goes back to the staff page when back button is clicked
      *
      */
     @FXML

@@ -84,7 +84,7 @@
                 </Label>
                 <ImageView fitHeight="97.0" fitWidth="100.0" GridPane.columnIndex="2">
                     <image>
-                        <Image url="@../../assets/staff view/active-search.png" />
+                        <Image url="@../../assets/staff_view/active-search.png" />
                     </image>
                     <GridPane.margin>
                         <Insets left="15.0" />
@@ -92,12 +92,12 @@
                 </ImageView>
                 <ImageView fitHeight="102.0" fitWidth="96.0" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                     <image>
-                        <Image url="@../../assets/staff view/medicine-icon.png" />
+                        <Image url="@../../assets/staff_view/medicine-icon.png" />
                     </image>
                 </ImageView>
                 <ImageView fitHeight="98.0" fitWidth="97.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                     <image>
-                        <Image url="@../../assets/staff view/Room-icon.png" />
+                        <Image url="@../../assets/staff_view/Room-icon.png" />
                     </image>
                     <GridPane.margin>
                         <Insets left="15.0" />
@@ -105,12 +105,12 @@
                 </ImageView>
                 <ImageView fitHeight="91.0" fitWidth="94.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                     <image>
-                        <Image url="@../../assets/staff view/Maintenance-icon.png" />
+                        <Image url="@../../assets/staff_view/Maintenance-icon.png" />
                     </image>
                 </ImageView>
                 <ImageView GridPane.halignment="RIGHT">
                     <image>
-                        <Image url="@../../assets/staff view/outline_people_alt_black_48dp.png" />
+                        <Image url="@../../assets/staff_view/outline_people_alt_black_48dp.png" />
                     </image>
                     <GridPane.margin>
                         <Insets right="20.0" />
@@ -123,7 +123,7 @@
                 <JFXButton fx:id="btnAddPatient" onAction="#addPatientClicked" opacity="0.0" prefHeight="130.0" prefWidth="135.0" text=" " GridPane.halignment="RIGHT" />
                 <ImageView GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                     <image>
-                        <Image url="@../../assets/staff view/outline_explore_black_48dp.png" />
+                        <Image url="@../../assets/staff_view/outline_explore_black_48dp.png" />
                     </image>
                     <GridPane.margin>
                         <Insets right="19.0" />
@@ -174,7 +174,7 @@
                             <graphic>
                                 <ImageView fitHeight="30.0" fitWidth="36.0">
                                     <image>
-                                        <Image url="@../../assets/staff view/baseline_notifications_white_48dp.png" />
+                                        <Image url="@../../assets/staff_view/baseline_notifications_white_48dp.png" />
                                     </image>
                                 </ImageView>
                             </graphic>

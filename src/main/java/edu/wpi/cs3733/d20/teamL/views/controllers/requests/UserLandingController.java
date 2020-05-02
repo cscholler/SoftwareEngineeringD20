@@ -136,7 +136,7 @@ public class UserLandingController {
     @FXML
     public void launchNotifPage() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("Staff/NotificationsPage").load();
+            Parent root = loaderHelper.getFXMLLoader("staff/NotificationsPage").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);

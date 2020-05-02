@@ -86,7 +86,7 @@ public class NavigationController implements Initializable {
     @FXML
     private void searchMap() {
         try {
-            FXMLLoader loader = loaderHelper.getFXMLLoader("Map Viewer/MapViewer");
+            FXMLLoader loader = loaderHelper.getFXMLLoader("map_viewer/MapViewer");
             loaderHelper.setupScene(new Scene(loader.load()));
             MapViewerController controller = loader.getController();
             controller.setDestination(searchBox.getText());
@@ -102,7 +102,7 @@ public class NavigationController implements Initializable {
     @FXML
     private void loginBtnClicked() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("Staff/LoginPage").load();
+            Parent root = loaderHelper.getFXMLLoader("staff/LoginPage").load();
             loaderHelper.setupPopup(new Stage(), new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);

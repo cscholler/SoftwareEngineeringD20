@@ -27,7 +27,7 @@ import java.util.ResourceBundle;
 @Slf4j
 public class AddUserController implements Initializable {
     ObservableList<String> serviceOptions = FXCollections.observableArrayList("Security", "Internal Transport", "External Transport", "Sanitation", "Maintenance", "Pharmacist", "Gift Shop", "Interpreter", "Information Technology");
-    ObservableList<String> userOptions = FXCollections.observableArrayList("Staff", "Nurse", "Doctor", "Admin");
+    ObservableList<String> userOptions = FXCollections.observableArrayList("staff", "Nurse", "Doctor", "admin");
 
     DBTableFormatter formatter = new DBTableFormatter();
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
@@ -61,7 +61,7 @@ public class AddUserController implements Initializable {
 
 		switch (userCombo.getValue()) {
 			default:
-			case "Staff Member":
+			case "staff Member":
 				type = "0";
 				break;
 			case "Nurse":
@@ -70,7 +70,7 @@ public class AddUserController implements Initializable {
 			case "Doctor":
 				type = "2";
 				break;
-			case "Admin":
+			case "admin":
 				type = "3";
 		}
         int rows = 0;
@@ -185,7 +185,7 @@ public class AddUserController implements Initializable {
     @FXML
     private void userSelected() {
         user = userCombo.getValue();
-        if (user.equals("Staff")) {
+        if (user.equals("staff")) {
             managerBox.setVisible(true);
             managerBox.setDisable(false);
             if (managerBox.isSelected()) {
@@ -196,7 +196,7 @@ public class AddUserController implements Initializable {
                 languages.setVisible(false);
                 languages.setDisable(true);
             } else {
-                System.out.println("Services");
+                System.out.println("services");
                 serviceCombo.setVisible(false);
                 serviceCombo.setDisable(true);
                 boxOService.setVisible(true);

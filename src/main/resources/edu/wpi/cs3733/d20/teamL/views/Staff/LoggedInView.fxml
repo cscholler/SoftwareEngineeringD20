@@ -56,7 +56,7 @@
                             <graphic>
                                 <ImageView fitHeight="30.0" fitWidth="36.0">
                                     <image>
-                                        <Image url="@../../assets/staff view/baseline_notifications_white_48dp.png" />
+                                        <Image url="@../../assets/staff_view/baseline_notifications_white_48dp.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
