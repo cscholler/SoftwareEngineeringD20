@@ -4,17 +4,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class DBConstants {
-	//public static final String DB_DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
-	public static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
-	//public static final String DB_URL = "jdbc:derby:myDB;create=true";
-	public static final String DB_PREFIX = "jdbc:mysql://";
-	public static final String DB_URL = "cs3733-teaml-bwh-db.cqqsqwjmcbj4.us-east-2.rds.amazonaws.com";
-	public static final String DB_PORT = ":3306";
-	public static final String DB_NAME_DEV = "/bwh_dev";
-	public static final String DB_NAME_PROD = "/bwh_prod";
-	public static final String DB_USER = "root";
-	public static final String DB_PASSWORD = "linenleviathans";
-	//public static final String SERVICE_NAME = "derby-db-embedded-01";
+
+	static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
+	static final String DB_PREFIX = "jdbc:mysql://";
+	static final String DB_URL = "cs3733-bwh-db.cqqsqwjmcbj4.us-east-2.rds.amazonaws.com";
+	static final String DB_PORT = ":5008";
+	static final String DB_NAME_DEV = "/bwh_dev";
+	static final String DB_NAME_PROD = "/bwh_prod";
+	static final String DB_USER = "teaml";
+	static final String DB_PASSWORD = "linenleviathans";
 	public static final String SERVICE_NAME = "mysql-db-01";
 
 	public static ArrayList<String> GET_TABLE_NAMES() {
