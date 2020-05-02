@@ -42,7 +42,7 @@ public class DBConstants {
 					"f_name VARCHAR(32) NOT NULL, " +
 					"l_name VARCHAR(32) NOT NULL, " +
 					"username VARCHAR(32) NOT NULL PRIMARY KEY, " +
-					"password VARCHAR(128) NOT NULL, " +
+					"password VARCHAR(60) NOT NULL, " +
 					// 0: Staff member, 1: Nurse, 2: Doctor, 3: Admin
 					"acct_type CHAR(1) NOT NULL, " +
 					"services VARCHAR(512), " +
@@ -198,9 +198,9 @@ public class DBConstants {
 					"ORDER BY id";
 
 	public static final String GET_USER =
-			"SELECT id, f_name, l_name, username, acct_type, services, manager " +
+			"SELECT id, f_name, l_name, username, password, acct_type, services, manager " +
 					"FROM Users " +
-					"WHERE username = ? AND password = ?";
+					"WHERE username = ?";
 
 	public static final String GET_USERNAME_BY_NAME =
 			"SELECT username " +

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+import edu.wpi.cs3733.d20.teamL.services.users.PasswordEncrypter;
 import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
@@ -40,6 +41,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 		}
 
 		// Rebuild the database if using Derby
+		// TODO: only rebuild if db doesn't exist and tables dont' exist
 		if (dbType == DB_TYPE.DERBY) {
 			rebuildDatabase();
 		}
@@ -244,10 +246,10 @@ public class DatabaseService extends Service implements IDatabaseService {
 		populateFromCSV("MapLAllEdges", DBConstants.ADD_EDGE);
 
 		// Add default users
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Admin", "Admin", "admin", "admin", "3", null, null))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Nurse", "Joy", "nurse", "nurse", "1", "pharmacy", null))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Staff", "Member", "staff", "staff", "0", null, null))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Wilson", "Wong", "doctor", "doctor", "2", "pharmacy", null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Admin", "Admin", "admin", PasswordEncrypter.hashPassword("admin"), "3", null, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Nurse", "Joy", "nurse", PasswordEncrypter.hashPassword("nurse"), "1", "pharmacy", null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Staff", "Member", "staff", PasswordEncrypter.hashPassword("staff"), "0", null, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Wilson", "Wong", "doctor", PasswordEncrypter.hashPassword("doctor"), "2", "pharmacy", null))));
 
 		// Managers for each department
 		Collection<String> serviceTypes = new ArrayList<>(Arrays.asList("security", "internal_transportation", "external_transportation", "maintenance", "interpreter", "sanitation", "gift_shop", "information_technology"));
@@ -257,24 +259,24 @@ public class DatabaseService extends Service implements IDatabaseService {
 
 		// Create test employees for some departments
 		String serviceType = "pharmacy";
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Billy", "Joel", serviceType + "_emp1", serviceType + "_emp1", "0", serviceType, null))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Jamie", "Adams", serviceType + "_emp2", serviceType + "_emp2", "0", serviceType, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Billy", "Joel", serviceType + "_emp1", PasswordEncrypter.hashPassword(serviceType + "_emp1"), "0", serviceType, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Jamie", "Adams", serviceType + "_emp2", PasswordEncrypter.hashPassword(serviceType + "_emp2"), "0", serviceType, null))));
 
 		serviceType = "gift_shop";
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Leon", "Hart", serviceType + "_emp1", serviceType + "_emp1", "0", serviceType, null))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Raymond", "Spencer", serviceType + "_emp2", serviceType + "_emp2", "0", serviceType, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Leon", "Hart", serviceType + "_emp1", PasswordEncrypter.hashPassword(serviceType + "_emp1"), "0", serviceType, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Raymond", "Spencer", serviceType + "_emp2", PasswordEncrypter.hashPassword(serviceType + "_emp2"), "0", serviceType, null))));
 		serviceType = "information_technology";
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Spongebob", "Squarepants", serviceType + "_emp1", serviceType + "_emp1", "0", serviceType, null))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Barry", "Benson", serviceType + "_emp2", serviceType + "_emp2", "0", serviceType, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Spongebob", "Squarepants", serviceType + "_emp1", PasswordEncrypter.hashPassword(serviceType + "_emp1"), "0", serviceType, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Barry", "Benson", serviceType + "_emp2", PasswordEncrypter.hashPassword(serviceType + "_emp2"), "0", serviceType, null))));
 
 
 		// Interpreters for French and Spanish, the interpreter form does submit them starting with capital letters
 		String interpreter = "interpreter";
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Jacques", "Cousteau", interpreter + "_emp1", interpreter + "_emp1", "0", interpreter + "(French)", null))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Adriana", "Lopez", interpreter + "_emp2", interpreter + "_emp2", "0", interpreter + "(Spanish)", null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Jacques", "Cousteau", interpreter + "_emp1", PasswordEncrypter.hashPassword(interpreter + "_emp1"), "0", interpreter + "(French)", null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Adriana", "Lopez", interpreter + "_emp2", PasswordEncrypter.hashPassword(interpreter + "_emp2"), "0", interpreter + "(Spanish)", null))));
 
 		// Add a user that can do both medication and IT
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Multi", "Boi", "multi", "multi", "0", "pharmacy;information_technology", null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Multi", "Boi", "multi", PasswordEncrypter.hashPassword("multi"), "0", "pharmacy;information_technology", null))));
 
 		// Example doctor and patient
 		executeUpdate(new SQLEntry(DBConstants.ADD_DOCTOR, new ArrayList<>(Arrays.asList("123", "Wilson", "Wong", "doctor", null, null))));
