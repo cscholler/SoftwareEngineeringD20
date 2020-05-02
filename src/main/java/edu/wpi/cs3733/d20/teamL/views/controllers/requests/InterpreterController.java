@@ -57,7 +57,7 @@ public class InterpreterController implements Initializable {
     @FXML
     private JFXButton btnBack, btnSubmit;
     @FXML
-    private JFXTextField patientIDText, roomNumText;
+    private JFXTextField patientIDText, roomNumText, patientFN;
     @FXML
     private JFXTextArea additionalText;
 
@@ -101,6 +101,7 @@ public class InterpreterController implements Initializable {
             String patientID = patientIDText.getText();
             String roomNumber = roomNumText.getText() == null ? sf.getNode(roomNumText.getText()).getID() : null;
             String additionalInfo = additionalText.getText();
+            String pFirstName = patientFN.getText();
 
 
             // Status codes-- 0: pending, 1: approved, 2: assigned, 3: denied
@@ -109,6 +110,7 @@ public class InterpreterController implements Initializable {
             String user = loginManager.getCurrentUser().getUsername();
             // Adds request info to database
             //patient_id, request_username, assignee_username, location, service, type, notes, status, date_and_time
+
             String concatenatedNotes = additionalInfo;
             int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
                     new ArrayList<>(Arrays.asList(patientID, user, null, roomNumber, "interpreter", interpreterType, concatenatedNotes, status, dateAndTime)))));
@@ -126,6 +128,7 @@ public class InterpreterController implements Initializable {
                 patientIDText.setText("");
                 roomNumText.setText("");
                 additionalText.setText("");
+
             }
 
             loaderHelper.showAndFade(confirmation);

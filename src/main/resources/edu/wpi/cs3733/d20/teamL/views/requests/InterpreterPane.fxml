@@ -13,7 +13,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.InterpreterController">
    <children>
       <BorderPane fx:id="borderPane" maxHeight="598.0" prefHeight="598.0" styleClass="services-pane-jfx" stylesheets="@../../css/GlobalStyleSheet.css">
@@ -22,7 +21,7 @@
                <children>
                   <HBox alignment="TOP_CENTER" spacing="20.0">
                      <children>
-                        <JFXButton fx:id="btnFrench" alignment="TOP_LEFT" contentDisplay="TOP" maxWidth="1000.0" onAction="#autoFillLanguage" prefHeight="80.0" text="Français (French)">
+                        <JFXButton fx:id="btnFrench" alignment="TOP_LEFT" buttonType="RAISED" contentDisplay="TOP" maxWidth="1000.0" onAction="#autoFillLanguage" prefHeight="80.0" text="Français (French)">
                            <graphic>
                               <ImageView fitHeight="60.0" fitWidth="100.0">
                                  <image>
@@ -37,7 +36,7 @@
                               <Insets />
                            </opaqueInsets>
                         </JFXButton>
-                        <JFXButton fx:id="btnChinese" alignment="TOP_LEFT" contentDisplay="TOP" maxWidth="1000.0" onAction="#autoFillLanguage" prefHeight="109.0" prefWidth="0.0" text="中文 (Chinese)">
+                        <JFXButton fx:id="btnChinese" alignment="TOP_LEFT" buttonType="RAISED" contentDisplay="TOP" maxWidth="1000.0" onAction="#autoFillLanguage" prefHeight="109.0" prefWidth="0.0" text="中文 (Chinese)">
                            <graphic>
                               <ImageView fitHeight="60.0" fitWidth="100.0">
                                  <image>
@@ -52,7 +51,7 @@
                               <Insets />
                            </opaqueInsets>
                         </JFXButton>
-                        <JFXButton fx:id="btnASL" alignment="TOP_LEFT" contentDisplay="TOP" maxWidth="1000.0" onAction="#autoFillLanguage" prefHeight="109.0" prefWidth="151.0" text="American Sign Language">
+                        <JFXButton fx:id="btnASL" alignment="TOP_LEFT" buttonType="RAISED" contentDisplay="TOP" maxWidth="1000.0" onAction="#autoFillLanguage" prefHeight="109.0" prefWidth="151.0" text="American Sign Language">
                            <graphic>
                               <ImageView fitHeight="60.0" fitWidth="100.0">
                                  <image>
@@ -67,7 +66,7 @@
                               <Insets />
                            </opaqueInsets>
                         </JFXButton>
-                        <JFXButton fx:id="btnSpanish" alignment="TOP_LEFT" contentDisplay="TOP" maxWidth="1000.0" onAction="#autoFillLanguage" prefHeight="80.0" text="Español (Spanish)">
+                        <JFXButton fx:id="btnSpanish" alignment="TOP_LEFT" buttonType="RAISED" contentDisplay="TOP" maxWidth="1000.0" onAction="#autoFillLanguage" prefHeight="80.0" text="Español (Spanish)">
                            <graphic>
                               <ImageView fitHeight="60.0" fitWidth="100.0">
                                  <image>
@@ -82,7 +81,7 @@
                               <Insets />
                            </opaqueInsets>
                         </JFXButton>
-                        <JFXButton fx:id="btnItalian" alignment="TOP_LEFT" contentDisplay="TOP" maxWidth="1000.0" onAction="#autoFillLanguage" prefHeight="80.0" text="Italiano (Italian)">
+                        <JFXButton fx:id="btnItalian" alignment="TOP_LEFT" buttonType="RAISED" contentDisplay="TOP" maxWidth="1000.0" onAction="#autoFillLanguage" prefHeight="80.0" text="Italiano (Italian)">
                            <graphic>
                               <ImageView fitHeight="60.0" fitWidth="100.0">
                                  <image>
@@ -118,7 +117,7 @@
                         <VBox spacing="30.0">
                            <children>
                               <JFXTextField fx:id="patientIDText" onAction="#handleButtonAction" promptText="  Patient ID" styleClass="text-field-jfx" />
-                              <JFXTextField onAction="#handleButtonAction" promptText="  Patient First Name" styleClass="text-field-jfx" />
+                              <JFXTextField fx:id="patientFN" onAction="#handleButtonAction" promptText="  Patient First Name" styleClass="text-field-jfx" />
                               <JFXTextField fx:id="roomNumText" onAction="#handleButtonAction" promptText="  Patient Room Number" styleClass="text-field-jfx" />
                            </children>
                         </VBox>

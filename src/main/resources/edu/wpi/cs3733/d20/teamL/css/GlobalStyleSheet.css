@@ -159,6 +159,7 @@
     -fx-background-color: white;
     -fx-pref-height: 80;
     -fx-graphic: top;
+    -jfx-button-type: RAISED;
 }
 
 .time-text-field-jfx{

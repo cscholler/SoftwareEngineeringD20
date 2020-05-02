@@ -19,6 +19,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,6 +35,13 @@ import java.util.ResourceBundle;
 
 @Slf4j
 public class ITServiceController implements Initializable {
+
+    @FXML
+    private ImageView requestReceived;
+    @FXML
+    private BorderPane borderPane;
+    @FXML
+    private StackPane stackPane;
 
     ObservableList<String> options = FXCollections.observableArrayList("General Help", "Data Backup", "Hardware/Software Issues", "Cyber Attacks");
 
@@ -70,6 +80,8 @@ public class ITServiceController implements Initializable {
 
         typeBox.setPromptText("Request Type:");
         typeBox.setItems(options);
+        borderPane.prefWidthProperty().bind(stackPane.widthProperty());
+        borderPane.prefHeightProperty().bind(stackPane.heightProperty());
     }
 
     /**
@@ -113,12 +125,10 @@ public class ITServiceController implements Initializable {
             confirmation.setTextFill(Color.RED);
             confirmation.setText("Submission failed");
         } else {
-            confirmation.setTextFill(Color.BLACK);
-            confirmation.setText("IT Request Sent");
-
             locationText.setText("");
             typeBox.setPromptText("Request Type:");
             notesText.setText("");
+            loaderHelper.showAndFade(requestReceived);
         }
         loaderHelper.showAndFade(confirmation);
     }
