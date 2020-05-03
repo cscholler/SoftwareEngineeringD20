@@ -238,7 +238,7 @@
                             </JFXButton>
                         </children>
                     </HBox>
-            <JFXButton contentDisplay="CENTER" maxHeight="30.0" text=" ">
+            <JFXButton fx:id="btnChangeLoc" contentDisplay="CENTER" maxHeight="30.0" onAction="#handleLocationChange" text=" ">
                <graphic>
                   <ImageView fitHeight="29.0" fitWidth="73.0" pickOnBounds="true" preserveRatio="true">
                      <image>

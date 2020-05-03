@@ -398,4 +398,14 @@ public class MapViewerController {
         ;
         Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("E, MMM d | h:mm aa").format(new Date())));
     }
+
+    @FXML
+    public void handleLocationChange(ActionEvent actionEvent) {
+
+        String startLoc = startingPoint.getText();
+        String destLoc = destination.getText();
+
+        startingPoint.setText(destLoc);
+        destination.setText(startLoc);
+    }
 }
