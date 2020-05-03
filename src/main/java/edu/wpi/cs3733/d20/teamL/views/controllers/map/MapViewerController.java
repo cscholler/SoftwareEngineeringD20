@@ -18,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -70,7 +71,7 @@ public class MapViewerController {
     StackPane stackPane;
 
     @FXML
-    JFXListView listView;
+    JFXListView listHall, listDept, listStair, listElev, listRest, listServ, listLabs, listExit, listRetail, listConf;
 
     @FXML
     private Label timeLabel;
@@ -128,7 +129,43 @@ public class MapViewerController {
         autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
 
-        listView.getItems().addAll("Pharmacy");
+        Collection <Node> allNodes = nodes.getNodes();
+        Collection<String> hallNodes = new ArrayList<>();
+        Collection<String> deptNodes = new ArrayList<>();
+        Collection<String> stairNodes = new ArrayList<>();
+        Collection<String> elevNodes = new ArrayList<>();
+        Collection<String> restNodes = new ArrayList<>();
+        Collection<String> servNodes = new ArrayList<>();
+        Collection<String> labsNodes = new ArrayList<>();
+        Collection<String> exitNodes = new ArrayList<>();
+        Collection<String> retlNodes = new ArrayList<>();
+        Collection<String> confNodes = new ArrayList<>();
+
+        for (Node node : allNodes) {
+            if (node.getType().equals("HALL")) { hallNodes.add(node.getLongName());
+            } else if (node.getType().equals("DEPT")) { deptNodes.add(node.getLongName());
+            } else if (node.getType().equals("STAI")) { stairNodes.add(node.getLongName());
+            } else if (node.getType().equals("ELEV")) { elevNodes.add(node.getLongName());
+            } else if (node.getType().equals("REST")) { restNodes.add(node.getLongName());
+            } else if (node.getType().equals("SERV")) { servNodes.add(node.getLongName());
+            } else if (node.getType().equals("LABS")) { labsNodes.add(node.getLongName());
+            } else if (node.getType().equals("EXIT")) { exitNodes.add(node.getLongName());
+            } else if (node.getType().equals("RETL")) { retlNodes.add(node.getLongName());
+            } else { confNodes.add(node.getLongName());
+            }
+        }
+
+        listHall.getItems().addAll(hallNodes);
+        listDept.getItems().addAll(deptNodes);
+        listStair.getItems().addAll(stairNodes);
+        listElev.getItems().addAll(elevNodes);
+        listRest.getItems().addAll(restNodes);
+        listServ.getItems().addAll(servNodes);
+        listLabs.getItems().addAll(labsNodes);
+        listExit.getItems().addAll(exitNodes);
+        listRetail.getItems().addAll(retlNodes);
+        listConf.getItems().addAll(confNodes);
+
     }
 
     @FXML
@@ -419,9 +456,9 @@ public class MapViewerController {
     }
 
     @FXML
-    public void handleDestinationPlace() {
+    public void handleDestination() {
 
-        String dest = (String) listView.getSelectionModel().getSelectedItem();
+        String dest = (String) listHall.getSelectionModel().getSelectedItem();
         destination.setText(dest);
 
     }
