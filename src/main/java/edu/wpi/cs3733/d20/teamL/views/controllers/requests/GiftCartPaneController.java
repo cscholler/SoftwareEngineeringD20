@@ -16,10 +16,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -39,12 +37,16 @@ public class GiftCartPaneController {
     @FXML
     private StackPane stackPane;
     @FXML
+    private AnchorPane checkoutPane;
+    @FXML
     private ImageView addedToCart, outOfStock;
 
     @FXML
     public void initialize() {
         cache.cacheGiftsFromDB();
         gifts = cache.getGiftsCache();
+
+        checkoutPane.setPickOnBounds(false);
 
         addedToCart = new ImageView(new Image("/edu/wpi/cs3733/d20/teamL/assets/gift_Delivery/addToCartIcon.png", 0,150,true,false,true));
         stackPane.getChildren().add(addedToCart);
@@ -165,5 +167,9 @@ public class GiftCartPaneController {
             image = new Image("/edu/wpi/cs3733/d20/teamL/assets/gift_Delivery/noImage.png", 0, 200, true, false, true);
         }
         images.add(image);
+    }
+
+    public void goToCheckout(MouseEvent mouseEvent) {
+        System.out.println("Go to Checkout");
     }
 }
