@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import edu.wpi.cs3733.d20.teamL.util.TimerManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -43,16 +44,12 @@ public class NavigationController implements Initializable {
     private JFXTextField searchBox;
     @FXML
     private Label timeLabel;
-    //@Inject
-    //private IDatabaseCache cache;
     private final FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
-	private final Timer timer = new Timer();
     private JFXAutoCompletePopup<String> autoCompletePopup;
     private SearchFields sf;
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-		timer.scheduleAtFixedRate(timerWrapper(this::updateTime), 0, 1000);
 		// This should be the only place where the cache is rebuilt
         //cache.cacheAllFromDB();
         //sf = new SearchFields(cache.getNodeCache());
@@ -151,18 +148,5 @@ public class NavigationController implements Initializable {
     @FXML
     private void autocomplete() {
         sf.applyAutocomplete(searchBox, autoCompletePopup);
-    }
-
-	private TimerTask timerWrapper(Runnable r) {
-		return new TimerTask() {
-			@Override
-			public void run() {
-				r.run();
-			}
-		};
-	}
-
-	private void updateTime() {
-        ;Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("E, MMM d | h:mm aa").format(new Date())));
     }
 }

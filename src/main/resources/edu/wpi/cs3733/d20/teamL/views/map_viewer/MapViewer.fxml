@@ -4,6 +4,7 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -162,6 +163,11 @@
             <URL value="@../../css/MapStyles.css" />
          </stylesheets>
          <children>
+            <Label fx:id="timeLabel" text="" textFill="WHITE">
+               <font>
+                  <Font size="32.0" />
+               </font>
+            </Label>
                     <HBox alignment="CENTER" prefHeight="40.0" prefWidth="300.0" style="-fx-border-radius: 10; -fx-background-radius: 10;" styleClass="background">
                         <children>
                             <JFXTextField fx:id="startingPoint" focusColor="WHITE" labelFloat="true" maxHeight="30.0" onKeyTyped="#startingPointAutocomplete" promptText="Starting Point" style="-fx-focus-color: white; -fx-unfocus-color: white; -fx-font-color: white;" styleClass="text-field" text="Hallway Intersection 14 Level 2" unFocusColor="WHITE">

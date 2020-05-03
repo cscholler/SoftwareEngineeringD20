@@ -5,12 +5,15 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.google.inject.internal.cglib.proxy.$Callback;
 import com.jfoenix.controls.*;
 import com.twilio.twiml.voice.Echo;
+import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.entities.Building;
 import edu.wpi.cs3733.d20.teamL.entities.Graph;
 import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
+import edu.wpi.cs3733.d20.teamL.util.TimerManager;
 import javafx.event.ActionEvent;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import javafx.event.EventHandler;
@@ -56,6 +59,9 @@ public class MapViewerController {
     JFXButton btnNavigate, floorUp, floorDown;
 
     @FXML
+	Label timeLabel;
+
+    @FXML
     ScrollPane scroll;
 
     @FXML
@@ -85,8 +91,12 @@ public class MapViewerController {
 
     @FXML
     private void initialize() {
-        cache.cacheAllFromDB();
-
+    	TimerManager.timeLabel = timeLabel;
+    	if (App.doUpdateCache) {
+			cache.cacheAllFromDB();
+			log.info("Caching from db");
+			App.doUpdateCache = false;
+		}
         map.setEditable(false);
         map.setHighLightColor(Color.GOLD);
         btnNavigate.setDisableVisualFocus(true);
