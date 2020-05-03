@@ -20,10 +20,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
-
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -47,6 +49,12 @@ public class InternalTransportController implements Initializable {
     Label confirmation;
     @FXML
     JFXDatePicker date;
+    @FXML
+    BorderPane borderPane;
+    @FXML
+    StackPane stackPane;
+    @FXML
+    ImageView requestReceived;
     @Inject
     private IDatabaseService db;
     @Inject
@@ -79,7 +87,8 @@ public class InternalTransportController implements Initializable {
             }
         });
 
-
+        borderPane.prefWidthProperty().bind(stackPane.widthProperty());
+        borderPane.prefHeightProperty().bind(stackPane.heightProperty());
     }
 
     @FXML
@@ -125,7 +134,7 @@ public class InternalTransportController implements Initializable {
             confirmation.setText("Request failed");
         } else {
             confirmation.setTextFill(Color.WHITE);
-            confirmation.setText("Transport Request Sent");
+            confirmation.setText("");
 
             startLoc.setText("");
             endLoc.setText("");
@@ -134,6 +143,7 @@ public class InternalTransportController implements Initializable {
             hour.setText("");
             minutes.setText("");
             patient.setText("");
+            loaderHelper.showAndFade(requestReceived);
         }
 
         loaderHelper.showAndFade(confirmation);

@@ -130,6 +130,7 @@ public class ExternalTransportController implements Initializable {
             hour.setText("");
             minutes.setText("");
             patient.setText("");
+            confirmation.setText("");
             loaderHelper.showAndFade(requestReceived);
         }
 

@@ -118,6 +118,7 @@ public class ITServiceController implements Initializable {
             typeBox.setPromptText("Request Type:");
             notesText.setText("");
             loaderHelper.showAndFade(requestReceived);
+            confirmation.setText("");
         }
         loaderHelper.showAndFade(confirmation);
     }
