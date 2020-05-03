@@ -70,8 +70,8 @@ public class UserLandingController {
 
     @FXML
     public void launchGiftPane() throws IOException {
-        resetAndLoadPane("GiftCart", "Gift Request");
-        btnSanitation.setStyle("-fx-background-color: #DCDCDC");
+        resetAndLoadPane("GiftCartPane", "Gift Request");
+        btnGift.setStyle("-fx-background-color: #DCDCDC");
     }
 
     @FXML
@@ -147,7 +147,7 @@ public class UserLandingController {
     public void logoutBtn() {
         login.logOut(true);
         try {
-            Parent root = loaderHelper.getFXMLLoader("Home").load();
+            Parent root = loaderHelper.getFXMLLoader("map_viewer/MapViewer").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);

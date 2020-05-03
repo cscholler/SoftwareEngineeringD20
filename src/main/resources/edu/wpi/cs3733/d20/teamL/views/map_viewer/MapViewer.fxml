@@ -4,7 +4,10 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -24,6 +27,50 @@
                     <children>
                         <VBox alignment="TOP_CENTER" prefWidth="404.0" spacing="15.0" style="-fx-background-color: #0d2e57;">
                             <children>
+                        <Accordion prefHeight="600.0" prefWidth="283.0">
+                          <panes>
+                            <TitledPane animated="false" text="Amenities">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                              </content>
+                            </TitledPane>
+                            <TitledPane animated="false" text="Brigham Innovation">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                              </content>
+                            </TitledPane>
+                            <TitledPane animated="false" text="Clinics and Departments">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                              </content>
+                            </TitledPane>
+                              <TitledPane animated="false" text="Patient Rooms (Floors Only)">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                 </content>
+                              </TitledPane>
+                              <TitledPane animated="false" text="Radiology">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                 </content>
+                              </TitledPane>
+                              <TitledPane animated="false" text="Satellite Locations">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                 </content>
+                              </TitledPane>
+                              <TitledPane animated="false" text="Services">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                 </content>
+                              </TitledPane>
+                              <TitledPane animated="false" text="Staff Only Locations">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                 </content>
+                              </TitledPane>
+                          </panes>
+                        </Accordion>
                                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" visible="false">
                                     <children>
                                         <JFXButton buttonType="RAISED" maxWidth="40.0" prefHeight="40.0" prefWidth="40.0" styleClass="circle-button" text=" ">
@@ -87,7 +134,7 @@
                                  <graphic>
                                     <ImageView fitHeight="34.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../../assets/black-info-icon.png" />
+                                          <Image url="@../../assets/home_page/black-info-icon.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
@@ -97,7 +144,8 @@
                         <JFXButton onAction="#loginBtnClicked" prefHeight="40.0" prefWidth="144.0" text="Login">
                            <HBox.margin>
                               <Insets right="10.0" />
-                           </HBox.margin></JFXButton>
+                           </HBox.margin>
+                        </JFXButton>
                      </children></HBox>
                     </children>
                     <padding>
@@ -156,13 +204,20 @@
         </AnchorPane>
     </center>
    <top>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="40.0" styleClass="background" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" style="-fx-background-color: #00043B;" BorderPane.alignment="CENTER">
          <stylesheets>
-            <URL value="@../../css/GlobalStyles.css" />
             <URL value="@../../css/MapStyles.css" />
          </stylesheets>
          <children>
-                    <HBox alignment="CENTER" prefHeight="40.0" prefWidth="300.0" style="-fx-border-radius: 10; -fx-background-radius: 10;" styleClass="background">
+            <Label fx:id="timeLabel" alignment="CENTER" prefHeight="64.0" prefWidth="244.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Label>
+                    <HBox alignment="CENTER" prefHeight="40.0" prefWidth="300.0" style="-fx-border-radius: 10; -fx-background-radius: 10;">
                         <children>
                             <JFXTextField fx:id="startingPoint" focusColor="WHITE" labelFloat="true" maxHeight="30.0" onKeyTyped="#startingPointAutocomplete" promptText="Starting Point" style="-fx-focus-color: white; -fx-unfocus-color: white; -fx-font-color: white;" styleClass="text-field" text="Hallway Intersection 14 Level 2" unFocusColor="WHITE">
                                 <font>
@@ -182,7 +237,16 @@
                             </JFXButton>
                         </children>
                     </HBox>
-                    <HBox alignment="CENTER" prefHeight="40.0" prefWidth="300.0" style="-fx-border-radius: 10; -fx-background-radius: 10;" styleClass="background">
+            <JFXButton fx:id="btnChangeLoc" contentDisplay="CENTER" maxHeight="30.0" onAction="#handleLocationChange" text=" ">
+               <graphic>
+                  <ImageView fitHeight="29.0" fitWidth="73.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../assets/map_editor/reverseArrow.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </JFXButton>
+                    <HBox alignment="CENTER" prefHeight="40.0" prefWidth="300.0" style="-fx-border-radius: 10; -fx-background-radius: 10;">
                         <children>
                             <JFXTextField fx:id="destination" focusColor="WHITE" labelFloat="true" maxHeight="30.0" onKeyTyped="#destinationAutocomplete" promptText="Destination" style="-jfx-focus-color: white; -jfx-unfocus-color: white;" styleClass="text-field" unFocusColor="WHITE">
                                 <font>

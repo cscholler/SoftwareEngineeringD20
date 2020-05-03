@@ -274,7 +274,7 @@
                   <graphic>
                      <ImageView fitHeight="54.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">
                         <image>
-                           <Image url="@../../assets/baseline_arrow_back_white_48dp.png" />
+                           <Image url="@../../staff_view/baseline_arrow_back_white_48dp.png" />
                         </image>
                      </ImageView>
                   </graphic>
@@ -283,7 +283,7 @@
             </VBox>
             <HBox alignment="CENTER" prefHeight="103.0" prefWidth="1177.0">
                <children>
-                  <Label styleClass="title" stylesheets="@../../css/ServiceRequestStyles.css" text="Gift Delivery Service" textFill="WHITE" />
+                  <Label styleClass="title" text="Gift Delivery Service" textFill="WHITE" />
                </children>
             </HBox>
          </children>

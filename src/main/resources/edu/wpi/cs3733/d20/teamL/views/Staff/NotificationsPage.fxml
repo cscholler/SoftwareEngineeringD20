@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="720.0" prefWidth="1080.0" styleClass="background" stylesheets="@../../css/GlobalStyles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.NotificationsPageController">
+<BorderPane prefHeight="720.0" prefWidth="1080.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.NotificationsPageController">
    <center>
-      <BorderPane style="-fx-background-radius: 10; -fx-background-color: white;" stylesheets="@../../css/GlobalStyles.css" BorderPane.alignment="CENTER">
+      <BorderPane style="-fx-background-radius: 10; -fx-background-color: white;" BorderPane.alignment="CENTER">
          <top>
             <Label fx:id="reqMessage" text="Request" BorderPane.alignment="CENTER">
                <font>
@@ -89,7 +89,7 @@
                      <graphic>
                         <ImageView fitHeight="45.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../assets/baseline_arrow_back_white_48dp.png" />
+                              <Image url="@../../staff_view/baseline_arrow_back_white_48dp.png" />
                            </image>
                         </ImageView>
                      </graphic>

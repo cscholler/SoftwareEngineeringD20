@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="297.0" prefWidth="432.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.QRCodeController">
+<BorderPane prefHeight="297.0" prefWidth="432.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.map.QRCodeController">
    <top>
       <VBox alignment="CENTER" prefHeight="60.0" prefWidth="432.0" BorderPane.alignment="CENTER">
          <children>
@@ -24,7 +24,6 @@
       </VBox>
    </top>
    <stylesheets>
-      <URL value="@../../css/GlobalStyles.css" />
       <URL value="@../../css/MapStyles.css" />
    </stylesheets>
    <bottom>
@@ -55,7 +54,7 @@
             </HBox>
             <ImageView fx:id="qrImage" fitHeight="1.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../assets/QRCode.png" />
+                  <Image url="@../../assets/home_page/QRCode.png" />
                </image>
             </ImageView>
          </children>
@@ -64,7 +63,7 @@
    <center>
       <ImageView fx:id="qrImage" fitHeight="371.0" fitWidth="383.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
          <image>
-            <Image url="@../../assets/QRCode.png" />
+            <Image url="@../../assets/home_page/QRCode.png" />
          </image>
       </ImageView>
    </center>
