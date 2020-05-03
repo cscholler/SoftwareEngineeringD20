@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXScrollPane;
 import edu.wpi.cs3733.d20.teamL.entities.Gift;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import javafx.event.ActionEvent;
@@ -36,30 +37,28 @@ public class GiftCartPaneController {
 
         for (Gift gift : gifts) { loadImage(gift.getSubtype()); }
 
-        for (int i = 0; i < gifts.size(); i++) {
-            String previousGiftType = gifts.get(i).getType();
+        int i = 0;
+        while (i < gifts.size() - 1) {
+            String currentGiftTabType = gifts.get(i).getType();
             Tab tab = new Tab();
             tab.setText(gifts.get(i).getType());
             tab.setClosable(false);
 
-            ScrollPane scrollPane = new ScrollPane();
+            JFXScrollPane scrollPane = new JFXScrollPane();
             VBox vBox = new VBox();
 
-            while (gifts.get(i).getType().equals(previousGiftType)) {
-                int numColumns = 1;
+            while (gifts.get(i).getType().equals(currentGiftTabType)) {
+                int numColumns = 0;
                 HBox giftRow = new HBox();
-                while (numColumns <= 3){
-                    if (!gifts.get(i).getType().equals(previousGiftType)) break;
+                while (numColumns < 3 && gifts.get(i).getType().equals(currentGiftTabType)){
                     giftRow.getChildren().add(makeGift(gifts.get(i), i));
+
                     numColumns++;
-                    previousGiftType = gifts.get(i).getType();
                     if (i < gifts.size() - 1) i++;
                     else break;
                 }
                 vBox.getChildren().add(giftRow);
-                //previousGiftType = gifts.get(i).getType();
-                if (i < gifts.size() - 1) i++;
-                else break;
+                if (i >= gifts.size() - 1) break;
             }
             scrollPane.setContent(vBox);
             tab.setContent(scrollPane);
@@ -85,7 +84,7 @@ public class GiftCartPaneController {
         HBox nameHBox = new HBox(item,giftName);
         nameHBox.setAlignment(Pos.CENTER_LEFT);
 
-        Label quantity = new Label("Quantity: ");
+        Label quantity = new Label("Amount in stock: ");
         Label giftQuantity = new Label(gift.getInventory());
         HBox quantityHBox = new HBox(quantity,giftQuantity);
         quantityHBox.setAlignment(Pos.CENTER_LEFT);
