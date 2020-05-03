@@ -91,7 +91,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="btnMaintenance" onAction="#launchMaintenancePane" prefWidth="361.0" styleClass="services-button-jfx" text="Maintenace">
+                        <JFXButton fx:id="btnMaintenance" onAction="#launchMaintenancePane" prefWidth="361.0" styleClass="services-button-jfx" text="Maintenance">
                            <graphic>
                               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>

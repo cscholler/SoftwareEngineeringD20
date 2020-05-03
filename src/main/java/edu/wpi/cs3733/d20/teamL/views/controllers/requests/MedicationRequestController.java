@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+import com.jfoenix.controls.JFXTextArea;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
@@ -49,7 +50,9 @@ public class MedicationRequestController implements Initializable {
     @FXML
     private Label lblConfirmation;
     @FXML
-    private JFXTextField docFNameText, docLNameText, medTypeText, doseText, patFNameText, patLNameText, roomNumText, addInfoText;
+    private JFXTextField docFNameText, docLNameText, medTypeText, doseText, patFNameText, patLNameText, roomNumText;
+
+	@FXML private JFXTextArea addInfoText;
 	@FXML
 	private ImageView requestReceived;
 	@FXML
