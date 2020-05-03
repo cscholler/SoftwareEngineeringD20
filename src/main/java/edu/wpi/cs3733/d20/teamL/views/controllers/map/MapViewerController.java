@@ -184,7 +184,7 @@ public class MapViewerController {
     @FXML
     private void showLegend() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("Map Viewer/keyPopUp").load();
+            Parent root = loaderHelper.getFXMLLoader("map_viwer/keyPopUp").load();
             loaderHelper.setupPopup(new Stage(), new Scene(root));
         } catch (IOException ex) {
             log.error("Couldn't load LegendPopup.fxml", ex);
@@ -261,7 +261,7 @@ public class MapViewerController {
     @FXML
     public void handleText(){
         try {
-            Parent root = loaderHelper.getFXMLLoader("Map Viewer/SendDirectionsPage").load();
+            Parent root = loaderHelper.getFXMLLoader("map_viewer/SendDirectionsPage").load();
             loaderHelper.setupPopup(new Stage(), new Scene(root));
         } catch (IOException e) {
             log.error("Encountered IOException", e);
@@ -271,7 +271,7 @@ public class MapViewerController {
     @FXML
     public void genQR(){
         try {
-            Parent root = loaderHelper.getFXMLLoader("Map Viewer/QRCode").load();
+            Parent root = loaderHelper.getFXMLLoader("map_viewer/QRCode").load();
             loaderHelper.setupPopup(new Stage(), new Scene(root));
         } catch (IOException e) {
             log.error("Encountered IOException", e);

@@ -106,7 +106,7 @@
                   </VBox>
                   <VBox fx:id="vService" alignment="TOP_CENTER">
                      <children>
-                        <JFXButton fx:id="btnServiceRequest" alignment="CENTER" contentDisplay="CENTER" maxHeight="250.0" maxWidth="250.0" minHeight="250.0" minWidth="250.0" onAction="#serviceRequestsClicked" style="-fx-background-radius: 200; -fx-border-color: white; -fx-border-radius: 200;" styleClass="circle-button" text=" ">
+                        <JFXButton fx:id="btnServiceRequest" alignment="CENTER" contentDisplay="CENTER" maxHeight="250.0" maxWidth="250.0" minHeight="250.0" minWidth="250.0" style="-fx-background-radius: 200; -fx-border-color: white; -fx-border-radius: 200;" styleClass="circle-button" text=" ">
                            <graphic>
                               <ImageView pickOnBounds="true" preserveRatio="true">
                                  <image>
