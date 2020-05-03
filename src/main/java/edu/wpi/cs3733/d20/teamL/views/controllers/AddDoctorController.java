@@ -44,7 +44,6 @@ public class AddDoctorController {
 
     @FXML
     private void initialize() {
-        cache.cacheAllFromDB();
         lblConfirmation.setVisible(false);
         sf = new SearchFields(cache.getNodeCache());
         sf.getFields().add(SearchFields.Field.nodeID);

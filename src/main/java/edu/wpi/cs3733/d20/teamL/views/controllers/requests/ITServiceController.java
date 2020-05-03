@@ -57,7 +57,6 @@ public class ITServiceController implements Initializable {
 	private SearchFields searchFields;
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-        dbCache.cacheAllFromDB();
         sf = new SearchFields(dbCache.getNodeCache());
         sf.getFields().add(SearchFields.Field.longName);
         sf.getFields().add(SearchFields.Field.shortName);

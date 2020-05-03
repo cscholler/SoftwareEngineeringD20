@@ -41,7 +41,6 @@ public class AddPatientController {
 
     @FXML
     private void initialize() {
-        dbCache.cacheAllFromDB();
         lblConfirmation.setVisible(false);
         sf = new SearchFields(dbCache.getNodeCache());
         sf.getFields().add(SearchFields.Field.nodeID);

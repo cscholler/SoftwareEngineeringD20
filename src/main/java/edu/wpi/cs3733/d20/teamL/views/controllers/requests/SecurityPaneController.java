@@ -59,8 +59,6 @@ public class SecurityPaneController {
             }
         });
 
-        dbCache.cacheAllFromDB();
-
         sf = new SearchFields(dbCache.getNodeCache());
         sf.getFields().add(SearchFields.Field.longName);
         sf.getFields().add(SearchFields.Field.shortName);

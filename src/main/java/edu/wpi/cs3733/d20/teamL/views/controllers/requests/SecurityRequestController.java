@@ -48,7 +48,6 @@ public class SecurityRequestController {
 
     @FXML
     public void initialize(){
-        dbCache.cacheAllFromDB();
 
         sf = new SearchFields(dbCache.getNodeCache());
         sf.getFields().add(SearchFields.Field.longName);

@@ -43,8 +43,8 @@ public class NavigationController implements Initializable {
     private JFXTextField searchBox;
     @FXML
     private Label timeLabel;
-    @Inject
-    private IDatabaseCache cache;
+    //@Inject
+    //private IDatabaseCache cache;
     private final FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 	private final Timer timer = new Timer();
     private JFXAutoCompletePopup<String> autoCompletePopup;
@@ -54,8 +54,8 @@ public class NavigationController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 		timer.scheduleAtFixedRate(timerWrapper(this::updateTime), 0, 1000);
 		// This should be the only place where the cache is rebuilt
-        cache.cacheAllFromDB();
-        sf = new SearchFields(cache.getNodeCache());
+        //cache.cacheAllFromDB();
+        //sf = new SearchFields(cache.getNodeCache());
         sf.getFields().addAll(Arrays.asList(SearchFields.Field.shortName, SearchFields.Field.longName));
         sf.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
