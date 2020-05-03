@@ -24,8 +24,9 @@
             <HBox alignment="CENTER" spacing="40.0">
                <children>
                   <JFXDatePicker fx:id="date" defaultColor="#405784" promptText="Select a Date..." />
-                  <HBox alignment="CENTER" prefHeight="55.0" prefWidth="160.0" spacing="10.0">
+                  <HBox alignment="CENTER" prefHeight="55.0" prefWidth="174.0" spacing="10.0">
                      <children>
+                        <Label styleClass="service-request-label-fx" text="Time" />
                         <JFXTextField fx:id="hour" prefHeight="39.0" prefWidth="40.0" styleClass="time-text-field-jfx">
                            <font>
                               <Font size="18.0" />
@@ -41,7 +42,6 @@
                               <Font size="18.0" />
                            </font>
                         </JFXTextField>
-                        <JFXComboBox fx:id="AMPM" prefHeight="31.0" prefWidth="62.0" promptText="AM" styleClass="time-combo-box-jfx" />
                      </children>
                   </HBox>
                </children>
