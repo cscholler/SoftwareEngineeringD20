@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733.d20.teamL.entities.Gift;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -25,7 +25,7 @@ import java.util.List;
 public class GiftCartController {
     @Inject
     IDatabaseCache cache;
-    FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
     @FXML
     JFXButton flowerBtn, toysBtn, booksBtn, movieBtn;
     @FXML

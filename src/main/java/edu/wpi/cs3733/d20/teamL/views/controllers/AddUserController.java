@@ -9,7 +9,7 @@ import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 import edu.wpi.cs3733.d20.teamL.services.users.PasswordEncrypter;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,7 +31,7 @@ public class AddUserController implements Initializable {
     ObservableList<String> userOptions = FXCollections.observableArrayList("staff", "Nurse", "Doctor", "admin");
 
     DBTableFormatter formatter = new DBTableFormatter();
-    private final FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    private final FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
 
     @FXML
     JFXTextField doctorIDText, fNameText, lNameText, servicesText, usernameText, passwordText, languages;

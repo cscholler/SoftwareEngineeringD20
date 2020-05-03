@@ -2,15 +2,9 @@ package edu.wpi.cs3733.d20.teamL.views.controllers;
 
 import java.io.IOException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
 
-import edu.wpi.cs3733.d20.teamL.util.TimerManager;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXMLLoader;
@@ -27,13 +21,10 @@ import javafx.stage.Stage;
 import com.jfoenix.controls.JFXAutoCompletePopup;
 import com.jfoenix.controls.JFXTextField;
 
-import com.google.inject.Inject;
-
 import lombok.extern.slf4j.Slf4j;
 
-import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import edu.wpi.cs3733.d20.teamL.views.controllers.map.MapViewerController;
 
 @Slf4j
@@ -44,7 +35,7 @@ public class NavigationController implements Initializable {
     private JFXTextField searchBox;
     @FXML
     private Label timeLabel;
-    private final FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    private final FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
     private JFXAutoCompletePopup<String> autoCompletePopup;
     private SearchFields sf;
 

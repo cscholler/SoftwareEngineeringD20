@@ -2,11 +2,9 @@ package edu.wpi.cs3733.d20.teamL.views.controllers;
 
 import com.google.inject.Inject;
 import com.jfoenix.controls.JFXButton;
-import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
-import javafx.application.Platform;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -37,7 +35,7 @@ public class LoggedInViewController implements Initializable{
     @Inject
     ILoginManager loginManager;
     String map;
-    FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
 
 
     @Override

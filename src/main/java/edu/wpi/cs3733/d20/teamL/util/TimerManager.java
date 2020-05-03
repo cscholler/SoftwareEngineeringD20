@@ -16,7 +16,7 @@ import java.util.TimerTask;
 public class TimerManager {
 	public static Label timeLabel;
 	private boolean isCacheBeingUpdated = false;
-	private IDatabaseCache cache = FXMLLoaderHelper.injector.getInstance(IDatabaseCache.class);
+	private IDatabaseCache cache = FXMLLoaderFactory.injector.getInstance(IDatabaseCache.class);
 	public TimerTask timerWrapper(Runnable r) {
 		return new TimerTask() {
 			@Override

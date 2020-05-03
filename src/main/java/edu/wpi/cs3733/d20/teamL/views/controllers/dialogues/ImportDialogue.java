@@ -2,29 +2,21 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.dialogues;
 
 import com.google.inject.Inject;
 import com.jfoenix.controls.JFXComboBox;
-import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
-import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
-import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ImportDialogue {
 	@Inject
     private IDatabaseService dbService;
-    private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    private FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
     @FXML
     private BorderPane root;
     @FXML
