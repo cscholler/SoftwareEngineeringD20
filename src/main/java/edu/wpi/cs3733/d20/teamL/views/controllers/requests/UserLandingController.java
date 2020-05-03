@@ -147,7 +147,7 @@ public class UserLandingController {
     public void logoutBtn() {
         login.logOut(true);
         try {
-            Parent root = loaderHelper.getFXMLLoader("MapViewer").load();
+            Parent root = loaderHelper.getFXMLLoader("map_viewer/MapViewer").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);

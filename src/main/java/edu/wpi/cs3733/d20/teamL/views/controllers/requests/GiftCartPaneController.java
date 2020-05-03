@@ -84,7 +84,7 @@ public class GiftCartPaneController {
         HBox nameHBox = new HBox(item,giftName);
         nameHBox.setAlignment(Pos.CENTER_LEFT);
 
-        Label quantity = new Label("Quantity: ");
+        Label quantity = new Label("Amount in stock: ");
         Label giftQuantity = new Label(gift.getInventory());
         HBox quantityHBox = new HBox(quantity,giftQuantity);
         quantityHBox.setAlignment(Pos.CENTER_LEFT);
