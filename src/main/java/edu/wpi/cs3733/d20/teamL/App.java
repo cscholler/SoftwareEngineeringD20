@@ -29,7 +29,7 @@ public class App extends Application {
 
 	public static void startIdleTimer() {
 		if(idleTimer != null) idleTimer.cancel();
-		idleTimer = timerManager.startTimer(timerManager::updateCacheIfNoInput, 10000, 10000);
+		//idleTimer = timerManager.startTimer(timerManager::updateCacheIfNoInput, 10000, 10000);
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class App extends Application {
 		FXMLLoaderFactory.getHistory().push(homeScene);
 		homeScene.addEventHandler(Event.ANY, event -> startIdleTimer());
 		clockTimer = timerManager.startTimer(timerManager::updateTime, 0, 1000);
-		cacheTimer = timerManager.startTimer(timerManager::forceUpdateCache, 300000, 300000);
+		//cacheTimer = timerManager.startTimer(timerManager::forceUpdateCache, 300000, 300000);
 		//startIdleTimer();
 	}
 

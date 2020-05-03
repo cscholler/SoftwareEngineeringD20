@@ -27,6 +27,9 @@
     -fx-font-size: 14;
 }
 
+.jfx-spinner .arc {
+    -fx-stroke: blue;
+}
 
 .topBorder {
     -fx-background-color: #00032E;

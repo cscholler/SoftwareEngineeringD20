@@ -63,8 +63,4 @@ public class TimerManager {
 		timer.scheduleAtFixedRate(timerWrapper(updateFunction::update), delay, period);
 		return timer;
 	}
-
-	public interface VoidFunction {
-		void update();
-	}
 }
