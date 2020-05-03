@@ -70,6 +70,9 @@ public class MapViewerController {
     StackPane stackPane;
 
     @FXML
+    JFXListView listView;
+
+    @FXML
     private Label timeLabel;
 
     @Inject
@@ -124,6 +127,8 @@ public class MapViewerController {
         sf.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
+
+        listView.getItems().addAll("Pharmacy");
     }
 
     @FXML
@@ -411,5 +416,13 @@ public class MapViewerController {
 
         startingPoint.setText(destLoc);
         destination.setText(startLoc);
+    }
+
+    @FXML
+    public void handleDestinationPlace() {
+
+        String dest = (String) listView.getSelectionModel().getSelectedItem();
+        destination.setText(dest);
+
     }
 }
