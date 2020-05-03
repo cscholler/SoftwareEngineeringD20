@@ -1,14 +1,14 @@
 
 
-/*-----------------------------------------------------------------------------*/
-/*                                                                             */
-/*                                                                             */
-/*         Please keep this file organized with headers and comments           */
-/*                                                                             */
-/*                                 thank you :)                                */
-/*                                                                             */
-/*                                                                             */
-/*-----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------------------------*/
+/*                                                                                              */
+/*                                                                                              */
+/*     Please keep this file organized with headers comments and proper naming conventions      */
+/*                                                                                              */
+/*                                    thank you :)  -UI Squad                                   */
+/*                                                                                              */
+/*                                                                                              */
+/*----------------------------------------------------------------------------------------------*/
 
 
 
@@ -200,6 +200,39 @@
     -jfx-unfocus-color: white;
     -jfx-focus-color: white;
     -fx-background-radius: 0;
+}
+
+/*----------------------------Admin Login----------------------------------*/
+.map-button-jfx {
+    -fx-text-fill: white;
+    -fx-font-size:35;
+    -fx-padding: 0 30 0 30;
+    -fx-text-alignment: justify;
+    -jfx-button-type: RAISED;
+}
+
+.database-buttons-jfx{
+    -fx-background-radius: 100;
+    -fx-background-color: #0d2e57;
+
+    -fx-border-width: 5;
+    -fx-border-radius: 100;
+    -fx-border-color: white;
+
+    -fx-pref-height: 70;
+    -fx-pref-width: 70;
+    -jfx-button-type: RAISED;
+}
+
+.delete-database-buttons-jfx{
+    -fx-background-radius: 100;
+    -fx-background-color: darkred;
+    -fx-border-radius: 100;
+
+
+    -fx-pref-height: 70;
+    -fx-pref-width: 70;
+    -jfx-button-type: RAISED;
 }
 
 
