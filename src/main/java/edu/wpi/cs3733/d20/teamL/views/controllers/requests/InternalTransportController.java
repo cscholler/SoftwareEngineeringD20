@@ -37,12 +37,11 @@ import java.util.ResourceBundle;
 public class InternalTransportController implements Initializable {
 
     ObservableList<String> transportOptions = FXCollections.observableArrayList("Wheelchair w/ Operator", "Wheelchair w/o Operator", "Crutches", "Walker", "Gurney");
-    ObservableList<String> timeOptions = FXCollections.observableArrayList("AM", "PM");
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
     @FXML
-    JFXComboBox transportSelector, AMPM;
+    JFXComboBox transportSelector;
     @FXML
     JFXTextField patient, startLoc, endLoc, hour, minutes;
     @FXML
@@ -72,7 +71,7 @@ public class InternalTransportController implements Initializable {
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
         //transportSelector.setPromptText("Select Equipment");
         transportSelector.setItems(transportOptions);
-        AMPM.setItems(timeOptions);
+
 
 
         hour.addEventFilter(KeyEvent.KEY_TYPED, keyEvent -> {
@@ -103,7 +102,7 @@ public class InternalTransportController implements Initializable {
 
    @FXML
     private boolean timeIsValid() {
-        if (Integer.parseInt(hour.getText()) < 13 || (Integer.parseInt(minutes.getText()) < 60)) {
+        if (Integer.parseInt(hour.getText()) < 25 || (Integer.parseInt(minutes.getText()) < 60)) {
             return true;
         }
         return false;
