@@ -4,7 +4,9 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -24,6 +26,146 @@
                     <children>
                         <VBox alignment="TOP_CENTER" prefWidth="404.0" spacing="15.0" style="-fx-background-color: #0d2e57;">
                             <children>
+                        <Accordion prefHeight="600.0" prefWidth="283.0">
+                          <panes>
+                            <TitledPane animated="false" text="Amenities">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <TitledPane animated="false" prefHeight="207.0" prefWidth="280.0" text="Onsite Dining &amp; Vending">
+                                            <content>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                   <children>
+                                                      <TitledPane animated="false" prefHeight="207.0" prefWidth="280.0" text="Off Campus Dining">
+                                                        <content>
+                                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <TitledPane animated="false" prefHeight="207.0" prefWidth="280.0" text="Relxation and Spiritul Care">
+                                                                    <content>
+                                                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                                           <children>
+                                                                              <TitledPane animated="false" prefHeight="207.0" prefWidth="280.0" text="Restrooms and Lactation Rooms">
+                                                                                <content>
+                                                                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                                                                </content>
+                                                                              </TitledPane>
+                                                                           </children>
+                                                                        </AnchorPane>
+                                                                    </content>
+                                                                  </TitledPane>
+                                                               </children>
+                                                            </AnchorPane>
+                                                        </content>
+                                                      </TitledPane>
+                                                   </children>
+                                                </AnchorPane>
+                                            </content>
+                                          </TitledPane>
+                                       </children>
+                                    </AnchorPane>
+                              </content>
+                            </TitledPane>
+                            <TitledPane animated="false" text="Brigham Innovation">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <TitledPane animated="false" prefHeight="207.0" prefWidth="282.0" text="BEI Knowledge Center">
+                                            <content>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                   <children>
+                                                      <TitledPane animated="false" layoutX="-1.0" prefHeight="207.0" prefWidth="281.0" text="Brigham Digital Innovation Hub">
+                                                        <content>
+                                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <TitledPane animated="false" prefHeight="207.0" prefWidth="280.0" text="Stratus Center">
+                                                                    <content>
+                                                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                                                    </content>
+                                                                  </TitledPane>
+                                                               </children>
+                                                            </AnchorPane>
+                                                        </content>
+                                                      </TitledPane>
+                                                   </children>
+                                                </AnchorPane>
+                                            </content>
+                                          </TitledPane>
+                                       </children>
+                                    </AnchorPane>
+                              </content>
+                            </TitledPane>
+                            <TitledPane animated="false" text="Clinics and Departments">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                              </content>
+                            </TitledPane>
+                              <TitledPane animated="false" text="Patient Rooms (Floors Only)">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                 </content>
+                              </TitledPane>
+                              <TitledPane animated="false" text="Radiology">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                 </content>
+                              </TitledPane>
+                              <TitledPane animated="false" text="Satellite Locations">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                 </content>
+                              </TitledPane>
+                              <TitledPane animated="false" text="Services">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <TitledPane animated="false" prefHeight="207.0" prefWidth="280.0" text="ATMs">
+                                            <content>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                   <children>
+                                                      <TitledPane animated="false" prefHeight="207.0" prefWidth="280.0" text="Infomation and Security">
+                                                        <content>
+                                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <TitledPane animated="false" prefHeight="207.0" prefWidth="280.0" text="Lobbies and Waiting Areas">
+                                                                    <content>
+                                                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                                           <children>
+                                                                              <TitledPane animated="false" prefHeight="207.0" prefWidth="280.0" text="Parking, Validation and Valet">
+                                                                                <content>
+                                                                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                                                       <children>
+                                                                                          <TitledPane animated="false" prefHeight="207.0" prefWidth="280.0" text="Patient and Visitor Services">
+                                                                                            <content>
+                                                                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                                                                            </content>
+                                                                                          </TitledPane>
+                                                                                       </children>
+                                                                                    </AnchorPane>
+                                                                                </content>
+                                                                              </TitledPane>
+                                                                           </children>
+                                                                        </AnchorPane>
+                                                                    </content>
+                                                                  </TitledPane>
+                                                               </children>
+                                                            </AnchorPane>
+                                                        </content>
+                                                      </TitledPane>
+                                                   </children>
+                                                </AnchorPane>
+                                            </content>
+                                          </TitledPane>
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </TitledPane>
+                              <TitledPane animated="false" text="Staff Only Locations">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                 </content>
+                              </TitledPane>
+                          </panes>
+                        </Accordion>
                                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" visible="false">
                                     <children>
                                         <JFXButton buttonType="RAISED" maxWidth="40.0" prefHeight="40.0" prefWidth="40.0" styleClass="circle-button" text=" ">
