@@ -28,56 +28,31 @@
                     <children>
                         <VBox alignment="TOP_CENTER" prefWidth="404.0" spacing="15.0" style="-fx-background-color: #0d2e57;">
                             <children>
-                        <Accordion prefHeight="600.0" prefWidth="283.0">
+                        <Accordion prefHeight="300.0" prefWidth="283.0">
                           <panes>
-                            <TitledPane animated="false" text="Hallways">
+                            <TitledPane animated="false" prefHeight="216.0" prefWidth="283.0" text="Floor 1">
                                  <content>
-                                    <JFXListView fx:id="listHall" onMouseClicked="#handleDestination" />
+                                    <JFXListView fx:id="listF1" onMouseClicked="#navigateFloor1" />
                                  </content>
                             </TitledPane>
-                            <TitledPane animated="false" text="Departments">
+                            <TitledPane animated="false" text="Floor 2">
                                  <content>
-                                    <JFXListView fx:id="listDept" />
+                                    <JFXListView fx:id="listF2" onMouseClicked="#navigateFloor2" />
                                  </content>
                             </TitledPane>
-                            <TitledPane animated="false" text="Stairs">
+                            <TitledPane animated="false" text="Floor 3">
                                  <content>
-                                    <JFXListView fx:id="listStair" />
+                                    <JFXListView fx:id="listF3" onMouseClicked="#navigateFloor3" />
                                  </content>
                             </TitledPane>
-                              <TitledPane animated="false" text="Elevator">
+                              <TitledPane animated="false" text="Floor 4">
                                  <content>
-                                    <JFXListView fx:id="listElev" />
+                                    <JFXListView fx:id="listF4" onMouseClicked="#navigateFloor4" />
                                  </content>
                               </TitledPane>
-                              <TitledPane animated="false" text="Restrooms">
+                              <TitledPane animated="false" text="Floor 5">
                                  <content>
-                                    <JFXListView fx:id="listRest" />
-                                 </content>
-                              </TitledPane>
-                              <TitledPane animated="false" text="Services">
-                                 <content>
-                                    <JFXListView fx:id="listServ" />
-                                 </content>
-                              </TitledPane>
-                              <TitledPane animated="false" text="Labs">
-                                 <content>
-                                    <JFXListView fx:id="listLabs" />
-                                 </content>
-                              </TitledPane>
-                              <TitledPane animated="false" text="Exits">
-                                 <content>
-                                    <JFXListView fx:id="listExit" />
-                                 </content>
-                              </TitledPane>
-                              <TitledPane animated="false" text="Retail">
-                                 <content>
-                                    <JFXListView fx:id="listRetail" />
-                                 </content>
-                              </TitledPane>
-                              <TitledPane animated="false" text="Conference Rooms">
-                                 <content>
-                                    <JFXListView fx:id="listConf" />
+                                    <JFXListView fx:id="listF5" onMouseClicked="#navigateFloor5" />
                                  </content>
                               </TitledPane>
                           </panes>
