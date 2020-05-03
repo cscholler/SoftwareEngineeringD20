@@ -1,10 +1,7 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 
 import com.google.inject.Inject;
-import com.jfoenix.controls.JFXAutoCompletePopup;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
@@ -58,9 +55,11 @@ public class ITServiceController implements Initializable {
     @FXML
     private Label confirmation;
     @FXML
-    private JFXButton btnBack, btnSubmit;
+    private JFXButton btnSubmit;
     @FXML
-    private JFXTextField locationText, notesText;
+    private JFXTextField locationText;
+    @FXML
+    private JFXTextArea notesText;
     @FXML
     private JFXComboBox<String> typeBox;
 
@@ -94,16 +93,6 @@ public class ITServiceController implements Initializable {
     }
 
     /**
-     * Goes back to the staff page when back button is clicked
-     *
-     */
-    @FXML
-    private void backClicked() {
-
-        loaderHelper.goBack();
-    }
-
-    /**
      * When clicked, the UI will either show that the request is made.
      * Or that the request had failed.
      *
@@ -129,6 +118,7 @@ public class ITServiceController implements Initializable {
             typeBox.setPromptText("Request Type:");
             notesText.setText("");
             loaderHelper.showAndFade(requestReceived);
+            confirmation.setText("");
         }
         loaderHelper.showAndFade(confirmation);
     }

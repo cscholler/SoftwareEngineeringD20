@@ -45,7 +45,7 @@ public class ExternalTransportController implements Initializable {
     private JFXAutoCompletePopup<String> autoCompletePopup;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
     @FXML
-    JFXComboBox transportSelector, AMPM;
+    JFXComboBox transportSelector;
     ObservableList<String> transportOptions = FXCollections.observableArrayList("Taxi", "Bus", "Uber", "Lyft");
     ObservableList<String> timeOptions = FXCollections.observableArrayList("AM", "PM");
 
@@ -72,7 +72,6 @@ public class ExternalTransportController implements Initializable {
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
 
         transportSelector.setItems(transportOptions);
-        AMPM.setItems(timeOptions);
 
         hour.addEventFilter(KeyEvent.KEY_TYPED, keyEvent -> {
             if (!"0123456789".contains(keyEvent.getCharacter())) {
@@ -97,7 +96,7 @@ public class ExternalTransportController implements Initializable {
 
     @FXML
     private boolean timeIsValid() {
-        if (Integer.parseInt(hour.getText()) < 13 || (Integer.parseInt(minutes.getText()) < 60)) {
+        if (Integer.parseInt(hour.getText()) < 25 || (Integer.parseInt(minutes.getText()) < 60)) {
             return true;
         }
         return false;
@@ -130,6 +129,7 @@ public class ExternalTransportController implements Initializable {
             hour.setText("");
             minutes.setText("");
             patient.setText("");
+            confirmation.setText("");
             loaderHelper.showAndFade(requestReceived);
         }
 

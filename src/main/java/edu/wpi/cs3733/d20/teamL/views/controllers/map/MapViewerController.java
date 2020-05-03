@@ -1,9 +1,8 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import com.jfoenix.controls.*;
 import com.twilio.twiml.voice.Echo;
@@ -11,6 +10,7 @@ import edu.wpi.cs3733.d20.teamL.entities.Building;
 import edu.wpi.cs3733.d20.teamL.entities.Graph;
 import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import javafx.event.EventHandler;
@@ -69,6 +69,9 @@ public class MapViewerController {
     @FXML
     StackPane stackPane;
 
+    @FXML
+    private Label timeLabel;
+
     @Inject
     private IDatabaseCache cache;
     @Inject
@@ -81,10 +84,12 @@ public class MapViewerController {
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    private final Timer timer = new Timer();
     private Path path = new Path();
 
     @FXML
     private void initialize() {
+        timer.scheduleAtFixedRate(timerWrapper(this::updateTime), 0, 1000);
         cache.cacheAllFromDB();
 
         map.setEditable(false);
@@ -366,8 +371,8 @@ public class MapViewerController {
                 "Product Owner: Tori Buyck\n" +
                 "Algorithms Specialist: Cameron Jacobson\n" +
                 "UI Engineer: Winnie Ly\n" +
-                "Documentation Analyst: Zaiyang Zhong\n" +
-                "Thank you Brigham and Women’s Hospital and Andrew Shinn for your time and input."));
+                "Documentation Analyst: Zaiyang Zhong\n\n" +
+                "Thank you Brigham and Women's Hospital and Andrew Shinn for your time and input."));
         JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
         JFXButton btnDone = new JFXButton("Done");
         btnDone.setOnAction(new EventHandler<ActionEvent>() {
@@ -378,5 +383,19 @@ public class MapViewerController {
         });
         content.setActions(btnDone);
         dialog.show();
+    }
+
+    private TimerTask timerWrapper(Runnable r) {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                r.run();
+            }
+        };
+    }
+
+    private void updateTime() {
+        ;
+        Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("E, MMM d | h:mm aa").format(new Date())));
     }
 }

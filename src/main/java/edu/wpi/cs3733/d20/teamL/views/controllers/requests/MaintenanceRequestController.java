@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 import com.google.inject.Inject;
 import com.jfoenix.controls.JFXAutoCompletePopup;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
@@ -37,7 +38,9 @@ public class MaintenanceRequestController implements Initializable {
     @FXML
     private JFXComboBox urgency, type;
     @FXML
-    private JFXTextField location, description;
+    private JFXTextField location;
+    @FXML
+    private JFXTextArea description;
     @FXML
     private Label error;
 

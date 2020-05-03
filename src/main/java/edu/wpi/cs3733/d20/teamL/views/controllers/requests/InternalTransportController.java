@@ -20,10 +20,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
-
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -35,18 +37,23 @@ import java.util.ResourceBundle;
 public class InternalTransportController implements Initializable {
 
     ObservableList<String> transportOptions = FXCollections.observableArrayList("Wheelchair w/ Operator", "Wheelchair w/o Operator", "Crutches", "Walker", "Gurney");
-    ObservableList<String> timeOptions = FXCollections.observableArrayList("AM", "PM");
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
     @FXML
-    JFXComboBox transportSelector, AMPM;
+    JFXComboBox transportSelector;
     @FXML
     JFXTextField patient, startLoc, endLoc, hour, minutes;
     @FXML
     Label confirmation;
     @FXML
     JFXDatePicker date;
+    @FXML
+    BorderPane borderPane;
+    @FXML
+    StackPane stackPane;
+    @FXML
+    ImageView requestReceived;
     @Inject
     private IDatabaseService db;
     @Inject
@@ -64,7 +71,7 @@ public class InternalTransportController implements Initializable {
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
         //transportSelector.setPromptText("Select Equipment");
         transportSelector.setItems(transportOptions);
-        AMPM.setItems(timeOptions);
+
 
 
         hour.addEventFilter(KeyEvent.KEY_TYPED, keyEvent -> {
@@ -79,7 +86,8 @@ public class InternalTransportController implements Initializable {
             }
         });
 
-
+        borderPane.prefWidthProperty().bind(stackPane.widthProperty());
+        borderPane.prefHeightProperty().bind(stackPane.heightProperty());
     }
 
     @FXML
@@ -94,7 +102,7 @@ public class InternalTransportController implements Initializable {
 
    @FXML
     private boolean timeIsValid() {
-        if (Integer.parseInt(hour.getText()) < 13 || (Integer.parseInt(minutes.getText()) < 60)) {
+        if (Integer.parseInt(hour.getText()) < 25 || (Integer.parseInt(minutes.getText()) < 60)) {
             return true;
         }
         return false;
@@ -125,7 +133,7 @@ public class InternalTransportController implements Initializable {
             confirmation.setText("Request failed");
         } else {
             confirmation.setTextFill(Color.WHITE);
-            confirmation.setText("Transport Request Sent");
+            confirmation.setText("");
 
             startLoc.setText("");
             endLoc.setText("");
@@ -134,6 +142,7 @@ public class InternalTransportController implements Initializable {
             hour.setText("");
             minutes.setText("");
             patient.setText("");
+            loaderHelper.showAndFade(requestReceived);
         }
 
         loaderHelper.showAndFade(confirmation);
