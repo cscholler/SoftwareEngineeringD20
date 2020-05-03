@@ -8,8 +8,11 @@ public class DBConstants {
 	static final String DB_PREFIX = "jdbc:mysql://";
 	static final String DB_URL = "cs3733-bwh-db.cqqsqwjmcbj4.us-east-2.rds.amazonaws.com";
 	static final String DB_PORT = ":5008";
+	// Development database
 	static final String DB_NAME_DEV = "/bwh_dev";
+	// Production database
 	static final String DB_NAME_PROD = "/bwh_prod";
+	// Bleeding-edge 'canary' database
 	static final String DB_NAME_CANARY = "/bwh_canary";
 	static final String DB_USER = "teaml";
 	static final String DB_PASSWORD = "linenleviathans";
