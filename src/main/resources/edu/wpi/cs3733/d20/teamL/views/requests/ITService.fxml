@@ -72,7 +72,7 @@
             </VBox>
          </center>
       </BorderPane>
-      <ImageView fx:id="requestRecieved" fitHeight="218.0" fitWidth="278.0">
+      <ImageView fx:id="requestRecieved" fitHeight="218.0" fitWidth="278.0" visible="false">
          <image>
             <Image url="@../../assets/Services/serviceRecieved.png" />
          </image>
