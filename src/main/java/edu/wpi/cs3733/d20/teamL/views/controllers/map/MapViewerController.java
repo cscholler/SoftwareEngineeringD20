@@ -399,8 +399,12 @@ public class MapViewerController {
         Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("E, MMM d | h:mm aa").format(new Date())));
     }
 
+    /**
+     * Changes starting location with destination and vice-versa.
+     *
+     */
     @FXML
-    public void handleLocationChange(ActionEvent actionEvent) {
+    public void handleLocationChange() {
 
         String startLoc = startingPoint.getText();
         String destLoc = destination.getText();
