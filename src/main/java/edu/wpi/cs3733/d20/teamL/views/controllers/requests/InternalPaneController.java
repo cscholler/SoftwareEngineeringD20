@@ -34,7 +34,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-public class InternalTransportController implements Initializable {
+public class InternalPaneController implements Initializable {
 
     ObservableList<String> transportOptions = FXCollections.observableArrayList("Wheelchair w/ Operator", "Wheelchair w/o Operator", "Crutches", "Walker", "Gurney");
     private SearchFields sf;
@@ -137,7 +137,7 @@ public class InternalTransportController implements Initializable {
 
             startLoc.setText("");
             endLoc.setText("");
-            transportSelector.setPromptText("Choose Type of Equipment");
+            transportSelector.setValue(null);
             date.setId("");
             hour.setText("");
             minutes.setText("");

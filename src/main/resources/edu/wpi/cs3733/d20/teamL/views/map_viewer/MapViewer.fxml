@@ -133,7 +133,7 @@
                                  <graphic>
                                     <ImageView fitHeight="34.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../../assets/black-info-icon.png" />
+                                          <Image url="@../../assets/home_page/black-info-icon.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
@@ -204,7 +204,6 @@
    <top>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="40.0" styleClass="background" BorderPane.alignment="CENTER">
          <stylesheets>
-            <URL value="@../../css/GlobalStyles.css" />
             <URL value="@../../css/MapStyles.css" />
          </stylesheets>
          <children>

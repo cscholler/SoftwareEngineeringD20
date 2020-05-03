@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamL.views.controllers;
+package edu.wpi.cs3733.d20.teamL.views.LoggedInView;
 
 import com.google.inject.Inject;
 import com.jfoenix.controls.JFXButton;

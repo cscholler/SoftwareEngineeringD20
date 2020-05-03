@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamL.views.controllers;
+package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 
 import com.google.inject.Inject;
 import com.google.zxing.WriterException;

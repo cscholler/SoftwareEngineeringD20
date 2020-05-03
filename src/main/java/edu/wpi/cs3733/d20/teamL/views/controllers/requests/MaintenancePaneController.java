@@ -27,7 +27,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-public class MaintenanceRequestController implements Initializable {
+public class MaintenancePaneController implements Initializable {
     @FXML
     private ImageView requestReceived;
     @FXML
@@ -100,7 +100,8 @@ public class MaintenanceRequestController implements Initializable {
                 error.setTextFill(Color.RED);
                 loaderHelper.showAndFade(error);
             } else {
-
+                location.setText("");
+                description.setText("");
                 loaderHelper.showAndFade(requestReceived);
             }
         } else {

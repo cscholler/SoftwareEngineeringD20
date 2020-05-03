@@ -36,7 +36,7 @@ import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class MedicationRequestController implements Initializable {
+public class MedicationPaneController implements Initializable {
 	DBTableFormatter formatter = new DBTableFormatter();
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
 	private SearchFields sf;

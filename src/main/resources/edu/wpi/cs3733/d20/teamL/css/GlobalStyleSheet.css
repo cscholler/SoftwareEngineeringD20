@@ -1,9 +1,92 @@
+
+
+/*-----------------------------------------------------------------------------*/
+/*                                                                             */
+/*                                                                             */
+/*         Please keep this file organized with headers and comments           */
+/*                                                                             */
+/*                                 thank you :)                                */
+/*                                                                             */
+/*                                                                             */
+/*-----------------------------------------------------------------------------*/
+
+
+
+
+
+
+
+/*-------------------------any background pane-------------------------------*/
 .background-pane-fx {
     -fx-pref-height: 720;
     -fx-pref-width: 1280;
     -fx-max-height: 720;
     -fx-max-width: 1280;
     -fx-background-color: white;
+}
+
+
+/*------------------------------bottom bar----------------------------------*/
+.bottom-bar-anchor-pane-fx {
+    -fx-background-color: #00043B;
+    -fx-pref-height: 30;
+    -fx-max-height: 30;
+    -fx-alignment: center;
+}
+
+.bottom-bar-time-label-fx {
+    -fx-text-fill: white;
+    -fx-font-size:30;
+    -fx-padding: 0 0 0 30;
+}
+
+.bottom-bar-logout-label-fx {
+    -fx-text-fill: white;
+    -fx-underline: true;
+    -fx-font-size:30;
+    -fx-padding: 0 30 0 30;
+    -fx-text-alignment: justify;
+}
+
+/*---------------------------------user Landing Page-----------------------------*/
+
+.services-button-jfx {
+    -fx-font-size: 30;
+    -fx-text-fill: #0D2E57;
+
+    -fx-background-color: WHITE;
+    -fx-pref-width: 385;
+    -fx-pref-height: 300;
+    -fx-max-height: 300;
+    -fx-alignment: center-left;
+    -jfx-button-type: RAISED;
+}
+.service-request-header-label-fx {
+    -fx-text-fill: #00043B;
+    -fx-font-size: 40;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 0 30;
+}
+
+.notifications-button-jfx {
+    -fx-font-size: 30;
+    -fx-text-fill: #00043B;
+    -fx-padding: 0 10 0 10;
+    -fx-underline: true;
+
+    -fx-background-color: WHITE;
+    -fx-pref-width: 260;
+    -fx-pref-height: 60;
+    -fx-max-width: 260;
+    -fx-max-height: 60;
+    -jfx-button-type: FLAT;
+}
+
+/*------------------------universal service request controls----------------------------*/
+.services-pane-jfx{
+    -fx-background-color: white;
+    -fx-pref-width: 895;
+    -fx-pref-height: 585;
 }
 
 .cancel-button-jfx {
@@ -46,57 +129,6 @@
     -jfx-label-float: true;
 }
 
-.combo-box-jfx {
-    -fx-background-color: #DCDCDC;
-    -fx-background-radius: 0;
-    -jfx-unfocus-color: white;
-    -jfx-focus-color: #405784;
-    -fx-pref-width: 200;
-    -fx-pref-height: 40;
-    -fx-max-width: 200;
-    -fx-max-height: 40;
-
-    -fx-font-size: 15;
-}
-
-.bottom-bar-anchor-pane-fx {
-    -fx-background-color: #00043B;
-    -fx-pref-height: 30;
-    -fx-max-height: 30;
-    -fx-alignment: center;
-}
-
-.bottom-bar-time-label-fx {
-    -fx-text-fill: white;
-    -fx-font-size:30;
-    -fx-padding: 0 0 0 30;
-}
-
-.bottom-bar-logout-label-fx {
-    -fx-text-fill: white;
-    -fx-underline: true;
-    -fx-font-size:30;
-    -fx-padding: 0 30 0 30;
-    -fx-text-alignment: justify;
-}
-
-.service-request-header-label-fx {
-    -fx-text-fill: #00043B;
-    -fx-font-size: 40;
-    -fx-font-weight: bold;
-    -fx-padding: 0 0 0 30;
-}
-
-.check-box-jfx {
-    -fx-font-size: 15;
-    -jfx-checked-color: #405784;
-}
-
-.radio-button-jfx {
-    -fx-font-size: 15;
-    -jfx-selected-color: #0D2E57;
-}
-
 .text-area-jfx {
     -fx-background-color: #DCDCDC;
     -fx-background-radius: 0;
@@ -110,53 +142,69 @@
     -fx-font-size: 15;
     -jfx-label-float: true;
 }
-
-.notifications-button-jfx {
-    -fx-font-size: 30;
+/*any labels used in service requests*/
+.service-request-label-fx{
+    -fx-font-size: 20;
     -fx-text-fill: #00043B;
-    -fx-padding: 0 10 0 10;
-    -fx-underline: true;
-
-    -fx-background-color: WHITE;
-    -fx-pref-width: 260;
-    -fx-pref-height: 60;
-    -fx-max-width: 260;
-    -fx-max-height: 60;
-    -jfx-button-type: FLAT;
 }
 
-.services-button-jfx {
-    -fx-font-size: 30;
-    -fx-text-fill: #00043B;
-
-    -fx-background-color: WHITE;
-    -fx-pref-width: 385;
-    -fx-pref-height: 300;
-    -fx-max-height: 300;
-    -fx-alignment: center-left;
-    -jfx-button-type: RAISED;
+.submission-failed-label-fx{
+    -fx-pref-width: 250;
+    -fx-pref-height: 20;
+    -fx-font-size: 14;
 }
 
-.services-button-jfx {
-    -fx-font-size: 30;
-    -fx-text-fill: #0D2E57;
+.combo-box-jfx {
+    -fx-background-color: #DCDCDC;
+    -fx-background-radius: 0;
+    -jfx-unfocus-color: white;
+    -jfx-focus-color: #405784;
+    -fx-pref-width: 200;
+    -fx-pref-height: 40;
+    -fx-max-width: 200;
+    -fx-max-height: 40;
 
-    -fx-background-color: WHITE;
-    -fx-pref-width: 385;
-    -fx-pref-height: 300;
-    -fx-max-height: 300;
-    -fx-alignment: center-left;
-    -jfx-button-type: RAISED;
+    -fx-font-size: 15;
+}
+.radio-button-jfx {
+    -fx-font-size: 15;
+    -jfx-selected-color: #0D2E57;
 }
 
-.services-pane-jfx{
+/*used for sanitation*/
+.check-box-jfx {
+    -fx-font-size: 15;
+    -jfx-checked-color: #405784;
+}
+
+/*used for interpreter*/
+.flags-button-jfx{
     -fx-background-color: white;
-    -fx-pref-width: 895;
-    -fx-pref-height: 585;
+    -fx-pref-height: 80;
+    -fx-graphic: top;
+    -jfx-button-type: RAISED;
 }
 
-/*-----------------------------------------------------*/
-/*this is for tab panes*/
+/*time used in internal and external transport*/
+.time-text-field-jfx{
+    -fx-font-size: 14;
+    -jfx-unfocus-color: black;
+    -jfx-focus-color: #405784;
+    -fx-max-width: 40;
+    -fx-alignment: center;
+}
+
+.time-combo-box-jfx {
+    -fx-font-size: 15;
+    -fx-text-fill: black;
+    -jfx-unfocus-color: white;
+    -jfx-focus-color: white;
+    -fx-background-radius: 0;
+}
+
+
+/*-----------------------------Tab Panes-----------------------------------*/
+/*applies automatically*/
 
 .jfx-tab-pane .tab-header-background {
     -fx-background-color: white;
@@ -191,40 +239,57 @@
     -fx-tab-pref-width:40px;
 }
 
-/*------------------------------------------------------*/
 
-.flags-button-jfx{
-    -fx-background-color: white;
-    -fx-pref-height: 80;
-    -fx-graphic: top;
-    -jfx-button-type: RAISED;
+/*---------------------------------------Scroll Bar-------------------------------------*/
+/*applies automatically*/
+
+.scroll-bar:vertical > .track-background, .scroll-bar:horizontal > .track-background {
+    -fx-background-color: #F1F1F1;
+    -fx-background-insets: 0.0;
 }
 
-.time-text-field-jfx{
-    -fx-font-size: 14;
-    -jfx-unfocus-color: black;
-    -jfx-focus-color: #405784;
-    -fx-max-width: 40;
-    -fx-alignment: center;
+.scroll-bar:vertical > .thumb, .scroll-bar:horizontal > .thumb {
+    -fx-background-color: #BCBCBC;
+    -fx-background-insets: 0.0;
+    -fx-background-radius: 1.0;
 }
 
-.time-combo-box-jfx {
-    -fx-font-size: 15;
-    -fx-text-fill: black;
-    -jfx-unfocus-color: white;
-    -jfx-focus-color: white;
-    -fx-background-radius: 0;
+/* Up- and Down-Button Padding */
+.scroll-bar:vertical > .increment-button, .scroll-bar:vertical > .decrement-button {
+    -fx-padding: 5 2 5 2;
 }
 
-.service-request-label-fx{
-    -fx-font-size: 20;
-    -fx-text-fill: #00043B;
+/* Left- and Right-Button Padding */
+.scroll-bar:horizontal > .increment-button, .scroll-bar:horizontal > .decrement-button {
+    -fx-padding: 2 5 2 5;
 }
 
-.submission-failed-label-fx{
-    -fx-pref-width: 250;
-    -fx-pref-height: 20;
-    -fx-font-size: 14;
+.scroll-bar > .increment-button, .scroll-bar > .decrement-button, .scroll-bar:hover > .increment-button, .scroll-bar:hover > .decrement-button {
+    -fx-background-color: transparent;
 }
 
+.scroll-bar > .increment-button > .increment-arrow, .scroll-bar > .decrement-button > .decrement-arrow {
+    -fx-background-color: rgb(150.0, 150.0, 150.0);
+}
 
+/* Up Arrow */
+.scroll-bar:vertical > .increment-button > .increment-arrow {
+    -fx-shape: "M298 426h428l-214 214z";
+}
+
+/* Down Arrow */
+.scroll-bar:vertical > .decrement-button > .decrement-arrow {
+    -fx-shape: "M298 598l214-214 214 214h-428z";
+}
+
+/* Right Arrow */
+.scroll-bar:horizontal > .increment-button > .increment-arrow {
+    -fx-shape: "M0 428l0 -428l214 214l-214 214z";
+}
+
+/* Left Arrow */
+.scroll-bar:horizontal > .decrement-button > .decrement-arrow {
+    -fx-shape: "M214 0l0 428l-214 -214l214 -214z";
+}
+
+/*------------------------------------------------------------------------------*/

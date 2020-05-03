@@ -32,7 +32,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-public class InterpreterController implements Initializable {
+public class InterpreterPaneController implements Initializable {
     public JFXButton btnSpanish;
     public JFXButton btnFrench;
     public JFXButton btnItalian;

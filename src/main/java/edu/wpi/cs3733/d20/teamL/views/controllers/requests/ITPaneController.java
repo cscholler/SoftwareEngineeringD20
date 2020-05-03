@@ -31,7 +31,7 @@ import java.util.Date;
 import java.util.ResourceBundle;
 
 @Slf4j
-public class ITServiceController implements Initializable {
+public class ITPaneController implements Initializable {
 
     @FXML
     private ImageView requestReceived;

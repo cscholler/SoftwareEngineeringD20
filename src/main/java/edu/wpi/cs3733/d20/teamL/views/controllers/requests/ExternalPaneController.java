@@ -31,7 +31,7 @@ import java.util.Date;
 import java.util.ResourceBundle;
 
 
-public class ExternalTransportController implements Initializable {
+public class ExternalPaneController implements Initializable {
 
     @FXML
     private ImageView requestReceived;
@@ -47,7 +47,6 @@ public class ExternalTransportController implements Initializable {
     @FXML
     JFXComboBox transportSelector;
     ObservableList<String> transportOptions = FXCollections.observableArrayList("Taxi", "Bus", "Uber", "Lyft");
-    ObservableList<String> timeOptions = FXCollections.observableArrayList("AM", "PM");
 
     @FXML
     JFXTextField patient, startLoc, endLoc, hour, minutes;
@@ -131,6 +130,7 @@ public class ExternalTransportController implements Initializable {
             patient.setText("");
             confirmation.setText("");
             loaderHelper.showAndFade(requestReceived);
+            transportSelector.setValue(null);
         }
 
         loaderHelper.showAndFade(confirmation);
