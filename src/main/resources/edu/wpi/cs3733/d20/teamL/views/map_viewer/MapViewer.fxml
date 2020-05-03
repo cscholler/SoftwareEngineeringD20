@@ -204,7 +204,7 @@
         </AnchorPane>
     </center>
    <top>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="40.0" styleClass="background" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" style="-fx-background-color: #00043B;" BorderPane.alignment="CENTER">
          <stylesheets>
             <URL value="@../../css/GlobalStyles.css" />
             <URL value="@../../css/MapStyles.css" />
@@ -218,7 +218,7 @@
                   <Insets />
                </HBox.margin>
             </Label>
-                    <HBox alignment="CENTER" prefHeight="40.0" prefWidth="300.0" style="-fx-border-radius: 10; -fx-background-radius: 10;" styleClass="background">
+                    <HBox alignment="CENTER" prefHeight="40.0" prefWidth="300.0" style="-fx-border-radius: 10; -fx-background-radius: 10;">
                         <children>
                             <JFXTextField fx:id="startingPoint" focusColor="WHITE" labelFloat="true" maxHeight="30.0" onKeyTyped="#startingPointAutocomplete" promptText="Starting Point" style="-fx-focus-color: white; -fx-unfocus-color: white; -fx-font-color: white;" styleClass="text-field" text="Hallway Intersection 14 Level 2" unFocusColor="WHITE">
                                 <font>
@@ -238,7 +238,16 @@
                             </JFXButton>
                         </children>
                     </HBox>
-                    <HBox alignment="CENTER" prefHeight="40.0" prefWidth="300.0" style="-fx-border-radius: 10; -fx-background-radius: 10;" styleClass="background">
+            <JFXButton contentDisplay="CENTER" maxHeight="30.0" text=" ">
+               <graphic>
+                  <ImageView fitHeight="29.0" fitWidth="73.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../assets/map_editor/reverseArrow.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </JFXButton>
+                    <HBox alignment="CENTER" prefHeight="40.0" prefWidth="300.0" style="-fx-border-radius: 10; -fx-background-radius: 10;">
                         <children>
                             <JFXTextField fx:id="destination" focusColor="WHITE" labelFloat="true" maxHeight="30.0" onKeyTyped="#destinationAutocomplete" promptText="Destination" style="-jfx-focus-color: white; -jfx-unfocus-color: white;" styleClass="text-field" unFocusColor="WHITE">
                                 <font>
