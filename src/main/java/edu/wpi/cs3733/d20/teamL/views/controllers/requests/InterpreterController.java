@@ -122,13 +122,14 @@ public class InterpreterController implements Initializable {
             } else {
                 confirmation.setVisible(true);
                 confirmation.setTextFill(Color.WHITE);
-                confirmation.setText("Request Sent");
+                confirmation.setText("");
 
                 interpType.setText("");
                 patientIDText.setText("");
                 roomNumText.setText("");
                 additionalText.setText("");
 
+                loaderHelper.showAndFade(requestReceived);
             }
 
             loaderHelper.showAndFade(confirmation);
