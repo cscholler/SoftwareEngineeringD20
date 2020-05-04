@@ -19,6 +19,7 @@ import com.twilio.type.PhoneNumber;
 import edu.wpi.cs3733.d20.teamL.services.Service;
 import lombok.extern.slf4j.Slf4j;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -114,13 +115,11 @@ public class MessengerService extends Service implements IMessengerService {
         }
     }
 
-    public void generateQRCodeImage(String text)
+    public BufferedImage getQRCodeImage(String text)
             throws WriterException, IOException {
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, 1000, 1000);
-
-        Path path = FileSystems.getDefault().getPath("src/main/resources/edu/wpi/cs3733/d20/teamL/assets/QRCode.png");
-        MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
+        return MatrixToImageWriter.toBufferedImage(bitMatrix);
     }
 
     @Override

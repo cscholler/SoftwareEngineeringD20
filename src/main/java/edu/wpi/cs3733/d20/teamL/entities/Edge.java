@@ -15,7 +15,7 @@ public class Edge {
 
     public Edge(Node source, Node destination) {
         this.id = source.getID() + "_" + destination.getID();
-        setSource(source);
+        this.source = source;
         this.destination = destination;
     }
 

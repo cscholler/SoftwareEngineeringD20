@@ -1,16 +1,12 @@
 package edu.wpi.cs3733.d20.teamL.entities;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class User {
 	private String id;
 	private String fName;
 	private String lName;
 	private String username;
 	private String acctType;
-	private List<String> services;
+	private String services;
 	private boolean isManager;
 	private String dept;
 
@@ -20,21 +16,13 @@ public class User {
 		this.lName = lName;
 		this.username = username;
 		this.acctType = acctType;
-		if (services != null) {
-			this.services = Arrays.asList(services.split(";"));
-		} else {
-			this.services = new ArrayList<>();
-		}
+		this.services = services;
 		this.isManager = manager != null;
 		this.dept = isManager ? manager : null;
 	}
 
 	public String getID() {
 		return id;
-	}
-
-	public void setID(String id) {
-		this.id = id;
 	}
 
 	public String getUsername() {
@@ -69,7 +57,7 @@ public class User {
 		this.acctType = acctType;
 	}
 
-	public List<String> getServices() {
+	public String getServices() {
 		return services;
 	}
 

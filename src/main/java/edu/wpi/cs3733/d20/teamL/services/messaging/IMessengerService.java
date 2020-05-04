@@ -4,6 +4,7 @@ import com.google.zxing.WriterException;
 import com.sendgrid.helpers.mail.objects.Email;
 import com.twilio.type.PhoneNumber;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public interface IMessengerService {
@@ -17,5 +18,5 @@ public interface IMessengerService {
 
 	void setDirections(String directions);
 
-	void generateQRCodeImage(String text) throws WriterException, IOException;
+	BufferedImage getQRCodeImage(String text) throws WriterException, IOException;
 }

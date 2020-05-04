@@ -202,19 +202,10 @@ public class MapEditorController {
     @FXML
     private void saveToDB() {
         ArrayList<Node> nodes = new ArrayList<>(map.getBuilding().getNodes());
-        ArrayList<Edge> blackList = new ArrayList<>();
-        ArrayList<Edge> newEdges = new ArrayList<>();
-
-        for (Node node : nodes) {
-            for (Edge edge : node.getEdges()) {
-                if (!newEdges.contains(edge) && blackList.contains(edge)) newEdges.add(edge);
-                if (edge.getDestination().getNeighbors().contains(node))
-                    blackList.add(edge.getDestination().getEdge(node));
-            }
-        }
+        ArrayList<Edge> edges = new ArrayList<>(map.getBuilding().getEdgesOneWay());
 
         cache.cacheNodes(nodes, map.getEditedNodes());
-        cache.cacheEdges(newEdges);
+        cache.cacheEdges(edges);
         cache.updateDB();
 
         map.getEditedNodes().clear();
@@ -227,11 +218,13 @@ public class MapEditorController {
         data.showDialogue(pathFind.getScene().getWindow());
         String nodeFilePath = data.getNodeFile().getAbsolutePath();
         String edgeFilePath = data.getEdgeFile().getAbsolutePath();
+
         CSVHelper csvHelper = new CSVHelper();
         ArrayList<ArrayList<String>> nodeTable = new ArrayList<>();
         ArrayList<ArrayList<String>> edgeTable = new ArrayList<>();
         ArrayList<Node> nodes = new ArrayList<>(map.getBuilding().getNodes());
-        ArrayList<Edge> edges = new ArrayList<>(map.getBuilding().getEdges());
+        ArrayList<Edge> edges = new ArrayList<>(map.getBuilding().getEdgesOneWay());
+
         nodeTable.add(new ArrayList<>(Arrays.asList("nodeID", "xCoord", "yCoord", "floor", "building", "nodeType", "longName", "shortName")));
         for (Node node : nodes) {
             nodeTable.add(node.toArrayList());
@@ -259,7 +252,8 @@ public class MapEditorController {
     private void openFromDB() {
         cache.cacheAllFromDB();
         Building newBuilding = new Building("Faulkner");
-        newBuilding.addAllNodes(cache.getNodeCache());
+        Graph nodes = Graph.graphFromCache(cache.getNodeCache(), cache.getEdgeCache());
+        newBuilding.addAllNodes(nodes.getNodes());
 
         map.setBuilding(newBuilding);
         setFloor(2);
@@ -292,7 +286,7 @@ public class MapEditorController {
     @FXML
     private void myCustomAction(MouseEvent event) {
         Node selectedNode = map.getSelectedNode();
-
+        path.getPathNodes().clear();
         if (selectedNode == null) {
             editor.setPrefWidth(0);
             editor.setVisible(false);
@@ -486,7 +480,8 @@ public class MapEditorController {
         nodeConnectionsTab.setPrefWidth(200);
         nodeConnectionsTab.setVisible(true);
 
-        for (Edge edge : map.getSelectedNode().getEdges()) {
+        Collection<Edge> edges = map.getSelectedNode().getEdges();
+        for (Edge edge : edges) {
             EdgeField newEdgeField = new EdgeField(map.getBuilding());
             newEdgeField.setText(edge.getDestination().getID());
 

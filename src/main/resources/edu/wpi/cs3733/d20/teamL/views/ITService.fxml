@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -19,10 +20,14 @@
          <children>
             <Label text="Infomation Technology Services" textFill="WHITE">
                <font>
-                  <Font size="36.0" />
+                  <Font size="40.0" />
                </font>
             </Label>
          </children>
+         <styleClass>
+            <String fx:value="title-background" />
+            <String fx:value="title" />
+         </styleClass>
       </HBox>
    </top>
    <bottom>
@@ -106,5 +111,6 @@
    <stylesheets>
       <URL value="@../css/GlobalStyles.css" />
       <URL value="@../css/MapStyles.css" />
+      <URL value="@../css/ServiceRequestStyles.css" />
    </stylesheets>
 </BorderPane>

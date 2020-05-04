@@ -85,7 +85,7 @@ public class DBConstants {
 					"gift3_id INT REFERENCES Gifts(id), " +
 					"message VARCHAR(128), " +
 					"notes VARCHAR(256), " +
-					// 0: Pending, 1: Approved, 2: Completed, 3: Denied
+					// 0: Pending, 1: Approved, 2: Assigned, 3: Denied, 4: Completed
 					"status CHAR(1) NOT NULL, " +
 					"date_and_time CHAR(19) NOT NULL, " +
 					"PRIMARY KEY (id))";
@@ -100,7 +100,7 @@ public class DBConstants {
 					"dose VARCHAR(64) NOT NULL, " +
 					"type VARCHAR(64) NOT NULL, " +
 					"notes VARCHAR(256), " +
-					// 0: Pending, 1: Approved, 2: Completed, 3: Denied
+					// 0: Pending, 1: Approved, 2: Assigned, 3: Denied, 4: Completed
 					"status CHAR(1) NOT NULL, " +
 					"date_and_time CHAR(19) NOT NULL, " +
 					"PRIMARY KEY (id))";
@@ -115,7 +115,7 @@ public class DBConstants {
 					"service VARCHAR(64) NOT NULL, " +
 					"type VARCHAR(64), " +
 					"notes VARCHAR(256), " +
-					// 0: Pending, 1: Approved, 2: Completed, 3: Denied
+					// 0: Pending, 1: Approved, 2: Assigned, 3: Denied, 4: Completed
 					"status CHAR(1) NOT NULL, " +
 					"date_and_time CHAR(19) NOT NULL, " +
 					"PRIMARY KEY (id))";
@@ -192,22 +192,18 @@ public class DBConstants {
 					"FROM Edges";
 
 	public static final String SELECT_ALL_USERS =
-			"SELECT * " +
+			"SELECT id, f_name, l_name, username, acct_type, services, manager " +
 					"FROM Users";
-
-	public static final String SELECT_ALL_GIFTS =
-			"SELECT * " +
-					"FROM Gifts";
-
-	public static final String GET_GIFT =
-			"SELECT * " +
-					"FROM Gifts " +
-					"WHERE id = ?";
 
 	public static final String GET_USER =
 			"SELECT id, f_name, l_name, username, acct_type, services, manager " +
 					"FROM Users " +
 					"WHERE username = ? AND password = ?";
+
+	public static final String GET_USERNAME_BY_NAME =
+			"SELECT username " +
+					"FROM Users " +
+					"WHERE f_name = ? AND l_name = ?";
 
 	public static final String GET_USER_BY_ID =
 			"SELECT id, username, f_name, l_name, acct_type " +
@@ -255,6 +251,15 @@ public class DBConstants {
 	public static final String GET_PATIENT_ROOM =
 			"SELECT room_id " +
 					"FROM Patients " +
+					"WHERE id = ?";
+
+	public static final String SELECT_ALL_GIFTS =
+			"SELECT * " +
+					"FROM Gifts";
+
+	public static final String GET_GIFT =
+			"SELECT * " +
+					"FROM Gifts " +
 					"WHERE id = ?";
 
 	public static final String SELECT_ALL_GIFT_DELIVERY_REQUESTS =
@@ -325,12 +330,17 @@ public class DBConstants {
 					"WHERE id = ?";
 
 	public static final String UPDATE_GIFT_DELIVERY_REQUEST =
-			"UPDATE Medication_Requests " +
+			"UPDATE Gift_Delivery_Requests " +
 					"SET patient_id = ?, request_username = ?, assignee_username = ?, gift_id = ?, message = ?, notes = ?, status = ?, date_and_time = ? " +
 					"WHERE id = ?";
 
+	public static final String UPDATE_GIFT_DELIVERY_REQUEST_ASSIGNEE =
+			"UPDATE Gift_Delivery_Requests " +
+					"SET assignee_username = ? " +
+					"WHERE id = ?";
+
 	public static final String UPDATE_GIFT_DELIVERY_REQUEST_STATUS =
-			"UPDATE Medication_Requests " +
+			"UPDATE Gift_Delivery_Requests " +
 					"SET status = ? " +
 					"WHERE id = ?";
 
@@ -350,12 +360,17 @@ public class DBConstants {
 					"WHERE id = ?";
 
 	public static final String UPDATE_SERVICE_REQUEST =
-			"UPDATE Medication_Requests " +
+			"UPDATE Service_Requests " +
 					"SET patient_id = ?, request_username = ?, assignee_username = ?, location = ?, service = ?, type = ?, notes = ?, status = ?, date_and_time = ? " +
 					"WHERE id = ?";
 
+	public static final String UPDATE_SERVICE_REQUEST_ASSIGNEE =
+			"UPDATE Service_Requests " +
+					"SET assignee_username = ? " +
+					"WHERE id = ?";
+
 	public static final String UPDATE_SERVICE_REQUEST_STATUS =
-			"UPDATE Medication_Requests " +
+			"UPDATE Service_Requests " +
 					"SET status = ? " +
 					"WHERE id = ?";
 

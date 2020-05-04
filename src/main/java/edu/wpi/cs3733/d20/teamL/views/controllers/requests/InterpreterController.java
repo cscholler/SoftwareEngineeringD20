@@ -50,14 +50,15 @@ public class InterpreterController implements Initializable {
     @FXML
     private JFXButton btnBack, btnSubmit;
     @FXML
-    private JFXTextField pNameText, roomNumText, userIDText, assignedToText, additionalText;
+    private JFXTextField patientIDText, roomNumText, additionalText;
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
         dbCache.cacheAllFromDB();
 
         sf = new SearchFields(dbCache.getNodeCache());
-        sf.getFields().add(SearchFields.Field.nodeID);
+        sf.getFields().add(SearchFields.Field.longName);
+        sf.getFields().add(SearchFields.Field.shortName);
         sf.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
@@ -86,10 +87,8 @@ public class InterpreterController implements Initializable {
             //sumbits request
         } else if (e.getSource() == btnSubmit){
             String interpreterType = interpType.getText();
-            String patientName = pNameText.getText();
-            String roomNumber = roomNumText.getText();
-            String userID = userIDText.getText();
-            String assignedTo = assignedToText.getText();
+            String patientID = patientIDText.getText();
+            String roomNumber = roomNumText.getText() == null ? sf.getNode(roomNumText.getText()).getID() : null;
             String additionalInfo = additionalText.getText();
 
 
@@ -98,23 +97,23 @@ public class InterpreterController implements Initializable {
             String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
             String user = loginManager.getCurrentUser().getUsername();
             // Adds request info to database
-
-            String concatenatedNotes = interpreterType + "\n" + patientName + "\n" + roomNumber + "\n" + userID + "\n" + assignedTo + "\n" +additionalInfo;
+            //patient_id, request_username, assignee_username, location, service, type, notes, status, date_and_time
+            String concatenatedNotes = additionalInfo;
             int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
-                    new ArrayList<>(Arrays.asList(interpreterType, patientName, roomNumber, user, assignedTo, additionalInfo, concatenatedNotes, dateAndTime, status)))));
+                    new ArrayList<>(Arrays.asList(patientID, user, null, roomNumber, "interpreter", interpreterType, concatenatedNotes, status, dateAndTime)))));
 
             if (rows == 0) {
+                confirmation.setVisible(true);
                 confirmation.setTextFill(Color.RED);
-                confirmation.setText("Submission failed      ");
+                confirmation.setText("Submission failed");
             } else {
+                confirmation.setVisible(true);
                 confirmation.setTextFill(Color.WHITE);
-                confirmation.setText("Interpreter Request Sent");
+                confirmation.setText("Request Sent");
 
-                interpType.setText("Interpreter Type:");
-                pNameText.setText("");
+                interpType.setText("");
+                patientIDText.setText("");
                 roomNumText.setText("");
-                userIDText.setText("");
-                assignedToText.setText("");
                 additionalText.setText("");
             }
 
@@ -125,15 +124,15 @@ public class InterpreterController implements Initializable {
     @FXML
     private void autoFillLanguage(ActionEvent e) {
         if(e.getSource() == btnASL){
-            interpType.setText("Interpreter Type: ASL");
+            interpType.setText("ASL");
         }else if(e.getSource() == btnChinese){
-            interpType.setText("Interpreter Type: Chinese");
+            interpType.setText("Chinese");
         }else if(e.getSource() == btnFrench){
-            interpType.setText("Interpreter Type: French");
+            interpType.setText("French");
         }else if(e.getSource() == btnItalian){
-            interpType.setText("Interpreter Type: Italian");
+            interpType.setText("Italian");
         }else{
-            interpType.setText("Interpreter Type: Spanish");
+            interpType.setText("Spanish");
         }
 
 

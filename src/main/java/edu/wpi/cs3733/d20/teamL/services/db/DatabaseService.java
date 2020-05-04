@@ -42,7 +42,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 			connect(props);
 		}
 		// Uncomment if database needs to be rebuilt
-		//rebuildDatabase();
+		rebuildDatabase();
 	}
 
 	/**
@@ -220,18 +220,36 @@ public class DatabaseService extends Service implements IDatabaseService {
 
 		// Users
 		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Admin", "Admin", "admin", "admin", "3", null, null))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Nurse", "Joy", "nurse", "nurse", "1", null, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Nurse", "Joy", "nurse", "nurse", "1", "pharmacy", null))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Staff", "Member", "staff", "staff", "0", null, null))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Wilson", "Wong", "doctor", "doctor", "2", null, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Wilson", "Wong", "doctor", "doctor", "2", "pharmacy", null))));
 
 		// Managers for each department
-		List<String> serviceTypes = new ArrayList<>(Arrays.asList("security", "internal_transportation", "external_transportation", "maintenance", "sanitation", "pharmacy", "gift_shop", "information_technology"));
+		List<String> serviceTypes = new ArrayList<>(Arrays.asList("security", "internal_transportation", "external_transportation", "maintenance", "interpreter", "sanitation", "gift_shop", "information_technology"));
 		for (String serviceType : serviceTypes) {
-			executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(serviceType, "Manager", serviceType, serviceType, "0", serviceType + ";", serviceType))));
+			executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(serviceType, "Manager", serviceType, serviceType, "0", null, serviceType))));
 		}
-		String serviceType = "interpreter";
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(serviceType, "Manager", serviceType, serviceType, "0", serviceType + "();", serviceType))));
 
+		// Presenting: gifts, medication, interpreter, it
+		// Create the employees for each
+		String serviceType = "pharmacy";
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Billy", "Joel", serviceType + "_emp1", serviceType + "_emp1", "0", serviceType, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Jamie", "Adams", serviceType + "_emp2", serviceType + "_emp2", "0", serviceType, null))));
+
+		serviceType = "gift_shop";
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Leon", "Hart", serviceType + "_emp1", serviceType + "_emp1", "0", serviceType, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Raymond", "Spencer", serviceType + "_emp2", serviceType + "_emp2", "0", serviceType, null))));
+		serviceType = "information_technology";
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Spongebob", "Squarepants", serviceType + "_emp1", serviceType + "_emp1", "0", serviceType, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Barry", "Benson", serviceType + "_emp2", serviceType + "_emp2", "0", serviceType, null))));
+
+		String interpreter = "interpreter";
+		// Interpreters for French and Spanish, the interpreter form does submit them starting with capital letters
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Jacques", "Cousteau", interpreter + "_emp1", interpreter + "_emp1", "0", interpreter + "(French)", null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Adriana", "Lopez", interpreter + "_emp2", interpreter + "_emp2", "0", interpreter + "(Spanish)", null))));
+
+		// Add a user that can do both medication and IT
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Multi", "Boi", "multi", "multi", "0", "pharmacy;information_technology", null))));
 
 		// Example doctor and patient
 		executeUpdate(new SQLEntry(DBConstants.ADD_DOCTOR, new ArrayList<>(Arrays.asList("123", "Wilson", "Wong", "doctor", null, null))));

@@ -192,14 +192,13 @@ public class PathfinderService implements IPathfinderService {
     private LinkedList<Node> entryToList(NodeEntry entry) {
         LinkedList<Node> path = new LinkedList<Node>();
         NodeEntry current = entry;
-        while (current.shortestPath != 0) {
+            while (current.shortestPath != 0) {
+                path.addFirst(current.node);
+                current = priorityQueueKey.get(current.parent);
+            }
             path.addFirst(current.node);
-            current = priorityQueueKey.get(current.parent);
-        }
-        path.addFirst(current.node);
-        return path;
+            return path;
     }
-
     private void addNode(Node node) {
         NodeEntry newEntry = new NodeEntry(node);
         priorityQueue.add(newEntry);

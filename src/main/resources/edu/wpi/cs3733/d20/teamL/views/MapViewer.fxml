@@ -40,15 +40,18 @@
                             <children>
                                 <HBox prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: white; -fx-border-radius: 10; -fx-background-radius: 10;">
                                     <children>
-                                        <JFXTextField fx:id="startingPoint" focusColor="WHITE" labelFloat="true" maxHeight="30.0" onKeyTyped="#startingPointAutocomplete" promptText="Starting Point" style="-jfx-focus-color: white; -jfx-unfocus-color: white;" styleClass="text-field" text="Hallway Intersection 14 Level 2" unFocusColor="WHITE">
+                                        <JFXTextField fx:id="startingPoint" focusColor="WHITE" labelFloat="true" maxHeight="30.0" onKeyTyped="#startingPointAutocomplete" promptText="Starting Point" style="-fx-focus-color: white; -fx-unfocus-color: white; -fx-font-color: white;" styleClass="text-field" text="Hallway Intersection 14 Level 2" unFocusColor="WHITE">
                                             <font>
                                                 <Font size="16.0" />
                                             </font>
                                             <HBox.margin>
                                                 <Insets left="10.0" />
                                             </HBox.margin>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
                                         </JFXTextField>
-                                        <JFXButton maxHeight="30.0" style="-fx-font-size: 10; -fx-pref-width: 40;" styleClass="clear" stylesheets="@../css/GlobalStyles.css" text="X" textFill="WHITE">
+                                        <JFXButton maxHeight="30.0" onAction="#clearSource" style="-fx-font-size: 10; -fx-pref-width: 40;" styleClass="clear" stylesheets="@../css/GlobalStyles.css" text="X" textFill="WHITE">
                                             <font>
                                                 <Font name="Corbel Light" size="10.0" />
                                             </font>
@@ -65,7 +68,7 @@
                                                 <Insets left="10.0" />
                                             </HBox.margin>
                                         </JFXTextField>
-                                        <JFXButton maxHeight="30.0" style="-fx-font-size: 10; -fx-pref-width: 40;" styleClass="clear" text="X" textFill="WHITE">
+                                        <JFXButton maxHeight="30.0" onAction="#clearDest" style="-fx-font-size: 10; -fx-pref-width: 40;" styleClass="clear" text="X" textFill="WHITE">
                                             <font>
                                                 <Font name="Corbel Light" size="10.0" />
                                             </font>
@@ -75,7 +78,7 @@
                                         <Insets top="20.0" />
                                     </VBox.margin>
                                 </HBox>
-                                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
+                                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" visible="false">
                                     <children>
                                         <JFXButton buttonType="RAISED" maxWidth="40.0" prefHeight="40.0" prefWidth="40.0" styleClass="circle-button" text=" ">
                                             <HBox.margin>
@@ -190,6 +193,7 @@
                         </JFXButton>
                     </children>
                 </VBox>
+            <JFXButton layoutX="825.0" layoutY="14.0" onAction="#showLegend" style="-fx-pref-width: 75;" text="Legend" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
             </children>
         </AnchorPane>
     </center>

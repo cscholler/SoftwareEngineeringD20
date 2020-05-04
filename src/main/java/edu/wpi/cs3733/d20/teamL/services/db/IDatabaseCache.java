@@ -24,7 +24,9 @@ public interface IDatabaseCache {
 
 	void clearNodeCache();
 
-	ArrayList<Node> getNodeCache();
+	List<Node> getNodeCache();
+
+	List<Edge> getEdgeCache();
 
 	void cacheEdgesFromDB();
 

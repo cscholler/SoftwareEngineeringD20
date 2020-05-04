@@ -14,8 +14,6 @@ import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +38,7 @@ public class GiftCheckoutController implements Initializable {
     @FXML
     private Label lblConfirmation, cartLbl;
     @FXML
-    private JFXTextField messageText, cartText, patFNameText, patLNameText, roomNumText, addInfoText;
+    private JFXTextField messageText, cartText, patFNameText, patLNameText, senderText, addInfoText;
 
     ArrayList<Gift> cart;
 
@@ -48,7 +46,8 @@ public class GiftCheckoutController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         sf = new SearchFields(cache.getNodeCache());
-        sf.getFields().add(SearchFields.Field.nodeID);
+        sf.getFields().add(SearchFields.Field.longName);
+        sf.getFields().add(SearchFields.Field.shortName);
         sf.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
@@ -68,7 +67,7 @@ public class GiftCheckoutController implements Initializable {
      */
     @FXML
     private void autocomplete() {
-        sf.applyAutocomplete(roomNumText, autoCompletePopup);
+        sf.applyAutocomplete(senderText, autoCompletePopup);
     }
 
     @FXML
@@ -81,24 +80,25 @@ public class GiftCheckoutController implements Initializable {
         String message = messageText.getText();
         String patientFName = patFNameText.getText();
         String patientLName = patLNameText.getText();
-        String roomNum = roomNumText.getText();
+        String sender = senderText.getText();
         String additionalInfo = addInfoText.getText();
 
         // Status codes-- 0: pending, 1: approved, 2: delivered, 3: denied,
         String status = "0";
         String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
-        String request_username = loginManager.getCurrentUser().getUsername();
 
         cart = cache.getCartCacheNull();
+
         // Adds request info to database
         String patientID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ID, new ArrayList<>(Arrays.asList(patientFName, patientLName))))).get(0).get(0);
         String patientRoomNum = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ROOM, new ArrayList<>(Collections.singletonList(patientID))))).get(0).get(0);
         //TODO: add more verification checks
         int rows = 0;
 
-        rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_GIFT_DELIVERY_REQUEST, new ArrayList<>(Arrays.asList(patientID, "Bob", request_username, null, cart.get(0).getId(), cart.get(1).getId(), cart.get(2).getId(), message, additionalInfo, status, dateAndTime))));
+        rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_GIFT_DELIVERY_REQUEST, new ArrayList<>(Arrays.asList(patientID, sender, loginManager.getCurrentUser().getUsername(), null,
+                cart.get(0).getId(), cart.get(1) != null ? cart.get(1).getId() : null, cart.get(2) != null ? cart.get(2).getId() : null, message, additionalInfo, status, dateAndTime))));
 
-        formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_MEDICATION_REQUESTS)));
+        formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_GIFT_DELIVERY_REQUESTS)));
         if (rows == 0) {
             lblConfirmation.setTextFill(Color.RED);
             lblConfirmation.setText("Submission failed");
@@ -108,7 +108,7 @@ public class GiftCheckoutController implements Initializable {
             messageText.setText("");
             patFNameText.setText("");
             patLNameText.setText("");
-            roomNumText.setText("");
+            senderText.setText("");
             addInfoText.setText("");
             cache.clearCartCache();
             loaderHelper.goBack();
