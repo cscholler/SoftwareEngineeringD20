@@ -5,9 +5,12 @@ import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import javafx.application.Platform;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Timer;
@@ -22,6 +25,8 @@ public class TimerManager {
 	// Don't touch.
 	private final IDatabaseCache cache = FXMLLoaderFactory.injector.getInstance(IDatabaseCache.class);
 	private final ILoginManager loginManager = FXMLLoaderFactory.injector.getInstance(ILoginManager.class);
+	private final FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
+
 	public TimerTask timerWrapper(Runnable r) {
 		return new TimerTask() {
 			@Override
@@ -64,8 +69,15 @@ public class TimerManager {
 
 	public void logOutIfNoInput() {
 		Platform.runLater(() -> {
-			log.info("No input for 1 minutes. Logging out...");
+			log.info("No input for 1 minute. Logging out...");
 			loginManager.logOut(true);
+			FXMLLoaderFactory.resetHistory();
+			try {
+				Parent root = loaderFactory.getFXMLLoader("map_viewer/MapViewer").load();
+				loaderFactory.setupScene(new Scene(root));
+			} catch (IOException ex) {
+				log.error("Encountered IOException", ex);
+			}
 		});
 	}
 
