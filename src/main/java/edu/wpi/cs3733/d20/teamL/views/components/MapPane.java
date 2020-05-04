@@ -400,7 +400,7 @@ public class MapPane extends ScrollPane {
 
         // Add lines to the scene
         for (Edge edge : currentFloor.getEdges()) {
-            if (edge.getDestination().getFloor() == getFloor() && edge.getSource().getFloor() == getFloor())
+            if (edge.getDestination().getFloor() == getFloor() && edge.getSource().getFloor() == getFloor() && edge.getSource().getBuilding().equals(edge.getDestination().getBuilding()))
                 addEdge(edge);
         }
 

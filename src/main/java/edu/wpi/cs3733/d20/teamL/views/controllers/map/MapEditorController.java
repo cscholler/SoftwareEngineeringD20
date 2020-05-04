@@ -354,14 +354,17 @@ public class MapEditorController {
         if (index == 1) {
             numberlbl.setText("Elevator Number:");
             updateShaftList(selected);
-            numberText.getSelectionModel().select(selected.getShaft());
         } else if (index == 3) {
             numberlbl.setText("Stairwell Number:");
             updateShaftList(selected);
-        } else {
-            multiFloorConnection.setVisible(false);
-            numberText.getSelectionModel().select(selected.getShaft());
+        } else if (index == 8) {
+            numberlbl.setText("Outdoor Connection Number:");
+            updateShaftList(selected);
         }
+        else {
+            multiFloorConnection.setVisible(false);
+        }
+        numberText.getSelectionModel().select(selected.getShaft());
     }
 
     private void updateShaftList(Node selected) {
@@ -424,7 +427,7 @@ public class MapEditorController {
                 iterator.remove();
             }
         }
-        if (node.getType().equals("ELEV") || node.getType().equals("STAI"))
+        if (node.getType().equals("ELEV") || node.getType().equals("STAI") || node.getType().equals("EXIT"))
             for (Node adj : map.getBuilding().getNodes())
                 if (node.getType().equals(adj.getType()) && node.getShaft() == adj.getShaft() && !node.equals(adj))
                     node.addEdgeTwoWay(adj);
