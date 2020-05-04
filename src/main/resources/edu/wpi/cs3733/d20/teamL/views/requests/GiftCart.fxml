@@ -274,7 +274,7 @@
                   <graphic>
                      <ImageView fitHeight="54.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">
                         <image>
-                           <Image url="@../../staff_view/baseline_arrow_back_white_48dp.png" />
+                           <Image url="@../../assets/staff_view/baseline_arrow_back_white_48dp.png" />
                         </image>
                      </ImageView>
                   </graphic>

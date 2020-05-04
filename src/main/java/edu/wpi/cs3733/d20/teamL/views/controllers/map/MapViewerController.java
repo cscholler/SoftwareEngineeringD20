@@ -254,6 +254,7 @@ public class MapViewerController {
         while (nodeIterator.hasNext()) {
             nextNode = nodeIterator.next();
             EdgeGUI edgeGUI = map.getEdgeGUI(currentNode.getEdge(nextNode));
+            map.getEdgeGUI(currentNode.getEdge(nextNode)).getHighlightGUI().getStrokeDashArray()
 
             if (edgeGUI != null) map.getSelector().add(edgeGUI);
 

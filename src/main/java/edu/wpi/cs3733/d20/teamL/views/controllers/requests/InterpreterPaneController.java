@@ -120,9 +120,6 @@ public class InterpreterPaneController implements Initializable {
                 confirmation.setTextFill(Color.RED);
                 confirmation.setText("Submission failed");
             } else {
-                confirmation.setVisible(true);
-                confirmation.setTextFill(Color.WHITE);
-                confirmation.setText("");
 
                 interpType.setText("");
                 patientIDText.setText("");

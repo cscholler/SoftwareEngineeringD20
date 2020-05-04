@@ -123,7 +123,7 @@ public class ExternalPaneController implements Initializable {
             confirmation.setTextFill(Color.RED);
             confirmation.setText("Request failed");
         } else {
-            transportSelector.setPromptText("Choose Transport Type");
+            transportSelector.setValue(null);
             date.setId("");
             hour.setText("");
             minutes.setText("");

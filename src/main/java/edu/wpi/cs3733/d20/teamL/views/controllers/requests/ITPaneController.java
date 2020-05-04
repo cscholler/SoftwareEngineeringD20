@@ -115,7 +115,7 @@ public class ITPaneController implements Initializable {
             confirmation.setText("Submission failed");
         } else {
             locationText.setText("");
-            typeBox.setPromptText("Request Type:");
+            typeBox.setValue(null);
             notesText.setText("");
             loaderHelper.showAndFade(requestReceived);
             confirmation.setText("");

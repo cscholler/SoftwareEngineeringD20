@@ -26,7 +26,7 @@ public class App extends Application {
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 		stage = primaryStage;
-		Scene homeScene = new Scene(loaderHelper.getFXMLLoader("map_viewer/MapViewer").load());
+		Scene homeScene = new Scene(loaderHelper.getFXMLLoader("Staff/test").load());
 		stage.setScene(homeScene);
 		stage.setMaximized(true);
 		stage.setWidth(SCREEN_WIDTH);
