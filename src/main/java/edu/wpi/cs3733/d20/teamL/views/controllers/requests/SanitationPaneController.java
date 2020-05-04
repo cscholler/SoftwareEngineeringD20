@@ -93,6 +93,12 @@ public class SanitationPaneController {
             confirmation.setTextFill(Color.WHITE);
             confirmation.setText("");
 
+            bioHazardCheckBox.setSelected(false);
+            spillCheckBox.setSelected(false);
+
+            highPriorityBox.setSelected(false);
+            nonEmergencyBox.setSelected(false);
+            lowPriorityBox.setSelected(false);
 
             incidentLocationText.setText("");
             additionalNotesText.setText("");
