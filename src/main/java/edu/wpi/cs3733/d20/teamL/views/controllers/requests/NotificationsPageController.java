@@ -372,7 +372,7 @@ public class NotificationsPageController implements Initializable {
 	@FXML
 	private void btnAssignClicked() {
 		try {
-			FXMLLoader loader = loaderHelper.getFXMLLoader("Staff/AssignPopup");
+			FXMLLoader loader = loaderHelper.getFXMLLoader("staff/AssignPopup");
 			Parent root = loader.load();
 			AssignPopupController assignPopupController = loader.getController();
 			assignPopupController.setNotificationsPageController(this);

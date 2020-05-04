@@ -10,7 +10,7 @@ public class DBConstants {
 	static final String DB_PORT = ":5008";
 	static final String DB_NAME_DEV = "/bwh_dev";
 	static final String DB_NAME_PROD = "/bwh_prod";
-	static final String DB_NAME_CANARY = "/bwh_canary";
+	static final String DB_NAME_CANARY = "/bwh_canary" ;
 	static final String DB_USER = "teaml";
 	static final String DB_PASSWORD = "linenleviathans";
 	public static final String SERVICE_NAME = "mysql-db-01";
@@ -43,7 +43,7 @@ public class DBConstants {
 					"l_name VARCHAR(32) NOT NULL, " +
 					"username VARCHAR(32) NOT NULL PRIMARY KEY, " +
 					"password VARCHAR(60) NOT NULL, " +
-					// 0: Staff member, 1: Nurse, 2: Doctor, 3: Admin
+					// 0: staff member, 1: Nurse, 2: Doctor, 3: admin
 					"acct_type CHAR(1) NOT NULL, " +
 					"services VARCHAR(512), " +
 					"manager VARCHAR(32), " +

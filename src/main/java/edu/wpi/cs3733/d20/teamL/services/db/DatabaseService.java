@@ -245,9 +245,9 @@ public class DatabaseService extends Service implements IDatabaseService {
 		populateFromCSV("MapLAllEdges", DBConstants.ADD_EDGE);
 
 		// Add default users
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Admin", "Admin", "admin", PasswordEncrypter.hashPassword("admin"), "3", null, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("admin", "admin", "admin", PasswordEncrypter.hashPassword("admin"), "3", null, null))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Nurse", "Joy", "nurse", PasswordEncrypter.hashPassword("nurse"), "1", "pharmacy", null))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Staff", "Member", "staff", PasswordEncrypter.hashPassword("staff"), "0", null, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("staff", "Member", "staff", PasswordEncrypter.hashPassword("staff"), "0", null, null))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Wilson", "Wong", "doctor", PasswordEncrypter.hashPassword("doctor"), "2", "pharmacy", null))));
 
 		// Managers for each department
