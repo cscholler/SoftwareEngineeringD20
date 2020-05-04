@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -18,6 +19,7 @@
     <center>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" BorderPane.alignment="CENTER">
             <children>
+            <JFXCheckBox fx:id="appendCheckbox" checkedColor="#595959" text="Append Data" />
                 <JFXComboBox fx:id="tableSelector" promptText="Choose table to import to" style="-fx-prompt-text-fill: lightgrey; -fx-text-fill: white;" />
                 <JFXButton onAction="#importClicked" text="Import" />
             </children>

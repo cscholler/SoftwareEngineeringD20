@@ -2,6 +2,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.dialogues;
 
 import com.google.inject.Inject;
 import com.jfoenix.controls.JFXComboBox;
+import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
@@ -38,7 +39,6 @@ public class ExportDialogue {
     @FXML
     private void initialize() {
         populateTables();
-
         tableSelector.getItems().addAll(tables.keySet());
         tableSelector.getItems().add("All");
     }
@@ -55,46 +55,48 @@ public class ExportDialogue {
     private void exportClicked() {
         String selected = tableSelector.getSelectionModel().getSelectedItem();
 
-        if (selected != "All") {
-            ResultSet resultSet = dbService.executeQuery(new SQLEntry(tables.get(selected)));
-            ArrayList<ArrayList<String>> dbTable = new ArrayList<>();
-            dbTable.add(dbService.getColumnNames(resultSet));
-            dbTable.addAll(dbService.getTableFromResultSet(resultSet));
+        if (selected != null) {
+			App.allowCacheUpdates = false;
+			if (!selected.equals("All")) {
+				ResultSet resultSet = dbService.executeQuery(new SQLEntry(tables.get(selected)));
+				ArrayList<ArrayList<String>> dbTable = new ArrayList<>();
+				dbTable.add(dbService.getColumnNames(resultSet));
+				dbTable.addAll(dbService.getTableFromResultSet(resultSet));
 
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV files .csv", "*.csv"));
-            fileChooser.setTitle("Save " + selected + " Table");
-            fileChooser.setInitialFileName(selected + "_table");
+				FileChooser fileChooser = new FileChooser();
+				fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV files .csv", "*.csv"));
+				fileChooser.setTitle("Save " + selected + " Table");
+				fileChooser.setInitialFileName(selected + "_table");
 
-            File savedFile = fileChooser.showSaveDialog(root.getScene().getWindow());
+				File savedFile = fileChooser.showSaveDialog(root.getScene().getWindow());
 
-            CSVHelper csvHelper = new CSVHelper();
-            csvHelper.writeToCSV(savedFile.getPath(), dbTable);
+				CSVHelper csvHelper = new CSVHelper();
+				csvHelper.writeToCSV(savedFile.getPath(), dbTable);
 
-            showMessage("Saved " + savedFile.getPath());
-        } else if (selected != null){
-            DirectoryChooser directoryChooser = new DirectoryChooser();
-            directoryChooser.setTitle("Save all tables");
-            File directory = directoryChooser.showDialog(root.getScene().getWindow());
+				showMessage("Saved " + savedFile.getPath());
+			} else {
+				DirectoryChooser directoryChooser = new DirectoryChooser();
+				directoryChooser.setTitle("Save all tables");
+				File directory = directoryChooser.showDialog(root.getScene().getWindow());
+				for (String table : tables.keySet()) {
+					String query = tables.get(table);
 
-            for (String table : tables.keySet()) {
-                String query = tables.get(table);
+					ResultSet resultSet = dbService.executeQuery(new SQLEntry(query));
+					ArrayList<ArrayList<String>> dbTable = new ArrayList<>();
+					dbTable.add(dbService.getColumnNames(resultSet));
+					dbTable.addAll(dbService.getTableFromResultSet(resultSet));
 
-                ResultSet resultSet = dbService.executeQuery(new SQLEntry(query));
-                ArrayList<ArrayList<String>> dbTable = new ArrayList<>();
-                dbTable.add(dbService.getColumnNames(resultSet));
-                dbTable.addAll(dbService.getTableFromResultSet(resultSet));
+					File savedFile = new File(directory.getPath() + "/" + table + "_table.csv");
 
-                File savedFile = new File(directory.getPath() + "/" + table + "_table.csv");
-
-                CSVHelper csvHelper = new CSVHelper();
-                csvHelper.writeToCSV(savedFile.getPath(), dbTable);
-            }
-
-            showMessage("Saved tables to " + directory.getPath());
+					CSVHelper csvHelper = new CSVHelper();
+					csvHelper.writeToCSV(savedFile.getPath(), dbTable);
+				}
+				showMessage("Saved tables to " + directory.getPath());
+			}
         } else {
             showErrorMessage("Please select a table to export");
         }
+		App.allowCacheUpdates = true;
     }
 
     private void showMessage(String msg) {
@@ -110,5 +112,4 @@ public class ExportDialogue {
 
         loaderHelper.showAndFade(message);
     }
-
 }

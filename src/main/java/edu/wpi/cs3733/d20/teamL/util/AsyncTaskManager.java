@@ -7,7 +7,7 @@ public class AsyncTaskManager {
 
     private static ForkJoinPool forkJoinPool = new ForkJoinPool();
 
-    public static ForkJoinTask newTask(VoidFunction task) {
+    public static ForkJoinTask newTask(VoidMethod task) {
         ForkJoinTask newForkJoinTask = new ForkJoinTask() {
             @Override
             public Object getRawResult() {
@@ -21,7 +21,7 @@ public class AsyncTaskManager {
 
             @Override
             protected boolean exec() {
-                task.update();
+                task.method();
                 return true;
             }
         };

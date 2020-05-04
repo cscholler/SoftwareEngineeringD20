@@ -1,6 +1,8 @@
 package edu.wpi.cs3733.d20.teamL.util;
 
+import com.google.inject.Inject;
 import edu.wpi.cs3733.d20.teamL.App;
+import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import javafx.animation.FadeTransition;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
@@ -24,8 +26,10 @@ import java.util.Stack;
 public class FXMLLoaderFactory {
 	private static final String ROOT_DIR = "/edu/wpi/cs3733/d20/teamL/views/";
 	public static Injector injector = Guice.createInjector(new ServiceProvider());
-
 	private static Stack<Scene> history = new Stack<>();
+	@Inject
+	private ILoginManager loginManager;
+
 
 	public static Stack<Scene> getHistory() {
 		return history;
@@ -50,8 +54,12 @@ public class FXMLLoaderFactory {
 	 */
 	public void setupScene(Scene scene) {
 		App.stage.setScene(scene);
-		//App.stage.setMaximized(true);
-		scene.getRoot().addEventHandler(Event.ANY, event -> App.startIdleTimer());
+		scene.getRoot().addEventHandler(Event.ANY, event -> {
+			App.startIdleTimer();
+			if (loginManager.isAuthenticated()) {
+				App.startLogoutTimer();
+			}
+		});
 
 		Point2D prevDimensions = new Point2D(App.stage.getWidth(), App.stage.getHeight());
 		App.stage.show();

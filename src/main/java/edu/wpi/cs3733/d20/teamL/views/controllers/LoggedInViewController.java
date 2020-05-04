@@ -2,7 +2,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers;
 
 import com.google.inject.Inject;
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXSpinner;
+import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
@@ -25,7 +25,6 @@ import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.*;
@@ -143,7 +142,7 @@ public class LoggedInViewController implements Initializable{
     }
 
     @FXML
-	public void importClicked(ActionEvent actionEvent) {
+	public void importClicked() {
 		try {
 			Parent root = loaderHelper.getFXMLLoader("dialogues/ImportDialogue").load();
 			loaderHelper.setupPopup(new Stage(), new Scene(root));
@@ -153,7 +152,7 @@ public class LoggedInViewController implements Initializable{
 	}
 
 	@FXML
-	public void exportClicked(ActionEvent actionEvent) {
+	public void exportClicked() {
         try {
             Parent root = loaderHelper.getFXMLLoader("dialogues/ExportDialogue").load();
             loaderHelper.setupPopup(new Stage(), new Scene(root));
@@ -164,21 +163,19 @@ public class LoggedInViewController implements Initializable{
 
 	@FXML
 	public void clearClicked() {
+		App.allowCacheUpdates = false;
     	log.warn("Rebuilding database");
 
     	Executor uiExec = Platform::runLater;
 
         Alert loading = new Alert(Alert.AlertType.NONE);
         loading.setResult(ButtonType.OK);
-//        JFXSpinner spinner = new JFXSpinner();
-//        spinner.setRadius(10);
         ImageView spinner = new ImageView(new Image("edu/wpi/cs3733/d20/teamL/assets/spinner.gif"));
         spinner.setPreserveRatio(true);
         spinner.setFitWidth(40);
         loading.setGraphic(spinner);
         loading.setContentText("Rebuilding database...");
 
-        // LOOK HOW SMART I AM
         Button btn = new Button("Start");
         btn.setOnAction(evt -> {
             btn.setDisable(true);
@@ -208,13 +205,13 @@ public class LoggedInViewController implements Initializable{
             log.info("Finished rebuilding database");
             uiExec.execute(new FutureTask<>(() -> {
                 loading.close();
-                showDone();
+                showDoneDialogue();
                 return null;
             }));
         });
 	}
 
-	private Boolean showDone() {
+	private Boolean showDoneDialogue() {
         log.info("showDone() Called");
         Alert done = new Alert(Alert.AlertType.INFORMATION);
         done.setContentText("Finished rebuilding database");
