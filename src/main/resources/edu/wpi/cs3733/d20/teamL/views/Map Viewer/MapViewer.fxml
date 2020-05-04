@@ -1,22 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXListView?>
-<?import com.jfoenix.controls.JFXNodesList?>
-<?import com.jfoenix.controls.JFXTextField?>
-<?import java.net.URL?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import com.jfoenix.controls.*?>
+<?import edu.wpi.cs3733.d20.teamL.views.components.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import edu.wpi.cs3733.d20.teamL.views.components.MapPane?>
-
-<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.map.MapViewerController">
+<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.map.MapViewerController">
     <stylesheets>
         <URL value="@../../css/GlobalStyles.css" />
         <URL value="@../../css/MapStyles.css" />
@@ -70,10 +62,10 @@
                                       <JFXButton fx:id="btnQR" alignment="CENTER" buttonType="RAISED" onAction="#genQR" prefHeight="40.0" prefWidth="85.0" text="QR Code" textFill="WHITE" visible="false" />
                                   </children>
                               </HBox>
-                        <JFXNodesList>
+                        <JFXNodesList rotate="-90.0">
                            <children>
                               <JFXButton text="Textual Directions" />
-                              <JFXListView fx:id="dirList" onMouseClicked="#goToSelected" prefWidth="300.0" />
+                              <JFXListView fx:id="dirList" onMouseClicked="#goToSelected" prefHeight="400.0" prefWidth="300.0" />
                            </children>
                         </JFXNodesList>
                             </children>
