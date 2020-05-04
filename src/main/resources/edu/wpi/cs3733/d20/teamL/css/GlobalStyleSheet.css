@@ -56,8 +56,9 @@
 
     -fx-background-color: WHITE;
     -fx-pref-width: 385;
-    -fx-pref-height: 300;
-    -fx-max-height: 300;
+    -fx-max-width: 385;
+    -fx-pref-height: 100;
+    -fx-max-height: 100;
     -fx-alignment: center-left;
     -jfx-button-type: RAISED;
 }
@@ -292,4 +293,49 @@
     -fx-shape: "M214 0l0 428l-214 -214l214 -214z";
 }
 
-/*------------------------------------------------------------------------------*/
+/*-------------------------Tree Table for Room Scheduler Times -------------------------------------------*/
+.tree-table-cell {
+    -fx-alignment: center;
+    -fx-font-size: 15;
+    -fx-pref-width: 150;
+}
+
+.tree-table-row-cell:odd {
+    -fx-background-color: #f9f9f9;
+    /*-fx-background-insets: 0, 0 0 1 0;*/
+}
+
+.tree-table-view .column-header {
+    -fx-alignment: center;
+    -fx-pref-width: 150;
+}
+
+.tree-table-view .column-header .label{
+    -fx-font-size: 20;
+    -fx-text-fill: black;
+}
+
+.jfx-tree-table-view > .virtual-flow > .clipped-container > .sheet > .tree-table-row-cell:filled:selected {
+    -fx-background-color: #b9c1de;
+}
+
+.tree-table-view {
+    -fx-pref-width: 464;
+    -fx-max-width: 464;
+    -fx-pref-height: 500;
+}
+
+.jfx-date-picker {
+    -fx-background-color: #DCDCDC;
+    -fx-pref-width: 200;
+    -fx-pref-height: 40;
+    -fx-max-width: 200;
+    -fx-max-height: 40;
+}
+
+.jfx-date-picker .input-line{
+    -fx-pref-height: 0px;
+}
+.jfx-date-picker .input-focused-line{
+    -fx-pref-height: 0px;
+}
