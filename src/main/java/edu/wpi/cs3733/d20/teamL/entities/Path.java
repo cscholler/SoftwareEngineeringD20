@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
 import javafx.geometry.Point2D;
 
 public class Path implements Iterable<Node> {
@@ -114,7 +115,7 @@ public class Path implements Iterable<Node> {
 
         Point2D start, end;
         Node prev, curr, next;
-        Node goal = pathNodes.get(pathNodes.size()-1);
+        Node goal = pathNodes.get(pathNodes.size() - 1);
         double angle;
         String sign;
         String lastRoom = null;
@@ -125,9 +126,9 @@ public class Path implements Iterable<Node> {
 
         subpath.add(pathNodes.get(0));
         for (int i = 1; i < pathNodes.size() - 1; i++) {
-            prev = pathNodes.get(i-1);
+            prev = pathNodes.get(i - 1);
             curr = pathNodes.get(i);
-            next = pathNodes.get(i+1);
+            next = pathNodes.get(i + 1);
 
             start = delta(prev, curr);
             end = delta(curr, next);
@@ -135,7 +136,7 @@ public class Path implements Iterable<Node> {
 
             subpath.add(curr);
 
-            if(curr.getType().equals("ELEV") && next.getType().equals("ELEV")) {
+            if (curr.getType().equals("ELEV") && next.getType().equals("ELEV")) {
                 message.add("Take the elevator to floor " + next.getFloor() + ".");
 
                 lastRoom = null;
@@ -143,8 +144,7 @@ public class Path implements Iterable<Node> {
                 lefts = 0;
                 subpaths.add(addSubPath(subpath));
                 subpath.clear();
-            }
-            else if (curr.getType().equals("STAI") && next.getType().equals("STAI")) {
+            } else if (curr.getType().equals("STAI") && next.getType().equals("STAI")) {
                 message.add("Take the stairs to floor " + next.getFloor() + ".");
 
                 lastRoom = null;
@@ -152,8 +152,7 @@ public class Path implements Iterable<Node> {
                 lefts = 0;
                 subpaths.add(addSubPath(subpath));
                 subpath.clear();
-            }
-            else {
+            } else {
                 if (angle > 10) {
                     StringBuilder builder = new StringBuilder();
                     sign = determineDirection(start, end);
@@ -175,6 +174,8 @@ public class Path implements Iterable<Node> {
                         lastStatement = false;
                     }
                     builder.append(".");
+
+
 
                     lastRoom = null;
                     rights = 0;
@@ -218,9 +219,9 @@ public class Path implements Iterable<Node> {
             }
         }
 
-        if(lastStatement) {
+        if (lastStatement) {
             message.add("Continue straight until your destination at " + goal.getLongName() + ".");
-            subpath.add(pathNodes.get(pathNodes.size()-1));
+            subpath.add(pathNodes.get(pathNodes.size() - 1));
             subpaths.add(addSubPath(subpath));
             subpath.clear();
         }
@@ -229,7 +230,7 @@ public class Path implements Iterable<Node> {
     private ArrayList<Node> addSubPath(ArrayList<Node> nodes) {
         ArrayList<Node> retPath = new ArrayList<>();
 
-        for(Node node : nodes)
+        for (Node node : nodes)
             retPath.add(node);
 
         return retPath;
@@ -247,23 +248,27 @@ public class Path implements Iterable<Node> {
 
     private String enumCounter(int num) {
         switch (num) {
-            case 1: return "1st";
-            case 2: return "2nd";
-            case 3: return "3rd";
-            default: return num + "th";
+            case 1:
+                return "1st";
+            case 2:
+                return "2nd";
+            case 3:
+                return "3rd";
+            default:
+                return num + "th";
         }
     }
 
     private String turnAmount(double angle) {
-        if(angle < 45) return "slight ";
+        if (angle < 45) return "slight ";
         else if (angle > 95) return "sharp ";
         else return "";
     }
 
     private String parseLongName(String name) {
-        for(int i = 0; i < name.length() - 1; i++) {
-            if(checkNumber(name.substring(i, i+1))) {
-                return name.substring(0, i-1).toLowerCase();
+        for (int i = 0; i < name.length() - 1; i++) {
+            if (checkNumber(name.substring(i, i + 1))) {
+                return name.substring(0, i - 1).toLowerCase();
             }
         }
 
