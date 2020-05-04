@@ -1,6 +1,5 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 
-import com.fasterxml.jackson.databind.module.SimpleAbstractTypeResolver;
 import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
@@ -9,16 +8,12 @@ import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
-import javafx.animation.FadeTransition;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.util.Duration;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -89,13 +84,6 @@ public class SanitationPaneController {
                 new ArrayList<>(Arrays.asList(null, loginManager.getCurrentUser().getUsername(),
                         null, null, "Sanitation", priorityLevel, serviceTags + additionalNotes, status, dateAndTime)))));
 
-        /*requestReceived.setVisible((true));
-        FadeTransition fadeTransition = new FadeTransition(Duration.millis(2000), requestReceived);
-        fadeTransition.setDelay(Duration.millis(2000));
-        fadeTransition.setFromValue(1.0);
-        fadeTransition.setToValue(0.0);
-        fadeTransition.setCycleCount(1);
-        fadeTransition.play();*/
         if(rows == 0) {
             confirmation.setVisible(true);
             confirmation.setTextFill(Color.RED);
@@ -104,6 +92,7 @@ public class SanitationPaneController {
             confirmation.setVisible(true);
             confirmation.setTextFill(Color.WHITE);
             confirmation.setText("");
+
 
             incidentLocationText.setText("");
             additionalNotesText.setText("");

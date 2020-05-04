@@ -23,7 +23,7 @@
             <HBox alignment="CENTER" prefHeight="80.0" prefWidth="895.0" spacing="100.0">
                <children>
                   <JFXButton onAction="#submitServiceRequest" styleClass="save-button-jfx" text="Submit" />
-                  <Label fx:id="confirmation" styleClass="submission-failed-label-fx" text="Label" />
+                  <Label fx:id="confirmation" styleClass="submission-failed-label-fx" text=" " />
                </children>
                <padding>
                   <Insets left="350.0" />
