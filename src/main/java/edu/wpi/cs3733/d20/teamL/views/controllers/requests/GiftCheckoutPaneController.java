@@ -80,11 +80,10 @@ public class GiftCheckoutPaneController {
         cart = cache.getCartCache();
         int index = 0;
         for(String giftType : cart.keySet()) {
-            index ++;
             int inv = cart.get(giftType);
             gifts.append("(" + inv + "x) " + giftType + (cart.keySet().size()-1 != index ? ", " : "."));
+            index ++;
         }
-        cache.updateInventory();
 
         int rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_GIFT_DELIVERY_REQUEST, new ArrayList<>(Arrays.asList(patientID, sender, loginManager.getCurrentUser().getUsername(), null,
                gifts.toString(), specialMessage, deliveryInstructions, status, dateAndTime))));
@@ -97,6 +96,7 @@ public class GiftCheckoutPaneController {
 //            confirmation.setVisible(true);
 //            confirmation.setTextFill(Color.WHITE);
 //            confirmation.setText("");
+            cache.updateInventory();
 
             firstNameText.setText("");
             lastNameText.setText("");
