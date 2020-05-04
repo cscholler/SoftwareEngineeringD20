@@ -189,7 +189,9 @@ public class MapViewerController {
         Building newBuilding = cache.getBuilding(selected);
         map.setBuilding(newBuilding);
 
+        int prevFloor = map.getFloor();
         generateFloorButtons();
+        setFloor(Math.max(map.getBuilding().getMinFloor(), Math.min(prevFloor, map.getBuilding().getMaxFloor())));
     }
 
     @FXML

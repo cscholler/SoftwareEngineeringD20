@@ -172,7 +172,9 @@ public class MapEditorController {
 
         map.setBuilding(selected);
 
+        int prevFloor = map.getFloor();
         generateFloorButtons();
+        setFloor(Math.max(map.getBuilding().getMinFloor(), Math.min(prevFloor, map.getBuilding().getMaxFloor())));
     }
 
     private void highlightPath() {
