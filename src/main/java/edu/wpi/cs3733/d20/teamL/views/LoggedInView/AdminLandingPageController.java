@@ -1,23 +1,23 @@
 package edu.wpi.cs3733.d20.teamL.views.LoggedInView;
 
-import com.jfoenix.controls.*;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTreeTableColumn;
+import com.jfoenix.controls.JFXTreeTableView;
+import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import edu.wpi.cs3733.d20.teamL.entities.User;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import edu.wpi.cs3733.d20.teamL.util.TableEntityWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,118 +31,38 @@ import javax.inject.Inject;
 
 @Slf4j
 public class AdminLandingPageController implements Initializable {
-    FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
-    @FXML
-    private JFXComboBox<String> selectDatabase;
-    private ObservableList<String> databaseOptions = FXCollections.observableArrayList("Map Nodes", "Map Edges", "Gift Inventory", "Users", "Doctors");
-
-    @FXML
-    private JFXTreeTableView<TableUser> usersTable;
-
-    @FXML
-    private JFXButton btnView;
-
+    private FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
+    private final ObservableList<String> tableOptions = FXCollections.observableArrayList("Map Nodes", "Map Edges", "Gift Inventory", "User Information", "Doctor Information");
 	@FXML
-    private ScrollPane scrollPane;
-
+	private JFXComboBox<String> tableSelector;
+    @FXML
+	private JFXTreeTableView<TableEntityWrapper.TableNode> nodesTable;
+	@FXML
+	private JFXTreeTableView<TableEntityWrapper.TableEdge> edgesTable;
+	@FXML
+	private JFXTreeTableView<TableEntityWrapper.TableGift> giftsTable;
+	@FXML
+	private JFXTreeTableView<TableEntityWrapper.TableUser> usersTable;
+	@FXML
+	private JFXTreeTableView<TableEntityWrapper.TableDoctor> doctorsTable;
     @Inject
-    ILoginManager loginManager;
+    private ILoginManager loginManager;
     @Inject
-    IDatabaseService db;
+    private IDatabaseService db;
     @Inject
-	IDatabaseCache cache;
+	private IDatabaseCache cache;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-    	//scrollPane.prefWidthProperty().bind(anchorPane.widthProperty());
-		//scrollPane.prefHeightProperty().bind(anchorPane.heightProperty());
-
-        selectDatabase.setItems(databaseOptions);
-		JFXTreeTableColumn<TableUser, String> idCol = new JFXTreeTableColumn<>("id");
-		idCol.setPrefWidth(150);
-		idCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableUser, String> param) -> {
-			if (idCol.validateValue(param)) {
-				return param.getValue().getValue().id;
-			} else {
-				return idCol.getComputedValue(param);
-			}
-		});
-		JFXTreeTableColumn<TableUser, String> fNameCol = new JFXTreeTableColumn<>("f_name");
-		fNameCol.setPrefWidth(150);
-		fNameCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableUser, String> param) -> {
-			if (fNameCol.validateValue(param)) {
-				return param.getValue().getValue().fName;
-			} else {
-				return fNameCol.getComputedValue(param);
-			}
-		});
-		JFXTreeTableColumn<TableUser, String> lNameCol = new JFXTreeTableColumn<>("l_name");
-		lNameCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableUser, String> param) -> {
-			if (lNameCol.validateValue(param)) {
-				return param.getValue().getValue().lName;
-			} else {
-				return lNameCol.getComputedValue(param);
-			}
-		});
-		JFXTreeTableColumn<TableUser, String> usernameCol = new JFXTreeTableColumn<>("username");
-		usernameCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableUser, String> param) -> {
-			if (usernameCol.validateValue(param)) {
-				return param.getValue().getValue().username;
-			} else {
-				return usernameCol.getComputedValue(param);
-			}
-		});
-		JFXTreeTableColumn<TableUser, String> acctTypeCol = new JFXTreeTableColumn<>("acct_type");
-		acctTypeCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableUser, String> param) -> {
-			if (acctTypeCol.validateValue(param)) {
-				return param.getValue().getValue().acctType;
-			} else {
-				return acctTypeCol.getComputedValue(param);
-			}
-		});
-		JFXTreeTableColumn<TableUser, String> servicesCol = new JFXTreeTableColumn<>("services");
-		servicesCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableUser, String> param) -> {
-			if (servicesCol.validateValue(param)) {
-				return param.getValue().getValue().services;
-			} else {
-				return servicesCol.getComputedValue(param);
-			}
-		});
-		JFXTreeTableColumn<TableUser, String> managerCol = new JFXTreeTableColumn<>("manager");
-		managerCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableUser, String> param) -> {
-			if (managerCol.validateValue(param)) {
-				return param.getValue().getValue().manager;
-			} else {
-				return managerCol.getComputedValue(param);
-			}
-		});
-
-		ObservableList<TableUser> users = FXCollections.observableArrayList();
-		for (User user : cache.getUserCache()) {
-			log.info(user.getID() + ", " + user.getFName() + ", " + user.getLName() + ", " + user.getUsername() + ", " + user.getAcctType() + ", " + user.getServices() + ", " + user.getDept());
-			users.add(new TableUser(user.getID(), user.getFName(), user.getLName(), user.getUsername(), user.getAcctType(), user.getServices(), user.getDept()));
-		}
-		final TreeItem<TableUser> root = new RecursiveTreeItem<>(users, RecursiveTreeObject::getChildren);
-		usersTable.getColumns().setAll(idCol, fNameCol, lNameCol, usernameCol, acctTypeCol, servicesCol, managerCol);
-		usersTable.setRoot(root);
-		usersTable.setShowRoot(false);
+		tableSelector.setItems(tableOptions);
     }
-
-    /*private TreeItem<TableUser> populateUsers() {
-
-    	for (User user : cache.getUserCache()) {
-
-    		users.add(new TableUser(user.getID(), user.getFName(), user.getLName(), user.getUsername(), user.getAcctType(), user.getServices(), user.getDept()));
-		}
-		return new RecursiveTreeItem<>(users, RecursiveTreeObject::getChildren);
-	}*/
 
     @FXML
     public void logoutBtn() {
         loginManager.logOut(true);
         try {
-            Parent root = loaderHelper.getFXMLLoader("map_viewer/MapViewer").load();
-            loaderHelper.setupScene(new Scene(root));
+            Parent root = loaderFactory.getFXMLLoader("map_viewer/MapViewer").load();
+            loaderFactory.setupScene(new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
         }
@@ -151,8 +71,8 @@ public class AdminLandingPageController implements Initializable {
     @FXML
     private void btnMapClicked() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("Admin/MapEditor").load();
-            loaderHelper.setupPopup(new Stage(), new Scene(root));
+            Parent root = loaderFactory.getFXMLLoader("Admin/MapEditor").load();
+            loaderFactory.setupPopup(new Stage(), new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
         }
@@ -161,8 +81,8 @@ public class AdminLandingPageController implements Initializable {
     @FXML
     private void rebuildDatabaseClicked() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("Admin/databaseDialogue").load();
-            loaderHelper.setupPopup(new Stage(), new Scene(root));
+            Parent root = loaderFactory.getFXMLLoader("Admin/databaseDialogue").load();
+            loaderFactory.setupPopup(new Stage(), new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
         }
@@ -179,8 +99,8 @@ public class AdminLandingPageController implements Initializable {
     private void addUserClicked() {
         try {
             System.out.println("Got here");
-            Parent root = loaderHelper.getFXMLLoader("AddUser").load();
-            loaderHelper.setupScene(new Scene(root));
+            Parent root = loaderFactory.getFXMLLoader("AddUser").load();
+            loaderFactory.setupScene(new Scene(root));
         } catch (IOException e) {
             log.error("Encountered IOException", e);
         }
@@ -189,8 +109,8 @@ public class AdminLandingPageController implements Initializable {
     @FXML
     private void addDoctorClicked() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("AddDoctor").load();
-            loaderHelper.setupScene(new Scene(root));
+            Parent root = loaderFactory.getFXMLLoader("AddDoctor").load();
+            loaderFactory.setupScene(new Scene(root));
         } catch (IOException e) {
             log.error("Encountered IOException", e);
         }
@@ -199,8 +119,8 @@ public class AdminLandingPageController implements Initializable {
     @FXML
     private void addPatientClicked() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("AddPatient").load();
-            loaderHelper.setupScene(new Scene(root));
+            Parent root = loaderFactory.getFXMLLoader("AddPatient").load();
+            loaderFactory.setupScene(new Scene(root));
         } catch (IOException e) {
             log.error("Encountered IOException", e);
         }
@@ -209,8 +129,8 @@ public class AdminLandingPageController implements Initializable {
     @FXML
     public void importClicked() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("dialogues/ImportDialogue").load();
-            loaderHelper.setupPopup(new Stage(), new Scene(root));
+            Parent root = loaderFactory.getFXMLLoader("dialogues/ImportDialogue").load();
+            loaderFactory.setupPopup(new Stage(), new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
         }
@@ -219,30 +139,180 @@ public class AdminLandingPageController implements Initializable {
     @FXML
     public void exportClicked() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("dialogues/ExportDialogue").load();
-            loaderHelper.setupPopup(new Stage(), new Scene(root));
+            Parent root = loaderFactory.getFXMLLoader("dialogues/ExportDialogue").load();
+            loaderFactory.setupPopup(new Stage(), new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
         }
     }
 
-    static class TableUser extends RecursiveTreeObject<TableUser> {
-    	private final StringProperty id;
-    	private final StringProperty fName;
-		private final StringProperty lName;
-		private final StringProperty username;
-		private final StringProperty acctType;
-		private final StringProperty services;
-		private final StringProperty manager;
-
-    	public TableUser(String id, String fName, String lName, String username, String acctType, String services, String manager) {
-    		this.id = new SimpleStringProperty(id);
-    		this.fName = new SimpleStringProperty(fName);
-    		this.lName = new SimpleStringProperty(lName);
-    		this.username = new SimpleStringProperty(username);
-    		this.acctType = new SimpleStringProperty(acctType);
-    		this.services = new SimpleStringProperty(services);
-    		this.manager = new SimpleStringProperty(manager);
+	public void btnViewClicked() {
+    	if (tableSelector != null) {
+    		if (tableSelector.getValue() != null) {
+				switch (tableSelector.getValue()) {
+					default:
+					case "Map Nodes": {
+						hideAllTablesExceptCurrent("Nodes");
+					}
+					break;
+					case "Map Edges": {
+						hideAllTablesExceptCurrent("Edges");
+					}
+					break;
+					case "Gift Inventory": {
+						hideAllTablesExceptCurrent("Gifts");
+					}
+					break;
+					case "User Information": {
+						loadUserTable();
+						hideAllTablesExceptCurrent("Users");
+					}
+					break;
+					case "Doctor Information": {
+						hideAllTablesExceptCurrent("Doctors");
+					}
+				}
+			}
 		}
+	}
+
+	private void hideAllTablesExceptCurrent(String tableName) {
+    	switch (tableName) {
+			case "Nodes": {
+				nodesTable.setVisible(true);
+				nodesTable.setMouseTransparent(false);
+				edgesTable.setVisible(false);
+				edgesTable.setMouseTransparent(true);
+				giftsTable.setVisible(false);
+				giftsTable.setMouseTransparent(true);
+				usersTable.setVisible(false);
+				usersTable.setMouseTransparent(true);
+				doctorsTable.setVisible(false);
+				doctorsTable.setMouseTransparent(true);
+			}
+			break;
+			case "Edges": {
+				nodesTable.setVisible(false);
+				nodesTable.setMouseTransparent(true);
+				edgesTable.setVisible(true);
+				edgesTable.setMouseTransparent(false);
+				giftsTable.setVisible(false);
+				giftsTable.setMouseTransparent(true);
+				usersTable.setVisible(false);
+				usersTable.setMouseTransparent(true);
+				doctorsTable.setVisible(false);
+				doctorsTable.setMouseTransparent(true);
+			}
+			break;
+			case "Gifts": {
+				nodesTable.setVisible(false);
+				nodesTable.setMouseTransparent(true);
+				edgesTable.setVisible(false);
+				edgesTable.setMouseTransparent(true);
+				giftsTable.setVisible(true);
+				giftsTable.setMouseTransparent(false);
+				usersTable.setVisible(false);
+				usersTable.setMouseTransparent(true);
+				doctorsTable.setVisible(false);
+				doctorsTable.setMouseTransparent(true);
+			}
+			break;
+			case "Users": {
+				nodesTable.setVisible(false);
+				nodesTable.setMouseTransparent(true);
+				edgesTable.setVisible(true);
+				edgesTable.setMouseTransparent(false);
+				giftsTable.setVisible(false);
+				giftsTable.setMouseTransparent(true);
+				usersTable.setVisible(true);
+				usersTable.setMouseTransparent(false);
+				doctorsTable.setVisible(false);
+				doctorsTable.setMouseTransparent(true);
+			}
+			break;
+			case "Doctors": {
+				nodesTable.setVisible(false);
+				nodesTable.setMouseTransparent(true);
+				edgesTable.setVisible(true);
+				edgesTable.setMouseTransparent(false);
+				giftsTable.setVisible(false);
+				giftsTable.setMouseTransparent(true);
+				usersTable.setVisible(false);
+				usersTable.setMouseTransparent(true);
+				doctorsTable.setVisible(true);
+				doctorsTable.setMouseTransparent(false);
+			}
+		}
+	}
+
+	private void loadUserTable() {
+    	log.info("here");
+		JFXTreeTableColumn<TableEntityWrapper.TableUser, String> idCol = new JFXTreeTableColumn<>("id");
+		idCol.setPrefWidth(150);
+		idCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableEntityWrapper.TableUser, String> param) -> {
+			if (idCol.validateValue(param)) {
+				return param.getValue().getValue().getID();
+			} else {
+				return idCol.getComputedValue(param);
+			}
+		});
+		JFXTreeTableColumn<TableEntityWrapper.TableUser, String> fNameCol = new JFXTreeTableColumn<>("f_name");
+		fNameCol.setPrefWidth(150);
+		fNameCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableEntityWrapper.TableUser, String> param) -> {
+			if (fNameCol.validateValue(param)) {
+				return param.getValue().getValue().getFName();
+			} else {
+				return fNameCol.getComputedValue(param);
+			}
+		});
+		JFXTreeTableColumn<TableEntityWrapper.TableUser, String> lNameCol = new JFXTreeTableColumn<>("l_name");
+		lNameCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableEntityWrapper.TableUser, String> param) -> {
+			if (lNameCol.validateValue(param)) {
+				return param.getValue().getValue().getLName();
+			} else {
+				return lNameCol.getComputedValue(param);
+			}
+		});
+		JFXTreeTableColumn<TableEntityWrapper.TableUser, String> usernameCol = new JFXTreeTableColumn<>("username");
+		usernameCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableEntityWrapper.TableUser, String> param) -> {
+			if (usernameCol.validateValue(param)) {
+				return param.getValue().getValue().getUsername();
+			} else {
+				return usernameCol.getComputedValue(param);
+			}
+		});
+		JFXTreeTableColumn<TableEntityWrapper.TableUser, String> acctTypeCol = new JFXTreeTableColumn<>("acct_type");
+		acctTypeCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableEntityWrapper.TableUser, String> param) -> {
+			if (acctTypeCol.validateValue(param)) {
+				return param.getValue().getValue().getAcctType();
+			} else {
+				return acctTypeCol.getComputedValue(param);
+			}
+		});
+		JFXTreeTableColumn<TableEntityWrapper.TableUser, String> servicesCol = new JFXTreeTableColumn<>("services");
+		servicesCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableEntityWrapper.TableUser, String> param) -> {
+			if (servicesCol.validateValue(param)) {
+				return param.getValue().getValue().getServices();
+			} else {
+				return servicesCol.getComputedValue(param);
+			}
+		});
+		JFXTreeTableColumn<TableEntityWrapper.TableUser, String> managerCol = new JFXTreeTableColumn<>("manager");
+		managerCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableEntityWrapper.TableUser, String> param) -> {
+			if (managerCol.validateValue(param)) {
+				return param.getValue().getValue().getManager();
+			} else {
+				return managerCol.getComputedValue(param);
+			}
+		});
+
+		ObservableList<TableEntityWrapper.TableUser> users = FXCollections.observableArrayList();
+		for (User user : cache.getUserCache()) {
+			users.add(new TableEntityWrapper.TableUser(user.getID(), user.getFName(), user.getLName(), user.getUsername(), user.getAcctType(), user.getServices(), user.getDept()));
+		}
+		final TreeItem<TableEntityWrapper.TableUser> root = new RecursiveTreeItem<>(users, RecursiveTreeObject::getChildren);
+		usersTable.getColumns().setAll(idCol, fNameCol, lNameCol, usernameCol, acctTypeCol, servicesCol, managerCol);
+		usersTable.setRoot(root);
+		usersTable.setShowRoot(false);
 	}
 }
