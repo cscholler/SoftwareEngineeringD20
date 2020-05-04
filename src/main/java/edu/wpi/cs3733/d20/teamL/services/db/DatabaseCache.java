@@ -1,9 +1,7 @@
 package edu.wpi.cs3733.d20.teamL.services.db;
 
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import edu.wpi.cs3733.d20.teamL.entities.Gift;
 import javafx.geometry.Point2D;
@@ -25,7 +23,7 @@ public class DatabaseCache implements IDatabaseCache {
     private ArrayList<Edge> deletedEdges = new ArrayList<>();
 
     private ArrayList<Gift> giftsCache = new ArrayList<>();
-    private ArrayList<Gift> cartCache = new ArrayList<>();
+    private Map<String, Integer> cartCache = new HashMap<>();
 
     @Inject
     private IDatabaseService db;
@@ -227,19 +225,30 @@ public class DatabaseCache implements IDatabaseCache {
     }
 
     @Override
-    public void cacheCart(ArrayList<Gift> cart) {
+    public void updateInventory() {
+        ArrayList<SQLEntry> updates = new ArrayList<>();
+
+        for(String giftType : cartCache.keySet()) {
+            for(Gift gift : giftsCache) {
+                if(gift.getSubtype().equals(giftType)) {
+                    gift.setInventory(Integer.toString(Integer.parseInt(gift.getInventory()) - cartCache.get(giftType)));
+                    ArrayList<String> values = new ArrayList<>();
+                    values.add(gift.getInventory());
+                    values.add(gift.getId());
+                    updates.add(new SQLEntry(DBConstants.UPDATE_GIFT, values));
+                }
+            }
+        }
+        db.executeUpdates(updates);
+    }
+
+    @Override
+    public void cacheCart(Map<String,Integer> cart) {
         cartCache = cart;
     }
 
     @Override
-    public ArrayList<Gift> getCartCacheNull() {
-        if (cartCache.size() == 1) cartCache.add(null);
-        if (cartCache.size() == 2) cartCache.add(null);
-        return cartCache;
-    }
-
-    @Override
-    public ArrayList<Gift> getCartCache() {
+    public Map<String,Integer> getCartCache() {
         return cartCache;
     }
 

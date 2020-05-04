@@ -74,9 +74,7 @@ public class DerbyConstants {
 					"sender_name VARCHAR(32) NOT NULL, " +
 					"request_username VARCHAR(32) NOT NULL REFERENCES Users(username), " +
 					"assignee_username VARCHAR(32) REFERENCES Users(username), " +
-					"gift1_id INT NOT NULL REFERENCES Gifts(id), " +
-					"gift2_id INT REFERENCES Gifts(id), " +
-					"gift3_id INT REFERENCES Gifts(id), " +
+					"gifts VARCHAR(256) NOT NULL, " +
 					"message VARCHAR(128), " +
 					"notes VARCHAR(256), " +
 					// 0: Pending, 1: Approved, 2: Assigned, 3: Denied, 4: Completed

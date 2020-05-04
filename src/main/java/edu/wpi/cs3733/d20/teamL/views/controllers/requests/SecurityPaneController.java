@@ -12,12 +12,14 @@ import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -50,6 +52,8 @@ public class SecurityPaneController {
     StackPane stackPane;
     @FXML
     BorderPane borderPane;
+    @FXML
+    private Label confirmation;
 
     public void initialize() throws IOException {
         // restrict key input to numerals on personnel needed textfield
@@ -105,15 +109,24 @@ public class SecurityPaneController {
 
             if(rows == 0) {
                 //TODO database error window
+                confirmation.setVisible(true);
+                confirmation.setTextFill(Color.RED);
+                confirmation.setText("Submission failed");
             } else {
+                confirmation.setVisible(true);
+                confirmation.setTextFill(Color.WHITE);
+                confirmation.setText("");
+
                 patientIDText.setText("");
                 locationText.setText("");
                 reasonText.setText("");
                 notesText.setText("");
                 personnelText.setText("");
+                rb.setSelected(false);
 
                 loaderHelper.showAndFade(requestReceived);
             }
+            loaderHelper.showAndFade(confirmation);
         }
     }
 }

@@ -105,10 +105,10 @@
                </padding>
               </HBox>
           </center>
-          <bottom>
-            <HBox alignment="CENTER" prefHeight="82.0" prefWidth="895.0" spacing="100.0">
+         <bottom>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0" BorderPane.alignment="CENTER">
                <children>
-                      <JFXButton fx:id="btnSubmit" maxWidth="201.0" onAction="#btnSubmitClicked" prefHeight="49.0" prefWidth="100.0" styleClass="save-button-jfx" text="Submit" textFill="WHITE">
+                      <JFXButton fx:id="btnSubmit" onAction="#btnSubmitClicked" prefHeight="44.0" prefWidth="195.0" styleClass="save-button-jfx" text="Submit" textFill="WHITE">
                           <font>
                               <Font name="Segoe UI" size="24.0" />
                           </font>
@@ -116,7 +116,7 @@
                       <Label fx:id="lblConfirmation" styleClass="submission-failed-label-fx" text="Medication Request Sent" visible="false">
                           <font>
       
-                                          <Font size="16.0" />
+                                                <Font size="16.0" />
                           </font>
                       </Label>
                </children>
@@ -124,10 +124,9 @@
                   <Insets left="350.0" />
                </padding>
             </HBox>
-      
-          </bottom>
+         </bottom>
       </BorderPane>
-      <ImageView fx:id="requestReceived" fitHeight="200.0" fitWidth="262.0" visible="false">
+      <ImageView fx:id="requestReceived" fitHeight="210.0" fitWidth="270.0" visible="false">
          <image>
             <Image url="@../../assets/service_icons/serviceRecieved.png" />
          </image>
