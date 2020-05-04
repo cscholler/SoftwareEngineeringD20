@@ -261,7 +261,7 @@ public class MapViewerController {
                 }
             };
         });
-
+        direct.clear();
         direct.addAll(message);
         dirList.getItems().addAll(direct);
 
@@ -622,7 +622,7 @@ public class MapViewerController {
     }
 
     @FXML
-    private void goToSelected(){
+    private void goToSelected() {
         int index = dirList.getSelectionModel().getSelectedIndex();
         ArrayList<Node> subpath = path.getSubpaths().get(index);
         setFloor(subpath.get(0).getFloor());
@@ -633,7 +633,7 @@ public class MapViewerController {
         double maxX = 0;
         double minY = 200000;
         double maxY = 0;
-        for(Node node : subpath) {
+        for (Node node : subpath) {
             double xPos = node.getPosition().getX();
             double yPos = node.getPosition().getY();
             double xPosGui = map.getNodeGUI(node).getLayoutX();
@@ -642,17 +642,17 @@ public class MapViewerController {
             totalX += xPosGui;
             totalY += yPosGui;
 
-            if(xPos > maxX) maxX = xPos;
-            if(xPos < minX) minX = xPos;
-            if(yPos > maxY) maxY = yPos;
-            if(yPos < minY) minY = yPos;
+            if (xPos > maxX) maxX = xPos;
+            if (xPos < minX) minX = xPos;
+            if (yPos > maxY) maxY = yPos;
+            if (yPos < minY) minY = yPos;
         }
 
         double diffX = maxX - minX;
         double diffY = maxY - minY;
         double scale;
 
-        if(diffX > diffY) scale = Math.min(400 / diffX, 5);
+        if (diffX > diffY) scale = Math.min(400 / diffX, 5);
         else scale = Math.min(400 / diffY, 5);
         System.out.println(scale);
 
