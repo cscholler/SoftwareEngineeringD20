@@ -3,6 +3,10 @@ package edu.wpi.cs3733.d20.teamL.views.LoggedInView;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
+import edu.wpi.cs3733.d20.teamL.entities.Edge;
+import edu.wpi.cs3733.d20.teamL.entities.Gift;
+import edu.wpi.cs3733.d20.teamL.entities.Node;
+import edu.wpi.cs3733.d20.teamL.entities.User;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
@@ -40,10 +44,15 @@ public class AdminLandingPageController implements Initializable {
     FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
     @FXML
     private JFXComboBox<String> selectDatabase;
-    ObservableList<String> databaseOptions = FXCollections.observableArrayList("Map Nodes", "Map Edges", "Gift Inventory", "Users");
+    private ObservableList<String> databaseOptions = FXCollections.observableArrayList("Map Nodes", "Map Edges", "Gift Inventory", "Users", "Doctors");
+    private ObservableList<Node> nodeData;
+    private ObservableList<Edge> edgeData;
+    private ObservableList<Gift> giftData;
+    private ObservableList<User> users;
+    //private ObservableList<Doctor> doctorData;
 
     @FXML
-    private JFXListView listData;
+    private JFXListView<String> listData;
 
     @Inject
     ILoginManager login;
@@ -54,6 +63,7 @@ public class AdminLandingPageController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         selectDatabase.setItems(databaseOptions);
+		nodeData = FXCollections.observableArrayList();
     }
 
     @FXML
