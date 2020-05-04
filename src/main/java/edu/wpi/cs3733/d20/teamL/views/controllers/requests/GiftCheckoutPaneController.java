@@ -68,6 +68,7 @@ public class GiftCheckoutPaneController {
         String deliveryInstructions = additionalNotesText.getText();
         String specialMessage = specialMessageText.getText();
 
+        //TODO: Set up the database so this will actually work
 //        int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_GIFT_DELIVERY_REQUEST,
 //                new ArrayList<>(Arrays.asList(patientID,sender,loginManager.getCurrentUser().getUsername(),null,)))))
     }
