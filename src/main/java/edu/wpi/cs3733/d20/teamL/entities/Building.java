@@ -12,10 +12,11 @@ public class Building extends Graph {
 
     public Building() {
         super();
+        setMaxFloor(1);
     }
 
     public Building(String name) {
-        super();
+        this();
         this.name = name;
     }
 
@@ -63,11 +64,7 @@ public class Building extends Graph {
         // add new floors up to and including the added nodes floor
         if (!getNodes().contains(newNode)) {
             if (newNode.getFloor() > getMaxFloor()) {
-                for (int i = getMaxFloor() + 1; i <= newNode.getFloor(); i++) {
-                    Floor newFloor = new Floor();
-                    newFloor.setFloor(i);
-                    floors.add(newFloor);
-                }
+                setMaxFloor(newNode.getFloor());
             }
 
             getFloor(newNode.getFloor()).addNode(newNode);
@@ -102,6 +99,23 @@ public class Building extends Graph {
             return floors.last().getFloor();
         else
             return 0;
+    }
+
+    /**
+     * Sets the max floor to a new max. Adds or removes the floors from this building respectively.
+     *
+     * @param maxFloor the new maximum floor
+     */
+    public void setMaxFloor(int maxFloor) {
+        if (getMaxFloor() > maxFloor) {
+            floors.removeAll(floors.subSet(getFloor(maxFloor), floors.last()));
+        } else if (getMaxFloor() < maxFloor) {
+            for (int i = getMaxFloor() + 1; i <= maxFloor; i++) {
+                Floor newFloor = new Floor();
+                newFloor.setFloor(i);
+                floors.add(newFloor);
+            }
+        }
     }
 
     /**

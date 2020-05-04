@@ -16,6 +16,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
@@ -44,30 +45,33 @@ import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
 @Slf4j
 public class MapViewerController {
     @FXML
-    MapPane map;
+    private MapPane map;
 
     @FXML
-    JFXTextField startingPoint, destination;
+    private JFXTextField startingPoint, destination;
 
     @FXML
-    JFXButton btnNavigate, floorUp, floorDown;
+    private JFXButton btnNavigate, floorUp, floorDown;
 
     @FXML
-    ScrollPane scroll;
+    private ScrollPane scroll;
 
     @FXML
-    VBox instructions;
+    private VBox instructions;
     @FXML
-	VBox floorSelector;
+    private VBox floorSelector;
 
     @FXML
-    JFXButton btnTextMe, btnQR;
+    private JFXButton btnTextMe, btnQR;
 
     @FXML
     StackPane stackPane;
 
     @FXML
-    JFXListView listF1, listF2, listF3, listF4, listF5;
+    private JFXListView listF1, listF2, listF3, listF4, listF5;
+
+    @FXML
+    private JFXComboBox<String> buildingChooser;
 
     @FXML
     private Label timeLabel;
@@ -96,35 +100,29 @@ public class MapViewerController {
         map.setHighLightColor(Color.GOLD);
         btnNavigate.setDisableVisualFocus(true);
 
-        Building startBuilding = cache.getBuilding("Faulkner");//new Building("Faulkner");
-//        Graph nodes = Graph.graphFromCache(cache.getNodeCache(), cache.getEdgeCache());
-//        startBuilding.addAllNodes(nodes.getNodes());
+        String startB = "Faulkner";
+        Building startBuilding = cache.getBuilding(startB);
         map.setBuilding(startBuilding);
+        buildingChooser.getSelectionModel().select(startB);
 
         // Add floor buttons
-        for (int i = 1; i <= startBuilding.getMaxFloor(); i++) {
-            JFXButton newButton = new JFXButton();
-            newButton.setButtonType(JFXButton.ButtonType.RAISED);
-            newButton.getStylesheets().add("edu/wpi/cs3733/d20/teamL/css/MapStyles.css");
-            newButton.setText("" + i);
-            newButton.setOnAction(this::handleFloor);
-            newButton.getStyleClass().add("floor-buttons");
+        generateFloorButtons();
 
-            floorSelector.getChildren().add(1, newButton);
-        }
+        buildingChooser.getItems().addAll("Faulkner", "BTM");
 
         setFloor(2);
 
         map.setZoomLevel(0.65);
         map.init();
 
-
+        // Populate autocomplete
         sf = new SearchFields(cache.getNodeCache());
         sf.getFields().addAll(Arrays.asList(SearchFields.Field.shortName, SearchFields.Field.longName));
         sf.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
 
+        // TODO: Change node dropdowns to be generated
         Collection <Node> allNodes = map.getBuilding().getNodes();
         Collection<String> floor1Nodes = new ArrayList<>();
         Collection<String> floor2Nodes = new ArrayList<>();
@@ -146,6 +144,32 @@ public class MapViewerController {
         listF3.getItems().addAll(floor3Nodes);
         listF4.getItems().addAll(floor4Nodes);
         listF5.getItems().addAll(floor5Nodes);
+    }
+
+    private void generateFloorButtons() {
+        while (floorSelector.getChildren().size() > 2) {
+            floorSelector.getChildren().remove(1);
+        }
+        for (int i = 1; i <= map.getBuilding().getMaxFloor(); i++) {
+            JFXButton newButton = new JFXButton();
+            newButton.setButtonType(JFXButton.ButtonType.RAISED);
+            newButton.getStylesheets().add("edu/wpi/cs3733/d20/teamL/css/MapStyles.css");
+            newButton.setText("" + i);
+            newButton.setOnAction(this::handleFloor);
+            newButton.getStyleClass().add("floor-buttons");
+
+            floorSelector.getChildren().add(1, newButton);
+        }
+    }
+
+    @FXML
+    private void switchBuilding() {
+        String selected = buildingChooser.getSelectionModel().getSelectedItem();
+
+        Building newBuilding = cache.getBuilding(selected);
+        map.setBuilding(newBuilding);
+
+        generateFloorButtons();
     }
 
     @FXML
@@ -265,15 +289,6 @@ public class MapViewerController {
             end.setVisible(true);
             end.getCircle().setFill(new ImagePattern(new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/END_filled.png")));
         }
-    }
-
-    private void labelNode(NodeGUI nodeGUI, Label label) {
-        AnchorPane parent = (AnchorPane) nodeGUI.getParent();
-
-        parent.getChildren().add(label);
-
-        label.setLayoutX(nodeGUI.getLayoutX());
-        label.setLayoutY(nodeGUI.getLayoutY());
     }
 
     public MapPane getMap() {
