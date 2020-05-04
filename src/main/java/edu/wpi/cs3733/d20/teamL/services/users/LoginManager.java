@@ -42,7 +42,11 @@ public class LoginManager extends Service implements ILoginManager {
 		if (results.size() == 1) {
 			ArrayList<String> userInfo = results.get(0);
 			currentUser = new User(userInfo.get(0), userInfo.get(1), userInfo.get(2), userInfo.get(3), userInfo.get(5), userInfo.get(6), userInfo.get(7));
-			isAuthenticated = PasswordEncrypter.isPasswordCorrect(password, userInfo.get(4));
+			try {
+				isAuthenticated = PasswordManager.isPasswordCorrect(password, userInfo.get(4));
+			} catch (IllegalArgumentException ex) {
+				isAuthenticated = false;
+			}
 			if (isAuthenticated()) {
 				log.info("Logged in as " + currentUser.getUsername());
 			} else {
