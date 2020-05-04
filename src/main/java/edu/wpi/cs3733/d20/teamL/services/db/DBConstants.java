@@ -170,7 +170,7 @@ public class DBConstants {
 
 	public static final String ADD_GIFT_DELIVERY_REQUEST =
 			"INSERT INTO Gift_Delivery_Requests(patient_id, sender_name, request_username, assignee_username, gifts, message, notes, status, date_and_time)" +
-					"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+					"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	public static final String ADD_MEDICATION_REQUEST =
 			"INSERT INTO Medication_Requests(doctor_id, patient_id, nurse_username, deliverer_username, dose, type, notes, status, date_and_time)" +

@@ -142,7 +142,7 @@ public class NotificationsPageController implements Initializable {
 					String patientName = getPatientFullName(patientID);
 					String roomID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ROOM, new ArrayList<>(Collections.singletonList(patientID))))).get(0).get(0);
 
-					giftReqList.add(new GiftDeliveryRequest(row.get(0), row.get(1), patientName, roomID, row.get(2), row.get(3), row.get(4), row.get(5), row.get(8), row.get(9), row.get(10), row.get(11)));
+					giftReqList.add(new GiftDeliveryRequest(row.get(0), row.get(1), patientName, roomID, row.get(2), row.get(3), row.get(4), row.get(5), row.get(6), row.get(7), row.get(8), row.get(9)));
 				}
 				Collections.reverse(giftReqList);
 				giftReqs.getItems().addAll(giftReqList);
