@@ -1,7 +1,6 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXScrollPane;
 import edu.wpi.cs3733.d20.teamL.entities.Gift;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
@@ -16,10 +15,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 
 import javax.inject.Inject;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +26,7 @@ import java.util.Map;
 public class GiftCartPaneController {
     private ArrayList<Gift> gifts = new ArrayList<>();
     private ArrayList<Image> images = new ArrayList<>();
-    Map<String, Integer> cart = new HashMap<>();
+    private Map<String, Integer> cart = new HashMap<>();
 
     @Inject
     private IDatabaseCache cache;
@@ -51,6 +50,9 @@ public class GiftCartPaneController {
         checkoutPane.setPickOnBounds(false);
         addedToCartPane.setPickOnBounds(false);
         outOfStockPane.setPickOnBounds(false);
+
+        cart = cache.getCartCache();
+        checkoutButton.setText(cart.size() + " - Go to Checkout");
 
         for (Gift gift : gifts) {
             loadImage(gift.getSubtype());
@@ -139,7 +141,7 @@ public class GiftCartPaneController {
             if (quantityInCart == 0) cart.put(gift.getSubtype(), 0);
             if (Integer.parseInt(gift.getInventory()) - quantityInCart > 0) {
                 cart.replace(gift.getSubtype(), quantityInCart + 1);
-                checkoutButton.setText(cart.get(gift.getSubtype()).toString() + " - Go to Checkout");
+                checkoutButton.setText(cart.size() + " - Go to Checkout");
                 addedToCartPane.setVisible(true);
                 loaderHelper.showAndFade(addedToCart);
 
@@ -173,7 +175,12 @@ public class GiftCartPaneController {
     }
 
 
-    public void toToCheckout(ActionEvent actionEvent) {
-        System.out.println("Go to Checkout");
+    public void toToCheckout() throws IOException {
+        cache.cacheCart(cart);
+
+        Region n = loaderHelper.getFXMLLoader("requests/GiftCheckoutPane").load();
+        stackPane.getChildren().add(n);
+        n.prefWidthProperty().bind(stackPane.widthProperty());
+        n.prefHeightProperty().bind(stackPane.heightProperty());
     }
 }
