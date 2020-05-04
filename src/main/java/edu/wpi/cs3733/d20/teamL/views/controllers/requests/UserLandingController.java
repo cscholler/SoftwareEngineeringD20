@@ -2,8 +2,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
-import javafx.animation.FadeTransition;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -26,7 +25,7 @@ import java.util.TimerTask;
 @Slf4j
 public class UserLandingController {
     public ImageView btnClose;
-    FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
     @FXML
     private Label timeLabel, requestLabel;
     @FXML
