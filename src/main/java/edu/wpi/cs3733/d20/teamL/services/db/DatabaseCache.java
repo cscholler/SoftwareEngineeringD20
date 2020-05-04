@@ -3,13 +3,10 @@ package edu.wpi.cs3733.d20.teamL.services.db;
 import java.sql.ResultSet;
 import java.util.*;
 
-import edu.wpi.cs3733.d20.teamL.entities.Gift;
+import edu.wpi.cs3733.d20.teamL.entities.*;
 import javafx.geometry.Point2D;
 
 import com.google.inject.Inject;
-
-import edu.wpi.cs3733.d20.teamL.entities.Edge;
-import edu.wpi.cs3733.d20.teamL.entities.Node;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -157,7 +154,7 @@ public class DatabaseCache implements IDatabaseCache {
         for (ArrayList<String> row : nodeData) {
             nodeCache.add(new Node(row.get(0),
                     new Point2D(Double.parseDouble(row.get(1)), Double.parseDouble(row.get(2))),
-                    Integer.parseInt(row.get(3)), row.get(4), row.get(5), row.get(6), row.get(7)));
+                    row.get(3), row.get(4), row.get(5), row.get(6), row.get(7)));
         }
     }
 
@@ -213,6 +210,19 @@ public class DatabaseCache implements IDatabaseCache {
     @Override
     public void clearEdgeCache() {
         edgeCache.clear();
+    }
+
+    public Building getBuilding(String building) {
+        Building newBuilding = new Building(building);
+        try {
+            newBuilding.addAllNodes(getNodeCache());
+        } catch (IllegalArgumentException ex) {
+            log.error("Encountered IllegalArgumentException", ex);
+        }
+
+        Graph.graphFromCache(newBuilding.getNodes(), getEdgeCache());
+
+        return newBuilding;
     }
 
     @Override

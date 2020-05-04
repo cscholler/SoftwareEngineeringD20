@@ -5,14 +5,24 @@ import com.sun.jdi.request.DuplicateRequestException;
 import java.util.*;
 
 public class Building extends Graph {
-    private String name;
+    private String name = "";
 
     private Comparator<Floor> floorComparator = Comparator.comparing(Floor::getFloor);
     private SortedSet<Floor> floors = new TreeSet<>(floorComparator);
 
-    public Building(String name) {
+    public Building() {
         super();
+        floors.add(new Floor(1));
+    }
+
+    public Building(String name) {
+        this();
         this.name = name;
+    }
+
+    public Building(String name, Iterable<Node> nodes) {
+        this(name);
+        addAllNodes(nodes);
     }
 
     public String getName() {
@@ -20,7 +30,11 @@ public class Building extends Graph {
     }
 
     public void setName(String name) {
-        this.name = name;
+        if (getNodes().isEmpty())
+            this.name = name;
+        else
+            throw new RuntimeException("Tried to set the name of (" + getClass().toString() + ") to (" + name +
+                    "), but it contained Nodes belonging to (" + getName() + ")");
     }
 
     @Override
@@ -45,20 +59,34 @@ public class Building extends Graph {
         return null;
     }
 
+    /**
+     * Adds a new node to this graph. Will not add the node if it does not belong to this building.
+     *
+     * @param newNode The new node to add
+     */
     @Override
     public void addNode(Node newNode) {
+        // If the building hasn't been set yet, set the building name to the newNode's building,
+        // otherwise check if the nodes building matches this building's name
+        if (getName().isEmpty())
+            setName(newNode.getBuilding());
+        else if (!newNode.getBuilding().equals(getName()))
+            return;
+//            throw new IllegalArgumentException("Tried to add node (" + newNode.getID() + ") to (" + getName() +
+//                    "), but its building was (" + newNode.getBuilding() + ")");
+
+        // Add the node to its respective floor, if its floor exceeds the maximum floor or is less than the minimum floor,
+        // add new floors up to and including the added floor
         if (!getNodes().contains(newNode)) {
             if (newNode.getFloor() > getMaxFloor()) {
-                for (int i = getMaxFloor() + 1; i <= newNode.getFloor(); i++) {
-                    Floor newFloor = new Floor();
-                    newFloor.setFloor(i);
-                    floors.add(newFloor);
-                }
+                setMaxFloor(newNode.getFloor());
+            } else if (newNode.getFloor() < getMinFloor()) {
+                setMinFloor(newNode.getFloor());
             }
 
             getFloor(newNode.getFloor()).addNode(newNode);
-        } else {
-            throw new IllegalArgumentException("Tried to add (" + newNode.getID() + ") more than once");
+        } else { // Throw an exception if you try to add the same node twice
+            throw new IllegalArgumentException("Tried to add (" + newNode.getID() + ") to (" + getName() + ") more than once");
         }
     }
 
@@ -75,7 +103,7 @@ public class Building extends Graph {
         if (floor > getMaxFloor())
             throw new IndexOutOfBoundsException("floor must not exceed the max floor of this building");
         else
-            return allFloors.get(floor - 1);
+            return allFloors.get(floor - getMinFloor());
     }
 
     /**
@@ -87,6 +115,57 @@ public class Building extends Graph {
         if (!floors.isEmpty())
             return floors.last().getFloor();
         else
-            return 0;
+            return 1;
+    }
+
+    public int getMinFloor() {
+        if (!floors.isEmpty())
+            return floors.first().getFloor();
+        else
+            return 1;
+    }
+
+    /**
+     * Sets the max floor to a new max. Adds or removes the floors from this building respectively.
+     *
+     * @param maxFloor the new maximum floor
+     */
+    public void setMaxFloor(int maxFloor) {
+        if (getMinFloor() > maxFloor) {
+            throw new IndexOutOfBoundsException("Tried to set max floor of (" + getName() + ") to (" + maxFloor +
+                    "), but it was out of range");
+        } else if (getMaxFloor() > maxFloor) {
+            floors.removeAll(floors.subSet(getFloor(maxFloor), floors.last()));
+        } else if (getMaxFloor() < maxFloor) {
+            for (int i = getMaxFloor() + 1; i <= maxFloor; i++) {
+                Floor newFloor = new Floor();
+                newFloor.setFloor(i);
+                floors.add(newFloor);
+            }
+        }
+    }
+
+    public void setMinFloor(int minFloor) {
+        if (getMaxFloor() < minFloor) {
+            throw new IndexOutOfBoundsException("Tried to set min floor of (" + getName() + ") to (" + minFloor +
+                    "), but it was out of range");
+        } else if (getMinFloor() < minFloor) {
+            floors.removeAll(floors.subSet(floors.first(), getFloor(minFloor)));
+        } else if (getMinFloor() > minFloor) {
+            for (int i = getMinFloor() - 1; i >= minFloor; i--) {
+                Floor newFloor = new Floor();
+                newFloor.setFloor(i);
+                floors.add(newFloor);
+            }
+        }
+    }
+
+    /**
+     * Returns a list of floor objects collectively containing all the nodes in this graph.
+     *
+     * @return an ArrayList of Floors using the List interface
+     */
+    public List<Floor> getFloors() {
+        return new ArrayList<>(floors);
     }
 }

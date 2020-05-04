@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamL.services.db;
 
+import edu.wpi.cs3733.d20.teamL.entities.Building;
 import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.entities.Gift;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
@@ -34,6 +35,8 @@ public interface IDatabaseCache {
 	Node searchNodeCache(String nodeID);
 
 	void clearEdgeCache();
+
+	Building getBuilding(String building);
 
 	void cacheGiftsFromDB();
 

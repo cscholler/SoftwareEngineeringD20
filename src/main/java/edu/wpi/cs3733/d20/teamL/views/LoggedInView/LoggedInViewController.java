@@ -69,7 +69,7 @@ public class LoggedInViewController implements Initializable{
     @FXML
     private void notifsClicked() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("Staff/NotificationsPage").load();
+            Parent root = loaderHelper.getFXMLLoader("staff/NotificationsPage").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
@@ -79,7 +79,7 @@ public class LoggedInViewController implements Initializable{
     @FXML
     private void addUserClicked(){
         try {
-            Parent root = loaderHelper.getFXMLLoader("Admin/AddUser").load();
+            Parent root = loaderHelper.getFXMLLoader("admin/AddUser").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException e) {
             log.error("Encountered IOException", e);
@@ -89,7 +89,7 @@ public class LoggedInViewController implements Initializable{
     @FXML
     private void addDoctorClicked(){
         try {
-            Parent root = loaderHelper.getFXMLLoader("Admin/AddDoctor").load();
+            Parent root = loaderHelper.getFXMLLoader("admin/AddDoctor").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException e) {
             log.error("Encountered IOException", e);
@@ -100,7 +100,7 @@ public class LoggedInViewController implements Initializable{
     @FXML
     private void addPatientClicked(){
         try {
-            Parent root = loaderHelper.getFXMLLoader("Staff/AddPatient").load();
+            Parent root = loaderHelper.getFXMLLoader("staff/AddPatient").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException e) {
             log.error("Encountered IOException", e);
