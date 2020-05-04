@@ -206,7 +206,7 @@ public class MapViewerController {
     @FXML
     private void showLegend() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("map_viwer/keyPopUp").load();
+            Parent root = loaderHelper.getFXMLLoader("map_viewer/LegendPopup").load();
             loaderHelper.setupPopup(new Stage(), new Scene(root));
         } catch (IOException ex) {
             log.error("Couldn't load LegendPopup.fxml", ex);
