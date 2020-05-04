@@ -1,17 +1,15 @@
 package edu.wpi.cs3733.d20.teamL.services.db;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.io.File;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
-import edu.wpi.cs3733.d20.teamL.services.users.PasswordEncrypter;
+import edu.wpi.cs3733.d20.teamL.App;
+import edu.wpi.cs3733.d20.teamL.services.users.PasswordManager;
 import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
@@ -20,6 +18,8 @@ import edu.wpi.cs3733.d20.teamL.services.Service;
 @Slf4j
 public class DatabaseService extends Service implements IDatabaseService {
 	private Connection connection;
+	private Map<String, ArrayList<String>> tableUpdateMappings = new HashMap<>();
+
 	public enum DB_TYPE {
 		MY_SQL,
 		DERBY
@@ -28,6 +28,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 
 	public DatabaseService() {
 		super();
+		populateTableUpdateMappings();
 		this.serviceName = DBConstants.SERVICE_NAME;
 	}
 
@@ -44,6 +45,14 @@ public class DatabaseService extends Service implements IDatabaseService {
 		if (dbType == DB_TYPE.DERBY) {
 			rebuildDatabase();
 		}
+	}
+
+	private void populateTableUpdateMappings() {
+		tableUpdateMappings.put("Nodes", new ArrayList<>(Arrays.asList(DBConstants.ADD_NODE, DBConstants.DELETE_ALL_NODES)));
+		tableUpdateMappings.put("Edges", new ArrayList<>(Arrays.asList(DBConstants.ADD_EDGE, DBConstants.DELETE_ALL_EDGES)));
+		tableUpdateMappings.put("Users", new ArrayList<>(Arrays.asList(DBConstants.ADD_USER, DBConstants.DELETE_ALL_USERS)));
+		tableUpdateMappings.put("Doctors", new ArrayList<>(Arrays.asList(DBConstants.ADD_DOCTOR, DBConstants.DELETE_ALL_DOCTORS)));
+		tableUpdateMappings.put("Gifts", new ArrayList<>(Arrays.asList(DBConstants.ADD_GIFT, DBConstants.DELETE_ALL_GIFTS)));
 	}
 
 	/**
@@ -112,6 +121,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 	 */
 	@Override
 	public ResultSet executeQuery(SQLEntry query) {
+		App.allowCacheUpdates = false;
 		ResultSet resSet = null;
 		try {
 			if (query.getValues().size() == 0) {
@@ -125,6 +135,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 		} catch (SQLException ex) {
 			log.error("Encountered SQLException.", ex);
 		}
+		App.allowCacheUpdates = true;
 		return resSet;
 	}
 
@@ -151,6 +162,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 	 */
 	@Override
 	public int executeUpdate(SQLEntry update) {
+		App.allowCacheUpdates = false;
 		int numRowsAffected = 0;
 		try {
 			if (update.getValues().size() == 0) {
@@ -166,6 +178,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 		} catch (SQLException ex) {
 			log.error("Encountered SQLException.", ex);
 		}
+		App.allowCacheUpdates = true;
 		return numRowsAffected;
 	}
 
@@ -241,41 +254,41 @@ public class DatabaseService extends Service implements IDatabaseService {
 		executeUpdates(updates);
 
 		// Add nodes and edges from CSV files
-		populateFromCSV("MapLAllNodes", DBConstants.ADD_NODE);
-		populateFromCSV("MapLAllEdges", DBConstants.ADD_EDGE);
+		populateFromCSV("MapLAllNodes", "Nodes");
+		populateFromCSV("MapLAllEdges", "Edges");
 
 		// Add default users
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("admin", "admin", "admin", PasswordEncrypter.hashPassword("admin"), "3", null, null))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Nurse", "Joy", "nurse", PasswordEncrypter.hashPassword("nurse"), "1", "pharmacy", null))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("staff", "Member", "staff", PasswordEncrypter.hashPassword("staff"), "0", null, null))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Wilson", "Wong", "doctor", PasswordEncrypter.hashPassword("doctor"), "2", "pharmacy", null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Admin", "Admin", "admin", PasswordManager.hashPassword("admin"), "3", null, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Nurse", "Joy", "nurse", PasswordManager.hashPassword("nurse"), "1", "pharmacy", null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Staff", "Member", "staff", PasswordManager.hashPassword("staff"), "0", null, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Wilson", "Wong", "doctor", PasswordManager.hashPassword("doctor"), "2", "pharmacy", null))));
 
 		// Managers for each department
 		Collection<String> serviceTypes = new ArrayList<>(Arrays.asList("security", "internal_transportation", "external_transportation", "maintenance", "interpreter", "sanitation", "gift_shop", "information_technology"));
 		for (String serviceType : serviceTypes) {
-			executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(serviceType, "Manager", serviceType, PasswordEncrypter.hashPassword(serviceType), "0", null, serviceType))));
+			executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(serviceType, "Manager", serviceType, PasswordManager.hashPassword(serviceType), "0", null, serviceType))));
 		}
 
 		// Create test employees for some departments
 		String serviceType = "pharmacy";
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Billy", "Joel", serviceType + "_emp1", PasswordEncrypter.hashPassword(serviceType + "_emp1"), "0", serviceType, null))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Jamie", "Adams", serviceType + "_emp2", PasswordEncrypter.hashPassword(serviceType + "_emp2"), "0", serviceType, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Billy", "Joel", serviceType + "_emp1", PasswordManager.hashPassword(serviceType + "_emp1"), "0", serviceType, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Jamie", "Adams", serviceType + "_emp2", PasswordManager.hashPassword(serviceType + "_emp2"), "0", serviceType, null))));
 
 		serviceType = "gift_shop";
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Leon", "Hart", serviceType + "_emp1", PasswordEncrypter.hashPassword(serviceType + "_emp1"), "0", serviceType, null))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Raymond", "Spencer", serviceType + "_emp2", PasswordEncrypter.hashPassword(serviceType + "_emp2"), "0", serviceType, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Leon", "Hart", serviceType + "_emp1", PasswordManager.hashPassword(serviceType + "_emp1"), "0", serviceType, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Raymond", "Spencer", serviceType + "_emp2", PasswordManager.hashPassword(serviceType + "_emp2"), "0", serviceType, null))));
 		serviceType = "information_technology";
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Spongebob", "Squarepants", serviceType + "_emp1", PasswordEncrypter.hashPassword(serviceType + "_emp1"), "0", serviceType, null))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Barry", "Benson", serviceType + "_emp2", PasswordEncrypter.hashPassword(serviceType + "_emp2"), "0", serviceType, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Spongebob", "Squarepants", serviceType + "_emp1", PasswordManager.hashPassword(serviceType + "_emp1"), "0", serviceType, null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Barry", "Benson", serviceType + "_emp2", PasswordManager.hashPassword(serviceType + "_emp2"), "0", serviceType, null))));
 
 
 		// Interpreters for French and Spanish, the interpreter form does submit them starting with capital letters
 		String interpreter = "interpreter";
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Jacques", "Cousteau", interpreter + "_emp1", PasswordEncrypter.hashPassword(interpreter + "_emp1"), "0", interpreter + "(French)", null))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Adriana", "Lopez", interpreter + "_emp2", PasswordEncrypter.hashPassword(interpreter + "_emp2"), "0", interpreter + "(Spanish)", null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Jacques", "Cousteau", interpreter + "_emp1", PasswordManager.hashPassword(interpreter + "_emp1"), "0", interpreter + "(French)", null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Adriana", "Lopez", interpreter + "_emp2", PasswordManager.hashPassword(interpreter + "_emp2"), "0", interpreter + "(Spanish)", null))));
 
 		// Add a user that can do both medication and IT
-		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Multi", "Boi", "multi", PasswordEncrypter.hashPassword("multi"), "0", "pharmacy;information_technology", null))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Multi", "Boi", "multi", PasswordManager.hashPassword("multi"), "0", "pharmacy;information_technology", null))));
 
 		// Example doctor and patient
 		executeUpdate(new SQLEntry(DBConstants.ADD_DOCTOR, new ArrayList<>(Arrays.asList("123", "Wilson", "Wong", "doctor", null, null))));
@@ -299,14 +312,45 @@ public class DatabaseService extends Service implements IDatabaseService {
 		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Movies", "Pulp Fiction", "A copy of the movie Pulp Fiction", "3"))));
 	}
 
+	/**
+	 * Populates a table in the database with data from
+	 *
+	 * @param csvFile The CSV file to pull the data from
+	 * @param tableName The name of the table to add data to
+	 */
 	@Override
-	public void populateFromCSV(String csvFile, String statement) {
+	public void populateFromCSV(String csvFile, String tableName) {
 		ArrayList<SQLEntry> updates = new ArrayList<>();
 		CSVHelper csvReader = new CSVHelper();
 		for (ArrayList<String> row : csvReader.readCSVFile(csvFile, true)) {
-			updates.add(new SQLEntry(statement, new ArrayList<>(row)));
+			updates.add(new SQLEntry(getTableUpdateMappings().get(tableName).get(0), row));
 		}
 		executeUpdates(updates);
+	}
+
+	/**
+	 * Populates a table in the database with data from
+	 *
+	 * @param csvFile The CSV file to pull the data from
+	 * @param tableName The name of the table to add data to
+	 * @param append Whether to append the data or replace the current contents of the table
+	 */
+	@Override
+	public void populateFromCSV(File csvFile, String tableName, boolean append) throws SQLException {
+		ArrayList<SQLEntry> updates = new ArrayList<>();
+		CSVHelper csvReader = new CSVHelper();
+		ArrayList<ArrayList<String>> csvOutput = csvReader.readCSVFile(csvFile, true);
+		if (!append) {
+			updates.add(new SQLEntry(tableUpdateMappings.get(tableName).get(1)));
+		}
+		for (ArrayList<String> row : csvOutput) {
+			updates.add(new SQLEntry(tableUpdateMappings.get(tableName).get(0), row));
+		}
+		for (int rowsAffected : executeUpdates(updates)) {
+			if (rowsAffected == 0) {
+				throw new SQLException();
+			}
+		}
 	}
 
 	/**
@@ -370,7 +414,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 		try {
 			ResultSetMetaData resSetMD = resSet.getMetaData();
 			for (int i = 0; i < resSetMD.getColumnCount(); i++) {
-				colLabels.set(i, resSetMD.getColumnLabel(i + 1));
+				colLabels.add(resSetMD.getColumnLabel(i + 1));
 			}
 		} catch (SQLException ex) {
 			log.error("Encountered SQLException.", ex);
@@ -401,5 +445,10 @@ public class DatabaseService extends Service implements IDatabaseService {
 			log.error("Encountered SQLException.", ex);
 		}
 		return table;
+	}
+
+	@Override
+	public Map<String, ArrayList<String>> getTableUpdateMappings() {
+		return tableUpdateMappings;
 	}
 }

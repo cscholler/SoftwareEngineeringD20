@@ -39,14 +39,14 @@ import lombok.extern.slf4j.Slf4j;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 
 @Slf4j
 public class NotificationsPageController implements Initializable {
 	private final ObservableList<MedicationRequest> medReqList = FXCollections.observableArrayList();
 	private final ObservableList<GiftDeliveryRequest> giftReqList = FXCollections.observableArrayList();
 	private final ObservableList<ServiceRequest> serviceReqList = FXCollections.observableArrayList();
-	private final FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+	private final FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
 	private MedicationRequest currentMedicationRequest;
 	private GiftDeliveryRequest currentGiftRequest;
 	private ServiceRequest currentServiceRequest;

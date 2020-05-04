@@ -1,7 +1,7 @@
 package edu.wpi.cs3733.d20.teamL.views.components;
 
 import edu.wpi.cs3733.d20.teamL.entities.*;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.EventHandler;
@@ -36,7 +36,7 @@ public class MapPane extends ScrollPane {
     @FXML
     private ImageView mapImage;
 
-    FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
 
     private Map<Node, NodeGUI> nodes = new ConcurrentHashMap<>();
     private Map<Edge, EdgeGUI> edges = new ConcurrentHashMap<>();

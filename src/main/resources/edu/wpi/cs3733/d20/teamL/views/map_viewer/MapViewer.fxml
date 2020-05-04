@@ -3,12 +3,12 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXNodesList?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -25,99 +25,88 @@
     <left>
         <HBox prefHeight="720.0" prefWidth="343.0" BorderPane.alignment="CENTER">
             <children>
-                <VBox style="-fx-background-color: #0d2e57;">
-                    <children>
-                        <VBox alignment="TOP_CENTER" prefWidth="404.0" spacing="15.0" style="-fx-background-color: #0d2e57;">
-                            <children>
-                        <Accordion prefHeight="300.0" prefWidth="283.0">
-                          <panes>
-                            <TitledPane animated="false" prefHeight="216.0" prefWidth="283.0" text="Floor 1">
-                                 <content>
-                                    <JFXListView fx:id="listF1" onMouseClicked="#navigateFloor1" />
-                                 </content>
-                            </TitledPane>
-                            <TitledPane animated="false" text="Floor 2">
-                                 <content>
-                                    <JFXListView fx:id="listF2" onMouseClicked="#navigateFloor2" />
-                                 </content>
-                            </TitledPane>
-                            <TitledPane animated="false" text="Floor 3">
-                                 <content>
-                                    <JFXListView fx:id="listF3" onMouseClicked="#navigateFloor3" />
-                                 </content>
-                            </TitledPane>
-                              <TitledPane animated="false" text="Floor 4">
-                                 <content>
-                                    <JFXListView fx:id="listF4" onMouseClicked="#navigateFloor4" />
-                                 </content>
-                              </TitledPane>
-                              <TitledPane animated="false" text="Floor 5">
-                                 <content>
-                                    <JFXListView fx:id="listF5" onMouseClicked="#navigateFloor5" />
-                                 </content>
-                              </TitledPane>
-                          </panes>
-                        </Accordion>
-                                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" visible="false">
-                                    <children>
-                                        <JFXButton buttonType="RAISED" maxWidth="40.0" prefHeight="40.0" prefWidth="40.0" styleClass="circle-button" text=" ">
-                                            <HBox.margin>
-                                                <Insets />
-                                            </HBox.margin>
-                                            <graphic>
-                                                <ImageView fitHeight="11.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true" scaleX="2.5" scaleY="2.5" translateX="4.0">
-                                                    <image>
-                                                        <Image url="@../../assets/nodes/REST.png" />
-                                                    </image>
-                                                </ImageView>
-                                            </graphic>
-                                        </JFXButton>
-                                        <JFXButton buttonType="RAISED" maxWidth="40.0" prefHeight="40.0" prefWidth="40.0" styleClass="circle-button" text=" ">
-                                            <graphic>
-                                                <ImageView fitHeight="14.0" fitWidth="8.0" pickOnBounds="true" preserveRatio="true" scaleX="2.5" scaleY="2.5" translateX="3.5">
-                                                    <image>
-                                                        <Image url="@../../assets/nodes/ELEV.png" />
-                                                    </image>
-                                                </ImageView>
-                                            </graphic></JFXButton>
-                                        <JFXButton buttonType="RAISED" maxWidth="40.0" prefHeight="40.0" prefWidth="40.0" styleClass="circle-button" text=" ">
-                                            <graphic>
-                                                <ImageView fitHeight="14.0" fitWidth="9.0" pickOnBounds="true" preserveRatio="true" scaleX="3.0" scaleY="3.0" translateX="4.0">
-                                                    <image>
-                                                        <Image url="@../../assets/home_page/round_fastfood_white_18dp.png" />
-                                                    </image>
-                                                </ImageView>
-                                            </graphic></JFXButton>
-                                    </children>
-                                </HBox>
-                                <ScrollPane fx:id="scroll" hbarPolicy="NEVER" prefHeight="290.0" prefWidth="283.0" visible="false">
-                                    <content>
-                                        <VBox fx:id="instructions" prefHeight="600.0" prefWidth="281.0" styleClass="background">
-                                            <padding>
-                                                <Insets left="10.0" right="20.0" />
-                                            </padding>
-                                        </VBox>
-                                    </content>
-                                </ScrollPane>
-                            </children>
-                            <padding>
-                                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                            </padding>
-                            <VBox.margin>
-                                <Insets top="5.0" />
-                            </VBox.margin>
-                        </VBox>
+                  <VBox alignment="TOP_CENTER" prefWidth="404.0" spacing="15.0" style="-fx-background-color: #0d2e57;">
+                      <children>
+                  <Accordion prefHeight="300.0" prefWidth="283.0">
+                    <panes>
+                      <TitledPane animated="false" prefHeight="216.0" prefWidth="283.0" text="Departments">
+                           <content>
+                              <JFXListView fx:id="listF1" onMouseClicked="#navigateFloor1" />
+                           </content>
+                      </TitledPane>
+                      <TitledPane animated="false" text="Labs">
+                           <content>
+                              <JFXListView fx:id="listF2" onMouseClicked="#navigateFloor2" />
+                           </content>
+                      </TitledPane>
+                      <TitledPane animated="false" text="Services/Information">
+                           <content>
+                              <JFXListView fx:id="listF3" onMouseClicked="#navigateFloor3" />
+                           </content>
+                      </TitledPane>
+                        <TitledPane animated="false" text="Amenities">
+                           <content>
+                              <JFXListView fx:id="listF4" onMouseClicked="#navigateFloor4" />
+                           </content>
+                        </TitledPane>
+                        <TitledPane animated="false" text="Conference Rooms">
+                           <content>
+                              <JFXListView fx:id="listF5" onMouseClicked="#navigateFloor5" />
+                           </content>
+                        </TitledPane>
+                    </panes>
+                  </Accordion>
+                          <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" visible="false">
+                              <children>
+                                  <JFXButton buttonType="RAISED" maxWidth="40.0" prefHeight="40.0" prefWidth="40.0" styleClass="circle-button" text=" ">
+                                      <HBox.margin>
+                                          <Insets />
+                                      </HBox.margin>
+                                      <graphic>
+                                          <ImageView fitHeight="11.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true" scaleX="2.5" scaleY="2.5" translateX="4.0">
+                                              <image>
+                                                  <Image url="@../../assets/nodes/REST.png" />
+                                              </image>
+                                          </ImageView>
+                                      </graphic>
+                                  </JFXButton>
+                                  <JFXButton buttonType="RAISED" maxWidth="40.0" prefHeight="40.0" prefWidth="40.0" styleClass="circle-button" text=" ">
+                                      <graphic>
+                                          <ImageView fitHeight="14.0" fitWidth="8.0" pickOnBounds="true" preserveRatio="true" scaleX="2.5" scaleY="2.5" translateX="3.5">
+                                              <image>
+                                                  <Image url="@../../assets/nodes/ELEV.png" />
+                                              </image>
+                                          </ImageView>
+                                      </graphic>
+                        </JFXButton>
+                                  <JFXButton buttonType="RAISED" maxWidth="40.0" prefHeight="40.0" prefWidth="40.0" styleClass="circle-button" text=" ">
+                                      <graphic>
+                                          <ImageView fitHeight="14.0" fitWidth="9.0" pickOnBounds="true" preserveRatio="true" scaleX="3.0" scaleY="3.0" translateX="4.0">
+                                              <image>
+                                                  <Image url="@../../assets/home_page/round_fastfood_white_18dp.png" />
+                                              </image>
+                                          </ImageView>
+                                      </graphic>
+                        </JFXButton>
+                              </children>
+                          </HBox>
                         <HBox alignment="CENTER" prefHeight="60.0" prefWidth="323.0" spacing="40.0">
                             <children>
                                 <JFXButton fx:id="btnTextMe" alignment="CENTER" buttonType="RAISED" minWidth="150.0" onAction="#handleText" prefHeight="40.0" prefWidth="133.0" text="Send Directions" textFill="WHITE" visible="false" />
                                 <JFXButton fx:id="btnQR" alignment="CENTER" buttonType="RAISED" onAction="#genQR" prefHeight="40.0" prefWidth="85.0" text="QR Code" textFill="WHITE" visible="false" />
                             </children>
                         </HBox>
-                    </children>
-                    <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                    </padding>
-                </VBox>
+                  <JFXNodesList fx:id="textDirNode" alignment="CENTER" disable="true" prefHeight="37.0" prefWidth="283.0" visible="false">
+                     <children>
+                        <JFXButton buttonType="RAISED" rotate="180.0" text="Textual Directions" />
+                        <JFXListView fx:id="dirList" onMouseClicked="#goToSelected" prefWidth="300.0" style="-fx-background-radius: 10;" />
+                     </children>
+                  </JFXNodesList>
+                      </children>
+                      <padding>
+                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                      </padding>
+                  </VBox>
             </children>
         </HBox>
     </left>

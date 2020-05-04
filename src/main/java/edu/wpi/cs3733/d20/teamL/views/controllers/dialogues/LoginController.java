@@ -20,10 +20,10 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 
 public class LoginController {
-	FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+	FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
     @FXML
     private JFXTextField usernameField;
     @FXML
