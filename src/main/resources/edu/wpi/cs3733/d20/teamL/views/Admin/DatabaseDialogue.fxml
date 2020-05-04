@@ -6,18 +6,17 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="300.0" prefWidth="500.0" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.RebuildDatabasePopupController">
    <children>
       <HBox alignment="CENTER" layoutX="150.0" layoutY="200.0" prefHeight="100.0" prefWidth="200.0" spacing="60.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
             <JFXButton fx:id="noBtn" prefHeight="51.0" prefWidth="124.0" styleClass="cancel-button-jfx" text="No" />
-            <JFXButton fx:id="yesBtn" styleClass="save-button-jfx" text="Yes" />
+            <JFXButton fx:id="yesBtn" onAction="#clearClicked" styleClass="save-button-jfx" text="Yes" />
          </children>
       </HBox>
-      <Label layoutX="8.0" layoutY="26.0" prefHeight="164.0" prefWidth="486.0" text="Are you sure you want to &#10;DELETE the database?" textAlignment="CENTER">
+      <Label layoutX="22.0" layoutY="26.0" prefHeight="164.0" prefWidth="455.0" text="Are you sure you want to &#10;DELETE the database?" textAlignment="CENTER">
          <font>
-            <Font name="System Bold" size="40.0" />
+            <Font size="40.0" />
          </font>
       </Label>
    </children>
