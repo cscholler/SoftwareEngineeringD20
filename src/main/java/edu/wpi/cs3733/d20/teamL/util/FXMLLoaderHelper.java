@@ -2,6 +2,8 @@ package edu.wpi.cs3733.d20.teamL.util;
 
 import edu.wpi.cs3733.d20.teamL.App;
 import javafx.animation.FadeTransition;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 
 import com.google.inject.Guice;
@@ -102,12 +104,15 @@ public class FXMLLoaderHelper {
 	public void showAndFade(ImageView image){
 		image.setVisible(true);
 
-		FadeTransition fadeTransition = new FadeTransition(Duration.millis(2000), image);
-		fadeTransition.setDelay(Duration.millis(2000));
+		FadeTransition fadeTransition = new FadeTransition(Duration.millis(1500), image);
+		fadeTransition.setDelay(Duration.millis(1500));
 		fadeTransition.setFromValue(1.0);
 		fadeTransition.setToValue(0.0);
 		fadeTransition.setCycleCount(1);
 
 		fadeTransition.play();
 	}
+
+
+
 }
