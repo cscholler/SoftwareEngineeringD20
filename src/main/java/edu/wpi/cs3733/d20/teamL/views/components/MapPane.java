@@ -17,7 +17,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.Paint;
@@ -71,6 +70,7 @@ public class MapPane extends ScrollPane {
     private double edgeThickness = 3;
     private double highlightThickness = 2;
     private Building currentBuilding;
+    private Collection<Building> buildings = new ArrayList<>();
 
     private ArrayList<Node> editedNodes = new ArrayList<>();
 
@@ -287,7 +287,29 @@ public class MapPane extends ScrollPane {
     public void setBuilding(Building currentBuilding) {
         this.currentBuilding = currentBuilding;
 
-        setFloor(Math.min(getFloor(), currentBuilding.getMaxFloor()));
+        setFloor(Math.max(Math.min(getFloor(), currentBuilding.getMaxFloor()), currentBuilding.getMinFloor()));
+
+        boolean foundBuilding = false;
+        for (Building building : getBuildings())
+            if (currentBuilding.getName().equals(building.getName())) foundBuilding = true;
+
+        if (!foundBuilding)
+            getBuildings().add(currentBuilding);
+    }
+
+    public void setBuilding(String buildingName) {
+        for (Building building : getBuildings()) {
+            if (building.getName().equals(buildingName)) {
+                setBuilding(building);
+                return;
+            }
+        }
+
+        throw new IllegalArgumentException("Could not find the building (" + buildingName + ") in (" + getClass() + ")");
+    }
+
+    public Collection<Building> getBuildings() {
+        return buildings;
     }
 
     public void setSelectedNode(Node selectedNode) {
@@ -383,7 +405,7 @@ public class MapPane extends ScrollPane {
     }
 
     /**
-     * Converts the given graph into Node and Edge GUIs and displays them with the correct map image based on their floor and building.
+     * Converts the given graph into Node and Edge GUIs and displays them with the correct map image based on their floor and buildingName.
      *
      * @param floor The floor to display
      */
@@ -404,7 +426,7 @@ public class MapPane extends ScrollPane {
                 addEdge(edge);
         }
 
-        setMapImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/" + getBuilding().getName() + "Floor" + getFloor() + "LM.png"));
+        setMapImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/" + getBuilding().getName() + "Floor" + currentFloor.getFloorAsString() + "LM.png"));
     }
 
     public void recalculatePositions() {
@@ -589,7 +611,11 @@ public class MapPane extends ScrollPane {
                     onActionProperty().get().handle(event);
                 }
             });
-            nodeGUI.getCircle().setFill(new ImagePattern(new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/" + node.getType() + "_filled.png")));
+            try {
+                nodeGUI.getCircle().setFill(new ImagePattern(new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/" + node.getType() + "_filled.png")));
+            } catch (IllegalArgumentException ex) {
+                nodeGUI.getCircle().setFill(nodeColor);
+            }
         } else {
             resetNodeVisibility(nodeGUI);
         }
@@ -607,7 +633,11 @@ public class MapPane extends ScrollPane {
 
     public void resetNodeVisibility(NodeGUI nodeGUI) {
         if (nodeGUI != null) {
-            nodeGUI.getCircle().setFill(new ImagePattern(new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/" + nodeGUI.getNode().getType() + "_filled.png")));
+            try {
+                nodeGUI.getCircle().setFill(new ImagePattern(new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/" + nodeGUI.getNode().getType() + "_filled.png")));
+            } catch (IllegalArgumentException ex) {
+                nodeGUI.getCircle().setFill(nodeColor);
+            }
             List<String> visibleNodeTypes = Arrays.asList("EXIT", "REST", "ELEV", "STAI", "INFO", "RETL");
             if (!visibleNodeTypes.contains(nodeGUI.getNode().getType()))
                 nodeGUI.setVisible(false);

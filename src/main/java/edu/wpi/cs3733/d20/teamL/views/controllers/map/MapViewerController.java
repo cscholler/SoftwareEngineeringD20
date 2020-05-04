@@ -98,8 +98,11 @@ public class MapViewerController {
         btnNavigate.setDisableVisualFocus(true);
 
         String startB = "Faulkner";
-        Building startBuilding = cache.getBuilding(startB);
-        map.setBuilding(startBuilding);
+        Building faulkner = cache.getBuilding("Faulkner");
+        Building btm = cache.getBuilding("BTM");
+
+        if(!faulkner.getNodes().isEmpty()) map.setBuilding(faulkner);
+        if(!btm.getNodes().isEmpty()) map.getBuildings().add(btm);
         buildingChooser.getSelectionModel().select(startB);
 
         // Add floor buttons
@@ -320,7 +323,7 @@ public class MapViewerController {
             setFloor(map.getFloor() + 1);
         } else if (event.getSource() == floorDown) {
             setFloor(map.getFloor() - 1);
-        } else if (MapEditorController.isNumeric(sourceButton.getText())) {
+        } else {
             setFloor(Node.floorStringToInt(sourceButton.getText()));
         }
 
@@ -338,11 +341,11 @@ public class MapViewerController {
     }
 
     public void setFloor(int newFloor) {
-        map.setFloor(Math.max(1, Math.min(newFloor, map.getBuilding().getMaxFloor())));
+        map.setFloor(Math.max(map.getBuilding().getMinFloor(), Math.min(newFloor, map.getBuilding().getMaxFloor())));
 
         for (javafx.scene.Node node : floorSelector.getChildren()) {
             JFXButton floorButton = (JFXButton) node;
-            if (!floorButton.getText().equals(String.valueOf(map.getFloor()))) {
+            if (!floorButton.getText().equals(Node.floorIntToString(map.getFloor()))) {
                 if (floorButton.getStyleClass().contains("selected-floor")) {
                     floorButton.getStyleClass().clear();
                     floorButton.getStyleClass().add("button");

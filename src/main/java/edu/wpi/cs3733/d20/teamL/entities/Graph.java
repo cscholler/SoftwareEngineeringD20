@@ -132,7 +132,7 @@ public class Graph implements Iterable<Node> {
      *
      * @param newNodes Collection of nodes to add
      */
-    public void addAllNodes(Collection<Node> newNodes) {
+    public void addAllNodes(Iterable<Node> newNodes) {
         for (Node node : newNodes) {
             addNode(node);
         }

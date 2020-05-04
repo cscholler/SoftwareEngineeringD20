@@ -11,11 +11,11 @@ public class DerbyConstants {
 					"id VARCHAR(16) NOT NULL, " +
 					"x_pos DOUBLE NOT NULL, " +
 					"y_pos DOUBLE NOT NULL, " +
-					"floor CHAR(1) NOT NULL, " +
+					"floor CHAR(2) NOT NULL, " +
 					"building VARCHAR(64) NOT NULL, " +
 					"node_type CHAR(4) NOT NULL, " +
 					"l_name VARCHAR(64) NOT NULL, " +
-					"s_name VARCHAR(32) NOT NULL, " +
+					"s_name VARCHAR(64) NOT NULL, " +
 					"PRIMARY KEY (id))";
 
 	public static final String CREATE_EDGE_TABLE =

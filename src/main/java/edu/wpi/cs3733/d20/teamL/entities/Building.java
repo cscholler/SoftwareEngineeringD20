@@ -20,6 +20,11 @@ public class Building extends Graph {
         this.name = name;
     }
 
+    public Building(String name, Iterable<Node> nodes) {
+        this(name);
+        addAllNodes(nodes);
+    }
+
     public String getName() {
         return name;
     }
@@ -54,6 +59,11 @@ public class Building extends Graph {
         return null;
     }
 
+    /**
+     * Adds a new node to this graph. Will not add the node if it does not belong to this building.
+     *
+     * @param newNode The new node to add
+     */
     @Override
     public void addNode(Node newNode) {
         // If the building hasn't been set yet, set the building name to the newNode's building,
@@ -61,8 +71,9 @@ public class Building extends Graph {
         if (getName().isEmpty())
             setName(newNode.getBuilding());
         else if (!newNode.getBuilding().equals(getName()))
-            throw new IllegalArgumentException("Tried to add node (" + newNode.getID() + ") to (" + getName() +
-                    "), but its building was (" + newNode.getBuilding() + ")");
+            return;
+//            throw new IllegalArgumentException("Tried to add node (" + newNode.getID() + ") to (" + getName() +
+//                    "), but its building was (" + newNode.getBuilding() + ")");
 
         // Add the node to its respective floor, if its floor exceeds the maximum floor or is less than the minimum floor,
         // add new floors up to and including the added floor

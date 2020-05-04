@@ -1,60 +1,60 @@
 nodeID,xCoord,yCoord,floor,building,nodeType,longName,shortName
-KHALL00801,1113.0,515.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection K00801,Hallway K0801
-KDEPT00501,1230.2144947466963,770.0,1,Brigham & Women's Faulkner Hospital,DEPT,Special testing,Department K0501
-KDEPT00301,2243.8561932233783,1150.551243745419,1,Brigham & Women's Faulkner Hospital,DEPT,Operation Room,Department K0301
-KHALL02501,1752.0,1113.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 25 Level 1,Hallway K2501
-KHALL00401,1400.0,1113.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 4 Level 1,Hallway K0401
-KDEPT00101,900.583624038739,831.9999999999985,1,Brigham & Women's Faulkner Hospital,DEPT,Emergency Department,Department K0101
-KSTAI00101,1224.0753309478719,1080.0000000000007,1,Brigham & Women's Faulkner Hospital,STAI,Staircase Intersection 1 Level 1,Stair K0101
-KHALL00601,1400.0,528.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 6 Level 1,Hallway K0601
-KDEPT00701,1257.0,218.0,1,Brigham & Women's Faulkner Hospital,DEPT,Waiting area,Department K0701
+KHALL00801,1113.0,515.0,1,Faulkner,HALL,Hallway Intersection K00801,Hallway K0801
+KDEPT00501,1230.2144947466963,770.0,1,Faulkner,DEPT,Special testing,Department K0501
+KDEPT00301,2243.8561932233783,1150.551243745419,1,Faulkner,DEPT,Operation Room,Department K0301
+KHALL02501,1752.0,1113.0,1,Faulkner,HALL,Hallway Intersection 25 Level 1,Hallway K2501
+KHALL00401,1400.0,1113.0,1,Faulkner,HALL,Hallway Intersection 4 Level 1,Hallway K0401
+KDEPT00101,900.583624038739,831.9999999999985,1,Faulkner,DEPT,Emergency Department,Department K0101
+KSTAI00101,1224.0753309478719,1080.0000000000007,1,Faulkner,STAI,Staircase Intersection 1 Level 1,Stair K0101
+KHALL00601,1400.0,528.0,1,Faulkner,HALL,Hallway Intersection 6 Level 1,Hallway K0601
+KDEPT00701,1257.0,218.0,1,Faulkner,DEPT,Waiting area,Department K0701
 KELEV00X01,1211.1891753215841,414.00000000000006,1,Faulkner,ELEV,Elevator X Level 1,Elevator 0X01
-KHALL02101,1257.0,863.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 21 Level 1,Hallway K2101
-KHALL00201,937.0,832.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 2 Level 1,Hallway K0201
-KHALL02301,1256.8375037582084,1101.0000000000005,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 23 Level 1,Hallway K2301
-KHALL01801,1113.0,586.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 18 Level 1,Hallway K1801
-KHALL01401,1257.000000000001,554.5850525381279,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 14 Level 1,Hallway K1401
-KHALL01601,1257.0000000000007,303.66330502015916,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 16 Level 1,Hallway K1601
-KSERV00301,1054.0000000000005,487.7553801188003,1,Brigham & Women's Faulkner Hospital,SERV,Admitting,Service K0301
-KREST00201,1112.9999999999993,492.08233518411083,1,Brigham & Women's Faulkner Hospital,REST,Restroom 2 Level 1,Restroom K0201
-KSERV00101,1373.0414578769723,942.0000000000006,1,Brigham & Women's Faulkner Hospital,SERV,Linens,Service K0101
+KHALL02101,1257.0,863.0,1,Faulkner,HALL,Hallway Intersection 21 Level 1,Hallway K2101
+KHALL00201,937.0,832.0,1,Faulkner,HALL,Hallway Intersection 2 Level 1,Hallway K0201
+KHALL02301,1256.8375037582084,1101.0000000000005,1,Faulkner,HALL,Hallway Intersection 23 Level 1,Hallway K2301
+KHALL01801,1113.0,586.0,1,Faulkner,HALL,Hallway Intersection 18 Level 1,Hallway K1801
+KHALL01401,1257.000000000001,554.5850525381279,1,Faulkner,HALL,Hallway Intersection 14 Level 1,Hallway K1401
+KHALL01601,1257.0000000000007,303.66330502015916,1,Faulkner,HALL,Hallway Intersection 16 Level 1,Hallway K1601
+KSERV00301,1054.0000000000005,487.7553801188003,1,Faulkner,SERV,Admitting,Service K0301
+KREST00201,1112.9999999999993,492.08233518411083,1,Faulkner,REST,Restroom 2 Level 1,Restroom K0201
+KSERV00101,1373.0414578769723,942.0000000000006,1,Faulkner,SERV,Linens,Service K0101
 LHALL00201,2008.818219869988,739.9999999999992,1,Faulkner,HALL,Hall,Hall
-KLABS00801,1186.0000000000014,535.0623199871252,1,Brigham & Women's Faulkner Hospital,LABS,Cardiac Rehab,Labs K0801
+KLABS00801,1186.0000000000014,535.0623199871252,1,Faulkner,LABS,Cardiac Rehab,Labs K0801
 KSTAI00301,1299.208884962015,414.0000000000005,1,Faulkner,STAI,Staircase Intersection 3 Level 1,Staircase K0301
-KHALL01001,866.1025272921237,514.9999999999995,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection K01001,Hallway K1001
-KLABS00201,937.0,909.9583347664561,1,Brigham & Women's Faulkner Hospital,LABS,Endoscopy,Labs K0201
-KHALL01201,1257.0,1080.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 12 Level 1,Hallway K1201
-KLABS00601,1400.0000000000011,497.33447932821264,1,Brigham & Women's Faulkner Hospital,LABS,MRI/CT,Labs K0601
-KLABS00401,1274.555539401179,863.0000000000005,1,Brigham & Women's Faulkner Hospital,LABS,PULM Lab,Labs K0401
-KHALL00701,1257.0,515.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 7 Level 1,Hallway K0701
-KDEPT00601,1275.671124118379,554.5850525381279,1,Brigham & Women's Faulkner Hospital,DEPT,Pre-Admittance Screening,Department K0601
+KHALL01001,866.1025272921237,514.9999999999995,1,Faulkner,HALL,Hallway Intersection K01001,Hallway K1001
+KLABS00201,937.0,909.9583347664561,1,Faulkner,LABS,Endoscopy,Labs K0201
+KHALL01201,1257.0,1080.0,1,Faulkner,HALL,Hallway Intersection 12 Level 1,Hallway K1201
+KLABS00601,1400.0000000000011,497.33447932821264,1,Faulkner,LABS,MRI/CT,Labs K0601
+KLABS00401,1274.555539401179,863.0000000000005,1,Faulkner,LABS,PULM Lab,Labs K0401
+KHALL00701,1257.0,515.0,1,Faulkner,HALL,Hallway Intersection 7 Level 1,Hallway K0701
+KDEPT00601,1275.671124118379,554.5850525381279,1,Faulkner,DEPT,Pre-Admittance Screening,Department K0601
 LEXIT0101,1257.0,128.0,1,Faulkner,EXIT,Exit 1 Level 1,Exit K0101
-KHALL00901,949.7517457399955,514.9999999999995,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection K00901,Hallway K0901
-KDEPT00401,2008.818219869988,792.7064756638557,1,Brigham & Women's Faulkner Hospital,DEPT,Recovery,Department K0401
-KHALL00301,1400.0,832.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 3 Level 1,Hallway K0301
-KDEPT00201,1752.0000000000014,1048.4802308936637,1,Brigham & Women's Faulkner Hospital,DEPT,Operation Rooms,Department K0201
-KHALL00501,1400.0,740.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 5 Level 1,Hallway K0501
-KSTAI00201,1288.4250209061981,303.66330502015916,1,Brigham & Women's Faulkner Hospital,STAI,Staircase Intersection 2 Level 1,Stair K0201
+KHALL00901,949.7517457399955,514.9999999999995,1,Faulkner,HALL,Hallway Intersection K00901,Hallway K0901
+KDEPT00401,2008.818219869988,792.7064756638557,1,Faulkner,DEPT,Recovery,Department K0401
+KHALL00301,1400.0,832.0,1,Faulkner,HALL,Hallway Intersection 3 Level 1,Hallway K0301
+KDEPT00201,1752.0000000000014,1048.4802308936637,1,Faulkner,DEPT,Operation Rooms,Department K0201
+KHALL00501,1400.0,740.0,1,Faulkner,HALL,Hallway Intersection 5 Level 1,Hallway K0501
+KSTAI00201,1288.4250209061981,303.66330502015916,1,Faulkner,STAI,Staircase Intersection 2 Level 1,Stair K0201
 KELEV00Y01,1196.0,1157.0,1,Faulkner,ELEV,Elevator Y Level 1,Elevator 0Y01
-KHALL02201,1257.0,931.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 22 Level 1,Hallway K2201
-KHALL00101,1257.2639762845765,832.0000000000002,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 1 Level 1,Hallway K0101
-KHALL02401,1400.0,942.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 24 Level 1,Hallway K2401
-KHALL02001,1186.0000000000014,515.2788961793007,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 20 Level 1,Hallway K2001
-KHALL01901,1284.4563537663305,528.0000000000005,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 19 Level 1,Hallway K1901
-KHALL01501,1257.0,414.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 15 Level 1,Hallway K1501
-KHALL01701,1054.0,515.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 17 Level 1,Hallway K1701
-KREST00101,1185.9999999999998,491.8035349942048,1,Brigham & Women's Faulkner Hospital,REST,Restroom 1 Level 1,Restroom K0101
-KSERV00201,1304.6763267655833,1101.0000000000011,1,Brigham & Women's Faulkner Hospital,SERV,QR MAT Management,Service K0201
-KREST00301,1284.4563537663305,501.5947784711205,1,Brigham & Women's Faulkner Hospital,REST,Restroom 3 Level 1,Restroom K0301
+KHALL02201,1257.0,931.0,1,Faulkner,HALL,Hallway Intersection 22 Level 1,Hallway K2201
+KHALL00101,1257.2639762845765,832.0000000000002,1,Faulkner,HALL,Hallway Intersection 1 Level 1,Hallway K0101
+KHALL02401,1400.0,942.0,1,Faulkner,HALL,Hallway Intersection 24 Level 1,Hallway K2401
+KHALL02001,1186.0000000000014,515.2788961793007,1,Faulkner,HALL,Hallway Intersection 20 Level 1,Hallway K2001
+KHALL01901,1284.4563537663305,528.0000000000005,1,Faulkner,HALL,Hallway Intersection 19 Level 1,Hallway K1901
+KHALL01501,1257.0,414.0,1,Faulkner,HALL,Hallway Intersection 15 Level 1,Hallway K1501
+KHALL01701,1054.0,515.0,1,Faulkner,HALL,Hallway Intersection 17 Level 1,Hallway K1701
+KREST00101,1185.9999999999998,491.8035349942048,1,Faulkner,REST,Restroom 1 Level 1,Restroom K0101
+KSERV00201,1304.6763267655833,1101.0000000000011,1,Faulkner,SERV,QR MAT Management,Service K0201
+KREST00301,1284.4563537663305,501.5947784711205,1,Faulkner,REST,Restroom 3 Level 1,Restroom K0301
 LHALL00301,2243.8561932233783,1112.999999999999,1,Faulkner,HALL,Hall,Hall
 LHALL00101,1257.000000000001,527.8110193253242,1,Faulkner,HALL,Hall,Hall
-KLABS00101,1080.0,586.0,1,Brigham & Women's Faulkner Hospital,LABS,Blood Draw Lab,Labs K0101
-KHALL01101,1256.8375037582089,1156.7219036469126,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection K1201,Hallway K1201
-KHALL01301,1257.0,770.0,1,Brigham & Women's Faulkner Hospital,HALL,Hallway Intersection 13 Level 1,Hallway K1301
-KLABS00301,1275.9500202976792,931.0000000000009,1,Brigham & Women's Faulkner Hospital,LABS,VASC Lab,Labs K0301
+KLABS00101,1080.0,586.0,1,Faulkner,LABS,Blood Draw Lab,Labs K0101
+KHALL01101,1256.8375037582089,1156.7219036469126,1,Faulkner,HALL,Hallway Intersection K1201,Hallway K1201
+KHALL01301,1257.0,770.0,1,Faulkner,HALL,Hallway Intersection 13 Level 1,Hallway K1301
+KLABS00301,1275.9500202976792,931.0000000000009,1,Faulkner,LABS,VASC Lab,Labs K0301
 LRETL00101,1064.3946004247464,217.99999999999991,1,Faulkner,RETL,Starbucks,Starbucks
-KLABS00701,1752.0000000000016,1175.9441111878089,1,Brigham & Women's Faulkner Hospital,LABS,Labs,Labs K0701
-KLABS00501,1542.1616123943154,528.0000000000006,1,Brigham & Women's Faulkner Hospital,LABS,Radiology,Labs K0501
+KLABS00701,1752.0000000000016,1175.9441111878089,1,Faulkner,LABS,Labs,Labs K0701
+KLABS00501,1542.1616123943154,528.0000000000006,1,Faulkner,LABS,Radiology,Labs K0501
 LHALL01802,1349.0,288.0,2,Faulkner,HALL,Hallway Intersection 18 Level 2,HALL L2018
 LHALL01902,1250.0,288.0,2,Faulkner,HALL,Hallway Intersection 19 Level 2,HALL L2019
 LHALL01602,1349.0,501.0,2,Faulkner,HALL,Hallway Intersection 16 Level 2,HALL L2016
@@ -99,7 +99,7 @@ LRETL00102,1348.999999999999,529.619421921677,2,Faulkner,RETL,Food Service,FOOD 
 LSERV00402,1408.363309516348,943.9999999999997,2,Faulkner,SERV,Central Sterile Supply 2,SERVF L2004
 LSERV00602,641.6225455028047,1205.000000000001,2,Faulkner,SERV,Mechanical Space,SERVF L2006
 MELEV00322,1203.4237958287633,378.01714753044456,3,Faulkner,ELEV,Elevator,Elevator
-LHALL01903,1256.415237705795,264.71225120831,3,Brigham & Women's Faulkner Hospital,HALL,Hall,Hall
+LHALL01903,1256.415237705795,264.71225120831,3,Faulkner,HALL,Hall,Hall
 LHALL01703,1638.9100456418846,906.4322664712353,3,Faulkner,HALL,Hall,Hall
 LHALL01503,1365.4685131424364,341.54403299883364,3,Faulkner,HALL,Hall,Hall
 LHALL01303,1329.6158245955976,275.02786082640887,3,Faulkner,HALL,Hall,Hall

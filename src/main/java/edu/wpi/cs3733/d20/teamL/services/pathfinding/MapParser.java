@@ -88,7 +88,7 @@ public class MapParser {
                 String[] data = row.split(",");
 
                 Node newNode = new Node(data[0], new Point2D(Double.parseDouble(data[1]), Double.parseDouble(data[2])),
-                        Integer.parseInt(data[3]), data[4], data[5], data[6], data[7]);
+                        data[3], data[4], data[5], data[6], data[7]);
 
                 newGraph.addNode(newNode);
             }

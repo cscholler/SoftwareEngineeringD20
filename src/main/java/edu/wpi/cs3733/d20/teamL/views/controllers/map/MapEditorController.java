@@ -153,11 +153,11 @@ public class MapEditorController {
         while (floorSelector.getChildren().size() > 2) {
             floorSelector.getChildren().remove(1);
         }
-        for (int i = 1; i <= map.getBuilding().getMaxFloor(); i++) {
+        for (Floor floor : map.getBuilding().getFloors()) {
             JFXButton newButton = new JFXButton();
             newButton.setButtonType(JFXButton.ButtonType.RAISED);
             newButton.getStylesheets().add("edu/wpi/cs3733/d20/teamL/css/MapStyles.css");
-            newButton.setText("" + i);
+            newButton.setText(floor.getFloorAsString());
             newButton.setOnAction(this::changeFloor);
             newButton.getStyleClass().add("floor-buttons");
 
@@ -169,8 +169,7 @@ public class MapEditorController {
     private void switchBuilding() {
         String selected = buildingChooser.getSelectionModel().getSelectedItem();
 
-        Building newBuilding = cache.getBuilding(selected);
-        map.setBuilding(newBuilding);
+        map.setBuilding(selected);
 
         generateFloorButtons();
     }
@@ -239,7 +238,10 @@ public class MapEditorController {
 
     @FXML
     private void saveToDB() {
-        ArrayList<Node> nodes = new ArrayList<>(map.getBuilding().getNodes());
+        ArrayList<Node> nodes = new ArrayList<>();
+        for (Building building : map.getBuildings()) {
+            nodes.addAll(building.getNodes());
+        }
         ArrayList<Edge> blackList = new ArrayList<>();
         ArrayList<Edge> newEdges = new ArrayList<>();
 
@@ -288,14 +290,21 @@ public class MapEditorController {
         boolean confirmed = data.showDialogue(pathFind.getScene().getWindow());
 
         if (confirmed) {
-            Building newBuilding = MapParser.parseMapToBuilding(data.getNodeFile(), data.getEdgeFile());
-            map.setBuilding(newBuilding);
+            Graph newGraph = MapParser.parseMapToGraph(data.getNodeFile(), data.getEdgeFile());
+            Building faulkner = new Building("Faulkner", newGraph);
+            Building BTM = new Building("BTM", newGraph);
+            map.setBuilding(faulkner);
+            map.getBuildings().add(BTM);
         }
     }
 
     @FXML
     private void openFromDB() {
-        map.setBuilding(cache.getBuilding("Faulkner"));
+        Building faulkner = cache.getBuilding("Faulkner");
+        Building btm = cache.getBuilding("BTM");
+
+        if(!faulkner.getNodes().isEmpty()) map.setBuilding(faulkner);
+        if(!btm.getNodes().isEmpty()) map.setBuilding(btm);
     }
 
     @FXML
@@ -441,8 +450,8 @@ public class MapEditorController {
             setFloor(map.getFloor() + 1);
         } else if (event.getSource() == floorDown) {
             setFloor(map.getFloor() - 1);
-        } else if (isNumeric(sourceButton.getText())) {
-            setFloor(Integer.parseInt(sourceButton.getText()));
+        } else {
+            setFloor(Node.floorStringToInt(sourceButton.getText()));
         }
 
         if (!path.getPathNodes().isEmpty()) highlightPath();
@@ -507,11 +516,11 @@ public class MapEditorController {
     }
 
     public void setFloor(int newFloor) {
-        map.setFloor(Math.max(1, Math.min(newFloor, map.getBuilding().getMaxFloor())));
+        map.setFloor(Math.max(map.getBuilding().getMinFloor(), Math.min(newFloor, map.getBuilding().getMaxFloor())));
 
         for (javafx.scene.Node node : floorSelector.getChildren()) {
             JFXButton floorButton = (JFXButton) node;
-            if (!floorButton.getText().equals(String.valueOf(map.getFloor()))) {
+            if (!floorButton.getText().equals(Node.floorIntToString(map.getFloor()))) {
                 if (floorButton.getStyleClass().contains("selected-floor")) {
                     floorButton.getStyleClass().clear();
                     floorButton.getStyleClass().add("button");
