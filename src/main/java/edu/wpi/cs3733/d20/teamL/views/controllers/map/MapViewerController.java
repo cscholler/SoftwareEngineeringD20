@@ -146,26 +146,26 @@ public class MapViewerController {
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
 
         Collection <Node> allNodes = nodes.getNodes();
-        Collection<String> floor1Nodes = new ArrayList<>();
-        Collection<String> floor2Nodes = new ArrayList<>();
-        Collection<String> floor3Nodes = new ArrayList<>();
-        Collection<String> floor4Nodes = new ArrayList<>();
-        Collection<String> floor5Nodes = new ArrayList<>();
+        Collection<String> deptNodes = new ArrayList<>();
+        Collection<String> labNodes = new ArrayList<>();
+        Collection<String> serviceNodes = new ArrayList<>();
+        Collection<String> retailNodes = new ArrayList<>();
+        Collection<String> confNodes = new ArrayList<>();
 
         for (Node node : allNodes) {
-            if (node.getFloor() == 1) { floor1Nodes.add(node.getLongName());
-            } else if (node.getFloor() == 2) { floor2Nodes.add(node.getLongName());
-            } else if (node.getFloor() == 3) { floor3Nodes.add(node.getLongName());
-            } else if (node.getFloor() == 4) { floor4Nodes.add(node.getLongName());
-            } else { floor5Nodes.add(node.getLongName());
+            if (node.getType().equals("DEPT")) { deptNodes.add(node.getLongName());
+            } else if (node.getType().equals("LABS")) { labNodes.add(node.getLongName());
+            } else if ((node.getType().equals("SERV") || node.getType().equals("INFO"))) { serviceNodes.add(node.getLongName());
+            } else if (node.getType().equals("RETL")) { retailNodes.add(node.getLongName());
+            } else if (node.getType().equals("CONF")) { confNodes.add(node.getLongName());
             }
         }
 
-        listF1.getItems().addAll(floor1Nodes);
-        listF2.getItems().addAll(floor2Nodes);
-        listF3.getItems().addAll(floor3Nodes);
-        listF4.getItems().addAll(floor4Nodes);
-        listF5.getItems().addAll(floor5Nodes);
+        listF1.getItems().addAll(deptNodes);
+        listF2.getItems().addAll(labNodes);
+        listF3.getItems().addAll(serviceNodes);
+        listF4.getItems().addAll(retailNodes);
+        listF5.getItems().addAll(confNodes);
     }
 
     @FXML
