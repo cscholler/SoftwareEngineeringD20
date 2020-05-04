@@ -16,7 +16,8 @@ class PathfinderServiceTest {
     @Test
     public void createGraph() throws Exception {
         PathfinderService pathfinderService = new PathfinderService();
-        pathfinderService.setPathfindingMethod(PathfinderService.PathfindingMethod.BFS);
+        pathfinderService.setPathfindingMethod(PathfinderService.PathfindingMethod.Astar);
+
         Graph newGraph = new Graph();
         Node n1 = new Node("n1", new Point2D(1, 2), 1, "A");
         Node n2 = new Node("n2", new Point2D(2, 1), 1, "A");

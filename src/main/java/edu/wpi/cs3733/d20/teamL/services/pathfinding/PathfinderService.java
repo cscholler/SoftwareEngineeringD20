@@ -66,7 +66,7 @@ public class PathfinderService implements IPathfinderService {
             case BFS:
                 return breadthFirstSearch(graph, source, destination);
             case DFS:
-                return null;
+                return depthFirstFind(graph, source, destination);
 
         }
     }
@@ -132,6 +132,58 @@ public class PathfinderService implements IPathfinderService {
     }
 
     /**
+     * Performs Depth First Traversal
+     *
+     * @param source The starting Node
+     * @param destination The ending Node
+     * @return
+     */
+    public Path depthFirstFind(Graph graph, Node source, Node destination) {
+
+        List<Node> path = new LinkedList<>();
+        LinkedList<Node> visitedNodes = new LinkedList<>();
+        LinkedList<Node> stack = new LinkedList<>();
+        stack.push(source);
+
+        //Loops until the stack is empty
+        while (!stack.isEmpty()) {
+
+            Node currentNode = stack.removeFirst();
+            //Mark destination is visited if the node popped is the destination node
+            if (destination == currentNode) {
+                path.add(destination);
+                break;
+            }
+            //If the node is not in the list of visited nodes, add it to the list
+            if (!visitedNodes.contains(currentNode)) {
+
+                visitedNodes.add(currentNode);
+                path.add(currentNode);
+
+                Collection<Node> neighbors = currentNode.getNeighbors();
+
+                //Checks if the list of neighbors is not empty
+                if (!neighbors.isEmpty()) {
+                    //For each node in the list, if it is not visited it is added to the stack
+                    for (Node next : neighbors) {
+
+                        if(!visitedNodes.contains(next)) {
+
+                            stack.addFirst(next);
+                        }
+                    }
+                }
+            }
+        }
+        for(Node node : path) {
+
+            System.out.print("Path: ");
+            System.out.println(node.getID());
+        }
+        return Path.listToPath(path);
+    }
+
+    /**
      * Converts a NodeEntry's chain of parents into a list representing the path
      *
      * @param entry
@@ -169,7 +221,6 @@ public class PathfinderService implements IPathfinderService {
         nodeEntry.shortestPath = newShortestPath;
         priorityQueue.add(nodeEntry);
     }
-
     @Override
     public PathfindingMethod getPathfindingMethod() {
         return pathfindingMethod;
