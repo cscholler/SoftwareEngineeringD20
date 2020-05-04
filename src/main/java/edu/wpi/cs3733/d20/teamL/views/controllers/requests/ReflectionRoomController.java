@@ -1,24 +1,18 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 
-
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import javafx.util.Callback;
-
 import java.io.IOException;
-import java.sql.Time;
 
 public class ReflectionRoomController {
 
@@ -96,9 +90,6 @@ public class ReflectionRoomController {
         loaderHelper.showAndFade(requestReceived);
     }
 
-
-
-
     class TimeSlot extends RecursiveTreeObject<TimeSlot> {
         StringProperty start;
         StringProperty end;
@@ -110,7 +101,5 @@ public class ReflectionRoomController {
             this.end  = new SimpleStringProperty(end);
             this.availability = new SimpleStringProperty(availability);
         }
-
-
     }
 }
