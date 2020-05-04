@@ -416,6 +416,11 @@
                   <JFXButton fx:id="floorDown" buttonType="RAISED" onAction="#changeFloor" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 0 0 20 20;" styleClass="floorChangeButton" text="▼" textFill="WHITE" />
                </children>
             </VBox>
+            <HBox alignment="BOTTOM_CENTER" layoutX="412.0" layoutY="680.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="350.0" AnchorPane.rightAnchor="350.0">
+               <children>
+                  <JFXComboBox fx:id="buildingChooser" onAction="#switchBuilding" promptText="Select Building" styleClass="combo-box-jfx" />
+               </children>
+            </HBox>
             <HBox layoutX="228.0" layoutY="225.0" spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0">
                <children>
                   <JFXNodesList rotate="270.0" spacing="10.0">
@@ -572,11 +577,6 @@
                         <Insets bottom="10.0" />
                      </HBox.margin>
                   </JFXNodesList>
-               </children>
-            </HBox>
-            <HBox alignment="BOTTOM_CENTER" layoutX="412.0" layoutY="680.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0">
-               <children>
-                  <JFXComboBox fx:id="buildingChooser" onAction="#switchBuilding" promptText="Select Building" styleClass="combo-box-jfx" />
                </children>
             </HBox>
          </children>
