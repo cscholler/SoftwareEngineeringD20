@@ -25,7 +25,11 @@ public class Building extends Graph {
     }
 
     public void setName(String name) {
-        this.name = name;
+        if (getNodes().isEmpty())
+            this.name = name;
+        else
+            throw new RuntimeException("Tried to set the name of (" + getClass().toString() + ") to (" + name +
+                    "), but it contained Nodes belonging to (" + getName() + ")");
     }
 
     @Override

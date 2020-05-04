@@ -62,6 +62,8 @@ public class MapEditorController {
     @FXML
     JFXNodesList saveNodesList, loadNodesList, pathNodesList;
     @FXML
+    JFXComboBox<String> buildingChooser;
+    @FXML
     Tooltip saveTooltip, loadTooltip, pathfindTooltip;
     @FXML
     ImageView saveOptImg, loadOptionsImage, pathfindImage;
@@ -115,18 +117,10 @@ public class MapEditorController {
 
         map.setZoomLevel(0.65);
 
-        // Add floor buttons
-        for (int i = 1; i <= map.getBuilding().getMaxFloor(); i++) {
-            JFXButton newButton = new JFXButton();
-            newButton.setButtonType(JFXButton.ButtonType.RAISED);
-            newButton.getStylesheets().add("edu/wpi/cs3733/d20/teamL/css/MapStyles.css");
-            newButton.setText("" + i);
-            newButton.setOnAction(this::changeFloor);
-            newButton.getStyleClass().add("floor-buttons");
+        buildingChooser.getItems().addAll("Faulkner", "BTM");
+        buildingChooser.getSelectionModel().select("Faulkner");
 
-            floorSelector.getChildren().add(1, newButton);
-        }
-
+        generateFloorButtons();
         setFloor(2);
 
         //Hides the node editor VBox
@@ -153,6 +147,32 @@ public class MapEditorController {
             pathFindingAlg = 'D';
             pathfindImage.setImage((depthFirstIcon));
         }
+    }
+
+    private void generateFloorButtons() {
+        while (floorSelector.getChildren().size() > 2) {
+            floorSelector.getChildren().remove(1);
+        }
+        for (int i = 1; i <= map.getBuilding().getMaxFloor(); i++) {
+            JFXButton newButton = new JFXButton();
+            newButton.setButtonType(JFXButton.ButtonType.RAISED);
+            newButton.getStylesheets().add("edu/wpi/cs3733/d20/teamL/css/MapStyles.css");
+            newButton.setText("" + i);
+            newButton.setOnAction(this::changeFloor);
+            newButton.getStyleClass().add("floor-buttons");
+
+            floorSelector.getChildren().add(1, newButton);
+        }
+    }
+
+    @FXML
+    private void switchBuilding() {
+        String selected = buildingChooser.getSelectionModel().getSelectedItem();
+
+        Building newBuilding = cache.getBuilding(selected);
+        map.setBuilding(newBuilding);
+
+        generateFloorButtons();
     }
 
     private void highlightPath() {
