@@ -30,8 +30,6 @@ public class App extends Application {
 	public static final double SCREEN_HEIGHT = Screen.getPrimary().getVisualBounds().getHeight();
 	public static boolean doUpdateCache = true;
 	public static boolean allowCacheUpdates = true;
-	@Inject
-	private ILoginManager loginManager;
 
 	public static void startForceUpdateTimer() {
 		if (forceCacheUpdateTimer != null) {
@@ -74,7 +72,6 @@ public class App extends Application {
 		clockTimer = timerManager.startTimer(timerManager::updateTime, 0, 1000);
 		startIdleTimer();
 		startForceUpdateTimer();
-		startLogoutTimer();
 	}
 
 	@Override

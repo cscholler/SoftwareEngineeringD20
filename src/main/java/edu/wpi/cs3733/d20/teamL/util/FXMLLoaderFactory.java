@@ -27,12 +27,13 @@ public class FXMLLoaderFactory {
 	private static final String ROOT_DIR = "/edu/wpi/cs3733/d20/teamL/views/";
 	public static Injector injector = Guice.createInjector(new ServiceProvider());
 	private static Stack<Scene> history = new Stack<>();
-	@Inject
-	private ILoginManager loginManager;
-
 
 	public static Stack<Scene> getHistory() {
 		return history;
+	}
+
+	public static void resetHistory() {
+		history = new Stack<>();
 	}
 
 	/**
@@ -56,6 +57,7 @@ public class FXMLLoaderFactory {
 		App.stage.setScene(scene);
 		scene.getRoot().addEventHandler(Event.ANY, event -> {
 			App.startIdleTimer();
+			ILoginManager loginManager = injector.getInstance(ILoginManager.class);
 			if (loginManager.isAuthenticated()) {
 				App.startLogoutTimer();
 			}
