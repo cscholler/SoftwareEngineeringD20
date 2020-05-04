@@ -12,7 +12,7 @@ public class Building extends Graph {
 
     public Building() {
         super();
-        setMaxFloor(1);
+        floors.add(new Floor(1));
     }
 
     public Building(String name) {
@@ -64,16 +64,18 @@ public class Building extends Graph {
             throw new IllegalArgumentException("Tried to add node (" + newNode.getID() + ") to (" + getName() +
                     "), but its building was (" + newNode.getBuilding() + ")");
 
-        // Add the node to its respective floor, if its floor exceeds the maximum floor,
-        // add new floors up to and including the added nodes floor
+        // Add the node to its respective floor, if its floor exceeds the maximum floor or is less than the minimum floor,
+        // add new floors up to and including the added floor
         if (!getNodes().contains(newNode)) {
             if (newNode.getFloor() > getMaxFloor()) {
                 setMaxFloor(newNode.getFloor());
+            } else if (newNode.getFloor() < getMinFloor()) {
+                setMinFloor(newNode.getFloor());
             }
 
             getFloor(newNode.getFloor()).addNode(newNode);
         } else { // Throw an exception if you try to add the same node twice
-            throw new IllegalArgumentException("Tried to add (" + newNode.getID() + ") more than once");
+            throw new IllegalArgumentException("Tried to add (" + newNode.getID() + ") to (" + getName() + ") more than once");
         }
     }
 
@@ -90,7 +92,7 @@ public class Building extends Graph {
         if (floor > getMaxFloor())
             throw new IndexOutOfBoundsException("floor must not exceed the max floor of this building");
         else
-            return allFloors.get(floor - 1);
+            return allFloors.get(floor - getMinFloor());
     }
 
     /**
@@ -102,7 +104,14 @@ public class Building extends Graph {
         if (!floors.isEmpty())
             return floors.last().getFloor();
         else
-            return 0;
+            return 1;
+    }
+
+    public int getMinFloor() {
+        if (!floors.isEmpty())
+            return floors.first().getFloor();
+        else
+            return 1;
     }
 
     /**
@@ -111,10 +120,28 @@ public class Building extends Graph {
      * @param maxFloor the new maximum floor
      */
     public void setMaxFloor(int maxFloor) {
-        if (getMaxFloor() > maxFloor) {
+        if (getMinFloor() > maxFloor) {
+            throw new IndexOutOfBoundsException("Tried to set max floor of (" + getName() + ") to (" + maxFloor +
+                    "), but it was out of range");
+        } else if (getMaxFloor() > maxFloor) {
             floors.removeAll(floors.subSet(getFloor(maxFloor), floors.last()));
         } else if (getMaxFloor() < maxFloor) {
             for (int i = getMaxFloor() + 1; i <= maxFloor; i++) {
+                Floor newFloor = new Floor();
+                newFloor.setFloor(i);
+                floors.add(newFloor);
+            }
+        }
+    }
+
+    public void setMinFloor(int minFloor) {
+        if (getMaxFloor() < minFloor) {
+            throw new IndexOutOfBoundsException("Tried to set min floor of (" + getName() + ") to (" + minFloor +
+                    "), but it was out of range");
+        } else if (getMinFloor() < minFloor) {
+            floors.removeAll(floors.subSet(floors.first(), getFloor(minFloor)));
+        } else if (getMinFloor() > minFloor) {
+            for (int i = getMinFloor() - 1; i >= minFloor; i--) {
                 Floor newFloor = new Floor();
                 newFloor.setFloor(i);
                 floors.add(newFloor);

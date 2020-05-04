@@ -5,8 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.jfoenix.controls.*;
-import edu.wpi.cs3733.d20.teamL.entities.Building;
-import edu.wpi.cs3733.d20.teamL.entities.Graph;
+import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import javafx.application.Platform;
@@ -34,9 +33,7 @@ import com.google.inject.Inject;
 
 import lombok.extern.slf4j.Slf4j;
 
-import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
-import edu.wpi.cs3733.d20.teamL.entities.Path;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
 import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
@@ -150,11 +147,11 @@ public class MapViewerController {
         while (floorSelector.getChildren().size() > 2) {
             floorSelector.getChildren().remove(1);
         }
-        for (int i = 1; i <= map.getBuilding().getMaxFloor(); i++) {
+        for (Floor floor : map.getBuilding().getFloors()) {
             JFXButton newButton = new JFXButton();
             newButton.setButtonType(JFXButton.ButtonType.RAISED);
             newButton.getStylesheets().add("edu/wpi/cs3733/d20/teamL/css/MapStyles.css");
-            newButton.setText("" + i);
+            newButton.setText(floor.getFloorAsString());
             newButton.setOnAction(this::handleFloor);
             newButton.getStyleClass().add("floor-buttons");
 
@@ -324,7 +321,7 @@ public class MapViewerController {
         } else if (event.getSource() == floorDown) {
             setFloor(map.getFloor() - 1);
         } else if (MapEditorController.isNumeric(sourceButton.getText())) {
-            setFloor(Integer.parseInt(sourceButton.getText()));
+            setFloor(Node.floorStringToInt(sourceButton.getText()));
         }
 
         if (!path.getPathNodes().isEmpty()) highLightPath();

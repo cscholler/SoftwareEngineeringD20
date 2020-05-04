@@ -156,7 +156,7 @@ public class DatabaseCache implements IDatabaseCache {
         for (ArrayList<String> row : nodeData) {
             nodeCache.add(new Node(row.get(0),
                     new Point2D(Double.parseDouble(row.get(1)), Double.parseDouble(row.get(2))),
-                    Integer.parseInt(row.get(3)), row.get(4), row.get(5), row.get(6), row.get(7)));
+                    row.get(3), row.get(4), row.get(5), row.get(6), row.get(7)));
         }
     }
 
