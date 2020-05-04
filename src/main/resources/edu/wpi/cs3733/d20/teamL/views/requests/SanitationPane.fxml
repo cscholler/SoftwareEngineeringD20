@@ -20,10 +20,14 @@
    <children>
       <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="546.0" prefWidth="900.0" styleClass="services-pane-jfx" stylesheets="@../../css/GlobalStyleSheet.css">
          <bottom>
-            <HBox alignment="CENTER" prefHeight="80.0" prefWidth="895.0">
+            <HBox alignment="CENTER" prefHeight="80.0" prefWidth="895.0" spacing="100.0">
                <children>
                   <JFXButton onAction="#submitServiceRequest" styleClass="save-button-jfx" text="Submit" />
+                  <Label fx:id="confirmation" styleClass="submission-failed-label-fx" text="Label" />
                </children>
+               <padding>
+                  <Insets left="350.0" />
+               </padding>
             </HBox>
          </bottom>
          <center>

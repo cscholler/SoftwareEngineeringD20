@@ -12,10 +12,12 @@ import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 import javax.inject.Inject;
@@ -49,6 +51,8 @@ public class SanitationPaneController {
     private StackPane serviceStackPane;
     @FXML
     private ImageView requestReceived;
+    @FXML
+    private Label confirmation;
 
     @FXML
     public void initialize(){
@@ -67,7 +71,7 @@ public class SanitationPaneController {
     @FXML
     private void autocomplete() {sf.applyAutocomplete(incidentLocationText, autoCompletePopup);}
 
-    public void submitServiceRequest(ActionEvent actionEvent) throws IOException {
+    public void submitServiceRequest() throws IOException {
         String incidentLocation = incidentLocationText.getText();
         String serviceTags = "";
         if (bioHazardCheckBox.isSelected()) serviceTags += "BioHazard, ";
@@ -85,13 +89,29 @@ public class SanitationPaneController {
                 new ArrayList<>(Arrays.asList(null, loginManager.getCurrentUser().getUsername(),
                         null, null, "Sanitation", priorityLevel, serviceTags + additionalNotes, status, dateAndTime)))));
 
-        requestReceived.setVisible((true));
+        /*requestReceived.setVisible((true));
         FadeTransition fadeTransition = new FadeTransition(Duration.millis(2000), requestReceived);
         fadeTransition.setDelay(Duration.millis(2000));
         fadeTransition.setFromValue(1.0);
         fadeTransition.setToValue(0.0);
         fadeTransition.setCycleCount(1);
-        fadeTransition.play();
+        fadeTransition.play();*/
+        if(rows == 0) {
+            confirmation.setVisible(true);
+            confirmation.setTextFill(Color.RED);
+            confirmation.setText("Submission failed");
+        } else {
+            confirmation.setVisible(true);
+            confirmation.setTextFill(Color.WHITE);
+            confirmation.setText("");
+
+            incidentLocationText.setText("");
+            additionalNotesText.setText("");
+
+            loaderHelper.showAndFade(requestReceived);
+        }
+
+        loaderHelper.showAndFade(confirmation);
 
     }
 }
