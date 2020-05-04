@@ -15,7 +15,7 @@ public class Gift {
         this.inventory = inventory;
     }
 
-    public String getId() {
+    public String getID() {
         return id;
     }
 

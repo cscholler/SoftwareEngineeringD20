@@ -96,7 +96,7 @@ public class GiftCheckoutController implements Initializable {
         int rows = 0;
 
         rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_GIFT_DELIVERY_REQUEST, new ArrayList<>(Arrays.asList(patientID, sender, loginManager.getCurrentUser().getUsername(), null,
-                cart.get(0).getId(), cart.get(1) != null ? cart.get(1).getId() : null, cart.get(2) != null ? cart.get(2).getId() : null, message, additionalInfo, status, dateAndTime))));
+                cart.get(0).getID(), cart.get(1) != null ? cart.get(1).getID() : null, cart.get(2) != null ? cart.get(2).getID() : null, message, additionalInfo, status, dateAndTime))));
 
         formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_GIFT_DELIVERY_REQUESTS)));
         if (rows == 0) {

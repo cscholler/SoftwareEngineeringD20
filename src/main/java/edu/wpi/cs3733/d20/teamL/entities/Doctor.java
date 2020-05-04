@@ -17,7 +17,7 @@ public class Doctor {
 		this.addInfo = addInfo;
 	}
 
-	public String getId() {
+	public String getID() {
 		return id;
 	}
 

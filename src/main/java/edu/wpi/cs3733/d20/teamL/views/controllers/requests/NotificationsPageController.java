@@ -241,19 +241,19 @@ public class NotificationsPageController implements Initializable {
 				String message;
 				ArrayList<Gift> gifts = req.getGifts();
 				Gift gift = gifts.get(0);
-				String gift1Text = gift.getType() + ": " + gift.getSubtype() + "(" + gift.getId() + ")";
+				String gift1Text = gift.getType() + ": " + gift.getSubtype() + "(" + gift.getID() + ")";
 				String gift2Text = "";
 				String gift3Text = "";
 				if (gifts.size() >= 2) {
 					if (gifts.get(1) != null) {
 						gift = gifts.get(1);
-						gift2Text = gift.getType() + ": " + gift.getSubtype() + "(" + gift.getId() + ")";
+						gift2Text = gift.getType() + ": " + gift.getSubtype() + "(" + gift.getID() + ")";
 					}
 				}
 				if (gifts.size() == 3) {
 					if (gifts.get(2) != null) {
 						gift = gifts.get(2);
-						gift3Text = gift.getType() + ": " + gift.getSubtype() + "(" + gift.getId() + ")";
+						gift3Text = gift.getType() + ": " + gift.getSubtype() + "(" + gift.getID() + ")";
 					}
 				}
 				String allGiftsText = gift1Text + (!gift2Text.isEmpty() ? ", " + gift2Text : "") + (!gift3Text.isEmpty() ? ", " + gift3Text : "");
