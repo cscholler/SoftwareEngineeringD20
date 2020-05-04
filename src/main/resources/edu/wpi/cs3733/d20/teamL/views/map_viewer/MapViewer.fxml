@@ -28,51 +28,51 @@
                     <children>
                         <VBox alignment="TOP_CENTER" prefWidth="404.0" spacing="15.0" style="-fx-background-color: #0d2e57;">
                             <children>
-                        <Accordion prefHeight="600.0" prefWidth="283.0">
+                        <Accordion prefHeight="320.0" prefWidth="283.0">
                           <panes>
-                            <TitledPane animated="false" text="Amenities">
+                            <TitledPane animated="false" prefHeight="216.0" prefWidth="283.0" text="Floor 1">
                                  <content>
-                                    <JFXListView fx:id="listView" onMouseClicked="#handleDestinationPlace" />
+                                    <JFXListView fx:id="listF1" onMouseClicked="#navigateFloor1" />
                                  </content>
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
                             </TitledPane>
-                            <TitledPane animated="false" text="Brigham Innovation">
-                              <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                              </content>
+                            <TitledPane animated="false" text="Floor 2">
+                                 <content>
+                                    <JFXListView fx:id="listF2" onMouseClicked="#navigateFloor2" />
+                                 </content>
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
                             </TitledPane>
-                            <TitledPane animated="false" text="Clinics and Departments">
-                              <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                              </content>
+                            <TitledPane animated="false" text="Floor 3">
+                                 <content>
+                                    <JFXListView fx:id="listF3" onMouseClicked="#navigateFloor3" />
+                                 </content>
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
                             </TitledPane>
-                              <TitledPane animated="false" text="Patient Rooms (Floors Only)">
+                              <TitledPane animated="false" text="Floor 4">
                                  <content>
-                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                    <JFXListView fx:id="listF4" onMouseClicked="#navigateFloor4" />
                                  </content>
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
                               </TitledPane>
-                              <TitledPane animated="false" text="Radiology">
+                              <TitledPane animated="false" text="Floor 5">
                                  <content>
-                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                    <JFXListView fx:id="listF5" onMouseClicked="#navigateFloor5" />
                                  </content>
-                              </TitledPane>
-                              <TitledPane animated="false" text="Satellite Locations">
-                                 <content>
-                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                                 </content>
-                              </TitledPane>
-                              <TitledPane animated="false" text="Services">
-                                 <content>
-                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                                 </content>
-                              </TitledPane>
-                              <TitledPane animated="false" text="Staff Only Locations">
-                                 <content>
-                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                                 </content>
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
                               </TitledPane>
                           </panes>
                         </Accordion>
-                                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" visible="false">
+                                <HBox alignment="CENTER" prefHeight="77.0" prefWidth="283.0" spacing="50.0" visible="false">
                                     <children>
                                         <JFXButton buttonType="RAISED" maxWidth="40.0" prefHeight="40.0" prefWidth="40.0" styleClass="circle-button" text=" ">
                                             <HBox.margin>
@@ -93,7 +93,8 @@
                                                         <Image url="@../../assets/nodes/ELEV.png" />
                                                     </image>
                                                 </ImageView>
-                                            </graphic></JFXButton>
+                                            </graphic>
+                              </JFXButton>
                                         <JFXButton buttonType="RAISED" maxWidth="40.0" prefHeight="40.0" prefWidth="40.0" styleClass="circle-button" text=" ">
                                             <graphic>
                                                 <ImageView fitHeight="14.0" fitWidth="9.0" pickOnBounds="true" preserveRatio="true" scaleX="3.0" scaleY="3.0" translateX="4.0">
@@ -101,7 +102,8 @@
                                                         <Image url="@../../assets/home_page/round_fastfood_white_18dp.png" />
                                                     </image>
                                                 </ImageView>
-                                            </graphic></JFXButton>
+                                            </graphic>
+                              </JFXButton>
                                     </children>
                                 </HBox>
                                 <ScrollPane fx:id="scroll" hbarPolicy="NEVER" prefHeight="290.0" prefWidth="283.0" visible="false">
@@ -182,7 +184,7 @@
                 <JFXButton layoutX="825.0" layoutY="14.0" onAction="#showLegend" style="-fx-pref-width: 75;" text="Legend" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="10.0" />
             <StackPane fx:id="stackPane" alignment="BOTTOM_LEFT" layoutX="282.0" layoutY="500.0" prefHeight="197.0" prefWidth="323.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="20.0">
                <children>
-                  <JFXButton fx:id="btnAbout" contentDisplay="CENTER" maxHeight="31.0" maxWidth="37.0" onAction="#handleAbout" prefHeight="31.0" prefWidth="37.0" style="-fx-background-radius: 50;" text=" ">
+                  <JFXButton fx:id="btnAbout" buttonType="RAISED" contentDisplay="CENTER" maxHeight="31.0" maxWidth="37.0" onAction="#handleAbout" prefHeight="31.0" prefWidth="37.0" style="-fx-background-radius: 50;" text=" ">
                      <graphic>
                         <ImageView fitHeight="47.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -271,10 +273,13 @@
                   </JFXButton>
                         </children>
                     </HBox>
-            <JFXButton onAction="#loginBtnClicked" prefHeight="40.0" prefWidth="88.0" text="Login">
+            <JFXButton onAction="#loginBtnClicked" prefHeight="65.0" prefWidth="125.0" style="-fx-background-color: transparent;" styleClass="bottom-bar-logout-label-fx" text="Login">
                <HBox.margin>
                   <Insets left="50.0" />
                </HBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
             </JFXButton>
          </children>
       </HBox>
