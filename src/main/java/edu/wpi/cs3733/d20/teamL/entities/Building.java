@@ -103,4 +103,13 @@ public class Building extends Graph {
         else
             return 0;
     }
+
+    /**
+     * Returns a list of floor objects collectively containing all the nodes in this graph.
+     *
+     * @return an ArrayList of Floors using the List interface
+     */
+    public List<Floor> getFloors() {
+        return new ArrayList<>(floors);
+    }
 }

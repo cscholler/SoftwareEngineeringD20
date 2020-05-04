@@ -313,10 +313,10 @@ public class MapEditorController {
             editor.setPrefWidth(200);
             editor.setVisible(true);
             nodeIDText.setText(selectedNode.getID());
-            Double x = selectedNode.getPosition().getX();
-            Double y = selectedNode.getPosition().getY();
-            xCoordText.setText(x.toString());
-            yCoordText.setText(y.toString());
+            double x = selectedNode.getPosition().getX();
+            double y = selectedNode.getPosition().getY();
+            xCoordText.setText(String.valueOf(x));
+            yCoordText.setText(String.valueOf(y));
             nodeTypeValue.getSelectionModel().select(types.indexOf(selectedNode.getType()));
             shortNameText.setText(selectedNode.getShortName());
             longNameText.setText(selectedNode.getLongName());

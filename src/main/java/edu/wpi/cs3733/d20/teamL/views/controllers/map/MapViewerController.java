@@ -440,29 +440,9 @@ public class MapViewerController {
 
         String dest = (String) listF1.getSelectionModel().getSelectedItem();
 
-        Node startNode = sf.getNode(startingPoint.getText());
-        Node destNode = sf.getNode(dest);
+        destination.setText(dest);
 
-        setFloor(startNode.getFloor());
-        if (startNode != null && destNode != null) {
-            String directions = highlightSourceToDestination(startNode, destNode);
-            messengerService.setDirections(directions);
-
-            messenger.setDirections(directions);
-            Label directionsLabel = new Label();
-            directionsLabel.setFont(new Font(14));
-            directionsLabel.setText(directions);
-            directionsLabel.setTextFill(Color.WHITE);
-            directionsLabel.setWrapText(true);
-
-            instructions.getChildren().clear();
-            instructions.getChildren().add(directionsLabel);
-            scroll.setVisible(true);
-            btnTextMe.setDisable(false);
-            btnTextMe.setVisible(true);
-            btnQR.setDisable(false);
-            btnQR.setVisible(true);
-        }
+        navigate();
     }
 
     @FXML
@@ -470,29 +450,9 @@ public class MapViewerController {
 
         String dest = (String) listF2.getSelectionModel().getSelectedItem();
 
-        Node startNode = sf.getNode(startingPoint.getText());
-        Node destNode = sf.getNode(dest);
+        destination.setText(dest);
 
-        setFloor(startNode.getFloor());
-        if (startNode != null && destNode != null) {
-            String directions = highlightSourceToDestination(startNode, destNode);
-            messengerService.setDirections(directions);
-
-            messenger.setDirections(directions);
-            Label directionsLabel = new Label();
-            directionsLabel.setFont(new Font(14));
-            directionsLabel.setText(directions);
-            directionsLabel.setTextFill(Color.WHITE);
-            directionsLabel.setWrapText(true);
-
-            instructions.getChildren().clear();
-            instructions.getChildren().add(directionsLabel);
-            scroll.setVisible(true);
-            btnTextMe.setDisable(false);
-            btnTextMe.setVisible(true);
-            btnQR.setDisable(false);
-            btnQR.setVisible(true);
-        }
+        navigate();
     }
 
     @FXML
@@ -500,29 +460,9 @@ public class MapViewerController {
 
         String dest = (String) listF3.getSelectionModel().getSelectedItem();
 
-        Node startNode = sf.getNode(startingPoint.getText());
-        Node destNode = sf.getNode(dest);
+        destination.setText(dest);
 
-        setFloor(startNode.getFloor());
-        if (startNode != null && destNode != null) {
-            String directions = highlightSourceToDestination(startNode, destNode);
-            messengerService.setDirections(directions);
-
-            messenger.setDirections(directions);
-            Label directionsLabel = new Label();
-            directionsLabel.setFont(new Font(14));
-            directionsLabel.setText(directions);
-            directionsLabel.setTextFill(Color.WHITE);
-            directionsLabel.setWrapText(true);
-
-            instructions.getChildren().clear();
-            instructions.getChildren().add(directionsLabel);
-            scroll.setVisible(true);
-            btnTextMe.setDisable(false);
-            btnTextMe.setVisible(true);
-            btnQR.setDisable(false);
-            btnQR.setVisible(true);
-        }
+        navigate();
     }
 
     @FXML
@@ -530,29 +470,9 @@ public class MapViewerController {
 
         String dest = (String) listF4.getSelectionModel().getSelectedItem();
 
-        Node startNode = sf.getNode(startingPoint.getText());
-        Node destNode = sf.getNode(dest);
+        destination.setText(dest);
 
-        setFloor(startNode.getFloor());
-        if (startNode != null && destNode != null) {
-            String directions = highlightSourceToDestination(startNode, destNode);
-            messengerService.setDirections(directions);
-
-            messenger.setDirections(directions);
-            Label directionsLabel = new Label();
-            directionsLabel.setFont(new Font(14));
-            directionsLabel.setText(directions);
-            directionsLabel.setTextFill(Color.WHITE);
-            directionsLabel.setWrapText(true);
-
-            instructions.getChildren().clear();
-            instructions.getChildren().add(directionsLabel);
-            scroll.setVisible(true);
-            btnTextMe.setDisable(false);
-            btnTextMe.setVisible(true);
-            btnQR.setDisable(false);
-            btnQR.setVisible(true);
-        }
+        navigate();
     }
 
     @FXML
@@ -560,28 +480,8 @@ public class MapViewerController {
 
         String dest = (String) listF5.getSelectionModel().getSelectedItem();
 
-        Node startNode = sf.getNode(startingPoint.getText());
-        Node destNode = sf.getNode(dest);
+        destination.setText(dest);
 
-        setFloor(startNode.getFloor());
-        if (startNode != null && destNode != null) {
-            String directions = highlightSourceToDestination(startNode, destNode);
-            messengerService.setDirections(directions);
-
-            messenger.setDirections(directions);
-            Label directionsLabel = new Label();
-            directionsLabel.setFont(new Font(14));
-            directionsLabel.setText(directions);
-            directionsLabel.setTextFill(Color.WHITE);
-            directionsLabel.setWrapText(true);
-
-            instructions.getChildren().clear();
-            instructions.getChildren().add(directionsLabel);
-            scroll.setVisible(true);
-            btnTextMe.setDisable(false);
-            btnTextMe.setVisible(true);
-            btnQR.setDisable(false);
-            btnQR.setVisible(true);
-        }
+        navigate();
     }
 }
