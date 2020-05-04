@@ -18,12 +18,13 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.control.Label;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class GiftCheckoutPaneController {
     private Map<String,Integer> cart = new HashMap<>();
@@ -31,8 +32,11 @@ public class GiftCheckoutPaneController {
     @Inject
     private IDatabaseCache cache;
     private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    @Inject
     private IDatabaseService db;
+    @Inject
     private ILoginManager loginManager;
+    public ImageView requestReceived;
     @FXML
     private TableView orderTable;
     @FXML
@@ -41,6 +45,8 @@ public class GiftCheckoutPaneController {
     private JFXTextField firstNameText, lastNameText, senderText;
     @FXML
     private JFXTextArea additionalNotesText, specialMessageText;
+    @FXML
+    private Label confirmation;
 
     @FXML
     public void initialize() {
@@ -67,10 +73,41 @@ public class GiftCheckoutPaneController {
         String sender = senderText.getText();
         String deliveryInstructions = additionalNotesText.getText();
         String specialMessage = specialMessageText.getText();
+        StringBuilder gifts = new StringBuilder();
+        String status = "0";
+        String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
 
-        //TODO: Set up the database so this will actually work
-//        int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_GIFT_DELIVERY_REQUEST,
-//                new ArrayList<>(Arrays.asList(patientID,sender,loginManager.getCurrentUser().getUsername(),null,)))))
+        cart = cache.getCartCache();
+        int index = 0;
+        for(String giftType : cart.keySet()) {
+            index ++;
+            int inv = cart.get(giftType);
+            gifts.append("(" + inv + "x) " + giftType + (cart.keySet().size()-1 != index ? ", " : "."));
+        }
+        cache.updateInventory();
+
+        int rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_GIFT_DELIVERY_REQUEST, new ArrayList<>(Arrays.asList(patientID, sender, loginManager.getCurrentUser().getUsername(), null,
+               gifts.toString(), specialMessage, deliveryInstructions, status, dateAndTime))));
+
+        if(rows == 0) {
+//            confirmation.setVisible(true);
+//            confirmation.setTextFill(Color.RED);
+//            confirmation.setText("Submission failed");
+        } else {
+//            confirmation.setVisible(true);
+//            confirmation.setTextFill(Color.WHITE);
+//            confirmation.setText("");
+
+            firstNameText.setText("");
+            lastNameText.setText("");
+            senderText.setText("");
+            additionalNotesText.setText("");
+            specialMessageText.setText("");
+
+            loaderHelper.showAndFade(requestReceived);
+        }
+
+//        loaderHelper.showAndFade(confirmation);
     }
 
     public class GiftDetails {

@@ -45,5 +45,7 @@ public interface IDatabaseCache {
 
 	ArrayList<Gift> getGiftsCache();
 
+	void updateInventory();
+
 	void clearCartCache();
 }

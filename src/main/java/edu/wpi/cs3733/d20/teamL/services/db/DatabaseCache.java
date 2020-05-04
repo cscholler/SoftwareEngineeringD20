@@ -223,6 +223,24 @@ public class DatabaseCache implements IDatabaseCache {
     }
 
     @Override
+    public void updateInventory() {
+        ArrayList<SQLEntry> updates = new ArrayList<>();
+
+        for(String giftType : cartCache.keySet()) {
+            for(Gift gift : giftsCache) {
+                if(gift.getSubtype().equals(giftType)) {
+                    gift.setInventory(Integer.toString(Integer.parseInt(gift.getInventory()) - cartCache.get(giftType)));
+                    ArrayList<String> values = new ArrayList<>();
+                    values.add(gift.getInventory());
+                    values.add(gift.getId());
+                    updates.add(new SQLEntry(DBConstants.UPDATE_GIFT, values));
+                }
+            }
+        }
+        db.executeUpdates(updates);
+    }
+
+    @Override
     public void cacheCart(Map<String,Integer> cart) {
         cartCache = cart;
     }
