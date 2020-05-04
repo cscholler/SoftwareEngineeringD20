@@ -1,6 +1,8 @@
 package edu.wpi.cs3733.d20.teamL;
 
 import java.io.IOException;
+
+import edu.wpi.cs3733.d20.teamL.views.controllers.map.MapViewerController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -26,7 +28,7 @@ public class App extends Application {
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 		stage = primaryStage;
-		Scene homeScene = new Scene(loaderHelper.getFXMLLoader("Staff/test").load());
+		Scene homeScene = new Scene(loaderHelper.getFXMLLoader("map_viewer/MapViewer").load());
 		stage.setScene(homeScene);
 		stage.setMaximized(true);
 		stage.setWidth(SCREEN_WIDTH);

@@ -9,6 +9,10 @@ import edu.wpi.cs3733.d20.teamL.entities.Building;
 import edu.wpi.cs3733.d20.teamL.entities.Graph;
 import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
@@ -25,12 +29,14 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import com.google.inject.Inject;
 
+import javafx.util.Duration;
 import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.cs3733.d20.teamL.entities.Node;
@@ -244,6 +250,8 @@ public class MapViewerController {
         return builder.toString();
     }
 
+
+
     private void highLightPath() {
         Iterator<Node> nodeIterator = path.iterator();
 
@@ -254,7 +262,15 @@ public class MapViewerController {
         while (nodeIterator.hasNext()) {
             nextNode = nodeIterator.next();
             EdgeGUI edgeGUI = map.getEdgeGUI(currentNode.getEdge(nextNode));
-            map.getEdgeGUI(currentNode.getEdge(nextNode)).getHighlightGUI().getStrokeDashArray()
+            map.getEdgeGUI(currentNode.getEdge(nextNode)).getHighlightGUI().getStrokeDashArray().setAll(5d, 20d, 20d, 5d);
+
+            //Please help me untangle my spaghetti
+            Line highlight = map.getEdgeGUI(currentNode.getEdge(nextNode)).getHighlightGUI();
+            final double maxOffset = highlight.getStrokeDashArray().stream().reduce(0d, (a, b) -> a + b);
+            Timeline timeline = new Timeline(new KeyFrame(Duration.ZERO, new KeyValue(highlight.strokeDashOffsetProperty(), 0, Interpolator.LINEAR)),
+                    new KeyFrame(Duration.seconds(2), new KeyValue(highlight.strokeDashOffsetProperty(), maxOffset, Interpolator.LINEAR)));
+            timeline.setCycleCount(Timeline.INDEFINITE);
+            timeline.play();
 
             if (edgeGUI != null) map.getSelector().add(edgeGUI);
 

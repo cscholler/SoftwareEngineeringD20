@@ -21,7 +21,7 @@ public class EdgeGUI extends Line implements Highlightable {
     private Edge edge;
     private NodeGUI source;
     private boolean selected = false;
-    final double maxOffset = highlightGui.getStrokeDashArray().stream().reduce(0d, (a, b) -> a + b);
+
 
     public EdgeGUI(int strokeWidth, Color nodeColor, Paint highLightColor, double highlightThickness) {
         this.setStrokeWidth(strokeWidth);
@@ -29,26 +29,7 @@ public class EdgeGUI extends Line implements Highlightable {
         this.setHighlightColor(highLightColor);
         this.setHighlightThickness(highlightThickness);
         highlightGui.setMouseTransparent(true);
-        Timeline timeline = new Timeline(
-                new KeyFrame(
-                        Duration.ZERO,
-                        new KeyValue(
-                                highlightGui.strokeDashOffsetProperty(),
-                                0,
-                                Interpolator.LINEAR
-                        )
-                ),
-                new KeyFrame(
-                        Duration.seconds(2),
-                        new KeyValue(
-                                highlightGui.strokeDashOffsetProperty(),
-                                maxOffset,
-                                Interpolator.LINEAR
-                        )
-                )
-        );
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
+
         //setMouseTransparent(true);
     }
 
