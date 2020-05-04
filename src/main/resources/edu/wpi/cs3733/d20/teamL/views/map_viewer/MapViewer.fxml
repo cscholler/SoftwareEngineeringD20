@@ -157,7 +157,7 @@
                <font>
                   <Font size="14.0" />
                </font></JFXButton>
-            <StackPane fx:id="stackPane" alignment="BOTTOM_LEFT" layoutX="282.0" layoutY="500.0" prefHeight="197.0" prefWidth="323.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="20.0" />
+            <StackPane fx:id="stackPane" alignment="BOTTOM_LEFT" layoutX="8.0" layoutY="15.0" prefHeight="197.0" prefWidth="323.0" AnchorPane.bottomAnchor="406.59999999999997" AnchorPane.leftAnchor="8.0" />
             </children>
         </AnchorPane>
     </center>
