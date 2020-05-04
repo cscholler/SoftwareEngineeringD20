@@ -96,9 +96,9 @@ public class MapViewerController {
         map.setHighLightColor(Color.GOLD);
         btnNavigate.setDisableVisualFocus(true);
 
-        Building startBuilding = new Building("Faulkner");
-        Graph nodes = Graph.graphFromCache(cache.getNodeCache(), cache.getEdgeCache());
-        startBuilding.addAllNodes(nodes.getNodes());
+        Building startBuilding = cache.getBuilding("Faulkner");//new Building("Faulkner");
+//        Graph nodes = Graph.graphFromCache(cache.getNodeCache(), cache.getEdgeCache());
+//        startBuilding.addAllNodes(nodes.getNodes());
         map.setBuilding(startBuilding);
 
         // Add floor buttons
@@ -125,7 +125,7 @@ public class MapViewerController {
         autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
 
-        Collection <Node> allNodes = nodes.getNodes();
+        Collection <Node> allNodes = map.getBuilding().getNodes();
         Collection<String> floor1Nodes = new ArrayList<>();
         Collection<String> floor2Nodes = new ArrayList<>();
         Collection<String> floor3Nodes = new ArrayList<>();

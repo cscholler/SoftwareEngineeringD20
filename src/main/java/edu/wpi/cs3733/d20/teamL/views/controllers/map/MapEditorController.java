@@ -102,8 +102,6 @@ public class MapEditorController {
             highlightPath();
         });
 
-        cache.cacheAllFromDB();
-
         sf = new SearchFields(cache.getNodeCache());
         sf.getFields().add(SearchFields.Field.nodeID);
         sf.getFields().add(SearchFields.Field.longName);
@@ -277,12 +275,7 @@ public class MapEditorController {
 
     @FXML
     private void openFromDB() {
-        cache.cacheAllFromDB();
-        Building newBuilding = new Building("Faulkner");
-        Graph graph = Graph.graphFromCache(cache.getNodeCache(), cache.getEdgeCache());
-        newBuilding.addAllNodes(graph.getNodes());
-
-        map.setBuilding(newBuilding);
+        map.setBuilding(cache.getBuilding("Faulkner"));
     }
 
     @FXML

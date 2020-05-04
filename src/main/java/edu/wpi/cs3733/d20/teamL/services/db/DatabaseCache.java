@@ -5,14 +5,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import edu.wpi.cs3733.d20.teamL.entities.Gift;
+import edu.wpi.cs3733.d20.teamL.entities.*;
 import javafx.geometry.Point2D;
 
 import com.google.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 
-import edu.wpi.cs3733.d20.teamL.entities.Edge;
-import edu.wpi.cs3733.d20.teamL.entities.Node;
-
+@Slf4j
 public class DatabaseCache implements IDatabaseCache {
     private ArrayList<Node> nodeCache = new ArrayList<>();
     private ArrayList<Edge> edgeCache = new ArrayList<>();
@@ -213,6 +212,19 @@ public class DatabaseCache implements IDatabaseCache {
     @Override
     public void clearEdgeCache() {
         edgeCache.clear();
+    }
+
+    public Building getBuilding(String building) {
+        Building newBuilding = new Building(building);
+        try {
+            newBuilding.addAllNodes(getNodeCache());
+        } catch (IllegalArgumentException ex) {
+            log.error("Encountered IllegalArgumentException", ex);
+        }
+
+        Graph.graphFromCache(newBuilding.getNodes(), getEdgeCache());
+
+        return newBuilding;
     }
 
     @Override

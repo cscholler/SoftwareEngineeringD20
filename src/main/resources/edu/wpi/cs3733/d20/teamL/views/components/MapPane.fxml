@@ -14,7 +14,7 @@
                 <ImageView fx:id="mapImage" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0"
                            AnchorPane.topAnchor="0.0">
                     <image>
-                        <Image url="@../../assets/maps/Floor2LM.png"/>
+                        <Image url="@../../assets/maps/FaulknerFloor2LM.png"/>
                     </image>
                 </ImageView>
                 <AnchorPane fx:id="body" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
