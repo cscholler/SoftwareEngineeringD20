@@ -69,7 +69,7 @@
             </HBox>
          </bottom>
       </BorderPane>
-      <ImageView fx:id="requestReceived" fitHeight="150.0" fitWidth="206.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="requestReceived" fitHeight="210.0" fitWidth="270.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../../assets/service_icons/serviceRecieved.png" />
          </image>
