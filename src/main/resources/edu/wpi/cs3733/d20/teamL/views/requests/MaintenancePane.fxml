@@ -41,9 +41,9 @@
             </VBox>
          </center>
          <bottom>
-            <HBox alignment="CENTER" prefHeight="87.0" prefWidth="895.0" spacing="100.0" BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0" BorderPane.alignment="CENTER">
                <children>
-                  <JFXButton onAction="#submit" styleClass="save-button-jfx" text="Submit">
+                  <JFXButton onAction="#submit" prefHeight="44.0" prefWidth="195.0" styleClass="save-button-jfx" text="Submit">
                      <font>
                         <Font size="20.0" />
                      </font>
