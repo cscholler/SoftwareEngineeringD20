@@ -47,7 +47,7 @@ public interface IDatabaseCache {
 
 	void clearCartCache();
 
-	void cacheUserFromDB();
+	void cacheUsersFromDB();
 
 	ArrayList<User> getUserCache();
 
@@ -58,6 +58,4 @@ public interface IDatabaseCache {
 	ArrayList<Doctor> getDoctorCache();
 
 	void clearDoctorCache();
-
-
 }

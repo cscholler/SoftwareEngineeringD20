@@ -1,26 +1,16 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.dialogues;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXSpinner;
+import com.sun.javafx.fxml.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
-//import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
-//import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
+import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ResourceBundle;
-import java.util.concurrent.*;
-import com.jfoenix.controls.JFXButton;
-import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
-import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +22,7 @@ import java.util.concurrent.FutureTask;
 @Slf4j
 public class RebuildDatabasePopupController {
 
-    FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
 
     @Inject
     ILoginManager login;
@@ -84,7 +74,7 @@ public class RebuildDatabasePopupController {
 
         loading.show();
 
-        /*AsyncTaskManager.newTask(() -> {
+        AsyncTaskManager.newTask(() -> {
             db.rebuildDatabase();
             log.info("Finished rebuilding database");
             uiExec.execute(new FutureTask<>(() -> {
@@ -92,7 +82,7 @@ public class RebuildDatabasePopupController {
                 showDone();
                 return null;
             }));
-        });*/
+        });
     }
 
     private Boolean showDone() {

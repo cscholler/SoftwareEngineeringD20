@@ -34,6 +34,8 @@ public class DatabaseCache implements IDatabaseCache {
         cacheNodesFromDB();
         cacheEdgesFromDB();
         cacheGiftsFromDB();
+        cacheUsersFromDB();
+        cacheDoctorsFromDB();
     }
 
     /**
@@ -259,11 +261,11 @@ public class DatabaseCache implements IDatabaseCache {
     }
 
 	@Override
-	public void cacheUserFromDB() {
+	public void cacheUsersFromDB() {
 		ArrayList<ArrayList<String>> usersTable = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_USERS)));
-		clearDoctorCache();
+		clearUserCache();
 		for (ArrayList<String> row : usersTable) {
-			userCache.add(new User(row.get(0), row.get(1), row.get(2), row.get(3), row.get(5), row.get(6), row.get(7)));
+			userCache.add(new User(row.get(0), row.get(1), row.get(2), row.get(3), row.get(4), row.get(5), row.get(6)));
 		}
 	}
 

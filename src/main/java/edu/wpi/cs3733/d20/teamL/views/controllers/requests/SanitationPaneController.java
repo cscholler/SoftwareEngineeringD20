@@ -1,20 +1,18 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 
-import com.fasterxml.jackson.databind.module.SimpleAbstractTypeResolver;
 import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
@@ -26,7 +24,7 @@ import java.util.Arrays;
 import java.util.Date;
 
 public class SanitationPaneController {
-    private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    private FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup = new JFXAutoCompletePopup<>();
     @Inject

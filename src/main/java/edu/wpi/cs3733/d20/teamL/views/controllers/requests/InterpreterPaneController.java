@@ -10,7 +10,7 @@ import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import javafx.event.ActionEvent;
@@ -43,7 +43,7 @@ public class InterpreterPaneController implements Initializable {
     public ImageView requestReceived;
 
     DBTableFormatter formatter = new DBTableFormatter();
-    private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    private FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
     @Inject
@@ -63,7 +63,6 @@ public class InterpreterPaneController implements Initializable {
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-        dbCache.cacheAllFromDB();
 
         sf = new SearchFields(dbCache.getNodeCache());
         sf.getFields().add(SearchFields.Field.longName);

@@ -1,22 +1,56 @@
 package edu.wpi.cs3733.d20.teamL;
 
 import java.io.IOException;
+import java.util.Timer;
+
+import com.google.inject.Inject;
+import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
+import edu.wpi.cs3733.d20.teamL.util.TimerManager;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.Event;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import lombok.extern.slf4j.Slf4j;
 
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 
 @Slf4j
 public class App extends Application {
-	FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+	private final FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
+	private static final TimerManager timerManager = new TimerManager();
+	public static Timer clockTimer;
+	public static Timer forceCacheUpdateTimer;
+	public static Timer idleCacheUpdateTimer;
+	public static Timer idleLogoutTimer;
 	public static Stage stage;
 	public static final double SCREEN_WIDTH = Screen.getPrimary().getVisualBounds().getWidth();
 	public static final double SCREEN_HEIGHT = Screen.getPrimary().getVisualBounds().getHeight();
+	public static boolean doUpdateCache = true;
+	public static boolean allowCacheUpdates = true;
+
+	public static void startForceUpdateTimer() {
+		if (forceCacheUpdateTimer != null) {
+			forceCacheUpdateTimer.cancel();
+		}
+		forceCacheUpdateTimer = timerManager.startTimer(timerManager::forceUpdateCache, 300000, 300000);
+	}
+
+	public static void startIdleTimer() {
+		if (idleCacheUpdateTimer != null) {
+			idleCacheUpdateTimer.cancel();
+		}
+		idleCacheUpdateTimer = timerManager.startTimer(timerManager::updateCacheIfNoInput, 30000, 30000);
+	}
+
+	public static void startLogoutTimer() {
+		if (idleLogoutTimer != null) {
+			idleLogoutTimer.cancel();
+		}
+		idleLogoutTimer = timerManager.startTimer(timerManager::logOutIfNoInput, 60000, 60000);
+	}
 
 	@Override
 	public void init() {
@@ -33,7 +67,11 @@ public class App extends Application {
 		stage.setHeight(SCREEN_HEIGHT);
 		stage.setTitle("Team L");
 		stage.show();
-		FXMLLoaderHelper.getHistory().push(homeScene);
+		FXMLLoaderFactory.getHistory().push(homeScene);
+		homeScene.addEventHandler(Event.ANY, event -> startIdleTimer());
+		clockTimer = timerManager.startTimer(timerManager::updateTime, 0, 1000);
+		startIdleTimer();
+		startForceUpdateTimer();
 	}
 
 	@Override
