@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.entities.User;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
@@ -56,6 +57,7 @@ public class AdminLandingPageController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 		tableSelector.setItems(tableOptions);
+		tableSelector.getSelectionModel().select(0);
 		hideAllTablesExceptCurrent("Nodes");
 		loadNodesTable();
     }
@@ -262,7 +264,38 @@ public class AdminLandingPageController implements Initializable {
 	}
 
 	private void loadEdgesTable() {
-
+		JFXTreeTableColumn<TableEntityWrapper.TableEdge, String> idCol = new JFXTreeTableColumn<>("id");
+		idCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableEntityWrapper.TableEdge, String> param) -> {
+			if (idCol.validateValue(param)) {
+				return param.getValue().getValue().getID();
+			} else {
+				return idCol.getComputedValue(param);
+			}
+		});
+		JFXTreeTableColumn<TableEntityWrapper.TableEdge, String> startNodeCol = new JFXTreeTableColumn<>("start_node");
+		startNodeCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableEntityWrapper.TableEdge, String> param) -> {
+			if (startNodeCol.validateValue(param)) {
+				return param.getValue().getValue().getSourceNode();
+			} else {
+				return startNodeCol.getComputedValue(param);
+			}
+		});
+		JFXTreeTableColumn<TableEntityWrapper.TableEdge, String> endNodeCol = new JFXTreeTableColumn<>("end_node");
+		endNodeCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableEntityWrapper.TableEdge, String> param) -> {
+			if (endNodeCol.validateValue(param)) {
+				return param.getValue().getValue().getDestNode();
+			} else {
+				return endNodeCol.getComputedValue(param);
+			}
+		});
+		ObservableList<TableEntityWrapper.TableEdge> edges = FXCollections.observableArrayList();
+		for (Edge edge : cache.getEdgeCache()) {
+			edges.add(new TableEntityWrapper.TableEdge(edge.getID(), edge.getSource().getID(), edge.getDestination().getID()));
+		}
+		final TreeItem<TableEntityWrapper.TableEdge> root = new RecursiveTreeItem<>(edges, RecursiveTreeObject::getChildren);
+		edgesTable.getColumns().setAll(idCol, startNodeCol, endNodeCol);
+		edgesTable.setRoot(root);
+		edgesTable.setShowRoot(false);
 	}
 
 	private void loadGiftsTable() {

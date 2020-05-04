@@ -54,7 +54,7 @@
                   </JFXButton>
                </children>
             </HBox>
-            <JFXComboBox fx:id="tableSelector" layoutX="445.0" layoutY="14.0" onAction="#tableSelected" promptText="Select a Table in the Database to View" style="-fx-min-width: 400;" styleClass="combo-box-jfx" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="10.0" />
+            <JFXComboBox fx:id="tableSelector" layoutX="445.0" layoutY="14.0" onAction="#tableSelected" style="-fx-min-width: 400;" styleClass="combo-box-jfx" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="10.0" />
             <JFXButton contentDisplay="CENTER" layoutX="1197.0" layoutY="7.0" onAction="#rebuildDatabaseClicked" prefWidth="49.0" styleClass="delete-database-buttons-jfx" text="☢" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="5.0">
                <font>
                   <Font size="29.0" />
