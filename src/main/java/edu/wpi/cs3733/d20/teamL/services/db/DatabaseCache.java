@@ -5,13 +5,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import edu.wpi.cs3733.d20.teamL.entities.Gift;
+import edu.wpi.cs3733.d20.teamL.entities.*;
 import javafx.geometry.Point2D;
 
 import com.google.inject.Inject;
-
-import edu.wpi.cs3733.d20.teamL.entities.Edge;
-import edu.wpi.cs3733.d20.teamL.entities.Node;
 
 public class DatabaseCache implements IDatabaseCache {
     private ArrayList<Node> nodeCache = new ArrayList<>();
@@ -22,8 +19,12 @@ public class DatabaseCache implements IDatabaseCache {
     private ArrayList<Node> deletedNodes = new ArrayList<>();
     private ArrayList<Edge> deletedEdges = new ArrayList<>();
 
-    private ArrayList<Gift> giftsCache = new ArrayList<>();
+    private ArrayList<Gift> giftCache = new ArrayList<>();
     private ArrayList<Gift> cartCache = new ArrayList<>();
+
+    private ArrayList<User> userCache = new ArrayList<>();
+
+    private ArrayList<Doctor> doctorCache = new ArrayList<>();
 
     @Inject
     private IDatabaseService db;
@@ -170,11 +171,11 @@ public class DatabaseCache implements IDatabaseCache {
     }
 
     @Override
-    public List<Node> getNodeCache() {
+    public ArrayList<Node> getNodeCache() {
         return nodeCache;
     }
 
-    public List<Edge> getEdgeCache() {
+    public ArrayList<Edge> getEdgeCache() {
         return edgeCache;
     }
 
@@ -220,7 +221,7 @@ public class DatabaseCache implements IDatabaseCache {
         ArrayList<ArrayList<String>> giftsDB = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_GIFTS)));
         clearGiftsCache();
         for (ArrayList<String> g : giftsDB) {
-            giftsCache.add(new Gift(g.get(0), g.get(1), g.get(2), g.get(3), g.get(4)));
+            giftCache.add(new Gift(g.get(0), g.get(1), g.get(2), g.get(3), g.get(4)));
         }
     }
 
@@ -242,13 +243,13 @@ public class DatabaseCache implements IDatabaseCache {
     }
 
     @Override
-    public ArrayList<Gift> getGiftsCache() {
-        return giftsCache;
+    public ArrayList<Gift> getGiftCache() {
+        return giftCache;
     }
 
     @Override
     public void clearGiftsCache() {
-        giftsCache.clear();
+        giftCache.clear();
         cartCache.clear();
     }
 
@@ -256,4 +257,42 @@ public class DatabaseCache implements IDatabaseCache {
     public void clearCartCache() {
         cartCache.clear();
     }
+
+	@Override
+	public void cacheUserFromDB() {
+		ArrayList<ArrayList<String>> usersTable = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_USERS)));
+		clearDoctorCache();
+		for (ArrayList<String> row : usersTable) {
+			userCache.add(new User(row.get(0), row.get(1), row.get(2), row.get(3), row.get(5), row.get(6), row.get(7)));
+		}
+	}
+
+	@Override
+	public ArrayList<User> getUserCache() {
+		return userCache;
+	}
+
+	@Override
+	public void clearUserCache() {
+    	userCache.clear();
+	}
+
+	@Override
+	public void cacheDoctorsFromDB() {
+		ArrayList<ArrayList<String>> doctorsTable = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_DOCTORS)));
+		clearDoctorCache();
+		for (ArrayList<String> row : doctorsTable) {
+			doctorCache.add(new Doctor(row.get(0), row.get(1), row.get(2), row.get(3), row.get(4), row.get(5)));
+		}
+	}
+
+	@Override
+	public ArrayList<Doctor> getDoctorCache() {
+		return doctorCache;
+	}
+
+	@Override
+	public void clearDoctorCache() {
+    	doctorCache.clear();
+	}
 }

@@ -79,7 +79,7 @@ public class GiftCartController {
 
 
         cache.cacheGiftsFromDB();
-        gifts = cache.getGiftsCache();
+        gifts = cache.getGiftCache();
 
         makeInvisible();
         updateStore();

@@ -9,7 +9,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
@@ -33,7 +32,7 @@ public class GiftCartPaneController {
     @FXML
     public void initialize() {
         cache.cacheGiftsFromDB();
-        gifts = cache.getGiftsCache();
+        gifts = cache.getGiftCache();
 
         for (Gift gift : gifts) { loadImage(gift.getSubtype()); }
 
