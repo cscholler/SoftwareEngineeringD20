@@ -1,9 +1,10 @@
 package edu.wpi.cs3733.d20.teamL.util;
 
+import com.google.inject.Inject;
 import edu.wpi.cs3733.d20.teamL.App;
+import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import javafx.animation.FadeTransition;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 
 import com.google.inject.Guice;
@@ -17,17 +18,22 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Stack;
 
-public class FXMLLoaderHelper {
+@Slf4j
+public class FXMLLoaderFactory {
 	private static final String ROOT_DIR = "/edu/wpi/cs3733/d20/teamL/views/";
 	public static Injector injector = Guice.createInjector(new ServiceProvider());
-
 	private static Stack<Scene> history = new Stack<>();
 
 	public static Stack<Scene> getHistory() {
 		return history;
+	}
+
+	public static void resetHistory() {
+		history = new Stack<>();
 	}
 
 	/**
@@ -49,7 +55,14 @@ public class FXMLLoaderHelper {
 	 */
 	public void setupScene(Scene scene) {
 		App.stage.setScene(scene);
-		//App.stage.setMaximized(true);
+		scene.getRoot().addEventHandler(Event.ANY, event -> {
+			App.startIdleTimer();
+			ILoginManager loginManager = injector.getInstance(ILoginManager.class);
+			if (loginManager.isAuthenticated()) {
+				App.startLogoutTimer();
+			}
+		});
+
 		Point2D prevDimensions = new Point2D(App.stage.getWidth(), App.stage.getHeight());
 		App.stage.show();
 
@@ -104,15 +117,12 @@ public class FXMLLoaderHelper {
 	public void showAndFade(ImageView image){
 		image.setVisible(true);
 
-		FadeTransition fadeTransition = new FadeTransition(Duration.millis(1500), image);
-		fadeTransition.setDelay(Duration.millis(1500));
+		FadeTransition fadeTransition = new FadeTransition(Duration.millis(2000), image);
+		fadeTransition.setDelay(Duration.millis(2000));
 		fadeTransition.setFromValue(1.0);
 		fadeTransition.setToValue(0.0);
 		fadeTransition.setCycleCount(1);
 
 		fadeTransition.play();
 	}
-
-
-
 }

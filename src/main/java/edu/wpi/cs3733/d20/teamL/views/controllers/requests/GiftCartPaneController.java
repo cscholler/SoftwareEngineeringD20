@@ -3,7 +3,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733.d20.teamL.entities.Gift;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -30,7 +30,7 @@ public class GiftCartPaneController {
 
     @Inject
     private IDatabaseCache cache;
-    private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    private FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
     @FXML
     private TabPane giftTabPane;
     @FXML

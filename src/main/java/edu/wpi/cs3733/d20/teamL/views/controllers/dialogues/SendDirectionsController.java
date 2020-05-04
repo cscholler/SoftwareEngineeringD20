@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import javafx.fxml.FXML;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -22,7 +22,7 @@ public class SendDirectionsController {
     @FXML
     private Label confirmation;
 
-    private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    private FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
 
     /**
      * closes text directions window
