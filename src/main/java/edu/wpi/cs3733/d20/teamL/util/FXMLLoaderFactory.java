@@ -57,7 +57,7 @@ public class FXMLLoaderFactory {
 		App.stage.setScene(scene);
 		scene.getRoot().addEventHandler(Event.ANY, event -> {
 			App.startIdleTimer();
-			ILoginManager loginManager = FXMLLoaderFactory.injector.getInstance(ILoginManager.class);
+			ILoginManager loginManager = injector.getInstance(ILoginManager.class);
 			if (loginManager.isAuthenticated()) {
 				App.startLogoutTimer();
 			}
