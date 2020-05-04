@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.MedicationPaneController">
+   <children>
+      <BorderPane fx:id="borderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="720.0" prefWidth="1080.0" styleClass="services-pane-jfx" stylesheets="@../../css/GlobalStyleSheet.css">
+      
+          <center>
+              <HBox alignment="CENTER" prefHeight="568.0" prefWidth="1080.0" spacing="100.0">
+                  <children>
+                      <VBox alignment="TOP_CENTER" prefHeight="562.0" prefWidth="380.0" spacing="40.0">
+                          <children>
+                              <Label alignment="CENTER" prefHeight="35.0" prefWidth="416.0" styleClass="service-request-label-fx" text="Patient Information" textFill="WHITE">
+                                  <font>
+                                      <Font name="System Bold" size="24.0" />
+                                  </font>
+                           <VBox.margin>
+                              <Insets top="50.0" />
+                           </VBox.margin>
+                              </Label>
+      
+                              <JFXTextField fx:id="patFNameText" labelFloat="true" minHeight="40.0" minWidth="300.0" prefHeight="40.0" prefWidth="300.0" promptText="Patient First Name" styleClass="text-field-jfx">
+      
+                                  <font>
+                                      <Font size="14.0" />
+                                  </font>
+                                  <opaqueInsets>
+                                      <Insets right="5.0" />
+                                  </opaqueInsets>
+                                  <padding>
+                                      <Insets right="5.0" />
+                                  </padding>
+                              </JFXTextField>
+      
+                              <JFXTextField fx:id="patLNameText" labelFloat="true" prefHeight="40.0" prefWidth="300.0" promptText="Patient Last Name" styleClass="text-field-jfx">
+      
+                                  <font>
+                                      <Font size="14.0" />
+                                  </font>
+                              </JFXTextField>
+                              <JFXTextField fx:id="roomNumText" labelFloat="true" onKeyTyped="#autocomplete" prefHeight="40.0" prefWidth="300.0" promptText="  Room Number" styleClass="text-field-jfx">
+      
+                                  <font>
+                                      <Font size="14.0" />
+                                  </font>
+                              </JFXTextField>
+                        <JFXTextArea fx:id="addInfoText" promptText="Description" styleClass="text-area-jfx" />
+                          </children>
+                      </VBox>
+                      <VBox alignment="TOP_CENTER" prefHeight="562.0" prefWidth="380.0" spacing="40.0">
+                          <children>
+                              <Label alignment="CENTER" prefHeight="35.0" prefWidth="452.0" styleClass="service-request-label-fx" text="Medication Information" textFill="WHITE">
+                                  <font>
+                                      <Font name="System Bold" size="24.0" />
+                                  </font>
+                           <VBox.margin>
+                              <Insets top="50.0" />
+                           </VBox.margin>
+                              </Label>
+      
+                              <JFXTextField fx:id="docFNameText" labelFloat="true" prefHeight="40.0" prefWidth="356.0" promptText="  Doctor First Name" styleClass="text-field-jfx">
+      
+                                  <font>
+                                      <Font size="14.0" />
+                                  </font>
+                              </JFXTextField>
+      
+                              <JFXTextField fx:id="docLNameText" labelFloat="true" prefHeight="40.0" prefWidth="300.0" promptText="Doctor Last Name" styleClass="text-field-jfx">
+      
+                                  <font>
+                                      <Font size="14.0" />
+                                  </font>
+                              </JFXTextField>
+      
+                              <JFXTextField fx:id="medTypeText" labelFloat="true" prefHeight="40.0" prefWidth="356.0" promptText="  Medication Type" styleClass="text-field-jfx">
+      
+                                  <font>
+                                      <Font size="14.0" />
+                                  </font>
+                              </JFXTextField>
+      
+                              <JFXTextField fx:id="doseText" labelFloat="true" prefHeight="40.0" prefWidth="356.0" promptText="  Dosage" styleClass="text-field-jfx">
+      
+                                  <font>
+                                      <Font size="14.0" />
+                                  </font>
+                              </JFXTextField>
+                          </children>
+                      </VBox>
+                  </children>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+              </HBox>
+          </center>
+          <bottom>
+            <HBox alignment="CENTER" prefHeight="82.0" prefWidth="895.0" spacing="100.0">
+               <children>
+                      <JFXButton fx:id="btnSubmit" maxWidth="201.0" onAction="#btnSubmitClicked" prefHeight="49.0" prefWidth="100.0" styleClass="save-button-jfx" text="Submit" textFill="WHITE">
+                          <font>
+                              <Font name="Segoe UI" size="24.0" />
+                          </font>
+                      </JFXButton>
+                      <Label fx:id="lblConfirmation" styleClass="submission-failed-label-fx" text="Medication Request Sent" visible="false">
+                          <font>
+      
+                                          <Font size="16.0" />
+                          </font>
+                      </Label>
+               </children>
+               <padding>
+                  <Insets left="350.0" />
+               </padding>
+            </HBox>
+      
+          </bottom>
+      </BorderPane>
+      <ImageView fx:id="requestReceived" fitHeight="200.0" fitWidth="262.0" visible="false">
+         <image>
+            <Image url="@../../assets/service_icons/serviceRecieved.png" />
+         </image>
+      </ImageView>
+   </children>
+</StackPane>

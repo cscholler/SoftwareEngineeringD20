@@ -11,6 +11,7 @@ import edu.wpi.cs3733.d20.teamL.services.ServiceProvider;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -85,6 +86,23 @@ public class FXMLLoaderHelper {
 		label.setVisible(true);
 
 		FadeTransition fadeTransition = new FadeTransition(Duration.millis(2000), label);
+		fadeTransition.setDelay(Duration.millis(2000));
+		fadeTransition.setFromValue(1.0);
+		fadeTransition.setToValue(0.0);
+		fadeTransition.setCycleCount(1);
+
+		fadeTransition.play();
+	}
+
+	/**
+	 * Plays an animation for a given label in which the label waits for 2 seconds and then fades away
+	 *
+	 * @param image
+	 */
+	public void showAndFade(ImageView image){
+		image.setVisible(true);
+
+		FadeTransition fadeTransition = new FadeTransition(Duration.millis(2000), image);
 		fadeTransition.setDelay(Duration.millis(2000));
 		fadeTransition.setFromValue(1.0);
 		fadeTransition.setToValue(0.0);

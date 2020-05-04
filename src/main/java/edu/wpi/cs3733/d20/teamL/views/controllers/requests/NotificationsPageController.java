@@ -101,7 +101,7 @@ public class NotificationsPageController implements Initializable {
 				medReqs.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 				medReqList.removeAll();
 				switch (user.getAcctType()) {
-					// Staff member
+					// staff member
 					default:
 					case "1":
 					case "3":
@@ -372,7 +372,7 @@ public class NotificationsPageController implements Initializable {
 	@FXML
 	private void btnAssignClicked() {
 		try {
-			FXMLLoader loader = loaderHelper.getFXMLLoader("AssignPopup");
+			FXMLLoader loader = loaderHelper.getFXMLLoader("Staff/AssignPopup");
 			Parent root = loader.load();
 			AssignPopupController assignPopupController = loader.getController();
 			assignPopupController.setNotificationsPageController(this);

@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamL.services.users;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,23 +27,27 @@ public class LoginManager extends Service implements ILoginManager {
 
 	@Override
 	public void startService() {
-		logOut();
+		logOut(false);
 	}
 
 	@Override
 	public void stopService() {
-		logOut();
+		logOut(true);
 	}
 
 	@Override
 	public void logIn(String username, String password) {
 		log.info("Attempting to log in...");
-		ArrayList<ArrayList<String>> results = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_USER, new ArrayList<>(Arrays.asList(username, getHashedPassword(password))))));
+		ArrayList<ArrayList<String>> results = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_USER, new ArrayList<>(Collections.singletonList(username)))));
 		if (results.size() == 1) {
 			ArrayList<String> userInfo = results.get(0);
-			currentUser = new User(userInfo.get(0), userInfo.get(1), userInfo.get(2), userInfo.get(3), userInfo.get(4), userInfo.get(5), userInfo.get(6));
-			isAuthenticated = true;
-			log.info("Logged in as " + currentUser.getUsername());
+			currentUser = new User(userInfo.get(0), userInfo.get(1), userInfo.get(2), userInfo.get(3), userInfo.get(5), userInfo.get(6), userInfo.get(7));
+			isAuthenticated = PasswordEncrypter.isPasswordCorrect(password, userInfo.get(4));
+			if (isAuthenticated()) {
+				log.info("Logged in as " + currentUser.getUsername());
+			} else {
+				logOut(false);
+			}
 		} else {
 			// No user found
 			log.warn("No user found with the given username and password");
@@ -50,16 +55,12 @@ public class LoginManager extends Service implements ILoginManager {
 	}
 
 	@Override
-	public void logOut() {
-		log.info("Logging out...");
+	public void logOut(boolean verbose) {
+		if (verbose) {
+			log.info("Logging out...");
+		}
 		currentUser = null;
 		isAuthenticated = false;
-	}
-
-	@Override
-	public String getHashedPassword(String password) {
-		// TODO: SHA-256 implementation
-		return password;
 	}
 
 	@Override

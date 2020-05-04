@@ -211,7 +211,7 @@
                            <graphic>
                               <ImageView fitHeight="10.0" pickOnBounds="true" preserveRatio="true" scaleX="3.0" scaleY="3.0" translateX="4.0">
                                  <image>
-                                    <Image url="@../../assets/baseline_home_white_48dp.png" />
+                                    <Image url="@../../assets/map_editor/baseline_home_white_48dp.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -232,7 +232,7 @@
                            <graphic>
                               <ImageView fitHeight="13.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true" scaleX="3.5" scaleY="4.5" translateX="3.0">
                                  <image>
-                                    <Image url="@../../assets/map editor/reverseArrow.png" />
+                                    <Image url="@../../assets/map_editor/reverseArrow.png" />
                                  </image>
                               </ImageView>
                            </graphic></JFXButton>
@@ -245,7 +245,7 @@
                            <graphic>
                               <ImageView fitHeight="11.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true" scaleX="3.0" scaleY="3.0" translateX="2.0">
                                  <image>
-                                       <Image url="@../../assets/home page/Search-button-home.png" />
+                                       <Image url="@../../assets/home_page/search_button_home.png" />
                                  </image>
                               </ImageView>
                            </graphic></JFXButton>
@@ -267,7 +267,7 @@
                            <graphic>
                               <ImageView fx:id="loadOptionsImage" fitHeight="13.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true" scaleX="2.5" scaleY="2.5" translateX="3.5">
                                  <image>
-                                    <Image url="@../../assets/map editor/UploadFromFolder.png" />
+                                    <Image url="@../../assets/map_editor/UploadFromFolder.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -279,7 +279,7 @@
                            <graphic>
                               <ImageView fitHeight="13.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true" scaleX="2.3" scaleY="2.3" translateX="4.0">
                                  <image>
-                                    <Image url="@../../assets/map editor/UploadFromDBFolder.png" />
+                                    <Image url="@../../assets/map_editor/UploadFromDBFolder.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -291,7 +291,7 @@
                            <graphic>
                               <ImageView fitHeight="15.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true" scaleX="2.5" scaleY="2.5" translateX="3.5">
                                  <image>
-                                    <Image url="@../../assets/map editor/UploadFromCSVFolder.png" />
+                                    <Image url="@../../assets/map_editor/UploadFromCSVFolder.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -307,7 +307,7 @@
                            <graphic>
                               <ImageView fx:id="saveOptImg" fitHeight="16.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true" scaleX="2.0" scaleY="2.0" translateX="4.0" translateY="-1.0">
                                  <image>
-                                    <Image url="@../../assets/map editor/SaveToFile.png" />
+                                    <Image url="@../../assets/map_editor/SaveToFile.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -319,7 +319,7 @@
                            <graphic>
                               <ImageView fitHeight="9.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true" scaleX="2.7" scaleY="2.7" translateX="4.0">
                                  <image>
-                                    <Image url="@../../assets/map editor/SaveToDB.png" />
+                                    <Image url="@../../assets/map_editor/SaveToDB.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -331,7 +331,7 @@
                            <graphic>
                               <ImageView fitHeight="44.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true" scaleX="2.0" scaleY="2.0" translateX="4.0">
                                  <image>
-                                    <Image url="@../../assets/map editor/SaveToCSV.png" />
+                                    <Image url="@../../assets/map_editor/SaveToCSV.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -347,7 +347,7 @@
                            <graphic>
                               <ImageView fx:id="pathfindImage" fitHeight="81.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true" scaleX="2.0" scaleY="2.0" translateX="2.0" translateY="1.0">
                                  <image>
-                                    <Image url="@../../assets/map editor/AStar.png" />
+                                    <Image url="@../../assets/map_editor/AStar.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -359,7 +359,7 @@
                            <graphic>
                               <ImageView fitHeight="19.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true" scaleX="2.0" scaleY="2.0" translateX="2.0" translateY="1.0">
                                  <image>
-                                    <Image url="@../../assets/map editor/AStar.png" />
+                                    <Image url="@../../assets/map_editor/AStar.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -371,7 +371,7 @@
                            <graphic>
                               <ImageView fitHeight="17.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true" scaleX="3.0" scaleY="3.0" translateX="3.0" translateY="-1.0">
                                  <image>
-                                    <Image url="@../../assets/map editor/DepthFirst.png" />
+                                    <Image url="@../../assets/map_editor/DepthFirst.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -383,7 +383,7 @@
                            <graphic>
                               <ImageView fitHeight="18.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true" scaleX="3.5" scaleY="3.5" translateX="4.0">
                                  <image>
-                                    <Image url="@../../assets/map editor/Breath First.png" />
+                                    <Image url="@../../assets/map_editor/Breath First.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -396,7 +396,7 @@
                            <graphic>
                                           <ImageView fitHeight="15.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true" scaleX="3.0" scaleY="3.0" translateX="3.0">
                                               <image>
-                                                  <Image url="@../../assets/map editor/eraser.png" />
+                                                  <Image url="@../../assets/map_editor/eraser.png" />
                                               </image>
                                           </ImageView>
                            </graphic>
@@ -428,7 +428,7 @@
                            <graphic>
                               <ImageView fitHeight="10.0" fitWidth="8.0" pickOnBounds="true" preserveRatio="true" rotate="45.0" scaleX="2.5" scaleY="2.5" translateX="3.5">
                                  <image>
-                                    <Image url="@../../assets/map editor/xButton.png" />
+                                    <Image url="@../../assets/map_editor/xButton.png" />
                                  </image>
                               </ImageView>
                            </graphic>

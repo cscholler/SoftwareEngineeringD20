@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.GiftCartPaneController">
+   <children>
+      <AnchorPane styleClass="services-pane-jfx" stylesheets="@../../css/GlobalStyleSheet.css" visible="true">
+         <children>
+            <JFXTabPane fx:id="giftTabPane" styleClass="services-pane-jfx" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="checkoutPane" prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <ImageView fitHeight="150.0" fitWidth="200.0" onMouseClicked="#goToCheckout" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
+               <image>
+                  <Image url="@../../assets/gift_delivery/checkout.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+   </children>
+</StackPane>
