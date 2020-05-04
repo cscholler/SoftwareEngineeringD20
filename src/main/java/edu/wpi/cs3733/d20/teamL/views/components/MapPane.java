@@ -404,7 +404,7 @@ public class MapPane extends ScrollPane {
                 addEdge(edge);
         }
 
-        setMapImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/Floor" + getFloor() + "LM.png"));
+        setMapImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/" + getBuilding().getName() + "Floor" + getFloor() + "LM.png"));
     }
 
     public void recalculatePositions() {
@@ -591,21 +591,6 @@ public class MapPane extends ScrollPane {
             });
             nodeGUI.getCircle().setFill(new ImagePattern(new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/" + node.getType() + "_filled.png")));
         } else {
-            /*nodeGUI.getCircle().setOnMousePressed(event -> {
-                if (event.isPrimaryButtonDown() && !addingEdge && !erasing) {
-                    if (!selector.contains(nodeGUI)) {
-                        selector.clear();
-                        selector.add(nodeGUI);
-                    }
-                }
-            });
-            nodeGUI.setOnMouseClicked(event -> {
-                if (selector.getNodes().size() == 1) {
-                    selectedNode = nodeGUI.getNode();
-                    selectedNodeGUI = nodeGUI;
-                    onActionProperty().get().handle(event);
-                }
-            });*/
             resetNodeVisibility(nodeGUI);
         }
         if (!currentFloor.getNodes().contains(node))

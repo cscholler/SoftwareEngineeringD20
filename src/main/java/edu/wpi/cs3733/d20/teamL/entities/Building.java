@@ -5,10 +5,14 @@ import com.sun.jdi.request.DuplicateRequestException;
 import java.util.*;
 
 public class Building extends Graph {
-    private String name;
+    private String name = "";
 
     private Comparator<Floor> floorComparator = Comparator.comparing(Floor::getFloor);
     private SortedSet<Floor> floors = new TreeSet<>(floorComparator);
+
+    public Building() {
+        super();
+    }
 
     public Building(String name) {
         super();
@@ -47,6 +51,16 @@ public class Building extends Graph {
 
     @Override
     public void addNode(Node newNode) {
+        // If the building hasn't been set yet, set the building name to the newNode's building,
+        // otherwise check if the nodes building matches this building's name
+        if (getName().isEmpty())
+            setName(newNode.getBuilding());
+        else if (!newNode.getBuilding().equals(getName()))
+            throw new IllegalArgumentException("Tried to add node (" + newNode.getID() + ") to (" + getName() +
+                    "), but its building was (" + newNode.getBuilding() + ")");
+
+        // Add the node to its respective floor, if its floor exceeds the maximum floor,
+        // add new floors up to and including the added nodes floor
         if (!getNodes().contains(newNode)) {
             if (newNode.getFloor() > getMaxFloor()) {
                 for (int i = getMaxFloor() + 1; i <= newNode.getFloor(); i++) {
@@ -57,7 +71,7 @@ public class Building extends Graph {
             }
 
             getFloor(newNode.getFloor()).addNode(newNode);
-        } else {
+        } else { // Throw an exception if you try to add the same node twice
             throw new IllegalArgumentException("Tried to add (" + newNode.getID() + ") more than once");
         }
     }
