@@ -64,7 +64,17 @@ public class AdminLandingPageController {
     }
 
     @FXML
-    public void clearClicked() {
+    private void rebuildDatabaseClicked() {
+        try {
+            Parent root = loaderHelper.getFXMLLoader("Admin/databaseDialogue").load();
+            loaderHelper.setupPopup(new Stage(), new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
+    }
+
+    @FXML
+    private void confirmRebuildDBClicked() {
         log.warn("Rebuilding database");
         db.rebuildDatabase();
     }

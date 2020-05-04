@@ -98,7 +98,7 @@
     -fx-pref-width: 150;
     -fx-pref-height: 50;
     -fx-max-width: 150;
-    -fx-max-height: 150;
+    -fx-max-height: 50;
     -jfx-button-type: RAISED;
 }
 
