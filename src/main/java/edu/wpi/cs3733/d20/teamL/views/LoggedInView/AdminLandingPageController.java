@@ -344,69 +344,49 @@ public class AdminLandingPageController implements Initializable {
 	private void hideAllTablesExceptCurrent(String tableName) {
 		switch (tableName) {
 			case "Nodes": {
-				nodesTable.setVisible(true);
-				nodesTable.setMouseTransparent(false);
-				edgesTable.setVisible(false);
-				edgesTable.setMouseTransparent(true);
-				giftsTable.setVisible(false);
-				giftsTable.setMouseTransparent(true);
-				usersTable.setVisible(false);
-				usersTable.setMouseTransparent(true);
-				doctorsTable.setVisible(false);
-				doctorsTable.setMouseTransparent(true);
+				setTableVisible(nodesTable, true);
+				setTableVisible(edgesTable, false);
+				setTableVisible(giftsTable, false);
+				setTableVisible(usersTable, false);
+				setTableVisible(doctorsTable, false);
 			}
 			break;
 			case "Edges": {
-				nodesTable.setVisible(false);
-				nodesTable.setMouseTransparent(true);
-				edgesTable.setVisible(true);
-				edgesTable.setMouseTransparent(false);
-				giftsTable.setVisible(false);
-				giftsTable.setMouseTransparent(true);
-				usersTable.setVisible(false);
-				usersTable.setMouseTransparent(true);
-				doctorsTable.setVisible(false);
-				doctorsTable.setMouseTransparent(true);
+				setTableVisible(nodesTable, false);
+				setTableVisible(edgesTable, true);
+				setTableVisible(giftsTable, false);
+				setTableVisible(usersTable, false);
+				setTableVisible(doctorsTable, false);
 			}
 			break;
 			case "Gifts": {
-				nodesTable.setVisible(false);
-				nodesTable.setMouseTransparent(true);
-				edgesTable.setVisible(false);
-				edgesTable.setMouseTransparent(true);
-				giftsTable.setVisible(true);
-				giftsTable.setMouseTransparent(false);
-				usersTable.setVisible(false);
-				usersTable.setMouseTransparent(true);
-				doctorsTable.setVisible(false);
-				doctorsTable.setMouseTransparent(true);
+				setTableVisible(nodesTable, false);
+				setTableVisible(edgesTable, false);
+				setTableVisible(giftsTable, true);
+				setTableVisible(usersTable, false);
+				setTableVisible(doctorsTable, false);
 			}
 			break;
 			case "Users": {
-				nodesTable.setVisible(false);
-				nodesTable.setMouseTransparent(true);
-				edgesTable.setVisible(true);
-				edgesTable.setMouseTransparent(false);
-				giftsTable.setVisible(false);
-				giftsTable.setMouseTransparent(true);
-				usersTable.setVisible(true);
-				usersTable.setMouseTransparent(false);
-				doctorsTable.setVisible(false);
-				doctorsTable.setMouseTransparent(true);
+				setTableVisible(nodesTable, false);
+				setTableVisible(edgesTable, false);
+				setTableVisible(giftsTable, false);
+				setTableVisible(usersTable, true);
+				setTableVisible(doctorsTable, false);
 			}
 			break;
 			case "Doctors": {
-				nodesTable.setVisible(false);
-				nodesTable.setMouseTransparent(true);
-				edgesTable.setVisible(true);
-				edgesTable.setMouseTransparent(false);
-				giftsTable.setVisible(false);
-				giftsTable.setMouseTransparent(true);
-				usersTable.setVisible(false);
-				usersTable.setMouseTransparent(true);
-				doctorsTable.setVisible(true);
-				doctorsTable.setMouseTransparent(false);
+				setTableVisible(nodesTable, false);
+				setTableVisible(edgesTable, false);
+				setTableVisible(giftsTable, false);
+				setTableVisible(usersTable, false);
+				setTableVisible(doctorsTable, true);
 			}
 		}
+	}
+
+	private void setTableVisible(JFXTreeTableView<?> table, boolean visible) {
+		table.setVisible(visible);
+		table.setMouseTransparent(!visible);
 	}
 }
