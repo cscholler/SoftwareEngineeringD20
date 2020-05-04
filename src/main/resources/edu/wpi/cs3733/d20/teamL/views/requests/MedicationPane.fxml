@@ -126,7 +126,7 @@
             </HBox>
          </bottom>
       </BorderPane>
-      <ImageView fx:id="requestReceived" fitHeight="200.0" fitWidth="262.0" visible="false">
+      <ImageView fx:id="requestReceived" fitHeight="210.0" fitWidth="270.0" visible="false">
          <image>
             <Image url="@../../assets/service_icons/serviceRecieved.png" />
          </image>
