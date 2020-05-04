@@ -45,6 +45,9 @@ public class AdminLandingPageController implements Initializable {
     @FXML
     private JFXListView listData;
 
+    @FXML
+    private JFXButton btnView;
+
     @Inject
     ILoginManager login;
 
