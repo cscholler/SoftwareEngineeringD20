@@ -28,36 +28,51 @@
                     <children>
                         <VBox alignment="TOP_CENTER" prefWidth="404.0" spacing="15.0" style="-fx-background-color: #0d2e57;">
                             <children>
-                        <Accordion prefHeight="300.0" prefWidth="283.0">
+                        <Accordion prefHeight="320.0" prefWidth="283.0">
                           <panes>
                             <TitledPane animated="false" prefHeight="216.0" prefWidth="283.0" text="Floor 1">
                                  <content>
                                     <JFXListView fx:id="listF1" onMouseClicked="#navigateFloor1" />
                                  </content>
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
                             </TitledPane>
                             <TitledPane animated="false" text="Floor 2">
                                  <content>
                                     <JFXListView fx:id="listF2" onMouseClicked="#navigateFloor2" />
                                  </content>
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
                             </TitledPane>
                             <TitledPane animated="false" text="Floor 3">
                                  <content>
                                     <JFXListView fx:id="listF3" onMouseClicked="#navigateFloor3" />
                                  </content>
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
                             </TitledPane>
                               <TitledPane animated="false" text="Floor 4">
                                  <content>
                                     <JFXListView fx:id="listF4" onMouseClicked="#navigateFloor4" />
                                  </content>
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
                               </TitledPane>
                               <TitledPane animated="false" text="Floor 5">
                                  <content>
                                     <JFXListView fx:id="listF5" onMouseClicked="#navigateFloor5" />
                                  </content>
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
                               </TitledPane>
                           </panes>
                         </Accordion>
-                                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" visible="false">
+                                <HBox alignment="CENTER" prefHeight="77.0" prefWidth="283.0" spacing="50.0" visible="false">
                                     <children>
                                         <JFXButton buttonType="RAISED" maxWidth="40.0" prefHeight="40.0" prefWidth="40.0" styleClass="circle-button" text=" ">
                                             <HBox.margin>
@@ -78,7 +93,8 @@
                                                         <Image url="@../../assets/nodes/ELEV.png" />
                                                     </image>
                                                 </ImageView>
-                                            </graphic></JFXButton>
+                                            </graphic>
+                              </JFXButton>
                                         <JFXButton buttonType="RAISED" maxWidth="40.0" prefHeight="40.0" prefWidth="40.0" styleClass="circle-button" text=" ">
                                             <graphic>
                                                 <ImageView fitHeight="14.0" fitWidth="9.0" pickOnBounds="true" preserveRatio="true" scaleX="3.0" scaleY="3.0" translateX="4.0">
@@ -86,7 +102,8 @@
                                                         <Image url="@../../assets/home_page/round_fastfood_white_18dp.png" />
                                                     </image>
                                                 </ImageView>
-                                            </graphic></JFXButton>
+                                            </graphic>
+                              </JFXButton>
                                     </children>
                                 </HBox>
                                 <ScrollPane fx:id="scroll" hbarPolicy="NEVER" prefHeight="290.0" prefWidth="283.0" visible="false">
