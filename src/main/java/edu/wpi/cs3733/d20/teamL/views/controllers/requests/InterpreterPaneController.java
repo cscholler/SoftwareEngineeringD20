@@ -126,6 +126,7 @@ public class InterpreterPaneController implements Initializable {
 
                 interpType.setText("");
                 patientIDText.setText("");
+                patientFN.setText("");
                 roomNumText.setText("");
                 additionalText.setText("");
 
