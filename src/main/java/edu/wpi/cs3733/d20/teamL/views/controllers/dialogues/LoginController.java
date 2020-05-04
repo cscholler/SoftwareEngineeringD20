@@ -85,19 +85,7 @@ public class LoginController {
             if (loginManager.isAuthenticated()) {
 				((Stage) login.getScene().getWindow()).close();
                 String view = "requests/UserLandingPage";
-                if (loginManager.getCurrentUser().getAcctType().equals("3")) view = "staff/LoggedInView";
-//            	switch (loginManager.getCurrentUser().getAcctType()) {
-//					default:
-//					case "0":
-//					case "1":
-//					case "2": {
-//						view = "StaffView";
-//					}
-//					break;
-//					case "3": {
-//						view = "AdminView";
-//					}
-//				}
+                if (loginManager.getCurrentUser().getAcctType().equals("3")) view = "Staff/LoggedInView";
 				loaderHelper.setupScene(new Scene(loaderHelper.getFXMLLoader(view).load()));
 			} else {
 				incorrectText.setVisible(true);
