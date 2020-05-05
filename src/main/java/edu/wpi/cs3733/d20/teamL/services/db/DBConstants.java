@@ -183,6 +183,10 @@ public class DBConstants {
 			"INSERT INTO Service_Requests(patient_id, request_username, assignee_username, location, service, type, notes, status, date_and_time)" +
 					"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+	public static final String ADD_ROOM_REQUEST =
+			"INSERT INTO Reservations(username, place, date, start_time, end_time)" +
+					"VALUES(?, ?, ?, ?, ?)";
+
 	public static final String SELECT_ALL_NODES =
 			"SELECT * " +
 					"FROM Nodes " +
@@ -307,6 +311,11 @@ public class DBConstants {
 			"SELECT * " +
 					"FROM Service_Requests " +
 					"WHERE service = ?";
+
+	public static final String GET_ALL_ROOM_REQUESTS =
+			"SELECT * " +
+					"FROM Reservations "+
+					"WHERE place = ? AND date = ?";
 
 	public static final String UPDATE_NODE =
 			"UPDATE Nodes " +
