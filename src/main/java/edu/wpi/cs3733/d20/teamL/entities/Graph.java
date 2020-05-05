@@ -76,15 +76,18 @@ public class Graph implements Iterable<Node> {
 
         for (Edge edge : getEdges()) {
             // Check the edges that have already been edges for an edge with the same source and destination but reversed
-            boolean otherWayExists = false;
-            for (Edge existingEdge : oneWayEdges) {
-                if (edge.getSource() == existingEdge.getDestination() && edge.getDestination() == existingEdge.getSource())
-                    otherWayExists = true;
-            }
+//            boolean otherWayExists = false;
+//            for (Edge existingEdge : oneWayEdges) {
+//                if (edge.getSource() == existingEdge.getDestination() && edge.getDestination() == existingEdge.getSource())
+//                    otherWayExists = true;
+//            }
 
-            // Only add an edge if the reversed edge wasn't already added
-            if(!otherWayExists)
+
+
+            // Only add an edge if the source and destination nodes are ordered alphabetically
+            if(edge.getSource().getID().compareTo(edge.getDestination().getID()) > 0) {
                 oneWayEdges.add(edge);
+            }
         }
 
         return oneWayEdges;
@@ -109,7 +112,18 @@ public class Graph implements Iterable<Node> {
 
         for (Node node : getNodes()) {
             for (Edge edge : node.getEdges()) {
-                if (!edges.contains(edge)) edges.add(edge);
+                // Check if the edges ID has already been added
+                boolean alreadyAdded = false;
+                for (Edge existingEdge : edges) {
+                    if (existingEdge.getID().equals(edge.getID())) {
+                        alreadyAdded = true;
+                        break;
+                    }
+                }
+
+                // Add the edge if it hasn't already been added
+                if (!alreadyAdded)
+                    edges.add(edge);
             }
         }
 

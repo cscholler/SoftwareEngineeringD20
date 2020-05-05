@@ -241,22 +241,22 @@ public class MapEditorController {
 
     @FXML
     private void saveToDB() {
-        ArrayList<Node> nodes = new ArrayList<>();
+        Graph nodes = new Graph();
         for (Building building : map.getBuildings()) {
-            nodes.addAll(building.getNodes());
+            nodes.addAllNodes(building);
         }
-        ArrayList<Edge> blackList = new ArrayList<>();
-        ArrayList<Edge> newEdges = new ArrayList<>();
+        //ArrayList<Edge> blackList = new ArrayList<>();
+        ArrayList<Edge> newEdges = new ArrayList<>(nodes.getEdgesOneWay());
 
-        for (Node node : nodes) {
+        /*for (Node node : nodes) {
             for (Edge edge : node.getEdges()) {
                 if (!newEdges.contains(edge) && blackList.contains(edge)) newEdges.add(edge);
                 if (edge.getDestination().getNeighbors().contains(node))
                     blackList.add(edge.getDestination().getEdge(node));
             }
-        }
+        }*/
 
-        cache.cacheNodes(nodes, map.getEditedNodes());
+        cache.cacheNodes(new ArrayList<>(nodes.getNodes()), map.getEditedNodes());
         cache.cacheEdges(newEdges);
         cache.updateDB();
 
@@ -265,16 +265,28 @@ public class MapEditorController {
 
     @FXML
     public void saveToCSV() {
+        // Show a data dialogue to get the path to save the nodes and edges
         DataDialogue data = new DataDialogue();
         data.setSaving(true);
         data.showDialogue(pathFind.getScene().getWindow());
         String nodeFilePath = data.getNodeFile().getAbsolutePath();
         String edgeFilePath = data.getEdgeFile().getAbsolutePath();
+
+        // Set up the CSV helper and make empty tables to populate then load into the csv
         CSVHelper csvHelper = new CSVHelper();
         ArrayList<ArrayList<String>> nodeTable = new ArrayList<>();
         ArrayList<ArrayList<String>> edgeTable = new ArrayList<>();
-        ArrayList<Node> nodes = new ArrayList<>(map.getBuilding().getNodes());
-        ArrayList<Edge> edges = new ArrayList<>(map.getBuilding().getEdges());
+
+        // Compile the nodes from each building into one graph to export them all
+        Graph allNodes = new Graph();
+        for (Building building : map.getBuildings())
+            allNodes.addAllNodes(building);
+
+        // Get nodes and one way edges from the compiled graph
+        ArrayList<Node> nodes = new ArrayList<>(allNodes.getNodes());
+        ArrayList<Edge> edges = new ArrayList<>(allNodes.getEdgesOneWay());
+
+        // Add headings and populate the Node and edge 2D arraylists
         nodeTable.add(new ArrayList<>(Arrays.asList("nodeID", "xCoord", "yCoord", "floor", "building", "nodeType", "longName", "shortName")));
         for (Node node : nodes) {
             nodeTable.add(node.toArrayList());
@@ -283,6 +295,8 @@ public class MapEditorController {
         for (Edge edge : edges) {
             edgeTable.add(edge.toArrayList());
         }
+
+        // Write the 2D arraylists to csv files using the CSV Helper
         csvHelper.writeToCSV(nodeFilePath, nodeTable);
         csvHelper.writeToCSV(edgeFilePath, edgeTable);
     }
