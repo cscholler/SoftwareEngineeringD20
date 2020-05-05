@@ -5,10 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.jfoenix.controls.*;
-import com.jfoenix.controls.JFXListView;
-import com.mysql.cj.x.protobuf.MysqlxCrud;
-import edu.wpi.cs3733.d20.teamL.entities.Building;
-import edu.wpi.cs3733.d20.teamL.entities.Graph;
+import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
@@ -22,6 +19,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ScrollPane;
@@ -42,7 +40,6 @@ import com.google.inject.Inject;
 
 import lombok.extern.slf4j.Slf4j;
 
-import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.entities.Path;
 import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
@@ -53,31 +50,35 @@ import org.apache.xmlgraphics.image.codec.png.PNGEncodeParam;
 @Slf4j
 public class MapViewerController {
     @FXML
-    MapPane map;
+    private MapPane map;
 
     @FXML
-    JFXTextField startingPoint, destination;
+    private JFXTextField startingPoint, destination;
 
     @FXML
-    JFXButton btnNavigate, floorUp, floorDown;
+    private JFXButton btnNavigate, floorUp, floorDown;
 
     @FXML
-    ScrollPane scroll;
+    private ScrollPane scroll;
 
     @FXML
+    private VBox instructions;
     JFXNodesList textDirNode;
     @FXML
-    VBox floorSelector;
+    private VBox floorSelector;
     @FXML
-    JFXListView dirList;
+    private JFXListView dirList;
     @FXML
-    JFXButton btnTextMe, btnQR;
+    private JFXButton btnTextMe, btnQR;
 
     @FXML
     StackPane stackPane;
 
     @FXML
-    JFXListView listF1, listF2, listF3, listF4, listF5;
+    private JFXListView listF1, listF2, listF3, listF4, listF5;
+
+    @FXML
+    private JFXComboBox<String> buildingChooser;
 
     @FXML
     private Label timeLabel;
@@ -116,36 +117,33 @@ public class MapViewerController {
         map.setHighLightColor(Color.GOLD);
         btnNavigate.setDisableVisualFocus(true);
 
-        Building startBuilding = new Building("Faulkner");
-        Graph nodes = Graph.graphFromCache(cache.getNodeCache(), cache.getEdgeCache());
-        startBuilding.addAllNodes(nodes.getNodes());
-        map.setBuilding(startBuilding);
+        String startB = "Faulkner";
+        Building faulkner = cache.getBuilding("Faulkner");
+        Building btm = cache.getBuilding("BTM");
+
+        if(!faulkner.getNodes().isEmpty()) map.setBuilding(faulkner);
+        if(!btm.getNodes().isEmpty()) map.getBuildings().add(btm);
+        buildingChooser.getSelectionModel().select(startB);
 
         // Add floor buttons
-        for (int i = 1; i <= startBuilding.getMaxFloor(); i++) {
-            JFXButton newButton = new JFXButton();
-            newButton.setButtonType(JFXButton.ButtonType.RAISED);
-            newButton.getStylesheets().add("edu/wpi/cs3733/d20/teamL/css/MapStyles.css");
-            newButton.setText("" + i);
-            newButton.setOnAction(this::handleFloor);
-            newButton.getStyleClass().add("floor-buttons");
+        generateFloorButtons();
 
-            floorSelector.getChildren().add(1, newButton);
-        }
+        buildingChooser.getItems().addAll("Faulkner", "BTM");
 
         setFloor(2);
 
         map.setZoomLevel(0.65);
         map.init();
 
-
+        // Populate autocomplete
         sf = new SearchFields(cache.getNodeCache());
         sf.getFields().addAll(Arrays.asList(SearchFields.Field.shortName, SearchFields.Field.longName));
         sf.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
 
-        Collection <Node> allNodes = nodes.getNodes();
+        // TODO: Change node dropdowns to be generated
+        Collection <Node> allNodes = map.getBuilding().getNodes();
         Collection<String> deptNodes = new ArrayList<>();
         Collection<String> labNodes = new ArrayList<>();
         Collection<String> serviceNodes = new ArrayList<>();
@@ -166,6 +164,34 @@ public class MapViewerController {
         listF3.getItems().addAll(serviceNodes);
         listF4.getItems().addAll(retailNodes);
         listF5.getItems().addAll(confNodes);
+    }
+
+    private void generateFloorButtons() {
+        while (floorSelector.getChildren().size() > 2) {
+            floorSelector.getChildren().remove(1);
+        }
+        for (Floor floor : map.getBuilding().getFloors()) {
+            JFXButton newButton = new JFXButton();
+            newButton.setButtonType(JFXButton.ButtonType.RAISED);
+            newButton.getStylesheets().add("edu/wpi/cs3733/d20/teamL/css/MapStyles.css");
+            newButton.setText(floor.getFloorAsString());
+            newButton.setOnAction(this::handleFloor);
+            newButton.getStyleClass().add("floor-buttons");
+
+            floorSelector.getChildren().add(1, newButton);
+        }
+    }
+
+    @FXML
+    private void switchBuilding() {
+        String selected = buildingChooser.getSelectionModel().getSelectedItem();
+
+        Building newBuilding = cache.getBuilding(selected);
+        map.setBuilding(newBuilding);
+
+        int prevFloor = map.getFloor();
+        generateFloorButtons();
+        setFloor(Math.max(map.getBuilding().getMinFloor(), Math.min(prevFloor, map.getBuilding().getMaxFloor())));
     }
 
     @FXML
@@ -220,7 +246,7 @@ public class MapViewerController {
     @FXML
     private void showLegend() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("map_viwer/keyPopUp").load();
+            Parent root = loaderHelper.getFXMLLoader("map_viewer/LegendPopup").load();
             loaderHelper.setupPopup(new Stage(), new Scene(root));
         } catch (IOException ex) {
             log.error("Couldn't load LegendPopup.fxml", ex);
@@ -341,15 +367,6 @@ public class MapViewerController {
         }
     }
 
-    private void labelNode(NodeGUI nodeGUI, Label label) {
-        AnchorPane parent = (AnchorPane) nodeGUI.getParent();
-
-        parent.getChildren().add(label);
-
-        label.setLayoutX(nodeGUI.getLayoutX());
-        label.setLayoutY(nodeGUI.getLayoutY());
-    }
-
     public MapPane getMap() {
         return map;
     }
@@ -382,8 +399,8 @@ public class MapViewerController {
             setFloor(map.getFloor() + 1);
         } else if (event.getSource() == floorDown) {
             setFloor(map.getFloor() - 1);
-        } else if (MapEditorController.isNumeric(sourceButton.getText())) {
-            setFloor(Integer.parseInt(sourceButton.getText()));
+        } else {
+            setFloor(Node.floorStringToInt(sourceButton.getText()));
         }
 
         if (!path.getPathNodes().isEmpty()) highLightPath();
@@ -400,11 +417,11 @@ public class MapViewerController {
     }
 
     public void setFloor(int newFloor) {
-        map.setFloor(Math.max(1, Math.min(newFloor, map.getBuilding().getMaxFloor())));
+        map.setFloor(Math.max(map.getBuilding().getMinFloor(), Math.min(newFloor, map.getBuilding().getMaxFloor())));
 
         for (javafx.scene.Node node : floorSelector.getChildren()) {
             JFXButton floorButton = (JFXButton) node;
-            if (!floorButton.getText().equals(String.valueOf(map.getFloor()))) {
+            if (!floorButton.getText().equals(Node.floorIntToString(map.getFloor()))) {
                 if (floorButton.getStyleClass().contains("selected-floor")) {
                     floorButton.getStyleClass().clear();
                     floorButton.getStyleClass().add("button");
@@ -421,12 +438,10 @@ public class MapViewerController {
      * Clears the text in source textfield
      *
      */
-
     @FXML
     private void clearSource() {
         startingPoint.clear();
     }
-
 
     /**
      * Clears the text in destination textfield
@@ -441,7 +456,7 @@ public class MapViewerController {
     @FXML
     private void loginBtnClicked() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("Staff/LoginPage").load();
+            Parent root = loaderHelper.getFXMLLoader("staff/LoginPage").load();
             loaderHelper.setupPopup(new Stage(), new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);

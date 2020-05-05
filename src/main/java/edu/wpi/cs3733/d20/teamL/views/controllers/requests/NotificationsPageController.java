@@ -141,18 +141,8 @@ public class NotificationsPageController implements Initializable {
 					String patientID = row.get(1);
 					String patientName = getPatientFullName(patientID);
 					String roomID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ROOM, new ArrayList<>(Collections.singletonList(patientID))))).get(0).get(0);
-					ArrayList<Gift> gifts = new ArrayList<>();
-					ArrayList<ArrayList<String>> giftEntries = new ArrayList<>();
-					for (int i = 5; i < 8; i++) {
-						ArrayList<ArrayList<String>> giftTable = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_GIFT, new ArrayList<>(Collections.singletonList(row.get(i))))));
-						if (giftTable.size() != 0) {
-							giftEntries.add(giftTable.get(0));
-						}
-					}
-					for (ArrayList<String> giftEntry : giftEntries) {
-						gifts.add(new Gift(giftEntry.get(0), giftEntry.get(1), giftEntry.get(2), giftEntry.get(3), giftEntry.get(4)));
-					}
-					giftReqList.add(new GiftDeliveryRequest(row.get(0), row.get(1), patientName, roomID, row.get(2), row.get(3), row.get(4), gifts, row.get(8), row.get(9), row.get(10), row.get(11)));
+
+					giftReqList.add(new GiftDeliveryRequest(row.get(0), row.get(1), patientName, roomID, row.get(2), row.get(3), row.get(4), row.get(5), row.get(6), row.get(7), row.get(8), row.get(9)));
 				}
 				Collections.reverse(giftReqList);
 				giftReqs.getItems().addAll(giftReqList);
@@ -239,26 +229,10 @@ public class NotificationsPageController implements Initializable {
 				addInfo.setWrapText(true);
 				addInfo.setText("Message: " + req.getMessage() + "\n" + "Notes: " + req.getNotes());
 				String message;
-				ArrayList<Gift> gifts = req.getGifts();
-				Gift gift = gifts.get(0);
-				String gift1Text = gift.getType() + ": " + gift.getSubtype() + "(" + gift.getId() + ")";
-				String gift2Text = "";
-				String gift3Text = "";
-				if (gifts.size() >= 2) {
-					if (gifts.get(1) != null) {
-						gift = gifts.get(1);
-						gift2Text = gift.getType() + ": " + gift.getSubtype() + "(" + gift.getId() + ")";
-					}
-				}
-				if (gifts.size() == 3) {
-					if (gifts.get(2) != null) {
-						gift = gifts.get(2);
-						gift3Text = gift.getType() + ": " + gift.getSubtype() + "(" + gift.getId() + ")";
-					}
-				}
-				String allGiftsText = gift1Text + (!gift2Text.isEmpty() ? ", " + gift2Text : "") + (!gift3Text.isEmpty() ? ", " + gift3Text : "");
+				String giftText = req.getGifts();
+
 				if (user.isManager()) {
-					message = getUserFullName(req.getRequestUsername()) + " requests " + allGiftsText + " for " +
+					message = getUserFullName(req.getRequestUsername()) + " requests " + giftText + " for " +
 							req.getPatientName() + "(" + req.getPatientID() + ")" + (req.getRoomNum() != null ? " in room " + req.getRoomNum() : "");
 					if (req.getStatus().equals("1") || req.getStatus().equals("2")) {
 						buttonBox.getChildren().add(btnAssign);
@@ -271,7 +245,7 @@ public class NotificationsPageController implements Initializable {
 						buttonBox.getChildren().add(btnApprove);
 					}
 				} else {
-					message = "You have been assigned to deliver " + allGiftsText + " to " +
+					message = "You have been assigned to deliver " + giftText + " to " +
 							req.getPatientName() + "(" + req.getPatientID() + ")" + (req.getRoomNum() != null ? " in room " + req.getRoomNum() : "");
 					buttonBox.getChildren().add(btnCompleted);
 				}
@@ -372,7 +346,7 @@ public class NotificationsPageController implements Initializable {
 	@FXML
 	private void btnAssignClicked() {
 		try {
-			FXMLLoader loader = loaderHelper.getFXMLLoader("Staff/AssignPopup");
+			FXMLLoader loader = loaderHelper.getFXMLLoader("staff/AssignPopup");
 			Parent root = loader.load();
 			AssignPopupController assignPopupController = loader.getController();
 			assignPopupController.setNotificationsPageController(this);
@@ -550,7 +524,7 @@ public class NotificationsPageController implements Initializable {
 							status = "Completed";
 						}
 					}
-					setText("[" + giftReq.getDateAndTime() + "] " + giftReq.getGifts().size() + " gifts from " + giftReq.getSenderName() + " for " + giftReq.getPatientName() + " (" + status + ")");
+					setText("[" + giftReq.getDateAndTime() + "] " + " Gift requests from " + giftReq.getSenderName() + " for " + giftReq.getPatientName() + " (" + status + ")");
 				}
 			}
 		});

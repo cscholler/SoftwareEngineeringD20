@@ -26,28 +26,6 @@
                </styleClass>
             </HBox>
          </top>
-         <bottom>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0" BorderPane.alignment="CENTER">
-               <children>
-                  <JFXButton fx:id="btnSubmit" buttonType="RAISED" maxWidth="200.0" onAction="#submitClicked" prefHeight="50.0" prefWidth="200.0" styleClass="save-button-jfx" text="Submit" textFill="WHITE">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </JFXButton>
-                  <Label fx:id="confirmation" styleClass="submission-failed-label-fx" text="IT Request Sent" visible="false">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-               </children>
-               <padding>
-                  <Insets left="350.0" />
-               </padding>
-               <BorderPane.margin>
-                  <Insets bottom="50.0" />
-               </BorderPane.margin>
-            </HBox>
-         </bottom>
          <left>
             <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
          </left>
@@ -67,8 +45,27 @@
                </children>
             </VBox>
          </center>
+         <bottom>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0" BorderPane.alignment="CENTER">
+               <children>
+                  <JFXButton fx:id="btnSubmit" buttonType="RAISED" onAction="#submitClicked" prefHeight="44.0" prefWidth="195.0" styleClass="save-button-jfx" text="Submit" textFill="WHITE">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </JFXButton>
+                  <Label fx:id="confirmation" styleClass="submission-failed-label-fx" text="IT Request Sent" visible="false">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets left="350.0" />
+               </padding>
+            </HBox>
+         </bottom>
       </BorderPane>
-      <ImageView fx:id="requestReceived" fitHeight="200.0" fitWidth="262.0" visible="false">
+      <ImageView fx:id="requestReceived" fitHeight="210.0" fitWidth="270.0" visible="false">
          <image>
             <Image url="@../../assets/service_icons/serviceRecieved.png" />
          </image>

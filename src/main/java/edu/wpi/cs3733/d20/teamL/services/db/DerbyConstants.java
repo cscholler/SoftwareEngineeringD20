@@ -11,11 +11,11 @@ public class DerbyConstants {
 					"id VARCHAR(16) NOT NULL, " +
 					"x_pos DOUBLE NOT NULL, " +
 					"y_pos DOUBLE NOT NULL, " +
-					"floor CHAR(1) NOT NULL, " +
+					"floor CHAR(2) NOT NULL, " +
 					"building VARCHAR(64) NOT NULL, " +
 					"node_type CHAR(4) NOT NULL, " +
 					"l_name VARCHAR(64) NOT NULL, " +
-					"s_name VARCHAR(32) NOT NULL, " +
+					"s_name VARCHAR(64) NOT NULL, " +
 					"PRIMARY KEY (id))";
 
 	public static final String CREATE_EDGE_TABLE =
@@ -32,7 +32,7 @@ public class DerbyConstants {
 					"l_name VARCHAR(32) NOT NULL, " +
 					"username VARCHAR(32) NOT NULL, " +
 					"password VARCHAR(256) NOT NULL, " +
-					// 0: Staff member, 1: Nurse, 2: Doctor, 3: Admin
+					// 0: staff member, 1: Nurse, 2: Doctor, 3: admin
 					"acct_type CHAR(1) NOT NULL, " +
 					"services VARCHAR(512), " +
 					"manager VARCHAR(32), " +
@@ -74,9 +74,7 @@ public class DerbyConstants {
 					"sender_name VARCHAR(32) NOT NULL, " +
 					"request_username VARCHAR(32) NOT NULL REFERENCES Users(username), " +
 					"assignee_username VARCHAR(32) REFERENCES Users(username), " +
-					"gift1_id INT NOT NULL REFERENCES Gifts(id), " +
-					"gift2_id INT REFERENCES Gifts(id), " +
-					"gift3_id INT REFERENCES Gifts(id), " +
+					"gifts VARCHAR(256) NOT NULL, " +
 					"message VARCHAR(128), " +
 					"notes VARCHAR(256), " +
 					// 0: Pending, 1: Approved, 2: Assigned, 3: Denied, 4: Completed

@@ -27,11 +27,11 @@ public class DBConstants {
 					"id VARCHAR(16) NOT NULL PRIMARY KEY, " +
 					"x_pos DOUBLE NOT NULL, " +
 					"y_pos DOUBLE NOT NULL, " +
-					"floor CHAR(1) NOT NULL, " +
+					"floor CHAR(2) NOT NULL, " +
 					"building VARCHAR(64) NOT NULL, " +
 					"node_type CHAR(4) NOT NULL, " +
 					"l_name VARCHAR(64) NOT NULL, " +
-					"s_name VARCHAR(32) NOT NULL)";
+					"s_name VARCHAR(64) NOT NULL)";
 
 	public static final String CREATE_EDGE_TABLE =
 			"CREATE TABLE Edges(" +
@@ -85,9 +85,7 @@ public class DBConstants {
 					"sender_name VARCHAR(32) NOT NULL, " +
 					"request_username VARCHAR(32) NOT NULL REFERENCES Users(username), " +
 					"assignee_username VARCHAR(32) REFERENCES Users(username), " +
-					"gift1_id INT NOT NULL REFERENCES Gifts(id), " +
-					"gift2_id INT REFERENCES Gifts(id), " +
-					"gift3_id INT REFERENCES Gifts(id), " +
+					"gifts VARCHAR(256) NOT NULL, " +
 					"message VARCHAR(128), " +
 					"notes VARCHAR(256), " +
 					// 0: Pending, 1: Approved, 2: Assigned, 3: Denied, 4: Completed
@@ -174,8 +172,8 @@ public class DBConstants {
 					"VALUES(?, ?, ?, ?)";
 
 	public static final String ADD_GIFT_DELIVERY_REQUEST =
-			"INSERT INTO Gift_Delivery_Requests(patient_id, sender_name, request_username, assignee_username, gift1_id, gift2_id, gift3_id, message, notes, status, date_and_time)" +
-					"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			"INSERT INTO Gift_Delivery_Requests(patient_id, sender_name, request_username, assignee_username, gifts, message, notes, status, date_and_time)" +
+					"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	public static final String ADD_MEDICATION_REQUEST =
 			"INSERT INTO Medication_Requests(doctor_id, patient_id, nurse_username, deliverer_username, dose, type, notes, status, date_and_time)" +
@@ -318,6 +316,11 @@ public class DBConstants {
 	public static final String UPDATE_EDGE =
 			"UPDATE Edges " +
 					"SET node_start = ?, node_end = ? " +
+					"WHERE id = ?";
+
+	public static final String UPDATE_GIFT =
+			"UPDATE Gifts " +
+					"SET inventory = ?" +
 					"WHERE id = ?";
 
 	public static final String UPDATE_USER_NAME =
