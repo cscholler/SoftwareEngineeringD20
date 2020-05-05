@@ -1,6 +1,5 @@
 package edu.wpi.cs3733.d20.teamL.views.LoggedInView;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.inject.Inject;
@@ -9,8 +8,6 @@ import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 
@@ -22,11 +19,11 @@ import lombok.extern.slf4j.Slf4j;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 
 @Slf4j
 public class AddPatientController {
-    private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    private FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
     private DBTableFormatter formatter = new DBTableFormatter();
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
@@ -41,7 +38,6 @@ public class AddPatientController {
 
     @FXML
     private void initialize() {
-        dbCache.cacheAllFromDB();
         lblConfirmation.setVisible(false);
         sf = new SearchFields(dbCache.getNodeCache());
         sf.getFields().add(SearchFields.Field.nodeID);
