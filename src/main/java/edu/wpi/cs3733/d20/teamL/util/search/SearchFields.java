@@ -34,26 +34,34 @@ public class SearchFields {
      */
     public void populateSearchFields() {
         // TODO: Don't let non-visible nodes show-up
+        StringBuilder sb = new StringBuilder();
+        String additionLong;
+        String additionShort;
         if (suggestions == null) suggestions = new ArrayList<>();
         for (Node node : nodeCache) {
-            for (Field field : fields) {
-                switch (field) {
-                    case nodeID:
-                        suggestions.add(node.getID());
-                        break;
-                    case building:
-                        suggestions.add(node.getBuilding());
-                        break;
-                    case longName:
-                        suggestions.add(node.getLongName());
-                        break;
-                    case shortName:
-                        suggestions.add(node.getShortName());
-                        break;
-                    default:
-                        break;
-                }
-            }
+            additionLong = (node.getLongName() + " - (" + node.getBuilding() +" "+ node.getFloorAsString() + ")");
+            suggestions.add(additionLong);
+//            additionShort = (node.getShortName() + " - (" + node.getBuilding() +" "+ node.getFloorAsString() + ")");
+//            suggestions.add(additionShort);
+
+//            for (Field field : fields) {
+//                switch (field) {
+//                    case nodeID:
+//                        suggestions.add(node.getID());
+//                        break;
+//                    case building:
+//                        suggestions.add(node.getBuilding());
+//                        break;
+//                    case longName:
+//                        suggestions.add(node.getLongName());
+//                        break;
+//                    case shortName:
+//                        suggestions.add(node.getShortName());
+//                        break;
+//                    default:
+//                        break;
+//                }
+//            }
         }
         Collections.sort(suggestions);
     }

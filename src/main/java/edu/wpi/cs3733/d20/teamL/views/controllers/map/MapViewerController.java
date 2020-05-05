@@ -151,11 +151,11 @@ public class MapViewerController {
         Collection<String> confNodes = new ArrayList<>();
 
         for (Node node : allNodes) {
-            if (node.getType().equals("DEPT")) { deptNodes.add(node.getLongName());
-            } else if (node.getType().equals("LABS")) { labNodes.add(node.getLongName());
-            } else if ((node.getType().equals("SERV") || node.getType().equals("INFO"))) { serviceNodes.add(node.getLongName());
-            } else if (node.getType().equals("RETL")) { retailNodes.add(node.getLongName());
-            } else if (node.getType().equals("CONF")) { confNodes.add(node.getLongName());
+            if (node.getType().equals("DEPT")) { deptNodes.add("Floor "+ node.getFloorAsString()+ " " + node.getLongName());
+            } else if (node.getType().equals("LABS")) { labNodes.add("Floor "+ node.getFloorAsString()+ " " + node.getLongName());
+            } else if ((node.getType().equals("SERV") || node.getType().equals("INFO"))) { serviceNodes.add("Floor "+ node.getFloorAsString()+ " " + node.getLongName());
+            } else if (node.getType().equals("RETL")) { retailNodes.add("Floor "+ node.getFloorAsString()+ " " + node.getLongName());
+            } else if (node.getType().equals("CONF")) { confNodes.add("Floor "+ node.getFloorAsString()+ " " + node.getLongName());
             }
         }
 
@@ -220,8 +220,30 @@ public class MapViewerController {
      */
     @FXML
     public void navigate() {
-        Node startNode = sf.getNode(startingPoint.getText());
-        Node destNode = sf.getNode(destination.getText());
+        String start = startingPoint.getText();
+        String end = destination.getText();
+
+        if(start.contains("(Faulkner"))
+        {
+            start= start.substring(0, start.length()-15);
+        }else if(start.contains("(BTM")){
+            start= start.substring(0, start.length()-10);
+        }
+        if(end.contains("(Faulkner"))
+        {
+            end= end.substring(0, end.length()-15);
+        }else if(end.contains("(BTM")){
+            end= end.substring(0, end.length()-10);
+        }
+
+        System.out.println(startingPoint.getText());
+        System.out.println(destination.getText());
+        System.out.println(start);
+        System.out.println(end);
+
+        Node startNode = sf.getNode(start);
+        Node destNode = sf.getNode(end);
+
 
         setFloor(startNode.getFloor());
         if (startNode != null && destNode != null) {
@@ -233,8 +255,8 @@ public class MapViewerController {
             btnTextMe.setVisible(true);
             btnQR.setDisable(false);
             btnQR.setVisible(true);
-            textDirNode.setDisable(false);
-            textDirNode.setVisible(true);
+//            textDirNode.setDisable(false);
+//            textDirNode.setVisible(true);
 
         }
     }
@@ -528,31 +550,41 @@ public class MapViewerController {
 
     @FXML
     public void navigateFloor1() {
-        destination.setText((String) listF1.getSelectionModel().getSelectedItem());
+        String selection = (String) listF1.getSelectionModel().getSelectedItem();
+        selection = selection.substring(8);
+        destination.setText(selection);
         navigate();
     }
 
     @FXML
     public void navigateFloor2() {
-        destination.setText((String) listF2.getSelectionModel().getSelectedItem());
+        String selection = (String) listF2.getSelectionModel().getSelectedItem();
+        selection = selection.substring(8);
+        destination.setText(selection);
         navigate();
     }
 
     @FXML
     public void navigateFloor3() {
-        destination.setText((String) listF3.getSelectionModel().getSelectedItem());
+        String selection = (String) listF3.getSelectionModel().getSelectedItem();
+        selection = selection.substring(8);
+        destination.setText(selection);
         navigate();
     }
 
     @FXML
     public void navigateFloor4() {
-        destination.setText((String) listF4.getSelectionModel().getSelectedItem());
+        String selection = (String) listF4.getSelectionModel().getSelectedItem();
+        selection = selection.substring(8);
+        destination.setText(selection);
         navigate();
     }
 
     @FXML
     public void navigateFloor5() {
-        destination.setText((String) listF5.getSelectionModel().getSelectedItem());
+        String selection = (String) listF5.getSelectionModel().getSelectedItem();
+        selection = selection.substring(8);
+        destination.setText(selection);
         navigate();
     }
 
