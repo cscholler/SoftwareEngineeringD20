@@ -1,9 +1,7 @@
 package edu.wpi.cs3733.d20.teamL.views.LoggedInView;
 
 import com.google.inject.Inject;
-import com.jfoenix.controls.JFXCheckBox;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
@@ -26,15 +24,22 @@ import java.util.Arrays;
 import java.util.ResourceBundle;
 
 @Slf4j
-public class AddUserController implements Initializable {
-    ObservableList<String> serviceOptions = FXCollections.observableArrayList("Security", "Internal Transport", "External Transport", "Sanitation", "Maintenance", "Pharmacist", "Gift Shop", "Interpreter", "Information Technology");
+public class AddPersonController implements Initializable {
+
+	//for doctor tab
+	@FXML
+	private JFXTextArea addlInfoText;
+	@FXML
+	private JFXTextField doctorFN, DoctorLN, docID, emailText, OfficeText;
+
+	ObservableList<String> serviceOptions = FXCollections.observableArrayList("Security", "Internal Transport", "External Transport", "Sanitation", "Maintenance", "Pharmacist", "Gift Shop", "Interpreter", "Information Technology");
     ObservableList<String> userOptions = FXCollections.observableArrayList("staff", "Nurse", "Doctor", "admin");
 
     DBTableFormatter formatter = new DBTableFormatter();
     private final FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
 
     @FXML
-    JFXTextField doctorIDText, fNameText, lNameText, servicesText, usernameText, passwordText, languages;
+    JFXTextField doctorIDText, fNameText, lNameText, usernameText, passwordText, languages;
     @FXML
     Label lblConfirmation;
     @FXML
@@ -43,6 +48,8 @@ public class AddUserController implements Initializable {
     private JFXCheckBox securityBox, inTransportBox, exTransportBox, maintenanceBox, sanitationBox, pharmacistBox, giftShopBox, itBox,  interpreterBox, managerBox;
     @FXML
     private VBox boxOService;
+    @FXML
+	private JFXButton btnSubmit, btnCancel;
     @Inject
     private IDatabaseService db;
     @Inject

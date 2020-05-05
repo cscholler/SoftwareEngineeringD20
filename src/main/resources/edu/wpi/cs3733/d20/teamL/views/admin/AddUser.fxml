@@ -4,7 +4,6 @@
 <?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
-<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
@@ -12,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane style="-fx-background-color: #0D2E57;" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.LoggedInView.AddUserController">
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" styleClass="background">
          <center>
@@ -34,7 +33,7 @@
                            <font>
                               <Font size="15.0" />
                            </font></JFXTextField>
-                        <JFXComboBox fx:id="userCombo" focusColor="WHITE" onAction="#userSelected" promptText="Type of User" style="-fx-background-color: white; -fx-font-size: 15; -fx-pref-height: 40;" unFocusColor="#ffffff00">
+                        <JFXComboBox fx:id="userCombo" focusColor="WHITE"  promptText="Type of User" style="-fx-background-color: white; -fx-font-size: 15; -fx-pref-height: 40;" unFocusColor="#ffffff00">
                            <padding>
                               <Insets left="10.0" />
                            </padding></JFXComboBox>
@@ -59,7 +58,7 @@
                            <font>
                               <Font size="15.0" />
                            </font></JFXTextField>
-                        <JFXTextField fx:id="doctorIDText" disable="true" focusColor="WHITE" labelFloat="true" maxWidth="100.0" prefHeight="40.0" prefWidth="100.0" promptText="Doctor ID" style="-fx-background-color: white; -fx-pref-height: 40; -fx-font-size: 15;" unFocusColor="#ffffff00" visible="false">
+                        <JFXTextField fx:id="doctorIDText" disable="true" focusColor="WHITE" labelFloat="true" maxWidth="100.0" prefHeight="40.0" prefWidth="100.0" promptText="Doctor ID" style="-fx-background-color: white; -fx-pref-height: 40; -fx-font-size: 15;" unFocusColor="#ffffff00">
                            <font>
                               <Font size="15.0" />
                            </font>
@@ -73,8 +72,8 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="1080.0" spacing="20.0">
                      <children>
-                        <JFXCheckBox fx:id="managerBox" checkedColor="WHITE" disable="true" onAction="#userSelected" prefHeight="40.0" prefWidth="180.0" style="-fx-font-size: 15;" text="Manager" visible="false" />
-                        <JFXComboBox fx:id="serviceCombo" disable="true" focusColor="WHITE" prefHeight="41.0" promptText="Service" style="-fx-background-color: white; -fx-font-size: 15;" styleClass="text-field" unFocusColor="#ffffff00" visible="false">
+<!--                        <JFXCheckBox fx:id="managerBox" checkedColor="WHITE" disable="true" onAction="#userSelected" prefHeight="40.0" prefWidth="180.0" style="-fx-font-size: 15;" text="Manager" />-->
+                        <JFXComboBox fx:id="serviceCombo" disable="true" focusColor="WHITE" prefHeight="41.0" promptText="Service" style="-fx-background-color: white; -fx-font-size: 15;" styleClass="text-field" unFocusColor="#ffffff00">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
@@ -106,11 +105,11 @@
          <bottom>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="40.0" BorderPane.alignment="CENTER">
                <children>
-                  <JFXButton onAction="#closeClicked" text="Close">
+                  <JFXButton text="Close">
                      <font>
                         <Font size="15.0" />
                      </font></JFXButton>
-                  <JFXButton onAction="#submitClicked" text="Submit">
+                  <JFXButton text="Submit">
                      <font>
                         <Font size="15.0" />
                      </font></JFXButton>
@@ -125,7 +124,7 @@
             </HBox>
          </bottom>
          <left>
-            <VBox fx:id="boxOService" disable="true" prefHeight="475.0" prefWidth="255.0" spacing="25.0" style="-fx-background-color: trasnparent;" visible="false">
+            <VBox fx:id="boxOService" disable="true" prefHeight="475.0" prefWidth="255.0" spacing="25.0" style="-fx-background-color: trasnparent;">
                <children>
                   <HBox alignment="BOTTOM_LEFT" prefHeight="40.0" prefWidth="248.0" spacing="2.0">
                      <children>
@@ -179,7 +178,7 @@
                         <Insets left="80.0" />
                      </VBox.margin>
                   </JFXCheckBox>
-                  <JFXCheckBox fx:id="interpreterBox" checkedColor="WHITE" onAction="#userSelected" style="-fx-font-size: 15;" text="Interpreter">
+                  <JFXCheckBox fx:id="interpreterBox" checkedColor="WHITE" style="-fx-font-size: 15;" text="Interpreter">
                      <VBox.margin>
                         <Insets left="80.0" />
                      </VBox.margin>
