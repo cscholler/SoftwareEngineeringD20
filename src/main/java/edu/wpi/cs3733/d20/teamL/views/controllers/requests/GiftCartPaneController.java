@@ -206,6 +206,7 @@ public class GiftCartPaneController {
                 "-fx-font-weight: bolder;");
         backButton.setOnAction(returnToCart);
         backPane = new AnchorPane(backButton);
+        backPane.setPickOnBounds(false);
         backPane.setTopAnchor(backButton,10.0);
         backPane.setLeftAnchor(backButton, 10.0);
         stackPane.getChildren().add(backPane);
