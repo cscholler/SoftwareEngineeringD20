@@ -157,16 +157,19 @@ public class AdminLandingPageController implements Initializable {
 					case "Map Nodes": {
 						hideAllTablesExceptCurrent("Nodes");
 						loadNodesTable();
+						btnChangePass.setVisible(false);
 					}
 					break;
 					case "Map Edges": {
 						hideAllTablesExceptCurrent("Edges");
 						loadEdgesTable();
+						btnChangePass.setVisible(false);
 					}
 					break;
 					case "Gift Inventory": {
 						hideAllTablesExceptCurrent("Gifts");
 						loadGiftsTable();
+						btnChangePass.setVisible(false);
 					}
 					break;
 					case "User Information": {
@@ -178,6 +181,7 @@ public class AdminLandingPageController implements Initializable {
 					case "Doctor Information": {
 						hideAllTablesExceptCurrent("Doctors");
 						loadDoctorsTable();
+						btnChangePass.setVisible(false);
 					}
 				}
 			}
