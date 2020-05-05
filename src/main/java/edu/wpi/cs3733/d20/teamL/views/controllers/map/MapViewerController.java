@@ -63,7 +63,8 @@ public class MapViewerController {
 
     @FXML
     private VBox instructions;
-    JFXNodesList textDirNode;
+    @FXML
+    private JFXNodesList textDirNode;
     @FXML
     private VBox floorSelector;
     @FXML
