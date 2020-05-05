@@ -607,7 +607,6 @@ public class MapViewerController {
 
             if (diffX > diffY) scale = Math.min(400 / diffX, 5);
             else scale = Math.min(400 / diffY, 5);
-            System.out.println(scale);
 
             totalX = totalX / subpath.size();
             totalY = totalY / subpath.size();
