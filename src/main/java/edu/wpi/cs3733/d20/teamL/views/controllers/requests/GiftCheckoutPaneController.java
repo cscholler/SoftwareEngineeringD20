@@ -54,17 +54,10 @@ public class GiftCheckoutPaneController {
 
         giftColumn.setCellValueFactory(
                 new PropertyValueFactory<GiftDetails, String>("name"));
-        qtyColumn.setCellValueFactory(new PropertyValueFactory<GiftDetails, TextField>("qty"));
-//        qtyColumn.setCellValueFactory(new PropertyValueFactory<GiftDetails, Date>("qty"));
-//        qtyColumn.setEditable(true);
-//        qtyColumn.setOnEditCommit((EventHandler<TableColumn.CellEditEvent<GiftDetails, Integer>>) e -> {
-//            final Integer qty = e.getNewValue() != null ? e.getNewValue() : e.getOldValue();
-//            e.getTableView().getItems().get(e.getTablePosition().getRow()).setQty(qty);
-//            cart.replace(e.getTableView().getItems().get(e.getTablePosition().getRow()).getName(), qty);
-//            orderTable.refresh();
-//        });
+        qtyColumn.setCellValueFactory(
+                new PropertyValueFactory<GiftDetails, TextField>("qty"));
 
-
+        orderTable.setEditable(true);
 
         removeColumn.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
         Callback<TableColumn<GiftDetails, String>, TableCell<GiftDetails, String>> cellFactory = new Callback<>() {
