@@ -195,7 +195,7 @@
             </Label>
                     <HBox alignment="CENTER" prefHeight="40.0" prefWidth="300.0" style="-fx-border-radius: 10; -fx-background-radius: 10;">
                         <children>
-                            <JFXTextField fx:id="startingPoint" focusColor="WHITE" labelFloat="true" maxHeight="30.0" onKeyTyped="#startingPointAutocomplete" prefHeight="22.0" promptText="Starting Point" style="-fx-border-color: white; -fx-focus-color: white; -fx-unfocus-color: white; -fx-font-color: white;" text="Hallway Intersection 14 Level 2" unFocusColor="WHITE">
+                            <JFXTextField fx:id="startingPoint" focusColor="WHITE" labelFloat="true" maxHeight="30.0" onKeyTyped="#startingPointAutocomplete" prefHeight="22.0" promptText="Starting Point" style="-fx-border-color: white; -fx-focus-color: white; -fx-unfocus-color: white; -fx-font-color: white;" text="Physical Therapy" unFocusColor="WHITE">
                                 <font>
                                     <Font size="16.0" />
                                 </font>

@@ -63,7 +63,8 @@ public class MapViewerController {
 
     @FXML
     private VBox instructions;
-    JFXNodesList textDirNode;
+    @FXML
+    private JFXNodesList textDirNode;
     @FXML
     private VBox floorSelector;
     @FXML
@@ -107,6 +108,8 @@ public class MapViewerController {
     private final Image IMAGE_ELEV  = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/elevator.jpg");
     private final Image IMAGE_STAIR = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/stair.png");
     private final Image IMAGE_DEST = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/destFlag.png");
+    private final Image IMAGE_FTOM = new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/FaulkToMain.PNG");
+    private final Image IMAGE_MTOF = new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/MainToFaulk.PNG");
 
     @FXML
     private void initialize() {
@@ -117,18 +120,18 @@ public class MapViewerController {
         map.setHighLightColor(Color.GOLD);
         btnNavigate.setDisableVisualFocus(true);
 
+        // Import all the nodes from the cache and set the current building to Faulkner
         String startB = "Faulkner";
         Building faulkner = cache.getBuilding("Faulkner");
         Building btm = cache.getBuilding("BTM");
 
         if(!faulkner.getNodes().isEmpty()) map.setBuilding(faulkner);
         if(!btm.getNodes().isEmpty()) map.getBuildings().add(btm);
+        buildingChooser.getItems().addAll("Faulkner", "BTM");
         buildingChooser.getSelectionModel().select(startB);
 
         // Add floor buttons
         generateFloorButtons();
-
-        buildingChooser.getItems().addAll("Faulkner", "BTM");
 
         setFloor(2);
 
@@ -167,19 +170,7 @@ public class MapViewerController {
     }
 
     private void generateFloorButtons() {
-        while (floorSelector.getChildren().size() > 2) {
-            floorSelector.getChildren().remove(1);
-        }
-        for (Floor floor : map.getBuilding().getFloors()) {
-            JFXButton newButton = new JFXButton();
-            newButton.setButtonType(JFXButton.ButtonType.RAISED);
-            newButton.getStylesheets().add("edu/wpi/cs3733/d20/teamL/css/MapStyles.css");
-            newButton.setText(floor.getFloorAsString());
-            newButton.setOnAction(this::handleFloor);
-            newButton.getStyleClass().add("floor-buttons");
-
-            floorSelector.getChildren().add(1, newButton);
-        }
+        map.generateFloorButtons(floorSelector, this::handleFloor);
     }
 
     @FXML
@@ -192,6 +183,8 @@ public class MapViewerController {
         int prevFloor = map.getFloor();
         generateFloorButtons();
         setFloor(Math.max(map.getBuilding().getMinFloor(), Math.min(prevFloor, map.getBuilding().getMaxFloor())));
+
+        if (!path.getPathNodes().isEmpty()) highLightPath();
     }
 
     @FXML
@@ -235,7 +228,6 @@ public class MapViewerController {
             btnQR.setVisible(true);
             textDirNode.setDisable(false);
             textDirNode.setVisible(true);
-
         }
     }
 
@@ -264,8 +256,7 @@ public class MapViewerController {
             map.resetNodeVisibility(end);
         }
 
-
-        path = pathfinderService.pathfind(map.getBuilding(), source, destination);
+        path = pathfinderService.pathfind(map.getAllNodes(), source, destination);
         highLightPath();
 
         path.generateTextMessage();
@@ -408,12 +399,12 @@ public class MapViewerController {
 
     @FXML
     private void zoomIn() {
-        map.setZoomLevel(map.getZoomLevel() * 1.2);
+        map.setZoomLevelToPosition(map.getZoomLevel() * 1.2, new Point2D(map.getBody().getWidth()/2,map.getBody().getHeight()/2));
     }
 
     @FXML
     private void zoomOut() {
-        map.setZoomLevel(map.getZoomLevel() * 0.8);
+        map.setZoomLevelToPosition(map.getZoomLevel() * 0.8, new Point2D(map.getBody().getWidth()/2,map.getBody().getHeight()/2));
     }
 
     public void setFloor(int newFloor) {
@@ -559,7 +550,18 @@ public class MapViewerController {
     @FXML
     private void goToSelected() {
         int index = dirList.getSelectionModel().getSelectedIndex();
+
         ArrayList<Node> subpath = path.getSubpaths().get(index);
+
+        if(!(subpath.get(0).getBuilding().equals(subpath.get(subpath.size()-1)))){
+            if(subpath.get(0).getBuilding().equals("Faulkner")) {
+                map.setMapImage(IMAGE_FTOM);
+            } else if(subpath.get(subpath.size()-1).getBuilding().equals("Faulkner")){
+                map.setMapImage(IMAGE_MTOF);
+            }
+
+        }
+
         setFloor(subpath.get(0).getFloor());
 
         double totalX = 0;

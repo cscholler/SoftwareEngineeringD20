@@ -23,7 +23,7 @@
                <children>
                   <JFXTextField fx:id="patientIDText" promptText="Patient ID" styleClass="text-field-jfx" />
                   <JFXTextField fx:id="locationText" onKeyTyped="#autocomplete" promptText="Location" styleClass="text-field-jfx" />
-                  <Label text="Priority Level:">
+                  <Label fx:id="urgencyLbl" text="Priority Level:">
                      <font>
                         <Font size="16.0" />
                      </font>
