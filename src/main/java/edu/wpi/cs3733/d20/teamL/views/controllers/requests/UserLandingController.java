@@ -31,7 +31,8 @@ public class UserLandingController {
     @FXML
     private Pane servicePane;
     @FXML
-    private JFXButton btnGift, btnSecurity, btnSanitation, btnMaintenance, btnIT, btnInternal, btnExternal, btnInterpreter, btnMedication;
+    private JFXButton btnGift, btnSecurity, btnSanitation, btnMaintenance, btnIT, btnInternal, btnExternal, btnInterpreter,
+            btnMedication, btnReflectionRoom, btnOnCallBed;
     @Inject
     ILoginManager login;
 
@@ -112,8 +113,20 @@ public class UserLandingController {
         btnInterpreter.setStyle("-fx-background-color: #DCDCDC");
     }
 
+    @FXML
+    private void launchReflectionRoomPane() throws IOException {
+        resetAndLoadPane("ReflectionRoomPane", "Reserve Reflection Room");
+        btnReflectionRoom.setStyle("-fx-background-color: #DCDCDC");
+    }
+
+    @FXML
+    private void launchOnCallBedPane() throws IOException {
+        resetAndLoadPane("OnCallBedPane", "Reserve On-Call Bed");
+        btnOnCallBed.setStyle("-fx-background-color: #DCDCDC");
+    }
+
     private void resetAndLoadPane(String regionName, String labelText) throws IOException {
-        JFXButton[] allButtons = new JFXButton[]{btnGift, btnSecurity, btnSanitation, btnMaintenance, btnIT, btnInternal, btnExternal, btnInterpreter, btnMedication};
+        JFXButton[] allButtons = new JFXButton[]{btnGift, btnSecurity, btnSanitation, btnMaintenance, btnIT, btnInternal, btnExternal, btnInterpreter, btnMedication, btnOnCallBed, btnReflectionRoom};
         for (JFXButton currButton:allButtons) {
             currButton.setStyle("-fx-background-color: white;");
         }

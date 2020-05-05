@@ -126,7 +126,7 @@ public class MapPane extends ScrollPane {
 
                         Node dest = new Node(currentBuilding.getUniqueNodeID(), new Point2D(event.getX(),
                                 event.getY()).multiply(1 / zoomLevel), currentFloor.getFloor(), currentBuilding.getName(),
-                                "HALL","Hall", "Hall");
+                                "HALL", "Hall", "Hall");
 
                         dest.setId(currentBuilding.getUniqueNodeID(dest));
 
@@ -162,11 +162,10 @@ public class MapPane extends ScrollPane {
             body.setOnMouseDragged(event -> {
                 if (!addingNode && event.isPrimaryButtonDown() && !erasing && !addingEdge) {
                     if (draggingNode) {
-                        if(event.isShiftDown() && selector.getNodes().size() == 1) {
+                        if (event.isShiftDown() && selector.getNodes().size() == 1) {
                             NodeGUI curr = selector.getNodes().get(0);
                             curr.setLayoutPos(snapNode(curr, new Point2D(event.getX(), event.getY())));
-                        }
-                        else for (NodeGUI gui : selector.getNodes()) {
+                        } else for (NodeGUI gui : selector.getNodes()) {
                             Point2D temp = selector.getNodePosition(gui);
                             if (temp != null) gui.setLayoutPos(temp.add(new Point2D(event.getX(), event.getY())));
                         }
@@ -190,10 +189,10 @@ public class MapPane extends ScrollPane {
             });
 
             body.setOnMouseReleased(event -> {
-                if(addingNode && event.getButton().equals(MouseButton.PRIMARY)) {
+                if (addingNode && event.getButton().equals(MouseButton.PRIMARY)) {
                     tempNode.getNode().setPosition(tempNode.getLayoutPos().multiply(1 / zoomLevel));
                     addingNode = false;
-                } else if(addingNode && event.getButton().equals(MouseButton.SECONDARY)) {
+                } else if (addingNode && event.getButton().equals(MouseButton.SECONDARY)) {
                     removeNode(tempNode);
                     addingNode = false;
                 }
@@ -206,7 +205,7 @@ public class MapPane extends ScrollPane {
                     tempEdge.setEndX(event.getX());
                     tempEdge.setEndY(event.getY());
                 }
-                if(addingNode) {
+                if (addingNode) {
                     tempNode.setLayoutPos(new Point2D(event.getX(), event.getY()));
                 }
             });
@@ -220,14 +219,14 @@ public class MapPane extends ScrollPane {
 
     private Point2D snapNode(NodeGUI curr, Point2D mousePos) {
         ArrayList<NodeGUI> adjacents = new ArrayList<>();
-        for(Edge edge : curr.getNode().getEdges()) {
-            if(getNodeGUI(edge.getDestination()) != null)
+        for (Edge edge : curr.getNode().getEdges()) {
+            if (getNodeGUI(edge.getDestination()) != null)
                 adjacents.add(getNodeGUI(edge.getDestination()));
         }
 
         double minAngle = Math.PI / 4;
         NodeGUI minNode = null;
-        for(NodeGUI adj : adjacents) {
+        for (NodeGUI adj : adjacents) {
             double currAngle = Math.abs(Math.atan((mousePos.getY() - adj.getLayoutY()) / (mousePos.getX() - adj.getLayoutX())));
             double tempAngle = currAngle;
             double tempMin = minAngle;
@@ -241,7 +240,7 @@ public class MapPane extends ScrollPane {
             }
         }
 
-        if(minNode != null) {
+        if (minNode != null) {
             if (minAngle < Math.PI / 4) {
                 return new Point2D(mousePos.getX(), minNode.getLayoutY());
             }
@@ -442,8 +441,11 @@ public class MapPane extends ScrollPane {
             if (edge.getDestination().getFloor() == getFloor() && edge.getSource().getFloor() == getFloor() && edge.getSource().getBuilding().equals(edge.getDestination().getBuilding()))
                 addEdge(edge);
         }
+        try {
+            setMapImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/" + getBuilding().getName() + "Floor" + currentFloor.getFloorAsString() + "LM.png"));
+        } catch (IllegalArgumentException ex) {
 
-        setMapImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/" + getBuilding().getName() + "Floor" + currentFloor.getFloorAsString() + "LM.png"));
+        }
     }
 
     /**
@@ -488,9 +490,10 @@ public class MapPane extends ScrollPane {
 
     // Sets the zoom level by changing the spacing between all the nodes
     public void setZoomLevel(double zoomLevel) {
-        if(currentBuilding.getName().equals("Faulkner")) zoomLevel = Math.max(zoomLevel, .5);
+        if (currentBuilding.getName().equals("Faulkner")) zoomLevel = Math.max(zoomLevel, .5);
+        if (currentBuilding.getName().equals("Google")) zoomLevel = Math.max(zoomLevel, 1);
         else zoomLevel = Math.max(zoomLevel, .25);
-        zoomLevel  = Math.min(zoomLevel, 4);
+        zoomLevel = Math.min(zoomLevel, 4);
 
         for (NodeGUI nodeGUI : nodes.values()) {
             Point2D prevPos = new Point2D(nodeGUI.getXProperty().get(), nodeGUI.getYProperty().get());

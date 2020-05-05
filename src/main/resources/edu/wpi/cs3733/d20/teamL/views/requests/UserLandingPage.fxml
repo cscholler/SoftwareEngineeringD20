@@ -72,9 +72,9 @@
             </Label>
             <ScrollPane hbarPolicy="NEVER" prefHeight="1000.0" prefWidth="385.0">
                <content>
-                  <VBox alignment="CENTER_LEFT" maxHeight="1000.0" prefHeight="677.0" prefWidth="385.0">
+                  <VBox alignment="CENTER_LEFT" prefWidth="385.0">
                      <children>
-                        <JFXButton fx:id="btnGift" onAction="#launchGiftPane" prefHeight="121.0" prefWidth="361.0" styleClass="services-button-jfx" text="Gift Delivery" VBox.vgrow="ALWAYS">
+                        <JFXButton fx:id="btnGift" onAction="#launchGiftPane" styleClass="services-button-jfx" text="Gift Delivery" VBox.vgrow="ALWAYS">
                            <graphic>
                               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -83,7 +83,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="btnSecurity" onAction="#launchSecurityPane" prefWidth="361.0" styleClass="services-button-jfx" text="Security">
+                        <JFXButton fx:id="btnSecurity" onAction="#launchSecurityPane" styleClass="services-button-jfx" text="Security">
                            <graphic>
                               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -92,7 +92,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="btnMaintenance" onAction="#launchMaintenancePane" prefWidth="361.0" styleClass="services-button-jfx" text="Maintenance">
+                        <JFXButton fx:id="btnMaintenance" onAction="#launchMaintenancePane" styleClass="services-button-jfx" text="Maintenance">
                            <graphic>
                               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -101,7 +101,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="btnInternal" onAction="#launchInternalPane" prefWidth="361.0" styleClass="services-button-jfx" text="Internal Transport">
+                        <JFXButton fx:id="btnInternal" onAction="#launchInternalPane" styleClass="services-button-jfx" text="Internal Transport">
                            <graphic>
                               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -110,7 +110,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="btnExternal" onAction="#launchExternalPane" prefHeight="101.0" prefWidth="361.0" styleClass="services-button-jfx" text="External Transport">
+                        <JFXButton fx:id="btnExternal" onAction="#launchExternalPane" styleClass="services-button-jfx" text="External Transport">
                            <graphic>
                               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -119,7 +119,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="btnMedication" onAction="#launchMedicationPane" prefWidth="361.0" styleClass="services-button-jfx" text="Medication">
+                        <JFXButton fx:id="btnMedication" onAction="#launchMedicationPane" styleClass="services-button-jfx" text="Medication">
                            <graphic>
                               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -128,7 +128,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="btnSanitation" onAction="#launchSanitationPane" prefWidth="361.0" styleClass="services-button-jfx" text="Sanitation">
+                        <JFXButton fx:id="btnSanitation" onAction="#launchSanitationPane" styleClass="services-button-jfx" text="Sanitation">
                            <graphic>
                               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -137,7 +137,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="btnIT" onAction="#launchITPane" prefWidth="361.0" styleClass="services-button-jfx" text="IT">
+                        <JFXButton fx:id="btnIT" onAction="#launchITPane" styleClass="services-button-jfx" text="IT">
                            <graphic>
                               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -146,7 +146,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="btnInterpreter" onAction="#launchInterpreterPane" prefWidth="361.0" styleClass="services-button-jfx" text="Interpreter">
+                        <JFXButton fx:id="btnInterpreter" onAction="#launchInterpreterPane" styleClass="services-button-jfx" text="Interpreter">
                            <graphic>
                               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -155,6 +155,22 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
+                        <JFXButton fx:id="btnReflectionRoom" onAction="#launchReflectionRoomPane" styleClass="services-button-jfx" text="Reflection Room">
+                           <graphic>
+                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/service_icons/reflectionRoom.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></JFXButton>
+                        <JFXButton fx:id="btnOnCallBed" onAction="#launchOnCallBedPane" styleClass="services-button-jfx" text="On-Call Bed">
+                           <graphic>
+                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/service_icons/sleepingArea.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></JFXButton>
                      </children>
                   </VBox>
                </content>
