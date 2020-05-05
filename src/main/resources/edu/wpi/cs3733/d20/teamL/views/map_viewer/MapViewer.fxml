@@ -274,7 +274,7 @@
                           </HBox>
                   <JFXButton onAction="#loginBtnClicked" prefHeight="65.0" prefWidth="125.0" style="-fx-background-color: transparent;" styleClass="bottom-bar-logout-label-fx" text="Login">
                      <HBox.margin>
-                        <Insets left="50.0" />
+                        <Insets left="100.0" />
                      </HBox.margin>
                      <font>
                         <Font size="14.0" />
