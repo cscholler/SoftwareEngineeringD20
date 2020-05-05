@@ -19,20 +19,14 @@ import javax.inject.Inject;
 import java.util.concurrent.Executor;
 import java.util.concurrent.FutureTask;
 
+import static java.lang.Thread.sleep;
+
 @Slf4j
 public class RebuildDatabasePopupController {
 	@FXML
-	private JFXButton btnYes;
-	@FXML
 	private JFXButton btnNo;
-
-	FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
-
     @Inject
-    ILoginManager login;
-
-    @Inject
-    IDatabaseService db;
+    private IDatabaseService db;
 
     @FXML
     public void btnYesClicked() {
@@ -53,21 +47,21 @@ public class RebuildDatabasePopupController {
             btn.setDisable(true);
 
             // make alert appear / disappear
-            Thread t = new Thread(() -> {
+            Thread thread = new Thread(() -> {
                 boolean showing = false;
                 while (true) {
                     try {
-                        Thread.sleep(1000);
+                        sleep(1000);
                     } catch (InterruptedException ex) {
-                        log.error("{}", ex);
+                        log.error("Encountered InterruptedException", ex);
                     }
                     Runnable action = showing ? loading::close : loading::show;
                     Platform.runLater(action);
                     showing = !showing;
                 }
             });
-            t.setDaemon(true);
-            t.start();
+            thread.setDaemon(true);
+            thread.start();
         });
 
         loading.show();

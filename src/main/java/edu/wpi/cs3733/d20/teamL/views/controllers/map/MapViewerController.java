@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.jfoenix.controls.*;
+import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
@@ -111,7 +112,10 @@ public class MapViewerController {
     @FXML
     private void initialize() {
         timer.scheduleAtFixedRate(timerWrapper(this::updateTime), 0, 1000);
-        cache.cacheAllFromDB();
+        if (App.doUpdateCacheOnLoad) {
+			cache.cacheAllFromDB();
+			App.doUpdateCacheOnLoad = false;
+		}
 
         map.setEditable(false);
         map.setHighLightColor(Color.GOLD);
@@ -121,8 +125,8 @@ public class MapViewerController {
         Building faulkner = cache.getBuilding("Faulkner");
         Building btm = cache.getBuilding("BTM");
 
-        if(!faulkner.getNodes().isEmpty()) map.setBuilding(faulkner);
-        if(!btm.getNodes().isEmpty()) map.getBuildings().add(btm);
+        if (!faulkner.getNodes().isEmpty()) map.setBuilding(faulkner);
+        if (!btm.getNodes().isEmpty()) map.getBuildings().add(btm);
         buildingChooser.getSelectionModel().select(startB);
 
         // Add floor buttons

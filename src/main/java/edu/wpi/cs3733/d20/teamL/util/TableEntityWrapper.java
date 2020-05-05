@@ -30,35 +30,64 @@ public class TableEntityWrapper {
 			return id;
 		}
 
+		public void setID(String id) {
+			this.id.set(id);
+		}
 
 		public StringProperty getXPos() {
 			return xPos;
+		}
+
+		public void setXPos(String xPos) {
+			this.xPos.set(xPos);
 		}
 
 		public StringProperty getYPos() {
 			return yPos;
 		}
 
+		public void setYPos(String yPos) {
+			this.yPos.set(yPos);
+		}
 
 		public StringProperty getFloor() {
 			return floor;
 		}
 
+		public void setFloor(String floor) {
+			this.floor.set(floor);
+		}
 
 		public StringProperty getBuilding() {
 			return building;
+		}
+
+		public void setBuilding(String building) {
+			this.building.set(building);
 		}
 
 		public StringProperty getType() {
 			return type;
 		}
 
+		public void setType(String type) {
+			this.type.set(type);
+		}
+
 		public StringProperty getLongName() {
 			return lName;
 		}
 
+		public void setLongName(String lName) {
+			this.lName.set(lName);
+		}
+
 		public StringProperty getShortName() {
 			return sName;
+		}
+
+		public void setShortName(String sName) {
+			this.sName.set(sName);
 		}
 	}
 
@@ -77,12 +106,24 @@ public class TableEntityWrapper {
 			return id;
 		}
 
+		public void setID(String id) {
+			this.id.set(id);
+		}
+
 		public StringProperty getSourceNode() {
 			return sourceNode;
 		}
 
+		public void setSourceNode(String sourceNode) {
+			this.sourceNode.set(sourceNode);
+		}
+
 		public StringProperty getDestNode() {
 			return destNode;
+		}
+
+		public void setDestNode(String destNode) {
+			this.destNode.set(destNode);
 		}
 	}
 
@@ -109,17 +150,32 @@ public class TableEntityWrapper {
 			return type;
 		}
 
+		public void setType(String type) {
+			this.type.set(type);
+		}
+
 		public StringProperty getSubtype() {
 			return subtype;
 		}
 
+		public void setSubtype(String subtype) {
+			this.subtype.set(subtype);
+		}
 
-		public StringProperty getDesc() {
+		public StringProperty getDescription() {
 			return desc;
+		}
+
+		public void setDesc(String desc) {
+			this.desc.set(desc);
 		}
 
 		public StringProperty getInventory() {
 			return inventory;
+		}
+
+		public void setInventory(String inventory) {
+			this.inventory.set(inventory);
 		}
 	}
 
@@ -140,24 +196,48 @@ public class TableEntityWrapper {
 			return fName;
 		}
 
+		public void setFName(String fName) {
+			this.fName.set(fName);
+		}
+
 		public StringProperty getLName() {
 			return lName;
+		}
+
+		public void setLName(String lName) {
+			this.lName.set(lName);
 		}
 
 		public StringProperty getUsername() {
 			return username;
 		}
 
+		public void setUsername(String username) {
+			this.username.set(username);
+		}
+
 		public StringProperty getAcctType() {
 			return acctType;
+		}
+
+		public void setAcctType(String acctType) {
+			this.acctType.set(acctType);
 		}
 
 		public StringProperty getServices() {
 			return services;
 		}
 
+		public void setServices(String services) {
+			this.services.set(services);
+		}
+
 		public StringProperty getManager() {
 			return manager;
+		}
+
+		public void setManager(String manager) {
+			this.manager.set(manager);
 		}
 
 		public TableUser(String id, String fName, String lName, String username, String acctType, String services, String manager) {
@@ -192,24 +272,48 @@ public class TableEntityWrapper {
 			return id;
 		}
 
-		public StringProperty getFName() {
-			return fName;
+		public void setID(String id) {
+			this.id.set(id);
 		}
 
-		public StringProperty getLName() {
+		public StringProperty getFirstName() {
+			return fName;
+		}
+		
+		public void setFirstName(String fName) {
+			this.fName.set(fName);
+		}
+
+		public StringProperty getLastName() {
 			return lName;
+		}
+
+		public void setLastName(String lName) {
+			this.lName.set(lName);
 		}
 
 		public StringProperty getUsername() {
 			return username;
 		}
 
+		public void setUsername(String username) {
+			this.username.set(username);
+		}
+
 		public StringProperty getOfficeID() {
 			return officeID;
 		}
 
+		public void setOfficeID(String officeID) {
+			this.officeID.set(officeID);
+		}
+		
 		public StringProperty getAddInfo() {
 			return addInfo;
+		}
+
+		public void setAddInfo(String addInfo) {
+			this.addInfo.set(addInfo);
 		}
 	}
 }
