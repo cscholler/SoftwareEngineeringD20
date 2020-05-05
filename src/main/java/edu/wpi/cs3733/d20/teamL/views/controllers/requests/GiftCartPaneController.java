@@ -52,7 +52,7 @@ public class GiftCartPaneController {
         outOfStockPane.setPickOnBounds(false);
 
         cart = cache.getCartCache();
-        checkoutButton.setText(cart.size() + " - Go to Checkout");
+        checkoutButton.setText(CartSize() + " - Go to Checkout");
 
         for (Gift gift : gifts) {
             loadImage(gift.getSubtype());
@@ -141,7 +141,7 @@ public class GiftCartPaneController {
             if (quantityInCart == 0) cart.put(gift.getSubtype(), 0);
             if (Integer.parseInt(gift.getInventory()) - quantityInCart > 0) {
                 cart.replace(gift.getSubtype(), quantityInCart + 1);
-                checkoutButton.setText(cart.size() + " - Go to Checkout");
+                checkoutButton.setText(CartSize() + " - Go to Checkout");
                 addedToCartPane.setVisible(true);
                 loaderHelper.showAndFade(addedToCart);
 
@@ -182,5 +182,13 @@ public class GiftCartPaneController {
         stackPane.getChildren().add(n);
         n.prefWidthProperty().bind(stackPane.widthProperty());
         n.prefHeightProperty().bind(stackPane.heightProperty());
+    }
+
+    private int CartSize() {
+        int cartSize = 0;
+        for (String giftName : cart.keySet()) {
+            cartSize += cart.get(giftName);
+        }
+        return cartSize;
     }
 }

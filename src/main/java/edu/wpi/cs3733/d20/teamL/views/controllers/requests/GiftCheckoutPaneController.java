@@ -3,24 +3,23 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
+import edu.wpi.cs3733.d20.teamL.entities.Gift;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
-import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-import javafx.scene.control.Label;
+import javafx.util.Callback;
 
 import javax.inject.Inject;
 import java.text.SimpleDateFormat;
@@ -36,6 +35,7 @@ public class GiftCheckoutPaneController {
     private IDatabaseService db;
     @Inject
     private ILoginManager loginManager;
+    @FXML
     public ImageView requestReceived;
     @FXML
     private TableView orderTable;
@@ -45,18 +45,55 @@ public class GiftCheckoutPaneController {
     private JFXTextField firstNameText, lastNameText, senderText;
     @FXML
     private JFXTextArea additionalNotesText, specialMessageText;
-    @FXML
-    private Label confirmation;
 
     @FXML
     public void initialize() {
         cart = cache.getCartCache();
         ObservableList<GiftDetails> giftDetailsObservableList = FXCollections.observableArrayList();
+        requestReceived.setPickOnBounds(false);
 
         giftColumn.setCellValueFactory(
                 new PropertyValueFactory<GiftDetails, String>("name"));
-        qtyColumn.setCellValueFactory(
-                new PropertyValueFactory<GiftDetails, Integer>("qty"));
+        qtyColumn.setCellValueFactory(new PropertyValueFactory<GiftDetails, TextField>("qty"));
+//        qtyColumn.setCellValueFactory(new PropertyValueFactory<GiftDetails, Date>("qty"));
+//        qtyColumn.setEditable(true);
+//        qtyColumn.setOnEditCommit((EventHandler<TableColumn.CellEditEvent<GiftDetails, Integer>>) e -> {
+//            final Integer qty = e.getNewValue() != null ? e.getNewValue() : e.getOldValue();
+//            e.getTableView().getItems().get(e.getTablePosition().getRow()).setQty(qty);
+//            cart.replace(e.getTableView().getItems().get(e.getTablePosition().getRow()).getName(), qty);
+//            orderTable.refresh();
+//        });
+
+
+
+        removeColumn.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
+        Callback<TableColumn<GiftDetails, String>, TableCell<GiftDetails, String>> cellFactory = new Callback<>() {
+                    @Override
+                    public TableCell call(final TableColumn<GiftDetails, String> param) {
+                        final TableCell<GiftDetails, String> cell = new TableCell<>() {
+                            final Button btn = new Button("X");
+                            {
+                                btn.setOnAction(event -> {
+                                    GiftDetails deletedItem = (GiftDetails) orderTable.getItems().get(getIndex());
+                                    orderTable.getItems().remove(getIndex());
+                                    cart.remove(deletedItem.getName());
+                                });
+                            }
+
+                            @Override
+                            public void updateItem(String item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (empty) {
+                                    setGraphic(null);
+                                } else {
+                                    setGraphic(btn);
+                                }
+                                setText(null);
+                            }
+                        };
+                        return cell;
+                    }
+                };
 
         for (String giftType : cart.keySet()) {
             GiftDetails gd = new GiftDetails(giftType,cart.get(giftType));
@@ -64,6 +101,7 @@ public class GiftCheckoutPaneController {
         }
 
         orderTable.setItems(giftDetailsObservableList);
+        removeColumn.setCellFactory(cellFactory);
     }
 
     public void placeOrder(ActionEvent actionEvent) {
@@ -125,6 +163,10 @@ public class GiftCheckoutPaneController {
 
         public Integer getQty() {
             return qty;
+        }
+
+        public void setQty(Integer qty) {
+            this.qty = qty;
         }
     }
 }
