@@ -390,6 +390,18 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
+                        <JFXButton fx:id="pathFindingK" buttonType="RAISED" onMouseClicked="#dijkstraSelected" prefHeight="146.0" prefWidth="206.0" styleClass="nodeListButton" text=" ">
+                           <tooltip>
+                              <Tooltip text="Dijkstra's Algorithm" />
+                           </tooltip>
+                           <graphic>
+                              <ImageView fitHeight="18.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true" scaleX="3.5" scaleY="3.5" translateX="4.0">
+                                 <image>
+                                    <Image url="@../../assets/map_editor/dijkstra.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
                      </children>
                   </JFXNodesList>
                   <JFXToggleNode fx:id="eraser" onAction="#handleTools" onMouseClicked="#eraserMouse" prefHeight="68.0" style="-fx-background-radius: 68;">
