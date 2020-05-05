@@ -159,6 +159,12 @@ public class MapViewerController {
             }
         }
 
+        listF1.setStyle("-fx-font-size: 16");
+        listF2.setStyle("-fx-font-size: 16");
+        listF3.setStyle("-fx-font-size: 16");
+        listF4.setStyle("-fx-font-size: 16");
+        listF5.setStyle("-fx-font-size: 16");
+
         listF1.getItems().addAll(deptNodes);
         listF2.getItems().addAll(labNodes);
         listF3.getItems().addAll(serviceNodes);
