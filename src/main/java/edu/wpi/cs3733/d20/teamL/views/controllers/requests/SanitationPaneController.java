@@ -47,7 +47,7 @@ public class SanitationPaneController {
     @FXML
     private ImageView requestReceived;
     @FXML
-    private Label confirmation;
+    private Label confirmation, tagTxt, priorityTxt;
 
     @FXML
     public void initialize(){
@@ -80,7 +80,23 @@ public class SanitationPaneController {
         String status = "0";
         String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
 
-        int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
+        boolean validFields = true;
+
+        if(!bioHazardCheckBox.isSelected()) {
+            tagTxt.setStyle("-fx-text-fill: RED");
+            validFields = false;
+        } else tagTxt.setStyle("-fx-text-fill: GRAY");
+        if(highPriorityBox.isSelected()) {
+            priorityTxt.setStyle("-fx-text-fill: RED");
+            validFields = false;
+        } else priorityTxt.setStyle("-fx-text-fill: GRAY");
+        if(incidentLocation == null || incidentLocation.length() == 0) {
+            incidentLocationText.setStyle("-fx-prompt-text-fill: RED");
+            validFields = false;
+        } else incidentLocationText.setStyle("-fx-prompt-text-fill: GRAY");
+
+        int rows = 0;
+        if(validFields) rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
                 new ArrayList<>(Arrays.asList(null, loginManager.getCurrentUser().getUsername(),
                         null, null, "Sanitation", priorityLevel, serviceTags + additionalNotes, status, dateAndTime)))));
 
