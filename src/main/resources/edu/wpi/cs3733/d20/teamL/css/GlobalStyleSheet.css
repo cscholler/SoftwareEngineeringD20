@@ -298,6 +298,8 @@
     -fx-alignment: center;
     -fx-font-size: 15;
     -fx-pref-width: 150;
+    -fx-border-color: black;
+    -fx-border-width: .5px;
 }
 
 .tree-table-row-cell:odd {
@@ -308,6 +310,8 @@
 .tree-table-view .column-header {
     -fx-alignment: center;
     -fx-pref-width: 150;
+    -fx-border-color: black;
+    -fx-border-width: .5px;
 }
 
 .tree-table-view .column-header .label{
@@ -331,6 +335,7 @@
     -fx-pref-height: 40;
     -fx-max-width: 200;
     -fx-max-height: 40;
+    -fx-font-size: 15;
 }
 
 .jfx-date-picker .input-line{
@@ -338,4 +343,10 @@
 }
 .jfx-date-picker .input-focused-line{
     -fx-pref-height: 0px;
+}
+
+.table-error-label {
+    -fx-pref-height: 20;
+    -fx-font-size: 14;
+    -fx-text-fill: red;
 }
