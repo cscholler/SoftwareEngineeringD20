@@ -99,13 +99,13 @@ public class MapViewerController {
     private Path path = new Path();
     private final ObservableList<String> direct = FXCollections.observableArrayList();
 
-    private final Image IMAGE_LEFT  = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/left.png");
-    private final Image IMAGE_RIGHT  = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/right.jpg");
-    private final Image IMAGE_SHLEFT  = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/sharp left.jpg");
+    private final Image IMAGE_LEFT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/left.png");
+    private final Image IMAGE_RIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/right.jpg");
+    private final Image IMAGE_SHLEFT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/sharp left.jpg");
     private final Image IMAGE_SHRIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/sharp right.jpg");
-    private final Image IMAGE_SLLEFT  = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/slightLeft.jpg");
+    private final Image IMAGE_SLLEFT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/slightLeft.jpg");
     private final Image IMAGE_SLRIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/slightRight.jpg");
-    private final Image IMAGE_ELEV  = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/elevator.jpg");
+    private final Image IMAGE_ELEV = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/elevator.jpg");
     private final Image IMAGE_STAIR = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/stair.png");
     private final Image IMAGE_DEST = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/destFlag.png");
     private final Image IMAGE_FTOM = new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/FaulkToMain.PNG");
@@ -125,8 +125,8 @@ public class MapViewerController {
         Building faulkner = cache.getBuilding("Faulkner");
         Building btm = cache.getBuilding("BTM");
 
-        if(!faulkner.getNodes().isEmpty()) map.setBuilding(faulkner);
-        if(!btm.getNodes().isEmpty()) map.getBuildings().add(btm);
+        if (!faulkner.getNodes().isEmpty()) map.setBuilding(faulkner);
+        if (!btm.getNodes().isEmpty()) map.getBuildings().add(btm);
         buildingChooser.getItems().addAll("Faulkner", "BTM");
         buildingChooser.getSelectionModel().select(startB);
 
@@ -146,7 +146,7 @@ public class MapViewerController {
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
 
         // TODO: Change node dropdowns to be generated
-        Collection <Node> allNodes = map.getBuilding().getNodes();
+        Collection<Node> allNodes = map.getBuilding().getNodes();
         Collection<String> deptNodes = new ArrayList<>();
         Collection<String> labNodes = new ArrayList<>();
         Collection<String> serviceNodes = new ArrayList<>();
@@ -154,11 +154,16 @@ public class MapViewerController {
         Collection<String> confNodes = new ArrayList<>();
 
         for (Node node : allNodes) {
-            if (node.getType().equals("DEPT")) { deptNodes.add(node.getLongName() + " - (" + node.getBuilding() + " " + node.getFloor() + ")" );
-            } else if (node.getType().equals("LABS")) { labNodes.add(node.getLongName() + " - (" + node.getBuilding() + " " + node.getFloor() + ")");
-            } else if ((node.getType().equals("SERV") || node.getType().equals("INFO"))) { serviceNodes.add(node.getLongName() + " - (" + node.getBuilding() + " " + node.getFloor() + ")");
-            } else if (node.getType().equals("RETL")) { retailNodes.add(node.getLongName() + " - (" + node.getBuilding() + " " + node.getFloor() + ")");
-            } else if (node.getType().equals("CONF")) { confNodes.add(node.getLongName() + " - (" + node.getBuilding() + " " + node.getFloor() + ")");
+            if (node.getType().equals("DEPT")) {
+                deptNodes.add(node.getLongName());
+            } else if (node.getType().equals("LABS")) {
+                labNodes.add(node.getLongName());
+            } else if ((node.getType().equals("SERV") || node.getType().equals("INFO"))) {
+                serviceNodes.add(node.getLongName());
+            } else if (node.getType().equals("RETL")) {
+                retailNodes.add(node.getLongName());
+            } else if (node.getType().equals("CONF")) {
+                confNodes.add(node.getLongName());
             }
         }
 
@@ -242,7 +247,13 @@ public class MapViewerController {
         Node destNode = sf.getNode(end);
 
 
+        if (!(startNode.getBuilding().equals(map.getBuilding().getName()))) {
+            map.setBuilding(startNode.getBuilding());
+            buildingChooser.getSelectionModel().select(startNode.getBuilding());
+        }
         setFloor(startNode.getFloor());
+
+
         if (startNode != null && destNode != null) {
             String directions = highlightSourceToDestination(startNode, destNode);
 
@@ -259,7 +270,6 @@ public class MapViewerController {
 
     /**
      * Shows the key popup
-     *
      */
     @FXML
     private void showLegend() {
@@ -293,6 +303,7 @@ public class MapViewerController {
         dirList.setCellFactory(param -> {
             return new ListCell<String>() {
                 private ImageView imageView = new ImageView();
+
                 protected void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);
                     if (empty || item == null) {
@@ -319,11 +330,11 @@ public class MapViewerController {
                             } else {
                                 imageView.setImage(IMAGE_LEFT);
                             }
-                        } else if (item.contains("elevator")){
+                        } else if (item.contains("elevator")) {
                             imageView.setImage(IMAGE_ELEV);
-                        } else if (item.contains("stair")){
+                        } else if (item.contains("stair")) {
                             imageView.setImage(IMAGE_STAIR);
-                        } else if (item.contains("destination")){
+                        } else if (item.contains("destination")) {
                             imageView.setImage(IMAGE_DEST);
                         }
                         setText(item);
@@ -425,12 +436,12 @@ public class MapViewerController {
 
     @FXML
     private void zoomIn() {
-        map.setZoomLevelToPosition(map.getZoomLevel() * 1.2, new Point2D(map.getBody().getWidth()/2,map.getBody().getHeight()/2));
+        map.setZoomLevelToPosition(map.getZoomLevel() * 1.2, new Point2D(map.getBody().getWidth() / 2, map.getBody().getHeight() / 2));
     }
 
     @FXML
     private void zoomOut() {
-        map.setZoomLevelToPosition(map.getZoomLevel() * 0.8, new Point2D(map.getBody().getWidth()/2,map.getBody().getHeight()/2));
+        map.setZoomLevelToPosition(map.getZoomLevel() * 0.8, new Point2D(map.getBody().getWidth() / 2, map.getBody().getHeight() / 2));
     }
 
     public void setFloor(int newFloor) {
@@ -453,7 +464,6 @@ public class MapViewerController {
 
     /**
      * Clears the text in source textfield
-     *
      */
     @FXML
     private void clearSource() {
@@ -462,10 +472,11 @@ public class MapViewerController {
 
     /**
      * Clears the text in destination textfield
-     *
      */
     @FXML
-    private void clearDest() { destination.clear(); }
+    private void clearDest() {
+        destination.clear();
+    }
 
     /**
      * login pops up when login button is clicked
@@ -482,7 +493,6 @@ public class MapViewerController {
 
     /**
      * Displays the About page of the application
-     *
      */
     @FXML
     public void handleAbout() {
@@ -531,7 +541,6 @@ public class MapViewerController {
 
     /**
      * Changes starting location with destination and vice-versa.
-     *
      */
     @FXML
     public void handleLocationChange() {
@@ -579,50 +588,57 @@ public class MapViewerController {
 
         ArrayList<Node> subpath = path.getSubpaths().get(index);
 
-        if(!(subpath.get(0).getBuilding().equals(subpath.get(subpath.size()-1)))){
-            if(subpath.get(0).getBuilding().equals("Faulkner")) {
+        if (dirList.getSelectionModel().getSelectedItem().toString().contains("Navigate")) {
+            if (subpath.get(0).getBuilding().equals("Faulkner")) {
+                map.setBuilding(new Building("Google"));
                 map.setMapImage(IMAGE_FTOM);
-            } else if(subpath.get(subpath.size()-1).getBuilding().equals("Faulkner")){
+            } else if (subpath.get(0).getBuilding().equals("BTM")) {
+                map.setBuilding(new Building("Google"));
                 map.setMapImage(IMAGE_MTOF);
             }
 
+            generateFloorButtons();
+            map.setZoomLevel(1.1);
+        } else {
+            if (!(subpath.get(0).getBuilding().equals(map.getBuilding().getName()))) {
+                map.setBuilding(subpath.get(0).getBuilding());
+                generateFloorButtons();
+            }
+            setFloor(subpath.get(0).getFloor());
+
+            double totalX = 0;
+            double totalY = 0;
+            double minX = 200000;
+            double maxX = 0;
+            double minY = 200000;
+            double maxY = 0;
+            for (Node node : subpath) {
+                double xPos = node.getPosition().getX();
+                double yPos = node.getPosition().getY();
+                double xPosGui = map.getNodeGUI(node).getLayoutX();
+                double yPosGui = map.getNodeGUI(node).getLayoutY();
+
+                totalX += xPosGui;
+                totalY += yPosGui;
+
+                if (xPos > maxX) maxX = xPos;
+                if (xPos < minX) minX = xPos;
+                if (yPos > maxY) maxY = yPos;
+                if (yPos < minY) minY = yPos;
+            }
+
+            double diffX = maxX - minX;
+            double diffY = maxY - minY;
+            double scale;
+
+            if (diffX > diffY) scale = Math.min(400 / diffX, 5);
+            else scale = Math.min(400 / diffY, 5);
+
+            totalX = totalX / subpath.size();
+            totalY = totalY / subpath.size();
+
+            map.setZoomLevelToPosition(scale, new Point2D(totalX, totalY));
+            highLightPath();
         }
-
-        setFloor(subpath.get(0).getFloor());
-
-        double totalX = 0;
-        double totalY = 0;
-        double minX = 200000;
-        double maxX = 0;
-        double minY = 200000;
-        double maxY = 0;
-        for (Node node : subpath) {
-            double xPos = node.getPosition().getX();
-            double yPos = node.getPosition().getY();
-            double xPosGui = map.getNodeGUI(node).getLayoutX();
-            double yPosGui = map.getNodeGUI(node).getLayoutY();
-
-            totalX += xPosGui;
-            totalY += yPosGui;
-
-            if (xPos > maxX) maxX = xPos;
-            if (xPos < minX) minX = xPos;
-            if (yPos > maxY) maxY = yPos;
-            if (yPos < minY) minY = yPos;
-        }
-
-        double diffX = maxX - minX;
-        double diffY = maxY - minY;
-        double scale;
-
-        if (diffX > diffY) scale = Math.min(400 / diffX, 5);
-        else scale = Math.min(400 / diffY, 5);
-        System.out.println(scale);
-
-        totalX = totalX / subpath.size();
-        totalY = totalY / subpath.size();
-
-        map.setZoomLevelToPosition(scale, new Point2D(totalX, totalY));
-        highLightPath();
     }
 }
