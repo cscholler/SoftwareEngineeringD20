@@ -154,8 +154,22 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="btnReflectionRoom" onAction="#launchReflectionRoomPane" styleClass="services-button-jfx" text="Reflection Room" />
-                        <JFXButton fx:id="btnOnCallBed" onAction="#launchOnCallBedPane" styleClass="services-button-jfx" text="On-Call Bed" />
+                        <JFXButton fx:id="btnReflectionRoom" onAction="#launchReflectionRoomPane" styleClass="services-button-jfx" text="Reflection Room">
+                           <graphic>
+                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/service_icons/reflectionRoom.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></JFXButton>
+                        <JFXButton fx:id="btnOnCallBed" onAction="#launchOnCallBedPane" styleClass="services-button-jfx" text="On-Call Bed">
+                           <graphic>
+                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/service_icons/sleepingArea.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></JFXButton>
                      </children>
                   </VBox>
                </content>
