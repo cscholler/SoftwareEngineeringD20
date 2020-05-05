@@ -74,7 +74,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 			log.error("Encountered ClassNotFoundException", ex);
 		}
 		try {
-			connection = DriverManager.getConnection( DBConstants.DB_PREFIX + DBConstants.DB_URL + DBConstants.DB_PORT + DBConstants.DB_NAME_DEV, DBConstants.DB_USER, DBConstants.DB_PASSWORD);
+			connection = DriverManager.getConnection( DBConstants.DB_PREFIX + DBConstants.DB_URL + DBConstants.DB_PORT + DBConstants.DB_NAME_CANARY, DBConstants.DB_USER, DBConstants.DB_PASSWORD);
 			log.info("Connection established.");
 			dbType = DB_TYPE.MY_SQL;
 		} catch (SQLException ex) {
@@ -323,7 +323,12 @@ public class DatabaseService extends Service implements IDatabaseService {
 		ArrayList<SQLEntry> updates = new ArrayList<>();
 		CSVHelper csvReader = new CSVHelper();
 		for (ArrayList<String> row : csvReader.readCSVFile(csvFile, true)) {
-			updates.add(new SQLEntry(getTableUpdateMappings().get(tableName).get(0), row));
+			//updates.add(new SQLEntry(getTableUpdateMappings().get(tableName).get(0), row));
+			if (tableName.equals("Nodes")) {
+				updates.add(new SQLEntry(DBConstants.ADD_NODE, row));
+			} else if (tableName.equals("Edges")) {
+				updates.add(new SQLEntry(DBConstants.ADD_EDGE, row));
+			}
 		}
 		executeUpdates(updates);
 	}

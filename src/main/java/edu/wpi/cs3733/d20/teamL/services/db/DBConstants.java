@@ -27,11 +27,11 @@ public class DBConstants {
 					"id VARCHAR(16) NOT NULL PRIMARY KEY, " +
 					"x_pos DOUBLE NOT NULL, " +
 					"y_pos DOUBLE NOT NULL, " +
-					"floor CHAR(1) NOT NULL, " +
+					"floor CHAR(2) NOT NULL, " +
 					"building VARCHAR(64) NOT NULL, " +
 					"node_type CHAR(4) NOT NULL, " +
 					"l_name VARCHAR(64) NOT NULL, " +
-					"s_name VARCHAR(32) NOT NULL)";
+					"s_name VARCHAR(64) NOT NULL)";
 
 	public static final String CREATE_EDGE_TABLE =
 			"CREATE TABLE Edges(" +
@@ -85,9 +85,7 @@ public class DBConstants {
 					"sender_name VARCHAR(32) NOT NULL, " +
 					"request_username VARCHAR(32) NOT NULL REFERENCES Users(username), " +
 					"assignee_username VARCHAR(32) REFERENCES Users(username), " +
-					"gift1_id INT NOT NULL REFERENCES Gifts(id), " +
-					"gift2_id INT REFERENCES Gifts(id), " +
-					"gift3_id INT REFERENCES Gifts(id), " +
+					"gifts VARCHAR(256) NOT NULL, " +
 					"message VARCHAR(128), " +
 					"notes VARCHAR(256), " +
 					// 0: Pending, 1: Approved, 2: Assigned, 3: Denied, 4: Completed

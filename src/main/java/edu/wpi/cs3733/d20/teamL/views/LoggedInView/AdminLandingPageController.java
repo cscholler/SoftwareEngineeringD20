@@ -10,24 +10,18 @@ import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import edu.wpi.cs3733.d20.teamL.util.TableEntityWrapper;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.cell.TextFieldTreeCell;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.control.cell.TextFieldTreeTableCell;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -43,6 +37,7 @@ import javax.inject.Inject;
 @Slf4j
 public class AdminLandingPageController implements Initializable {
     private FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
+    private ArrayList<String> tableNames = new ArrayList<>(Arrays.asList("Nodes", "Edges", "Gifts", "Users", "Doctors"));
     private final ObservableList<String> tableOptions = FXCollections.observableArrayList("Map Nodes", "Map Edges", "Gift Inventory", "User Information", "Doctor Information");
 	@FXML
 	private JFXComboBox<String> tableSelector;
@@ -367,6 +362,7 @@ public class AdminLandingPageController implements Initializable {
 				return idCol.getComputedValue(param);
 			}
 		});
+
 		JFXTreeTableColumn<TableEntityWrapper.TableUser, String> fNameCol = new JFXTreeTableColumn<>("f_name");
 		fNameCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableEntityWrapper.TableUser, String> param) -> {
 			if (fNameCol.validateValue(param)) {
@@ -435,18 +431,20 @@ public class AdminLandingPageController implements Initializable {
 		managerCol.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
 		ArrayList<JFXTreeTableColumn<TableEntityWrapper.TableUser, String>> userCols = new ArrayList<>(Arrays.asList(idCol, fNameCol, lNameCol, usernameCol, acctTypeCol, servicesCol, managerCol));
 		usersTable.getColumns().setAll(userCols);
+
 		usersTable.getColumns().addListener(new ListChangeListener<>() {
-			private boolean suspended;
+			private boolean isColSuspended;
 			@Override
 			public void onChanged(ListChangeListener.Change change) {
 				change.next();
-				if (change.wasReplaced() && !suspended) {
-					this.suspended = true;
+				if (change.wasReplaced() && !isColSuspended) {
+					this.isColSuspended = true;
 					usersTable.getColumns().setAll(userCols);
-					this.suspended = false;
+					this.isColSuspended = false;
 				}
 			}
 		});
+
 		usersTable.setRoot(root);
 		usersTable.setShowRoot(false);
 	}
