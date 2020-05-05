@@ -107,6 +107,8 @@ public class MapViewerController {
     private final Image IMAGE_ELEV  = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/elevator.jpg");
     private final Image IMAGE_STAIR = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/stair.png");
     private final Image IMAGE_DEST = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/destFlag.png");
+    private final Image IMAGE_FTOM = new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/FaulkToMain.PNG");
+    private final Image IMAGE_MTOF = new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/MainToFaulk.PNG");
 
     @FXML
     private void initialize() {
@@ -396,12 +398,12 @@ public class MapViewerController {
 
     @FXML
     private void zoomIn() {
-        map.setZoomLevel(map.getZoomLevel() * 1.2);
+        map.setZoomLevelToPosition(map.getZoomLevel() * 1.2, new Point2D(map.getBody().getWidth()/2,map.getBody().getHeight()/2));
     }
 
     @FXML
     private void zoomOut() {
-        map.setZoomLevel(map.getZoomLevel() * 0.8);
+        map.setZoomLevelToPosition(map.getZoomLevel() * 0.8, new Point2D(map.getBody().getWidth()/2,map.getBody().getHeight()/2));
     }
 
     public void setFloor(int newFloor) {
@@ -547,7 +549,18 @@ public class MapViewerController {
     @FXML
     private void goToSelected() {
         int index = dirList.getSelectionModel().getSelectedIndex();
+
         ArrayList<Node> subpath = path.getSubpaths().get(index);
+
+        if(!(subpath.get(0).getBuilding().equals(subpath.get(subpath.size()-1)))){
+            if(subpath.get(0).getBuilding().equals("Faulkner")) {
+                map.setMapImage(IMAGE_FTOM);
+            } else if(subpath.get(subpath.size()-1).getBuilding().equals("Faulkner")){
+                map.setMapImage(IMAGE_MTOF);
+            }
+
+        }
+
         setFloor(subpath.get(0).getFloor());
 
         double totalX = 0;

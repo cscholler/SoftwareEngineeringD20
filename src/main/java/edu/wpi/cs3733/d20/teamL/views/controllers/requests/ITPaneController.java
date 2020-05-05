@@ -25,10 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.ResourceBundle;
+import java.util.*;
 
 @Slf4j
 public class ITPaneController implements Initializable {
@@ -106,7 +103,19 @@ public class ITPaneController implements Initializable {
         String status = "0";
         String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm aa").format(new Date());
 
-        int rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
+        boolean validFields = true;
+
+        if(location == null || location.length() == 0) {
+            locationText.setStyle("-fx-prompt-text-fill: RED");
+            validFields = false;
+        } else locationText.setStyle("-fx-prompt-text-fill: GRAY");
+        if(type == null || type.length() == 0) {
+            typeBox.setStyle("-fx-prompt-text-fill: RED");
+            validFields = false;
+        } else typeBox.setStyle("-fx-text-fill: GRAY");
+
+        int rows = 0;
+        if(validFields) rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
                 new ArrayList<>(Arrays.asList(null, userName, null, searchFields.getNode(location).getID(), "information technology", type, notes, status, dateAndTime))));
 
         if (rows == 0) {

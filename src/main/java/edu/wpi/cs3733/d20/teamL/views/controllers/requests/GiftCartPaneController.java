@@ -36,11 +36,13 @@ public class GiftCartPaneController {
     @FXML
     private StackPane stackPane;
     @FXML
-    private AnchorPane checkoutPane, addedToCartPane, outOfStockPane;
+    private AnchorPane checkoutPane, addedToCartPane, outOfStockPane, backPane;
     @FXML
     private ImageView addedToCart, outOfStock;
     @FXML
     private JFXButton checkoutButton;
+    @FXML
+    private Region checkoutFXML;
 
     @FXML
     public void initialize() {
@@ -52,7 +54,7 @@ public class GiftCartPaneController {
         outOfStockPane.setPickOnBounds(false);
 
         cart = cache.getCartCache();
-        checkoutButton.setText(cart.size() + " - Go to Checkout");
+        checkoutButton.setText(CartSize() + " - Go to Checkout");
 
         for (Gift gift : gifts) {
             loadImage(gift.getSubtype());
@@ -141,7 +143,7 @@ public class GiftCartPaneController {
             if (quantityInCart == 0) cart.put(gift.getSubtype(), 0);
             if (Integer.parseInt(gift.getInventory()) - quantityInCart > 0) {
                 cart.replace(gift.getSubtype(), quantityInCart + 1);
-                checkoutButton.setText(cart.size() + " - Go to Checkout");
+                checkoutButton.setText(CartSize() + " - Go to Checkout");
                 addedToCartPane.setVisible(true);
                 loaderHelper.showAndFade(addedToCart);
 
@@ -178,9 +180,42 @@ public class GiftCartPaneController {
     public void toToCheckout() throws IOException {
         cache.cacheCart(cart);
 
-        Region n = loaderHelper.getFXMLLoader("requests/GiftCheckoutPane").load();
-        stackPane.getChildren().add(n);
-        n.prefWidthProperty().bind(stackPane.widthProperty());
-        n.prefHeightProperty().bind(stackPane.heightProperty());
+        checkoutFXML = loaderHelper.getFXMLLoader("requests/GiftCheckoutPane").load();
+        stackPane.getChildren().add(checkoutFXML);
+        checkoutFXML.prefWidthProperty().bind(stackPane.widthProperty());
+        checkoutFXML.prefHeightProperty().bind(stackPane.heightProperty());
+        createBackButton();
     }
+
+    private int CartSize() {
+        int cartSize = 0;
+        for (String giftName : cart.keySet()) {
+            cartSize += cart.get(giftName);
+        }
+        return cartSize;
+    }
+
+    private void createBackButton(){
+        JFXButton backButton = new JFXButton("<");
+        backButton.setStyle("-fx-background-color: #0e2d57;" +
+                "-fx-pref-width: 40;" +
+                "-fx-pref-height: 40;" +
+                "-fx-background-radius: 20;" +
+                "-fx-font-size: 15;" +
+                "-fx-text-fill: white;" +
+                "-fx-font-weight: bolder;");
+        backButton.setOnAction(returnToCart);
+        backPane = new AnchorPane(backButton);
+        backPane.setPickOnBounds(false);
+        backPane.setTopAnchor(backButton,10.0);
+        backPane.setLeftAnchor(backButton, 10.0);
+        stackPane.getChildren().add(backPane);
+    }
+
+    EventHandler<ActionEvent> returnToCart = new EventHandler<>() {
+        public void handle(ActionEvent e) {
+            stackPane.getChildren().remove(checkoutFXML);
+            stackPane.getChildren().remove(backPane);
+        }
+    };
 }

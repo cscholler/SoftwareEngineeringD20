@@ -238,9 +238,9 @@ public class DatabaseCache implements IDatabaseCache {
     public void updateInventory() {
         ArrayList<SQLEntry> updates = new ArrayList<>();
 
-        for(String giftType : cartCache.keySet()) {
-            for(Gift gift : giftsCache) {
-                if(gift.getSubtype().equals(giftType)) {
+        for (String giftType : cartCache.keySet()) {
+            for (Gift gift : giftsCache) {
+                if (gift.getSubtype().equals(giftType)) {
                     gift.setInventory(Integer.toString(Integer.parseInt(gift.getInventory()) - cartCache.get(giftType)));
                     ArrayList<String> values = new ArrayList<>();
                     values.add(gift.getInventory());
@@ -253,12 +253,12 @@ public class DatabaseCache implements IDatabaseCache {
     }
 
     @Override
-    public void cacheCart(Map<String,Integer> cart) {
+    public void cacheCart(Map<String, Integer> cart) {
         cartCache = cart;
     }
 
     @Override
-    public Map<String,Integer> getCartCache() {
+    public Map<String, Integer> getCartCache() {
         return cartCache;
     }
 
