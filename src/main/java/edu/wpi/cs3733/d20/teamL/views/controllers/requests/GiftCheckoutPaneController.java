@@ -42,7 +42,7 @@ public class GiftCheckoutPaneController {
     @FXML
     private TableColumn giftColumn, qtyColumn, removeColumn;
     @FXML
-    private JFXTextField firstNameText, lastNameText, senderText;
+    private JFXTextField firstNameText, lastNameText, senderText, confirmation;
     @FXML
     private JFXTextArea additionalNotesText, specialMessageText;
 
