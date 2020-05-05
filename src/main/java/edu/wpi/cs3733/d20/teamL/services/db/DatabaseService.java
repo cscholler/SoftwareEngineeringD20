@@ -323,7 +323,11 @@ public class DatabaseService extends Service implements IDatabaseService {
 		ArrayList<SQLEntry> updates = new ArrayList<>();
 		CSVHelper csvReader = new CSVHelper();
 		for (ArrayList<String> row : csvReader.readCSVFile(csvFile, true)) {
-			updates.add(new SQLEntry(getTableUpdateMappings().get(tableName).get(0), row));
+			//updates.add(new SQLEntry(getTableUpdateMappings().get(tableName).get(0), row));
+			if (tableName.equals("Nodes"))
+				updates.add(new SQLEntry(DBConstants.ADD_NODE, row));
+			else if (tableName.equals("Edges"))
+				updates.add(new SQLEntry(DBConstants.ADD_EDGE, row));
 		}
 		executeUpdates(updates);
 	}
