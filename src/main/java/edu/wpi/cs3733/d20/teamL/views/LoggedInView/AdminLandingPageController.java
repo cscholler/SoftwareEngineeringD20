@@ -7,6 +7,7 @@ import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import edu.wpi.cs3733.d20.teamL.util.TableEntityWrapper;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -15,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -24,9 +26,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.ResourceBundle;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 
@@ -51,6 +52,8 @@ public class AdminLandingPageController implements Initializable {
 	private JFXTreeTableView<TableEntityWrapper.TableDoctor> doctorsTable;
 	@FXML
 	private JFXButton btnChangePass;
+	@FXML
+	private Label timeLabel;
     @Inject
     private ILoginManager loginManager;
     @Inject
@@ -58,8 +61,11 @@ public class AdminLandingPageController implements Initializable {
     @Inject
 	private IDatabaseCache cache;
 
+	private final Timer timer = new Timer();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+		timer.scheduleAtFixedRate(timerWrapper(this::updateTime), 0, 1000);
 		tableSelector.setItems(tableOptions);
 		tableSelector.getSelectionModel().select(0);
 		hideAllTablesExceptCurrent("Nodes");
@@ -650,5 +656,19 @@ public class AdminLandingPageController implements Initializable {
 		} catch (IOException ex) {
 			log.error("Encountered IOException", ex);
 		}
+	}
+
+	private TimerTask timerWrapper(Runnable r) {
+		return new TimerTask() {
+			@Override
+			public void run() {
+				r.run();
+			}
+		};
+	}
+
+	private void updateTime() {
+		;
+		Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("E, MMM d | h:mm aa").format(new Date())));
 	}
 }
