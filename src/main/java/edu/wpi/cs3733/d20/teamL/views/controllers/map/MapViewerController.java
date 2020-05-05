@@ -218,8 +218,34 @@ public class MapViewerController {
      */
     @FXML
     public void navigate() {
-        Node startNode = sf.getNode(startingPoint.getText());
-        Node destNode = sf.getNode(destination.getText());
+        String start = startingPoint.getText();
+        String end = destination.getText();
+        String buildingS;
+        String buildingE;
+        String floorS = start.substring(start.length()-2,start.length()-1);
+        String floorE = end.substring(end.length()-2,end.length()-1);
+
+
+        if(start.contains("(Faulkner"))
+        {
+            start= start.substring(0, start.length()-15);
+            buildingS = "Faulkner";
+        }else if(start.contains("(BTM")){
+            start= start.substring(0, start.length()-10);
+            buildingS = "BTM";
+        }
+        if(end.contains("(Faulkner"))
+        {
+            end= end.substring(0, end.length()-15);
+            buildingE = "Faulkner";
+        }else if(end.contains("(BTM")){
+            end= end.substring(0, end.length()-10);
+            buildingE = "BTM";
+        }
+
+        Node startNode = sf.getNode(start);
+        Node destNode = sf.getNode(end);
+
 
         if (!(startNode.getBuilding().equals(map.getBuilding().getName()))) {
             map.setBuilding(startNode.getBuilding());
