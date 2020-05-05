@@ -8,63 +8,80 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="services-pane-jfx" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.GiftCheckoutPaneController">
-   <center>
-      <VBox alignment="CENTER" BorderPane.alignment="CENTER">
-         <children>
-            <HBox alignment="TOP_CENTER" prefHeight="360.0" prefWidth="895.0" spacing="50.0">
+
+<StackPane styleClass="services-pane-jfx" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.GiftCheckoutPaneController">
+   <children>
+      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="services-pane-jfx" stylesheets="@../../css/GlobalStyleSheet.css">
+         <center>
+            <VBox alignment="CENTER" BorderPane.alignment="CENTER">
                <children>
-                  <VBox alignment="TOP_CENTER" prefHeight="525.0" prefWidth="346.0" spacing="10.0">
+                  <HBox alignment="TOP_CENTER" prefHeight="360.0" prefWidth="895.0" spacing="50.0">
                      <children>
-                        <Label styleClass="service-request-label-fx" text="Your order">
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                        </Label>
-                        <ScrollPane hbarPolicy="NEVER" prefHeight="300.0" prefWidth="350.0">
-                           <content>
-                              <TableView fx:id="orderTable" prefWidth="350.0">
-                                <columns>
-                                  <TableColumn fx:id="giftColumn" maxWidth="1.7976931348623157E308" prefWidth="180.0" text="Gift" />
-                                  <TableColumn fx:id="qtyColumn" maxWidth="1.7976931348623157E308" prefWidth="75.0" text="Qty." />
-                                    <TableColumn fx:id="removeColumn" maxWidth="1.7976931348623157E308" prefWidth="75.0" text="Remove" />
-                                </columns>
-                              </TableView>
-                           </content>
-                        </ScrollPane>
+                        <VBox alignment="TOP_CENTER" prefHeight="525.0" prefWidth="346.0" spacing="20.0">
+                           <children>
+                              <Label styleClass="service-request-label-fx" text="Your order">
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <ScrollPane hbarPolicy="NEVER" prefHeight="300.0" prefWidth="350.0">
+                                 <content>
+                                    <TableView fx:id="orderTable" prefWidth="350.0">
+                                      <columns>
+                                        <TableColumn fx:id="giftColumn" maxWidth="1.7976931348623157E308" prefWidth="180.0" text="Gift" />
+                                        <TableColumn fx:id="qtyColumn" maxWidth="1.7976931348623157E308" prefWidth="75.0" text="Qty." />
+                                          <TableColumn fx:id="removeColumn" maxWidth="1.7976931348623157E308" prefWidth="75.0" text="Remove" />
+                                      </columns>
+                                    </TableView>
+                                 </content>
+                              </ScrollPane>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" prefHeight="525.0" prefWidth="302.0" spacing="20.0">
+                           <children>
+                              <Label styleClass="service-request-label-fx" text="Delivery details">
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <JFXTextField fx:id="firstNameText" promptText="Patient first name" styleClass="text-field-jfx" />
+                              <JFXTextField fx:id="lastNameText" promptText="Patient last name" styleClass="text-field-jfx" />
+                              <JFXTextField fx:id="senderText" promptText="Sender name" styleClass="text-field-jfx" />
+                              <JFXTextArea fx:id="additionalNotesText" promptText="Delivery instructions" styleClass="text-area-jfx" />
+                           </children>
+                        </VBox>
                      </children>
-                  </VBox>
-                  <VBox alignment="TOP_CENTER" prefHeight="525.0" prefWidth="302.0" spacing="10.0">
-                     <children>
-                        <Label styleClass="service-request-label-fx" text="Delivery details">
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                        </Label>
-                        <JFXTextField fx:id="firstNameText" promptText="Patient first name" styleClass="text-field-jfx" />
-                        <JFXTextField fx:id="lastNameText" promptText="Patient last name" styleClass="text-field-jfx" />
-                        <JFXTextField fx:id="senderText" promptText="Sender name" styleClass="text-field-jfx" />
-                        <JFXTextArea fx:id="additionalNotesText" promptText="Delivery instructions" styleClass="text-area-jfx" />
-                     </children>
-                  </VBox>
+                  </HBox>
+                  <JFXTextArea fx:id="specialMessageText" promptText="Special Message" styleClass="text-area-jfx">
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </JFXTextArea>
                </children>
-            </HBox>
-            <JFXTextArea fx:id="specialMessageText" promptText="Special Message" styleClass="text-area-jfx" />
-         </children>
-         <BorderPane.margin>
-            <Insets bottom="10.0" />
-         </BorderPane.margin>
-      </VBox>
-   </center>
-   <bottom>
-      <JFXButton onAction="#placeOrder" styleClass="save-button-jfx" text="Place Order" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets bottom="10.0" />
-         </BorderPane.margin>
-      </JFXButton>
-   </bottom>
-</BorderPane>
+               <BorderPane.margin>
+                  <Insets bottom="10.0" />
+               </BorderPane.margin>
+            </VBox>
+         </center>
+         <bottom>
+            <JFXButton onAction="#placeOrder" styleClass="save-button-jfx" text="Place Order" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="10.0" />
+               </BorderPane.margin>
+            </JFXButton>
+         </bottom>
+      </BorderPane>
+      <ImageView fx:id="requestReceived" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../../assets/service_icons/serviceRecieved.png" />
+         </image>
+      </ImageView>
+   </children>
+</StackPane>
