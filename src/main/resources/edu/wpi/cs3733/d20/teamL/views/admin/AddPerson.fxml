@@ -9,7 +9,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -77,46 +76,53 @@
                      <right>
                         <Pane prefHeight="563.0" prefWidth="150.0" BorderPane.alignment="CENTER" />
                      </right>
+                     <bottom>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="70.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <JFXButton fx:id="btnCancel" onAction="#setBtnCancel" styleClass="cancel-button-jfx" text="Cancel" />
+                              <JFXButton onAction="#submitClicked" styleClass="save-button-jfx" text="Submit" />
+                           </children>
+                        </HBox>
+                     </bottom>
                   </BorderPane>
               </content>
             </Tab>
             <Tab text="Add Doctor">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <HBox alignment="CENTER" layoutX="400.0" layoutY="166.0" prefHeight="562.8" prefWidth="800.0" spacing="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <BorderPane>
+                     <center>
+                        <HBox alignment="CENTER" prefHeight="562.8" prefWidth="800.0" spacing="30.0">
                            <children>
                               <VBox alignment="TOP_CENTER" prefHeight="563.0" prefWidth="300.0" spacing="40.0">
                                  <children>
                                     <JFXTextField fx:id="doctorFN" promptText="Doctor First Name" styleClass="text-field-jfx" />
-                                    <JFXTextField fx:id="DoctorLN" promptText="Doctor Last Name" styleClass="text-field-jfx" />
+                                    <JFXTextField fx:id="doctorLN" promptText="Doctor Last Name" styleClass="text-field-jfx" />
                                     <JFXTextField fx:id="docID" promptText="Doctor ID" styleClass="text-field-jfx" />
                                  </children>
                                  <padding>
                                     <Insets top="126.0" />
                                  </padding>
                               </VBox>
-                              <VBox alignment="CENTER" prefHeight="563.0" prefWidth="300.0" spacing="40.0">
+                              <VBox alignment="CENTER" prefHeight="563.0" prefWidth="300.0" spacing="30.0">
                                  <children>
-                                    <JFXTextField fx:id="emailText" promptText="Email" styleClass="text-field-jfx" />
-                                    <JFXTextField fx:id="OfficeText" promptText="Office " styleClass="text-field-jfx" />
+                                    <JFXTextField fx:id="officeText" onKeyTyped="#autocomplete" promptText="Office " styleClass="text-field-jfx" />
                                     <JFXTextArea fx:id="addlInfoText" promptText="Additonal Information" styleClass="text-area-jfx" />
                                  </children>
                               </VBox>
                            </children>
                         </HBox>
-                     </children>
-                  </AnchorPane>
+                     </center>
+                     <bottom>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="70.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <JFXButton fx:id="btnCancel" onAction="#setBtnCancel" styleClass="cancel-button-jfx" text="Cancel" />
+                              <JFXButton fx:id="btnSubmit" onAction="#btnSubmitClicked" styleClass="save-button-jfx" text="Submit" />
+                           </children>
+                        </HBox>
+                     </bottom>
+                  </BorderPane>
                </content>
             </Tab>
          </tabs></JFXTabPane>
    </center>
-   <bottom>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="70.0" BorderPane.alignment="CENTER">
-         <children>
-            <JFXButton fx:id="btnCancel" styleClass="cancel-button-jfx" text="Cancel" />
-            <JFXButton fx:id="btnSubmit" styleClass="save-button-jfx" text="Submit" />
-         </children>
-      </HBox>
-   </bottom>
 </BorderPane>
