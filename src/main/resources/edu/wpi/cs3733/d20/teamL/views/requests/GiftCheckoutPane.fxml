@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-
+<?import javafx.scene.text.Font?>
 
 <StackPane styleClass="services-pane-jfx" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.GiftCheckoutPaneController">
    <children>
@@ -26,7 +26,7 @@
                      <children>
                         <VBox alignment="TOP_CENTER" prefHeight="525.0" prefWidth="346.0" spacing="20.0">
                            <children>
-                              <Label styleClass="service-request-label-fx" text="Your order">
+                              <Label fx:id="orderTxt" styleClass="service-request-label-fx" text="Your order">
                                  <VBox.margin>
                                     <Insets top="10.0" />
                                  </VBox.margin>
@@ -64,6 +64,14 @@
                         <Insets top="20.0" />
                      </VBox.margin>
                   </JFXTextArea>
+                  <Label fx:id="confirmation" text="Submission Failed" visible="false">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </Label>
                </children>
                <BorderPane.margin>
                   <Insets bottom="10.0" />

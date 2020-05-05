@@ -100,7 +100,7 @@ public class DatabaseCache implements IDatabaseCache {
             updates.add(new SQLEntry(DBConstants.UPDATE_NODE, currentNode));
         }
 
-        db.executeUpdates(updates); // TODO: Fix SQL error by preventing from adding duplicate nodes
+        db.executeUpdates(updates);
         // Clear added, edited, and deleted nodes from cache
         addedNodes.clear();
         addedEdges.clear();

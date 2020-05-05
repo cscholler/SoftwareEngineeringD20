@@ -110,6 +110,20 @@ public class Path implements Iterable<Node> {
         return newPath;
     }
 
+    public int getPathTime(String transportation) {
+        int time = 0;
+        for(int i = 0; i < pathNodes.size() - 1; i++) {
+            Edge edge = pathNodes.get(i).getEdge(pathNodes.get(i+1));
+            if(edge.getSource().getBuilding().equals(edge.getDestination().getBuilding())) {
+                if(transportation.equals("driving")) time += 10000;
+                else if (transportation.equals("walking")) time += 100000;
+            } else {
+                time += edge.getLength();
+            }
+        }
+        return time;
+    }
+
     public void generateTextMessage() {
         ArrayList<Node> subpath = new ArrayList<>();
 
@@ -152,7 +166,16 @@ public class Path implements Iterable<Node> {
                 lefts = 0;
                 subpaths.add(addSubPath(subpath));
                 subpath.clear();
-            } else {
+            }  else if(!curr.getBuilding().equals(next.getBuilding())) {
+                message.add("Navigate from " + curr.getBuilding() + " to " + next.getBuilding() + ".");
+
+                lastRoom = null;
+                rights = 0;
+                lefts = 0;
+                subpaths.add(addSubPath(subpath));
+                subpath.clear();
+            }
+            else {
                 if (angle > 10) {
                     StringBuilder builder = new StringBuilder();
                     sign = determineDirection(start, end);
@@ -174,8 +197,6 @@ public class Path implements Iterable<Node> {
                         lastStatement = false;
                     }
                     builder.append(".");
-
-
 
                     lastRoom = null;
                     rights = 0;

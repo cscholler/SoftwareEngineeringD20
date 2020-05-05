@@ -22,10 +22,7 @@ import javafx.scene.paint.Color;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class MaintenancePaneController implements Initializable {
     @FXML
@@ -87,12 +84,38 @@ public class MaintenancePaneController implements Initializable {
 
     @FXML
     private void submit() {
-        if (fieldsFilled()) {
-            String notes = urgency.getSelectionModel().getSelectedItem().toString() + "|" + description.getText();
-            String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm aa").format(new Date());
+        String urge = null;
+        String manType = null;
 
-            ArrayList<String> params = new ArrayList<>(Arrays.asList(null, loginManager.getCurrentUser().getUsername(), null, searchFields.getNode(location.getText()).getID(),
-                    "maintenance", type.getSelectionModel().getSelectedItem().toString(), notes, "0", dateAndTime));
+        if(type.getSelectionModel().getSelectedItem() != null) {
+            manType = type.getSelectionModel().getSelectedItem().toString();
+        }
+        if(urgency.getSelectionModel().getSelectedItem() != null) {
+            urge = urgency.getSelectionModel().getSelectedItem().toString();
+        }
+        String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm aa").format(new Date());
+        String roomNum = location.getText() == null ? searchFields.getNode(location.getText()).getID() : null;
+
+        String notes = urge + "|" + description.getText();
+
+        boolean validFields = true;
+
+        if(urge == null || urge.length() == 0) {
+            urgency.setStyle("-fx-prompt-text-fill: RED");
+            validFields = false;
+        } else urgency.setStyle("-fx-prompt-text-fill: GRAY");
+        if(roomNum == null || roomNum.length() == 0) {
+           location.setStyle("-fx-prompt-text-fill: RED");
+            validFields = false;
+        } else location.setStyle("-fx-text-fill: GRAY");
+        if(manType == null || manType.length() == 0) {
+            type.setStyle("-fx-prompt-text-fill: RED");
+            validFields = false;
+        } else type.setStyle("-fx-text-fill: GRAY");
+
+        if(validFields){
+            ArrayList<String> params = new ArrayList<>(Arrays.asList(null, loginManager.getCurrentUser().getUsername(), null, roomNum,
+                    "maintenance", manType, notes, "0", dateAndTime));
             int rows = dbService.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST, params));
 
             if (rows == 0) {
@@ -105,7 +128,7 @@ public class MaintenancePaneController implements Initializable {
                 loaderHelper.showAndFade(requestReceived);
             }
         } else {
-            error.setText("Please fill in all fields");
+            error.setText("Please fill in all fields correctly");
             error.setTextFill(Color.RED);
             loaderHelper.showAndFade(error);
         }
