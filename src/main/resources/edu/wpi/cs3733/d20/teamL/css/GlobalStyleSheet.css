@@ -40,6 +40,11 @@
     -fx-padding: 0 0 0 30;
 }
 
+.bottom-bar-user-label-fx {
+    -fx-text-fill: white;
+    -fx-font-size:30;
+}
+
 .bottom-bar-logout-label-fx {
     -fx-text-fill: white;
     -fx-underline: true;
