@@ -27,10 +27,7 @@ import javafx.scene.paint.Color;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class InterpreterPaneController implements Initializable {
     public JFXButton btnSpanish;
@@ -53,7 +50,7 @@ public class InterpreterPaneController implements Initializable {
     @Inject
     private ILoginManager loginManager;
     @FXML
-    private Label confirmation, interpType;
+    private Label confirmation, interpType, languageTxt;
     @FXML
     private JFXButton btnBack, btnSubmit;
     @FXML
@@ -100,8 +97,7 @@ public class InterpreterPaneController implements Initializable {
             String patientID = patientIDText.getText();
             String roomNumber = roomNumText.getText() == null ? sf.getNode(roomNumText.getText()).getID() : null;
             String additionalInfo = additionalText.getText();
-            String pFirstName = patientFN.getText();
-
+            String firstName = patientFN.getText();
 
             // Status codes-- 0: pending, 1: approved, 2: assigned, 3: denied
             String status = "0";
@@ -111,15 +107,30 @@ public class InterpreterPaneController implements Initializable {
             //patient_id, request_username, assignee_username, location, service, type, notes, status, date_and_time
 
             String concatenatedNotes = additionalInfo;
-            int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
+
+            boolean validFields = true;
+
+            if(interpreterType == null || interpreterType.length() == 0) {
+                languageTxt.setStyle("-fx-text-fill: RED");
+                validFields = false;
+            } else interpType.setStyle("-fx-text-fill: GRAY");
+            if(db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_NAME, new ArrayList<>(Collections.singletonList(patientID))))).size() == 0) {
+                patientIDText.setStyle("-fx-prompt-text-fill: RED");
+                validFields = false;
+            } else patientIDText.setStyle("-fx-text-fill: GRAY");
+            if(roomNumber == null || roomNumber.length() == 0) {
+                roomNumText.setStyle("-fx-prompt-text-fill: RED");
+                validFields = false;
+            } else roomNumText.setStyle("-fx-text-fill: GRAY");
+
+            int rows = 0;
+            if(validFields) rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
                     new ArrayList<>(Arrays.asList(patientID, user, null, roomNumber, "interpreter", interpreterType, concatenatedNotes, status, dateAndTime)))));
 
             if(rows == 0) {
-                confirmation.setVisible(true);
                 confirmation.setTextFill(Color.RED);
                 confirmation.setText("Submission failed");
             } else {
-                confirmation.setVisible(true);
                 confirmation.setTextFill(Color.WHITE);
                 confirmation.setText("");
 
@@ -131,7 +142,7 @@ public class InterpreterPaneController implements Initializable {
 
                 loaderHelper.showAndFade(requestReceived);
             }
-
+            confirmation.setVisible(true);
             loaderHelper.showAndFade(confirmation);
         }
 
