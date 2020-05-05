@@ -117,18 +117,18 @@ public class MapViewerController {
         map.setHighLightColor(Color.GOLD);
         btnNavigate.setDisableVisualFocus(true);
 
+        // Import all the nodes from the cache and set the current building to Faulkner
         String startB = "Faulkner";
         Building faulkner = cache.getBuilding("Faulkner");
         Building btm = cache.getBuilding("BTM");
 
         if(!faulkner.getNodes().isEmpty()) map.setBuilding(faulkner);
         if(!btm.getNodes().isEmpty()) map.getBuildings().add(btm);
+        buildingChooser.getItems().addAll("Faulkner", "BTM");
         buildingChooser.getSelectionModel().select(startB);
 
         // Add floor buttons
         generateFloorButtons();
-
-        buildingChooser.getItems().addAll("Faulkner", "BTM");
 
         setFloor(2);
 
@@ -173,19 +173,7 @@ public class MapViewerController {
     }
 
     private void generateFloorButtons() {
-        while (floorSelector.getChildren().size() > 2) {
-            floorSelector.getChildren().remove(1);
-        }
-        for (Floor floor : map.getBuilding().getFloors()) {
-            JFXButton newButton = new JFXButton();
-            newButton.setButtonType(JFXButton.ButtonType.RAISED);
-            newButton.getStylesheets().add("edu/wpi/cs3733/d20/teamL/css/MapStyles.css");
-            newButton.setText(floor.getFloorAsString());
-            newButton.setOnAction(this::handleFloor);
-            newButton.getStyleClass().add("floor-buttons");
-
-            floorSelector.getChildren().add(1, newButton);
-        }
+        map.generateFloorButtons(floorSelector, this::handleFloor);
     }
 
     @FXML
@@ -271,7 +259,7 @@ public class MapViewerController {
         }
 
 
-        path = pathfinderService.pathfind(map.getBuilding(), source, destination);
+        path = pathfinderService.pathfind(map.getAllNodes(), source, destination);
         highLightPath();
 
         path.generateTextMessage();

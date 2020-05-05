@@ -83,7 +83,8 @@ public class MapEditorController {
     private Path path = new Path();
 
     private final List<String> types = Arrays.asList("HALL", "ELEV", "REST", "STAI", "DEPT", "LABS", "INFO", "CONF", "EXIT", "RETL", "SERV");
-    private int floor = 2;
+    private int defaultFloor = 2;
+    private String defaultBuilding = "Faulkner";
 
     private Image breadthFirstIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map_editor/Breath First.png", 100, 0, true, false, true);
     private Image depthFirstIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map_editor/DepthFirst.png", 100, 0, true, false, true);
@@ -100,7 +101,7 @@ public class MapEditorController {
         coreShortcuts();
 
         pathFind.setOnAction(event -> {
-            path = pathfinder.pathfind(map.getBuilding(), sf.getNode(startNode.getText()), sf.getNode(endNode.getText()));
+            path = pathfinder.pathfind(map.getAllNodes(), sf.getNode(startNode.getText()), sf.getNode(endNode.getText()));
 
             highlightPath();
         });
@@ -118,11 +119,12 @@ public class MapEditorController {
 
         map.setZoomLevel(0.65);
 
+        // Add options for buildings and select Faulkner by default
         buildingChooser.getItems().addAll("Faulkner", "BTM");
-        buildingChooser.getSelectionModel().select("Faulkner");
+        buildingChooser.getSelectionModel().select(defaultBuilding);
 
         generateFloorButtons();
-        setFloor(2);
+        setFloor(defaultFloor);
 
         //Hides the node editor VBox
         editor.setPrefWidth(0);
@@ -151,19 +153,7 @@ public class MapEditorController {
     }
 
     private void generateFloorButtons() {
-        while (floorSelector.getChildren().size() > 2) {
-            floorSelector.getChildren().remove(1);
-        }
-        for (Floor floor : map.getBuilding().getFloors()) {
-            JFXButton newButton = new JFXButton();
-            newButton.setButtonType(JFXButton.ButtonType.RAISED);
-            newButton.getStylesheets().add("edu/wpi/cs3733/d20/teamL/css/MapStyles.css");
-            newButton.setText(floor.getFloorAsString());
-            newButton.setOnAction(this::changeFloor);
-            newButton.getStyleClass().add("floor-buttons");
-
-            floorSelector.getChildren().add(1, newButton);
-        }
+        map.generateFloorButtons(floorSelector, this::changeFloor);
     }
 
     @FXML
@@ -234,27 +224,11 @@ public class MapEditorController {
     }
 
     @FXML
-    private void quit() {
-        cache.updateDB();
-        Platform.exit();
-    }
-
-    @FXML
     private void saveToDB() {
-        Graph nodes = new Graph();
-        for (Building building : map.getBuildings()) {
-            nodes.addAllNodes(building);
-        }
-        //ArrayList<Edge> blackList = new ArrayList<>();
-        ArrayList<Edge> newEdges = new ArrayList<>(nodes.getEdgesOneWay());
 
-        /*for (Node node : nodes) {
-            for (Edge edge : node.getEdges()) {
-                if (!newEdges.contains(edge) && blackList.contains(edge)) newEdges.add(edge);
-                if (edge.getDestination().getNeighbors().contains(node))
-                    blackList.add(edge.getDestination().getEdge(node));
-            }
-        }*/
+        Graph nodes = map.getAllNodes();
+
+        ArrayList<Edge> newEdges = new ArrayList<>(nodes.getEdgesOneWay());
 
         cache.cacheNodes(new ArrayList<>(nodes.getNodes()), map.getEditedNodes());
         cache.cacheEdges(newEdges);
@@ -310,8 +284,9 @@ public class MapEditorController {
             Graph newGraph = MapParser.parseMapToGraph(data.getNodeFile(), data.getEdgeFile());
             Building faulkner = new Building("Faulkner", newGraph);
             Building BTM = new Building("BTM", newGraph);
-            map.setBuilding(faulkner);
+            map.getBuildings().add(faulkner);
             map.getBuildings().add(BTM);
+            map.setBuilding(defaultBuilding);
         }
     }
 
@@ -320,8 +295,9 @@ public class MapEditorController {
         Building faulkner = cache.getBuilding("Faulkner");
         Building btm = cache.getBuilding("BTM");
 
-        if(!faulkner.getNodes().isEmpty()) map.setBuilding(faulkner);
-        if(!btm.getNodes().isEmpty()) map.setBuilding(btm);
+        if(!faulkner.getNodes().isEmpty()) map.getBuildings().add(faulkner);
+        if(!btm.getNodes().isEmpty()) map.getBuildings().add(btm);
+        map.setBuilding(defaultBuilding);
     }
 
     @FXML
@@ -564,13 +540,13 @@ public class MapEditorController {
      */
     @FXML
     private void editConnections() {
-        closeConnections();
+        edgeList.getChildren().clear();
         nodeConnectionsTab.setPrefWidth(200);
         nodeConnectionsTab.setVisible(true);
 
         Collection<Edge> edges = map.getSelectedNode().getEdges();
         for (Edge edge : edges) {
-            EdgeField newEdgeField = new EdgeField(map.getBuilding());
+            EdgeField newEdgeField = new EdgeField(map.getAllNodes());
             newEdgeField.setText(edge.getDestination().getID());
 
             edgeList.getChildren().add(newEdgeField);
@@ -601,10 +577,11 @@ public class MapEditorController {
         // Add the new set of edges from the connection editing pane
         for (javafx.scene.Node node : edgeList.getChildren()) {
             EdgeField edgeField = (EdgeField) node;
-            Node destination = map.getBuilding().getNode(edgeField.getText());
+            Node destination = map.getAllNodes().getNode(edgeField.getText());
 
             selectedNode.addEdgeTwoWay(destination);
-            map.addEdge(selectedNode.getEdge(destination));
+            if (destination.getFloor() == map.getFloor() && destination.getBuilding().equals(map.getBuilding().getName()))
+                map.addEdge(selectedNode.getEdge(destination));
         }
 
         closeConnections();
@@ -612,7 +589,7 @@ public class MapEditorController {
 
     @FXML
     private void addConnection() {
-        edgeList.getChildren().add(new EdgeField(map.getBuilding()));
+        edgeList.getChildren().add(new EdgeField(map.getAllNodes()));
     }
 
     private void closeConnections() {
