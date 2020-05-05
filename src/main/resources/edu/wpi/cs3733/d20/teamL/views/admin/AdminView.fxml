@@ -85,6 +85,7 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
+                  <JFXButton fx:id="btnChangePass" onAction="#changePasswordClicked" styleClass="database-buttons-jfx" visible="false" />
                </children>
             </HBox>
             <JFXComboBox fx:id="tableSelector" layoutX="47.0" layoutY="13.0" maxHeight="60.0" maxWidth="366.0" minWidth="366.0" onAction="#tableSelected" prefHeight="60.0" prefWidth="366.0" style="-fx-min-width: 400;" styleClass="combo-box-jfx" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="10.0" />
