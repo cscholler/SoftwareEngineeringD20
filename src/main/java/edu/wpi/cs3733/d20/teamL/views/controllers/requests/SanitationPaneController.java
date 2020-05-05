@@ -82,11 +82,11 @@ public class SanitationPaneController {
 
         boolean validFields = true;
 
-        if(!bioHazardCheckBox.isSelected()) {
+        if(serviceTags.equals("")) {
             tagTxt.setStyle("-fx-text-fill: RED");
             validFields = false;
         } else tagTxt.setStyle("-fx-text-fill: GRAY");
-        if(highPriorityBox.isSelected()) {
+        if(priorityLevel.equals("")) {
             priorityTxt.setStyle("-fx-text-fill: RED");
             validFields = false;
         } else priorityTxt.setStyle("-fx-text-fill: GRAY");
