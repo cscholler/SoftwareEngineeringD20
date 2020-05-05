@@ -180,6 +180,8 @@ public class MapViewerController {
         int prevFloor = map.getFloor();
         generateFloorButtons();
         setFloor(Math.max(map.getBuilding().getMinFloor(), Math.min(prevFloor, map.getBuilding().getMaxFloor())));
+
+        if (!path.getPathNodes().isEmpty()) highLightPath();
     }
 
     @FXML
@@ -251,7 +253,6 @@ public class MapViewerController {
             map.resetNodeVisibility(start);
             map.resetNodeVisibility(end);
         }
-
 
         path = pathfinderService.pathfind(map.getAllNodes(), source, destination);
         highLightPath();
