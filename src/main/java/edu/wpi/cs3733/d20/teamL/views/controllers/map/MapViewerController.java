@@ -231,7 +231,6 @@ public class MapViewerController {
             btnQR.setVisible(true);
             textDirNode.setDisable(false);
             textDirNode.setVisible(true);
-
         }
     }
 
