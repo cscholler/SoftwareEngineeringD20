@@ -26,7 +26,7 @@
                      <children>
                         <VBox alignment="TOP_CENTER" prefHeight="525.0" prefWidth="346.0" spacing="20.0">
                            <children>
-                              <Label styleClass="service-request-label-fx" text="Your order">
+                              <Label fx:id="orderTxt" styleClass="service-request-label-fx" text="Your order">
                                  <VBox.margin>
                                     <Insets top="10.0" />
                                  </VBox.margin>

@@ -94,17 +94,48 @@ public class MedicationPaneController implements Initializable {
 		String patientLName = patLNameText.getText();
 		String roomNum = roomNumText.getText();
 		String additionalInfo = addInfoText.getText();
+		String doctorID = "";
+		String patientID = "";
+		String patientRoomNum = "";
 
 		// Status codes-- 0: pending, 1: approved, 2: delivered, 3: denied,
 		String status = "0";
 		String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm aa").format(new Date());
 		String nurseUsername = loginManager.getCurrentUser().getUsername();
 		// Adds request info to database
-		String doctorID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_DOCTOR_ID_BY_NAME, new ArrayList<>(Arrays.asList(doctorFName, doctorLName))))).get(0).get(0);
-		String patientID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ID, new ArrayList<>(Arrays.asList(patientFName, patientLName))))).get(0).get(0);
-		String patientRoomNum = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ROOM, new ArrayList<>(Collections.singletonList(patientID))))).get(0).get(0);
+
+		boolean validFields = true;
+
+		if(db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ID, new ArrayList<>(Arrays.asList(patientFName, patientLName))))).size() == 0) {
+			patFNameText.setStyle("-fx-prompt-text-fill: RED");
+			patLNameText.setStyle("-fx-prompt-text-fill: RED");
+			validFields = false;
+		} else {
+			patFNameText.setStyle("-fx-prompt-text-fill: GRAY");
+			patLNameText.setStyle("-fx-prompt-text-fill: GRAY");
+			patientID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ID, new ArrayList<>(Arrays.asList(patientFName, patientLName))))).get(0).get(0);
+			patientRoomNum = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ROOM, new ArrayList<>(Collections.singletonList(patientID))))).get(0).get(0);
+		}
+		if(db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_DOCTOR_ID_BY_NAME, new ArrayList<>(Arrays.asList(doctorFName, doctorLName))))).size() == 0) {
+			docFNameText.setStyle("-fx-prompt-text-fill: RED");
+			docLNameText.setStyle("-fx-prompt-text-fill: RED");
+			validFields = false;
+		} else {
+			docFNameText.setStyle("-fx-prompt-text-fill: GRAY");
+			docLNameText.setStyle("-fx-prompt-text-fill: GRAY");
+			doctorID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_DOCTOR_ID_BY_NAME, new ArrayList<>(Arrays.asList(doctorFName, doctorLName))))).get(0).get(0);
+		}
+		if(medType == null || medType.length() == 0) {
+			medTypeText.setStyle("-fx-prompt-text-fill: RED");
+			validFields = false;
+		} else medTypeText.setStyle("-fx-text-fill: GRAY");
+		if(dose == null || dose.length() == 0) {
+			doseText.setStyle("-fx-prompt-text-fill: RED");
+			validFields = false;
+		} else doseText.setStyle("-fx-text-fill: GRAY");
+
 		int rows = 0;
-		rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_MEDICATION_REQUEST, new ArrayList<>(Arrays.asList(doctorID, patientID, nurseUsername, null, dose, medType, additionalInfo, status, dateAndTime))));
+		if(validFields) rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_MEDICATION_REQUEST, new ArrayList<>(Arrays.asList(doctorID, patientID, nurseUsername, null, dose, medType, additionalInfo, status, dateAndTime))));
 		formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_MEDICATION_REQUESTS)));
 		if (rows == 0) {
 			lblConfirmation.setTextFill(Color.RED);

@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 
 public class SecurityPaneController {
@@ -53,7 +54,7 @@ public class SecurityPaneController {
     @FXML
     BorderPane borderPane;
     @FXML
-    private Label confirmation;
+    private Label confirmation, urgencyLbl;
 
     public void initialize() throws IOException {
         // restrict key input to numerals on personnel needed textfield
@@ -88,21 +89,47 @@ public class SecurityPaneController {
     @FXML
     private void handleSubmit() throws IOException {
         String id = patientIDText.getText();
-        String location = sf.getNode(locationText.getText()).getID();
+        String location = locationText.getText() == null ? sf.getNode(locationText.getText()).getID() : null;
         String reason = reasonText.getText();
         String notes = notesText.getText();
         String personnel = personnelText.getText();
+        String urgencyText = null;
 
         RadioButton rb = (RadioButton)urgency.getSelectedToggle();
-        String urgencyText = rb.getText();
+        if(rb != null) {
+            urgencyText = rb.getText();
+        }
 
         String status = "0";
         String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm aa").format(new Date());
         String concatenatedNotes = "Urgency: " + urgencyText + "\nPersonnel Needed: " + personnel + "\nReason: " + reason + "\nAdditional Notes: " + notes;
 
-        if(id.isEmpty() || location.isEmpty() || reason.isEmpty() || personnel.isEmpty()) {
+
             //TODO invalid input window
-        } else {
+            boolean validFields = true;
+
+            if(reason == null || reason.length() == 0) {
+                reasonText.setStyle("-fx-text-fill: RED");
+                validFields = false;
+            } else reasonText.setStyle("-fx-text-fill: GRAY");
+            if(db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_NAME, new ArrayList<>(Collections.singletonList(id))))).size() == 0) {
+                patientIDText.setStyle("-fx-prompt-text-fill: RED");
+                validFields = false;
+            } else patientIDText.setStyle("-fx-text-fill: GRAY");
+            if(location == null || location.length() == 0) {
+                locationText.setStyle("-fx-prompt-text-fill: RED");
+                validFields = false;
+            } else locationText.setStyle("-fx-text-fill: GRAY");
+            if(rb == null) {
+                urgencyLbl.setStyle("-fx-text-fill: RED");
+                validFields = false;
+            } else urgencyLbl.setStyle("-fx-text-fill: GRAY");
+            if(personnel == null || personnel.length() == 0) {
+                personnelText.setStyle("-fx-prompt-text-fill: RED");
+                validFields = false;
+            } else personnelText.setStyle("-fx-text-fill: GRAY");
+
+            if(validFields){
 
             int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
                     new ArrayList<>(Arrays.asList(null, manager.getCurrentUser().getUsername(), null, location, "security", null, concatenatedNotes, status, dateAndTime)))));

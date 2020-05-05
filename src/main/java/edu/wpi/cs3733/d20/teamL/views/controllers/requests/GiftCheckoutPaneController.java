@@ -42,9 +42,11 @@ public class GiftCheckoutPaneController {
     @FXML
     private TableColumn giftColumn, qtyColumn, removeColumn;
     @FXML
-    private JFXTextField firstNameText, lastNameText, senderText, confirmation;
+    private JFXTextField firstNameText, lastNameText, senderText;
     @FXML
     private JFXTextArea additionalNotesText, specialMessageText;
+    @FXML
+    private Label confirmation, orderTxt;
 
     @FXML
     public void initialize() {
@@ -100,7 +102,7 @@ public class GiftCheckoutPaneController {
     public void placeOrder(ActionEvent actionEvent) {
         String firstName = firstNameText.getText();
         String lastName = lastNameText.getText();
-        String patientID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ID, new ArrayList<>(Arrays.asList(firstName, lastName))))).get(0).get(0);
+        String patientID = "";
         String sender = senderText.getText();
         String deliveryInstructions = additionalNotesText.getText();
         String specialMessage = specialMessageText.getText();
@@ -116,17 +118,35 @@ public class GiftCheckoutPaneController {
             index ++;
         }
 
-        int rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_GIFT_DELIVERY_REQUEST, new ArrayList<>(Arrays.asList(patientID, sender, loginManager.getCurrentUser().getUsername(), null,
+        boolean validFields = true;
+
+        if(db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ID, new ArrayList<>(Arrays.asList(firstName, lastName))))).size() == 0) {
+            firstNameText.setStyle("-fx-prompt-text-fill: RED");
+            lastNameText.setStyle("-fx-prompt-text-fill: RED");
+            validFields = false;
+        } else {
+            firstNameText.setStyle("-fx-prompt-text-fill: GRAY");
+            lastNameText.setStyle("-fx-prompt-text-fill: GRAY");
+            patientID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ID, new ArrayList<>(Arrays.asList(firstName, lastName))))).get(0).get(0);
+        }
+        if (gifts.toString().length() < 2) {
+            orderTxt.setStyle("-fx-text-fill: RED");
+            validFields = false;
+        } else orderTxt.setStyle("-fx-text-fill: #00043b");
+
+
+        int rows = 0;
+        if(validFields) rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_GIFT_DELIVERY_REQUEST, new ArrayList<>(Arrays.asList(patientID, sender, loginManager.getCurrentUser().getUsername(), null,
                gifts.toString(), specialMessage, deliveryInstructions, status, dateAndTime))));
 
         if(rows == 0) {
-//            confirmation.setVisible(true);
-//            confirmation.setTextFill(Color.RED);
-//            confirmation.setText("Submission failed");
+            confirmation.setVisible(true);
+            confirmation.setStyle("-fx-text-fill: RED");
+            confirmation.setText("Submission failed");
         } else {
-//            confirmation.setVisible(true);
-//            confirmation.setTextFill(Color.WHITE);
-//            confirmation.setText("");
+            confirmation.setVisible(true);
+            confirmation.setStyle("-fx-text-fill: WHITE");
+            confirmation.setText("");
             cache.updateInventory();
 
             firstNameText.setText("");
