@@ -1,7 +1,6 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXScrollPane;
 import edu.wpi.cs3733.d20.teamL.entities.Gift;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
@@ -16,10 +15,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 
 import javax.inject.Inject;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +26,7 @@ import java.util.Map;
 public class GiftCartPaneController {
     private ArrayList<Gift> gifts = new ArrayList<>();
     private ArrayList<Image> images = new ArrayList<>();
-    Map<String, Integer> cart = new HashMap<String, Integer>();
+    private Map<String, Integer> cart = new HashMap<>();
 
     @Inject
     private IDatabaseCache cache;
@@ -37,9 +36,11 @@ public class GiftCartPaneController {
     @FXML
     private StackPane stackPane;
     @FXML
-    private AnchorPane checkoutPane;
+    private AnchorPane checkoutPane, addedToCartPane, outOfStockPane;
     @FXML
     private ImageView addedToCart, outOfStock;
+    @FXML
+    private JFXButton checkoutButton;
 
     @FXML
     public void initialize() {
@@ -47,18 +48,15 @@ public class GiftCartPaneController {
         gifts = cache.getGiftCache();
 
         checkoutPane.setPickOnBounds(false);
+        addedToCartPane.setPickOnBounds(false);
+        outOfStockPane.setPickOnBounds(false);
 
-        addedToCart = new ImageView(new Image("/edu/wpi/cs3733/d20/teamL/assets/gift_Delivery/addToCartIcon.png", 0,150,true,false,true));
-        stackPane.getChildren().add(addedToCart);
-        addedToCart.setVisible(false);
-        addedToCart.setPickOnBounds(false);
+        cart = cache.getCartCache();
+        checkoutButton.setText(cart.size() + " - Go to Checkout");
 
-        outOfStock = new ImageView(new Image("/edu/wpi/cs3733/d20/teamL/assets/gift_Delivery/outOfStock.png",0,150,true,false,true));
-        stackPane.getChildren().add(outOfStock);
-        outOfStock.setVisible(false);
-        outOfStock.setPickOnBounds(false);
-
-        for (Gift gift : gifts) { loadImage(gift.getSubtype()); }
+        for (Gift gift : gifts) {
+            loadImage(gift.getSubtype());
+        }
 
         // Logic of filling scroll pane with tabs and filling those tabs
         int i = 0;
@@ -72,7 +70,7 @@ public class GiftCartPaneController {
             scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
             VBox vBox = new VBox();
             vBox.setSpacing(5);
-            vBox.setPadding(new Insets(5,5,0,5));
+            vBox.setPadding(new Insets(5, 5, 0, 5));
             vBox.setAlignment(Pos.TOP_CENTER);
 
             while (gifts.get(i).getType().equals(currentGiftTabType)) {
@@ -80,7 +78,7 @@ public class GiftCartPaneController {
                 HBox giftRow = new HBox();
                 giftRow.setSpacing(10);
                 giftRow.setAlignment(Pos.CENTER);
-                while (numColumns < 4 && gifts.get(i).getType().equals(currentGiftTabType)){
+                while (numColumns < 4 && gifts.get(i).getType().equals(currentGiftTabType)) {
                     giftRow.getChildren().add(makeGift(gifts.get(i), i));
 
                     numColumns++;
@@ -93,18 +91,19 @@ public class GiftCartPaneController {
             scrollPane.setContent(vBox);
             tab.setContent(scrollPane);
             giftTabPane.getTabs().add(tab);
-            }
+        }
 
         giftTabPane.prefWidthProperty().bind(stackPane.widthProperty());
         giftTabPane.prefHeightProperty().bind(stackPane.heightProperty());
 
-        }
+    }
 
     /**
      * Creates a VBox with a gift image, name, quantity, description
      * and button to add it to the cart with all that jazz
+     *
      * @param gift Gift type of the gift you want to be formated
-     * @param i This is only used to get the corresponding pic (hopefully will be changes l8r)
+     * @param i    This is only used to get the corresponding pic (hopefully will be changes l8r)
      * @return Returns a formated Vbox to be placed in Tab Pane
      */
     private VBox makeGift(Gift gift, int i) {
@@ -118,42 +117,48 @@ public class GiftCartPaneController {
         imageView.setFitWidth(200);
         VBox imageVBox = new VBox(imageView);
         imageVBox.setAlignment(Pos.TOP_CENTER);
-        imageVBox.setMargin(imageView, new Insets(0,0,30,0));
+        imageVBox.setMargin(imageView, new Insets(0, 0, 30, 0));
         imageVBox.setMinHeight(200);
 
         Label item = new Label("Item: ");
         Label giftName = new Label(gift.getSubtype());
-        HBox nameHBox = new HBox(item,giftName);
+        HBox nameHBox = new HBox(item, giftName);
         nameHBox.setAlignment(Pos.CENTER_LEFT);
 
         Label quantity = new Label("Amount in stock: ");
         Label giftQuantity = new Label(gift.getInventory());
-        HBox quantityHBox = new HBox(quantity,giftQuantity);
+        HBox quantityHBox = new HBox(quantity, giftQuantity);
         quantityHBox.setAlignment(Pos.CENTER_LEFT);
 
         Label description = new Label("Description: ");
         Label giftDescription = new Label(gift.getDescription());
         giftDescription.setWrapText(true);
-        VBox descriptionVBox = new VBox(description,giftDescription);
+        VBox descriptionVBox = new VBox(description, giftDescription);
 
-        EventHandler<ActionEvent> addToCartAction = new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e) {
-                int quantityInCart = cart.getOrDefault(gift.getSubtype(), 0);
-                System.out.println(quantityInCart);
-                if (quantityInCart == 0) cart.put(gift.getSubtype(), 0);
-                if (Integer.parseInt(gift.getInventory()) - quantityInCart > 0) {
-                    cart.replace(gift.getSubtype(), quantityInCart + 1);
-                    loaderHelper.showAndFade(addedToCart);
-                } else loaderHelper.showAndFade(outOfStock);
+        EventHandler<ActionEvent> addToCartAction = e -> {
+            int quantityInCart = cart.getOrDefault(gift.getSubtype(), 0);
+            System.out.println(quantityInCart);
+            if (quantityInCart == 0) cart.put(gift.getSubtype(), 0);
+            if (Integer.parseInt(gift.getInventory()) - quantityInCart > 0) {
+                cart.replace(gift.getSubtype(), quantityInCart + 1);
+                checkoutButton.setText(cart.size() + " - Go to Checkout");
+                addedToCartPane.setVisible(true);
+                loaderHelper.showAndFade(addedToCart);
+
+            } else {
+                System.out.println("Out of stock");
+                outOfStockPane.setVisible(true);
+                loaderHelper.showAndFade(outOfStock);
+
             }
         };
 
         JFXButton addToCartButton = new JFXButton("Add to Cart");
         addToCartButton.getStyleClass().add("save-button-jfx");
         addToCartButton.setOnAction(addToCartAction);
-        vbox.setMargin(addToCartButton, new Insets(5,0,5,0));
+        vbox.setMargin(addToCartButton, new Insets(5, 0, 5, 0));
 
-        vbox.getChildren().addAll(imageView,nameHBox,quantityHBox,descriptionVBox,addToCartButton);
+        vbox.getChildren().addAll(imageView, nameHBox, quantityHBox, descriptionVBox, addToCartButton);
 
         return vbox;
     }
@@ -169,7 +174,13 @@ public class GiftCartPaneController {
         images.add(image);
     }
 
-    public void goToCheckout(MouseEvent mouseEvent) {
-        System.out.println("Go to Checkout");
+
+    public void toToCheckout() throws IOException {
+        cache.cacheCart(cart);
+
+        Region n = loaderHelper.getFXMLLoader("requests/GiftCheckoutPane").load();
+        stackPane.getChildren().add(n);
+        n.prefWidthProperty().bind(stackPane.widthProperty());
+        n.prefHeightProperty().bind(stackPane.heightProperty());
     }
 }

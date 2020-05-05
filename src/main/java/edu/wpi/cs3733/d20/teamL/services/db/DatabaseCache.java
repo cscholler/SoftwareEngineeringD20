@@ -1,15 +1,16 @@
 package edu.wpi.cs3733.d20.teamL.services.db;
 
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import edu.wpi.cs3733.d20.teamL.entities.*;
 import javafx.geometry.Point2D;
 
 import com.google.inject.Inject;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class DatabaseCache implements IDatabaseCache {
     private ArrayList<Node> nodeCache = new ArrayList<>();
     private ArrayList<Edge> edgeCache = new ArrayList<>();
@@ -20,7 +21,7 @@ public class DatabaseCache implements IDatabaseCache {
     private ArrayList<Edge> deletedEdges = new ArrayList<>();
 
     private ArrayList<Gift> giftCache = new ArrayList<>();
-    private ArrayList<Gift> cartCache = new ArrayList<>();
+    private Map<String, Integer> cartCache = new HashMap<>();
 
     private ArrayList<User> userCache = new ArrayList<>();
 
@@ -160,7 +161,7 @@ public class DatabaseCache implements IDatabaseCache {
         for (ArrayList<String> row : nodeData) {
             nodeCache.add(new Node(row.get(0),
                     new Point2D(Double.parseDouble(row.get(1)), Double.parseDouble(row.get(2))),
-                    Integer.parseInt(row.get(3)), row.get(4), row.get(5), row.get(6), row.get(7)));
+                    row.get(3), row.get(4), row.get(5), row.get(6), row.get(7)));
         }
     }
 
@@ -218,6 +219,19 @@ public class DatabaseCache implements IDatabaseCache {
         edgeCache.clear();
     }
 
+    public Building getBuilding(String building) {
+        Building newBuilding = new Building(building);
+        try {
+            newBuilding.addAllNodes(getNodeCache());
+        } catch (IllegalArgumentException ex) {
+            log.error("Encountered IllegalArgumentException", ex);
+        }
+
+        Graph.graphFromCache(newBuilding.getNodes(), getEdgeCache());
+
+        return newBuilding;
+    }
+
     @Override
     public void cacheGiftsFromDB() {
         ArrayList<ArrayList<String>> giftsDB = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_GIFTS)));
@@ -228,19 +242,30 @@ public class DatabaseCache implements IDatabaseCache {
     }
 
     @Override
-    public void cacheCart(ArrayList<Gift> cart) {
+    public void updateInventory() {
+        ArrayList<SQLEntry> updates = new ArrayList<>();
+
+        for(String giftType : cartCache.keySet()) {
+            for(Gift gift : giftCache) {
+                if(gift.getSubtype().equals(giftType)) {
+                    gift.setInventory(Integer.toString(Integer.parseInt(gift.getInventory()) - cartCache.get(giftType)));
+                    ArrayList<String> values = new ArrayList<>();
+                    values.add(gift.getInventory());
+                    values.add(gift.getID());
+                    updates.add(new SQLEntry(DBConstants.UPDATE_GIFT, values));
+                }
+            }
+        }
+        db.executeUpdates(updates);
+    }
+
+    @Override
+    public void cacheCart(Map<String,Integer> cart) {
         cartCache = cart;
     }
 
     @Override
-    public ArrayList<Gift> getCartCacheNull() {
-        if (cartCache.size() == 1) cartCache.add(null);
-        if (cartCache.size() == 2) cartCache.add(null);
-        return cartCache;
-    }
-
-    @Override
-    public ArrayList<Gift> getCartCache() {
+    public Map<String,Integer> getCartCache() {
         return cartCache;
     }
 

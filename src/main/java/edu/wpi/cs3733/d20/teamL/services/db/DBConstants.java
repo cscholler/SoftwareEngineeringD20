@@ -172,8 +172,8 @@ public class DBConstants {
 					"VALUES(?, ?, ?, ?)";
 
 	public static final String ADD_GIFT_DELIVERY_REQUEST =
-			"INSERT INTO Gift_Delivery_Requests(patient_id, sender_name, request_username, assignee_username, gift1_id, gift2_id, gift3_id, message, notes, status, date_and_time)" +
-					"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			"INSERT INTO Gift_Delivery_Requests(patient_id, sender_name, request_username, assignee_username, gifts, message, notes, status, date_and_time)" +
+					"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	public static final String ADD_MEDICATION_REQUEST =
 			"INSERT INTO Medication_Requests(doctor_id, patient_id, nurse_username, deliverer_username, dose, type, notes, status, date_and_time)" +
@@ -316,6 +316,11 @@ public class DBConstants {
 	public static final String UPDATE_EDGE =
 			"UPDATE Edges " +
 					"SET node_start = ?, node_end = ? " +
+					"WHERE id = ?";
+
+	public static final String UPDATE_GIFT =
+			"UPDATE Gifts " +
+					"SET inventory = ?" +
 					"WHERE id = ?";
 
 	public static final String UPDATE_USER_NAME =
