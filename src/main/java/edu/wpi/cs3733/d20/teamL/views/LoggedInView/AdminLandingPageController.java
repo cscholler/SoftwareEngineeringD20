@@ -98,20 +98,13 @@ public class AdminLandingPageController implements Initializable {
     }
 
     @FXML
-    private void confirmRebuildDBClicked() {
-        log.warn("Rebuilding database");
-        db.rebuildDatabase();
-    }
-
-
-    @FXML
     private void addUserClicked() {
         try {
             System.out.println("Got here");
             Parent root = loaderFactory.getFXMLLoader("AddUser").load();
             loaderFactory.setupScene(new Scene(root));
-        } catch (IOException e) {
-            log.error("Encountered IOException", e);
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
         }
     }
 
@@ -120,8 +113,8 @@ public class AdminLandingPageController implements Initializable {
         try {
             Parent root = loaderFactory.getFXMLLoader("AddDoctor").load();
             loaderFactory.setupScene(new Scene(root));
-        } catch (IOException e) {
-            log.error("Encountered IOException", e);
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
         }
     }
 
@@ -130,8 +123,8 @@ public class AdminLandingPageController implements Initializable {
         try {
             Parent root = loaderFactory.getFXMLLoader("AddPatient").load();
             loaderFactory.setupScene(new Scene(root));
-        } catch (IOException e) {
-            log.error("Encountered IOException", e);
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
         }
     }
 
@@ -261,8 +254,32 @@ public class AdminLandingPageController implements Initializable {
 			nodes.add(new TableEntityWrapper.TableNode(node.getID(), String.valueOf(node.getPosition().getX()), String.valueOf(node.getPosition().getY()),
 					String.valueOf(node.getFloor()), node.getBuilding(), node.getType(), node.getLongName(), node.getShortName()));
 		}
+
 		final TreeItem<TableEntityWrapper.TableNode> root = new RecursiveTreeItem<>(nodes, RecursiveTreeObject::getChildren);
-		nodesTable.getColumns().setAll(idCol, xPosCol, yPosCol, floorCol, buildingCol, typeCol, lNameCol, sNameCol);
+		idCol.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
+		xPosCol.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
+		yPosCol.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
+		floorCol.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
+		buildingCol.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
+		typeCol.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
+		lNameCol.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
+		sNameCol.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
+		ArrayList<JFXTreeTableColumn<TableEntityWrapper.TableNode, String>> nodeCols = new ArrayList<>(Arrays.asList(idCol, xPosCol, yPosCol, floorCol, buildingCol, typeCol, lNameCol, sNameCol));
+		nodesTable.getColumns().setAll(nodeCols);
+
+		nodesTable.getColumns().addListener(new ListChangeListener<>() {
+			private boolean isColSuspended;
+			@Override
+			public void onChanged(ListChangeListener.Change change) {
+				change.next();
+				if (change.wasReplaced() && !isColSuspended) {
+					this.isColSuspended = true;
+					nodesTable.getColumns().setAll(nodeCols);
+					this.isColSuspended = false;
+				}
+			}
+		});
+
 		nodesTable.setRoot(root);
 		nodesTable.setShowRoot(false);
 	}
@@ -296,8 +313,27 @@ public class AdminLandingPageController implements Initializable {
 		for (Edge edge : cache.getEdgeCache()) {
 			edges.add(new TableEntityWrapper.TableEdge(edge.getID(), edge.getSource().getID(), edge.getDestination().getID()));
 		}
+
 		final TreeItem<TableEntityWrapper.TableEdge> root = new RecursiveTreeItem<>(edges, RecursiveTreeObject::getChildren);
-		edgesTable.getColumns().setAll(idCol, startNodeCol, endNodeCol);
+		idCol.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
+		startNodeCol.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
+		endNodeCol.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
+		ArrayList<JFXTreeTableColumn<TableEntityWrapper.TableEdge, String>> edgeCols = new ArrayList<>(Arrays.asList(idCol, startNodeCol, endNodeCol));
+		edgesTable.getColumns().setAll(edgeCols);
+
+		edgesTable.getColumns().addListener(new ListChangeListener<>() {
+			private boolean isColSuspended;
+			@Override
+			public void onChanged(ListChangeListener.Change change) {
+				change.next();
+				if (change.wasReplaced() && !isColSuspended) {
+					this.isColSuspended = true;
+					edgesTable.getColumns().setAll(edgeCols);
+					this.isColSuspended = false;
+				}
+			}
+		});
+
 		edgesTable.setRoot(root);
 		edgesTable.setShowRoot(false);
 	}
@@ -343,12 +379,32 @@ public class AdminLandingPageController implements Initializable {
 				return invCol.getComputedValue(param);
 			}
 		});
-		ObservableList<TableEntityWrapper.TableGift> edges = FXCollections.observableArrayList();
+		ObservableList<TableEntityWrapper.TableGift> gifts = FXCollections.observableArrayList();
 		for (Gift gift : cache.getGiftCache()) {
-			edges.add(new TableEntityWrapper.TableGift(gift.getID(), gift.getType(), gift.getSubtype(), gift.getDescription(), gift.getInventory()));
+			gifts.add(new TableEntityWrapper.TableGift(gift.getID(), gift.getType(), gift.getSubtype(), gift.getDescription(), gift.getInventory()));
 		}
-		final TreeItem<TableEntityWrapper.TableGift> root = new RecursiveTreeItem<>(edges, RecursiveTreeObject::getChildren);
-		giftsTable.getColumns().setAll(idCol, typeCol, subtypeCol, descCol, invCol);
+
+		final TreeItem<TableEntityWrapper.TableGift> root = new RecursiveTreeItem<>(gifts, RecursiveTreeObject::getChildren);
+		typeCol.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
+		subtypeCol.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
+		descCol.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
+		invCol.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
+		ArrayList<JFXTreeTableColumn<TableEntityWrapper.TableGift, String>> giftCols = new ArrayList<>(Arrays.asList(idCol, typeCol, subtypeCol, descCol, invCol));
+		giftsTable.getColumns().setAll(giftCols);
+
+		giftsTable.getColumns().addListener(new ListChangeListener<>() {
+			private boolean isColSuspended;
+			@Override
+			public void onChanged(ListChangeListener.Change change) {
+				change.next();
+				if (change.wasReplaced() && !isColSuspended) {
+					this.isColSuspended = true;
+					giftsTable.getColumns().setAll(giftCols);
+					this.isColSuspended = false;
+				}
+			}
+		});
+
 		giftsTable.setRoot(root);
 		giftsTable.setShowRoot(false);
 	}
@@ -482,12 +538,12 @@ public class AdminLandingPageController implements Initializable {
 				return usernameCol.getComputedValue(param);
 			}
 		});
-		JFXTreeTableColumn<TableEntityWrapper.TableDoctor, String> officeID = new JFXTreeTableColumn<>("office_id");
-		officeID.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableEntityWrapper.TableDoctor, String> param) -> {
-			if (officeID.validateValue(param)) {
+		JFXTreeTableColumn<TableEntityWrapper.TableDoctor, String> officeIDCol = new JFXTreeTableColumn<>("office_id");
+		officeIDCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableEntityWrapper.TableDoctor, String> param) -> {
+			if (officeIDCol.validateValue(param)) {
 				return param.getValue().getValue().getOfficeID();
 			} else {
-				return officeID.getComputedValue(param);
+				return officeIDCol.getComputedValue(param);
 			}
 		});
 		JFXTreeTableColumn<TableEntityWrapper.TableDoctor, String> addInfoCol = new JFXTreeTableColumn<>("addl_info");
@@ -503,8 +559,30 @@ public class AdminLandingPageController implements Initializable {
 		for (Doctor doctor : cache.getDoctorCache()) {
 			doctors.add(new TableEntityWrapper.TableDoctor(doctor.getID(), doctor.getFName(), doctor.getLName(), doctor.getUsername(), doctor.getOfficeID(), doctor.getAddInfo()));
 		}
+
 		final TreeItem<TableEntityWrapper.TableDoctor> root = new RecursiveTreeItem<>(doctors, RecursiveTreeObject::getChildren);
-		doctorsTable.getColumns().setAll(idCol, fNameCol, lNameCol, usernameCol, officeID, addInfoCol);
+		idCol.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
+		fNameCol.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
+		lNameCol.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
+		usernameCol.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
+		officeIDCol.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
+		addInfoCol.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
+		ArrayList<JFXTreeTableColumn<TableEntityWrapper.TableDoctor, String>> doctorCols = new ArrayList<>(Arrays.asList(idCol, fNameCol, lNameCol, usernameCol, officeIDCol, addInfoCol));
+		doctorsTable.getColumns().setAll(doctorCols);
+
+		doctorsTable.getColumns().addListener(new ListChangeListener<>() {
+			private boolean isColSuspended;
+			@Override
+			public void onChanged(ListChangeListener.Change change) {
+				change.next();
+				if (change.wasReplaced() && !isColSuspended) {
+					this.isColSuspended = true;
+					doctorsTable.getColumns().setAll(doctorCols);
+					this.isColSuspended = false;
+				}
+			}
+		});
+
 		doctorsTable.setRoot(root);
 		doctorsTable.setShowRoot(false);
 	}

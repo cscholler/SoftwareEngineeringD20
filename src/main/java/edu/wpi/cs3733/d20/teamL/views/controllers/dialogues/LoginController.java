@@ -85,7 +85,11 @@ public class LoginController {
             if (loginManager.isAuthenticated()) {
 				((Stage) login.getScene().getWindow()).close();
                 String view = "requests/UserLandingPage";
-                if (loginManager.getCurrentUser().getAcctType().equals("3")) view = "staff/LoggedInView";
+                if (loginManager.getCurrentUser().getAcctType().equals("3")) {
+                	view = "admin/AdminView";
+				} else {
+					view = "staff/LoggedInView";
+				}
 				loaderHelper.setupScene(new Scene(loaderHelper.getFXMLLoader(view).load()));
 			} else {
 				incorrectText.setVisible(true);
