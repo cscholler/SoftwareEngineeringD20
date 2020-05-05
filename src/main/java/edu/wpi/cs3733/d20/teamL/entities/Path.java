@@ -166,7 +166,7 @@ public class Path implements Iterable<Node> {
                 lefts = 0;
                 subpaths.add(addSubPath(subpath));
                 subpath.clear();
-            }  else if(curr.getBuilding().equals(next.getBuilding())) {
+            }  else if(!curr.getBuilding().equals(next.getBuilding())) {
                 message.add("Navigate from " + curr.getBuilding() + " to " + next.getBuilding() + ".");
 
                 lastRoom = null;
