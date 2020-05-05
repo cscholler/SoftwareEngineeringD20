@@ -53,6 +53,9 @@
          <image>
             <Image url="@../../assets/service_icons/serviceRecieved.png" />
          </image>
+         <StackPane.margin>
+            <Insets top="300.0" />
+         </StackPane.margin>
       </ImageView>
    </children>
 </StackPane>

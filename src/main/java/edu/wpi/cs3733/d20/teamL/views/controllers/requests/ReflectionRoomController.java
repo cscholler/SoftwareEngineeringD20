@@ -18,7 +18,6 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-
 import javax.inject.Inject;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -65,14 +64,17 @@ public class ReflectionRoomController {
         borderPane.prefHeightProperty().bind(stackPane.heightProperty());
     }
 
+    //TODO change values when room or date is changed, or make them uneditable
+
     @FXML
     private void loadTimes() {
-        String r = (String) rooms.getValue();
-        String d = date.getValue().toString();
 
         if (rooms.getValue() == null || date.getValue() == null) {
-            tableErrorLbl.setVisible(true);
+            loaderHelper.showAndFade(tableErrorLbl);
         } else {
+
+            String r = (String) rooms.getValue();
+            String d = date.getValue().toString();
 
             ArrayList<ArrayList<String>> requests = new ArrayList<>();
             requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_ALL_ROOM_REQUESTS,  new ArrayList<>((Arrays.asList(r, d))))));
@@ -86,8 +88,6 @@ public class ReflectionRoomController {
             JFXTreeTableColumn<TimeSlot, String> availability = new JFXTreeTableColumn<>("Availability");
             availability.setCellValueFactory(param -> param.getValue().getValue().availability);
 
-            //TODO fill with actual times from database when date and room selected
-            //TODO maybe have the database just contain requests, and don't show those when room + date is entered
             ObservableList<TimeSlot> slots = FXCollections.observableArrayList();
             for (int i = 0; i < 24; i++) {
                 String s = String.format("%02d", i);
@@ -128,15 +128,8 @@ public class ReflectionRoomController {
         String dateChosen = date.getValue().toString();
         //TODO check values for null, past date, time
 
-        System.out.println(room + " " + dateChosen + " " + startTime + " to " + endTime);
-
-        //TODO enter request into database
-
         int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_ROOM_REQUEST,
                 new ArrayList<>(Arrays.asList(manager.getCurrentUser().getUsername(), room, dateChosen, startTime, endTime)))));
-
-
-        System.out.println("rows: " + rows);
 
         //clear selected values
         rooms.setValue(null);
@@ -144,6 +137,13 @@ public class ReflectionRoomController {
         table.getSelectionModel().clearSelection();
 
         loaderHelper.showAndFade(requestReceived);
+
+        table.setVisible(false);
+        btnLoadTimes.setVisible(true);
+        tableErrorLbl.setVisible(false);
+        table.getColumns().clear();
+
+        requestReceived.toBack();
     }
 
     class TimeSlot extends RecursiveTreeObject<TimeSlot> {

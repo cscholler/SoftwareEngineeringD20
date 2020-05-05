@@ -22,7 +22,7 @@
                <children>
                   <JFXComboBox fx:id="beds" promptText="Select Bed" styleClass="combo-box-jfx" />
                   <JFXDatePicker fx:id="date" defaultColor="#00043b" promptText="Select Date" />
-                  <StackPane>
+                  <StackPane fx:id="pane">
                      <children>
                         <JFXTreeTableView fx:id="table" />
                         <JFXButton fx:id="btnLoadTimes" onAction="#loadTimes" styleClass="save-button-jfx" text="Load Times" />
@@ -54,6 +54,9 @@
          <image>
             <Image url="@../../assets/service_icons/serviceRecieved.png" />
          </image>
+         <StackPane.margin>
+            <Insets top="300.0" />
+         </StackPane.margin>
       </ImageView>
    </children>
 </StackPane>
