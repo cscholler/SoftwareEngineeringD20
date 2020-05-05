@@ -2,7 +2,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -28,7 +28,7 @@ public class ReflectionRoomController {
     BorderPane borderPane;
     @FXML
     StackPane stackPane;
-    private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    private FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
 
     private ObservableList<String> reflectionRooms = FXCollections.observableArrayList("Floor 1 Reflection Room", "Floor 3 Reflection Room", "Floor 4 Reflection Room");
 
