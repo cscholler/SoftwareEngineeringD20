@@ -1,9 +1,6 @@
 package edu.wpi.cs3733.d20.teamL.views.LoggedInView;
 
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTreeTableColumn;
-import com.jfoenix.controls.JFXTreeTableView;
-import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
@@ -13,6 +10,7 @@ import edu.wpi.cs3733.d20.teamL.util.TableEntityWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -51,6 +49,8 @@ public class AdminLandingPageController implements Initializable {
 	private JFXTreeTableView<TableEntityWrapper.TableUser> usersTable;
 	@FXML
 	private JFXTreeTableView<TableEntityWrapper.TableDoctor> doctorsTable;
+	@FXML
+	private JFXButton btnChangePass;
     @Inject
     private ILoginManager loginManager;
     @Inject
@@ -172,6 +172,7 @@ public class AdminLandingPageController implements Initializable {
 					case "User Information": {
 						hideAllTablesExceptCurrent("Users");
 						loadUsersTable();
+						btnChangePass.setVisible(true);
 					}
 					break;
 					case "Doctor Information": {
@@ -634,5 +635,16 @@ public class AdminLandingPageController implements Initializable {
 	private void setTableVisible(JFXTreeTableView<?> table, boolean visible) {
 		table.setVisible(visible);
 		table.setMouseTransparent(!visible);
+	}
+
+
+	@FXML
+	private void changePasswordClicked(ActionEvent actionEvent) {
+		try {
+			Parent root = loaderFactory.getFXMLLoader("admin/ChangePassword").load();
+			loaderFactory.setupPopup(new Stage(), new Scene(root));
+		} catch (IOException ex) {
+			log.error("Encountered IOException", ex);
+		}
 	}
 }
