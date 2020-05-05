@@ -488,7 +488,9 @@ public class MapPane extends ScrollPane {
 
     // Sets the zoom level by changing the spacing between all the nodes
     public void setZoomLevel(double zoomLevel) {
-        zoomLevel = Math.max(zoomLevel, 0.01);
+        if(currentBuilding.getName().equals("Faulkner")) zoomLevel = Math.max(zoomLevel, .5);
+        else zoomLevel = Math.max(zoomLevel, .25);
+        zoomLevel  = Math.min(zoomLevel, 4);
 
         for (NodeGUI nodeGUI : nodes.values()) {
             Point2D prevPos = new Point2D(nodeGUI.getXProperty().get(), nodeGUI.getYProperty().get());
@@ -805,5 +807,9 @@ public class MapPane extends ScrollPane {
 
     public void setTempNode(NodeGUI tempNode) {
         this.tempNode = tempNode;
+    }
+
+    public AnchorPane getBody() {
+        return body;
     }
 }
