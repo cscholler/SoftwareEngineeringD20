@@ -14,6 +14,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
@@ -68,7 +69,7 @@ public class MapViewerController {
     @FXML
     private VBox floorSelector;
     @FXML
-    private JFXListView dirList;
+    private JFXListView dirList = new JFXListView();
     @FXML
     private JFXButton btnTextMe, btnQR;
     @FXML
@@ -117,6 +118,8 @@ public class MapViewerController {
         map.setHighLightColor(Color.GOLD);
         btnNavigate.setDisableVisualFocus(true);
 
+        stackPane.setPickOnBounds(false);
+
         // Import all the nodes from the cache and set the current building to Faulkner
         String startB = "Faulkner";
         Building faulkner = cache.getBuilding("Faulkner");
@@ -153,11 +156,21 @@ public class MapViewerController {
             }
         }
 
-        listF1.setStyle("-fx-font-size: 16");
-        listF2.setStyle("-fx-font-size: 16");
-        listF3.setStyle("-fx-font-size: 16");
-        listF4.setStyle("-fx-font-size: 16");
-        listF5.setStyle("-fx-font-size: 16");
+        //ToDO get the fancy clicking feature back
+        listF1 = new JFXListView();
+        listF2 = new JFXListView();
+        listF3 = new JFXListView();
+        listF4 = new JFXListView();
+        listF5 = new JFXListView();
+
+        JFXListView[] listOfListViews = new JFXListView[]{listF1,listF2,listF3,listF4,listF5};
+        for (JFXListView list : listOfListViews){
+            list.addEventHandler(MouseEvent.MOUSE_CLICKED, (mouseEvent -> {
+                destination.setText((String) list.getSelectionModel().getSelectedItem());
+                navigate();
+            }));
+            list.setStyle("-fx-font-size: 16");
+        }
 
         listF1.getItems().addAll(deptNodes);
         listF2.getItems().addAll(labNodes);
@@ -166,12 +179,18 @@ public class MapViewerController {
         listF5.getItems().addAll(confNodes);
 
         TitledPane departments = new TitledPane("Departments", listF1);
+        departments.setStyle("-fx-font-size: 16");
         TitledPane labs = new TitledPane("Labs", listF2);
+        labs.setStyle("-fx-font-size: 16");
         TitledPane services = new TitledPane("Services/Information", listF3);
+        services.setStyle("-fx-font-size: 16");
         TitledPane amenities = new TitledPane("Amenities", listF4);
+        amenities.setStyle("-fx-font-size: 16");
         TitledPane conferenceRooms = new TitledPane("Conference Rooms", listF5);
+        conferenceRooms.setStyle("-fx-font-size: 16");
 
         accordion.getPanes().addAll(departments, labs, services, amenities, conferenceRooms);
+        showAccordion();
     }
 
     private void generateFloorButtons() {
@@ -221,9 +240,6 @@ public class MapViewerController {
         Node startNode = sf.getNode(startingPoint.getText());
         Node destNode = sf.getNode(destination.getText());
 
-        hideAccordion();
-        showTextualDirections();
-
         if (!(startNode.getBuilding().equals(map.getBuilding().getName()))) {
             map.setBuilding(startNode.getBuilding());
             buildingChooser.getSelectionModel().select(startNode.getBuilding());
@@ -240,9 +256,13 @@ public class MapViewerController {
             btnTextMe.setVisible(true);
             btnQR.setDisable(false);
             btnQR.setVisible(true);
-            textDirNode.setDisable(false);
-            textDirNode.setVisible(true);
+//            textDirNode.setDisable(false);
+//            textDirNode.setVisible(true);
         }
+
+        System.out.println("Here");
+        hideAccordion();
+        showTextualDirections();
     }
 
     /**
@@ -277,6 +297,7 @@ public class MapViewerController {
         StringBuilder builder = new StringBuilder();
 
         dirList.getItems().clear();
+        dirList.setStyle("-fx-font-size: 15");
         dirList.setCellFactory(param -> {
             return new ListCell<String>() {
                 private ImageView imageView = new ImageView();
@@ -287,8 +308,8 @@ public class MapViewerController {
                         setGraphic(null);
                         setText(null);
                         // other stuff to do...
-                        imageView.setFitWidth(10);
-                        imageView.setFitHeight(10);
+                        imageView.setFitWidth(15);
+                        imageView.setFitHeight(15);
                     } else {
 
                         if (item.contains("right")) {
@@ -451,7 +472,11 @@ public class MapViewerController {
      * Clears the text in destination textfield
      */
     @FXML
-    private void clearDest() { destination.clear(); }
+    private void clearDest() {
+        destination.clear();
+        hideTextualDirections();
+        showAccordion();
+    }
 
     /**
      * login pops up when login button is clicked
@@ -487,7 +512,7 @@ public class MapViewerController {
                 "Algorithms Specialist: Cameron Jacobson\n" +
                 "UI Engineer: Winnie Ly\n" +
                 "Documentation Analyst: Zaiyang Zhong\n\n" +
-                "Thank you Brigham and Women's Hospital and Andrew Shinn for your time and input."));
+                "Thank you Brigham and Women's Hospital \nand Andrew Shinn for your time and input."));
         JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
         JFXButton btnDone = new JFXButton("Done");
         btnDone.setOnAction(new EventHandler<ActionEvent>() {
@@ -618,7 +643,7 @@ public class MapViewerController {
     }
 
     private void showAccordion() {
-        sideBox.getChildren().add(0,accordion); //eventually this should be 1
+        sideBox.getChildren().add(2,accordion); //eventually this should be 1
     }
 
     private void hideAccordion() {
@@ -627,7 +652,7 @@ public class MapViewerController {
     }
 
     private void showTextualDirections() {
-        sideBox.getChildren().add(1, dirList); //eventually this should be 2
+        sideBox.getChildren().add(2, dirList); //eventually this should be 2
     }
 
     private void hideTextualDirections() {

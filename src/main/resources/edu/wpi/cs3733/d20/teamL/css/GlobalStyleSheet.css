@@ -88,6 +88,32 @@
     -jfx-button-type: FLAT;
 }
 
+/*-------------------------------search bars formatting----------------------------------*/
+.search-bar-text-field-jfx{
+    -fx-pref-height: 40;
+    -fx-max-height: 40;
+    -fx-pref-width: 240;
+    -fx-background-radius: 0;
+    -fx-focus-color: white;
+    -fx-unfocus-color: white;
+    -fx-background-color: white;
+}
+
+.clear-button-jfx {
+    -fx-pref-width: 30;
+    -fx-pref-height: 40;
+    -fx-max-height: 40;
+    -fx-background-color: white;
+    -fx-font-size: 10;
+    -fx-text-fill: black;
+    -fx-border-color: white;
+    /*-fx-border-width: 2px;*/
+    -fx-border-radius: 0 0 0 0;
+    -fx-border-width: 2px;
+
+    -jfx-button-type: FLAT;
+}
+
 /*------------------------universal service request controls----------------------------*/
 .services-pane-jfx{
     -fx-background-color: white;
