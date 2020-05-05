@@ -107,35 +107,16 @@ public class AdminLandingPageController implements Initializable {
     private void addUserClicked() {
         try {
             System.out.println("Got here");
-            Parent root = loaderFactory.getFXMLLoader("AddUser").load();
+            Parent root = loaderFactory.getFXMLLoader("admin/AddPerson").load();
             loaderFactory.setupScene(new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
         }
     }
 
-    @FXML
-    private void addDoctorClicked() {
-        try {
-            Parent root = loaderFactory.getFXMLLoader("AddDoctor").load();
-            loaderFactory.setupScene(new Scene(root));
-        } catch (IOException ex) {
-            log.error("Encountered IOException", ex);
-        }
-    }
 
     @FXML
-    private void addPatientClicked() {
-        try {
-            Parent root = loaderFactory.getFXMLLoader("AddPatient").load();
-            loaderFactory.setupScene(new Scene(root));
-        } catch (IOException ex) {
-            log.error("Encountered IOException", ex);
-        }
-    }
-
-    @FXML
-    public void importClicked() {
+    public void importDBClicked() {
         try {
             Parent root = loaderFactory.getFXMLLoader("dialogues/ImportDialogue").load();
             loaderFactory.setupPopup(new Stage(), new Scene(root));
@@ -145,7 +126,7 @@ public class AdminLandingPageController implements Initializable {
     }
 
     @FXML
-    public void exportClicked() {
+    public void saveDBClicked() {
         try {
             Parent root = loaderFactory.getFXMLLoader("dialogues/ExportDialogue").load();
             loaderFactory.setupPopup(new Stage(), new Scene(root));
@@ -153,6 +134,26 @@ public class AdminLandingPageController implements Initializable {
             log.error("Encountered IOException", ex);
         }
     }
+
+	@FXML
+	public void importCSVClicked() {
+		try {
+			Parent root = loaderFactory.getFXMLLoader("dialogues/ImportDialogue").load();
+			loaderFactory.setupPopup(new Stage(), new Scene(root));
+		} catch (IOException ex) {
+			log.error("Encountered IOException", ex);
+		}
+	}
+
+	@FXML
+	public void saveCSVClicked() {
+		try {
+			Parent root = loaderFactory.getFXMLLoader("dialogues/ExportDialogue").load();
+			loaderFactory.setupPopup(new Stage(), new Scene(root));
+		} catch (IOException ex) {
+			log.error("Encountered IOException", ex);
+		}
+	}
 
     @FXML
 	public void tableSelected() {
