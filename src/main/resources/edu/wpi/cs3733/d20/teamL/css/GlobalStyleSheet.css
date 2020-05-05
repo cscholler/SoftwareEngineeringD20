@@ -194,13 +194,6 @@
     -fx-alignment: center;
 }
 
-.time-combo-box-jfx {
-    -fx-font-size: 15;
-    -fx-text-fill: black;
-    -jfx-unfocus-color: white;
-    -jfx-focus-color: white;
-    -fx-background-radius: 0;
-}
 
 /*----------------------------Admin Login----------------------------------*/
 .map-button-jfx {
@@ -235,6 +228,14 @@
     -jfx-button-type: RAISED;
 }
 
+.user-combo-box-jfx {
+    -fx-font-size: 15;
+    -fx-text-fill: black;
+    -fx-background-color: #DCDCDC;
+    -jfx-unfocus-color: white;
+    -jfx-focus-color: #405784;
+    -fx-background-radius: 0;
+}
 
 /*-----------------------------Tab Panes-----------------------------------*/
 /*applies automatically*/

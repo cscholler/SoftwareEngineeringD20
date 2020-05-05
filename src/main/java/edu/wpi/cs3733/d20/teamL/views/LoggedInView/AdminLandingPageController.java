@@ -1,22 +1,28 @@
 package edu.wpi.cs3733.d20.teamL.views.LoggedInView;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.ResourceBundle;
-
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTreeTableColumn;
+import com.jfoenix.controls.JFXTreeTableView;
+import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
+import edu.wpi.cs3733.d20.teamL.util.TableEntityWrapper;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.control.cell.TextFieldTreeTableCell;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -41,6 +47,11 @@ import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
+import java.io.IOException;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import edu.wpi.cs3733.d20.teamL.util.TableEntityWrapper;
@@ -71,6 +82,10 @@ public class AdminLandingPageController implements Initializable {
 	private JFXTreeTableView<TableEntityWrapper.TableDoctor> doctorsTable;
 	@FXML
 	private JFXComboBox<String> tableSelector;
+	@FXML
+	private JFXButton btnChangePass;
+	@FXML
+	private Label timeLabel;
     @Inject
     private ILoginManager loginManager;
     @Inject
@@ -78,8 +93,11 @@ public class AdminLandingPageController implements Initializable {
     @Inject
 	private IDatabaseCache cache;
 
+	private final Timer timer = new Timer();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+		timer.scheduleAtFixedRate(timerWrapper(this::updateTime), 0, 1000);
 		tableSelector.setItems(tableOptions);
 		tableSelector.getSelectionModel().select(0);
 		hideAllTablesExceptCurrent("Nodes");
@@ -112,6 +130,16 @@ public class AdminLandingPageController implements Initializable {
         }
     }
 
+    @FXML
+    private void rebuildDatabaseClicked() {
+        try {
+            Parent root = loaderFactory.getFXMLLoader("Admin/databaseDialogue").load();
+            loaderFactory.setupPopup(new Stage(), new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
+    }
+
 	@FXML
 	private void btnAddUserClicked() {
 		try {
@@ -121,6 +149,16 @@ public class AdminLandingPageController implements Initializable {
 			log.error("Encountered IOException", ex);
 		}
 	}
+    @FXML
+    private void addUserClicked() {
+        try {
+            System.out.println("Got here");
+            Parent root = loaderFactory.getFXMLLoader("admin/AddPerson").load();
+            loaderFactory.setupScene(new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
+    }
 
 	@FXML
 	private void btnAddDoctorClicked() {
@@ -132,6 +170,16 @@ public class AdminLandingPageController implements Initializable {
 		}
 	}
 
+    @FXML
+    public void importDBClicked() {
+        try {
+            Parent root = loaderFactory.getFXMLLoader("dialogues/ImportDialogue").load();
+            loaderFactory.setupPopup(new Stage(), new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
+    }
+
 	@FXML
 	private void btnAddPatientClicked() {
 		try {
@@ -141,6 +189,15 @@ public class AdminLandingPageController implements Initializable {
 			log.error("Encountered IOException", ex);
 		}
 	}
+    @FXML
+    public void saveDBClicked() {
+        try {
+            Parent root = loaderFactory.getFXMLLoader("dialogues/ExportDialogue").load();
+            loaderFactory.setupPopup(new Stage(), new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
+    }
 
 	@FXML
 	public void btnImportClicked() {
@@ -151,9 +208,27 @@ public class AdminLandingPageController implements Initializable {
 			log.error("Encountered IOException", ex);
 		}
 	}
+	@FXML
+	public void importCSVClicked() {
+		try {
+			Parent root = loaderFactory.getFXMLLoader("dialogues/ImportDialogue").load();
+			loaderFactory.setupPopup(new Stage(), new Scene(root));
+		} catch (IOException ex) {
+			log.error("Encountered IOException", ex);
+		}
+	}
 
 	@FXML
 	public void btnExportClicked() {
+		try {
+			Parent root = loaderFactory.getFXMLLoader("dialogues/ExportDialogue").load();
+			loaderFactory.setupPopup(new Stage(), new Scene(root));
+		} catch (IOException ex) {
+			log.error("Encountered IOException", ex);
+		}
+	}
+	@FXML
+	public void saveCSVClicked() {
 		try {
 			Parent root = loaderFactory.getFXMLLoader("dialogues/ExportDialogue").load();
 			loaderFactory.setupPopup(new Stage(), new Scene(root));
@@ -317,7 +392,7 @@ public class AdminLandingPageController implements Initializable {
 				};
 			}
 		};
-		
+
 		ObservableList<TableEntityWrapper.TableNode> nodes = FXCollections.observableArrayList();
 		for (Node node : cache.getNodeCache()) {
 			nodes.add(new TableEntityWrapper.TableNode(node.getID(), String.valueOf(node.getPosition().getX()), String.valueOf(node.getPosition().getY()),
@@ -477,7 +552,7 @@ public class AdminLandingPageController implements Initializable {
 
 		final TreeItem<TableEntityWrapper.TableEdge> root = new RecursiveTreeItem<>(edges, RecursiveTreeObject::getChildren);
 		idCol.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
-		
+
 		startNodeCol.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
 		startNodeCol.setOnEditCommit(event -> {
 			TableEntityWrapper.TableEdge editedEdge = event.getRowValue().getValue();
@@ -486,7 +561,7 @@ public class AdminLandingPageController implements Initializable {
 				editedEdges.add(editedEdge);
 			}
 		});
-		
+
 		endNodeCol.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
 		endNodeCol.setOnEditCommit(event -> {
 			TableEntityWrapper.TableEdge editedEdge = event.getRowValue().getValue();
@@ -941,7 +1016,7 @@ public class AdminLandingPageController implements Initializable {
 				editedDoctors.add(editedDoctor);
 			}
 		});
-		
+
 		usernameCol.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
 		usernameCol.setOnEditCommit(event -> {
 			TableEntityWrapper.TableDoctor editedDoctor = event.getRowValue().getValue();
@@ -950,7 +1025,7 @@ public class AdminLandingPageController implements Initializable {
 				editedDoctors.add(editedDoctor);
 			}
 		});
-		
+
 		officeIDCol.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
 		officeIDCol.setOnEditCommit(event -> {
 			TableEntityWrapper.TableDoctor editedDoctor = event.getRowValue().getValue();
@@ -1071,5 +1146,29 @@ public class AdminLandingPageController implements Initializable {
 	private void setTableVisible(JFXTreeTableView<?> table, boolean visible) {
 		table.setVisible(visible);
 		table.setMouseTransparent(!visible);
+	}
+
+
+	@FXML
+	private void changePasswordClicked(ActionEvent actionEvent) {
+		try {
+			Parent root = loaderFactory.getFXMLLoader("admin/ChangePassword").load();
+			loaderFactory.setupPopup(new Stage(), new Scene(root));
+		} catch (IOException ex) {
+			log.error("Encountered IOException", ex);
+		}
+	}
+
+	private TimerTask timerWrapper(Runnable r) {
+		return new TimerTask() {
+			@Override
+			public void run() {
+				r.run();
+			}
+		};
+	}
+
+	private void updateTime() {
+		Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("E, MMM d | h:mm aa").format(new Date())));
 	}
 }

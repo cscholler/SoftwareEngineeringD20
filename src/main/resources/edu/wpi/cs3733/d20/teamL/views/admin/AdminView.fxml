@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXTreeTableView?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.text.Font?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background-pane-fx" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.LoggedInView.AdminLandingPageController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background-pane-fx" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.LoggedInView.AdminLandingPageController">
    <bottom>
       <AnchorPane maxHeight="76.0" prefHeight="76.0" prefWidth="1280.0" styleClass="bottom-bar-anchor-pane-fx" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutY="2.0" prefHeight="5.0" prefWidth="130.0" styleClass="bottom-bar-time-label-fx" text="14:92" AnchorPane.leftAnchor="0.0" />
-            <JFXButton layoutX="1012.0" layoutY="1.0" onAction="#btnLogoutClicked" styleClass="bottom-bar-logout-label-fx" text="Logout" AnchorPane.rightAnchor="0.0" />
+            <Label fx:id="timeLabel" layoutY="2.0" prefHeight="45.0" prefWidth="348.0" styleClass="bottom-bar-time-label-fx" text="14:92" AnchorPane.leftAnchor="0.0" />
+             <JFXButton layoutX="1012.0" layoutY="1.0" onAction="#btnLogoutClicked" styleClass="bottom-bar-logout-label-fx" text="Logout" AnchorPane.rightAnchor="0.0" />
             <JFXButton fx:id="btnMap" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" layoutX="449.0" layoutY="1.0" onAction="#btnMapClicked" prefHeight="51.0" prefWidth="386.0" styleClass="map-button-jfx" text="Switch to Map Editor" textAlignment="CENTER" AnchorPane.leftAnchor="447.0" AnchorPane.rightAnchor="447.0" />
          </children>
       </AnchorPane>
@@ -28,13 +23,31 @@
             <Insets bottom="10.0" top="10.0" />
          </BorderPane.margin>
          <children>
-            <HBox alignment="CENTER_LEFT" spacing="20.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="5.0">
+            <HBox alignment="CENTER_LEFT" layoutX="466.0" layoutY="10.0" prefHeight="70.0" prefWidth="560.0" spacing="10.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="450.0" AnchorPane.rightAnchor="264.0" AnchorPane.topAnchor="5.0">
                <children>
                   <JFXButton contentDisplay="GRAPHIC_ONLY" prefHeight="44.0" prefWidth="45.0" styleClass="database-buttons-jfx">
                      <graphic>
                         <ImageView fitHeight="40.0" fitWidth="42.0">
                            <image>
                               <Image url="@../../assets/baseline_edit_white_48dp.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
+                  <JFXButton contentDisplay="GRAPHIC_ONLY" prefHeight="44.0" prefWidth="45.0" styleClass="database-buttons-jfx">
+                     <graphic>
+                        <ImageView fitHeight="43.0" fitWidth="41.0">
+                           <image>
+                              <Image url="@../../staff_view/Add.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
+                  <JFXButton contentDisplay="GRAPHIC_ONLY" onAction="#importDBClicked" styleClass="database-buttons-jfx">
+                     <graphic>
+                        <ImageView fx:id="importClicked1" fitHeight="38.0" fitWidth="42.0">
+                           <image>
+                              <Image url="@../../assets/map_editor/UploadFromDBFolder.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -48,27 +61,37 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
-                  <JFXButton contentDisplay="GRAPHIC_ONLY" onAction="#btnImportClicked" styleClass="database-buttons-jfx">
+                  <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#importCSVClicked" styleClass="database-buttons-jfx">
                      <graphic>
-                        <ImageView fx:id="btnImportClicked" fitHeight="38.0" fitWidth="38.0">
+                        <ImageView fitHeight="34.0" fitWidth="41.0">
                            <image>
-                              <Image url="@../../assets/map_editor/UploadFromDBFolder.png" />
+                              <Image url="@../../assets/map_editor/UploadFromCSVFolder.png" />
                            </image>
                         </ImageView>
                      </graphic>
                   </JFXButton>
+                  <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#saveCSVClicked" styleClass="database-buttons-jfx">
+                     <graphic>
+                        <ImageView fitHeight="38.0" fitWidth="37.0">
+                           <image>
+                              <Image url="@../../assets/map_editor/SaveToCSV.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
+                  <JFXButton fx:id="btnChangePass" onAction="#changePasswordClicked" prefWidth="58.0" styleClass="database-buttons-jfx" visible="false" />
                </children>
                <padding>
                   <Insets right="10.0" />
                </padding>
             </HBox>
-            <JFXComboBox fx:id="tableSelector" layoutX="445.0" layoutY="14.0" onAction="#tableSelected" style="-fx-min-width: 400;" styleClass="combo-box-jfx" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="10.0" />
-            <JFXButton contentDisplay="CENTER" layoutX="1197.0" layoutY="7.0" onAction="#btnRebuildClicked" prefWidth="49.0" styleClass="delete-database-buttons-jfx" text="☢" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="5.0">
+            <JFXComboBox fx:id="tableSelector" layoutX="47.0" layoutY="13.0" maxHeight="60.0" maxWidth="366.0" minWidth="366.0" onAction="#tableSelected" prefHeight="60.0" prefWidth="366.0" style="-fx-min-width: 400;" styleClass="combo-box-jfx" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="10.0" />
+            <JFXButton contentDisplay="CENTER" layoutX="1197.0" layoutY="7.0" onAction="#rebuildDatabaseClicked" prefWidth="49.0" styleClass="delete-database-buttons-jfx" text="☢" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="5.0">
                <font>
                   <Font size="29.0" />
                </font>
             </JFXButton>
-            <JFXButton layoutX="280.0" layoutY="15.0" onAction="#btnSaveClicked" styleClass="save-button-jfx" text="Save" />
+            <JFXButton layoutX="941.0" layoutY="15.0" onAction="#btnSaveClicked" styleClass="save-button-jfx" text="Save" />
          </children>
       </AnchorPane>
    </top>
@@ -76,7 +99,7 @@
       <AnchorPane>
          <children>
             <JFXTreeTableView fx:id="nodesTable" editable="true" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="0.0" />
-            <JFXTreeTableView fx:id="edgesTable" editable="true" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="0.0" />
+            <JFXTreeTableView fx:id="edgesTable" editable="true" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="0.0" />
             <JFXTreeTableView fx:id="giftsTable" editable="true" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="0.0" />
             <JFXTreeTableView fx:id="usersTable" editable="true" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="0.0" />
             <JFXTreeTableView fx:id="doctorsTable" editable="true" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="0.0" />
