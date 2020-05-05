@@ -151,11 +151,11 @@ public class MapViewerController {
         Collection<String> confNodes = new ArrayList<>();
 
         for (Node node : allNodes) {
-            if (node.getType().equals("DEPT")) { deptNodes.add("Floor "+ node.getFloorAsString()+ " " + node.getLongName());
-            } else if (node.getType().equals("LABS")) { labNodes.add("Floor "+ node.getFloorAsString()+ " " + node.getLongName());
-            } else if ((node.getType().equals("SERV") || node.getType().equals("INFO"))) { serviceNodes.add("Floor "+ node.getFloorAsString()+ " " + node.getLongName());
-            } else if (node.getType().equals("RETL")) { retailNodes.add("Floor "+ node.getFloorAsString()+ " " + node.getLongName());
-            } else if (node.getType().equals("CONF")) { confNodes.add("Floor "+ node.getFloorAsString()+ " " + node.getLongName());
+            if (node.getType().equals("DEPT")) { deptNodes.add(node.getLongName() + " - (" + node.getBuilding() + " " + node.getFloor() + ")" );
+            } else if (node.getType().equals("LABS")) { labNodes.add(node.getLongName() + " - (" + node.getBuilding() + " " + node.getFloor() + ")");
+            } else if ((node.getType().equals("SERV") || node.getType().equals("INFO"))) { serviceNodes.add(node.getLongName() + " - (" + node.getBuilding() + " " + node.getFloor() + ")");
+            } else if (node.getType().equals("RETL")) { retailNodes.add(node.getLongName() + " - (" + node.getBuilding() + " " + node.getFloor() + ")");
+            } else if (node.getType().equals("CONF")) { confNodes.add(node.getLongName() + " - (" + node.getBuilding() + " " + node.getFloor() + ")");
             }
         }
 
@@ -561,7 +561,7 @@ public class MapViewerController {
     @FXML
     public void navigateFloor1() {
         String selection = (String) listF1.getSelectionModel().getSelectedItem();
-        selection = selection.substring(8);
+
         destination.setText(selection);
         navigate();
     }
@@ -569,7 +569,7 @@ public class MapViewerController {
     @FXML
     public void navigateFloor2() {
         String selection = (String) listF2.getSelectionModel().getSelectedItem();
-        selection = selection.substring(8);
+
         destination.setText(selection);
         navigate();
     }
@@ -577,7 +577,7 @@ public class MapViewerController {
     @FXML
     public void navigateFloor3() {
         String selection = (String) listF3.getSelectionModel().getSelectedItem();
-        selection = selection.substring(8);
+
         destination.setText(selection);
         navigate();
     }
@@ -585,7 +585,7 @@ public class MapViewerController {
     @FXML
     public void navigateFloor4() {
         String selection = (String) listF4.getSelectionModel().getSelectedItem();
-        selection = selection.substring(8);
+
         destination.setText(selection);
         navigate();
     }
@@ -593,7 +593,7 @@ public class MapViewerController {
     @FXML
     public void navigateFloor5() {
         String selection = (String) listF5.getSelectionModel().getSelectedItem();
-        selection = selection.substring(8);
+
         destination.setText(selection);
         navigate();
     }
