@@ -2,10 +2,7 @@ package edu.wpi.cs3733.d20.teamL.entities;
 
 import javafx.geometry.Point2D;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.*;
 
 public class Node {
 
@@ -90,6 +87,24 @@ public class Node {
     }
 
     public Collection<Edge> getEdges() {
+
+        // Remove all duplicate edges
+        Iterator<Edge> iterator = edges.iterator();
+        while(iterator.hasNext()) {
+            Edge edge = iterator.next();
+
+            boolean foundDuplicate = false;
+            for (Edge otherEdge : edges) {
+                if (edge.getID().equals(otherEdge.getID()) && otherEdge != edge) {
+                    foundDuplicate = true;
+                    break;
+                }
+            }
+
+            if (foundDuplicate)
+                iterator.remove();
+        }
+
         return edges;
     }
 
@@ -188,7 +203,8 @@ public class Node {
      * @param newEdge The edge to add
      */
     public void addEdge(Edge newEdge) {
-        newEdge.setSource(this);
+        if (!getEdges().contains(newEdge)) newEdge.setSource(this);
+        else newEdge.source = this;
     }
 
     /**
@@ -198,7 +214,7 @@ public class Node {
      */
     public Edge addEdge(Node otherNode) {
         Edge newEdge = new Edge(this, otherNode);
-        newEdge.setSource(this);
+        addEdge(newEdge);
 
         return getEdge(otherNode);
     }
@@ -315,6 +331,12 @@ public class Node {
      */
     public HashMap<String, Object> getData() {
         return data;
+    }
+
+    public double distanceTo(Node otherNode) {
+        double length = getPosition().distance(otherNode.getPosition()) + (Math.abs(getFloor() - otherNode.getFloor()) * 100);
+        if (!getBuilding().equals(otherNode.getBuilding())) length += 10000;
+        return length;
     }
 
     /*
