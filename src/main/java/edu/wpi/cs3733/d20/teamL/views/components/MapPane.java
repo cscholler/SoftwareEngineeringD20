@@ -1,9 +1,11 @@
 package edu.wpi.cs3733.d20.teamL.views.components;
 
+import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +19,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.Paint;
@@ -63,8 +66,9 @@ public class MapPane extends ScrollPane {
     private EdgeGUI tempEdge;
     private NodeGUI tempNode;
     private int nodeRadius = 18;
-    private int hallwayNodeRadius = 12;
+    private int hallwayNodeRadius = 10;
     private Color nodeColor = Color.rgb(13, 46, 87, 0.9);
+    private Color hallNodeColor = Color.rgb(13, 46, 87);
     private Color edgeColor = Color.DARKBLUE;
     private Color highLightColor = Color.GOLD;//Color.rgb(20, 194, 247);
     private double edgeThickness = 3;
@@ -312,6 +316,19 @@ public class MapPane extends ScrollPane {
         return buildings;
     }
 
+    /**
+     * Compiles all the nodes from both buildings into one graph.
+     *
+     * @return A graph containing all the nodes from both buildings
+     */
+    public Graph getAllNodes() {
+        Graph allNodes = new Graph();
+        for (Building building : getBuildings())
+            allNodes.addAllNodes(building);
+
+        return allNodes;
+    }
+
     public void setSelectedNode(Node selectedNode) {
         this.selectedNode = selectedNode;
     }
@@ -427,6 +444,29 @@ public class MapPane extends ScrollPane {
         }
 
         setMapImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/" + getBuilding().getName() + "Floor" + currentFloor.getFloorAsString() + "LM.png"));
+    }
+
+    /**
+     * Inserts floor buttons into a given VBox
+     */
+    public void generateFloorButtons(VBox floorSelector, EventMethod handleFloor) {
+        while (floorSelector.getChildren().size() > 2) {
+            floorSelector.getChildren().remove(1);
+        }
+        for (Floor floor : getBuilding().getFloors()) {
+            JFXButton newButton = new JFXButton();
+            newButton.setButtonType(JFXButton.ButtonType.RAISED);
+            newButton.getStylesheets().add("edu/wpi/cs3733/d20/teamL/css/MapStyles.css");
+            newButton.setText(floor.getFloorAsString());
+            newButton.setOnAction(handleFloor::op);
+            newButton.getStyleClass().add("floor-buttons");
+
+            floorSelector.getChildren().add(1, newButton);
+        }
+    }
+
+    public interface EventMethod {
+        void op(ActionEvent event);
     }
 
     public void recalculatePositions() {
@@ -615,6 +655,8 @@ public class MapPane extends ScrollPane {
             });
             try {
                 nodeGUI.getCircle().setFill(new ImagePattern(new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/" + node.getType() + "_filled.png")));
+                if (nodeGUI.getNode().getType().equals("HALL") && hallNodeColor != null)
+                    nodeGUI.getCircle().setFill(hallNodeColor);
             } catch (IllegalArgumentException ex) {
                 nodeGUI.getCircle().setFill(nodeColor);
             }
@@ -637,6 +679,8 @@ public class MapPane extends ScrollPane {
         if (nodeGUI != null) {
             try {
                 nodeGUI.getCircle().setFill(new ImagePattern(new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/" + nodeGUI.getNode().getType() + "_filled.png")));
+                if (nodeGUI.getNode().getType().equals("HALL") && hallNodeColor != null)
+                    nodeGUI.getCircle().setFill(hallNodeColor);
             } catch (IllegalArgumentException ex) {
                 nodeGUI.getCircle().setFill(nodeColor);
             }

@@ -91,9 +91,7 @@ public class PathfinderService implements IPathfinderService {
         // Calculate the distance of each node from the destination if coordinates are in the data
         if (hasCoords) {
             for (NodeEntry entry : priorityQueue) {
-                double twoDimensionalDistance = entry.node.getPosition().distance(destination.getPosition());
-
-                entry.distFromDest = twoDimensionalDistance + Math.abs(entry.node.getFloor() - destination.getFloor()) * 100;
+                entry.distFromDest = entry.node.distanceTo(destination);
             }
         }
 
