@@ -54,10 +54,7 @@ public class GiftCheckoutPaneController {
 
         giftColumn.setCellValueFactory(
                 new PropertyValueFactory<GiftDetails, String>("name"));
-        qtyColumn.setCellValueFactory(
-                new PropertyValueFactory<GiftDetails, TextField>("qty"));
-
-        orderTable.setEditable(true);
+        qtyColumn.setCellValueFactory(new PropertyValueFactory<GiftDetails, TextField>("qty"));
 
         removeColumn.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
         Callback<TableColumn<GiftDetails, String>, TableCell<GiftDetails, String>> cellFactory = new Callback<>() {
@@ -87,6 +84,9 @@ public class GiftCheckoutPaneController {
                         return cell;
                     }
                 };
+
+        removeColumn.setEditable(true);
+        orderTable.setEditable(true);
 
         for (String giftType : cart.keySet()) {
             GiftDetails gd = new GiftDetails(giftType,cart.get(giftType));

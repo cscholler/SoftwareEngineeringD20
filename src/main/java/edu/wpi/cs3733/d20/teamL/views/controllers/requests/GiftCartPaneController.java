@@ -36,11 +36,13 @@ public class GiftCartPaneController {
     @FXML
     private StackPane stackPane;
     @FXML
-    private AnchorPane checkoutPane, addedToCartPane, outOfStockPane;
+    private AnchorPane checkoutPane, addedToCartPane, outOfStockPane, backPane;
     @FXML
     private ImageView addedToCart, outOfStock;
     @FXML
     private JFXButton checkoutButton;
+    @FXML
+    private Region checkoutFXML;
 
     @FXML
     public void initialize() {
@@ -178,10 +180,11 @@ public class GiftCartPaneController {
     public void toToCheckout() throws IOException {
         cache.cacheCart(cart);
 
-        Region n = loaderHelper.getFXMLLoader("requests/GiftCheckoutPane").load();
-        stackPane.getChildren().add(n);
-        n.prefWidthProperty().bind(stackPane.widthProperty());
-        n.prefHeightProperty().bind(stackPane.heightProperty());
+        checkoutFXML = loaderHelper.getFXMLLoader("requests/GiftCheckoutPane").load();
+        stackPane.getChildren().add(checkoutFXML);
+        checkoutFXML.prefWidthProperty().bind(stackPane.widthProperty());
+        checkoutFXML.prefHeightProperty().bind(stackPane.heightProperty());
+        createBackButton();
     }
 
     private int CartSize() {
@@ -191,4 +194,27 @@ public class GiftCartPaneController {
         }
         return cartSize;
     }
+
+    private void createBackButton(){
+        JFXButton backButton = new JFXButton("<");
+        backButton.setStyle("-fx-background-color: #0e2d57;" +
+                "-fx-pref-width: 40;" +
+                "-fx-pref-height: 40;" +
+                "-fx-background-radius: 20;" +
+                "-fx-font-size: 15;" +
+                "-fx-text-fill: white;" +
+                "-fx-font-weight: bolder;");
+        backButton.setOnAction(returnToCart);
+        backPane = new AnchorPane(backButton);
+        backPane.setTopAnchor(backButton,10.0);
+        backPane.setLeftAnchor(backButton, 10.0);
+        stackPane.getChildren().add(backPane);
+    }
+
+    EventHandler<ActionEvent> returnToCart = new EventHandler<>() {
+        public void handle(ActionEvent e) {
+            stackPane.getChildren().remove(checkoutFXML);
+            stackPane.getChildren().remove(backPane);
+        }
+    };
 }
