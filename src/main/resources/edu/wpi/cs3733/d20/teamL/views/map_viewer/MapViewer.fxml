@@ -179,91 +179,95 @@
             </children>
         </AnchorPane>
     </center>
-   <top>
-      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" style="-fx-background-color: #00043B;" BorderPane.alignment="CENTER">
-         <stylesheets>
-            <URL value="@../../css/MapStyles.css" />
-         </stylesheets>
-         <children>
-            <Label fx:id="timeLabel" alignment="CENTER" prefHeight="64.0" prefWidth="244.0" text="Label" textFill="WHITE">
-               <font>
-                  <Font size="18.0" />
-               </font>
-               <HBox.margin>
-                  <Insets right="70.0" />
-               </HBox.margin>
-            </Label>
-                    <HBox alignment="CENTER" prefHeight="40.0" prefWidth="300.0" style="-fx-border-radius: 10; -fx-background-radius: 10;">
-                        <children>
-                            <JFXTextField fx:id="startingPoint" focusColor="WHITE" labelFloat="true" maxHeight="30.0" onKeyTyped="#startingPointAutocomplete" prefHeight="22.0" promptText="Starting Point" style="-fx-border-color: white; -fx-focus-color: white; -fx-unfocus-color: white; -fx-font-color: white;" text="Hallway Intersection 14 Level 2" unFocusColor="WHITE">
-                                <font>
-                                    <Font size="16.0" />
-                                </font>
-                                <HBox.margin>
-                                    <Insets left="10.0" />
-                                </HBox.margin>
-                                <opaqueInsets>
-                                    <Insets />
-                                </opaqueInsets>
-                            </JFXTextField>
-                            <JFXButton maxHeight="30.0" onAction="#clearSource" prefWidth="29.0" style="-fx-font-size: 10; -fx-pref-width: 30;" styleClass="clear" text="X" textFill="WHITE">
-                                <font>
-                                    <Font name="Corbel Light" size="10.0" />
-                                </font>
-                            </JFXButton>
-                        </children>
-                    </HBox>
-            <JFXButton fx:id="btnChangeLoc" contentDisplay="CENTER" maxHeight="30.0" onAction="#handleLocationChange" text=" ">
-               <graphic>
-                  <ImageView fitHeight="20.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../assets/map_editor/reverseArrow.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </JFXButton>
-                    <HBox alignment="CENTER" prefHeight="40.0" prefWidth="300.0" style="-fx-border-radius: 10; -fx-background-radius: 10;">
-                        <children>
-                            <JFXTextField fx:id="destination" focusColor="WHITE" labelFloat="true" maxHeight="30.0" onKeyTyped="#destinationAutocomplete" promptText="Destination" style="-jfx-focus-color: white; -jfx-unfocus-color: white; -fx-border-color: white;" unFocusColor="WHITE">
-                                <font>
-                                    <Font size="16.0" />
-                                </font>
-                                <HBox.margin>
-                                    <Insets />
-                                </HBox.margin>
-                            </JFXTextField>
-                            <JFXButton maxHeight="30.0" onAction="#clearDest" style="-fx-font-size: 10; -fx-pref-width: 40;" styleClass="clear" text="X" textFill="WHITE">
-                                <font>
-                                    <Font name="Corbel Light" size="10.0" />
-                                </font>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                            </JFXButton>
-                  <JFXButton fx:id="btnNavigate" contentDisplay="CENTER" maxHeight="35.0" onAction="#navigate" prefHeight="35.0" prefWidth="41.0" text=" ">
-                     <graphic>
-                        <ImageView fitHeight="21.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../assets/home_page/search_button_home.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </JFXButton>
-                        </children>
-                    </HBox>
-            <JFXButton onAction="#loginBtnClicked" prefHeight="65.0" prefWidth="125.0" style="-fx-background-color: transparent;" styleClass="bottom-bar-logout-label-fx" text="Login">
-               <HBox.margin>
-                  <Insets left="50.0" />
-               </HBox.margin>
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </JFXButton>
-         </children>
-      </HBox>
-   </top>
    <stylesheets>
       <URL value="@../../css/GlobalStyleSheet.css" />
       <URL value="@../../css/MapStyles.css" />
    </stylesheets>
+   <top>
+      <AnchorPane prefHeight="108.0" prefWidth="1287.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="108.0" prefWidth="1287.0" spacing="20.0" style="-fx-background-color: #00043B;">
+               <stylesheets>
+                  <URL value="@../../css/MapStyles.css" />
+               </stylesheets>
+               <children>
+                  <Label fx:id="timeLabel" alignment="CENTER" prefHeight="64.0" prefWidth="244.0" text="Label" textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="70.0" />
+                     </HBox.margin>
+                  </Label>
+                          <HBox alignment="CENTER" prefHeight="40.0" prefWidth="300.0" style="-fx-border-radius: 10; -fx-background-radius: 10;">
+                              <children>
+                                  <JFXTextField fx:id="startingPoint" focusColor="WHITE" labelFloat="true" maxHeight="30.0" onKeyTyped="#startingPointAutocomplete" prefHeight="22.0" promptText="Starting Point" style="-fx-border-color: white; -fx-focus-color: white; -fx-unfocus-color: white; -fx-font-color: white;" text="Hallway Intersection 14 Level 2" unFocusColor="WHITE">
+                                      <font>
+                                          <Font size="16.0" />
+                                      </font>
+                                      <HBox.margin>
+                                          <Insets left="10.0" />
+                                      </HBox.margin>
+                                      <opaqueInsets>
+                                          <Insets />
+                                      </opaqueInsets>
+                                  </JFXTextField>
+                                  <JFXButton maxHeight="30.0" onAction="#clearSource" prefWidth="29.0" style="-fx-font-size: 10; -fx-pref-width: 30;" styleClass="clear" text="X" textFill="WHITE">
+                                      <font>
+                                          <Font name="Corbel Light" size="10.0" />
+                                      </font>
+                                  </JFXButton>
+                              </children>
+                          </HBox>
+                  <JFXButton fx:id="btnChangeLoc" contentDisplay="CENTER" maxHeight="30.0" onAction="#handleLocationChange" text=" ">
+                     <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../assets/map_editor/reverseArrow.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
+                          <HBox alignment="CENTER" prefHeight="40.0" prefWidth="300.0" style="-fx-border-radius: 10; -fx-background-radius: 10;">
+                              <children>
+                                  <JFXTextField fx:id="destination" focusColor="WHITE" labelFloat="true" maxHeight="30.0" onKeyTyped="#destinationAutocomplete" promptText="Destination" style="-jfx-focus-color: white; -jfx-unfocus-color: white; -fx-border-color: white;" unFocusColor="WHITE">
+                                      <font>
+                                          <Font size="16.0" />
+                                      </font>
+                                      <HBox.margin>
+                                          <Insets />
+                                      </HBox.margin>
+                                  </JFXTextField>
+                                  <JFXButton maxHeight="30.0" onAction="#clearDest" style="-fx-font-size: 10; -fx-pref-width: 40;" styleClass="clear" text="X" textFill="WHITE">
+                                      <font>
+                                          <Font name="Corbel Light" size="10.0" />
+                                      </font>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                                  </JFXButton>
+                        <JFXButton fx:id="btnNavigate" contentDisplay="CENTER" maxHeight="35.0" onAction="#navigate" prefHeight="35.0" prefWidth="41.0" text=" ">
+                           <graphic>
+                              <ImageView fitHeight="21.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/home_page/search_button_home.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
+                              </children>
+                          </HBox>
+                  <JFXButton onAction="#loginBtnClicked" prefHeight="65.0" prefWidth="125.0" style="-fx-background-color: transparent;" styleClass="bottom-bar-logout-label-fx" text="Login">
+                     <HBox.margin>
+                        <Insets left="50.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+   </top>
 </BorderPane>
