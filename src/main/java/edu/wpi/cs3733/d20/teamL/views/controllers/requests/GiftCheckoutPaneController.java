@@ -42,9 +42,11 @@ public class GiftCheckoutPaneController {
     @FXML
     private TableColumn giftColumn, qtyColumn, removeColumn;
     @FXML
-    private JFXTextField firstNameText, lastNameText, senderText, confirmation;
+    private JFXTextField firstNameText, lastNameText, senderText;
     @FXML
     private JFXTextArea additionalNotesText, specialMessageText;
+    @FXML
+    private Label confirmation, orderTxt;
 
     @FXML
     public void initialize() {
@@ -125,11 +127,12 @@ public class GiftCheckoutPaneController {
         } else {
             firstNameText.setStyle("-fx-prompt-text-fill: GRAY");
             lastNameText.setStyle("-fx-prompt-text-fill: GRAY");
-            patientID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ID, new ArrayList<>(Arrays.asList(patientFName, patientLName))))).get(0).get(0);
+            patientID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ID, new ArrayList<>(Arrays.asList(firstName, lastName))))).get(0).get(0);
         }
         if (gifts.toString().length() < 2) {
+            orderTxt.setStyle("-fx-text-fill: RED");
             validFields = false;
-        }
+        } else orderTxt.setStyle("-fx-text-fill: #00043b");
 
 
         int rows = 0;
@@ -138,11 +141,11 @@ public class GiftCheckoutPaneController {
 
         if(rows == 0) {
             confirmation.setVisible(true);
-            confirmation.setTextFill(Color.RED);
+            confirmation.setStyle("-fx-text-fill: RED");
             confirmation.setText("Submission failed");
         } else {
             confirmation.setVisible(true);
-            confirmation.setTextFill(Color.WHITE);
+            confirmation.setStyle("-fx-text-fill: WHITE");
             confirmation.setText("");
             cache.updateInventory();
 
