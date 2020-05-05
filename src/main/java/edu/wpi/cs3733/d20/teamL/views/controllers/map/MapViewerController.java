@@ -408,12 +408,12 @@ public class MapViewerController {
 
     @FXML
     private void zoomIn() {
-        map.setZoomLevel(map.getZoomLevel() * 1.2);
+        map.setZoomLevelToPosition(map.getZoomLevel() * 1.2, new Point2D(map.getBody().getWidth()/2,map.getBody().getHeight()/2));
     }
 
     @FXML
     private void zoomOut() {
-        map.setZoomLevel(map.getZoomLevel() * 0.8);
+        map.setZoomLevelToPosition(map.getZoomLevel() * 0.8, new Point2D(map.getBody().getWidth()/2,map.getBody().getHeight()/2));
     }
 
     public void setFloor(int newFloor) {
