@@ -8,6 +8,7 @@ import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.MapParser;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.PathfinderService;
+import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
@@ -232,7 +233,8 @@ public class MapEditorController {
 
         cache.cacheNodes(new ArrayList<>(nodes.getNodes()), map.getEditedNodes());
         cache.cacheEdges(newEdges);
-        cache.updateDB();
+
+        AsyncTaskManager.startTaskWithPopup(cache::updateDB, "Saving...", "Saved successfully");
 
         map.getEditedNodes().clear();
     }
