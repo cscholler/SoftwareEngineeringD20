@@ -19,10 +19,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -49,20 +46,23 @@ import org.apache.xmlgraphics.image.codec.png.PNGEncodeParam;
 
 @Slf4j
 public class MapViewerController {
+    @Inject
+    private IDatabaseCache cache;
+    @Inject
+    private IPathfinderService pathfinderService;
+    @Inject
+    private IMessengerService messenger;
+
     @FXML
     private MapPane map;
-
     @FXML
     private JFXTextField startingPoint, destination;
-
     @FXML
     private JFXButton btnNavigate, floorUp, floorDown;
-
     @FXML
     private ScrollPane scroll;
-
     @FXML
-    private VBox instructions;
+    private VBox sideBox;
     @FXML
     private JFXNodesList textDirNode;
     @FXML
@@ -71,25 +71,16 @@ public class MapViewerController {
     private JFXListView dirList;
     @FXML
     private JFXButton btnTextMe, btnQR;
-
     @FXML
     StackPane stackPane;
-
     @FXML
     private JFXListView listF1, listF2, listF3, listF4, listF5;
-
     @FXML
     private JFXComboBox<String> buildingChooser;
-
     @FXML
     private Label timeLabel;
-
-    @Inject
-    private IDatabaseCache cache;
-    @Inject
-    private IPathfinderService pathfinderService;
-    @Inject
-    private IMessengerService messenger;
+    @FXML
+    private Accordion accordion = new Accordion();
 
 
     private SearchFields sf;
@@ -110,6 +101,12 @@ public class MapViewerController {
     private final Image IMAGE_DEST = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/destFlag.png");
     private final Image IMAGE_FTOM = new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/FaulkToMain.PNG");
     private final Image IMAGE_MTOF = new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/MainToFaulk.PNG");
+
+    private Collection<String> deptNodes = new ArrayList<>();
+    private Collection<String> labNodes = new ArrayList<>();
+    private Collection<String> serviceNodes = new ArrayList<>();
+    private Collection<String> retailNodes = new ArrayList<>();
+    private Collection<String> confNodes = new ArrayList<>();
 
     @FXML
     private void initialize() {
@@ -145,13 +142,7 @@ public class MapViewerController {
         autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
 
-        // TODO: Change node dropdowns to be generated
         Collection <Node> allNodes = map.getBuilding().getNodes();
-        Collection<String> deptNodes = new ArrayList<>();
-        Collection<String> labNodes = new ArrayList<>();
-        Collection<String> serviceNodes = new ArrayList<>();
-        Collection<String> retailNodes = new ArrayList<>();
-        Collection<String> confNodes = new ArrayList<>();
 
         for (Node node : allNodes) {
             if (node.getType().equals("DEPT")) { deptNodes.add(node.getLongName());
@@ -173,6 +164,14 @@ public class MapViewerController {
         listF3.getItems().addAll(serviceNodes);
         listF4.getItems().addAll(retailNodes);
         listF5.getItems().addAll(confNodes);
+
+        TitledPane departments = new TitledPane("Departments", listF1);
+        TitledPane labs = new TitledPane("Labs", listF2);
+        TitledPane services = new TitledPane("Services/Information", listF3);
+        TitledPane amenities = new TitledPane("Amenities", listF4);
+        TitledPane conferenceRooms = new TitledPane("Conference Rooms", listF5);
+
+        accordion.getPanes().addAll(departments, labs, services, amenities, conferenceRooms);
     }
 
     private void generateFloorButtons() {
@@ -221,6 +220,9 @@ public class MapViewerController {
     public void navigate() {
         Node startNode = sf.getNode(startingPoint.getText());
         Node destNode = sf.getNode(destination.getText());
+
+        hideAccordion();
+        showTextualDirections();
 
         setFloor(startNode.getFloor());
         if (startNode != null && destNode != null) {
@@ -604,5 +606,22 @@ public class MapViewerController {
 
         map.setZoomLevelToPosition(scale, new Point2D(totalX, totalY));
         highLightPath();
+    }
+
+    private void showAccordion() {
+        sideBox.getChildren().add(0,accordion); //eventually this should be 1
+    }
+
+    private void hideAccordion() {
+        accordion.getPanes().removeAll();
+        sideBox.getChildren().remove(accordion);
+    }
+
+    private void showTextualDirections() {
+        sideBox.getChildren().add(1, dirList); //eventually this should be 2
+    }
+
+    private void hideTextualDirections() {
+        sideBox.getChildren().remove(dirList);
     }
 }
