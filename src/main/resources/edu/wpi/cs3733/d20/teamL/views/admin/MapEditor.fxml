@@ -204,7 +204,7 @@
                <children>
                   <HBox>
                      <children>
-                        <JFXButton buttonType="RAISED" onAction="#backToMain" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #0D2E57;" text=" " textFill="WHITE">
+                        <JFXButton buttonType="RAISED" disable="true" onAction="#backToMain" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #0D2E57;" text=" " textFill="WHITE" visible="false">
                            <HBox.margin>
                               <Insets left="15.0" />
                            </HBox.margin>
@@ -611,4 +611,13 @@
       <URL value="@../../css/GlobalStyleSheet.css" />
       <URL value="@../../css/MapStyles.css" />
    </stylesheets>
+   <bottom>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="bottom-bar-anchor-pane-fx" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="timeLabel" styleClass="bottom-bar-time-label-fx" text="14:92" AnchorPane.leftAnchor="0.0" />
+            <JFXButton layoutX="1012.0" onAction="#btnLogoutClicked" style="-fx-padding: 0 30 0 30; -fx-background-color: transparent;" styleClass="bottom-bar-logout-label-fx" text="Logout" AnchorPane.rightAnchor="0.0" />
+            <JFXButton fx:id="btnTable" layoutX="393.0" onAction="#btnTableClicked" prefHeight="51.0" prefWidth="440.0" style="-fx-padding: 0 30 0 30; -fx-background-color: transparent;" styleClass="map-button-jfx" text="Switch to Dashboard" AnchorPane.leftAnchor="393.0" AnchorPane.rightAnchor="447.0" />
+         </children>
+      </AnchorPane>
+   </bottom>
 </BorderPane>

@@ -111,8 +111,8 @@ public class AdminLandingPageController implements Initializable {
     @FXML
     private void btnMapClicked() {
         try {
-            Parent root = loaderFactory.getFXMLLoader("Admin/MapEditor").load();
-            loaderFactory.setupPopup(new Stage(), new Scene(root));
+            Parent root = loaderFactory.getFXMLLoader("admin/MapEditor").load();
+            loaderFactory.setupScene(new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
         }
