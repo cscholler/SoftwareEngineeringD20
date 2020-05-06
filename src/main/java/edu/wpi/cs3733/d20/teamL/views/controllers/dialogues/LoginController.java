@@ -51,11 +51,10 @@ public class LoginController {
 
     /**
      * Dummy function to allow enter to be pressed from the password box
-     * @param e the key that is pressed
      * @throws
      */
     @FXML
-    private void bugfix(ActionEvent e) {}
+    private void bugfix() {}
 
     /**
      * Controls the login feature setting usernames and passwords and only accepting correct usernames and passwords
