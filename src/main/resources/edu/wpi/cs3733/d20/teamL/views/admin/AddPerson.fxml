@@ -77,10 +77,11 @@
                         <Pane prefHeight="563.0" prefWidth="150.0" BorderPane.alignment="CENTER" />
                      </right>
                      <bottom>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="70.0" BorderPane.alignment="CENTER">
+                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
                            <children>
                               <JFXButton fx:id="btnCancel" onAction="#setBtnCancel" styleClass="cancel-button-jfx" text="Cancel" />
                               <JFXButton onAction="#submitClicked" styleClass="save-button-jfx" text="Submit" />
+                              <Label fx:id="lblConfirmation" styleClass="submission-failed-label-fx" />
                            </children>
                         </HBox>
                      </bottom>
@@ -113,10 +114,11 @@
                         </HBox>
                      </center>
                      <bottom>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="70.0" BorderPane.alignment="CENTER">
+                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
                            <children>
-                              <JFXButton fx:id="btnCancel" onAction="#setBtnCancel" styleClass="cancel-button-jfx" text="Cancel" />
-                              <JFXButton fx:id="btnSubmit" onAction="#btnSubmitClicked" styleClass="save-button-jfx" text="Submit" />
+                              <JFXButton onAction="#setBtnCancel" styleClass="cancel-button-jfx" text="Cancel" />
+                              <JFXButton onAction="#btnSubmitClicked" styleClass="save-button-jfx" text="Submit" />
+                              <Label styleClass="submission-failed-label-fx" />
                            </children>
                         </HBox>
                      </bottom>
