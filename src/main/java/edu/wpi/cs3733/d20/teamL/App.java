@@ -28,6 +28,8 @@ public class App extends Application {
 	public static boolean doUpdateCacheOnLoad = true;
 	public static boolean allowCacheUpdates = true;
 
+	public static double UI_SCALE = 1.23 * (SCREEN_WIDTH / 1920);
+
 	public static void startForceUpdateTimer() {
 		if (forceCacheUpdateTimer != null) {
 			forceCacheUpdateTimer.cancel();
