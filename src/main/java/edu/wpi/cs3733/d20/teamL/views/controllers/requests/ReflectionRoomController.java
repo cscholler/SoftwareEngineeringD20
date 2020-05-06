@@ -20,6 +20,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javax.inject.Inject;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -38,9 +39,7 @@ public class ReflectionRoomController {
     @FXML
     StackPane stackPane;
     @FXML
-    JFXButton btnLoadTimes;
-    @FXML
-    Label tableErrorLbl;
+    Label confirmation;
     private FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
     @Inject
     private IDatabaseService db;
@@ -55,23 +54,28 @@ public class ReflectionRoomController {
     public void initialize() throws IOException {
 
         table.setVisible(false);
-        btnLoadTimes.setVisible(true);
-        tableErrorLbl.setVisible(false);
 
         rooms.setItems(reflectionRooms);
 
         borderPane.prefWidthProperty().bind(stackPane.widthProperty());
         borderPane.prefHeightProperty().bind(stackPane.heightProperty());
-    }
 
-    //TODO change values when room or date is changed, or make them uneditable
+        //load dates when room and date are changed
+        date.valueProperty().addListener((observable, oldDate, newDate)->{
+            if(date.getValue() != null && rooms.getValue() != null) {
+                loadTimes();
+            }
+        });
+
+        rooms.valueProperty().addListener((observable, oldRoom, newRoom) -> {
+            if(date.getValue() != null && rooms.getValue() != null) {
+                loadTimes();
+            }
+        });
+    }
 
     @FXML
     private void loadTimes() {
-
-        if (rooms.getValue() == null || date.getValue() == null) {
-            loaderHelper.showAndFade(tableErrorLbl);
-        } else {
 
             String r = (String) rooms.getValue();
             String d = date.getValue().toString();
@@ -112,38 +116,61 @@ public class ReflectionRoomController {
             table.setShowRoot(false);
 
             table.setVisible(true);
-            btnLoadTimes.setVisible(false);
-            tableErrorLbl.setVisible(false);
-        }
     }
 
     @FXML
     private void handleSubmit() {
-        TreeItem<TimeSlot> row = table.getSelectionModel().getSelectedItem();
-        TimeSlot t = row.getValue();
-        String startTime = t.start.getValue();
-        String endTime = t.end.getValue();
-        String availability = t.availability.getValue();
-        String room = (String) rooms.getValue();
-        String dateChosen = date.getValue().toString();
-        //TODO check values for null, past date, time
 
-        int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_ROOM_REQUEST,
-                new ArrayList<>(Arrays.asList(manager.getCurrentUser().getUsername(), room, dateChosen, startTime, endTime)))));
+        //check for null values
+        if(rooms.getValue() == null || date.getValue() == null || table.getSelectionModel().isEmpty()) {
+            confirmation.setText("Select a Valid Room, Date, and Time");
+            loaderHelper.showAndFade(confirmation);
+        } else {
 
-        //clear selected values
-        rooms.setValue(null);
-        date.setValue(null);
-        table.getSelectionModel().clearSelection();
+            //check if date is valid
+            LocalDate d = date.getValue();
+            if(d.isBefore(LocalDate.now())) {
+                confirmation.setText("Select a Valid Date");
+                loaderHelper.showAndFade(confirmation);
+            } else {
 
-        loaderHelper.showAndFade(requestReceived);
+                TreeItem<TimeSlot> row = table.getSelectionModel().getSelectedItem();
+                TimeSlot t = row.getValue();
+                String startTime = t.start.getValue();
+                String endTime = t.end.getValue();
+                String availability = t.availability.getValue();
+                String room = (String) rooms.getValue();
+                String dateChosen = date.getValue().toString();
 
-        table.setVisible(false);
-        btnLoadTimes.setVisible(true);
-        tableErrorLbl.setVisible(false);
-        table.getColumns().clear();
+                //check if room is available
+                if(availability.equals("Reserved")){
+                    confirmation.setText("Select an Open Time Slot");
+                    loaderHelper.showAndFade(confirmation);
+                } else {
 
-        requestReceived.toBack();
+                    int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_ROOM_REQUEST,
+                            new ArrayList<>(Arrays.asList(manager.getCurrentUser().getUsername(), room, dateChosen, startTime, endTime)))));
+
+                    if(rows == 0) {
+                        confirmation.setText("Submission Failed");
+                        loaderHelper.showAndFade(confirmation);
+                    } else {
+
+                        //clear selected values
+                        rooms.setValue(null);
+                        date.setValue(null);
+                        table.getSelectionModel().clearSelection();
+
+                        loaderHelper.showAndFade(requestReceived);
+
+                        table.setVisible(false);
+                        table.getColumns().clear();
+
+                        requestReceived.toBack();
+                    }
+                }
+            }
+        }
     }
 
     class TimeSlot extends RecursiveTreeObject<TimeSlot> {
