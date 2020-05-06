@@ -1,0 +1,425 @@
+
+
+/*----------------------------------------------------------------------------------------------*/
+/*                                                                                              */
+/*                                                                                              */
+/*     Please keep this file organized with headers comments and proper naming conventions      */
+/*                                                                                              */
+/*                                    thank you :)  -UI Squad                                   */
+/*                                                                                              */
+/*                                                                                              */
+/*----------------------------------------------------------------------------------------------*/
+
+
+
+
+
+
+
+/*-------------------------any background pane-------------------------------*/
+.background-pane-fx {
+    -fx-pref-height: 720;
+    -fx-pref-width: 1280;
+    -fx-max-height: 720;
+    -fx-max-width: 1280;
+    -fx-background-color: white;
+}
+
+
+/*------------------------------bottom bar----------------------------------*/
+.bottom-bar-anchor-pane-fx {
+    -fx-background-color: #00043B;
+    -fx-pref-height: 30;
+    -fx-max-height: 30;
+    -fx-alignment: center;
+}
+
+.bottom-bar-time-label-fx {
+    -fx-text-fill: white;
+    -fx-font-size:30;
+    -fx-padding: 0 0 0 30;
+}
+
+.bottom-bar-user-label-fx {
+    -fx-text-fill: white;
+    -fx-font-size:30;
+}
+
+.bottom-bar-logout-label-fx {
+    -fx-text-fill: white;
+    -fx-underline: true;
+    -fx-font-size:30;
+    -fx-padding: 0 30 0 30;
+    -fx-text-alignment: justify;
+}
+
+/*---------------------------------user Landing Page-----------------------------*/
+
+.services-button-jfx {
+    -fx-font-size: 30;
+    -fx-text-fill: #0D2E57;
+
+    -fx-background-color: WHITE;
+    -fx-pref-width: 385;
+    -fx-max-width: 385;
+    -fx-pref-height: 100;
+    -fx-max-height: 100;
+    -fx-alignment: center-left;
+    -jfx-button-type: RAISED;
+}
+.service-request-header-label-fx {
+    -fx-text-fill: #00043B;
+    -fx-font-size: 40;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 0 30;
+}
+
+.notifications-button-jfx {
+    -fx-font-size: 30;
+    -fx-text-fill: #00043B;
+    -fx-padding: 0 10 0 10;
+    -fx-underline: true;
+
+    -fx-background-color: WHITE;
+    -fx-pref-width: 260;
+    -fx-pref-height: 60;
+    -fx-max-width: 260;
+    -fx-max-height: 60;
+    -jfx-button-type: FLAT;
+}
+
+/*-------------------------------search bars formatting----------------------------------*/
+.search-bar-text-field-jfx{
+    -fx-pref-height: 40;
+    -fx-max-height: 40;
+    -fx-pref-width: 240;
+    -fx-background-radius: 0;
+    -jfx-focus-color: white;
+    -jfx-unfocus-color: white;
+    -fx-background-color: white;
+}
+
+.search-bar-text-field-jfx .input-line {
+    -fx-pref-height: 0;
+}
+
+.search-bar-text-field-jfx .input-focused-line {
+    -fx-pref-height: 0;
+}
+
+.clear-button-jfx {
+    -fx-pref-width: 30;
+    -fx-pref-height: 40;
+    -fx-max-height: 40;
+    -fx-background-color: white;
+    -fx-font-size: 10;
+    -fx-text-fill: black;
+    -fx-border-color: white;
+    /*-fx-border-width: 2px;*/
+    -fx-border-radius: 0 0 0 0;
+    -fx-border-width: 2px;
+
+    -jfx-button-type: FLAT;
+}
+
+/*------------------------universal service request controls----------------------------*/
+.services-pane-jfx{
+    -fx-background-color: white;
+    -fx-pref-width: 895;
+    -fx-pref-height: 585;
+}
+
+.cancel-button-jfx {
+    -fx-font-size: 20;
+    -fx-text-fill: white;
+    -fx-padding: 10;
+
+    -fx-background-color: gray;
+    -fx-pref-width: 150;
+    -fx-pref-height: 50;
+    -fx-max-width: 150;
+    -fx-max-height: 50;
+    -jfx-button-type: RAISED;
+}
+
+.save-button-jfx {
+    -fx-font-size: 20;
+    -fx-text-fill: white;
+    -fx-padding: 10;
+
+    -fx-background-color: #00043B;
+    -fx-pref-width: 150;
+    -fx-pref-height: 50;
+    -fx-max-width: 150;
+    -fx-max-height: 50;
+    -jfx-button-type: RAISED;
+}
+
+.text-field-jfx {
+    -fx-background-color: #DCDCDC;
+    -fx-background-radius: 0;
+    -jfx-unfocus-color: white;
+    -jfx-focus-color: #405784;
+    -fx-pref-width: 300;
+    -fx-pref-height: 40;
+    -fx-max-width: 300;
+    -fx-max-height: 40;
+
+    -fx-font-size: 15;
+    -jfx-label-float: true;
+}
+
+.text-area-jfx {
+    -fx-background-color: #DCDCDC;
+    -fx-background-radius: 0;
+    -jfx-unfocus-color: white;
+    -jfx-focus-color: #405784;
+    -fx-pref-width: 300;
+    -fx-pref-height: 150;
+    -fx-max-width: 300;
+    -fx-max-height: 150;
+
+    -fx-font-size: 15;
+    -jfx-label-float: true;
+}
+/*any labels used in service requests*/
+.service-request-label-fx{
+    -fx-font-size: 20;
+    -fx-text-fill: #00043B;
+}
+
+.submission-failed-label-fx{
+    -fx-pref-width: 250;
+    -fx-pref-height: 20;
+    -fx-font-size: 14;
+}
+
+.combo-box-jfx {
+    -fx-background-color: #DCDCDC;
+    -fx-background-radius: 0;
+    -jfx-unfocus-color: white;
+    -jfx-focus-color: #405784;
+    -fx-pref-width: 200;
+    -fx-pref-height: 40;
+    -fx-max-width: 200;
+    -fx-max-height: 40;
+
+    -fx-font-size: 15;
+}
+.radio-button-jfx {
+    -fx-font-size: 15;
+    -jfx-selected-color: #0D2E57;
+}
+
+/*used for sanitation*/
+.check-box-jfx {
+    -fx-font-size: 15;
+    -jfx-checked-color: #405784;
+}
+
+/*used for interpreter*/
+.flags-button-jfx{
+    -fx-background-color: white;
+    -fx-pref-height: 80;
+    -fx-graphic: top;
+    -jfx-button-type: RAISED;
+}
+
+/*time used in internal and external transport*/
+.time-text-field-jfx{
+    -fx-font-size: 14;
+    -jfx-unfocus-color: black;
+    -jfx-focus-color: #405784;
+    -fx-max-width: 40;
+    -fx-alignment: center;
+}
+
+
+/*----------------------------admin Login----------------------------------*/
+.map-button-jfx {
+    -fx-text-fill: white;
+    -fx-font-size:35;
+    -fx-padding: 0 30 0 30;
+    -fx-text-alignment: justify;
+    -jfx-button-type: RAISED;
+}
+
+.database-buttons-jfx{
+    -fx-background-radius: 100;
+    -fx-background-color: #0d2e57;
+
+    -fx-border-width: 5;
+    -fx-border-radius: 100;
+    -fx-border-color: white;
+
+    -fx-pref-height: 70;
+    -fx-pref-width: 70;
+    -jfx-button-type: RAISED;
+}
+
+.delete-database-buttons-jfx{
+    -fx-background-radius: 100;
+    -fx-background-color: darkred;
+    -fx-border-radius: 100;
+
+
+    -fx-pref-height: 70;
+    -fx-pref-width: 70;
+    -jfx-button-type: RAISED;
+}
+
+.user-combo-box-jfx {
+    -fx-font-size: 15;
+    -fx-text-fill: black;
+    -fx-background-color: #DCDCDC;
+    -jfx-unfocus-color: white;
+    -jfx-focus-color: #405784;
+    -fx-background-radius: 0;
+}
+
+/*-----------------------------Tab Panes-----------------------------------*/
+/*applies automatically*/
+
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: white;
+}
+
+.jfx-tab-pane .tab-selected-line {
+    -fx-background-color: transparent;
+}
+
+.tab:selected {
+    -fx-background-color: #0d2e57;
+}
+
+.tab:selected .tab-label {
+    -fx-text-fill: white;
+}
+
+.jfx-tab-pane .tab-header-area .jfx-rippler{
+    -jfx-rippler-fill: #0d2e57;
+}
+
+.tab {
+    -fx-pref-width: 200;
+}
+
+.jfx-tab-pane .tab-label {
+    -fx-text-fill: #0D2E57;
+}
+
+.JFX-tab-pane .tab-content-area{
+    -fx-tab-pref-width:300px;
+    -fx-tab-pref-width:40px;
+}
+
+
+/*---------------------------------------Scroll Bar-------------------------------------*/
+/*applies automatically*/
+
+.scroll-bar:vertical > .track-background, .scroll-bar:horizontal > .track-background {
+    -fx-background-color: #F1F1F1;
+    -fx-background-insets: 0.0;
+}
+
+.scroll-bar:vertical > .thumb, .scroll-bar:horizontal > .thumb {
+    -fx-background-color: #BCBCBC;
+    -fx-background-insets: 0.0;
+    -fx-background-radius: 1.0;
+}
+
+/* Up- and Down-Button Padding */
+.scroll-bar:vertical > .increment-button, .scroll-bar:vertical > .decrement-button {
+    -fx-padding: 5 2 5 2;
+}
+
+/* Left- and Right-Button Padding */
+.scroll-bar:horizontal > .increment-button, .scroll-bar:horizontal > .decrement-button {
+    -fx-padding: 2 5 2 5;
+}
+
+.scroll-bar > .increment-button, .scroll-bar > .decrement-button, .scroll-bar:hover > .increment-button, .scroll-bar:hover > .decrement-button {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar > .increment-button > .increment-arrow, .scroll-bar > .decrement-button > .decrement-arrow {
+    -fx-background-color: rgb(150.0, 150.0, 150.0);
+}
+
+/* Up Arrow */
+.scroll-bar:vertical > .increment-button > .increment-arrow {
+    -fx-shape: "M298 426h428l-214 214z";
+}
+
+/* Down Arrow */
+.scroll-bar:vertical > .decrement-button > .decrement-arrow {
+    -fx-shape: "M298 598l214-214 214 214h-428z";
+}
+
+/* Right Arrow */
+.scroll-bar:horizontal > .increment-button > .increment-arrow {
+    -fx-shape: "M0 428l0 -428l214 214l-214 214z";
+}
+
+/* Left Arrow */
+.scroll-bar:horizontal > .decrement-button > .decrement-arrow {
+    -fx-shape: "M214 0l0 428l-214 -214l214 -214z";
+}
+
+/*-------------------------Tree Table for Room Scheduler Times -------------------------------------------*/
+.tree-table-cell {
+    -fx-alignment: center;
+    -fx-font-size: 15;
+    -fx-pref-width: 150;
+    -fx-border-color: black;
+    -fx-border-width: .5px;
+}
+
+.tree-table-row-cell:odd {
+    -fx-background-color: #f9f9f9;
+    /*-fx-background-insets: 0, 0 0 1 0;*/
+}
+
+.tree-table-view .column-header {
+    -fx-alignment: center;
+    -fx-pref-width: 150;
+    -fx-border-color: black;
+    -fx-border-width: .5px;
+}
+
+.tree-table-view .column-header .label{
+    -fx-font-size: 20;
+    -fx-text-fill: black;
+}
+
+.jfx-tree-table-view > .virtual-flow > .clipped-container > .sheet > .tree-table-row-cell:filled:selected {
+    -fx-background-color: #b9c1de;
+}
+
+.tree-table-view {
+    -fx-pref-width: 464;
+    -fx-max-width: 464;
+    -fx-pref-height: 500;
+}
+
+.jfx-date-picker {
+    -fx-background-color: #DCDCDC;
+    -fx-pref-width: 200;
+    -fx-pref-height: 40;
+    -fx-max-width: 200;
+    -fx-max-height: 40;
+    -fx-font-size: 15;
+}
+
+.jfx-date-picker .input-line{
+    -fx-pref-height: 0px;
+}
+.jfx-date-picker .input-focused-line{
+    -fx-pref-height: 0px;
+}
+
+.table-error-label {
+    -fx-pref-height: 20;
+    -fx-font-size: 14;
+    -fx-text-fill: red;
+}
