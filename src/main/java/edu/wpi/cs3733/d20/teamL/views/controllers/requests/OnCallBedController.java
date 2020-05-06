@@ -22,6 +22,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javax.inject.Inject;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -38,11 +39,9 @@ public class OnCallBedController {
     @FXML
     BorderPane borderPane;
     @FXML
-    StackPane stackPane, pane;
+    StackPane stackPane;
     @FXML
-    JFXButton btnLoadTimes;
-    @FXML
-    Label tableErrorLbl;
+    Label confirmation;
     @Inject
     private IDatabaseService db;
     @Inject
@@ -58,15 +57,24 @@ public class OnCallBedController {
     public void initialize() throws IOException {
 
         table.setVisible(false);
-        btnLoadTimes.setVisible(true);
-        tableErrorLbl.setVisible(false);
 
         beds.setItems(bedsList);
 
         borderPane.prefWidthProperty().bind(stackPane.widthProperty());
         borderPane.prefHeightProperty().bind(stackPane.heightProperty());
 
-        pane.setPickOnBounds(false);
+        //load dates when bed and date are changed
+        date.valueProperty().addListener((observable, oldDate, newDate)->{
+            if(date.getValue() != null && beds.getValue() != null) {
+                loadTimes();
+            }
+        });
+
+        beds.valueProperty().addListener((observable, oldBed, newBed) -> {
+            if(date.getValue() != null && beds.getValue() != null) {
+                loadTimes();
+            }
+        });
     }
 
     //TODO change values when bed or date is changed, or make them uneditable
@@ -74,9 +82,6 @@ public class OnCallBedController {
     @FXML
     private void loadTimes() {
 
-        if (beds.getValue() == null || date.getValue() == null) {
-            loaderHelper.showAndFade(tableErrorLbl);
-        } else {
             String b = (String) beds.getValue();
             String d = date.getValue().toString();
 
@@ -113,53 +118,86 @@ public class OnCallBedController {
             TreeTableView.TreeTableViewSelectionModel<TimeSlot> selection = table.getSelectionModel();
             selection.setSelectionMode(SelectionMode.MULTIPLE);
 
-            final TreeItem<TimeSlot> root = new RecursiveTreeItem<TimeSlot>(slots, RecursiveTreeObject::getChildren);
+            final TreeItem<TimeSlot> root = new RecursiveTreeItem<>(slots, RecursiveTreeObject::getChildren);
             table.getColumns().setAll(startTime, endTime, availability);
             table.setRoot(root);
             table.setShowRoot(false);
 
             table.setVisible(true);
-            btnLoadTimes.setVisible(false);
-            tableErrorLbl.setVisible(false);
-        }
     }
 
     @FXML
     private void handleSubmit() {
-        ObservableList<TreeItem<TimeSlot>> rows = table.getSelectionModel().getSelectedItems();
-        String bed = (String) beds.getValue();
-        String dateChosen = date.getValue().toString();
 
-        //TODO check values for null, past date, time, reserved
+        //check for null values
+        if(beds.getValue() == null || date.getValue() == null || table.getSelectionModel().isEmpty()) {
+            confirmation.setText("Select a Valid Bed, Date, and Time");
+            loaderHelper.showAndFade(confirmation);
+        } else {
 
-        System.out.println(rows.size() + " rows are selected.");
+            //check if date is valid
+            LocalDate d = date.getValue();
+            if(d.isBefore(LocalDate.now())) {
+                confirmation.setText("Select a Valid Date");
+                loaderHelper.showAndFade(confirmation);
+            } else {
 
-        //add each hour to the database
-        for (TreeItem<TimeSlot> ti : rows) {
-            TimeSlot t = ti.getValue();
-            String startTime = t.start.getValue();
-            String endTime = t.end.getValue();
-            String availability = t.availability.getValue();
+                ObservableList<TreeItem<TimeSlot>> rows = table.getSelectionModel().getSelectedItems();
+                String bed = (String) beds.getValue();
+                String dateChosen = date.getValue().toString();
 
-            int r = db.executeUpdate((new SQLEntry(DBConstants.ADD_ROOM_REQUEST,
-                    new ArrayList<>(Arrays.asList(manager.getCurrentUser().getUsername(), bed, dateChosen, startTime, endTime)))));
+                ArrayList<String> availabilities = new ArrayList<>();
+
+                for (TreeItem<TimeSlot> ti : rows) {
+                    TimeSlot t = ti.getValue();
+                    String a = t.availability.getValue();
+                    availabilities.add(a);
+                }
+
+                //check if time slot is reserved
+                if (availabilities.contains("Reserved")) {
+                    confirmation.setText("Select an Open Time");
+                    loaderHelper.showAndFade(confirmation);
+                } else {
+
+                    boolean failed = false;
+
+                    //add each hour to the database
+                    for (TreeItem<TimeSlot> ti : rows) {
+                        TimeSlot t = ti.getValue();
+                        String startTime = t.start.getValue();
+                        String endTime = t.end.getValue();
+                        String availability = t.availability.getValue();
+
+                        int r = db.executeUpdate((new SQLEntry(DBConstants.ADD_ROOM_REQUEST,
+                                new ArrayList<>(Arrays.asList(manager.getCurrentUser().getUsername(), bed, dateChosen, startTime, endTime)))));
+
+                        if(r == 0) {
+                            confirmation.setText("Submission Failed");
+                            loaderHelper.showAndFade(confirmation);
+                            failed = true;
+                            break;
+                        }
+                    }
+
+                    if (!failed) {
+                        //clear selected values
+                        beds.setValue(null);
+                        date.setValue(null);
+                        table.getSelectionModel().clearSelection();
+
+                        requestReceived.toFront();
+
+                        loaderHelper.showAndFade(requestReceived);
+
+                        table.setVisible(false);
+                        table.getColumns().clear();
+
+                        requestReceived.toBack();
+                    }
+                }
+            }
         }
-
-        //clear selected values
-        beds.setValue(null);
-        date.setValue(null);
-        table.getSelectionModel().clearSelection();
-
-        requestReceived.toFront();
-
-        loaderHelper.showAndFade(requestReceived);
-
-        table.setVisible(false);
-        btnLoadTimes.setVisible(true);
-        tableErrorLbl.setVisible(false);
-        table.getColumns().clear();
-
-        requestReceived.toBack();
     }
 
     class TimeSlot extends RecursiveTreeObject<TimeSlot> {
