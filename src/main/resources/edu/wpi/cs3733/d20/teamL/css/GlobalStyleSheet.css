@@ -370,7 +370,6 @@
 .tree-table-cell {
     -fx-alignment: center;
     -fx-font-size: 15;
-    -fx-pref-width: 150;
 }
 
 .tree-table-row-cell:odd {
@@ -380,7 +379,6 @@
 
 .tree-table-view .column-header {
     -fx-alignment: center;
-    -fx-pref-width: 150;
     -fx-border-color: black;
     -fx-border-width: .5px;
     -fx-background-color: #DCDCDC;
