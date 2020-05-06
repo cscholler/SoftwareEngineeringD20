@@ -2,7 +2,6 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
-<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
@@ -11,16 +10,19 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="297.0" prefWidth="432.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.SendDirectionsController">
+<BorderPane prefHeight="350.0" prefWidth="500.0" style="-fx-background-color: white;" styleClass="background" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.SendDirectionsController">
    <top>
       <VBox alignment="CENTER" prefHeight="60.0" prefWidth="432.0" BorderPane.alignment="CENTER">
          <children>
-              <Label fx:id="sendDirectionsLabel" alignment="CENTER" contentDisplay="TOP" focusTraversable="false" prefHeight="29.0" prefWidth="260.0" text="Send Directions" textFill="WHITE">
+              <Label fx:id="sendDirectionsLabel" alignment="CENTER" contentDisplay="TOP" focusTraversable="false" prefHeight="29.0" prefWidth="260.0" styleClass="lab" text="Send Directions" textFill="#00043b">
                   <font>
-                      <Font name="System Bold" size="18.0" />
+                      <Font name="System Bold" size="30.0" />
                   </font>
               </Label>
-            <Label fx:id="descLabel" alignment="CENTER" contentDisplay="CENTER" text="Enter your email or phone number to recieve directions." textAlignment="CENTER" textFill="WHITE" />
+            <Label fx:id="descLabel" alignment="CENTER" contentDisplay="CENTER" text="Enter your email or phone number to recieve directions." textAlignment="CENTER" textFill="#00043b">
+               <font>
+                  <Font size="18.0" />
+               </font></Label>
          </children>
       </VBox>
    </top>
@@ -29,8 +31,8 @@
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                <children>
-                  <JFXTextField fx:id="emailField" labelFloat="true" prefHeight="29.0" prefWidth="183.0" promptText="Enter Email" />
-                  <JFXButton id="buttons" fx:id="btnEmail" alignment="CENTER" buttonType="RAISED" onAction="#sendEmail" prefHeight="36.0" prefWidth="110.0" ripplerFill="BLACK" style="-fx-background-color: #405784;" text="Send Email" textAlignment="CENTER" textFill="WHITE">
+                  <JFXTextField fx:id="emailField" labelFloat="true" prefHeight="29.0" prefWidth="183.0" promptText="Enter Email" styleClass="text-field-jfx" />
+                  <JFXButton id="buttons" fx:id="btnEmail" alignment="CENTER" buttonType="RAISED" onAction="#sendEmail" prefHeight="36.0" prefWidth="110.0" ripplerFill="BLACK" styleClass="save-button-jfx" text="Send Email" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font size="13.0" />
                      </font>
@@ -45,8 +47,8 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                <children>
-                  <JFXTextField fx:id="phoneNumberField" labelFloat="true" prefHeight="29.0" prefWidth="183.0" promptText="Enter Phone Number" />
-                  <JFXButton id="buttons" fx:id="btnText" alignment="CENTER" buttonType="RAISED" onAction="#sendText" pickOnBounds="false" prefHeight="36.0" prefWidth="110.0" ripplerFill="BLACK" style="-fx-background-color: #405784;" text="Send Text" textAlignment="CENTER" textFill="WHITE">
+                  <JFXTextField fx:id="phoneNumberField" labelFloat="true" prefHeight="29.0" prefWidth="183.0" promptText="Enter Phone Number" styleClass="text-field-jfx" />
+                  <JFXButton id="buttons" fx:id="btnText" alignment="CENTER" buttonType="RAISED" onAction="#sendText" pickOnBounds="false" prefHeight="36.0" prefWidth="110.0" ripplerFill="BLACK" styleClass="save-button-jfx" text="Send Text" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font size="13.0" />
                      </font>
@@ -65,10 +67,6 @@
          </BorderPane.margin>
       </VBox>
    </center>
-   <stylesheets>
-      <URL value="@../../css/GlobalStyles.css" />
-      <URL value="@../../css/MapStyles.css" />
-   </stylesheets>
    <bottom>
       <VBox alignment="CENTER" BorderPane.alignment="CENTER">
          <BorderPane.margin>
@@ -83,7 +81,7 @@
                   <Insets bottom="10.0" />
                </padding>
             </Label>
-            <JFXButton fx:id="btnCancel" buttonType="RAISED" onAction="#cancelClicked" prefHeight="36.0" prefWidth="110.0" text="Close">
+            <JFXButton fx:id="btnCancel" buttonType="RAISED" onAction="#cancelClicked" prefHeight="36.0" prefWidth="110.0" styleClass="save-button-jfx" text="Close">
                <padding>
                   <Insets bottom="20.0" />
                </padding>
