@@ -114,7 +114,7 @@ public class OnCallBedController {
             TreeTableView.TreeTableViewSelectionModel<TimeSlot> selection = table.getSelectionModel();
             selection.setSelectionMode(SelectionMode.MULTIPLE);
 
-            final TreeItem<TimeSlot> root = new RecursiveTreeItem<TimeSlot>(slots, RecursiveTreeObject::getChildren);
+            final TreeItem<TimeSlot> root = new RecursiveTreeItem<>(slots, RecursiveTreeObject::getChildren);
             table.getColumns().setAll(startTime, endTime, availability);
             table.setRoot(root);
             table.setShowRoot(false);
@@ -145,8 +145,6 @@ public class OnCallBedController {
                 String bed = (String) beds.getValue();
                 String dateChosen = date.getValue().toString();
 
-                //TODO check values for null, past date, time, reserved
-
                 ArrayList<String> availabilities = new ArrayList<>();
 
                 for (TreeItem<TimeSlot> ti : rows) {
@@ -161,6 +159,8 @@ public class OnCallBedController {
                     loaderHelper.showAndFade(confirmation);
                 } else {
 
+                    boolean failed = false;
+
                     //add each hour to the database
                     for (TreeItem<TimeSlot> ti : rows) {
                         TimeSlot t = ti.getValue();
@@ -170,23 +170,32 @@ public class OnCallBedController {
 
                         int r = db.executeUpdate((new SQLEntry(DBConstants.ADD_ROOM_REQUEST,
                                 new ArrayList<>(Arrays.asList(manager.getCurrentUser().getUsername(), bed, dateChosen, startTime, endTime)))));
+
+                        if(r == 0) {
+                            confirmation.setText("Submission Failed");
+                            loaderHelper.showAndFade(confirmation);
+                            failed = true;
+                            break;
+                        }
                     }
 
-                    //clear selected values
-                    beds.setValue(null);
-                    date.setValue(null);
-                    table.getSelectionModel().clearSelection();
+                    if (!failed) {
+                        //clear selected values
+                        beds.setValue(null);
+                        date.setValue(null);
+                        table.getSelectionModel().clearSelection();
 
-                    requestReceived.toFront();
+                        requestReceived.toFront();
 
-                    loaderHelper.showAndFade(requestReceived);
+                        loaderHelper.showAndFade(requestReceived);
 
-                    table.setVisible(false);
-                    btnLoadTimes.setVisible(true);
-                    tableErrorLbl.setVisible(false);
-                    table.getColumns().clear();
+                        table.setVisible(false);
+                        btnLoadTimes.setVisible(true);
+                        tableErrorLbl.setVisible(false);
+                        table.getColumns().clear();
 
-                    requestReceived.toBack();
+                        requestReceived.toBack();
+                    }
                 }
             }
         }

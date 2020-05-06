@@ -18,13 +18,13 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+
 import javax.inject.Inject;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.chrono.ChronoLocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 
 public class ReflectionRoomController {
 
@@ -123,7 +123,6 @@ public class ReflectionRoomController {
     @FXML
     private void handleSubmit() {
 
-
         //check for null values
         if(rooms.getValue() == null || date.getValue() == null || table.getSelectionModel().isEmpty()) {
             confirmation.setText("Select a Valid Room, Date, and Time");
@@ -137,7 +136,6 @@ public class ReflectionRoomController {
                 loaderHelper.showAndFade(confirmation);
             } else {
 
-
                 TreeItem<TimeSlot> row = table.getSelectionModel().getSelectedItem();
                 TimeSlot t = row.getValue();
                 String startTime = t.start.getValue();
@@ -145,7 +143,6 @@ public class ReflectionRoomController {
                 String availability = t.availability.getValue();
                 String room = (String) rooms.getValue();
                 String dateChosen = date.getValue().toString();
-                //TODO check values for null, past date, time
 
                 //check if room is available
                 if(availability.equals("Reserved")){
@@ -156,19 +153,25 @@ public class ReflectionRoomController {
                     int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_ROOM_REQUEST,
                             new ArrayList<>(Arrays.asList(manager.getCurrentUser().getUsername(), room, dateChosen, startTime, endTime)))));
 
-                    //clear selected values
-                    rooms.setValue(null);
-                    date.setValue(null);
-                    table.getSelectionModel().clearSelection();
+                    if(rows == 0) {
+                        confirmation.setText("Submission Failed");
+                        loaderHelper.showAndFade(confirmation);
+                    } else {
 
-                    loaderHelper.showAndFade(requestReceived);
+                        //clear selected values
+                        rooms.setValue(null);
+                        date.setValue(null);
+                        table.getSelectionModel().clearSelection();
 
-                    table.setVisible(false);
-                    btnLoadTimes.setVisible(true);
-                    tableErrorLbl.setVisible(false);
-                    table.getColumns().clear();
+                        loaderHelper.showAndFade(requestReceived);
 
-                    requestReceived.toBack();
+                        table.setVisible(false);
+                        btnLoadTimes.setVisible(true);
+                        tableErrorLbl.setVisible(false);
+                        table.getColumns().clear();
+
+                        requestReceived.toBack();
+                    }
                 }
             }
         }
