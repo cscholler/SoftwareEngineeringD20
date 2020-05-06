@@ -248,7 +248,7 @@ public class AddPersonController implements Initializable {
             doctorIDText.setDisable(true);
         }
     }
-    
+
     //Add doctor
     @FXML
     private void autocomplete() {

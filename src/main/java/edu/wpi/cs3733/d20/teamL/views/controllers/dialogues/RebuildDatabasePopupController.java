@@ -32,6 +32,7 @@ public class RebuildDatabasePopupController {
 
         Alert loading = new Alert(Alert.AlertType.NONE);
         loading.setResult(ButtonType.OK);
+        loading.setHeaderText("");
         ImageView spinner = new ImageView(new Image("edu/wpi/cs3733/d20/teamL/assets/spinner.gif"));
         spinner.setPreserveRatio(true);
         spinner.setFitWidth(40);
@@ -79,9 +80,11 @@ public class RebuildDatabasePopupController {
 	}
 
     private Boolean showDone() {
-        log.info("showDone() Called");
+		Stage stage = (Stage) btnNo.getScene().getWindow();
+		stage.close();
         Alert done = new Alert(Alert.AlertType.INFORMATION);
         done.setContentText("Finished rebuilding database");
+        done.setHeaderText("");
         done.showAndWait();
 
         return true;
