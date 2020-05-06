@@ -27,7 +27,7 @@ public class ExportDialogue {
 
     @Inject
     private IDatabaseService dbService;
-    private FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
+    private FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
 
     @FXML
     private BorderPane root;
@@ -103,13 +103,13 @@ public class ExportDialogue {
         message.setTextFill(Color.WHITE);
         message.setText(msg);
 
-        loaderHelper.showAndFade(message);
+        loaderFactory.showAndFade(message);
     }
 
     private void showErrorMessage(String msg) {
         message.setTextFill(Color.RED);
         message.setText(msg);
 
-        loaderHelper.showAndFade(message);
+        loaderFactory.showAndFade(message);
     }
 }

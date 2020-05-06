@@ -235,7 +235,7 @@
 }
 
 
-/*----------------------------Admin Login----------------------------------*/
+/*----------------------------admin Login----------------------------------*/
 .map-button-jfx {
     -fx-text-fill: white;
     -fx-font-size:35;
@@ -370,9 +370,6 @@
 .tree-table-cell {
     -fx-alignment: center;
     -fx-font-size: 15;
-    -fx-pref-width: 150;
-    /*-fx-border-color: black;*/
-    /*-fx-border-width: .5px;*/
 }
 
 .tree-table-row-cell:odd {
@@ -382,9 +379,9 @@
 
 .tree-table-view .column-header {
     -fx-alignment: center;
-    -fx-pref-width: 150;
     -fx-border-color: black;
     -fx-border-width: .5px;
+    -fx-background-color: #DCDCDC;
 }
 
 .tree-table-view .column-header .label{

@@ -106,6 +106,7 @@ public class MapViewerController {
     private final Image IMAGE_SHRIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/sharp right.jpg", 15, 15, true, false, true);
     private final Image IMAGE_SLLEFT  = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/slightLeft.jpg", 15, 15, true, false, true);
     private final Image IMAGE_SLRIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/slightRight.jpg", 15, 15, true, false, true);
+    private final Image IMAGE_STRAIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/straight.png", 15, 15, true, false, true);
     private final Image IMAGE_ELEV  = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/elevator.jpg", 15, 15, true, false, true);
     private final Image IMAGE_STAIR = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/stair.png", 15, 15, true, false, true);
     private final Image IMAGE_DEST = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/destFlag.png", 15, 15, true, false, true);
@@ -360,7 +361,7 @@ public class MapViewerController {
                         } else if (item.contains("destination")) {
                             imageView.setImage(IMAGE_DEST);
                         } else {
-                            imageView.setImage(null);
+                            imageView.setImage(IMAGE_STRAIGHT);
                         }
                         setText(item);
                         setGraphic(imageView);

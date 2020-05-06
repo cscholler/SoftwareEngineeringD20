@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="root" prefHeight="400.0" prefWidth="600.0" styleClass="background" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.ImportDialogue">
+<BorderPane fx:id="root" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" styleClass="background" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.ImportDialogue">
     <top>
         <Label alignment="CENTER" prefWidth="600.0" styleClass="service-request-header-label-fx" text="Import a Table" BorderPane.alignment="CENTER">
             <padding>
@@ -26,7 +26,7 @@
          <children>
               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                   <children>
-                      <JFXComboBox fx:id="tableSelector" promptText="Choose table to import to" styleClass="text-field-jfx" />
+                      <JFXComboBox fx:id="tableSelector" promptText="Choose a table to import" style="-fx-max-width: 200; -fx-pref-width: 200;" styleClass="combo-box-jfx" />
                   <JFXCheckBox fx:id="appendCheckbox" checkedColor="#595959" styleClass="check-box-jfx" text="Append Data" />
                   </children>
               </HBox>
