@@ -65,8 +65,7 @@ public class SecurityPaneController {
         });
 
         sf = new SearchFields(dbCache.getNodeCache());
-        sf.getFields().add(SearchFields.Field.longName);
-        sf.getFields().add(SearchFields.Field.shortName);
+        sf.getFields().add(SearchFields.Field.nodeID);
         sf.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());

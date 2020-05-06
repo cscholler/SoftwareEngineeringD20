@@ -68,8 +68,7 @@ public class ITPaneController implements Initializable {
         sf.getFields().add(SearchFields.Field.shortName);
         sf.populateSearchFields();
 		searchFields = new SearchFields(dbCache.getNodeCache());
-		searchFields.getFields().add(SearchFields.Field.longName);
-		searchFields.getFields().add(SearchFields.Field.shortName);
+		searchFields.getFields().add(SearchFields.Field.nodeID);
 		searchFields.populateSearchFields();
 		autoCompletePopup.getSuggestions().addAll(searchFields.getSuggestions());
 
