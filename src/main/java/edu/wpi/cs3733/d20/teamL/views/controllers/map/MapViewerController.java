@@ -155,15 +155,15 @@ public class MapViewerController {
 
         for (Node node : allNodes) {
             if (node.getType().equals("DEPT")) {
-                deptNodes.add(node.getLongName());
+                deptNodes.add(node.getLongName() + " - (" + node.getBuilding() + " " + node.getFloor() + ")");
             } else if (node.getType().equals("LABS")) {
-                labNodes.add(node.getLongName());
+                labNodes.add(node.getLongName() + " - (" + node.getBuilding() + " " + node.getFloor() + ")");
             } else if ((node.getType().equals("SERV") || node.getType().equals("INFO"))) {
-                serviceNodes.add(node.getLongName());
+                serviceNodes.add(node.getLongName() + " - (" + node.getBuilding() + " " + node.getFloor() + ")");
             } else if (node.getType().equals("RETL")) {
-                retailNodes.add(node.getLongName());
+                retailNodes.add(node.getLongName() + " - (" + node.getBuilding() + " " + node.getFloor() + ")");
             } else if (node.getType().equals("CONF")) {
-                confNodes.add(node.getLongName());
+                confNodes.add(node.getLongName() + " - (" + node.getBuilding() + " " + node.getFloor() + ")");
             }
         }
 
