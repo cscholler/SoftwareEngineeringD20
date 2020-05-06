@@ -138,7 +138,7 @@ public class MapViewerController {
 
         setFloor(2);
 
-        map.setZoomLevel(0.65);
+        map.setZoomLevel(0.25);
         map.init();
 
         // Populate autocomplete
@@ -214,7 +214,7 @@ public class MapViewerController {
         int prevFloor = map.getFloor();
         generateFloorButtons();
         setFloor(Math.max(map.getBuilding().getMinFloor(), Math.min(prevFloor, map.getBuilding().getMaxFloor())));
-
+        map.setZoomLevel(.25);
         if (!path.getPathNodes().isEmpty()) highLightPath();
     }
 
@@ -629,11 +629,12 @@ public class MapViewerController {
             }
 
             generateFloorButtons();
-            map.setZoomLevel(1.1);
+            map.setZoomLevel(.25);
         } else {
             if (!(subpath.get(0).getBuilding().equals(map.getBuilding().getName()))) {
                 map.setBuilding(subpath.get(0).getBuilding());
                 generateFloorButtons();
+                map.setZoomLevel(.25);
                 goToSelected();
             }
             if (!(subpath.get(0).getFloorAsString().equals(map.getFloor())))
@@ -664,8 +665,8 @@ public class MapViewerController {
             double diffY = maxY - minY;
             double scale;
 
-            if (diffX > diffY) scale = Math.min(400 / diffX, 5);
-            else scale = Math.min(400 / diffY, 5);
+            if (diffX > diffY) scale = Math.min(400 / diffX, 2);
+            else scale = Math.min(400 / diffY, 2);
 
             totalX = totalX / subpath.size();
             totalY = totalY / subpath.size();
