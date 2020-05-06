@@ -1,6 +1,5 @@
 package edu.wpi.cs3733.d20.teamL.util;
 
-import com.google.inject.Inject;
 import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
@@ -68,22 +67,24 @@ public class TimerManager {
 	}
 
 	public void logOutIfNoInput() {
-		Platform.runLater(() -> {
-			log.info("No input for 1 minute. Logging out...");
-			loginManager.logOut(true);
-			FXMLLoaderFactory.resetHistory();
-			try {
-				Parent root = loaderFactory.getFXMLLoader("map_viewer/MapViewer").load();
-				loaderFactory.setupScene(new Scene(root));
-			} catch (IOException ex) {
-				log.error("Encountered IOException", ex);
-			}
-		});
+		if (!AsyncTaskManager.isTaskRunning) {
+			Platform.runLater(() -> {
+				log.info("No input for 1 minute. Logging out...");
+				loginManager.logOut(true);
+				FXMLLoaderFactory.resetHistory();
+				try {
+					Parent root = loaderFactory.getFXMLLoader("map_viewer/MapViewer").load();
+					loaderFactory.setupScene(new Scene(root));
+				} catch (IOException ex) {
+					log.error("Encountered IOException", ex);
+				}
+			});
+		}
 	}
 
 	public Timer startTimer(VoidMethod updateFunction, long delay, long period) {
 		Timer timer = new Timer();
-		timer.scheduleAtFixedRate(timerWrapper(updateFunction::method), delay, period);
+		timer.scheduleAtFixedRate(timerWrapper(updateFunction::execute), delay, period);
 		return timer;
 	}
 }

@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background-pane-fx" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.LoggedInView.AdminLandingPageController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background-pane-fx" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.logged_in.AdminLandingPageController">
    <bottom>
       <AnchorPane maxHeight="76.0" prefHeight="76.0" prefWidth="1280.0" styleClass="bottom-bar-anchor-pane-fx" BorderPane.alignment="CENTER">
          <children>
@@ -35,7 +35,7 @@
                      <graphic>
                         <ImageView fitHeight="43.0" fitWidth="41.0">
                            <image>
-                              <Image url="@../../staff_view/Add.png" />
+                              <Image url="@../../assets/map_editor/addPerson.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -47,15 +47,22 @@
                         </Tooltip>
                      </tooltip>
                   </JFXButton>
-                  <JFXButton fx:id="btnChangePass" onAction="#changePasswordClicked" styleClass="database-buttons-jfx">
+                  <JFXButton fx:id="btnChangePass" alignment="CENTER_RIGHT" buttonType="RAISED" contentDisplay="CENTER" onAction="#changePasswordClicked" prefHeight="43.0" prefWidth="35.0" styleClass="database-buttons-jfx" text=" ">
                      <tooltip>
                         <Tooltip text="Change Password">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Tooltip>
-                     </tooltip></JFXButton>
-                  <JFXButton onAction="#btnExportClicked" prefHeight="73.0" prefWidth="99.0" styleClass="database-buttons-jfx" text="⬆" textFill="WHITE">
+                     </tooltip>
+                     <graphic>
+                        <ImageView fitHeight="38.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../assets/map_editor/resetPassword.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></JFXButton>
+                  <JFXButton contentDisplay="CENTER" onAction="#btnExportClicked" prefHeight="61.0" prefWidth="61.0" styleClass="database-buttons-jfx" text=" " textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -66,8 +73,15 @@
                            </font>
                         </Tooltip>
                      </tooltip>
+                     <graphic>
+                        <ImageView fitHeight="38.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../assets/map_editor/exportTable.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
                   </JFXButton>
-                  <JFXButton onAction="#btnImportClicked" styleClass="database-buttons-jfx" text="⬇" textFill="WHITE">
+                  <JFXButton contentDisplay="CENTER" onAction="#btnImportClicked" styleClass="database-buttons-jfx" text=" " textFill="WHITE">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -78,6 +92,13 @@
                            </font>
                         </Tooltip>
                      </tooltip>
+                     <graphic>
+                        <ImageView fitHeight="38.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../assets/map_editor/importTable.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
                   </JFXButton>
                </children>
                <padding>

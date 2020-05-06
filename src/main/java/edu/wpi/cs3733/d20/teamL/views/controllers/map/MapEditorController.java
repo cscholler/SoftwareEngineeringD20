@@ -310,8 +310,8 @@ public class MapEditorController {
         Building faulkner = cache.getBuilding("Faulkner");
         Building btm = cache.getBuilding(MapViewerController.MAIN);
 
-        if(!faulkner.getNodes().isEmpty()) map.getBuildings().add(faulkner);
-        if(!btm.getNodes().isEmpty()) map.getBuildings().add(btm);
+        if (!faulkner.getNodes().isEmpty()) map.getBuildings().add(faulkner);
+        if (!btm.getNodes().isEmpty()) map.getBuildings().add(btm);
         map.setBuilding(defaultBuilding);
     }
 
@@ -709,7 +709,7 @@ public class MapEditorController {
     @FXML
     private void btnTableClicked() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("Admin/AdminView").load();
+            Parent root = loaderHelper.getFXMLLoader("admin/AdminView").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
