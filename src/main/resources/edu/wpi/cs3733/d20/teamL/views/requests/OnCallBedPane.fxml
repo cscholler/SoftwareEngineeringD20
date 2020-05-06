@@ -21,17 +21,7 @@
                <children>
                   <JFXComboBox fx:id="beds" promptText="Select Bed" styleClass="combo-box-jfx" />
                   <JFXDatePicker fx:id="date" defaultColor="#00043b" editable="false" promptText="Select Date" />
-                  <StackPane fx:id="pane">
-                     <children>
-                        <JFXTreeTableView fx:id="table" />
-                        <JFXButton fx:id="btnLoadTimes" onAction="#loadTimes" styleClass="save-button-jfx" text="Load Times" />
-                        <Label fx:id="tableErrorLbl" styleClass="table-error-label" text="Select a Bed and Day" textFill="RED">
-                           <StackPane.margin>
-                              <Insets top="100.0" />
-                           </StackPane.margin>
-                        </Label>
-                     </children>
-                  </StackPane>
+                  <JFXTreeTableView fx:id="table" />
                </children>
                <BorderPane.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -58,7 +48,7 @@
             <Image url="@../../assets/service_icons/serviceRecieved.png" />
          </image>
          <StackPane.margin>
-            <Insets top="300.0" />
+            <Insets />
          </StackPane.margin>
       </ImageView>
    </children>

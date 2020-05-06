@@ -18,8 +18,6 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-
 import javax.inject.Inject;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -41,9 +39,7 @@ public class ReflectionRoomController {
     @FXML
     StackPane stackPane;
     @FXML
-    JFXButton btnLoadTimes;
-    @FXML
-    Label tableErrorLbl, confirmation;
+    Label confirmation;
     private FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
     @Inject
     private IDatabaseService db;
@@ -58,23 +54,28 @@ public class ReflectionRoomController {
     public void initialize() throws IOException {
 
         table.setVisible(false);
-        btnLoadTimes.setVisible(true);
-        tableErrorLbl.setVisible(false);
 
         rooms.setItems(reflectionRooms);
 
         borderPane.prefWidthProperty().bind(stackPane.widthProperty());
         borderPane.prefHeightProperty().bind(stackPane.heightProperty());
-    }
 
-    //TODO change values when room or date is changed, or make them uneditable
+        //load dates when room and date are changed
+        date.valueProperty().addListener((observable, oldDate, newDate)->{
+            if(date.getValue() != null && rooms.getValue() != null) {
+                loadTimes();
+            }
+        });
+
+        rooms.valueProperty().addListener((observable, oldRoom, newRoom) -> {
+            if(date.getValue() != null && rooms.getValue() != null) {
+                loadTimes();
+            }
+        });
+    }
 
     @FXML
     private void loadTimes() {
-
-        if (rooms.getValue() == null || date.getValue() == null) {
-            loaderHelper.showAndFade(tableErrorLbl);
-        } else {
 
             String r = (String) rooms.getValue();
             String d = date.getValue().toString();
@@ -115,9 +116,6 @@ public class ReflectionRoomController {
             table.setShowRoot(false);
 
             table.setVisible(true);
-            btnLoadTimes.setVisible(false);
-            tableErrorLbl.setVisible(false);
-        }
     }
 
     @FXML
@@ -166,8 +164,6 @@ public class ReflectionRoomController {
                         loaderHelper.showAndFade(requestReceived);
 
                         table.setVisible(false);
-                        btnLoadTimes.setVisible(true);
-                        tableErrorLbl.setVisible(false);
                         table.getColumns().clear();
 
                         requestReceived.toBack();

@@ -39,11 +39,9 @@ public class OnCallBedController {
     @FXML
     BorderPane borderPane;
     @FXML
-    StackPane stackPane, pane;
+    StackPane stackPane;
     @FXML
-    JFXButton btnLoadTimes;
-    @FXML
-    Label tableErrorLbl, confirmation;
+    Label confirmation;
     @Inject
     private IDatabaseService db;
     @Inject
@@ -59,15 +57,24 @@ public class OnCallBedController {
     public void initialize() throws IOException {
 
         table.setVisible(false);
-        btnLoadTimes.setVisible(true);
-        tableErrorLbl.setVisible(false);
 
         beds.setItems(bedsList);
 
         borderPane.prefWidthProperty().bind(stackPane.widthProperty());
         borderPane.prefHeightProperty().bind(stackPane.heightProperty());
 
-        pane.setPickOnBounds(false);
+        //load dates when bed and date are changed
+        date.valueProperty().addListener((observable, oldDate, newDate)->{
+            if(date.getValue() != null && beds.getValue() != null) {
+                loadTimes();
+            }
+        });
+
+        beds.valueProperty().addListener((observable, oldBed, newBed) -> {
+            if(date.getValue() != null && beds.getValue() != null) {
+                loadTimes();
+            }
+        });
     }
 
     //TODO change values when bed or date is changed, or make them uneditable
@@ -75,9 +82,6 @@ public class OnCallBedController {
     @FXML
     private void loadTimes() {
 
-        if (beds.getValue() == null || date.getValue() == null) {
-            loaderHelper.showAndFade(tableErrorLbl);
-        } else {
             String b = (String) beds.getValue();
             String d = date.getValue().toString();
 
@@ -120,9 +124,6 @@ public class OnCallBedController {
             table.setShowRoot(false);
 
             table.setVisible(true);
-            btnLoadTimes.setVisible(false);
-            tableErrorLbl.setVisible(false);
-        }
     }
 
     @FXML
@@ -190,8 +191,6 @@ public class OnCallBedController {
                         loaderHelper.showAndFade(requestReceived);
 
                         table.setVisible(false);
-                        btnLoadTimes.setVisible(true);
-                        tableErrorLbl.setVisible(false);
                         table.getColumns().clear();
 
                         requestReceived.toBack();
