@@ -46,7 +46,7 @@ public class AddPersonController implements Initializable {
     ObservableList<String> userOptions = FXCollections.observableArrayList("Staff", "Nurse", "Doctor", "Admin");
     ObservableList<String> languageOptions = FXCollections.observableArrayList("Spanish", "Italian", "Chinese", "ASL", "French");
 
-    DBTableFormatter formatter = new DBTableFormatter();
+
     private final FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
 
     @FXML
@@ -60,8 +60,6 @@ public class AddPersonController implements Initializable {
     @FXML
     private JFXButton btnCancel;
 
-    String user;
-
     @FXML
     private void setBtnCancel() {
         Stage stage;
@@ -71,8 +69,6 @@ public class AddPersonController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_DOCTORS)));
-        formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_USERS)));
         serviceCombo.setItems(serviceOptions);
         userCombo.setItems(userOptions);
         languages.setItems(languageOptions);
@@ -164,7 +160,6 @@ public class AddPersonController implements Initializable {
             if (!(firstName.isBlank() || lastName.isBlank() || username.isBlank() || password.isBlank() || userCombo.getValue().isBlank())) {
                 rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(firstName, lastName, username, PasswordManager.hashPassword(password), type, services, manager))));
             }
-            formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_USERS)));
             if (doctorIDText.getText() != null && !(doctorIDText.getText().isEmpty())) {
 				rows = db.executeUpdate(new SQLEntry(DBConstants.UPDATE_DOCTOR_USERNAME, new ArrayList<>(Arrays.asList(username, doctorID))));
 			}
@@ -211,7 +206,7 @@ public class AddPersonController implements Initializable {
 
     @FXML
     private void userSelected() {
-        user = userCombo.getValue();
+        String user = userCombo.getValue();
         if (user.equals("staff")) {
             managerBox.setVisible(true);
             managerBox.setDisable(false);
@@ -253,14 +248,12 @@ public class AddPersonController implements Initializable {
             doctorIDText.setDisable(true);
         }
     }
-
-
+    
     //Add doctor
     @FXML
     private void autocomplete() {
         sf.applyAutocomplete(officeText, autoCompletePopup);
     }
-
 
     /**
      * Handles UI portion of submit being clicked giving confirmation when it succeeds
