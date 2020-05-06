@@ -10,7 +10,7 @@
 
 <BorderPane fx:id="root" prefHeight="400.0" prefWidth="600.0" styleClass="background" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.ExportDialogue">
     <top>
-        <Label alignment="CENTER" prefWidth="600.0" styleClass="topBorder" text="Export a Table" BorderPane.alignment="CENTER">
+        <Label alignment="CENTER" prefWidth="600.0" styleClass="service-request-header-label-fx" text="Export a Table" BorderPane.alignment="CENTER">
             <padding>
                 <Insets bottom="20.0" top="20.0" />
             </padding>
@@ -22,8 +22,8 @@
     <center>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" BorderPane.alignment="CENTER">
             <children>
-                <JFXComboBox fx:id="tableSelector" promptText="Choose table to export" style="-fx-prompt-text-fill: lightgrey; -fx-text-fill: white;" />
-                <JFXButton onAction="#exportClicked" text="Export" />
+                <JFXComboBox fx:id="tableSelector" promptText="Choose table to export" styleClass="text-field-jfx" />
+                <JFXButton onAction="#exportClicked" styleClass="save-button-jfx" text="Export" />
             </children>
         </HBox>
     </center>

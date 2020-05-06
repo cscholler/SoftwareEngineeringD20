@@ -14,10 +14,12 @@ repositories {
     jcenter()
     google()
     maven {url 'https://www.jitpack.io'}
+    maven {url 'https://apisite.crmyers.dev/maven'}
 }
 
 dependencies {
     implementation(
+            [group: 'edu.wpi.cs3733.c20.teamR', name: 'AppointmentRequest', version:'5.0.0'],
             'com.jfoenix:jfoenix:9.0.9',
             'mysql:mysql-connector-java:8.0.20',
             'org.apache.derby:derby:10.14.2.0',
