@@ -10,6 +10,7 @@ import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
+import edu.wpi.cs3733.d20.teamL.util.TimerManager;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -50,18 +51,29 @@ import org.apache.xmlgraphics.image.codec.png.PNGEncodeParam;
 
 @Slf4j
 public class MapViewerController {
+	private FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
+	private static final TimerManager timerManager = new TimerManager();
+	private SearchFields sf;
+	private Path path = new Path();
+	private final ObservableList<String> direct = FXCollections.observableArrayList();
+	private final Image IMAGE_LEFT  = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/left.png");
+	private final Image IMAGE_RIGHT  = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/right.jpg");
+	private final Image IMAGE_SHLEFT  = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/sharp left.jpg");
+	private final Image IMAGE_SHRIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/sharp right.jpg");
+	private final Image IMAGE_SLLEFT  = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/slightLeft.jpg");
+	private final Image IMAGE_SLRIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/slightRight.jpg");
+	private final Image IMAGE_ELEV  = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/elevator.jpg");
+	private final Image IMAGE_STAIR = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/stair.png");
+	private final Image IMAGE_DEST = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/destFlag.png");
+	private JFXAutoCompletePopup<String> autoCompletePopup;
     @FXML
     private MapPane map;
-
     @FXML
     private JFXTextField startingPoint, destination;
-
     @FXML
     private JFXButton btnNavigate, floorUp, floorDown;
-
     @FXML
     private ScrollPane scroll;
-
     @FXML
     private VBox instructions;
     JFXNodesList textDirNode;
@@ -71,19 +83,14 @@ public class MapViewerController {
     private JFXListView dirList;
     @FXML
     private JFXButton btnTextMe, btnQR;
-
     @FXML
     StackPane stackPane;
-
     @FXML
     private JFXListView listF1, listF2, listF3, listF4, listF5;
-
     @FXML
     private JFXComboBox<String> buildingChooser;
-
     @FXML
     private Label timeLabel;
-
     @Inject
     private IDatabaseCache cache;
     @Inject
@@ -91,27 +98,9 @@ public class MapViewerController {
     @Inject
     private IMessengerService messenger;
 
-
-    private SearchFields sf;
-    private JFXAutoCompletePopup<String> autoCompletePopup;
-    private FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
-    private final Timer timer = new Timer();
-    private Path path = new Path();
-    private final ObservableList<String> direct = FXCollections.observableArrayList();
-
-    private final Image IMAGE_LEFT  = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/left.png");
-    private final Image IMAGE_RIGHT  = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/right.jpg");
-    private final Image IMAGE_SHLEFT  = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/sharp left.jpg");
-    private final Image IMAGE_SHRIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/sharp right.jpg");
-    private final Image IMAGE_SLLEFT  = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/slightLeft.jpg");
-    private final Image IMAGE_SLRIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/slightRight.jpg");
-    private final Image IMAGE_ELEV  = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/elevator.jpg");
-    private final Image IMAGE_STAIR = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/stair.png");
-    private final Image IMAGE_DEST = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/destFlag.png");
-
     @FXML
     private void initialize() {
-        timer.scheduleAtFixedRate(timerWrapper(this::updateTime), 0, 1000);
+        timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
         if (App.doUpdateCacheOnLoad) {
 			cache.cacheAllFromDB();
 			App.doUpdateCacheOnLoad = false;
@@ -500,20 +489,6 @@ public class MapViewerController {
         });
         content.setActions(btnDone);
         dialog.show();
-    }
-
-    private TimerTask timerWrapper(Runnable r) {
-        return new TimerTask() {
-            @Override
-            public void run() {
-                r.run();
-            }
-        };
-    }
-
-    private void updateTime() {
-        ;
-        Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("E, MMM d | h:mm aa").format(new Date())));
     }
 
     /**

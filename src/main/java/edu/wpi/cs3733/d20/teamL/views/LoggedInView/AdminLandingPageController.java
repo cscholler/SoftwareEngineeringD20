@@ -9,7 +9,7 @@ import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import edu.wpi.cs3733.d20.teamL.util.TableEntityWrapper;
-import javafx.application.Platform;
+import edu.wpi.cs3733.d20.teamL.util.TimerManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -40,20 +40,17 @@ import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 import java.io.IOException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 
 @Slf4j
 public class AdminLandingPageController implements Initializable {
     private FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
+    private static final TimerManager timerManager = new TimerManager();
     private final ObservableList<String> tableOptions = FXCollections.observableArrayList("Map Nodes", "Map Edges", "Gift Inventory", "User Information", "Doctor Information");
 	private ArrayList<TableEntityWrapper.TableNode> editedNodes = new ArrayList<>();
 	private ArrayList<TableEntityWrapper.TableEdge> editedEdges = new ArrayList<>();
@@ -86,11 +83,9 @@ public class AdminLandingPageController implements Initializable {
     @Inject
 	private IDatabaseCache cache;
 
-	private final Timer timer = new Timer();
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-		timer.scheduleAtFixedRate(timerWrapper(this::updateTime), 0, 1000);
+		timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
 		tableSelector.setItems(tableOptions);
 		tableSelector.getSelectionModel().select(0);
 		hideAllTablesExceptCurrent("Nodes");
@@ -126,7 +121,7 @@ public class AdminLandingPageController implements Initializable {
     @FXML
     private void rebuildDatabaseClicked() {
         try {
-            Parent root = loaderFactory.getFXMLLoader("Admin/databaseDialogue").load();
+            Parent root = loaderFactory.getFXMLLoader("admin/RebuildDatabaseDialogue").load();
             loaderFactory.setupPopup(new Stage(), new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
@@ -146,44 +141,15 @@ public class AdminLandingPageController implements Initializable {
 	@FXML
 	private void btnAddDoctorClicked() {
 		try {
-			Parent root = loaderFactory.getFXMLLoader("AddDoctor").load();
+			Parent root = loaderFactory.getFXMLLoader("admin/AddDoctor").load();
 			loaderFactory.setupScene(new Scene(root));
 		} catch (IOException ex) {
 			log.error("Encountered IOException", ex);
 		}
 	}
 
-    @FXML
-    public void importDBClicked() {
-        try {
-            Parent root = loaderFactory.getFXMLLoader("dialogues/ImportDialogue").load();
-            loaderFactory.setupPopup(new Stage(), new Scene(root));
-        } catch (IOException ex) {
-            log.error("Encountered IOException", ex);
-        }
-    }
-
-    @FXML
-    public void saveDBClicked() {
-        try {
-            Parent root = loaderFactory.getFXMLLoader("dialogues/ExportDialogue").load();
-            loaderFactory.setupPopup(new Stage(), new Scene(root));
-        } catch (IOException ex) {
-            log.error("Encountered IOException", ex);
-        }
-    }
-
 	@FXML
 	public void btnImportClicked() {
-		try {
-			Parent root = loaderFactory.getFXMLLoader("dialogues/ImportDialogue").load();
-			loaderFactory.setupPopup(new Stage(), new Scene(root));
-		} catch (IOException ex) {
-			log.error("Encountered IOException", ex);
-		}
-	}
-	@FXML
-	public void importCSVClicked() {
 		try {
 			Parent root = loaderFactory.getFXMLLoader("dialogues/ImportDialogue").load();
 			loaderFactory.setupPopup(new Stage(), new Scene(root));
@@ -201,25 +167,6 @@ public class AdminLandingPageController implements Initializable {
 			log.error("Encountered IOException", ex);
 		}
 	}
-	@FXML
-	public void saveCSVClicked() {
-		try {
-			Parent root = loaderFactory.getFXMLLoader("dialogues/ExportDialogue").load();
-			loaderFactory.setupPopup(new Stage(), new Scene(root));
-		} catch (IOException ex) {
-			log.error("Encountered IOException", ex);
-		}
-	}
-
-    @FXML
-    private void btnRebuildClicked() {
-        try {
-            Parent root = loaderFactory.getFXMLLoader("Admin/databaseDialogue").load();
-            loaderFactory.setupPopup(new Stage(), new Scene(root));
-        } catch (IOException ex) {
-            log.error("Encountered IOException", ex);
-        }
-    }
 
     @FXML
 	private void btnSaveClicked() {
@@ -1131,18 +1078,5 @@ public class AdminLandingPageController implements Initializable {
 		} catch (IOException ex) {
 			log.error("Encountered IOException", ex);
 		}
-	}
-
-	private TimerTask timerWrapper(Runnable r) {
-		return new TimerTask() {
-			@Override
-			public void run() {
-				r.run();
-			}
-		};
-	}
-
-	private void updateTime() {
-		Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("E, MMM d | h:mm aa").format(new Date())));
 	}
 }
