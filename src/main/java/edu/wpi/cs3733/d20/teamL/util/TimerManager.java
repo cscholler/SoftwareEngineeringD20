@@ -35,9 +35,9 @@ public class TimerManager {
 		};
 	}
 
-	public void updateTime() {
-		if (TimerManager.timeLabel != null) {
-			Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("E, MMM d | h:mm aa").format(new Date())));
+	public void updateTime(Label timeLabel) {
+		if (timeLabel != null) {
+			Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("E, MMM d h:mm aa").format(new Date())));
 		}
 	}
 

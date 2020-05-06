@@ -172,6 +172,7 @@ public class Path implements Iterable<Node> {
                 lastRoom = null;
                 rights = 0;
                 lefts = 0;
+                subpath.add(next);
                 subpaths.add(addSubPath(subpath));
                 subpath.clear();
             }

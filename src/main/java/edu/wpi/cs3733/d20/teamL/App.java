@@ -3,8 +3,6 @@ package edu.wpi.cs3733.d20.teamL;
 import java.io.IOException;
 import java.util.Timer;
 
-import com.google.inject.Inject;
-import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.TimerManager;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -21,14 +19,13 @@ import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 public class App extends Application {
 	private final FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
 	private static final TimerManager timerManager = new TimerManager();
-	public static Timer clockTimer;
 	public static Timer forceCacheUpdateTimer;
 	public static Timer idleCacheUpdateTimer;
 	public static Timer idleLogoutTimer;
 	public static Stage stage;
 	public static final double SCREEN_WIDTH = Screen.getPrimary().getVisualBounds().getWidth();
 	public static final double SCREEN_HEIGHT = Screen.getPrimary().getVisualBounds().getHeight();
-	public static boolean doUpdateCache = true;
+	public static boolean doUpdateCacheOnLoad = true;
 	public static boolean allowCacheUpdates = true;
 
 	public static void startForceUpdateTimer() {
@@ -69,7 +66,6 @@ public class App extends Application {
 		stage.show();
 		FXMLLoaderFactory.getHistory().push(homeScene);
 		homeScene.addEventHandler(Event.ANY, event -> startIdleTimer());
-		clockTimer = timerManager.startTimer(timerManager::updateTime, 0, 1000);
 		startIdleTimer();
 		startForceUpdateTimer();
 	}

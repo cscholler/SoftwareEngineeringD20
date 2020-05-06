@@ -5,10 +5,12 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.jfoenix.controls.*;
+import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
+import edu.wpi.cs3733.d20.teamL.util.TimerManager;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -47,21 +49,18 @@ import org.apache.xmlgraphics.image.codec.png.PNGEncodeParam;
 
 @Slf4j
 public class MapViewerController {
-    @Inject
-    private IDatabaseCache cache;
-    @Inject
-    private IPathfinderService pathfinderService;
-    @Inject
-    private IMessengerService messenger;
-
     @FXML
     private MapPane map;
+
     @FXML
     private JFXTextField startingPoint, destination;
+
     @FXML
     private JFXButton btnNavigate, floorUp, floorDown;
+
     @FXML
     private ScrollPane scroll;
+
     @FXML
     private VBox sideBox, instructions;
     @FXML
@@ -80,9 +79,17 @@ public class MapViewerController {
     private JFXComboBox<String> buildingChooser;
     @FXML
     private Label timeLabel;
+
+    @Inject
+    private IDatabaseCache cache;
+    @Inject
+    private IPathfinderService pathfinderService;
+    @Inject
+    private IMessengerService messenger;
+    private static final TimerManager timerManager = new TimerManager();
+
     @FXML
     private Accordion accordion = new Accordion();
-
 
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
@@ -91,13 +98,13 @@ public class MapViewerController {
     private Path path = new Path();
     private final ObservableList<String> direct = FXCollections.observableArrayList();
 
-    private final Image IMAGE_LEFT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/left.png", 15, 15, true, false, true);
-    private final Image IMAGE_RIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/right.jpg", 15, 15, true, false, true);
-    private final Image IMAGE_SHLEFT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/sharp left.jpg", 15, 15, true, false, true);
+    private final Image IMAGE_LEFT  = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/left.png", 15, 15, true, false, true);
+    private final Image IMAGE_RIGHT  = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/right.jpg", 15, 15, true, false, true);
+    private final Image IMAGE_SHLEFT  = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/sharp left.jpg", 15, 15, true, false, true);
     private final Image IMAGE_SHRIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/sharp right.jpg", 15, 15, true, false, true);
-    private final Image IMAGE_SLLEFT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/slightLeft.jpg", 15, 15, true, false, true);
+    private final Image IMAGE_SLLEFT  = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/slightLeft.jpg", 15, 15, true, false, true);
     private final Image IMAGE_SLRIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/slightRight.jpg", 15, 15, true, false, true);
-    private final Image IMAGE_ELEV = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/elevator.jpg", 15, 15, true, false, true);
+    private final Image IMAGE_ELEV  = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/elevator.jpg", 15, 15, true, false, true);
     private final Image IMAGE_STAIR = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/stair.png", 15, 15, true, false, true);
     private final Image IMAGE_DEST = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/destFlag.png", 15, 15, true, false, true);
     private final Image IMAGE_FTOM = new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/FaulkToMain.PNG");
@@ -113,16 +120,18 @@ public class MapViewerController {
 
     @FXML
     private void initialize() {
-        timer.scheduleAtFixedRate(timerWrapper(this::updateTime), 0, 1000);
-        cache.cacheAllFromDB();
-        dirList.addEventHandler(MouseEvent.MOUSE_CLICKED, (mouseEvent -> goToSelected()));
+        timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
+        if (App.doUpdateCacheOnLoad) {
+			cache.cacheAllFromDB();
+			App.doUpdateCacheOnLoad = false;
+		}
 
         map.setEditable(false);
         map.setHighLightColor(Color.GOLD);
         btnNavigate.setDisableVisualFocus(true);
 
         stackPane.setPickOnBounds(false);
-
+        dirList.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent -> goToSelected()));
         // Import all the nodes from the cache and set the current building to Faulkner
         String startB = "Faulkner";
         Building faulkner = cache.getBuilding("Faulkner");
@@ -138,7 +147,7 @@ public class MapViewerController {
 
         setFloor(2);
 
-        map.setZoomLevel(0.65);
+        map.setZoomLevel(0.25);
         map.init();
 
         // Populate autocomplete
@@ -214,7 +223,7 @@ public class MapViewerController {
         int prevFloor = map.getFloor();
         generateFloorButtons();
         setFloor(Math.max(map.getBuilding().getMinFloor(), Math.min(prevFloor, map.getBuilding().getMaxFloor())));
-
+        map.setZoomLevel(.25);
         if (!path.getPathNodes().isEmpty()) highLightPath();
     }
 
@@ -556,20 +565,6 @@ public class MapViewerController {
         dialog.show();
     }
 
-    private TimerTask timerWrapper(Runnable r) {
-        return new TimerTask() {
-            @Override
-            public void run() {
-                r.run();
-            }
-        };
-    }
-
-    private void updateTime() {
-        ;
-        Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("E, MMM d | h:mm aa").format(new Date())));
-    }
-
     /**
      * Changes starting location with destination and vice-versa.
      */
@@ -629,11 +624,12 @@ public class MapViewerController {
             }
 
             generateFloorButtons();
-            map.setZoomLevel(1.1);
+            map.setZoomLevel(.25);
         } else {
             if (!(subpath.get(0).getBuilding().equals(map.getBuilding().getName()))) {
                 map.setBuilding(subpath.get(0).getBuilding());
                 generateFloorButtons();
+                map.setZoomLevel(.25);
                 goToSelected();
             }
             if (!(subpath.get(0).getFloorAsString().equals(map.getFloor())))
@@ -664,8 +660,8 @@ public class MapViewerController {
             double diffY = maxY - minY;
             double scale;
 
-            if (diffX > diffY) scale = Math.min(400 / diffX, 5);
-            else scale = Math.min(400 / diffY, 5);
+            if (diffX > diffY) scale = Math.min(400 / diffX, 2);
+            else scale = Math.min(400 / diffY, 2);
 
             totalX = totalX / subpath.size();
             totalY = totalY / subpath.size();
