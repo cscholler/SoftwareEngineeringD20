@@ -62,8 +62,8 @@
     -fx-background-color: WHITE;
     -fx-pref-width: 385;
     -fx-max-width: 385;
-    -fx-pref-height: 75;
-    -fx-max-height: 75;
+    -fx-pref-height: 100;
+    -fx-max-height: 100;
     -fx-alignment: center-left;
     -jfx-button-type: RAISED;
 }
@@ -371,8 +371,8 @@
     -fx-alignment: center;
     -fx-font-size: 15;
     -fx-pref-width: 150;
-    -fx-border-color: black;
-    -fx-border-width: .5px;
+    /*-fx-border-color: black;*/
+    /*-fx-border-width: .5px;*/
 }
 
 .tree-table-row-cell:odd {

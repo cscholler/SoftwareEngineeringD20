@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -55,11 +56,7 @@
                <children>
                         <JFXTextField fx:id="doctorIDText" prefHeight="40.0" promptText="Doctor ID" styleClass="text-field-jfx" />
                         <JFXTextField fx:id="roomNumText" onKeyTyped="#autocomplete" prefHeight="40.0" promptText="Room Number" styleClass="text-field-jfx" />
-                        <JFXTextField fx:id="addInfoText" alignment="TOP_LEFT" prefHeight="116.0" prefWidth="0.0" promptText="Additional Information" styleClass="text-area-jfx">
-                            <padding>
-                                <Insets bottom="10.0" right="10.0" top="10.0" />
-                            </padding>
-                        </JFXTextField>
+                  <JFXTextArea fx:id="addInfoText" promptText="Additonal Information" styleClass="text-area-jfx" />
                </children>
             </VBox>
          </children>

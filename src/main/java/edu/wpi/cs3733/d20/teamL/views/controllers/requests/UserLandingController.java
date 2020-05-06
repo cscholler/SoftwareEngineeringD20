@@ -52,6 +52,10 @@ public class UserLandingController {
 
 
         launchDefaultPane();
+
+        if (login.getCurrentUser().getAcctType().equals("1")) {
+            btnAddPatient.setVisible(true);
+        }
     }
 
     @FXML

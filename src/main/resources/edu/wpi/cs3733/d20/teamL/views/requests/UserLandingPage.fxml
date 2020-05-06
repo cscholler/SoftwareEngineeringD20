@@ -128,14 +128,6 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="btnAddPatient" onAction="#launchAddPatient" styleClass="services-button-jfx" text="Add Patient">
-                           <graphic>
-                              <ImageView fitHeight="50.0" fitWidth="50.0">
-                                 <image>
-                                    <Image url="@../../assets/service_icons/addPerson.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic></JFXButton>
                         <JFXButton fx:id="btnSanitation" onAction="#launchSanitationPane" styleClass="services-button-jfx" text="Sanitation">
                            <graphic>
                               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
@@ -176,6 +168,14 @@
                               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../assets/service_icons/sleepingArea.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></JFXButton>
+                        <JFXButton fx:id="btnAddPatient" onAction="#launchAddPatient" styleClass="services-button-jfx" text="Add Patient" visible="false">
+                           <graphic>
+                              <ImageView fitHeight="50.0" fitWidth="50.0">
+                                 <image>
+                                    <Image url="@../../assets/service_icons/addPerson.png" />
                                  </image>
                               </ImageView>
                            </graphic></JFXButton>
