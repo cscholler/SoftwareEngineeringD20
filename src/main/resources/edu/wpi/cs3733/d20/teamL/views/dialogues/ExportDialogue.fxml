@@ -22,7 +22,7 @@
     <center>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" BorderPane.alignment="CENTER">
             <children>
-                <JFXComboBox fx:id="tableSelector" promptText="Choose table to export" styleClass="text-field-jfx" />
+                <JFXComboBox fx:id="tableSelector" promptText="Choose table(s) to export" styleClass="combo-box-jfx" />
                 <JFXButton onAction="#exportClicked" styleClass="save-button-jfx" text="Export" />
             </children>
         </HBox>

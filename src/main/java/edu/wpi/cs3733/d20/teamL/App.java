@@ -46,7 +46,7 @@ public class App extends Application {
 		if (idleLogoutTimer != null) {
 			idleLogoutTimer.cancel();
 		}
-		idleLogoutTimer = timerManager.startTimer(timerManager::logOutIfNoInput, 240000, 240000);
+		idleLogoutTimer = timerManager.startTimer(timerManager::logOutIfNoInput, 60000, 60000);
 	}
 
 	@Override
@@ -68,6 +68,7 @@ public class App extends Application {
 		homeScene.addEventHandler(Event.ANY, event -> startIdleTimer());
 		startIdleTimer();
 		startForceUpdateTimer();
+		startLogoutTimer();
 	}
 
 	@Override
