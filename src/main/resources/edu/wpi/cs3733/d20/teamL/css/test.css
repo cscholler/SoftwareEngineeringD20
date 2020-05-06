@@ -1,0 +1,23 @@
+.line {
+
+    -fx-stroke-width: 10;
+    -fx-stroke: #6a3d3d;
+    -fx-stroke-dash-array: 2 20 20 2;
+    -fx-animated: true;
+    animation-delay: 5;
+    animation-direction: line;
+    -fx-indeterminate-bar-animation-time: 5;
+    /*animation: dash 5s linear alternate infinite;*/
+}
+
+.path {
+    stroke-dasharray: 10;
+    stroke-dashoffset: 10;
+    animation: dash 5s linear forwards;
+}
+
+@keyframes dash {
+    to {
+        stroke-dashoffset: 0;
+    }
+}

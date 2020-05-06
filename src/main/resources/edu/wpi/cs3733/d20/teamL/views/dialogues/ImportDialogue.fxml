@@ -7,11 +7,12 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane fx:id="root" prefHeight="400.0" prefWidth="600.0" styleClass="background" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.ImportDialogue">
     <top>
-        <Label alignment="CENTER" prefWidth="600.0" styleClass="topBorder" text="Import a Table" BorderPane.alignment="CENTER">
+        <Label alignment="CENTER" prefWidth="600.0" styleClass="service-request-header-label-fx" text="Import a Table" BorderPane.alignment="CENTER">
             <padding>
                 <Insets bottom="20.0" top="20.0" />
             </padding>
@@ -21,13 +22,17 @@
         </Label>
     </top>
     <center>
-        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" BorderPane.alignment="CENTER">
-            <children>
-            <JFXCheckBox fx:id="appendCheckbox" checkedColor="#595959" text="Append Data" />
-                <JFXComboBox fx:id="tableSelector" promptText="Choose table to import to" style="-fx-prompt-text-fill: lightgrey; -fx-text-fill: white;" />
-                <JFXButton onAction="#importClicked" text="Import" />
-            </children>
-        </HBox>
+      <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+         <children>
+              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                  <children>
+                      <JFXComboBox fx:id="tableSelector" promptText="Choose table to import to" styleClass="text-field-jfx" />
+                  <JFXCheckBox fx:id="appendCheckbox" checkedColor="#595959" styleClass="check-box-jfx" text="Append Data" />
+                  </children>
+              </HBox>
+                <JFXButton onAction="#importClicked" styleClass="save-button-jfx" text="Import" />
+         </children>
+      </VBox>
     </center>
     <bottom>
         <Label fx:id="message" style="-fx-text-fill: white; -fx-font-size: 16;" text="Label" visible="false" BorderPane.alignment="CENTER">
