@@ -2,6 +2,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.logged_in;
 
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.entities.User;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
@@ -24,11 +25,12 @@ import java.util.Collections;
 
 @Slf4j
 public class ChangePasswordController {
-
+    @FXML
+    private JFXPasswordField newPasswordText, confirmPasswordText;
     @FXML
     private JFXButton btnCancel, btnConfirm;
     @FXML
-    private JFXTextField usernameText, newPasswordText, confirmPasswordText, oldPassText;
+    private JFXTextField usernameText, oldPassText;
     @FXML
     private Label incorrectPassword;
     private User user;
