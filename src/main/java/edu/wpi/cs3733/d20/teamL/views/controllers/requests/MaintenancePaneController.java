@@ -60,8 +60,8 @@ public class MaintenancePaneController implements Initializable {
 
         // Setup autocomplete
         searchFields = new SearchFields(dbCache.getNodeCache());
-        searchFields.getFields().add(SearchFields.Field.longName);
-        searchFields.getFields().add(SearchFields.Field.shortName);
+        searchFields.getFields().add(SearchFields.Field.nodeID);
+//        searchFields.getFields().add(SearchFields.Field.shortName);
         searchFields.populateSearchFields();
         autoCompletePopup.getSuggestions().addAll(searchFields.getSuggestions());
         borderPane.prefWidthProperty().bind(stackPane.widthProperty());

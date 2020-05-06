@@ -74,8 +74,7 @@ public class AddPersonController implements Initializable {
         languages.setItems(languageOptions);
 
         sf = new SearchFields(cache.getNodeCache());
-        sf.getFields().add(SearchFields.Field.longName);
-        sf.getFields().add(SearchFields.Field.shortName);
+        sf.getFields().add(SearchFields.Field.nodeID);
         sf.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
