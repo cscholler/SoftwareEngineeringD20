@@ -8,8 +8,10 @@ import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.MapParser;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.PathfinderService;
+import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
+import edu.wpi.cs3733.d20.teamL.util.TimerManager;
 import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import edu.wpi.cs3733.d20.teamL.views.components.*;
@@ -20,6 +22,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
@@ -30,6 +33,7 @@ import javafx.scene.layout.BorderPane;
 
 import javafx.geometry.Point2D;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.List;
 import javax.inject.Inject;
@@ -54,7 +58,7 @@ public class MapEditorController {
     @FXML
     MapPane map;
     @FXML
-    Label nodeIDText, numberlbl;
+    Label nodeIDText, numberlbl, timeLabel;
     @FXML
     JFXTextField xCoordText, yCoordText, buildingText, nodeTypeText, shortNameText, longNameText;
     @FXML
@@ -73,10 +77,13 @@ public class MapEditorController {
     @Inject
     private IDatabaseCache cache;
     @Inject
+    private ILoginManager loginManager;
+    @Inject
     private IPathfinderService pathfinder;
 
     private Scene scene;
     private FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
+    private static final TimerManager timerManager = new TimerManager();
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
     private boolean eraserBool = false;
@@ -98,6 +105,7 @@ public class MapEditorController {
 
     @FXML
     public void initialize() {
+        timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
         scene = root.getScene();
 
         coreShortcuts();
@@ -697,4 +705,27 @@ public class MapEditorController {
         pathNodesList.animateList(false);
         pathfinder.setPathfindingMethod(PathfinderService.PathfindingMethod.DSPF);
     }
+
+    @FXML
+    private void btnTableClicked() {
+        try {
+            Parent root = loaderHelper.getFXMLLoader("Admin/AdminView").load();
+            loaderHelper.setupScene(new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
+    }
+
+    @FXML
+    public void btnLogoutClicked() {
+        System.out.println(loginManager == null);
+        loginManager.logOut(true);
+        try {
+            Parent root = loaderHelper.getFXMLLoader("map_viewer/MapViewer").load();
+            loaderHelper.setupScene(new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
+    }
+
 }
