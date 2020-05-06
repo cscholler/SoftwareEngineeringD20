@@ -122,7 +122,7 @@ public class MapEditorController {
         map.setZoomLevel(0.65);
 
         // Add options for buildings and select Faulkner by default
-        buildingChooser.getItems().addAll("Faulkner", "BTM");
+        buildingChooser.getItems().addAll("Faulkner", MapViewerController.MAIN);
         buildingChooser.getSelectionModel().select(defaultBuilding);
 
         generateFloorButtons();
@@ -290,7 +290,7 @@ public class MapEditorController {
         if (confirmed) {
             Graph newGraph = MapParser.parseMapToGraph(data.getNodeFile(), data.getEdgeFile());
             Building faulkner = new Building("Faulkner", newGraph);
-            Building BTM = new Building("BTM", newGraph);
+            Building BTM = new Building(MapViewerController.MAIN, newGraph);
             map.getBuildings().add(faulkner);
             map.getBuildings().add(BTM);
             map.setBuilding(defaultBuilding);
@@ -300,7 +300,7 @@ public class MapEditorController {
     @FXML
     private void openFromDB() {
         Building faulkner = cache.getBuilding("Faulkner");
-        Building btm = cache.getBuilding("BTM");
+        Building btm = cache.getBuilding(MapViewerController.MAIN);
 
         if(!faulkner.getNodes().isEmpty()) map.getBuildings().add(faulkner);
         if(!btm.getNodes().isEmpty()) map.getBuildings().add(btm);
