@@ -27,7 +27,7 @@ public class UserLandingController {
     public ImageView btnClose;
     FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
     @FXML
-    private Label timeLabel, requestLabel;
+    private Label timeLabel, requestLabel, userLabel;
     @FXML
     private Pane servicePane;
     @FXML
@@ -42,9 +42,12 @@ public class UserLandingController {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("h:mm aa").format(new Date())));
+                Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("E, MMM d | h:mm aa").format(new Date())));
             }
         }, 0, 1000);
+
+        userLabel.setText("Hello, " + login.getCurrentUser().getFName());
+
 
         launchDefaultPane();
     }

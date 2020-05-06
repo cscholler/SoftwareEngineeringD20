@@ -169,9 +169,11 @@ public class PathfinderService implements IPathfinderService {
     }
 
     private void setShortestPath(NodeEntry nodeEntry, double newShortestPath) {
-        priorityQueue.remove(nodeEntry);
-        nodeEntry.shortestPath = newShortestPath;
-        priorityQueue.add(nodeEntry);
+        if(nodeEntry != null) {
+            priorityQueue.remove(nodeEntry);
+            nodeEntry.shortestPath = newShortestPath;
+            priorityQueue.add(nodeEntry);
+        }
     }
 
     @Override

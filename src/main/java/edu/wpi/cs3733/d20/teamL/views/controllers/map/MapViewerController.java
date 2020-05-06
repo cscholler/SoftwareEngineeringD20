@@ -14,15 +14,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -49,47 +47,41 @@ import org.apache.xmlgraphics.image.codec.png.PNGEncodeParam;
 
 @Slf4j
 public class MapViewerController {
-    @FXML
-    private MapPane map;
-
-    @FXML
-    private JFXTextField startingPoint, destination;
-
-    @FXML
-    private JFXButton btnNavigate, floorUp, floorDown;
-
-    @FXML
-    private ScrollPane scroll;
-
-    @FXML
-    private VBox instructions;
-    @FXML
-    private JFXNodesList textDirNode;
-    @FXML
-    private VBox floorSelector;
-    @FXML
-    private JFXListView dirList;
-    @FXML
-    private JFXButton btnTextMe, btnQR;
-
-    @FXML
-    StackPane stackPane;
-
-    @FXML
-    private JFXListView listF1, listF2, listF3, listF4, listF5;
-
-    @FXML
-    private JFXComboBox<String> buildingChooser;
-
-    @FXML
-    private Label timeLabel;
-
     @Inject
     private IDatabaseCache cache;
     @Inject
     private IPathfinderService pathfinderService;
     @Inject
     private IMessengerService messenger;
+
+    @FXML
+    private MapPane map;
+    @FXML
+    private JFXTextField startingPoint, destination;
+    @FXML
+    private JFXButton btnNavigate, floorUp, floorDown;
+    @FXML
+    private ScrollPane scroll;
+    @FXML
+    private VBox sideBox, instructions;
+    @FXML
+    private JFXNodesList textDirNode;
+    @FXML
+    private VBox floorSelector;
+    @FXML
+    private JFXListView dirList = new JFXListView();
+    @FXML
+    private JFXButton btnTextMe, btnQR;
+    @FXML
+    StackPane stackPane;
+    @FXML
+    private JFXListView listF1, listF2, listF3, listF4, listF5;
+    @FXML
+    private JFXComboBox<String> buildingChooser;
+    @FXML
+    private Label timeLabel;
+    @FXML
+    private Accordion accordion = new Accordion();
 
 
     private SearchFields sf;
@@ -99,17 +91,23 @@ public class MapViewerController {
     private Path path = new Path();
     private final ObservableList<String> direct = FXCollections.observableArrayList();
 
-    private final Image IMAGE_LEFT  = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/left.png");
-    private final Image IMAGE_RIGHT  = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/right.jpg");
-    private final Image IMAGE_SHLEFT  = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/sharp left.jpg");
+    private final Image IMAGE_LEFT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/left.png");
+    private final Image IMAGE_RIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/right.jpg");
+    private final Image IMAGE_SHLEFT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/sharp left.jpg");
     private final Image IMAGE_SHRIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/sharp right.jpg");
-    private final Image IMAGE_SLLEFT  = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/slightLeft.jpg");
+    private final Image IMAGE_SLLEFT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/slightLeft.jpg");
     private final Image IMAGE_SLRIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/slightRight.jpg");
-    private final Image IMAGE_ELEV  = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/elevator.jpg");
+    private final Image IMAGE_ELEV = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/elevator.jpg");
     private final Image IMAGE_STAIR = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/stair.png");
     private final Image IMAGE_DEST = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/destFlag.png");
     private final Image IMAGE_FTOM = new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/FaulkToMain.PNG");
     private final Image IMAGE_MTOF = new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/MainToFaulk.PNG");
+
+    private Collection<String> deptNodes = new ArrayList<>();
+    private Collection<String> labNodes = new ArrayList<>();
+    private Collection<String> serviceNodes = new ArrayList<>();
+    private Collection<String> retailNodes = new ArrayList<>();
+    private Collection<String> confNodes = new ArrayList<>();
 
     @FXML
     private void initialize() {
@@ -119,6 +117,8 @@ public class MapViewerController {
         map.setEditable(false);
         map.setHighLightColor(Color.GOLD);
         btnNavigate.setDisableVisualFocus(true);
+
+        stackPane.setPickOnBounds(false);
 
         // Import all the nodes from the cache and set the current building to Faulkner
         String startB = "Faulkner";
@@ -145,13 +145,7 @@ public class MapViewerController {
         autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
 
-        // TODO: Change node dropdowns to be generated
         Collection <Node> allNodes = map.getBuilding().getNodes();
-        Collection<String> deptNodes = new ArrayList<>();
-        Collection<String> labNodes = new ArrayList<>();
-        Collection<String> serviceNodes = new ArrayList<>();
-        Collection<String> retailNodes = new ArrayList<>();
-        Collection<String> confNodes = new ArrayList<>();
 
         for (Node node : allNodes) {
             if (node.getType().equals("DEPT")) { deptNodes.add(node.getLongName());
@@ -162,11 +156,40 @@ public class MapViewerController {
             }
         }
 
+        listF1 = new JFXListView();
+        listF2 = new JFXListView();
+        listF3 = new JFXListView();
+        listF4 = new JFXListView();
+        listF5 = new JFXListView();
+
+        JFXListView[] listOfListViews = new JFXListView[]{listF1,listF2,listF3,listF4,listF5};
+        for (JFXListView list : listOfListViews){
+            list.addEventHandler(MouseEvent.MOUSE_CLICKED, (mouseEvent -> {
+                destination.setText((String) list.getSelectionModel().getSelectedItem());
+                navigate();
+            }));
+            list.setStyle("-fx-font-size: 16");
+        }
+
         listF1.getItems().addAll(deptNodes);
         listF2.getItems().addAll(labNodes);
         listF3.getItems().addAll(serviceNodes);
         listF4.getItems().addAll(retailNodes);
         listF5.getItems().addAll(confNodes);
+
+        TitledPane departments = new TitledPane("Departments", listF1);
+        departments.setStyle("-fx-font-size: 16");
+        TitledPane labs = new TitledPane("Labs", listF2);
+        labs.setStyle("-fx-font-size: 16");
+        TitledPane services = new TitledPane("Services/Information", listF3);
+        services.setStyle("-fx-font-size: 16");
+        TitledPane amenities = new TitledPane("Amenities", listF4);
+        amenities.setStyle("-fx-font-size: 16");
+        TitledPane conferenceRooms = new TitledPane("Conference Rooms", listF5);
+        conferenceRooms.setStyle("-fx-font-size: 16");
+
+        accordion.getPanes().addAll(departments, labs, services, amenities, conferenceRooms);
+        showAccordion();
     }
 
     private void generateFloorButtons() {
@@ -213,10 +236,42 @@ public class MapViewerController {
      */
     @FXML
     public void navigate() {
-        Node startNode = sf.getNode(startingPoint.getText());
-        Node destNode = sf.getNode(destination.getText());
+        String start = startingPoint.getText();
+        String end = destination.getText();
+        String buildingS;
+        String buildingE;
+        String floorS = start.substring(start.length()-2,start.length()-1);
+        String floorE = end.substring(end.length()-2,end.length()-1);
+
+
+        if(start.contains("(Faulkner"))
+        {
+            start= start.substring(0, start.length()-15);
+            buildingS = "Faulkner";
+        }else if(start.contains("(BTM")){
+            start= start.substring(0, start.length()-10);
+            buildingS = "BTM";
+        }
+        if(end.contains("(Faulkner"))
+        {
+            end= end.substring(0, end.length()-15);
+            buildingE = "Faulkner";
+        }else if(end.contains("(BTM")){
+            end= end.substring(0, end.length()-10);
+            buildingE = "BTM";
+        }
+
+        Node startNode = sf.getNode(start);
+        Node destNode = sf.getNode(end);
+
+
+        if (!(startNode.getBuilding().equals(map.getBuilding().getName()))) {
+            map.setBuilding(startNode.getBuilding());
+            buildingChooser.getSelectionModel().select(startNode.getBuilding());
+        }
 
         setFloor(startNode.getFloor());
+
         if (startNode != null && destNode != null) {
             String directions = highlightSourceToDestination(startNode, destNode);
 
@@ -226,14 +281,17 @@ public class MapViewerController {
             btnTextMe.setVisible(true);
             btnQR.setDisable(false);
             btnQR.setVisible(true);
-            textDirNode.setDisable(false);
-            textDirNode.setVisible(true);
+//            textDirNode.setDisable(false);
+//            textDirNode.setVisible(true);
         }
+
+        System.out.println("Here");
+        hideAccordion();
+        showTextualDirections();
     }
 
     /**
      * Shows the key popup
-     *
      */
     @FXML
     private void showLegend() {
@@ -264,17 +322,19 @@ public class MapViewerController {
         StringBuilder builder = new StringBuilder();
 
         dirList.getItems().clear();
+        dirList.setStyle("-fx-font-size: 15");
         dirList.setCellFactory(param -> {
             return new ListCell<String>() {
                 private ImageView imageView = new ImageView();
+
                 protected void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);
                     if (empty || item == null) {
                         setGraphic(null);
                         setText(null);
                         // other stuff to do...
-                        imageView.setFitWidth(10);
-                        imageView.setFitHeight(10);
+                        imageView.setFitWidth(15);
+                        imageView.setFitHeight(15);
                     } else {
 
                         if (item.contains("right")) {
@@ -293,11 +353,11 @@ public class MapViewerController {
                             } else {
                                 imageView.setImage(IMAGE_LEFT);
                             }
-                        } else if (item.contains("elevator")){
+                        } else if (item.contains("elevator")) {
                             imageView.setImage(IMAGE_ELEV);
-                        } else if (item.contains("stair")){
+                        } else if (item.contains("stair")) {
                             imageView.setImage(IMAGE_STAIR);
-                        } else if (item.contains("destination")){
+                        } else if (item.contains("destination")) {
                             imageView.setImage(IMAGE_DEST);
                         }
                         setText(item);
@@ -399,12 +459,12 @@ public class MapViewerController {
 
     @FXML
     private void zoomIn() {
-        map.setZoomLevelToPosition(map.getZoomLevel() * 1.2, new Point2D(map.getBody().getWidth()/2,map.getBody().getHeight()/2));
+        map.setZoomLevelToPosition(map.getZoomLevel() * 1.2, new Point2D(map.getBody().getWidth() / 2, map.getBody().getHeight() / 2));
     }
 
     @FXML
     private void zoomOut() {
-        map.setZoomLevelToPosition(map.getZoomLevel() * 0.8, new Point2D(map.getBody().getWidth()/2,map.getBody().getHeight()/2));
+        map.setZoomLevelToPosition(map.getZoomLevel() * 0.8, new Point2D(map.getBody().getWidth() / 2, map.getBody().getHeight() / 2));
     }
 
     public void setFloor(int newFloor) {
@@ -427,7 +487,6 @@ public class MapViewerController {
 
     /**
      * Clears the text in source textfield
-     *
      */
     @FXML
     private void clearSource() {
@@ -436,10 +495,13 @@ public class MapViewerController {
 
     /**
      * Clears the text in destination textfield
-     *
      */
     @FXML
-    private void clearDest() { destination.clear(); }
+    private void clearDest() {
+        destination.clear();
+        hideTextualDirections();
+        showAccordion();
+    }
 
     /**
      * login pops up when login button is clicked
@@ -456,7 +518,6 @@ public class MapViewerController {
 
     /**
      * Displays the About page of the application
-     *
      */
     @FXML
     public void handleAbout() {
@@ -476,7 +537,7 @@ public class MapViewerController {
                 "Algorithms Specialist: Cameron Jacobson\n" +
                 "UI Engineer: Winnie Ly\n" +
                 "Documentation Analyst: Zaiyang Zhong\n\n" +
-                "Thank you Brigham and Women's Hospital and Andrew Shinn for your time and input."));
+                "Thank you Brigham and Women's Hospital \nand Andrew Shinn for your time and input."));
         JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
         JFXButton btnDone = new JFXButton("Done");
         btnDone.setOnAction(new EventHandler<ActionEvent>() {
@@ -505,7 +566,6 @@ public class MapViewerController {
 
     /**
      * Changes starting location with destination and vice-versa.
-     *
      */
     @FXML
     public void handleLocationChange() {
@@ -553,50 +613,74 @@ public class MapViewerController {
 
         ArrayList<Node> subpath = path.getSubpaths().get(index);
 
-        if(!(subpath.get(0).getBuilding().equals(subpath.get(subpath.size()-1)))){
-            if(subpath.get(0).getBuilding().equals("Faulkner")) {
+        if (dirList.getSelectionModel().getSelectedItem().toString().contains("Navigate")) {
+            if (subpath.get(0).getBuilding().equals("Faulkner")) {
+                map.setBuilding(new Building("Google"));
                 map.setMapImage(IMAGE_FTOM);
-            } else if(subpath.get(subpath.size()-1).getBuilding().equals("Faulkner")){
+            } else if (subpath.get(0).getBuilding().equals("BTM")) {
+                map.setBuilding(new Building("Google"));
                 map.setMapImage(IMAGE_MTOF);
             }
 
+            generateFloorButtons();
+            map.setZoomLevel(1.1);
+        } else {
+            if (!(subpath.get(0).getBuilding().equals(map.getBuilding().getName()))) {
+                map.setBuilding(subpath.get(0).getBuilding());
+                generateFloorButtons();
+            }
+            setFloor(subpath.get(0).getFloor());
+
+            double totalX = 0;
+            double totalY = 0;
+            double minX = 200000;
+            double maxX = 0;
+            double minY = 200000;
+            double maxY = 0;
+            for (Node node : subpath) {
+                double xPos = node.getPosition().getX();
+                double yPos = node.getPosition().getY();
+                double xPosGui = map.getNodeGUI(node).getLayoutX();
+                double yPosGui = map.getNodeGUI(node).getLayoutY();
+
+                totalX += xPosGui;
+                totalY += yPosGui;
+
+                if (xPos > maxX) maxX = xPos;
+                if (xPos < minX) minX = xPos;
+                if (yPos > maxY) maxY = yPos;
+                if (yPos < minY) minY = yPos;
+            }
+
+            double diffX = maxX - minX;
+            double diffY = maxY - minY;
+            double scale;
+
+            if (diffX > diffY) scale = Math.min(400 / diffX, 5);
+            else scale = Math.min(400 / diffY, 5);
+
+            totalX = totalX / subpath.size();
+            totalY = totalY / subpath.size();
+
+            map.setZoomLevelToPosition(scale, new Point2D(totalX, totalY));
+            highLightPath();
         }
+    }
 
-        setFloor(subpath.get(0).getFloor());
+    private void showAccordion() {
+        sideBox.getChildren().add(2,accordion); //eventually this should be 1
+    }
 
-        double totalX = 0;
-        double totalY = 0;
-        double minX = 200000;
-        double maxX = 0;
-        double minY = 200000;
-        double maxY = 0;
-        for (Node node : subpath) {
-            double xPos = node.getPosition().getX();
-            double yPos = node.getPosition().getY();
-            double xPosGui = map.getNodeGUI(node).getLayoutX();
-            double yPosGui = map.getNodeGUI(node).getLayoutY();
+    private void hideAccordion() {
+        accordion.getPanes().removeAll();
+        sideBox.getChildren().remove(accordion);
+    }
 
-            totalX += xPosGui;
-            totalY += yPosGui;
+    private void showTextualDirections() {
+        sideBox.getChildren().add(2, dirList); //eventually this should be 2
+    }
 
-            if (xPos > maxX) maxX = xPos;
-            if (xPos < minX) minX = xPos;
-            if (yPos > maxY) maxY = yPos;
-            if (yPos < minY) minY = yPos;
-        }
-
-        double diffX = maxX - minX;
-        double diffY = maxY - minY;
-        double scale;
-
-        if (diffX > diffY) scale = Math.min(400 / diffX, 5);
-        else scale = Math.min(400 / diffY, 5);
-        System.out.println(scale);
-
-        totalX = totalX / subpath.size();
-        totalY = totalY / subpath.size();
-
-        map.setZoomLevelToPosition(scale, new Point2D(totalX, totalY));
-        highLightPath();
+    private void hideTextualDirections() {
+        sideBox.getChildren().remove(dirList);
     }
 }
