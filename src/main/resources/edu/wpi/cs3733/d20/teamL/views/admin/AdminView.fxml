@@ -29,7 +29,7 @@
             <Insets bottom="10.0" top="10.0" />
          </BorderPane.margin>
          <children>
-            <HBox alignment="CENTER_LEFT" layoutX="466.0" layoutY="10.0" prefHeight="70.0" prefWidth="321.0" spacing="10.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="450.0" AnchorPane.rightAnchor="509.0" AnchorPane.topAnchor="5.0">
+            <HBox alignment="CENTER_LEFT" layoutX="3.0" layoutY="4.0" prefHeight="70.0" prefWidth="363.0" spacing="10.0" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="914.0" AnchorPane.topAnchor="4.0">
                <children>
                   <JFXButton contentDisplay="GRAPHIC_ONLY" onAction="#addUserClicked" prefHeight="44.0" prefWidth="45.0" styleClass="database-buttons-jfx">
                      <graphic>
@@ -47,38 +47,6 @@
                         </Tooltip>
                      </tooltip>
                   </JFXButton>
-                  <JFXButton contentDisplay="GRAPHIC_ONLY" onAction="#btnImportClicked" styleClass="database-buttons-jfx">
-                     <graphic>
-                        <ImageView fitHeight="38.0" fitWidth="42.0">
-                           <image>
-                              <Image url="@../../assets/map_editor/UploadFromDBFolder.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <tooltip>
-                        <Tooltip text="Import Database">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Tooltip>
-                     </tooltip>
-                  </JFXButton>
-                  <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#btnExportClicked" styleClass="database-buttons-jfx">
-                     <graphic>
-                        <ImageView fitHeight="37.0" fitWidth="37.0">
-                           <image>
-                              <Image url="@../../assets/map_editor/SaveToDB.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <tooltip>
-                        <Tooltip text="Save to Database">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Tooltip>
-                     </tooltip>
-                  </JFXButton>
                   <JFXButton fx:id="btnChangePass" onAction="#changePasswordClicked" styleClass="database-buttons-jfx">
                      <tooltip>
                         <Tooltip text="Change Password">
@@ -87,12 +55,22 @@
                            </font>
                         </Tooltip>
                      </tooltip></JFXButton>
+                  <JFXButton onAction="#btnImportClicked" prefHeight="73.0" prefWidth="99.0" styleClass="database-buttons-jfx" text="⬆" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton styleClass="database-buttons-jfx" text="⬇" textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </JFXButton>
                </children>
                <padding>
                   <Insets right="10.0" />
                </padding>
             </HBox>
-            <JFXComboBox fx:id="tableSelector" layoutX="47.0" layoutY="13.0" maxHeight="60.0" maxWidth="366.0" minWidth="366.0" onAction="#tableSelected" prefHeight="60.0" prefWidth="366.0" style="-fx-min-width: 400;" styleClass="combo-box-jfx" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="10.0" />
+            <JFXComboBox fx:id="tableSelector" layoutX="455.0" layoutY="9.0" maxHeight="60.0" maxWidth="366.0" minWidth="366.0" onAction="#tableSelected" prefHeight="60.0" prefWidth="366.0" style="-fx-min-width: 400;" styleClass="combo-box-jfx" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="455.0" AnchorPane.topAnchor="9.0" />
             <JFXButton contentDisplay="CENTER" layoutX="1197.0" layoutY="7.0" onAction="#rebuildDatabaseClicked" prefWidth="49.0" style="-fx-background-color: #FFF77D;" styleClass="delete-database-buttons-jfx" text="☢" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="5.0">
                <font>
                   <Font size="29.0" />
