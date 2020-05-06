@@ -127,7 +127,7 @@ public class MapEditorController {
         map.init();
         openFromDB();
 
-        map.setZoomLevel(0.65);
+        map.setZoomLevel(0.65 * App.UI_SCALE);
 
         // Add options for buildings and select Faulkner by default
         buildingChooser.getItems().addAll("Faulkner", MapViewerController.MAIN);
@@ -143,8 +143,6 @@ public class MapEditorController {
         //Hides the edges editor VBox
         nodeConnectionsTab.setPrefWidth(0);
         nodeConnectionsTab.setVisible(false);
-
-        map.recalculatePositions();
 
         eraser.setDisableAnimation(true);
 
@@ -310,8 +308,8 @@ public class MapEditorController {
         Building faulkner = cache.getBuilding("Faulkner");
         Building btm = cache.getBuilding(MapViewerController.MAIN);
 
-        if(!faulkner.getNodes().isEmpty()) map.getBuildings().add(faulkner);
-        if(!btm.getNodes().isEmpty()) map.getBuildings().add(btm);
+        if (!faulkner.getNodes().isEmpty()) map.getBuildings().add(faulkner);
+        if (!btm.getNodes().isEmpty()) map.getBuildings().add(btm);
         map.setBuilding(defaultBuilding);
     }
 
@@ -709,7 +707,7 @@ public class MapEditorController {
     @FXML
     private void btnTableClicked() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("Admin/AdminView").load();
+            Parent root = loaderHelper.getFXMLLoader("admin/AdminView").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);

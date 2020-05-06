@@ -47,7 +47,6 @@ public class AddPersonController implements Initializable {
     ObservableList<String> languageOptions = FXCollections.observableArrayList("Spanish", "Italian", "Chinese", "ASL", "French");
 
 
-    DBTableFormatter formatter = new DBTableFormatter();
     private final FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
 
     @FXML
@@ -61,8 +60,6 @@ public class AddPersonController implements Initializable {
     @FXML
     private JFXButton btnCancel;
 
-    String user;
-
     @FXML
     private void setBtnCancel() {
         Stage stage;
@@ -72,8 +69,6 @@ public class AddPersonController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_DOCTORS)));
-        formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_USERS)));
         serviceCombo.setItems(serviceOptions);
         userCombo.setItems(userOptions);
         languages.setItems(languageOptions);
@@ -100,7 +95,7 @@ public class AddPersonController implements Initializable {
 
         switch (userCombo.getValue()) {
             default:
-            case "staff Member":
+            case "Staff":
                 type = "0";
                 break;
             case "Nurse":
@@ -109,7 +104,7 @@ public class AddPersonController implements Initializable {
             case "Doctor":
                 type = "2";
                 break;
-            case "admin":
+            case "Admin":
                 type = "3";
         }
         int rows = 0;
@@ -165,10 +160,9 @@ public class AddPersonController implements Initializable {
             if (!(firstName.isBlank() || lastName.isBlank() || username.isBlank() || password.isBlank() || userCombo.getValue().isBlank())) {
                 rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(firstName, lastName, username, PasswordManager.hashPassword(password), type, services, manager))));
             }
-            formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_USERS)));
             if (doctorIDText.getText() != null && !(doctorIDText.getText().isEmpty())) {
-                rows = db.executeUpdate(new SQLEntry(DBConstants.UPDATE_DOCTOR_USERNAME, new ArrayList<>(Arrays.asList(username, doctorID))));
-            }
+				rows = db.executeUpdate(new SQLEntry(DBConstants.UPDATE_DOCTOR_USERNAME, new ArrayList<>(Arrays.asList(username, doctorID))));
+			}
             if (rows == 0) {
                 lblConfirmation.setTextFill(Color.RED);
                 lblConfirmation.setText("Submission failed");
@@ -205,16 +199,15 @@ public class AddPersonController implements Initializable {
                 log.error("SQL update affected more than 1 row.");
             }
             loaderHelper.showAndFade(lblConfirmation);
+			cache.cacheUsersFromDB();
+			cache.cacheDoctorsFromDB();
         }
-        formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_DOCTORS)));
-        formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_USERS)));
     }
-
 
     @FXML
     private void userSelected() {
-        user = userCombo.getValue();
-        if (user.equals("staff")) {
+        String user = userCombo.getValue();
+        if (user.equals("Staff")) {
             managerBox.setVisible(true);
             managerBox.setDisable(false);
             if (managerBox.isSelected()) {
@@ -256,13 +249,11 @@ public class AddPersonController implements Initializable {
         }
     }
 
-
     //Add doctor
     @FXML
     private void autocomplete() {
         sf.applyAutocomplete(officeText, autoCompletePopup);
     }
-
 
     /**
      * Handles UI portion of submit being clicked giving confirmation when it succeeds
@@ -275,10 +266,11 @@ public class AddPersonController implements Initializable {
         String lName = doctorLN.getText();
         String roomNum = officeText.getText();
         String additionalInfo = addlInfoText.getText();
-        if (db.executeUpdate(new SQLEntry(DBConstants.ADD_DOCTOR, new ArrayList<>(Arrays.asList(doctorID, fName, lName, null, roomNum, additionalInfo)))) == 0) {
+        int rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_DOCTOR, new ArrayList<>(Arrays.asList(doctorID, fName, lName, null, roomNum, additionalInfo))));
+        if (rows == 0) {
             confirmation.setTextFill(Color.RED);
             confirmation.setText("Submission failed");
-        } else {
+        } else if (rows == 1) {
             confirmation.setTextFill(Color.BLACK);
             confirmation.setText("Doctor Added");
             doctorFN.setText("");
@@ -286,9 +278,11 @@ public class AddPersonController implements Initializable {
             doctorIDText.setText("");
             officeText.setText("");
             addlInfoText.setText("");
-        }
+		} else {
+			log.error("SQL update affected more than 1 row.");
+		}
         loaderHelper.showAndFade(confirmation);
-        formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_DOCTORS)));
+		cache.cacheDoctorsFromDB();
     }
 }
 

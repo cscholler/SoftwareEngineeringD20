@@ -1,6 +1,5 @@
 package edu.wpi.cs3733.d20.teamL.util;
 
-import com.google.inject.Inject;
 import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
@@ -93,7 +92,7 @@ public class TimerManager {
 
 	public Timer startTimer(VoidMethod updateFunction, long delay, long period) {
 		Timer timer = new Timer();
-		timer.scheduleAtFixedRate(timerWrapper(updateFunction::method), delay, period);
+		timer.scheduleAtFixedRate(timerWrapper(updateFunction::execute), delay, period);
 		return timer;
 	}
 }

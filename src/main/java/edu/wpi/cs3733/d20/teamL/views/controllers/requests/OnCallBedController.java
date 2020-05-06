@@ -90,12 +90,15 @@ public class OnCallBedController {
 
             JFXTreeTableColumn<TimeSlot, String> startTime = new JFXTreeTableColumn<>("Start Time");
             startTime.setCellValueFactory(param -> param.getValue().getValue().start);
+            startTime.setPrefWidth(150);
 
             JFXTreeTableColumn<TimeSlot, String> endTime = new JFXTreeTableColumn<>("End Time");
             endTime.setCellValueFactory(param -> param.getValue().getValue().end);
+            endTime.setPrefWidth(150);
 
             JFXTreeTableColumn<TimeSlot, String> availability = new JFXTreeTableColumn<>("Availability");
             availability.setCellValueFactory(param -> param.getValue().getValue().availability);
+            availability.setPrefWidth(150);
 
             ObservableList<TimeSlot> slots = FXCollections.observableArrayList();
             for (int i = 0; i < 24; i++) {

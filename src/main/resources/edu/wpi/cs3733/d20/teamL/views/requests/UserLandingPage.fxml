@@ -17,7 +17,7 @@
          <children>
             <Label fx:id="timeLabel" layoutY="14.0" prefHeight="76.0" prefWidth="350.0" styleClass="bottom-bar-time-label-fx" text="25:74 PM" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" />
             <JFXButton alignment="CENTER" contentDisplay="CENTER" layoutX="1178.0" layoutY="19.0" onAction="#logoutBtn" styleClass="bottom-bar-logout-label-fx" text="Logout" textAlignment="CENTER" AnchorPane.bottomAnchor="21.0" AnchorPane.rightAnchor="-6.7999999999999545" />
-            <Label fx:id="userLabel" layoutX="544.0" layoutY="-2.0" prefHeight="76.0" prefWidth="350.0" styleClass="bottom-bar-user-label-fx" text="Hello" />
+            <Label fx:id="userLabel" alignment="CENTER" layoutX="544.0" layoutY="-2.0" prefHeight="76.0" prefWidth="350.0" styleClass="bottom-bar-user-label-fx" text="Hello" />
          </children>
       </AnchorPane>
    </bottom>
@@ -171,15 +171,22 @@
                                  </image>
                               </ImageView>
                            </graphic></JFXButton>
-                        <JFXButton fx:id="btnAPI" onAction="#launchAPIntment" styleClass="services-button-jfx" text="Appointment">
+                        <JFXButton fx:id="btnAddPatient" onAction="#launchAddPatient" styleClass="services-button-jfx" text="Add Patient" visible="false">
                            <graphic>
-                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="50.0" fitWidth="50.0">
+                                 <image>
+                                    <Image url="@../../assets/service_icons/addPerson.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></JFXButton>
+                        <JFXButton fx:id="btnLaunchAPI" onAction="#launchAPIntment" styleClass="services-button-jfx" text="Make Appointment" visible="true">
+                           <graphic>
+                              <ImageView fitHeight="50.0" fitWidth="50.0">
                                  <image>
                                     <Image url="@../../assets/service_icons/schedulerService.png" />
                                  </image>
                               </ImageView>
-                           </graphic>
-                        </JFXButton>
+                           </graphic></JFXButton>
                      </children>
                   </VBox>
                </content>
