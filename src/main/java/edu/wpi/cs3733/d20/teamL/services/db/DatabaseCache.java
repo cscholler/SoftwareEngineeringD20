@@ -7,20 +7,27 @@ import edu.wpi.cs3733.d20.teamL.entities.*;
 import javafx.geometry.Point2D;
 
 import com.google.inject.Inject;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class DatabaseCache implements IDatabaseCache {
     private ArrayList<Node> nodeCache = new ArrayList<>();
     private ArrayList<Edge> edgeCache = new ArrayList<>();
+	private ArrayList<Gift> giftCache = new ArrayList<>();
+	private ArrayList<User> userCache = new ArrayList<>();
+	private ArrayList<Doctor> doctorCache = new ArrayList<>();
+	private Map<String, Integer> cartCache = new HashMap<>();
+
     private ArrayList<Node> editedNodes = new ArrayList<>();
     private ArrayList<Node> addedNodes = new ArrayList<>();
     private ArrayList<Edge> addedEdges = new ArrayList<>();
     private ArrayList<Node> deletedNodes = new ArrayList<>();
     private ArrayList<Edge> deletedEdges = new ArrayList<>();
 
-    private ArrayList<Gift> giftsCache = new ArrayList<>();
-    private Map<String, Integer> cartCache = new HashMap<>();
+
+
+
 
     @Inject
     private IDatabaseService db;
@@ -30,6 +37,8 @@ public class DatabaseCache implements IDatabaseCache {
         cacheNodesFromDB();
         cacheEdgesFromDB();
         cacheGiftsFromDB();
+        cacheUsersFromDB();
+        cacheDoctorsFromDB();
     }
 
     /**
@@ -167,11 +176,11 @@ public class DatabaseCache implements IDatabaseCache {
     }
 
     @Override
-    public List<Node> getNodeCache() {
+    public ArrayList<Node> getNodeCache() {
         return nodeCache;
     }
 
-    public List<Edge> getEdgeCache() {
+    public ArrayList<Edge> getEdgeCache() {
         return edgeCache;
     }
 
@@ -230,7 +239,7 @@ public class DatabaseCache implements IDatabaseCache {
         ArrayList<ArrayList<String>> giftsDB = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_GIFTS)));
         clearGiftsCache();
         for (ArrayList<String> g : giftsDB) {
-            giftsCache.add(new Gift(g.get(0), g.get(1), g.get(2), g.get(3), g.get(4)));
+            giftCache.add(new Gift(g.get(0), g.get(1), g.get(2), g.get(3), g.get(4)));
         }
     }
 
@@ -239,13 +248,13 @@ public class DatabaseCache implements IDatabaseCache {
         ArrayList<SQLEntry> updates = new ArrayList<>();
 
         for (String giftType : cartCache.keySet()) {
-            for (Gift gift : giftsCache) {
+            for (Gift gift : giftCache) {
                 if (gift.getSubtype().equals(giftType)) {
                     gift.setInventory(Integer.toString(Integer.parseInt(gift.getInventory()) - cartCache.get(giftType)));
                     ArrayList<String> values = new ArrayList<>();
                     values.add(gift.getInventory());
-                    values.add(gift.getId());
-                    updates.add(new SQLEntry(DBConstants.UPDATE_GIFT, values));
+                    values.add(gift.getID());
+                    updates.add(new SQLEntry(DBConstants.UPDATE_GIFT_INVENTORY, values));
                 }
             }
         }
@@ -263,13 +272,13 @@ public class DatabaseCache implements IDatabaseCache {
     }
 
     @Override
-    public ArrayList<Gift> getGiftsCache() {
-        return giftsCache;
+    public ArrayList<Gift> getGiftCache() {
+        return giftCache;
     }
 
     @Override
     public void clearGiftsCache() {
-        giftsCache.clear();
+        giftCache.clear();
         cartCache.clear();
     }
 
@@ -277,4 +286,42 @@ public class DatabaseCache implements IDatabaseCache {
     public void clearCartCache() {
         cartCache.clear();
     }
+
+	@Override
+	public void cacheUsersFromDB() {
+		ArrayList<ArrayList<String>> usersTable = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_USERS)));
+		clearUserCache();
+		for (ArrayList<String> row : usersTable) {
+			userCache.add(new User(row.get(0), row.get(1), row.get(2), row.get(3), row.get(4), row.get(5), row.get(6)));
+		}
+	}
+
+	@Override
+	public ArrayList<User> getUserCache() {
+		return userCache;
+	}
+
+	@Override
+	public void clearUserCache() {
+    	userCache.clear();
+	}
+
+	@Override
+	public void cacheDoctorsFromDB() {
+		ArrayList<ArrayList<String>> doctorsTable = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_DOCTORS)));
+		clearDoctorCache();
+		for (ArrayList<String> row : doctorsTable) {
+			doctorCache.add(new Doctor(row.get(0), row.get(1), row.get(2), row.get(3), row.get(4), row.get(5)));
+		}
+	}
+
+	@Override
+	public ArrayList<Doctor> getDoctorCache() {
+		return doctorCache;
+	}
+
+	@Override
+	public void clearDoctorCache() {
+    	doctorCache.clear();
+	}
 }

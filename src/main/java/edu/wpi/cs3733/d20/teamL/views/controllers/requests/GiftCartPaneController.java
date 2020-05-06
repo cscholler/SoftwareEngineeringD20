@@ -47,7 +47,7 @@ public class GiftCartPaneController {
     @FXML
     public void initialize() {
         cache.cacheGiftsFromDB();
-        gifts = cache.getGiftsCache();
+        gifts = cache.getGiftCache();
 
         checkoutPane.setPickOnBounds(false);
         addedToCartPane.setPickOnBounds(false);
