@@ -156,7 +156,6 @@ public class MapViewerController {
             }
         }
 
-        //ToDO get the fancy clicking feature back
         listF1 = new JFXListView();
         listF2 = new JFXListView();
         listF3 = new JFXListView();

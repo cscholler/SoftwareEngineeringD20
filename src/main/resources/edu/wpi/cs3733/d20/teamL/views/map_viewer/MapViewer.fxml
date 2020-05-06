@@ -43,7 +43,7 @@
                                   </JFXButton>
                         <JFXButton fx:id="btnChangeLoc" contentDisplay="CENTER" maxHeight="30.0" onAction="#handleLocationChange" prefHeight="35.0" prefWidth="41.0" style="-fx-background-color: transparent;" text=" ">
                            <graphic>
-                              <ImageView fitHeight="20.0" pickOnBounds="true" preserveRatio="true" scaleX="1.5" scaleY="1.5">
+                              <ImageView fitHeight="20.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" scaleX="1.5" scaleY="1.5">
                                  <image>
                                     <Image url="@../../assets/map_editor/switchWhite.png" />
                                  </image>
@@ -81,8 +81,16 @@
                         </JFXButton>
                               </children>
                           </HBox>
-                          <JFXButton fx:id="btnTextMe" alignment="CENTER" buttonType="RAISED" minWidth="150.0" onAction="#handleText" prefHeight="40.0" prefWidth="133.0" style="-fx-pref-width: 200; -fx-max-width: 200;" styleClass="save-button-jfx" text="Text me directions" textFill="WHITE" visible="false" />
-                          <JFXButton fx:id="btnQR" alignment="CENTER" buttonType="RAISED" onAction="#genQR" prefHeight="40.0" prefWidth="85.0" style="-fx-pref-width: 200; -fx-max-width: 200;" styleClass="save-button-jfx" text="Scan Directions" textFill="WHITE" visible="false" />
+                  <VBox alignment="CENTER" spacing="10.0">
+                     <children>
+                                <JFXButton fx:id="btnTextMe" alignment="CENTER" buttonType="RAISED" minWidth="150.0" onAction="#handleText" prefHeight="40.0" prefWidth="133.0" style="-fx-pref-width: 200; -fx-max-width: 200;" styleClass="save-button-jfx" text="Text me directions" textFill="WHITE" visible="false" />
+                                <JFXButton fx:id="btnQR" alignment="CENTER" buttonType="RAISED" onAction="#genQR" prefHeight="40.0" prefWidth="85.0" style="-fx-pref-width: 200; -fx-max-width: 200;" styleClass="save-button-jfx" text="Scan Directions" textFill="WHITE" visible="false">
+                           <VBox.margin>
+                              <Insets bottom="40.0" />
+                           </VBox.margin>
+                        </JFXButton>
+                     </children>
+                  </VBox>
                       </children>
                       <padding>
                           <Insets bottom="20.0" left="20.0" right="20.0" top="30.0" />
@@ -138,7 +146,7 @@
                 </VBox>
                 <VBox alignment="BOTTOM_RIGHT" cache="true" layoutX="883.0" layoutY="510.0" maxHeight="100.0" maxWidth="50.0" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="20.0">
                     <children>
-                        <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" minHeight="40.0" minWidth="40.0" onAction="#zoomIn" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 20 20 0 0; -fx-pref-width: 40; -fx-pref-height: 40;" text="+" textAlignment="CENTER">
+                        <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" minHeight="40.0" minWidth="40.0" onAction="#zoomIn" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 20 20 0 0; -fx-pref-width: 40; -fx-pref-height: 40; -fx-background-color: #0d2e57;" text="+" textAlignment="CENTER">
                             <font>
                                 <Font name="System Bold" size="18.0" />
                             </font>
@@ -146,7 +154,7 @@
                                 <Insets right="20.0" />
                             </padding>
                         </JFXButton>
-                        <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" minHeight="40.0" minWidth="40.0" onAction="#zoomOut" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 0 0 20 20; -fx-pref-height: 40; -fx-pref-width: 40;" text="-" textAlignment="CENTER">
+                        <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" minHeight="40.0" minWidth="40.0" onAction="#zoomOut" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 0 0 20 20; -fx-pref-height: 40; -fx-pref-width: 40; -fx-background-color: #0d2e57;" text="-" textAlignment="CENTER">
                             <font>
                                 <Font name="System Bold" size="18.0" />
                             </font>
@@ -156,7 +164,6 @@
                         </JFXButton>
                     </children>
                 </VBox>
-                <JFXButton layoutX="786.0" layoutY="550.0" onAction="#showLegend" style="-fx-pref-width: 75;" text="Legend" AnchorPane.bottomAnchor="33.0" AnchorPane.rightAnchor="76.0" />
             <HBox alignment="BOTTOM_CENTER" layoutX="369.0" layoutY="570.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0">
                <children>
                   <JFXComboBox fx:id="buildingChooser" onAction="#switchBuilding" promptText="Select Building" styleClass="combo-box-jfx" />
@@ -168,16 +175,31 @@
    <top>
       <AnchorPane prefHeight="100.0" prefWidth="1287.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="1287.0" spacing="20.0" style="-fx-background-color: #00043B;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="1287.0" spacing="20.0" style="-fx-background-color: #00043B;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <stylesheets>
                   <URL value="@../../css/MapStyles.css" />
                </stylesheets>
+               <children>
+                  <Label text="Where to?" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="68.0" />
+                     </font>
+                  </Label>
+               </children>
             </HBox>
             <Label fx:id="timeLabel" alignment="CENTER" prefHeight="64.0" styleClass="bottom-bar-time-label-fx" text="Label" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="18.0">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
+                <JFXButton contentDisplay="CENTER" onAction="#showLegend" style="-fx-pref-width: 50; -fx-pref-height: 50; -fx-background-radius: 25; -fx-background-color: transparent;" text=" " AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
+               <graphic>
+                  <ImageView fitHeight="32.0" fitWidth="86.0" pickOnBounds="true" preserveRatio="true" scaleX="1.5" scaleY="1.5">
+                     <image>
+                        <Image url="@../../assets/home_page/compassRose.png" />
+                     </image>
+                  </ImageView>
+               </graphic></JFXButton>
          </children>
       </AnchorPane>
    </top>
