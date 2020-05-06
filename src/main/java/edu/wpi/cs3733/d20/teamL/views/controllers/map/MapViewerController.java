@@ -314,6 +314,7 @@ public class MapViewerController {
             map.resetNodeVisibility(start);
             map.resetNodeVisibility(end);
         }
+        path.getPathNodes().clear();
 
         path = pathfinderService.pathfind(map.getAllNodes(), source, destination);
         highLightPath();
@@ -430,6 +431,10 @@ public class MapViewerController {
             end.setVisible(true);
             end.getCircle().setFill(new ImagePattern(new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/END_filled.png")));
         }
+
+        map.getBuildings().clear();
+        map.getBuildings().add(cache.getBuilding("Faulkner"));
+        map.getBuildings().add(cache.getBuilding("Main"));
     }
 
     public MapPane getMap() {

@@ -443,7 +443,8 @@ public class MapPane extends ScrollPane {
                 addEdge(edge);
         }
         try {
-            setMapImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/" + getBuilding().getName() + "Floor" + currentFloor.getFloorAsString() + "LM.png"));
+            Image img = new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/" + getBuilding().getName() + "Floor" + currentFloor.getFloorAsString() + "LM.png");
+            setMapImage(img);
         } catch (IllegalArgumentException ex) {
 
         }
