@@ -6,8 +6,8 @@ import java.util.HashMap;
 
 public class Edge {
 	private String id;
-    private Node source;
-    private Node destination;
+    Node source;
+    Node destination;
 
     private HashMap<String, Object> data = new HashMap<>();
 
@@ -18,7 +18,7 @@ public class Edge {
     }
 
     public double getLength() {
-        return source.getPosition().distance(destination.getPosition()) + (Math.abs(source.getFloor() - destination.getFloor()) * 100);
+        return source.distanceTo(destination);
     }
 
 	public String getID() {

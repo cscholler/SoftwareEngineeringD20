@@ -1,9 +1,11 @@
 package edu.wpi.cs3733.d20.teamL.views.components;
 
+import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +19,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.Paint;
@@ -63,8 +66,9 @@ public class MapPane extends ScrollPane {
     private EdgeGUI tempEdge;
     private NodeGUI tempNode;
     private int nodeRadius = 18;
-    private int hallwayNodeRadius = 12;
+    private int hallwayNodeRadius = 10;
     private Color nodeColor = Color.rgb(13, 46, 87, 0.9);
+    private Color hallNodeColor = Color.rgb(13, 46, 87);
     private Color edgeColor = Color.DARKBLUE;
     private Color highLightColor = Color.GOLD;//Color.rgb(20, 194, 247);
     private double edgeThickness = 3;
@@ -122,7 +126,7 @@ public class MapPane extends ScrollPane {
 
                         Node dest = new Node(currentBuilding.getUniqueNodeID(), new Point2D(event.getX(),
                                 event.getY()).multiply(1 / zoomLevel), currentFloor.getFloor(), currentBuilding.getName(),
-                                "HALL","Hall", "Hall");
+                                "HALL", "Hall", "Hall");
 
                         dest.setId(currentBuilding.getUniqueNodeID(dest));
 
@@ -158,11 +162,10 @@ public class MapPane extends ScrollPane {
             body.setOnMouseDragged(event -> {
                 if (!addingNode && event.isPrimaryButtonDown() && !erasing && !addingEdge) {
                     if (draggingNode) {
-                        if(event.isShiftDown() && selector.getNodes().size() == 1) {
+                        if (event.isShiftDown() && selector.getNodes().size() == 1) {
                             NodeGUI curr = selector.getNodes().get(0);
                             curr.setLayoutPos(snapNode(curr, new Point2D(event.getX(), event.getY())));
-                        }
-                        else for (NodeGUI gui : selector.getNodes()) {
+                        } else for (NodeGUI gui : selector.getNodes()) {
                             Point2D temp = selector.getNodePosition(gui);
                             if (temp != null) gui.setLayoutPos(temp.add(new Point2D(event.getX(), event.getY())));
                         }
@@ -186,10 +189,10 @@ public class MapPane extends ScrollPane {
             });
 
             body.setOnMouseReleased(event -> {
-                if(addingNode && event.getButton().equals(MouseButton.PRIMARY)) {
+                if (addingNode && event.getButton().equals(MouseButton.PRIMARY)) {
                     tempNode.getNode().setPosition(tempNode.getLayoutPos().multiply(1 / zoomLevel));
                     addingNode = false;
-                } else if(addingNode && event.getButton().equals(MouseButton.SECONDARY)) {
+                } else if (addingNode && event.getButton().equals(MouseButton.SECONDARY)) {
                     removeNode(tempNode);
                     addingNode = false;
                 }
@@ -202,7 +205,7 @@ public class MapPane extends ScrollPane {
                     tempEdge.setEndX(event.getX());
                     tempEdge.setEndY(event.getY());
                 }
-                if(addingNode) {
+                if (addingNode) {
                     tempNode.setLayoutPos(new Point2D(event.getX(), event.getY()));
                 }
             });
@@ -216,14 +219,14 @@ public class MapPane extends ScrollPane {
 
     private Point2D snapNode(NodeGUI curr, Point2D mousePos) {
         ArrayList<NodeGUI> adjacents = new ArrayList<>();
-        for(Edge edge : curr.getNode().getEdges()) {
-            if(getNodeGUI(edge.getDestination()) != null)
+        for (Edge edge : curr.getNode().getEdges()) {
+            if (getNodeGUI(edge.getDestination()) != null)
                 adjacents.add(getNodeGUI(edge.getDestination()));
         }
 
         double minAngle = Math.PI / 4;
         NodeGUI minNode = null;
-        for(NodeGUI adj : adjacents) {
+        for (NodeGUI adj : adjacents) {
             double currAngle = Math.abs(Math.atan((mousePos.getY() - adj.getLayoutY()) / (mousePos.getX() - adj.getLayoutX())));
             double tempAngle = currAngle;
             double tempMin = minAngle;
@@ -237,7 +240,7 @@ public class MapPane extends ScrollPane {
             }
         }
 
-        if(minNode != null) {
+        if (minNode != null) {
             if (minAngle < Math.PI / 4) {
                 return new Point2D(mousePos.getX(), minNode.getLayoutY());
             }
@@ -310,6 +313,19 @@ public class MapPane extends ScrollPane {
 
     public Collection<Building> getBuildings() {
         return buildings;
+    }
+
+    /**
+     * Compiles all the nodes from both buildings into one graph.
+     *
+     * @return A graph containing all the nodes from both buildings
+     */
+    public Graph getAllNodes() {
+        Graph allNodes = new Graph();
+        for (Building building : getBuildings())
+            allNodes.addAllNodes(building);
+
+        return allNodes;
     }
 
     public void setSelectedNode(Node selectedNode) {
@@ -425,8 +441,34 @@ public class MapPane extends ScrollPane {
             if (edge.getDestination().getFloor() == getFloor() && edge.getSource().getFloor() == getFloor() && edge.getSource().getBuilding().equals(edge.getDestination().getBuilding()))
                 addEdge(edge);
         }
+        try {
+            setMapImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/" + getBuilding().getName() + "Floor" + currentFloor.getFloorAsString() + "LM.png"));
+        } catch (IllegalArgumentException ex) {
 
-        setMapImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/" + getBuilding().getName() + "Floor" + currentFloor.getFloorAsString() + "LM.png"));
+        }
+    }
+
+    /**
+     * Inserts floor buttons into a given VBox
+     */
+    public void generateFloorButtons(VBox floorSelector, EventMethod handleFloor) {
+        while (floorSelector.getChildren().size() > 2) {
+            floorSelector.getChildren().remove(1);
+        }
+        for (Floor floor : getBuilding().getFloors()) {
+            JFXButton newButton = new JFXButton();
+            newButton.setButtonType(JFXButton.ButtonType.RAISED);
+            newButton.getStylesheets().add("edu/wpi/cs3733/d20/teamL/css/MapStyles.css");
+            newButton.setText(floor.getFloorAsString());
+            newButton.setOnAction(handleFloor::op);
+            newButton.getStyleClass().add("floor-buttons");
+
+            floorSelector.getChildren().add(1, newButton);
+        }
+    }
+
+    public interface EventMethod {
+        void op(ActionEvent event);
     }
 
     public void recalculatePositions() {
@@ -448,7 +490,10 @@ public class MapPane extends ScrollPane {
 
     // Sets the zoom level by changing the spacing between all the nodes
     public void setZoomLevel(double zoomLevel) {
-        zoomLevel = Math.max(zoomLevel, 0.01);
+        if (currentBuilding.getName().equals("Faulkner")) zoomLevel = Math.max(zoomLevel, .5);
+        if (currentBuilding.getName().equals("Google")) zoomLevel = Math.max(zoomLevel, .8);
+        else zoomLevel = Math.max(zoomLevel, .25);
+        zoomLevel = Math.min(zoomLevel, 4);
 
         for (NodeGUI nodeGUI : nodes.values()) {
             Point2D prevPos = new Point2D(nodeGUI.getXProperty().get(), nodeGUI.getYProperty().get());
@@ -613,6 +658,8 @@ public class MapPane extends ScrollPane {
             });
             try {
                 nodeGUI.getCircle().setFill(new ImagePattern(new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/" + node.getType() + "_filled.png")));
+                if (nodeGUI.getNode().getType().equals("HALL") && hallNodeColor != null)
+                    nodeGUI.getCircle().setFill(hallNodeColor);
             } catch (IllegalArgumentException ex) {
                 nodeGUI.getCircle().setFill(nodeColor);
             }
@@ -635,10 +682,12 @@ public class MapPane extends ScrollPane {
         if (nodeGUI != null) {
             try {
                 nodeGUI.getCircle().setFill(new ImagePattern(new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/" + nodeGUI.getNode().getType() + "_filled.png")));
+                if (nodeGUI.getNode().getType().equals("HALL") && hallNodeColor != null)
+                    nodeGUI.getCircle().setFill(hallNodeColor);
             } catch (IllegalArgumentException ex) {
                 nodeGUI.getCircle().setFill(nodeColor);
             }
-            List<String> visibleNodeTypes = Arrays.asList("EXIT", "REST", "ELEV", "STAI", "INFO", "RETL");
+            List<String> visibleNodeTypes = Arrays.asList("EXIT", "REST", "ELEV", "STAI", "INFO", "RETL", "KIOS");
             if (!visibleNodeTypes.contains(nodeGUI.getNode().getType()))
                 nodeGUI.setVisible(false);
         }
@@ -761,5 +810,9 @@ public class MapPane extends ScrollPane {
 
     public void setTempNode(NodeGUI tempNode) {
         this.tempNode = tempNode;
+    }
+
+    public AnchorPane getBody() {
+        return body;
     }
 }

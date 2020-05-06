@@ -46,7 +46,7 @@ public class App extends Application {
 		if (idleLogoutTimer != null) {
 			idleLogoutTimer.cancel();
 		}
-		idleLogoutTimer = timerManager.startTimer(timerManager::logOutIfNoInput, 60000, 60000);
+		idleLogoutTimer = timerManager.startTimer(timerManager::logOutIfNoInput, 240000, 240000);
 	}
 
 	@Override
