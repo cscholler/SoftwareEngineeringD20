@@ -108,6 +108,8 @@ public class MapViewerController {
     private Collection<String> serviceNodes = new ArrayList<>();
     private Collection<String> retailNodes = new ArrayList<>();
     private Collection<String> confNodes = new ArrayList<>();
+    
+    private final String MAIN = "Main";
 
     @FXML
     private void initialize() {
@@ -123,11 +125,11 @@ public class MapViewerController {
         // Import all the nodes from the cache and set the current building to Faulkner
         String startB = "Faulkner";
         Building faulkner = cache.getBuilding("Faulkner");
-        Building btm = cache.getBuilding("BTM");
+        Building main = cache.getBuilding(MAIN);
 
         if(!faulkner.getNodes().isEmpty()) map.setBuilding(faulkner);
-        if(!btm.getNodes().isEmpty()) map.getBuildings().add(btm);
-        buildingChooser.getItems().addAll("Faulkner", "BTM");
+        if(!main.getNodes().isEmpty()) map.getBuildings().add(main);
+        buildingChooser.getItems().addAll("Faulkner", MAIN);
         buildingChooser.getSelectionModel().select(startB);
 
         // Add floor buttons
@@ -255,7 +257,7 @@ public class MapViewerController {
             buildingS = "Faulkner";
         }else if(start.contains("(BTM")){
             start= start.substring(0, start.length()-10);
-            buildingS = "BTM";
+            buildingS = MAIN;
         }
         if(end.contains("(Faulkner"))
         {
@@ -263,7 +265,7 @@ public class MapViewerController {
             buildingE = "Faulkner";
         }else if(end.contains("(BTM")){
             end= end.substring(0, end.length()-10);
-            buildingE = "BTM";
+            buildingE = MAIN;
         }
 
         Node startNode = sf.getNode(start);
@@ -622,7 +624,7 @@ public class MapViewerController {
             if (subpath.get(0).getBuilding().equals("Faulkner")) {
                 map.setBuilding(new Building("Google"));
                 map.setMapImage(IMAGE_FTOM);
-            } else if (subpath.get(0).getBuilding().equals("BTM")) {
+            } else if (subpath.get(0).getBuilding().equals(MAIN)) {
                 map.setBuilding(new Building("Google"));
                 map.setMapImage(IMAGE_MTOF);
             }
