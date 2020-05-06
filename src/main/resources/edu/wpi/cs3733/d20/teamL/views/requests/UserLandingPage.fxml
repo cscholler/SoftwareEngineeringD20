@@ -171,6 +171,15 @@
                                  </image>
                               </ImageView>
                            </graphic></JFXButton>
+                        <JFXButton fx:id="btnAPI" onAction="#launchAPIntment" styleClass="services-button-jfx" text="Appointment">
+                           <graphic>
+                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/service_icons/schedulerService.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
                      </children>
                   </VBox>
                </content>
