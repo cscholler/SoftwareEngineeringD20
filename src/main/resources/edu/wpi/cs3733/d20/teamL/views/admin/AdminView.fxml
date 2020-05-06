@@ -5,6 +5,7 @@
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -38,6 +39,13 @@
                            </image>
                         </ImageView>
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Add User">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Tooltip>
+                     </tooltip>
                   </JFXButton>
                   <JFXButton contentDisplay="GRAPHIC_ONLY" onAction="#importDBClicked" styleClass="database-buttons-jfx">
                      <graphic>
@@ -47,6 +55,13 @@
                            </image>
                         </ImageView>
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Import Database">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Tooltip>
+                     </tooltip>
                   </JFXButton>
                   <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#btnExportClicked" styleClass="database-buttons-jfx">
                      <graphic>
@@ -56,6 +71,13 @@
                            </image>
                         </ImageView>
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Save to Database">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Tooltip>
+                     </tooltip>
                   </JFXButton>
                   <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#importCSVClicked" styleClass="database-buttons-jfx">
                      <graphic>
@@ -65,6 +87,13 @@
                            </image>
                         </ImageView>
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Import CSV">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Tooltip>
+                     </tooltip>
                   </JFXButton>
                   <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#saveCSVClicked" styleClass="database-buttons-jfx">
                      <graphic>
@@ -74,8 +103,22 @@
                            </image>
                         </ImageView>
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Save to CSV">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Tooltip>
+                     </tooltip>
                   </JFXButton>
-                  <JFXButton fx:id="btnChangePass" onAction="#changePasswordClicked" styleClass="database-buttons-jfx" />
+                  <JFXButton fx:id="btnChangePass" onAction="#changePasswordClicked" styleClass="database-buttons-jfx">
+                     <tooltip>
+                        <Tooltip text="Change Password">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Tooltip>
+                     </tooltip></JFXButton>
                   <JFXButton fx:id="btnChangePass" onAction="#changePasswordClicked" prefWidth="58.0" styleClass="database-buttons-jfx" visible="false" />
                </children>
                <padding>
