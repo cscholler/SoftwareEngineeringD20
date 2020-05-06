@@ -17,7 +17,7 @@ import java.util.concurrent.FutureTask;
 @Slf4j
 public class AsyncTaskManager {
 
-    private static ForkJoinPool forkJoinPool = new ForkJoinPool();
+    private static final ForkJoinPool forkJoinPool = new ForkJoinPool();
 
     public static ForkJoinTask newTask(VoidMethod task) {
         ForkJoinTask newForkJoinTask = new ForkJoinTask() {
@@ -28,12 +28,11 @@ public class AsyncTaskManager {
 
             @Override
             protected void setRawResult(Object value) {
-
             }
 
             @Override
             protected boolean exec() {
-                task.exec();
+                task.execute();
                 return true;
             }
         };
@@ -81,7 +80,7 @@ public class AsyncTaskManager {
         loading.show();
 
         AsyncTaskManager.newTask(() -> {
-            task.exec();
+            task.execute();
             log.info(doneMessage);
             uiExec.execute(new FutureTask<>(() -> {
                 loading.close();
@@ -96,9 +95,4 @@ public class AsyncTaskManager {
         done.setContentText(message);
         done.showAndWait();
     }
-
-    public interface VoidMethod {
-        void exec();
-    }
-
 }

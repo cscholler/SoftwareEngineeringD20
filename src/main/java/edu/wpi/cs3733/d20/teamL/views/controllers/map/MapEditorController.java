@@ -302,8 +302,8 @@ public class MapEditorController {
         Building faulkner = cache.getBuilding("Faulkner");
         Building btm = cache.getBuilding("BTM");
 
-        if(!faulkner.getNodes().isEmpty()) map.getBuildings().add(faulkner);
-        if(!btm.getNodes().isEmpty()) map.getBuildings().add(btm);
+        if (!faulkner.getNodes().isEmpty()) map.getBuildings().add(faulkner);
+        if (!btm.getNodes().isEmpty()) map.getBuildings().add(btm);
         map.setBuilding(defaultBuilding);
     }
 

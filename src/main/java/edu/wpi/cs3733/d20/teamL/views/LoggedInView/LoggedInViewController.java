@@ -154,8 +154,7 @@ public class LoggedInViewController implements Initializable{
 
 	@FXML
 	public void clearClicked() {
+		log.warn("Rebuilding database...");
         AsyncTaskManager.startTaskWithPopup(db::rebuildDatabase, "Rebuilding database...", "Finished rebuilding database");
-        log.warn("Rebuilding database");
 	}
-
 }
