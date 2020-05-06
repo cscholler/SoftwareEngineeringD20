@@ -40,6 +40,11 @@
     -fx-padding: 0 0 0 30;
 }
 
+.bottom-bar-user-label-fx {
+    -fx-text-fill: white;
+    -fx-font-size:30;
+}
+
 .bottom-bar-logout-label-fx {
     -fx-text-fill: white;
     -fx-underline: true;
@@ -56,8 +61,9 @@
 
     -fx-background-color: WHITE;
     -fx-pref-width: 385;
-    -fx-pref-height: 300;
-    -fx-max-height: 300;
+    -fx-max-width: 385;
+    -fx-pref-height: 100;
+    -fx-max-height: 100;
     -fx-alignment: center-left;
     -jfx-button-type: RAISED;
 }
@@ -79,6 +85,32 @@
     -fx-pref-height: 60;
     -fx-max-width: 260;
     -fx-max-height: 60;
+    -jfx-button-type: FLAT;
+}
+
+/*-------------------------------search bars formatting----------------------------------*/
+.search-bar-text-field-jfx{
+    -fx-pref-height: 40;
+    -fx-max-height: 40;
+    -fx-pref-width: 240;
+    -fx-background-radius: 0;
+    -fx-focus-color: white;
+    -fx-unfocus-color: white;
+    -fx-background-color: white;
+}
+
+.clear-button-jfx {
+    -fx-pref-width: 30;
+    -fx-pref-height: 40;
+    -fx-max-height: 40;
+    -fx-background-color: white;
+    -fx-font-size: 10;
+    -fx-text-fill: black;
+    -fx-border-color: white;
+    /*-fx-border-width: 2px;*/
+    -fx-border-radius: 0 0 0 0;
+    -fx-border-width: 2px;
+
     -jfx-button-type: FLAT;
 }
 
@@ -292,4 +324,60 @@
     -fx-shape: "M214 0l0 428l-214 -214l214 -214z";
 }
 
-/*------------------------------------------------------------------------------*/
+/*-------------------------Tree Table for Room Scheduler Times -------------------------------------------*/
+.tree-table-cell {
+    -fx-alignment: center;
+    -fx-font-size: 15;
+    -fx-pref-width: 150;
+    -fx-border-color: black;
+    -fx-border-width: .5px;
+}
+
+.tree-table-row-cell:odd {
+    -fx-background-color: #f9f9f9;
+    /*-fx-background-insets: 0, 0 0 1 0;*/
+}
+
+.tree-table-view .column-header {
+    -fx-alignment: center;
+    -fx-pref-width: 150;
+    -fx-border-color: black;
+    -fx-border-width: .5px;
+}
+
+.tree-table-view .column-header .label{
+    -fx-font-size: 20;
+    -fx-text-fill: black;
+}
+
+.jfx-tree-table-view > .virtual-flow > .clipped-container > .sheet > .tree-table-row-cell:filled:selected {
+    -fx-background-color: #b9c1de;
+}
+
+.tree-table-view {
+    -fx-pref-width: 464;
+    -fx-max-width: 464;
+    -fx-pref-height: 500;
+}
+
+.jfx-date-picker {
+    -fx-background-color: #DCDCDC;
+    -fx-pref-width: 200;
+    -fx-pref-height: 40;
+    -fx-max-width: 200;
+    -fx-max-height: 40;
+    -fx-font-size: 15;
+}
+
+.jfx-date-picker .input-line{
+    -fx-pref-height: 0px;
+}
+.jfx-date-picker .input-focused-line{
+    -fx-pref-height: 0px;
+}
+
+.table-error-label {
+    -fx-pref-height: 20;
+    -fx-font-size: 14;
+    -fx-text-fill: red;
+}

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="895.0" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.ReflectionRoomController">
+   <children>
+      <BorderPane fx:id="borderPane" prefHeight="200.0" prefWidth="200.0">
+         <center>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" BorderPane.alignment="CENTER">
+               <children>
+                  <JFXComboBox fx:id="rooms" promptText="Select Room" styleClass="combo-box-jfx" />
+                  <JFXDatePicker fx:id="date" defaultColor="#00043b" promptText="Select Date" />
+                  <StackPane>
+                     <children>
+                        <JFXTreeTableView fx:id="table" />
+                        <JFXButton fx:id="btnLoadTimes" onAction="#loadTimes" styleClass="save-button-jfx" text="Load Times" />
+                        <Label fx:id="tableErrorLbl" styleClass="table-error-label" text="Select a Room and Day" textAlignment="CENTER" textFill="RED">
+                           <StackPane.margin>
+                              <Insets top="100.0" />
+                           </StackPane.margin>
+                        </Label>
+                     </children>
+                  </StackPane>
+               </children>
+               <BorderPane.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </BorderPane.margin>
+            </VBox>
+         </center>
+         <bottom>
+            <HBox alignment="CENTER" BorderPane.alignment="CENTER">
+               <children>
+                  <JFXButton fx:id="btnSubmit" maxHeight="120.0" onAction="#handleSubmit" prefHeight="120.0" styleClass="save-button-jfx" text="Submit" />
+               </children>
+               <BorderPane.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" />
+               </BorderPane.margin>
+            </HBox>
+         </bottom>
+      </BorderPane>
+      <ImageView fx:id="requestReceived" fitHeight="150.0" fitWidth="206.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../../assets/service_icons/serviceRecieved.png" />
+         </image>
+         <StackPane.margin>
+            <Insets top="300.0" />
+         </StackPane.margin>
+      </ImageView>
+   </children>
+</StackPane>

@@ -90,6 +90,7 @@ public class MapEditorController {
     private Image breadthFirstIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map_editor/Breath First.png", 100, 0, true, false, true);
     private Image depthFirstIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map_editor/DepthFirst.png", 100, 0, true, false, true);
     private Image aStarIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map_editor/AStar.png", 60, 0, true, false, true);
+    private Image dijkstraIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map_editor/dijkstra.png", 100, 0, true, false, true);
     private Image xButtonIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map_editor/xButton.png", 40, 0, true, false, true);
     private Image saveToFileIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map_editor/SaveToFile.png", 40, 0, true, false, true);
     private Image uploadFromFolderIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map_editor/UploadFromFolder.png", 40, 0, true, false, true);
@@ -150,6 +151,10 @@ public class MapEditorController {
         if (pathfinder.getPathfindingMethod() == PathfinderService.PathfindingMethod.DFS) {
             pathFindingAlg = 'D';
             pathfindImage.setImage((depthFirstIcon));
+        }
+        if (pathfinder.getPathfindingMethod() == PathfinderService.PathfindingMethod.DSPF) {
+            pathFindingAlg = 'K';
+            pathfindImage.setImage((dijkstraIcon));
         }
     }
 
@@ -683,5 +688,13 @@ public class MapEditorController {
         pathfindImage.setImage(breadthFirstIcon);
         pathNodesList.animateList(false);
         pathfinder.setPathfindingMethod(PathfinderService.PathfindingMethod.BFS);
+    }
+
+    @FXML
+    private void dijkstraSelected() {
+        pathFindingAlg = 'K';
+        pathfindImage.setImage(dijkstraIcon);
+        pathNodesList.animateList(false);
+        pathfinder.setPathfindingMethod(PathfinderService.PathfindingMethod.DSPF);
     }
 }
