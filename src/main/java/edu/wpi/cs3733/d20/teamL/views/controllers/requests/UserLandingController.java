@@ -34,7 +34,7 @@ public class UserLandingController {
     private Pane servicePane;
     @FXML
     private JFXButton btnGift, btnSecurity, btnSanitation, btnMaintenance, btnIT, btnInternal, btnExternal, btnInterpreter,
-            btnMedication, btnReflectionRoom, btnOnCallBed;
+            btnMedication, btnReflectionRoom, btnOnCallBed, btnLaunchAPI;
     @Inject
     ILoginManager login;
 
@@ -145,8 +145,10 @@ public class UserLandingController {
     }
 
     private void resetAndLoadPane(String regionName, String labelText) throws IOException {
-        JFXButton[] allButtons = new JFXButton[]{btnGift, btnSecurity, btnSanitation, btnMaintenance, btnIT, btnInternal, btnExternal, btnInterpreter, btnMedication, btnOnCallBed, btnReflectionRoom, btnAddPatient};
-        for (JFXButton currButton:allButtons) {
+        JFXButton[] allButtons = new JFXButton[] {
+        		btnGift, btnSecurity, btnSanitation, btnMaintenance, btnIT, btnInternal, btnExternal, btnInterpreter, btnMedication, btnOnCallBed, btnReflectionRoom, btnAddPatient
+        };
+        for (JFXButton currButton : allButtons) {
             currButton.setStyle("-fx-background-color: white;");
         }
 

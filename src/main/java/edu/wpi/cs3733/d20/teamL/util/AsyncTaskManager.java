@@ -16,8 +16,8 @@ import java.util.concurrent.FutureTask;
 
 @Slf4j
 public class AsyncTaskManager {
-
-    private static ForkJoinPool forkJoinPool = new ForkJoinPool();
+    private static final ForkJoinPool forkJoinPool = new ForkJoinPool();
+    public static boolean isTaskRunning = false;
 
     public static ForkJoinTask newTask(VoidMethod task) {
         ForkJoinTask newForkJoinTask = new ForkJoinTask() {
@@ -28,17 +28,17 @@ public class AsyncTaskManager {
 
             @Override
             protected void setRawResult(Object value) {
-
             }
 
             @Override
             protected boolean exec() {
-                task.exec();
+                task.execute();
                 return true;
             }
         };
-
+		isTaskRunning = true;
         forkJoinPool.execute(newForkJoinTask);
+        isTaskRunning = false;
 
         return newForkJoinTask;
     }
@@ -50,6 +50,7 @@ public class AsyncTaskManager {
 
         Alert loading = new Alert(Alert.AlertType.NONE);
         loading.setResult(ButtonType.OK);
+        loading.setHeaderText("");
         ImageView spinner = new ImageView(new Image("edu/wpi/cs3733/d20/teamL/assets/spinner.gif"));
         spinner.setPreserveRatio(true);
         spinner.setFitWidth(40);
@@ -81,7 +82,7 @@ public class AsyncTaskManager {
         loading.show();
 
         AsyncTaskManager.newTask(() -> {
-            task.exec();
+            task.execute();
             log.info(doneMessage);
             uiExec.execute(new FutureTask<>(() -> {
                 loading.close();
@@ -94,11 +95,7 @@ public class AsyncTaskManager {
     private static void showDoneDialogue(String message) {
         Alert done = new Alert(Alert.AlertType.INFORMATION);
         done.setContentText(message);
+		done.setHeaderText("");
         done.showAndWait();
     }
-
-    public interface VoidMethod {
-        void exec();
-    }
-
 }

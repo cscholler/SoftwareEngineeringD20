@@ -1,6 +1,5 @@
 package edu.wpi.cs3733.d20.teamL.util;
 
-import com.google.inject.Inject;
 import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
@@ -8,10 +7,13 @@ import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -73,6 +75,13 @@ public class TimerManager {
 			loginManager.logOut(true);
 			FXMLLoaderFactory.resetHistory();
 			try {
+				try {
+					Stage openPopup = (Stage) Stage.getWindows().stream().filter(Window::isFocused).findFirst().orElse(null);
+					assert openPopup != null;
+					openPopup.close();
+				} catch (NullPointerException ex) {
+					log.warn("Attempted to close an unfocused window on timeout.");
+				}
 				Parent root = loaderFactory.getFXMLLoader("map_viewer/MapViewer").load();
 				loaderFactory.setupScene(new Scene(root));
 			} catch (IOException ex) {
@@ -83,7 +92,7 @@ public class TimerManager {
 
 	public Timer startTimer(VoidMethod updateFunction, long delay, long period) {
 		Timer timer = new Timer();
-		timer.scheduleAtFixedRate(timerWrapper(updateFunction::method), delay, period);
+		timer.scheduleAtFixedRate(timerWrapper(updateFunction::execute), delay, period);
 		return timer;
 	}
 }

@@ -2,9 +2,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.dialogues;
 
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
-import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -18,8 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import javax.inject.Inject;
 import java.util.concurrent.Executor;
 import java.util.concurrent.FutureTask;
-
-import static java.lang.Thread.sleep;
 
 @Slf4j
 public class RebuildDatabasePopupController {
@@ -36,6 +32,7 @@ public class RebuildDatabasePopupController {
 
         Alert loading = new Alert(Alert.AlertType.NONE);
         loading.setResult(ButtonType.OK);
+        loading.setHeaderText("");
         ImageView spinner = new ImageView(new Image("edu/wpi/cs3733/d20/teamL/assets/spinner.gif"));
         spinner.setPreserveRatio(true);
         spinner.setFitWidth(40);
@@ -51,7 +48,7 @@ public class RebuildDatabasePopupController {
                 boolean showing = false;
                 while (true) {
                     try {
-                        sleep(1000);
+                        Thread.sleep(1000);
                     } catch (InterruptedException ex) {
                         log.error("Encountered InterruptedException", ex);
                     }
@@ -83,9 +80,11 @@ public class RebuildDatabasePopupController {
 	}
 
     private Boolean showDone() {
-        log.info("showDone() Called");
+		Stage stage = (Stage) btnNo.getScene().getWindow();
+		stage.close();
         Alert done = new Alert(Alert.AlertType.INFORMATION);
         done.setContentText("Finished rebuilding database");
+        done.setHeaderText("");
         done.showAndWait();
 
         return true;

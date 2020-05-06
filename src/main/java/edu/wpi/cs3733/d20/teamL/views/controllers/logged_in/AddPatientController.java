@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamL.views.LoggedInView;
+package edu.wpi.cs3733.d20.teamL.views.controllers.logged_in;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -73,11 +73,11 @@ public class AddPatientController {
         String docID = doctorIDText.getText();
         String roomNum = roomNumText.getText();
         String additionalInfo = addInfoText.getText();
-
-        if (db.executeUpdate(new SQLEntry(DBConstants.ADD_PATIENT, new ArrayList<>(Arrays.asList(patID, fName, lName, docID, roomNum, additionalInfo)))) == 0) {
+        int rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_PATIENT, new ArrayList<>(Arrays.asList(patID, fName, lName, docID, roomNum, additionalInfo))));
+        if (rows == 0) {
             lblConfirmation.setText("Submission failed!");
             lblConfirmation.setTextFill(Color.RED);
-        } else {
+        } else if (rows == 1) {
             //show the submitted label and clear the fields
             lblConfirmation.setText("Patient Submitted!");
             lblConfirmation.setTextFill(Color.BLACK);
@@ -87,7 +87,9 @@ public class AddPatientController {
             doctorIDText.setText("");
             roomNumText.setText("");
             addInfoText.setText("");
-        }
+        } else {
+        	//TODO
+		}
         lblConfirmation.setVisible(true);
         //fade the label out
         loaderHelper.showAndFade(lblConfirmation);

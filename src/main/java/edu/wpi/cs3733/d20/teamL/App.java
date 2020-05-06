@@ -27,12 +27,13 @@ public class App extends Application {
 	public static final double SCREEN_HEIGHT = Screen.getPrimary().getVisualBounds().getHeight();
 	public static boolean doUpdateCacheOnLoad = true;
 	public static boolean allowCacheUpdates = true;
+	public static double UI_SCALE = 1.34 * (SCREEN_WIDTH / 1920);
 
 	public static void startForceUpdateTimer() {
 		if (forceCacheUpdateTimer != null) {
 			forceCacheUpdateTimer.cancel();
 		}
-		forceCacheUpdateTimer = timerManager.startTimer(timerManager::forceUpdateCache, 300000, 300000);
+		forceCacheUpdateTimer = timerManager.startTimer(timerManager::forceUpdateCache, 180000, 180000);
 	}
 
 	public static void startIdleTimer() {
@@ -46,7 +47,7 @@ public class App extends Application {
 		if (idleLogoutTimer != null) {
 			idleLogoutTimer.cancel();
 		}
-		idleLogoutTimer = timerManager.startTimer(timerManager::logOutIfNoInput, 240000, 240000);
+		idleLogoutTimer = timerManager.startTimer(timerManager::logOutIfNoInput, 60000, 60000);
 	}
 
 	@Override
@@ -68,6 +69,7 @@ public class App extends Application {
 		homeScene.addEventHandler(Event.ANY, event -> startIdleTimer());
 		startIdleTimer();
 		startForceUpdateTimer();
+		startLogoutTimer();
 	}
 
 	@Override
