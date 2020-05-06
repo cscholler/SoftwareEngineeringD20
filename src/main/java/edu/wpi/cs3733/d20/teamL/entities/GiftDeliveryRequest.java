@@ -14,10 +14,10 @@ public class GiftDeliveryRequest {
 	private String dateAndTime;
 	private String message;
 	private String notes;
-	private ArrayList<Gift> gifts;
+	private String gifts;
 
 	public GiftDeliveryRequest(String id, String patientID, String patientName, String roomNum, String senderName,
-							   String requestUsername, String assigneeUsername, ArrayList<Gift> gifts,
+							   String requestUsername, String assigneeUsername, String gifts,
 							   String message, String notes, String status, String dateAndTime) {
 		this.id = id;
 		this.patientID = patientID;
@@ -61,7 +61,7 @@ public class GiftDeliveryRequest {
 		return assigneeUsername;
 	}
 
-	public ArrayList<Gift> getGifts() {
+	public String getGifts() {
 		return gifts;
 	}
 

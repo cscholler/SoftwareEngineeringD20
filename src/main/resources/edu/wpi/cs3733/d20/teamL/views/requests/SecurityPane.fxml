@@ -18,63 +18,52 @@
 <StackPane fx:id="stackPane" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.SecurityPaneController">
    <children>
       <BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="services-pane-jfx">
-         <bottom>
-            <HBox alignment="CENTER" prefHeight="85.0" prefWidth="895.0" spacing="100.0" BorderPane.alignment="CENTER">
-               <children>
-                  <JFXButton fx:id="btnSubmit" onAction="#handleSubmit" styleClass="save-button-jfx" text="Submit" />
-                  <Label styleClass="submission-failed-label-fx" text=" " />
-               </children>
-               <BorderPane.margin>
-                  <Insets />
-               </BorderPane.margin>
-               <padding>
-                  <Insets bottom="20.0" left="350.0" />
-               </padding>
-            </HBox>
-         </bottom>
          <center>
-            <HBox alignment="CENTER" spacing="50.0" BorderPane.alignment="CENTER">
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" BorderPane.alignment="CENTER">
+               <children>
+                  <JFXTextField fx:id="patientIDText" promptText="Patient ID" styleClass="text-field-jfx" />
+                  <JFXTextField fx:id="locationText" onKeyTyped="#autocomplete" promptText="Location" styleClass="text-field-jfx" />
+                  <Label fx:id="urgencyLbl" text="Priority Level:">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="-15.0" />
+                     </VBox.margin>
+                  </Label>
+                  <HBox alignment="CENTER" prefHeight="20.0" prefWidth="459.0" spacing="10.0">
+                     <children>
+                        <JFXRadioButton styleClass="radio-button-jfx" text="High Priority">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="urgency" />
+                           </toggleGroup>
+                        </JFXRadioButton>
+                        <JFXRadioButton styleClass="radio-button-jfx" text="Medium Priority" toggleGroup="$urgency" />
+                        <JFXRadioButton styleClass="radio-button-jfx" text="Low Priority" toggleGroup="$urgency" />
+                     </children>
+                  </HBox>
+                  <JFXTextField fx:id="personnelText" promptText="Personnel Needed" styleClass="text-field-jfx" />
+                  <JFXTextArea fx:id="reasonText" promptText="Reason" styleClass="text-area-jfx" />
+                  <JFXTextArea fx:id="notesText" promptText="Additional Notes" styleClass="text-area-jfx" />
+               </children>
                <BorderPane.margin>
                   <Insets left="20.0" right="20.0" top="20.0" />
                </BorderPane.margin>
-               <children>
-                  <VBox alignment="CENTER" prefHeight="495.0" prefWidth="402.0" spacing="20.0">
-                     <children>
-                        <JFXTextField fx:id="patientIDText" promptText="Patient ID" styleClass="text-field-jfx" />
-                        <JFXTextField fx:id="locationText" onKeyTyped="#autocomplete" promptText="Location" styleClass="text-field-jfx" />
-                        <Label text="Priority Level:">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets bottom="-15.0" />
-                           </VBox.margin>
-                        </Label>
-                        <HBox alignment="CENTER" prefHeight="20.0" prefWidth="459.0" spacing="10.0">
-                           <children>
-                              <JFXRadioButton styleClass="radio-button-jfx" text="High Priority">
-                                 <toggleGroup>
-                                    <ToggleGroup fx:id="urgency" />
-                                 </toggleGroup>
-                              </JFXRadioButton>
-                              <JFXRadioButton styleClass="radio-button-jfx" text="Medium Priority" toggleGroup="$urgency" />
-                              <JFXRadioButton styleClass="radio-button-jfx" text="Low Priority" toggleGroup="$urgency" />
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER" spacing="20.0">
-                     <children>
-                        <JFXTextField fx:id="personnelText" promptText="Personnel Needed" styleClass="text-field-jfx" />
-                        <JFXTextArea fx:id="reasonText" promptText="Reason" styleClass="text-area-jfx" />
-                        <JFXTextArea fx:id="notesText" promptText="Additional Notes" styleClass="text-area-jfx" />
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
+            </VBox>
          </center>
+         <bottom>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="895.0" spacing="100.0" BorderPane.alignment="CENTER">
+               <children>
+                  <JFXButton fx:id="btnSubmit" onAction="#handleSubmit" prefHeight="44.0" prefWidth="195.0" styleClass="save-button-jfx" text="Submit" />
+                  <Label fx:id="confirmation" styleClass="submission-failed-label-fx" text=" " />
+               </children>
+               <padding>
+                  <Insets left="350.0" />
+               </padding>
+            </HBox>
+         </bottom>
       </BorderPane>
-      <ImageView fx:id="requestReceived" fitHeight="150.0" fitWidth="206.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="requestReceived" fitHeight="210.0" fitWidth="270.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../../assets/service_icons/serviceRecieved.png" />
          </image>

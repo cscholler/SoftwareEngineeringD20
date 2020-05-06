@@ -8,8 +8,11 @@ public class DBConstants {
 	static final String DB_PREFIX = "jdbc:mysql://";
 	static final String DB_URL = "cs3733-bwh-db.cqqsqwjmcbj4.us-east-2.rds.amazonaws.com";
 	static final String DB_PORT = ":5008";
+	// Development database
 	static final String DB_NAME_DEV = "/bwh_dev";
+	// Production database
 	static final String DB_NAME_PROD = "/bwh_prod";
+	// Bleeding-edge 'canary' database
 	static final String DB_NAME_CANARY = "/bwh_canary";
 	static final String DB_USER = "teaml";
 	static final String DB_PASSWORD = "linenleviathans";
@@ -24,11 +27,11 @@ public class DBConstants {
 					"id VARCHAR(16) NOT NULL PRIMARY KEY, " +
 					"x_pos DOUBLE NOT NULL, " +
 					"y_pos DOUBLE NOT NULL, " +
-					"floor CHAR(1) NOT NULL, " +
+					"floor CHAR(2) NOT NULL, " +
 					"building VARCHAR(64) NOT NULL, " +
 					"node_type CHAR(4) NOT NULL, " +
 					"l_name VARCHAR(64) NOT NULL, " +
-					"s_name VARCHAR(32) NOT NULL)";
+					"s_name VARCHAR(64) NOT NULL)";
 
 	public static final String CREATE_EDGE_TABLE =
 			"CREATE TABLE Edges(" +
@@ -82,9 +85,7 @@ public class DBConstants {
 					"sender_name VARCHAR(32) NOT NULL, " +
 					"request_username VARCHAR(32) NOT NULL REFERENCES Users(username), " +
 					"assignee_username VARCHAR(32) REFERENCES Users(username), " +
-					"gift1_id INT NOT NULL REFERENCES Gifts(id), " +
-					"gift2_id INT REFERENCES Gifts(id), " +
-					"gift3_id INT REFERENCES Gifts(id), " +
+					"gifts VARCHAR(256) NOT NULL, " +
 					"message VARCHAR(128), " +
 					"notes VARCHAR(256), " +
 					// 0: Pending, 1: Approved, 2: Assigned, 3: Denied, 4: Completed
@@ -171,8 +172,8 @@ public class DBConstants {
 					"VALUES(?, ?, ?, ?)";
 
 	public static final String ADD_GIFT_DELIVERY_REQUEST =
-			"INSERT INTO Gift_Delivery_Requests(patient_id, sender_name, request_username, assignee_username, gift1_id, gift2_id, gift3_id, message, notes, status, date_and_time)" +
-					"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			"INSERT INTO Gift_Delivery_Requests(patient_id, sender_name, request_username, assignee_username, gifts, message, notes, status, date_and_time)" +
+					"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	public static final String ADD_MEDICATION_REQUEST =
 			"INSERT INTO Medication_Requests(doctor_id, patient_id, nurse_username, deliverer_username, dose, type, notes, status, date_and_time)" +
@@ -182,17 +183,24 @@ public class DBConstants {
 			"INSERT INTO Service_Requests(patient_id, request_username, assignee_username, location, service, type, notes, status, date_and_time)" +
 					"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+	public static final String ADD_ROOM_REQUEST =
+			"INSERT INTO Reservations(username, place, date, start_time, end_time)" +
+					"VALUES(?, ?, ?, ?, ?)";
+
 	public static final String SELECT_ALL_NODES =
 			"SELECT * " +
-					"FROM Nodes";
+					"FROM Nodes " +
+					"ORDER BY id";
 
 	public static final String SELECT_ALL_EDGES =
 			"SELECT * " +
-					"FROM Edges";
+					"FROM Edges " +
+					"ORDER BY id";
 
 	public static final String SELECT_ALL_USERS =
 			"SELECT id, f_name, l_name, username, acct_type, services, manager " +
-					"FROM Users";
+					"FROM Users " +
+					"ORDER BY id";
 
 	public static final String GET_USER =
 			"SELECT id, f_name, l_name, username, password, acct_type, services, manager " +
@@ -216,7 +224,8 @@ public class DBConstants {
 
 	public static final String SELECT_ALL_DOCTORS =
 			"SELECT * " +
-					"FROM Doctors";
+					"FROM Doctors " +
+					"ORDER BY id";
 
 	public static final String GET_DOCTOR_NAME =
 			"SELECT f_name, l_name " +
@@ -235,7 +244,8 @@ public class DBConstants {
 
 	public static final String SELECT_ALL_PATIENTS =
 			"SELECT * " +
-					"FROM Patients";
+					"FROM Patients " +
+					"ORDER BY id";
 
 	public static final String GET_PATIENT_ID =
 			"SELECT id " +
@@ -254,7 +264,8 @@ public class DBConstants {
 
 	public static final String SELECT_ALL_GIFTS =
 			"SELECT * " +
-					"FROM Gifts";
+					"FROM Gifts " +
+					"ORDER BY id";
 
 	public static final String GET_GIFT =
 			"SELECT * " +
@@ -263,7 +274,8 @@ public class DBConstants {
 
 	public static final String SELECT_ALL_GIFT_DELIVERY_REQUESTS =
 			"SELECT * " +
-					"FROM Gift_Delivery_Requests";
+					"FROM Gift_Delivery_Requests " +
+					"ORDER BY id";
 
 	public static final String SELECT_ALL_GIFT_DELIVERY_REQUESTS_FOR_ASSIGNEE =
 			"SELECT * " +
@@ -272,7 +284,8 @@ public class DBConstants {
 
 	public static final String SELECT_ALL_MEDICATION_REQUESTS =
 			"SELECT * " +
-					"FROM Medication_Requests";
+					"FROM Medication_Requests " +
+					"ORDER BY id";
 
 	public static final String SELECT_ALL_MEDICATION_REQUESTS_FOR_DOCTOR =
 			"SELECT * " +
@@ -286,7 +299,8 @@ public class DBConstants {
 
 	public static final String SELECT_ALL_SERVICE_REQUESTS =
 			"SELECT * " +
-					"FROM Service_Requests";
+					"FROM Service_Requests " +
+					"ORDER BY id";
 
 	public static final String SELECT_ALL_SERVICE_REQUESTS_FOR_ASSIGNEE =
 			"SELECT * " +
@@ -298,6 +312,11 @@ public class DBConstants {
 					"FROM Service_Requests " +
 					"WHERE service = ?";
 
+	public static final String GET_ALL_ROOM_REQUESTS =
+			"SELECT * " +
+					"FROM Reservations "+
+					"WHERE place = ? AND date = ?";
+
 	public static final String UPDATE_NODE =
 			"UPDATE Nodes " +
 					"SET x_pos = ?, y_pos = ?, floor = ?, building = ?, node_type = ?, l_name = ?, s_name = ? " +
@@ -306,6 +325,11 @@ public class DBConstants {
 	public static final String UPDATE_EDGE =
 			"UPDATE Edges " +
 					"SET node_start = ?, node_end = ? " +
+					"WHERE id = ?";
+
+	public static final String UPDATE_GIFT =
+			"UPDATE Gifts " +
+					"SET inventory = ?" +
 					"WHERE id = ?";
 
 	public static final String UPDATE_USER_NAME =
@@ -407,4 +431,31 @@ public class DBConstants {
 	public static final String REMOVE_SERVICE_REQUEST =
 			"DELETE FROM Service_Requests " +
 					"WHERE id = ?";
+
+	public static final String DELETE_ALL_NODES =
+			"DELETE FROM Nodes";
+
+	public static final String DELETE_ALL_EDGES =
+			"DELETE FROM Edges";
+
+	public static final String DELETE_ALL_USERS =
+			"DELETE FROM Users";
+
+	public static final String DELETE_ALL_DOCTORS =
+			"DELETE FROM Doctors";
+
+	public static final String DELETE_ALL_PATIENTS =
+			"DELETE FROM Patients";
+
+	public static final String DELETE_ALL_GIFTS =
+			"DELETE FROM Gifts";
+
+	public static final String DELETE_ALL_GIFT_DELIVERY_REQUESTS =
+			"DELETE FROM Gift_Delivery_Requests";
+
+	public static final String DELETE_ALL_MEDICATION_REQUESTS =
+			"DELETE FROM Medication_Requests";
+
+	public static final String DELETE_ALL_SERVICE_REQUESTS =
+			"DELETE FROM SERVICE_REQUESTS";
 }

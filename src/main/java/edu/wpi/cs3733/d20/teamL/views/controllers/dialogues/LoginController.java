@@ -20,10 +20,10 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 
 public class LoginController {
-	FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+	FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
     @FXML
     private JFXTextField usernameField;
     @FXML
@@ -85,7 +85,7 @@ public class LoginController {
             if (loginManager.isAuthenticated()) {
 				((Stage) login.getScene().getWindow()).close();
                 String view = "requests/UserLandingPage";
-                if (loginManager.getCurrentUser().getAcctType().equals("3")) view = "Staff/LoggedInView";
+                if (loginManager.getCurrentUser().getAcctType().equals("3")) view = "staff/LoggedInView";
 				loaderHelper.setupScene(new Scene(loaderHelper.getFXMLLoader(view).load()));
 			} else {
 				incorrectText.setVisible(true);

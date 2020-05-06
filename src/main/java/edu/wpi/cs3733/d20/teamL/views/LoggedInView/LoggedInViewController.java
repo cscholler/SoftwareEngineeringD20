@@ -2,32 +2,41 @@ package edu.wpi.cs3733.d20.teamL.views.LoggedInView;
 
 import com.google.inject.Inject;
 import com.jfoenix.controls.JFXButton;
-import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
+import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.*;
 
 @Slf4j
 public class LoggedInViewController implements Initializable{
     @FXML
-    JFXButton btnAddUser, btnAddDoctor, btnAddPatient, btnServiceRequest, btnMapEditor;
+    private JFXButton btnAddUser, btnAddDoctor, btnAddPatient, btnServiceRequest, btnMapEditor;
     @FXML
-    HBox buttonBox;
+    private HBox buttonBox;
     @FXML
-    Label lblName, lblMap;
+    private Label lblName, lblMap;
     @FXML
     private VBox vMap, vPatient, vDoc, vService, vUser;
     @Inject
@@ -35,7 +44,7 @@ public class LoggedInViewController implements Initializable{
     @Inject
     ILoginManager loginManager;
     String map;
-    FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
 
 
     @Override
@@ -60,7 +69,7 @@ public class LoggedInViewController implements Initializable{
     @FXML
     private void notifsClicked() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("Staff/NotificationsPage").load();
+            Parent root = loaderHelper.getFXMLLoader("staff/NotificationsPage").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
@@ -70,7 +79,7 @@ public class LoggedInViewController implements Initializable{
     @FXML
     private void addUserClicked(){
         try {
-            Parent root = loaderHelper.getFXMLLoader("Admin/AddUser").load();
+            Parent root = loaderHelper.getFXMLLoader("admin/AddUser").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException e) {
             log.error("Encountered IOException", e);
@@ -80,7 +89,7 @@ public class LoggedInViewController implements Initializable{
     @FXML
     private void addDoctorClicked(){
         try {
-            Parent root = loaderHelper.getFXMLLoader("Admin/AddDoctor").load();
+            Parent root = loaderHelper.getFXMLLoader("admin/AddDoctor").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException e) {
             log.error("Encountered IOException", e);
@@ -91,7 +100,7 @@ public class LoggedInViewController implements Initializable{
     @FXML
     private void addPatientClicked(){
         try {
-            Parent root = loaderHelper.getFXMLLoader("Staff/AddPatient").load();
+            Parent root = loaderHelper.getFXMLLoader("staff/AddPatient").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException e) {
             log.error("Encountered IOException", e);
@@ -124,18 +133,29 @@ public class LoggedInViewController implements Initializable{
     }
 
     @FXML
-	public void importClicked(ActionEvent actionEvent) {
-
+	public void importClicked() {
+		try {
+			Parent root = loaderHelper.getFXMLLoader("dialogues/ImportDialogue").load();
+			loaderHelper.setupPopup(new Stage(), new Scene(root));
+		} catch (IOException ex) {
+			log.error("Encountered IOException", ex);
+		}
 	}
 
 	@FXML
-	public void exportClicked(ActionEvent actionEvent) {
-
+	public void exportClicked() {
+        try {
+            Parent root = loaderHelper.getFXMLLoader("dialogues/ExportDialogue").load();
+            loaderHelper.setupPopup(new Stage(), new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
 	}
 
 	@FXML
 	public void clearClicked() {
-    	log.warn("Rebuilding database");
-    	db.rebuildDatabase();
+        AsyncTaskManager.startTaskWithPopup(db::rebuildDatabase, "Rebuilding database...", "Finished rebuilding database");
+        log.warn("Rebuilding database");
 	}
+
 }

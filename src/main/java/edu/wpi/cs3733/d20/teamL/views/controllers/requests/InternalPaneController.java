@@ -10,11 +10,10 @@ import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.DateCell;
@@ -29,23 +28,20 @@ import javafx.util.Callback;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class InternalPaneController implements Initializable {
 
     ObservableList<String> transportOptions = FXCollections.observableArrayList("Wheelchair w/ Operator", "Wheelchair w/o Operator", "Crutches", "Walker", "Gurney");
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
-    private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    private FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
     @FXML
     JFXComboBox transportSelector;
     @FXML
     JFXTextField patient, startLoc, endLoc, hour, minutes;
     @FXML
-    Label confirmation;
+    Label confirmation, timeTxt;
     @FXML
     JFXDatePicker date;
     @FXML
@@ -123,10 +119,35 @@ public class InternalPaneController implements Initializable {
         String status = "0";
         String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm:aa").format(new Date());
         String concatenatedNotes = end + dateNeeded + "\n" + hourNeeded + " : " + minNeeded;
+
+
+        boolean validFields = true;
+
+        if(start == null || start.equals("")) {
+            startLoc.setStyle("-fx-prompt-text-fill: RED");
+            validFields = false;
+        } else startLoc.setStyle("-fx-prompt-text-fill: GRAY");
+        if(end == null || end.equals("")) {
+            endLoc.setStyle("-fx-prompt-text-fill: RED");
+            validFields = false;
+        } else endLoc.setStyle("-fx-prompt-text-fill: GRAY");
+        if(hourNeeded == null || hourNeeded.equals("") || minNeeded == null || minNeeded.equals("")) {
+            timeTxt.setStyle("-fx-text-fill: RED");
+            validFields = false;
+        } else timeTxt.setStyle("-fx-text-fill: GRAY");
+        if(db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_NAME, new ArrayList<>(Collections.singletonList(patientID))))).size() == 0) {
+            patient.setStyle("-fx-prompt-text-fill: RED");
+            validFields = false;
+        } else patient.setStyle("-fx-prompt-text-fill: GRAY");
+        if(type == null || type.equals("")) {
+            transportSelector.setStyle("-fx-prompt-text-fill: RED");
+            validFields = false;
+        } else transportSelector.setStyle("-fx-prompt-text-fill: GRAY");
+
         int rows = 0;
-        if (!(start.isEmpty() || end.isEmpty() || type.isEmpty()) && timeIsValid()) {
+        if(validFields)
             rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST, new ArrayList<>(Arrays.asList(patientID, manager.getCurrentUser().getUsername(), null, start, "internal transportation", type, concatenatedNotes, status, dateAndTime))));
-        }
+
 
         if (rows == 0) {
             confirmation.setTextFill(Color.RED);

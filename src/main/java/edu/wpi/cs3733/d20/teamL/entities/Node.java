@@ -2,10 +2,7 @@ package edu.wpi.cs3733.d20.teamL.entities;
 
 import javafx.geometry.Point2D;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.*;
 
 public class Node {
 
@@ -43,6 +40,40 @@ public class Node {
         this.building = building;
     }
 
+    public Node(String id, Point2D position, String floor, String building, String type, String longName, String shortName) {
+        this(id, position, floorStringToInt(floor), building, type, longName, shortName);
+    }
+
+    public Node(String id, Point2D position, String floor, String building) {
+        this(id, position, floorStringToInt(floor), building);
+    }
+
+    public static int floorStringToInt(String floor) {
+        switch (floor) {
+            case "G":
+                return 0;
+            case "L1":
+                return -1;
+            case "L2":
+                return -2;
+            default:
+                return Integer.parseInt(floor);
+        }
+    }
+
+    public static String floorIntToString(int floor) {
+        switch (floor) {
+            case 0:
+                return "G";
+            case -1:
+                return "L1";
+            case -2:
+                return "L2";
+            default:
+                return String.valueOf(floor);
+        }
+    }
+
     public Graph getGraph() {
         return graph;
     }
@@ -56,6 +87,24 @@ public class Node {
     }
 
     public Collection<Edge> getEdges() {
+
+        // Remove all duplicate edges
+        Iterator<Edge> iterator = edges.iterator();
+        while(iterator.hasNext()) {
+            Edge edge = iterator.next();
+
+            boolean foundDuplicate = false;
+            for (Edge otherEdge : edges) {
+                if (edge.getID().equals(otherEdge.getID()) && otherEdge != edge) {
+                    foundDuplicate = true;
+                    break;
+                }
+            }
+
+            if (foundDuplicate)
+                iterator.remove();
+        }
+
         return edges;
     }
 
@@ -124,8 +173,16 @@ public class Node {
         return floor;
     }
 
+    public String getFloorAsString() {
+        return floorIntToString(getFloor());
+    }
+
     public void setFloor(int floor) {
         this.floor = floor;
+    }
+
+    public void setFloor(String floor) {
+        this.floor = floorStringToInt(floor);
     }
 
     public int getShaft() {
@@ -146,7 +203,8 @@ public class Node {
      * @param newEdge The edge to add
      */
     public void addEdge(Edge newEdge) {
-        newEdge.setSource(this);
+        if (!getEdges().contains(newEdge)) newEdge.setSource(this);
+        else newEdge.source = this;
     }
 
     /**
@@ -156,7 +214,7 @@ public class Node {
      */
     public Edge addEdge(Node otherNode) {
         Edge newEdge = new Edge(this, otherNode);
-        newEdge.setSource(this);
+        addEdge(newEdge);
 
         return getEdge(otherNode);
     }
@@ -273,6 +331,12 @@ public class Node {
      */
     public HashMap<String, Object> getData() {
         return data;
+    }
+
+    public double distanceTo(Node otherNode) {
+        double length = getPosition().distance(otherNode.getPosition()) + (Math.abs(getFloor() - otherNode.getFloor()) * 100);
+        if (!getBuilding().equals(otherNode.getBuilding())) length += 10000;
+        return length;
     }
 
     /*

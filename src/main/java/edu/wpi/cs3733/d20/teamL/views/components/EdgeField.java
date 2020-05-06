@@ -5,13 +5,12 @@ import com.jfoenix.controls.JFXAutoCompletePopup;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.entities.Building;
-import edu.wpi.cs3733.d20.teamL.entities.Edge;
+import edu.wpi.cs3733.d20.teamL.entities.Graph;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import lombok.extern.slf4j.Slf4j;
@@ -30,12 +29,12 @@ public class EdgeField extends HBox {
     @Inject
     private IDatabaseCache dbCache;
 
-    private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    private FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
 
     private SearchFields edgesSf;
     private JFXAutoCompletePopup<String> edgesAutoCompletePopup;
 
-    public EdgeField(Building building) {
+    public EdgeField(Graph graph) {
         FXMLLoader fxmlLoader = loaderHelper.getFXMLLoader("components/EdgeField");
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -49,7 +48,7 @@ public class EdgeField extends HBox {
         text.setOnKeyTyped(event -> autocomplete());
         close.setOnAction(event -> delete());
 
-        edgesSf = new SearchFields(new ArrayList<>(building.getNodes()));
+        edgesSf = new SearchFields(new ArrayList<>(graph.getNodes()));
         edgesSf.getFields().add(SearchFields.Field.nodeID);
         edgesSf.populateSearchFields();
         edgesAutoCompletePopup = new JFXAutoCompletePopup<>();

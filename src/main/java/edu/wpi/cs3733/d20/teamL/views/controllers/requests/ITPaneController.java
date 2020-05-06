@@ -7,7 +7,7 @@ import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import javafx.collections.FXCollections;
@@ -25,10 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.ResourceBundle;
+import java.util.*;
 
 @Slf4j
 public class ITPaneController implements Initializable {
@@ -42,7 +39,7 @@ public class ITPaneController implements Initializable {
 
     ObservableList<String> options = FXCollections.observableArrayList("General Help", "Data Backup", "Hardware/Software Issues", "Cyber Attacks");
 
-    private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    private FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup = new JFXAutoCompletePopup<>();
 
@@ -66,7 +63,6 @@ public class ITPaneController implements Initializable {
 	private SearchFields searchFields;
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-        dbCache.cacheAllFromDB();
         sf = new SearchFields(dbCache.getNodeCache());
         sf.getFields().add(SearchFields.Field.longName);
         sf.getFields().add(SearchFields.Field.shortName);
@@ -107,7 +103,19 @@ public class ITPaneController implements Initializable {
         String status = "0";
         String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm aa").format(new Date());
 
-        int rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
+        boolean validFields = true;
+
+        if(location == null || location.length() == 0) {
+            locationText.setStyle("-fx-prompt-text-fill: RED");
+            validFields = false;
+        } else locationText.setStyle("-fx-prompt-text-fill: GRAY");
+        if(type == null || type.length() == 0) {
+            typeBox.setStyle("-fx-prompt-text-fill: RED");
+            validFields = false;
+        } else typeBox.setStyle("-fx-text-fill: GRAY");
+
+        int rows = 0;
+        if(validFields) rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
                 new ArrayList<>(Arrays.asList(null, userName, null, searchFields.getNode(location).getID(), "information technology", type, notes, status, dateAndTime))));
 
         if (rows == 0) {

@@ -5,24 +5,30 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.jfoenix.controls.*;
-import edu.wpi.cs3733.d20.teamL.entities.Building;
-import edu.wpi.cs3733.d20.teamL.entities.Graph;
+import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
@@ -30,6 +36,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Line;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -39,41 +46,46 @@ import com.google.inject.Inject;
 import javafx.util.Duration;
 import lombok.extern.slf4j.Slf4j;
 
-import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.entities.Path;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
 import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
 import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
 import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
+import org.apache.xmlgraphics.image.codec.png.PNGEncodeParam;
 
 @Slf4j
 public class MapViewerController {
     @FXML
-    MapPane map;
+    private MapPane map;
 
     @FXML
-    JFXTextField startingPoint, destination;
+    private JFXTextField startingPoint, destination;
 
     @FXML
-    JFXButton btnNavigate, floorUp, floorDown;
+    private JFXButton btnNavigate, floorUp, floorDown;
 
     @FXML
-    ScrollPane scroll;
+    private ScrollPane scroll;
 
     @FXML
-    VBox instructions;
+    private VBox instructions;
     @FXML
-	VBox floorSelector;
-
+    private JFXNodesList textDirNode;
     @FXML
-    JFXButton btnTextMe, btnQR;
+    private VBox floorSelector;
+    @FXML
+    private JFXListView dirList;
+    @FXML
+    private JFXButton btnTextMe, btnQR;
 
     @FXML
     StackPane stackPane;
 
     @FXML
-    JFXListView listF1, listF2, listF3, listF4, listF5;
+    private JFXListView listF1, listF2, listF3, listF4, listF5;
+
+    @FXML
+    private JFXComboBox<String> buildingChooser;
 
     @FXML
     private Label timeLabel;
@@ -84,14 +96,26 @@ public class MapViewerController {
     private IPathfinderService pathfinderService;
     @Inject
     private IMessengerService messenger;
-    @Inject
-    private IMessengerService messengerService;
+
 
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
-    private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    private FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
     private final Timer timer = new Timer();
     private Path path = new Path();
+    private final ObservableList<String> direct = FXCollections.observableArrayList();
+
+    private final Image IMAGE_LEFT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/left.png");
+    private final Image IMAGE_RIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/right.jpg");
+    private final Image IMAGE_SHLEFT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/sharp left.jpg");
+    private final Image IMAGE_SHRIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/sharp right.jpg");
+    private final Image IMAGE_SLLEFT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/slightLeft.jpg");
+    private final Image IMAGE_SLRIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/slightRight.jpg");
+    private final Image IMAGE_ELEV = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/elevator.jpg");
+    private final Image IMAGE_STAIR = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/stair.png");
+    private final Image IMAGE_DEST = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/destFlag.png");
+    private final Image IMAGE_FTOM = new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/FaulkToMain.PNG");
+    private final Image IMAGE_MTOF = new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/MainToFaulk.PNG");
 
     @FXML
     private void initialize() {
@@ -102,62 +126,76 @@ public class MapViewerController {
         map.setHighLightColor(Color.GOLD);
         btnNavigate.setDisableVisualFocus(true);
 
-        Building startBuilding = new Building("Faulkner");
-        Graph nodes = Graph.graphFromCache(cache.getNodeCache(), cache.getEdgeCache());
-        startBuilding.addAllNodes(nodes.getNodes());
-        map.setBuilding(startBuilding);
+        // Import all the nodes from the cache and set the current building to Faulkner
+        String startB = "Faulkner";
+        Building faulkner = cache.getBuilding("Faulkner");
+        Building btm = cache.getBuilding("BTM");
+
+        if (!faulkner.getNodes().isEmpty()) map.setBuilding(faulkner);
+        if (!btm.getNodes().isEmpty()) map.getBuildings().add(btm);
+        buildingChooser.getItems().addAll("Faulkner", "BTM");
+        buildingChooser.getSelectionModel().select(startB);
 
         // Add floor buttons
-        for (int i = 1; i <= startBuilding.getMaxFloor(); i++) {
-            JFXButton newButton = new JFXButton();
-            newButton.setButtonType(JFXButton.ButtonType.RAISED);
-            newButton.getStylesheets().add("edu/wpi/cs3733/d20/teamL/css/MapStyles.css");
-            newButton.setText("" + i);
-            newButton.setOnAction(this::handleFloor);
-            newButton.getStyleClass().add("floor-buttons");
-
-            floorSelector.getChildren().add(1, newButton);
-        }
+        generateFloorButtons();
 
         setFloor(2);
 
         map.setZoomLevel(0.65);
         map.init();
 
-
+        // Populate autocomplete
         sf = new SearchFields(cache.getNodeCache());
         sf.getFields().addAll(Arrays.asList(SearchFields.Field.shortName, SearchFields.Field.longName));
         sf.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
 
-        Collection <Node> allNodes = nodes.getNodes();
-        Collection<String> floor1Nodes = new ArrayList<>();
-        Collection<String> floor2Nodes = new ArrayList<>();
-        Collection<String> floor3Nodes = new ArrayList<>();
-        Collection<String> floor4Nodes = new ArrayList<>();
-        Collection<String> floor5Nodes = new ArrayList<>();
+        // TODO: Change node dropdowns to be generated
+        Collection<Node> allNodes = map.getBuilding().getNodes();
+        Collection<String> deptNodes = new ArrayList<>();
+        Collection<String> labNodes = new ArrayList<>();
+        Collection<String> serviceNodes = new ArrayList<>();
+        Collection<String> retailNodes = new ArrayList<>();
+        Collection<String> confNodes = new ArrayList<>();
 
         for (Node node : allNodes) {
-            if (node.getFloor() == 1) { floor1Nodes.add(node.getLongName());
-            } else if (node.getFloor() == 2) { floor2Nodes.add(node.getLongName());
-            } else if (node.getFloor() == 3) { floor3Nodes.add(node.getLongName());
-            } else if (node.getFloor() == 4) { floor4Nodes.add(node.getLongName());
-            } else { floor5Nodes.add(node.getLongName());
+            if (node.getType().equals("DEPT")) {
+                deptNodes.add(node.getLongName());
+            } else if (node.getType().equals("LABS")) {
+                labNodes.add(node.getLongName());
+            } else if ((node.getType().equals("SERV") || node.getType().equals("INFO"))) {
+                serviceNodes.add(node.getLongName());
+            } else if (node.getType().equals("RETL")) {
+                retailNodes.add(node.getLongName());
+            } else if (node.getType().equals("CONF")) {
+                confNodes.add(node.getLongName());
             }
         }
 
-        listF1.setStyle("-fx-font-size: 14;");
-        listF2.setStyle("-fx-font-size: 14;");
-        listF3.setStyle("-fx-font-size: 14;");
-        listF4.setStyle("-fx-font-size: 14;");
-        listF5.setStyle("-fx-font-size: 14;");
+        listF1.getItems().addAll(deptNodes);
+        listF2.getItems().addAll(labNodes);
+        listF3.getItems().addAll(serviceNodes);
+        listF4.getItems().addAll(retailNodes);
+        listF5.getItems().addAll(confNodes);
+    }
 
-        listF1.getItems().addAll(floor1Nodes);
-        listF2.getItems().addAll(floor2Nodes);
-        listF3.getItems().addAll(floor3Nodes);
-        listF4.getItems().addAll(floor4Nodes);
-        listF5.getItems().addAll(floor5Nodes);
+    private void generateFloorButtons() {
+        map.generateFloorButtons(floorSelector, this::handleFloor);
+    }
+
+    @FXML
+    private void switchBuilding() {
+        String selected = buildingChooser.getSelectionModel().getSelectedItem();
+
+        Building newBuilding = cache.getBuilding(selected);
+        map.setBuilding(newBuilding);
+
+        int prevFloor = map.getFloor();
+        generateFloorButtons();
+        setFloor(Math.max(map.getBuilding().getMinFloor(), Math.min(prevFloor, map.getBuilding().getMaxFloor())));
+
+        if (!path.getPathNodes().isEmpty()) highLightPath();
     }
 
     @FXML
@@ -186,39 +224,66 @@ public class MapViewerController {
      */
     @FXML
     public void navigate() {
-        Node startNode = sf.getNode(startingPoint.getText());
-        Node destNode = sf.getNode(destination.getText());
+        String start = startingPoint.getText();
+        String end = destination.getText();
+        String buildingS;
+        String buildingE;
+        String floorS = start.substring(start.length()-2,start.length()-1);
+        String floorE = end.substring(end.length()-2,end.length()-1);
 
+
+        if(start.contains("(Faulkner"))
+        {
+            start= start.substring(0, start.length()-15);
+            buildingS = "Faulkner";
+        }else if(start.contains("(BTM")){
+            start= start.substring(0, start.length()-10);
+            buildingS = "BTM";
+        }
+        if(end.contains("(Faulkner"))
+        {
+            end= end.substring(0, end.length()-15);
+            buildingE = "Faulkner";
+        }else if(end.contains("(BTM")){
+            end= end.substring(0, end.length()-10);
+            buildingE = "BTM";
+        }
+
+        Node startNode = sf.getNode(start);
+        Node destNode = sf.getNode(end);
+
+
+        if (!(startNode.getBuilding().equals(map.getBuilding().getName()))) {
+            map.setBuilding(startNode.getBuilding());
+            buildingChooser.getSelectionModel().select(startNode.getBuilding());
+        }
+
+        // Set the building and floor to the start node so it doesn't break
+        map.setBuilding(startNode.getBuilding());
+        buildingChooser.getSelectionModel().select(startNode.getBuilding());
         setFloor(startNode.getFloor());
+
         if (startNode != null && destNode != null) {
             String directions = highlightSourceToDestination(startNode, destNode);
-            messengerService.setDirections(directions);
 
             messenger.setDirections(directions);
-            Label directionsLabel = new Label();
-            directionsLabel.setFont(new Font(14));
-            directionsLabel.setText(directions);
-            directionsLabel.setTextFill(Color.WHITE);
-            directionsLabel.setWrapText(true);
 
-            instructions.getChildren().clear();
-            instructions.getChildren().add(directionsLabel);
-            scroll.setVisible(true);
             btnTextMe.setDisable(false);
             btnTextMe.setVisible(true);
             btnQR.setDisable(false);
             btnQR.setVisible(true);
+            textDirNode.setDisable(false);
+            textDirNode.setVisible(true);
         }
     }
 
     /**
      * Shows the key popup
-     *
      */
     @FXML
     private void showLegend() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("map_viwer/keyPopUp").load();
+            Parent root = loaderHelper.getFXMLLoader("map_viewer/LegendPopup").load();
             loaderHelper.setupPopup(new Stage(), new Scene(root));
         } catch (IOException ex) {
             log.error("Couldn't load LegendPopup.fxml", ex);
@@ -228,29 +293,87 @@ public class MapViewerController {
     private String highlightSourceToDestination(Node source, Node destination) {
         map.getSelector().clear();
 
-        if(!path.getPathNodes().isEmpty()) {
+        if (!path.getPathNodes().isEmpty()) {
             NodeGUI start = map.getNodeGUI(path.getPathNodes().get(0));
-            NodeGUI end = map.getNodeGUI(path.getPathNodes().get(path.getPathNodes().size()-1));
+            NodeGUI end = map.getNodeGUI(path.getPathNodes().get(path.getPathNodes().size() - 1));
 
             map.resetNodeVisibility(start);
             map.resetNodeVisibility(end);
         }
 
-
-        path = pathfinderService.pathfind(map.getBuilding(), source, destination);
+        path = pathfinderService.pathfind(map.getAllNodes(), source, destination);
         highLightPath();
 
-        ArrayList<String> message = path.generateTextMessage();
+        path.generateTextMessage();
+        ArrayList<String> message = path.getMessage();
         StringBuilder builder = new StringBuilder();
 
-        for(String direction : message) {
+        dirList.getItems().clear();
+        dirList.setCellFactory(param -> {
+            return new ListCell<String>() {
+                private ImageView imageView = new ImageView();
+
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setGraphic(null);
+                        setText(null);
+                        // other stuff to do...
+                        imageView.setFitWidth(10);
+                        imageView.setFitHeight(10);
+                    } else {
+
+                        if (item.contains("right")) {
+                            if (item.contains("slight")) {
+                                imageView.setImage(IMAGE_SLRIGHT);
+                            } else if (item.contains("sharp")) {
+                                imageView.setImage(IMAGE_SHRIGHT);
+                            } else {
+                                imageView.setImage(IMAGE_RIGHT);
+                            }
+                        } else if (item.contains("left")) {
+                            if (item.contains("slight")) {
+                                imageView.setImage(IMAGE_SLLEFT);
+                            } else if (item.contains("sharp")) {
+                                imageView.setImage(IMAGE_SHLEFT);
+                            } else {
+                                imageView.setImage(IMAGE_LEFT);
+                            }
+                        } else if (item.contains("elevator")) {
+                            imageView.setImage(IMAGE_ELEV);
+                        } else if (item.contains("stair")) {
+                            imageView.setImage(IMAGE_STAIR);
+                        } else if (item.contains("destination")) {
+                            imageView.setImage(IMAGE_DEST);
+                        }
+                        setText(item);
+                        setGraphic(imageView);
+
+
+                        setMinWidth(getWidth());
+                        setMaxWidth(getWidth());
+                        setPrefWidth(getWidth());
+
+                        // allow wrapping
+                        setWrapText(true);
+
+                        setText(item);
+
+
+                    }
+                }
+            };
+        });
+        direct.clear();
+        direct.addAll(message);
+        dirList.getItems().addAll(direct);
+
+        for (String direction : message) {
             builder.append(direction + "\n\n");
         }
 
         return builder.toString();
     }
-
-
 
     private void highLightPath() {
         Iterator<Node> nodeIterator = path.iterator();
@@ -262,15 +385,19 @@ public class MapViewerController {
         while (nodeIterator.hasNext()) {
             nextNode = nodeIterator.next();
             EdgeGUI edgeGUI = map.getEdgeGUI(currentNode.getEdge(nextNode));
-            map.getEdgeGUI(currentNode.getEdge(nextNode)).getHighlightGUI().getStrokeDashArray().setAll(5d, 20d, 20d, 5d);
 
-            //Please help me untangle my spaghetti
-            Line highlight = map.getEdgeGUI(currentNode.getEdge(nextNode)).getHighlightGUI();
-            final double maxOffset = highlight.getStrokeDashArray().stream().reduce(0d, (a, b) -> a + b);
-            Timeline timeline = new Timeline(new KeyFrame(Duration.ZERO, new KeyValue(highlight.strokeDashOffsetProperty(), 0, Interpolator.LINEAR)),
-                    new KeyFrame(Duration.seconds(2), new KeyValue(highlight.strokeDashOffsetProperty(), maxOffset, Interpolator.LINEAR)));
-            timeline.setCycleCount(Timeline.INDEFINITE);
-            timeline.play();
+            // Please help me untangle my spaghetti
+            if (edgeGUI != null) {
+                edgeGUI.getHighlightGUI().getStrokeDashArray().setAll(5d, 20d, 20d, 5d);
+                Line highlight = map.getEdgeGUI(currentNode.getEdge(nextNode)).getHighlightGUI();
+
+                final double maxOffset = highlight.getStrokeDashArray().stream().reduce(0d, (a, b) -> a + b);
+                Timeline timeline = new Timeline(new KeyFrame(Duration.ZERO, new KeyValue(highlight.strokeDashOffsetProperty(), maxOffset, Interpolator.LINEAR)),
+                        new KeyFrame(Duration.seconds(2), new KeyValue(highlight.strokeDashOffsetProperty(), 0, Interpolator.LINEAR)));
+
+                timeline.setCycleCount(Timeline.INDEFINITE);
+                timeline.play();
+            }
 
             if (edgeGUI != null) map.getSelector().add(edgeGUI);
 
@@ -290,21 +417,12 @@ public class MapViewerController {
         }
     }
 
-    private void labelNode(NodeGUI nodeGUI, Label label) {
-        AnchorPane parent = (AnchorPane) nodeGUI.getParent();
-
-        parent.getChildren().add(label);
-
-        label.setLayoutX(nodeGUI.getLayoutX());
-        label.setLayoutY(nodeGUI.getLayoutY());
-    }
-
     public MapPane getMap() {
         return map;
     }
 
     @FXML
-    public void handleText(){
+    public void handleText() {
         try {
             Parent root = loaderHelper.getFXMLLoader("map_viewer/SendDirectionsPage").load();
             loaderHelper.setupPopup(new Stage(), new Scene(root));
@@ -314,7 +432,7 @@ public class MapViewerController {
     }
 
     @FXML
-    public void genQR(){
+    public void genQR() {
         try {
             Parent root = loaderHelper.getFXMLLoader("map_viewer/QRCode").load();
             loaderHelper.setupPopup(new Stage(), new Scene(root));
@@ -331,8 +449,8 @@ public class MapViewerController {
             setFloor(map.getFloor() + 1);
         } else if (event.getSource() == floorDown) {
             setFloor(map.getFloor() - 1);
-        } else if (MapEditorController.isNumeric(sourceButton.getText())) {
-            setFloor(Integer.parseInt(sourceButton.getText()));
+        } else {
+            setFloor(Node.floorStringToInt(sourceButton.getText()));
         }
 
         if (!path.getPathNodes().isEmpty()) highLightPath();
@@ -340,20 +458,20 @@ public class MapViewerController {
 
     @FXML
     private void zoomIn() {
-        map.setZoomLevel(map.getZoomLevel() * 1.2);
+        map.setZoomLevelToPosition(map.getZoomLevel() * 1.2, new Point2D(map.getBody().getWidth() / 2, map.getBody().getHeight() / 2));
     }
 
     @FXML
     private void zoomOut() {
-        map.setZoomLevel(map.getZoomLevel() * 0.8);
+        map.setZoomLevelToPosition(map.getZoomLevel() * 0.8, new Point2D(map.getBody().getWidth() / 2, map.getBody().getHeight() / 2));
     }
 
     public void setFloor(int newFloor) {
-        map.setFloor(Math.max(1, Math.min(newFloor, map.getBuilding().getMaxFloor())));
+        map.setFloor(Math.max(map.getBuilding().getMinFloor(), Math.min(newFloor, map.getBuilding().getMaxFloor())));
 
         for (javafx.scene.Node node : floorSelector.getChildren()) {
             JFXButton floorButton = (JFXButton) node;
-            if (!floorButton.getText().equals(String.valueOf(map.getFloor()))) {
+            if (!floorButton.getText().equals(Node.floorIntToString(map.getFloor()))) {
                 if (floorButton.getStyleClass().contains("selected-floor")) {
                     floorButton.getStyleClass().clear();
                     floorButton.getStyleClass().add("button");
@@ -368,7 +486,6 @@ public class MapViewerController {
 
     /**
      * Clears the text in source textfield
-     *
      */
     @FXML
     private void clearSource() {
@@ -377,10 +494,11 @@ public class MapViewerController {
 
     /**
      * Clears the text in destination textfield
-     *
      */
     @FXML
-    private void clearDest() { destination.clear(); }
+    private void clearDest() {
+        destination.clear();
+    }
 
     /**
      * login pops up when login button is clicked
@@ -388,7 +506,7 @@ public class MapViewerController {
     @FXML
     private void loginBtnClicked() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("Staff/LoginPage").load();
+            Parent root = loaderHelper.getFXMLLoader("staff/LoginPage").load();
             loaderHelper.setupPopup(new Stage(), new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
@@ -397,7 +515,6 @@ public class MapViewerController {
 
     /**
      * Displays the About page of the application
-     *
      */
     @FXML
     public void handleAbout() {
@@ -446,7 +563,6 @@ public class MapViewerController {
 
     /**
      * Changes starting location with destination and vice-versa.
-     *
      */
     @FXML
     public void handleLocationChange() {
@@ -460,151 +576,91 @@ public class MapViewerController {
 
     @FXML
     public void navigateFloor1() {
-
-        String dest = (String) listF1.getSelectionModel().getSelectedItem();
-
-        Node startNode = sf.getNode(startingPoint.getText());
-        Node destNode = sf.getNode(dest);
-
-        setFloor(startNode.getFloor());
-        if (startNode != null && destNode != null) {
-            String directions = highlightSourceToDestination(startNode, destNode);
-            messengerService.setDirections(directions);
-
-            messenger.setDirections(directions);
-            Label directionsLabel = new Label();
-            directionsLabel.setFont(new Font(14));
-            directionsLabel.setText(directions);
-            directionsLabel.setTextFill(Color.WHITE);
-            directionsLabel.setWrapText(true);
-
-            instructions.getChildren().clear();
-            instructions.getChildren().add(directionsLabel);
-            scroll.setVisible(true);
-            btnTextMe.setDisable(false);
-            btnTextMe.setVisible(true);
-            btnQR.setDisable(false);
-            btnQR.setVisible(true);
-        }
+        destination.setText((String) listF1.getSelectionModel().getSelectedItem());
+        navigate();
     }
 
     @FXML
     public void navigateFloor2() {
-
-        String dest = (String) listF2.getSelectionModel().getSelectedItem();
-
-        Node startNode = sf.getNode(startingPoint.getText());
-        Node destNode = sf.getNode(dest);
-
-        setFloor(startNode.getFloor());
-        if (startNode != null && destNode != null) {
-            String directions = highlightSourceToDestination(startNode, destNode);
-            messengerService.setDirections(directions);
-
-            messenger.setDirections(directions);
-            Label directionsLabel = new Label();
-            directionsLabel.setFont(new Font(14));
-            directionsLabel.setText(directions);
-            directionsLabel.setTextFill(Color.WHITE);
-            directionsLabel.setWrapText(true);
-
-            instructions.getChildren().clear();
-            instructions.getChildren().add(directionsLabel);
-            scroll.setVisible(true);
-            btnTextMe.setDisable(false);
-            btnTextMe.setVisible(true);
-            btnQR.setDisable(false);
-            btnQR.setVisible(true);
-        }
+        destination.setText((String) listF2.getSelectionModel().getSelectedItem());
+        navigate();
     }
 
     @FXML
     public void navigateFloor3() {
-
-        String dest = (String) listF3.getSelectionModel().getSelectedItem();
-
-        Node startNode = sf.getNode(startingPoint.getText());
-        Node destNode = sf.getNode(dest);
-
-        setFloor(startNode.getFloor());
-        if (startNode != null && destNode != null) {
-            String directions = highlightSourceToDestination(startNode, destNode);
-            messengerService.setDirections(directions);
-
-            messenger.setDirections(directions);
-            Label directionsLabel = new Label();
-            directionsLabel.setFont(new Font(14));
-            directionsLabel.setText(directions);
-            directionsLabel.setTextFill(Color.WHITE);
-            directionsLabel.setWrapText(true);
-
-            instructions.getChildren().clear();
-            instructions.getChildren().add(directionsLabel);
-            scroll.setVisible(true);
-            btnTextMe.setDisable(false);
-            btnTextMe.setVisible(true);
-            btnQR.setDisable(false);
-            btnQR.setVisible(true);
-        }
+        destination.setText((String) listF3.getSelectionModel().getSelectedItem());
+        navigate();
     }
 
     @FXML
     public void navigateFloor4() {
-
-        String dest = (String) listF4.getSelectionModel().getSelectedItem();
-
-        Node startNode = sf.getNode(startingPoint.getText());
-        Node destNode = sf.getNode(dest);
-
-        setFloor(startNode.getFloor());
-        if (startNode != null && destNode != null) {
-            String directions = highlightSourceToDestination(startNode, destNode);
-            messengerService.setDirections(directions);
-
-            messenger.setDirections(directions);
-            Label directionsLabel = new Label();
-            directionsLabel.setFont(new Font(14));
-            directionsLabel.setText(directions);
-            directionsLabel.setTextFill(Color.WHITE);
-            directionsLabel.setWrapText(true);
-
-            instructions.getChildren().clear();
-            instructions.getChildren().add(directionsLabel);
-            scroll.setVisible(true);
-            btnTextMe.setDisable(false);
-            btnTextMe.setVisible(true);
-            btnQR.setDisable(false);
-            btnQR.setVisible(true);
-        }
+        destination.setText((String) listF4.getSelectionModel().getSelectedItem());
+        navigate();
     }
 
     @FXML
     public void navigateFloor5() {
+        destination.setText((String) listF5.getSelectionModel().getSelectedItem());
+        navigate();
+    }
 
-        String dest = (String) listF5.getSelectionModel().getSelectedItem();
+    @FXML
+    private void goToSelected() {
+        int index = dirList.getSelectionModel().getSelectedIndex();
 
-        Node startNode = sf.getNode(startingPoint.getText());
-        Node destNode = sf.getNode(dest);
+        ArrayList<Node> subpath = path.getSubpaths().get(index);
 
-        setFloor(startNode.getFloor());
-        if (startNode != null && destNode != null) {
-            String directions = highlightSourceToDestination(startNode, destNode);
-            messengerService.setDirections(directions);
+        if (dirList.getSelectionModel().getSelectedItem().toString().contains("Navigate")) {
+            if (subpath.get(0).getBuilding().equals("Faulkner")) {
+                map.setBuilding(new Building("Google"));
+                map.setMapImage(IMAGE_FTOM);
+            } else if (subpath.get(0).getBuilding().equals("BTM")) {
+                map.setBuilding(new Building("Google"));
+                map.setMapImage(IMAGE_MTOF);
+            }
 
-            messenger.setDirections(directions);
-            Label directionsLabel = new Label();
-            directionsLabel.setFont(new Font(14));
-            directionsLabel.setText(directions);
-            directionsLabel.setTextFill(Color.WHITE);
-            directionsLabel.setWrapText(true);
+            generateFloorButtons();
+            map.setZoomLevel(1.1);
+        } else {
+            if (!(subpath.get(0).getBuilding().equals(map.getBuilding().getName()))) {
+                map.setBuilding(subpath.get(0).getBuilding());
+                generateFloorButtons();
+            }
+            setFloor(subpath.get(0).getFloor());
 
-            instructions.getChildren().clear();
-            instructions.getChildren().add(directionsLabel);
-            scroll.setVisible(true);
-            btnTextMe.setDisable(false);
-            btnTextMe.setVisible(true);
-            btnQR.setDisable(false);
-            btnQR.setVisible(true);
+            double totalX = 0;
+            double totalY = 0;
+            double minX = 200000;
+            double maxX = 0;
+            double minY = 200000;
+            double maxY = 0;
+            for (Node node : subpath) {
+                double xPos = node.getPosition().getX();
+                double yPos = node.getPosition().getY();
+                double xPosGui = map.getNodeGUI(node).getLayoutX();
+                double yPosGui = map.getNodeGUI(node).getLayoutY();
+
+                totalX += xPosGui;
+                totalY += yPosGui;
+
+                if (xPos > maxX) maxX = xPos;
+                if (xPos < minX) minX = xPos;
+                if (yPos > maxY) maxY = yPos;
+                if (yPos < minY) minY = yPos;
+            }
+
+            double diffX = maxX - minX;
+            double diffY = maxY - minY;
+            double scale;
+
+            if (diffX > diffY) scale = Math.min(400 / diffX, 5);
+            else scale = Math.min(400 / diffY, 5);
+
+            totalX = totalX / subpath.size();
+            totalY = totalY / subpath.size();
+
+            map.setZoomLevelToPosition(scale, new Point2D(totalX, totalY));
+            highLightPath();
         }
     }
 }

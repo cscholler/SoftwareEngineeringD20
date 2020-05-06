@@ -86,6 +86,8 @@ public class EdgeGUI extends Line implements Highlightable {
 
     public void setHighlighted(boolean newHighlighted) {
         highlightGui.setVisible(newHighlighted);
+        //highlightGui.getParent().getStylesheets().add("edu/wpi/cs3733/d20/teamL/css/MarchingAnts.css");
+        //highlightGui.getStyleClass().add("box");
     }
 
     public double getHighlightThickness() {

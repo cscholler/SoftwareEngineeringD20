@@ -1,20 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXDatePicker?>
-<?import com.jfoenix.controls.JFXTextField?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.ExternalPaneController">
+<StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.ExternalPaneController">
    <children>
       <BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" styleClass="services-pane-jfx" stylesheets="@../../css/GlobalStyleSheet.css">
           <center>
@@ -31,7 +24,7 @@
                         <JFXDatePicker fx:id="date" defaultColor="#405784" promptText="Select a Date..." />
                         <HBox alignment="CENTER" prefHeight="55.0" prefWidth="160.0" spacing="10.0">
                            <children>
-                              <Label styleClass="service-request-label-fx" text="Time" />
+                              <Label fx:id="timeTxt" styleClass="service-request-label-fx" text="Time" />
                               <JFXTextField fx:id="hour" prefHeight="39.0" prefWidth="40.0" styleClass="time-text-field-jfx">
                                  <font>
                                     <Font size="18.0" />
@@ -92,7 +85,7 @@
               </HBox>
           </bottom>
       </BorderPane>
-      <ImageView fx:id="requestReceived" fitHeight="213.0" fitWidth="261.0" visible="false">
+      <ImageView fx:id="requestReceived" fitHeight="210.0" fitWidth="270.0" visible="false">
          <image>
             <Image url="@../../assets/service_icons/serviceRecieved.png" />
          </image>

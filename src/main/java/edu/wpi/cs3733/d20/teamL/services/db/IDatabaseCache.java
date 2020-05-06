@@ -1,11 +1,13 @@
 package edu.wpi.cs3733.d20.teamL.services.db;
 
+import edu.wpi.cs3733.d20.teamL.entities.Building;
 import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.entities.Gift;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public interface IDatabaseCache {
 	void cacheAllFromDB();
@@ -34,17 +36,19 @@ public interface IDatabaseCache {
 
 	void clearEdgeCache();
 
+	Building getBuilding(String building);
+
 	void cacheGiftsFromDB();
 
 	void clearGiftsCache();
 
-	void cacheCart(ArrayList<Gift> cart);
+	void cacheCart(Map<String,Integer> cart);
 
-	ArrayList<Gift> getCartCache();
+	Map<String,Integer> getCartCache();
 
 	ArrayList<Gift> getGiftsCache();
 
-	ArrayList<Gift> getCartCacheNull();
+	void updateInventory();
 
 	void clearCartCache();
 }

@@ -1,13 +1,15 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 
 import com.jfoenix.controls.*;
+import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.MapParser;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.PathfinderService;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderHelper;
+import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import edu.wpi.cs3733.d20.teamL.views.components.*;
@@ -62,6 +64,8 @@ public class MapEditorController {
     @FXML
     JFXNodesList saveNodesList, loadNodesList, pathNodesList;
     @FXML
+    JFXComboBox<String> buildingChooser;
+    @FXML
     Tooltip saveTooltip, loadTooltip, pathfindTooltip;
     @FXML
     ImageView saveOptImg, loadOptionsImage, pathfindImage;
@@ -72,7 +76,7 @@ public class MapEditorController {
     private IPathfinderService pathfinder;
 
     private Scene scene;
-    private FXMLLoaderHelper loaderHelper = new FXMLLoaderHelper();
+    private FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
     private boolean eraserBool = false;
@@ -80,11 +84,13 @@ public class MapEditorController {
     private Path path = new Path();
 
     private final List<String> types = Arrays.asList("HALL", "ELEV", "REST", "STAI", "DEPT", "LABS", "INFO", "CONF", "EXIT", "RETL", "SERV");
-    private int floor = 2;
+    private int defaultFloor = 2;
+    private String defaultBuilding = "Faulkner";
 
     private Image breadthFirstIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map_editor/Breath First.png", 100, 0, true, false, true);
     private Image depthFirstIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map_editor/DepthFirst.png", 100, 0, true, false, true);
     private Image aStarIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map_editor/AStar.png", 60, 0, true, false, true);
+    private Image dijkstraIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map_editor/dijkstra.png", 100, 0, true, false, true);
     private Image xButtonIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map_editor/xButton.png", 40, 0, true, false, true);
     private Image saveToFileIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map_editor/SaveToFile.png", 40, 0, true, false, true);
     private Image uploadFromFolderIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map_editor/UploadFromFolder.png", 40, 0, true, false, true);
@@ -97,12 +103,10 @@ public class MapEditorController {
         coreShortcuts();
 
         pathFind.setOnAction(event -> {
-            path = pathfinder.pathfind(map.getBuilding(), sf.getNode(startNode.getText()), sf.getNode(endNode.getText()));
+            path = pathfinder.pathfind(map.getAllNodes(), sf.getNode(startNode.getText()), sf.getNode(endNode.getText()));
 
             highlightPath();
         });
-
-        cache.cacheAllFromDB();
 
         sf = new SearchFields(cache.getNodeCache());
         sf.getFields().add(SearchFields.Field.nodeID);
@@ -117,19 +121,12 @@ public class MapEditorController {
 
         map.setZoomLevel(0.65);
 
-        // Add floor buttons
-        for (int i = 1; i <= map.getBuilding().getMaxFloor(); i++) {
-            JFXButton newButton = new JFXButton();
-            newButton.setButtonType(JFXButton.ButtonType.RAISED);
-            newButton.getStylesheets().add("edu/wpi/cs3733/d20/teamL/css/MapStyles.css");
-            newButton.setText("" + i);
-            newButton.setOnAction(this::changeFloor);
-            newButton.getStyleClass().add("floor-buttons");
+        // Add options for buildings and select Faulkner by default
+        buildingChooser.getItems().addAll("Faulkner", "BTM");
+        buildingChooser.getSelectionModel().select(defaultBuilding);
 
-            floorSelector.getChildren().add(1, newButton);
-        }
-
-        setFloor(2);
+        generateFloorButtons();
+        setFloor(defaultFloor);
 
         //Hides the node editor VBox
         editor.setPrefWidth(0);
@@ -155,6 +152,25 @@ public class MapEditorController {
             pathFindingAlg = 'D';
             pathfindImage.setImage((depthFirstIcon));
         }
+        if (pathfinder.getPathfindingMethod() == PathfinderService.PathfindingMethod.DSPF) {
+            pathFindingAlg = 'K';
+            pathfindImage.setImage((dijkstraIcon));
+        }
+    }
+
+    private void generateFloorButtons() {
+        map.generateFloorButtons(floorSelector, this::changeFloor);
+    }
+
+    @FXML
+    private void switchBuilding() {
+        String selected = buildingChooser.getSelectionModel().getSelectedItem();
+
+        map.setBuilding(selected);
+
+        int prevFloor = map.getFloor();
+        generateFloorButtons();
+        setFloor(Math.max(map.getBuilding().getMinFloor(), Math.min(prevFloor, map.getBuilding().getMaxFloor())));
     }
 
     private void highlightPath() {
@@ -214,44 +230,44 @@ public class MapEditorController {
     }
 
     @FXML
-    private void quit() {
-        cache.updateDB();
-        Platform.exit();
-    }
-
-    @FXML
     private void saveToDB() {
-        ArrayList<Node> nodes = new ArrayList<>(map.getBuilding().getNodes());
-        ArrayList<Edge> blackList = new ArrayList<>();
-        ArrayList<Edge> newEdges = new ArrayList<>();
 
-        for (Node node : nodes) {
-            for (Edge edge : node.getEdges()) {
-                if (!newEdges.contains(edge) && blackList.contains(edge)) newEdges.add(edge);
-                if (edge.getDestination().getNeighbors().contains(node))
-                    blackList.add(edge.getDestination().getEdge(node));
-            }
-        }
+        Graph nodes = map.getAllNodes();
 
-        cache.cacheNodes(nodes, map.getEditedNodes());
+        ArrayList<Edge> newEdges = new ArrayList<>(nodes.getEdgesOneWay());
+
+        cache.cacheNodes(new ArrayList<>(nodes.getNodes()), map.getEditedNodes());
         cache.cacheEdges(newEdges);
-        cache.updateDB();
+
+        AsyncTaskManager.startTaskWithPopup(cache::updateDB, "Saving...", "Saved successfully");
 
         map.getEditedNodes().clear();
     }
 
     @FXML
     public void saveToCSV() {
+        // Show a data dialogue to get the path to save the nodes and edges
         DataDialogue data = new DataDialogue();
         data.setSaving(true);
         data.showDialogue(pathFind.getScene().getWindow());
         String nodeFilePath = data.getNodeFile().getAbsolutePath();
         String edgeFilePath = data.getEdgeFile().getAbsolutePath();
+
+        // Set up the CSV helper and make empty tables to populate then load into the csv
         CSVHelper csvHelper = new CSVHelper();
         ArrayList<ArrayList<String>> nodeTable = new ArrayList<>();
         ArrayList<ArrayList<String>> edgeTable = new ArrayList<>();
-        ArrayList<Node> nodes = new ArrayList<>(map.getBuilding().getNodes());
-        ArrayList<Edge> edges = new ArrayList<>(map.getBuilding().getEdges());
+
+        // Compile the nodes from each building into one graph to export them all
+        Graph allNodes = new Graph();
+        for (Building building : map.getBuildings())
+            allNodes.addAllNodes(building);
+
+        // Get nodes and one way edges from the compiled graph
+        ArrayList<Node> nodes = new ArrayList<>(allNodes.getNodes());
+        ArrayList<Edge> edges = new ArrayList<>(allNodes.getEdgesOneWay());
+
+        // Add headings and populate the Node and edge 2D arraylists
         nodeTable.add(new ArrayList<>(Arrays.asList("nodeID", "xCoord", "yCoord", "floor", "building", "nodeType", "longName", "shortName")));
         for (Node node : nodes) {
             nodeTable.add(node.toArrayList());
@@ -260,6 +276,8 @@ public class MapEditorController {
         for (Edge edge : edges) {
             edgeTable.add(edge.toArrayList());
         }
+
+        // Write the 2D arraylists to csv files using the CSV Helper
         csvHelper.writeToCSV(nodeFilePath, nodeTable);
         csvHelper.writeToCSV(edgeFilePath, edgeTable);
     }
@@ -270,19 +288,23 @@ public class MapEditorController {
         boolean confirmed = data.showDialogue(pathFind.getScene().getWindow());
 
         if (confirmed) {
-            Building newBuilding = MapParser.parseMapToBuilding(data.getNodeFile(), data.getEdgeFile());
-            map.setBuilding(newBuilding);
+            Graph newGraph = MapParser.parseMapToGraph(data.getNodeFile(), data.getEdgeFile());
+            Building faulkner = new Building("Faulkner", newGraph);
+            Building BTM = new Building("BTM", newGraph);
+            map.getBuildings().add(faulkner);
+            map.getBuildings().add(BTM);
+            map.setBuilding(defaultBuilding);
         }
     }
 
     @FXML
     private void openFromDB() {
-        cache.cacheAllFromDB();
-        Building newBuilding = new Building("Faulkner");
-        Graph graph = Graph.graphFromCache(cache.getNodeCache(), cache.getEdgeCache());
-        newBuilding.addAllNodes(graph.getNodes());
+        Building faulkner = cache.getBuilding("Faulkner");
+        Building btm = cache.getBuilding("BTM");
 
-        map.setBuilding(newBuilding);
+        if(!faulkner.getNodes().isEmpty()) map.getBuildings().add(faulkner);
+        if(!btm.getNodes().isEmpty()) map.getBuildings().add(btm);
+        map.setBuilding(defaultBuilding);
     }
 
     @FXML
@@ -320,10 +342,10 @@ public class MapEditorController {
             editor.setPrefWidth(200);
             editor.setVisible(true);
             nodeIDText.setText(selectedNode.getID());
-            Double x = selectedNode.getPosition().getX();
-            Double y = selectedNode.getPosition().getY();
-            xCoordText.setText(x.toString());
-            yCoordText.setText(y.toString());
+            double x = selectedNode.getPosition().getX();
+            double y = selectedNode.getPosition().getY();
+            xCoordText.setText(String.valueOf(x));
+            yCoordText.setText(String.valueOf(y));
             nodeTypeValue.getSelectionModel().select(types.indexOf(selectedNode.getType()));
             shortNameText.setText(selectedNode.getShortName());
             longNameText.setText(selectedNode.getLongName());
@@ -341,14 +363,17 @@ public class MapEditorController {
         if (index == 1) {
             numberlbl.setText("Elevator Number:");
             updateShaftList(selected);
-            numberText.getSelectionModel().select(selected.getShaft());
         } else if (index == 3) {
             numberlbl.setText("Stairwell Number:");
             updateShaftList(selected);
-        } else {
-            multiFloorConnection.setVisible(false);
-            numberText.getSelectionModel().select(selected.getShaft());
+        } else if (index == 8) {
+            numberlbl.setText("Outdoor Connection Number:");
+            updateShaftList(selected);
         }
+        else {
+            multiFloorConnection.setVisible(false);
+        }
+        numberText.getSelectionModel().select(selected.getShaft());
     }
 
     private void updateShaftList(Node selected) {
@@ -411,7 +436,7 @@ public class MapEditorController {
                 iterator.remove();
             }
         }
-        if (node.getType().equals("ELEV") || node.getType().equals("STAI"))
+        if (node.getType().equals("ELEV") || node.getType().equals("STAI") || node.getType().equals("EXIT"))
             for (Node adj : map.getBuilding().getNodes())
                 if (node.getType().equals(adj.getType()) && node.getShaft() == adj.getShaft() && !node.equals(adj))
                     node.addEdgeTwoWay(adj);
@@ -425,8 +450,8 @@ public class MapEditorController {
             setFloor(map.getFloor() + 1);
         } else if (event.getSource() == floorDown) {
             setFloor(map.getFloor() - 1);
-        } else if (isNumeric(sourceButton.getText())) {
-            setFloor(Integer.parseInt(sourceButton.getText()));
+        } else {
+            setFloor(Node.floorStringToInt(sourceButton.getText()));
         }
 
         if (!path.getPathNodes().isEmpty()) highlightPath();
@@ -491,11 +516,11 @@ public class MapEditorController {
     }
 
     public void setFloor(int newFloor) {
-        map.setFloor(Math.max(1, Math.min(newFloor, map.getBuilding().getMaxFloor())));
+        map.setFloor(Math.max(map.getBuilding().getMinFloor(), Math.min(newFloor, map.getBuilding().getMaxFloor())));
 
         for (javafx.scene.Node node : floorSelector.getChildren()) {
             JFXButton floorButton = (JFXButton) node;
-            if (!floorButton.getText().equals(String.valueOf(map.getFloor()))) {
+            if (!floorButton.getText().equals(Node.floorIntToString(map.getFloor()))) {
                 if (floorButton.getStyleClass().contains("selected-floor")) {
                     floorButton.getStyleClass().clear();
                     floorButton.getStyleClass().add("button");
@@ -522,13 +547,13 @@ public class MapEditorController {
      */
     @FXML
     private void editConnections() {
-        closeConnections();
+        edgeList.getChildren().clear();
         nodeConnectionsTab.setPrefWidth(200);
         nodeConnectionsTab.setVisible(true);
 
         Collection<Edge> edges = map.getSelectedNode().getEdges();
         for (Edge edge : edges) {
-            EdgeField newEdgeField = new EdgeField(map.getBuilding());
+            EdgeField newEdgeField = new EdgeField(map.getAllNodes());
             newEdgeField.setText(edge.getDestination().getID());
 
             edgeList.getChildren().add(newEdgeField);
@@ -559,10 +584,11 @@ public class MapEditorController {
         // Add the new set of edges from the connection editing pane
         for (javafx.scene.Node node : edgeList.getChildren()) {
             EdgeField edgeField = (EdgeField) node;
-            Node destination = map.getBuilding().getNode(edgeField.getText());
+            Node destination = map.getAllNodes().getNode(edgeField.getText());
 
             selectedNode.addEdgeTwoWay(destination);
-            map.addEdge(selectedNode.getEdge(destination));
+            if (destination.getFloor() == map.getFloor() && destination.getBuilding().equals(map.getBuilding().getName()))
+                map.addEdge(selectedNode.getEdge(destination));
         }
 
         closeConnections();
@@ -570,7 +596,7 @@ public class MapEditorController {
 
     @FXML
     private void addConnection() {
-        edgeList.getChildren().add(new EdgeField(map.getBuilding()));
+        edgeList.getChildren().add(new EdgeField(map.getAllNodes()));
     }
 
     private void closeConnections() {
@@ -658,5 +684,13 @@ public class MapEditorController {
         pathfindImage.setImage(breadthFirstIcon);
         pathNodesList.animateList(false);
         pathfinder.setPathfindingMethod(PathfinderService.PathfindingMethod.BFS);
+    }
+
+    @FXML
+    private void dijkstraSelected() {
+        pathFindingAlg = 'K';
+        pathfindImage.setImage(dijkstraIcon);
+        pathNodesList.animateList(false);
+        pathfinder.setPathfindingMethod(PathfinderService.PathfindingMethod.DSPF);
     }
 }
