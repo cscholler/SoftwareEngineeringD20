@@ -26,11 +26,11 @@ import java.util.Collections;
 @Slf4j
 public class ChangePasswordController {
     @FXML
-    private JFXPasswordField newPasswordText, confirmPasswordText;
+    private JFXPasswordField newPasswordText, confirmPasswordText, oldPassText;
     @FXML
     private JFXButton btnCancel, btnConfirm;
     @FXML
-    private JFXTextField usernameText, oldPassText;
+    private JFXTextField usernameText;
     @FXML
     private Label incorrectPassword;
     private User user;

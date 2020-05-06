@@ -53,16 +53,16 @@ public class AdminLandingPageController implements Initializable {
     private FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
     private static final TimerManager timerManager = new TimerManager();
     private final ObservableList<String> tableOptions = FXCollections.observableArrayList("Map Nodes", "Map Edges", "Gift Inventory", "User Information", "Doctor Information");
-	private ArrayList<TableEntityWrapper.TableNode> editedNodes = new ArrayList<>();
-	private ArrayList<TableEntityWrapper.TableEdge> editedEdges = new ArrayList<>();
-	private ArrayList<TableEntityWrapper.TableGift> editedGifts = new ArrayList<>();
-    private ArrayList<TableEntityWrapper.TableUser> editedUsers = new ArrayList<>();
-    private ArrayList<TableEntityWrapper.TableDoctor> editedDoctors = new ArrayList<>();
-	private ArrayList<TableEntityWrapper.TableNode> deletedNodes = new ArrayList<>();
-	private ArrayList<TableEntityWrapper.TableEdge> deletedEdges = new ArrayList<>();
-	private ArrayList<TableEntityWrapper.TableGift> deletedGifts = new ArrayList<>();
-	private ArrayList<TableEntityWrapper.TableUser> deletedUsers = new ArrayList<>();
-	private ArrayList<TableEntityWrapper.TableDoctor> deletedDoctors = new ArrayList<>();
+	private ArrayList<TableEntityWrapper.TableNode> editedNodes;
+	private ArrayList<TableEntityWrapper.TableEdge> editedEdges;
+	private ArrayList<TableEntityWrapper.TableGift> editedGifts;
+    private ArrayList<TableEntityWrapper.TableUser> editedUsers;
+    private ArrayList<TableEntityWrapper.TableDoctor> editedDoctors;
+	private ArrayList<TableEntityWrapper.TableNode> deletedNodes;
+	private ArrayList<TableEntityWrapper.TableEdge> deletedEdges;
+	private ArrayList<TableEntityWrapper.TableGift> deletedGifts;
+	private ArrayList<TableEntityWrapper.TableUser> deletedUsers;
+	private ArrayList<TableEntityWrapper.TableDoctor> deletedDoctors;
     @FXML
 	private JFXTreeTableView<TableEntityWrapper.TableNode> nodesTable;
 	@FXML
@@ -90,6 +90,16 @@ public class AdminLandingPageController implements Initializable {
 		tableSelector.setItems(tableOptions);
 		tableSelector.getSelectionModel().select(0);
 		hideAllTablesExceptCurrent("Nodes");
+		editedNodes = new ArrayList<>();
+		editedEdges = new ArrayList<>();
+		editedGifts = new ArrayList<>();
+		editedUsers = new ArrayList<>();
+		editedDoctors = new ArrayList<>();
+		deletedNodes = new ArrayList<>();
+		deletedEdges = new ArrayList<>();
+		deletedGifts = new ArrayList<>();
+		deletedUsers = new ArrayList<>();
+		deletedDoctors = new ArrayList<>();
 		loadNodesTable();
     }
 
