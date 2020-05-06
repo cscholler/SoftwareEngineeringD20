@@ -35,7 +35,7 @@ public class AddPersonController implements Initializable {
     @Inject
     private IDatabaseCache cache;
     @FXML
-    private Label lblConfirmation;
+    private Label lblConfirmation, confirmation;
     @FXML
     private JFXTextArea addlInfoText;
     @FXML
@@ -44,14 +44,16 @@ public class AddPersonController implements Initializable {
     //for user
     ObservableList<String> serviceOptions = FXCollections.observableArrayList("Security", "Internal Transport", "External Transport", "Sanitation", "Maintenance", "Pharmacist", "Gift Shop", "Interpreter", "Information Technology");
     ObservableList<String> userOptions = FXCollections.observableArrayList("staff", "Nurse", "Doctor", "admin");
+    ObservableList<String> languageOptions = FXCollections.observableArrayList("Spanish", "Italian", "Chinese", "ASL", "French");
+
 
     DBTableFormatter formatter = new DBTableFormatter();
     private final FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
 
     @FXML
-    JFXTextField doctorIDText, fNameText, lNameText, usernameText, passwordText, languages;
+    JFXTextField doctorIDText, fNameText, lNameText, usernameText, passwordText;
     @FXML
-    private JFXComboBox<String> serviceCombo, userCombo;
+    private JFXComboBox<String> serviceCombo, userCombo, languages;
     @FXML
     private JFXCheckBox securityBox, inTransportBox, exTransportBox, maintenanceBox, sanitationBox, pharmacistBox, giftShopBox, itBox, interpreterBox, managerBox;
     @FXML
@@ -74,6 +76,14 @@ public class AddPersonController implements Initializable {
         formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_USERS)));
         serviceCombo.setItems(serviceOptions);
         userCombo.setItems(userOptions);
+        languages.setItems(languageOptions);
+
+        sf = new SearchFields(cache.getNodeCache());
+        sf.getFields().add(SearchFields.Field.longName);
+        sf.getFields().add(SearchFields.Field.shortName);
+        sf.populateSearchFields();
+        autoCompletePopup = new JFXAutoCompletePopup<>();
+        autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
     }
 
     //for user
@@ -140,7 +150,7 @@ public class AddPersonController implements Initializable {
                 anyServicesSelected = true;
             }
             if (interpreterBox.isSelected()) {
-                servicesList.append("interpreter(").append(languages.getText().replace(" ", "")).append(");");
+                servicesList.append("interpreter(").append(languages.getValue().replace(" ", "")).append(");");
                 anyServicesSelected = true;
             }
             if (anyServicesSelected) {
@@ -170,7 +180,7 @@ public class AddPersonController implements Initializable {
                 usernameText.setText("");
                 passwordText.setText("");
                 doctorIDText.setText("");
-                languages.setText("");
+                languages.setValue(null);
                 managerBox.setSelected(false);
                 managerBox.setVisible(false);
                 serviceCombo.setVisible(false);
@@ -266,18 +276,18 @@ public class AddPersonController implements Initializable {
         String roomNum = officeText.getText();
         String additionalInfo = addlInfoText.getText();
         if (db.executeUpdate(new SQLEntry(DBConstants.ADD_DOCTOR, new ArrayList<>(Arrays.asList(doctorID, fName, lName, null, roomNum, additionalInfo)))) == 0) {
-            lblConfirmation.setTextFill(Color.RED);
-            lblConfirmation.setText("Submission failed");
+            confirmation.setTextFill(Color.RED);
+            confirmation.setText("Submission failed");
         } else {
-            lblConfirmation.setTextFill(Color.BLACK);
-            lblConfirmation.setText("Doctor Added");
+            confirmation.setTextFill(Color.BLACK);
+            confirmation.setText("Doctor Added");
             doctorFN.setText("");
             doctorLN.setText("");
             doctorIDText.setText("");
             officeText.setText("");
             addlInfoText.setText("");
         }
-        loaderHelper.showAndFade(lblConfirmation);
+        loaderHelper.showAndFade(confirmation);
         formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_DOCTORS)));
     }
 }

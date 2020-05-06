@@ -151,15 +151,6 @@ public class AdminLandingPageController implements Initializable {
         }
     }
 
-	@FXML
-	private void btnAddDoctorClicked() {
-		try {
-			Parent root = loaderFactory.getFXMLLoader("AddDoctor").load();
-			loaderFactory.setupScene(new Scene(root));
-		} catch (IOException ex) {
-			log.error("Encountered IOException", ex);
-		}
-	}
 
     @FXML
     public void importDBClicked() {
