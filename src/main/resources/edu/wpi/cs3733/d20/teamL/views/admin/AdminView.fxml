@@ -30,15 +30,6 @@
          <children>
             <HBox alignment="CENTER_LEFT" layoutX="466.0" layoutY="10.0" prefHeight="70.0" prefWidth="560.0" spacing="10.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="450.0" AnchorPane.rightAnchor="264.0" AnchorPane.topAnchor="5.0">
                <children>
-                  <JFXButton contentDisplay="GRAPHIC_ONLY" prefHeight="44.0" prefWidth="45.0" styleClass="database-buttons-jfx">
-                     <graphic>
-                        <ImageView fitHeight="40.0" fitWidth="42.0">
-                           <image>
-                              <Image url="@../../assets/baseline_edit_white_48dp.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </JFXButton>
                   <JFXButton contentDisplay="GRAPHIC_ONLY" onAction="#addUserClicked" prefHeight="44.0" prefWidth="45.0" styleClass="database-buttons-jfx">
                      <graphic>
                         <ImageView fitHeight="43.0" fitWidth="41.0">
@@ -84,6 +75,7 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
+                  <JFXButton fx:id="btnChangePass" onAction="#changePasswordClicked" styleClass="database-buttons-jfx" />
                   <JFXButton fx:id="btnChangePass" onAction="#changePasswordClicked" prefWidth="58.0" styleClass="database-buttons-jfx" visible="false" />
                </children>
                <padding>
@@ -91,7 +83,7 @@
                </padding>
             </HBox>
             <JFXComboBox fx:id="tableSelector" layoutX="47.0" layoutY="13.0" maxHeight="60.0" maxWidth="366.0" minWidth="366.0" onAction="#tableSelected" prefHeight="60.0" prefWidth="366.0" style="-fx-min-width: 400;" styleClass="combo-box-jfx" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="10.0" />
-            <JFXButton contentDisplay="CENTER" layoutX="1197.0" layoutY="7.0" onAction="#rebuildDatabaseClicked" prefWidth="49.0" styleClass="delete-database-buttons-jfx" text="☢" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="5.0">
+            <JFXButton contentDisplay="CENTER" layoutX="1197.0" layoutY="7.0" onAction="#rebuildDatabaseClicked" prefWidth="49.0" style="-fx-background-color: #FFF77D;" styleClass="delete-database-buttons-jfx" text="☢" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="5.0">
                <font>
                   <Font size="29.0" />
                </font>
