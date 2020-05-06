@@ -180,11 +180,6 @@
                   <URL value="@../../css/MapStyles.css" />
                </stylesheets>
                <children>
-                  <Label text="Welcome to" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold" size="68.0" />
-                     </font>
-                  </Label>
                   <ImageView fitHeight="75.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../assets/home_page/BWH%20logo.png" />

@@ -395,7 +395,7 @@
 
 .tree-table-view {
     -fx-pref-width: 464;
-    -fx-max-width: 464;
+    -fx-max-width: inherit;
     -fx-pref-height: 500;
 }
 
