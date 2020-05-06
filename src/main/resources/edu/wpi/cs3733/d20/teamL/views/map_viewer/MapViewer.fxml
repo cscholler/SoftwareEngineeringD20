@@ -76,7 +76,7 @@
                   <VBox alignment="CENTER" spacing="10.0">
                      <children>
                                 <JFXButton fx:id="btnTextMe" alignment="CENTER" buttonType="RAISED" minWidth="150.0" onAction="#handleText" prefHeight="40.0" prefWidth="133.0" style="-fx-pref-width: 200; -fx-max-width: 200;" styleClass="save-button-jfx" text="Text me directions" textFill="WHITE" visible="false" />
-                                <JFXButton fx:id="btnQR" alignment="CENTER" buttonType="RAISED" onAction="#genQR" prefHeight="40.0" prefWidth="85.0" style="-fx-pref-width: 200; -fx-max-width: 200;" styleClass="save-button-jfx" text="Scan Directions" textFill="WHITE" visible="false">
+                                <JFXButton fx:id="btnQR" alignment="CENTER" buttonType="RAISED" onAction="#genQR" prefHeight="40.0" prefWidth="85.0" style="-fx-pref-width: 200; -fx-max-width: 200;" styleClass="save-button-jfx" text="Scan directions" textFill="WHITE" visible="false">
                            <VBox.margin>
                               <Insets bottom="40.0" />
                            </VBox.margin>
