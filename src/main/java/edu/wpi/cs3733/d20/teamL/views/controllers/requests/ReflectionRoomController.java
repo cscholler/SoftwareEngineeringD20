@@ -20,8 +20,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javax.inject.Inject;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.chrono.ChronoLocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 public class ReflectionRoomController {
 
@@ -121,37 +124,46 @@ public class ReflectionRoomController {
     private void handleSubmit() {
 
 
-
+        //check for null values
         if(rooms.getValue() == null || date.getValue() == null || table.getSelectionModel().isEmpty()) {
             confirmation.setText("Select a Valid Room, Date, and Time");
             loaderHelper.showAndFade(confirmation);
         } else {
 
-            TreeItem<TimeSlot> row = table.getSelectionModel().getSelectedItem();
-            TimeSlot t = row.getValue();
-            String startTime = t.start.getValue();
-            String endTime = t.end.getValue();
-            String availability = t.availability.getValue();
-            String room = (String) rooms.getValue();
-            String dateChosen = date.getValue().toString();
-            //TODO check values for null, past date, time
+            //check if date is valid
+            LocalDate d = date.getValue();
+            if(d.isBefore(LocalDate.now())) {
+                confirmation.setText("Select a Valid Date");
+                loaderHelper.showAndFade(confirmation);
+            } else {
 
-            int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_ROOM_REQUEST,
-                    new ArrayList<>(Arrays.asList(manager.getCurrentUser().getUsername(), room, dateChosen, startTime, endTime)))));
 
-            //clear selected values
-            rooms.setValue(null);
-            date.setValue(null);
-            table.getSelectionModel().clearSelection();
+                TreeItem<TimeSlot> row = table.getSelectionModel().getSelectedItem();
+                TimeSlot t = row.getValue();
+                String startTime = t.start.getValue();
+                String endTime = t.end.getValue();
+                String availability = t.availability.getValue();
+                String room = (String) rooms.getValue();
+                String dateChosen = date.getValue().toString();
+                //TODO check values for null, past date, time
 
-            loaderHelper.showAndFade(requestReceived);
+                int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_ROOM_REQUEST,
+                        new ArrayList<>(Arrays.asList(manager.getCurrentUser().getUsername(), room, dateChosen, startTime, endTime)))));
 
-            table.setVisible(false);
-            btnLoadTimes.setVisible(true);
-            tableErrorLbl.setVisible(false);
-            table.getColumns().clear();
+                //clear selected values
+                rooms.setValue(null);
+                date.setValue(null);
+                table.getSelectionModel().clearSelection();
 
-            requestReceived.toBack();
+                loaderHelper.showAndFade(requestReceived);
+
+                table.setVisible(false);
+                btnLoadTimes.setVisible(true);
+                tableErrorLbl.setVisible(false);
+                table.getColumns().clear();
+
+                requestReceived.toBack();
+            }
         }
     }
 

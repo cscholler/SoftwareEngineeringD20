@@ -22,6 +22,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javax.inject.Inject;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -127,46 +128,54 @@ public class OnCallBedController {
     @FXML
     private void handleSubmit() {
 
+        //check for null values
         if(beds.getValue() == null || date.getValue() == null || table.getSelectionModel().isEmpty()) {
             confirmation.setText("Select a Valid Bed, Date, and Time");
             loaderHelper.showAndFade(confirmation);
         } else {
 
+            //check if date is valid
+            LocalDate d = date.getValue();
+            if(d.isBefore(LocalDate.now())) {
+                confirmation.setText("Select a Valid Date");
+                loaderHelper.showAndFade(confirmation);
+            } else {
 
-            ObservableList<TreeItem<TimeSlot>> rows = table.getSelectionModel().getSelectedItems();
-            String bed = (String) beds.getValue();
-            String dateChosen = date.getValue().toString();
+                ObservableList<TreeItem<TimeSlot>> rows = table.getSelectionModel().getSelectedItems();
+                String bed = (String) beds.getValue();
+                String dateChosen = date.getValue().toString();
 
-            //TODO check values for null, past date, time, reserved
+                //TODO check values for null, past date, time, reserved
 
-            System.out.println(rows.size() + " rows are selected.");
+                System.out.println(rows.size() + " rows are selected.");
 
-            //add each hour to the database
-            for (TreeItem<TimeSlot> ti : rows) {
-                TimeSlot t = ti.getValue();
-                String startTime = t.start.getValue();
-                String endTime = t.end.getValue();
-                String availability = t.availability.getValue();
+                //add each hour to the database
+                for (TreeItem<TimeSlot> ti : rows) {
+                    TimeSlot t = ti.getValue();
+                    String startTime = t.start.getValue();
+                    String endTime = t.end.getValue();
+                    String availability = t.availability.getValue();
 
-                int r = db.executeUpdate((new SQLEntry(DBConstants.ADD_ROOM_REQUEST,
-                        new ArrayList<>(Arrays.asList(manager.getCurrentUser().getUsername(), bed, dateChosen, startTime, endTime)))));
+                    int r = db.executeUpdate((new SQLEntry(DBConstants.ADD_ROOM_REQUEST,
+                            new ArrayList<>(Arrays.asList(manager.getCurrentUser().getUsername(), bed, dateChosen, startTime, endTime)))));
+                }
+
+                //clear selected values
+                beds.setValue(null);
+                date.setValue(null);
+                table.getSelectionModel().clearSelection();
+
+                requestReceived.toFront();
+
+                loaderHelper.showAndFade(requestReceived);
+
+                table.setVisible(false);
+                btnLoadTimes.setVisible(true);
+                tableErrorLbl.setVisible(false);
+                table.getColumns().clear();
+
+                requestReceived.toBack();
             }
-
-            //clear selected values
-            beds.setValue(null);
-            date.setValue(null);
-            table.getSelectionModel().clearSelection();
-
-            requestReceived.toFront();
-
-            loaderHelper.showAndFade(requestReceived);
-
-            table.setVisible(false);
-            btnLoadTimes.setVisible(true);
-            tableErrorLbl.setVisible(false);
-            table.getColumns().clear();
-
-            requestReceived.toBack();
         }
     }
 
