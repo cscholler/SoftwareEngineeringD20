@@ -1,9 +1,6 @@
 package edu.wpi.cs3733.d20.teamL.services.db;
 
-import edu.wpi.cs3733.d20.teamL.entities.Building;
-import edu.wpi.cs3733.d20.teamL.entities.Edge;
-import edu.wpi.cs3733.d20.teamL.entities.Gift;
-import edu.wpi.cs3733.d20.teamL.entities.Node;
+import edu.wpi.cs3733.d20.teamL.entities.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +23,9 @@ public interface IDatabaseCache {
 
 	void clearNodeCache();
 
-	List<Node> getNodeCache();
+	ArrayList<Node> getNodeCache();
 
-	List<Edge> getEdgeCache();
+	ArrayList<Edge> getEdgeCache();
 
 	void cacheEdgesFromDB();
 
@@ -46,9 +43,21 @@ public interface IDatabaseCache {
 
 	Map<String,Integer> getCartCache();
 
-	ArrayList<Gift> getGiftsCache();
+	ArrayList<Gift> getGiftCache();
 
 	void updateInventory();
 
 	void clearCartCache();
+
+	void cacheUsersFromDB();
+
+	ArrayList<User> getUserCache();
+
+	void clearUserCache();
+
+	void cacheDoctorsFromDB();
+
+	ArrayList<Doctor> getDoctorCache();
+
+	void clearDoctorCache();
 }

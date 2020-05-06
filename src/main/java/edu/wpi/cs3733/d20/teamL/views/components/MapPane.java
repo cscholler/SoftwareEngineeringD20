@@ -492,7 +492,7 @@ public class MapPane extends ScrollPane {
     // Sets the zoom level by changing the spacing between all the nodes
     public void setZoomLevel(double zoomLevel) {
         if (currentBuilding.getName().equals("Faulkner")) zoomLevel = Math.max(zoomLevel, .5);
-        if (currentBuilding.getName().equals("Google")) zoomLevel = Math.max(zoomLevel, 1);
+        if (currentBuilding.getName().equals("Google")) zoomLevel = Math.max(zoomLevel, .8);
         else zoomLevel = Math.max(zoomLevel, .25);
         zoomLevel = Math.min(zoomLevel, 4);
 
@@ -688,7 +688,7 @@ public class MapPane extends ScrollPane {
             } catch (IllegalArgumentException ex) {
                 nodeGUI.getCircle().setFill(nodeColor);
             }
-            List<String> visibleNodeTypes = Arrays.asList("EXIT", "REST", "ELEV", "STAI", "INFO", "RETL");
+            List<String> visibleNodeTypes = Arrays.asList("EXIT", "REST", "ELEV", "STAI", "INFO", "RETL", "KIOS");
             if (!visibleNodeTypes.contains(nodeGUI.getNode().getType()))
                 nodeGUI.setVisible(false);
         }
