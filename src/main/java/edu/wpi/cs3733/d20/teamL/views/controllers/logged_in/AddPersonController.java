@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamL.views.LoggedInView;
+package edu.wpi.cs3733.d20.teamL.views.controllers.logged_in;
 
 import com.google.inject.Inject;
 import com.jfoenix.controls.*;
@@ -45,7 +45,6 @@ public class AddPersonController implements Initializable {
     ObservableList<String> serviceOptions = FXCollections.observableArrayList("Security", "Internal Transport", "External Transport", "Sanitation", "Maintenance", "Gift Shop", "Interpreter", "Information Technology");
     ObservableList<String> userOptions = FXCollections.observableArrayList("Staff", "Nurse", "Doctor", "Admin");
     ObservableList<String> languageOptions = FXCollections.observableArrayList("Spanish", "Italian", "Chinese", "ASL", "French");
-
 
     DBTableFormatter formatter = new DBTableFormatter();
     private final FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
@@ -167,8 +166,8 @@ public class AddPersonController implements Initializable {
             }
             formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_USERS)));
             if (doctorIDText.getText() != null && !(doctorIDText.getText().isEmpty())) {
-                rows = db.executeUpdate(new SQLEntry(DBConstants.UPDATE_DOCTOR_USERNAME, new ArrayList<>(Arrays.asList(username, doctorID))));
-            }
+				rows = db.executeUpdate(new SQLEntry(DBConstants.UPDATE_DOCTOR_USERNAME, new ArrayList<>(Arrays.asList(username, doctorID))));
+			}
             if (rows == 0) {
                 lblConfirmation.setTextFill(Color.RED);
                 lblConfirmation.setText("Submission failed");
@@ -205,11 +204,10 @@ public class AddPersonController implements Initializable {
                 log.error("SQL update affected more than 1 row.");
             }
             loaderHelper.showAndFade(lblConfirmation);
+			cache.cacheUsersFromDB();
+			cache.cacheDoctorsFromDB();
         }
-        formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_DOCTORS)));
-        formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_USERS)));
     }
-
 
     @FXML
     private void userSelected() {
@@ -275,10 +273,11 @@ public class AddPersonController implements Initializable {
         String lName = doctorLN.getText();
         String roomNum = officeText.getText();
         String additionalInfo = addlInfoText.getText();
-        if (db.executeUpdate(new SQLEntry(DBConstants.ADD_DOCTOR, new ArrayList<>(Arrays.asList(doctorID, fName, lName, null, roomNum, additionalInfo)))) == 0) {
+        int rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_DOCTOR, new ArrayList<>(Arrays.asList(doctorID, fName, lName, null, roomNum, additionalInfo))));
+        if (rows == 0) {
             confirmation.setTextFill(Color.RED);
             confirmation.setText("Submission failed");
-        } else {
+        } else if (rows == 1) {
             confirmation.setTextFill(Color.BLACK);
             confirmation.setText("Doctor Added");
             doctorFN.setText("");
@@ -286,9 +285,11 @@ public class AddPersonController implements Initializable {
             doctorIDText.setText("");
             officeText.setText("");
             addlInfoText.setText("");
-        }
+		} else {
+			log.error("SQL update affected more than 1 row.");
+		}
         loaderHelper.showAndFade(confirmation);
-        formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_DOCTORS)));
+		cache.cacheDoctorsFromDB();
     }
 }
 

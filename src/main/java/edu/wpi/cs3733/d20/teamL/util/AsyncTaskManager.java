@@ -50,6 +50,7 @@ public class AsyncTaskManager {
 
         Alert loading = new Alert(Alert.AlertType.NONE);
         loading.setResult(ButtonType.OK);
+        loading.setHeaderText("");
         ImageView spinner = new ImageView(new Image("edu/wpi/cs3733/d20/teamL/assets/spinner.gif"));
         spinner.setPreserveRatio(true);
         spinner.setFitWidth(40);
@@ -94,6 +95,7 @@ public class AsyncTaskManager {
     private static void showDoneDialogue(String message) {
         Alert done = new Alert(Alert.AlertType.INFORMATION);
         done.setContentText(message);
+		done.setHeaderText("");
         done.showAndWait();
     }
 }

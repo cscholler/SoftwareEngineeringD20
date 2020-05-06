@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamL.views.LoggedInView;
+package edu.wpi.cs3733.d20.teamL.views.controllers.logged_in;
 
 import java.util.ArrayList;
 import java.util.Arrays;

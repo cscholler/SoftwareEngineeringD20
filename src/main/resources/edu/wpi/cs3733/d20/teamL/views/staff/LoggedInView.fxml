@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #0D2E57;" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.LoggedInView.LoggedInViewController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #0D2E57;" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.logged_in.LoggedInViewController">
     <top>
         <GridPane prefHeight="173.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
             <columnConstraints>
@@ -164,7 +164,7 @@
                   </VBox>
                   <VBox fx:id="vMap111" alignment="TOP_CENTER">
                      <children>
-                        <JFXButton alignment="CENTER" contentDisplay="CENTER" maxHeight="250.0" maxWidth="250.0" minHeight="250.0" minWidth="250.0" onAction="#clearClicked" style="-fx-background-radius: 200; -fx-border-color: white; -fx-border-radius: 200; -fx-text-fill: white; -fx-font-size: 48;" styleClass="circle-button" text="☢" />
+                        <JFXButton alignment="CENTER" contentDisplay="CENTER" maxHeight="250.0" maxWidth="250.0" minHeight="250.0" minWidth="250.0" onAction="#rebuildClicked" style="-fx-background-radius: 200; -fx-border-color: white; -fx-border-radius: 200; -fx-text-fill: white; -fx-font-size: 48;" styleClass="circle-button" text="☢" />
                         <Label fx:id="lblMap111" text="Clear DB" />
                      </children>
                   </VBox>
