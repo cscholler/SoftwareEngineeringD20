@@ -77,7 +77,7 @@
                      <graphic>
                         <ImageView fitHeight="38.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../assets/map_editor/exportTable.png" />
+                              <Image url="@../../assets/map_editor/importTable.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -96,7 +96,7 @@
                      <graphic>
                         <ImageView fitHeight="38.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../assets/map_editor/importTable.png" />
+                              <Image url="@../../assets/map_editor/exportTable.png" />
                            </image>
                         </ImageView>
                      </graphic>

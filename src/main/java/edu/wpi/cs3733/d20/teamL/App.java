@@ -69,7 +69,6 @@ public class App extends Application {
 		homeScene.addEventHandler(Event.ANY, event -> startIdleTimer());
 		startIdleTimer();
 		startForceUpdateTimer();
-		startLogoutTimer();
 	}
 
 	@Override
