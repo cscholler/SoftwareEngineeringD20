@@ -156,6 +156,9 @@ public class DBConstants {
 	public static final String DROP_SERVICE_REQUEST_TABLE =
 			"DROP TABLE IF EXISTS Service_Requests";
 
+	public static final String DROP_RESERVATIONS_TABLE =
+			"DROP TABLE IF EXISTS Reservations";
+
 	public static final String ADD_NODE =
 			"INSERT INTO Nodes(id, x_pos, y_pos, floor, building, node_type, l_name, s_name)" +
 					"VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
