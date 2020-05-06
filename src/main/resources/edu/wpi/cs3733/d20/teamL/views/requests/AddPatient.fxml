@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="720.0" prefWidth="1080.0" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.LoggedInView.AddPatientController">
+    <top>
+      <HBox alignment="CENTER" style="-fx-background-color: #00032E;" BorderPane.alignment="CENTER" />
+    </top>
+    <bottom>
+        <HBox alignment="CENTER" prefHeight="142.0" prefWidth="1080.0" spacing="100.0" BorderPane.alignment="CENTER">
+            <children>
+                <JFXButton fx:id="btnSubmit" buttonType="RAISED" maxWidth="200.0" onAction="#btnSubmitClicked" prefHeight="31.0" prefWidth="200.0" styleClass="save-button-jfx" text="Submit" textAlignment="CENTER" textFill="WHITE">
+                    <font>
+                        <Font size="24.0" />
+                    </font>
+                </JFXButton>
+                <Label fx:id="lblConfirmation" styleClass="submission-failed-label-fx" text="Patient Submitted!">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                </Label>
+            </children>
+            <BorderPane.margin>
+                <Insets />
+            </BorderPane.margin>
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets>
+         <padding>
+            <Insets left="350.0" />
+         </padding>
+        </HBox>
+    </bottom>
+    <center>
+      <HBox alignment="CENTER" spacing="100.0" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets top="10.0" />
+         </BorderPane.margin>
+         <children>
+            <VBox alignment="CENTER" spacing="30.0">
+               <children>
+                        <JFXTextField fx:id="IDText" prefHeight="40.0" prefWidth="300.0" promptText="Patient ID" styleClass="text-field-jfx" />
+                        <JFXTextField fx:id="fNameText" prefHeight="40.0" promptText="Patient First Name " styleClass="text-field-jfx" />
+                        <JFXTextField fx:id="lNameText" prefHeight="40.0" promptText="Patient Last Name" styleClass="text-field-jfx" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" spacing="30.0">
+               <children>
+                        <JFXTextField fx:id="doctorIDText" prefHeight="40.0" promptText="Doctor ID" styleClass="text-field-jfx" />
+                        <JFXTextField fx:id="roomNumText" onKeyTyped="#autocomplete" prefHeight="40.0" promptText="Room Number" styleClass="text-field-jfx" />
+                  <JFXTextArea fx:id="addInfoText" promptText="Additonal Information" styleClass="text-area-jfx" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+    </center>
+</BorderPane>
