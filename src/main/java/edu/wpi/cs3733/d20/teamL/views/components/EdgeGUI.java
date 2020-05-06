@@ -1,11 +1,16 @@
 package edu.wpi.cs3733.d20.teamL.views.components;
 
 import edu.wpi.cs3733.d20.teamL.entities.Edge;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,12 +22,14 @@ public class EdgeGUI extends Line implements Highlightable {
     private NodeGUI source;
     private boolean selected = false;
 
+
     public EdgeGUI(int strokeWidth, Color nodeColor, Paint highLightColor, double highlightThickness) {
         this.setStrokeWidth(strokeWidth);
         this.strokeProperty().setValue(nodeColor);
         this.setHighlightColor(highLightColor);
         this.setHighlightThickness(highlightThickness);
         highlightGui.setMouseTransparent(true);
+
         //setMouseTransparent(true);
     }
 
@@ -103,6 +110,8 @@ public class EdgeGUI extends Line implements Highlightable {
         return highlightGui.isVisible();
     }
 
+    public Line getHighlightGUI() {return highlightGui;}
+
     public Collection<Node> getAllNodes() {
         Collection<javafx.scene.Node> retList = new ArrayList<>(2);
         retList.add(highlightGui);
@@ -175,4 +184,6 @@ public class EdgeGUI extends Line implements Highlightable {
     public Edge getEdge() {
         return edge;
     }
+
+
 }
