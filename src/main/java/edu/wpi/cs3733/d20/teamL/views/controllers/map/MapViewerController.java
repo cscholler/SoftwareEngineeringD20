@@ -553,50 +553,55 @@ public class MapViewerController {
 
         ArrayList<Node> subpath = path.getSubpaths().get(index);
 
-        if(!(subpath.get(0).getBuilding().equals(subpath.get(subpath.size()-1)))){
-            if(subpath.get(0).getBuilding().equals("Faulkner")) {
+        System.out.println("size: "+subpath.size());
+        if (!(subpath.get(0).getBuilding().equals(subpath.get(subpath.size() - 1).getBuilding()))) {
+            if (subpath.get(0).getBuilding().equals("Faulkner")) {
                 map.setMapImage(IMAGE_FTOM);
-            } else if(subpath.get(subpath.size()-1).getBuilding().equals("Faulkner")){
+            } else if (subpath.get(subpath.size() - 1).getBuilding().equals("Faulkner")) {
                 map.setMapImage(IMAGE_MTOF);
             }
 
+        } else {
+
+            if (!subpath.get(0).getBuilding().equals(map.getBuilding().getName()))
+                map.setBuilding(subpath.get(0).getBuilding());
+            if (subpath.get(0).getFloor() != map.getCurrentFloor().getFloor())
+                setFloor(subpath.get(0).getFloor());
+
+            double totalX = 0;
+            double totalY = 0;
+            double minX = 200000;
+            double maxX = 0;
+            double minY = 200000;
+            double maxY = 0;
+            for (Node node : subpath) {
+                double xPos = node.getPosition().getX();
+                double yPos = node.getPosition().getY();
+                double xPosGui = map.getNodeGUI(node).getLayoutX();
+                double yPosGui = map.getNodeGUI(node).getLayoutY();
+
+                totalX += xPosGui;
+                totalY += yPosGui;
+
+                if (xPos > maxX) maxX = xPos;
+                if (xPos < minX) minX = xPos;
+                if (yPos > maxY) maxY = yPos;
+                if (yPos < minY) minY = yPos;
+            }
+
+            double diffX = maxX - minX;
+            double diffY = maxY - minY;
+            double scale;
+
+            if (diffX > diffY) scale = Math.min(400 / diffX, 2);
+            else scale = Math.min(400 / diffY, 2);
+            System.out.println(scale);
+
+            totalX = totalX / subpath.size();
+            totalY = totalY / subpath.size();
+
+            map.setZoomLevelToPosition(scale, new Point2D(totalX, totalY));
+            highLightPath();
         }
-
-        setFloor(subpath.get(0).getFloor());
-
-        double totalX = 0;
-        double totalY = 0;
-        double minX = 200000;
-        double maxX = 0;
-        double minY = 200000;
-        double maxY = 0;
-        for (Node node : subpath) {
-            double xPos = node.getPosition().getX();
-            double yPos = node.getPosition().getY();
-            double xPosGui = map.getNodeGUI(node).getLayoutX();
-            double yPosGui = map.getNodeGUI(node).getLayoutY();
-
-            totalX += xPosGui;
-            totalY += yPosGui;
-
-            if (xPos > maxX) maxX = xPos;
-            if (xPos < minX) minX = xPos;
-            if (yPos > maxY) maxY = yPos;
-            if (yPos < minY) minY = yPos;
-        }
-
-        double diffX = maxX - minX;
-        double diffY = maxY - minY;
-        double scale;
-
-        if (diffX > diffY) scale = Math.min(400 / diffX, 5);
-        else scale = Math.min(400 / diffY, 5);
-        System.out.println(scale);
-
-        totalX = totalX / subpath.size();
-        totalY = totalY / subpath.size();
-
-        map.setZoomLevelToPosition(scale, new Point2D(totalX, totalY));
-        highLightPath();
     }
 }
