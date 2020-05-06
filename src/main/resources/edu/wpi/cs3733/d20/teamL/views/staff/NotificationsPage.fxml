@@ -19,7 +19,10 @@
             <Label fx:id="reqMessage" text="Request" BorderPane.alignment="CENTER">
                <font>
                   <Font size="20.0" />
-               </font></Label>
+               </font>
+               <BorderPane.margin>
+                  <Insets top="10.0" />
+               </BorderPane.margin></Label>
          </top>
          <center>
             <Label fx:id="addInfo" alignment="CENTER" contentDisplay="CENTER" text="Click on a notification to view the full message." BorderPane.alignment="TOP_LEFT">
@@ -100,7 +103,7 @@
                         <Font size="40.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="325.0" />
+                        <Insets left="480.0" />
                      </HBox.margin>
                   </Label>
                </children>
