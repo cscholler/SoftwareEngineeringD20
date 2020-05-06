@@ -267,14 +267,14 @@ public class MapViewerController {
             start = start.substring(0, start.length() - 15);
             buildingS = "Faulkner";
         }else if(start.contains("(" + MAIN)) {
-            start= start.substring(0, start.length()-10);
+            start= start.substring(0, start.length()-11);
             buildingS = MAIN;
         }
         if (end.contains("(Faulkner")) {
             end = end.substring(0, end.length() - 15);
             buildingE = "Faulkner";
         }else if(end.contains("(" + MAIN)) {
-            end= end.substring(0, end.length()-10);
+            end= end.substring(0, end.length()-11);
             buildingE = MAIN;
         }
 
@@ -307,7 +307,9 @@ public class MapViewerController {
 
         System.out.println("Here");
         hideAccordion();
+        hideTextualDirections();
         showTextualDirections();
+
     }
 
     /**
