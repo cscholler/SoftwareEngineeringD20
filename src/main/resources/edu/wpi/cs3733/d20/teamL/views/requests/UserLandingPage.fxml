@@ -34,7 +34,7 @@
                      <graphic>
                         <ImageView fitHeight="39.0" fitWidth="30.0" translateX="-5.0" translateY="2.0">
                            <image>
-                              <Image url="@../../staff_view/bellIconBlue.png" />
+                              <Image url="@../../assets/staff_view/bellIconBlue.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -54,7 +54,7 @@
                <children>
                   <ImageView fx:id="btnClose" fitHeight="25.0" fitWidth="25.0" onMouseClicked="#launchDefaultPane" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
                      <image>
-                        <Image url="@../../staff_view/close.png" />
+                        <Image url="@../../assets/staff_view/close.png" />
                      </image>
                   </ImageView>
                </children>
@@ -128,6 +128,14 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
+                        <JFXButton fx:id="btnAddPatient" onAction="#launchAddPatient" styleClass="services-button-jfx" text="Add Patient">
+                           <graphic>
+                              <ImageView fitHeight="50.0" fitWidth="50.0">
+                                 <image>
+                                    <Image url="@../../assets/service_icons/addPerson.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></JFXButton>
                         <JFXButton fx:id="btnSanitation" onAction="#launchSanitationPane" styleClass="services-button-jfx" text="Sanitation">
                            <graphic>
                               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
@@ -171,7 +179,6 @@
                                  </image>
                               </ImageView>
                            </graphic></JFXButton>
-                        <JFXButton fx:id="btnAddPatient" onAction="#launchAddPatient" styleClass="services-button-jfx" text="Add Patient" />
                      </children>
                   </VBox>
                </content>

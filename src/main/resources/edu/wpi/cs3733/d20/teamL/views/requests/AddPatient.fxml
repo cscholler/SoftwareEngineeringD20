@@ -16,20 +16,12 @@
     <bottom>
         <HBox alignment="CENTER" prefHeight="142.0" prefWidth="1080.0" spacing="100.0" BorderPane.alignment="CENTER">
             <children>
-                <JFXButton fx:id="btnCancel" buttonType="RAISED" maxWidth="200.0" onAction="#btnBackClicked" prefHeight="50.0" prefWidth="200.0" styleClass="cancel-button-jfx" text="Back" textAlignment="CENTER" textFill="WHITE">
-                    <font>
-                        <Font size="24.0" />
-                    </font>
-                    <HBox.margin>
-                        <Insets left="240.0" />
-                    </HBox.margin>
-                </JFXButton>
                 <JFXButton fx:id="btnSubmit" buttonType="RAISED" maxWidth="200.0" onAction="#btnSubmitClicked" prefHeight="31.0" prefWidth="200.0" styleClass="save-button-jfx" text="Submit" textAlignment="CENTER" textFill="WHITE">
                     <font>
                         <Font size="24.0" />
                     </font>
                 </JFXButton>
-                <Label fx:id="lblConfirmation" text="Patient Submitted!">
+                <Label fx:id="lblConfirmation" styleClass="submission-failed-label-fx" text="Patient Submitted!">
                     <font>
                         <Font size="16.0" />
                     </font>
@@ -41,6 +33,9 @@
             <opaqueInsets>
                 <Insets />
             </opaqueInsets>
+         <padding>
+            <Insets left="350.0" />
+         </padding>
         </HBox>
     </bottom>
     <center>
