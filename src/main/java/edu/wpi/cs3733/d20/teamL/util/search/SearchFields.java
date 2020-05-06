@@ -3,10 +3,12 @@ package edu.wpi.cs3733.d20.teamL.util.search;
 import com.jfoenix.controls.JFXAutoCompletePopup;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
+import edu.wpi.cs3733.d20.teamL.views.controllers.map.MapViewerController;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class SearchFields {
     private List<Node> nodeCache;
@@ -132,8 +134,25 @@ public class SearchFields {
      * @return If keyword is found it'll return that node, otherwise null if your node isn't found.
      */
     public Node getNode(String query) {
-        for (Node node : nodeCache) {
-            if (query.equals(node.getShortName()) || query.equals(node.getLongName())) return node;
+
+        String building = "";
+
+        if (query.contains("(Faulkner")) {
+            query = query.substring(0, query.length() - 15);
+            building = "Faulkner";
+        }else if(query.contains("(" + MapViewerController.MAIN)) {
+            query = query.substring(0, query.length() - 11);
+            building = MapViewerController.MAIN;
+        }
+
+        if (building.isEmpty()) {
+            for (Node node : nodeCache) {
+                if (query.equals(node.getShortName()) || query.equals(node.getLongName())) return node;
+            }
+        } else {
+            for (Node node : getNodesInBuilding(building)) {
+                if (query.equals(node.getShortName()) || query.equals(node.getLongName())) return node;
+            }
         }
         return null;
     }
@@ -143,5 +162,15 @@ public class SearchFields {
             if ((query.equals(node.getShortName()) || query.equals(node.getLongName())) && building.equals(node.getBuilding()) && floor.equals(node.getFloorAsString())) return node;
         }
         return null;
+    }
+
+    private List<Node> getNodesInBuilding(String building) {
+        List<Node> newNodes = new ArrayList<>();
+        for (Node node : nodeCache) {
+            if (node.getBuilding().equals(building))
+                newNodes.add(node);
+        }
+
+        return newNodes;
     }
 }

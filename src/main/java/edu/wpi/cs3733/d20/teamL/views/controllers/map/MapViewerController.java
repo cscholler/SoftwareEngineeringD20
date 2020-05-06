@@ -257,30 +257,9 @@ public class MapViewerController {
     public void navigate() {
         String start = startingPoint.getText();
         String end = destination.getText();
-        String buildingS;
-        String buildingE;
-        String floorS = start.substring(start.length() - 2, start.length() - 1);
-        String floorE = end.substring(end.length() - 2, end.length() - 1);
-
-
-        if (start.contains("(Faulkner")) {
-            start = start.substring(0, start.length() - 15);
-            buildingS = "Faulkner";
-        }else if(start.contains("(" + MAIN)) {
-            start= start.substring(0, start.length()-11);
-            buildingS = MAIN;
-        }
-        if (end.contains("(Faulkner")) {
-            end = end.substring(0, end.length() - 15);
-            buildingE = "Faulkner";
-        }else if(end.contains("(" + MAIN)) {
-            end= end.substring(0, end.length()-11);
-            buildingE = MAIN;
-        }
 
         Node startNode = sf.getNode(start);
         Node destNode = sf.getNode(end);
-
 
         if (!(startNode.getBuilding().equals(map.getBuilding().getName()))) {
             map.setBuilding(startNode.getBuilding());
