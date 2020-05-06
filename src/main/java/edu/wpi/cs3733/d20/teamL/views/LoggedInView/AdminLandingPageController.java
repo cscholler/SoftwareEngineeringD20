@@ -133,20 +133,11 @@ public class AdminLandingPageController implements Initializable {
         }
     }
 
-	@FXML
-	private void btnAddUserClicked() {
-		try {
-			Parent root = loaderFactory.getFXMLLoader("AddUser").load();
-			loaderFactory.setupScene(new Scene(root));
-		} catch (IOException ex) {
-			log.error("Encountered IOException", ex);
-		}
-	}
     @FXML
     private void addUserClicked() {
         try {
             Parent root = loaderFactory.getFXMLLoader("admin/AddPerson").load();
-            loaderFactory.setupScene(new Scene(root));
+			loaderFactory.setupPopup(new Stage(), new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
         }

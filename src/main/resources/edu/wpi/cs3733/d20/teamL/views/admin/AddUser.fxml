@@ -33,7 +33,7 @@
                            <font>
                               <Font size="15.0" />
                            </font></JFXTextField>
-                        <JFXComboBox fx:id="userCombo" focusColor="WHITE"  promptText="Type of User" style="-fx-background-color: white; -fx-font-size: 15; -fx-pref-height: 40;" unFocusColor="#ffffff00">
+                        <JFXComboBox fx:id="userCombo" focusColor="WHITE" promptText="Type of User" style="-fx-background-color: white; -fx-font-size: 15; -fx-pref-height: 40;" unFocusColor="#ffffff00">
                            <padding>
                               <Insets left="10.0" />
                            </padding></JFXComboBox>
