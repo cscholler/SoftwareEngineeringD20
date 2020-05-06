@@ -19,7 +19,6 @@ import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 public class App extends Application {
 	private final FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
 	private static final TimerManager timerManager = new TimerManager();
-	public static Timer clockTimer;
 	public static Timer forceCacheUpdateTimer;
 	public static Timer idleCacheUpdateTimer;
 	public static Timer idleLogoutTimer;
@@ -67,7 +66,6 @@ public class App extends Application {
 		stage.show();
 		FXMLLoaderFactory.getHistory().push(homeScene);
 		homeScene.addEventHandler(Event.ANY, event -> startIdleTimer());
-		clockTimer = timerManager.startTimer(timerManager::updateTime, 0, 1000);
 		startIdleTimer();
 		startForceUpdateTimer();
 	}

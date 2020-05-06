@@ -9,11 +9,10 @@ import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import edu.wpi.cs3733.d20.teamL.util.TableEntityWrapper;
-import javafx.application.Platform;
+import edu.wpi.cs3733.d20.teamL.util.TimerManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -22,7 +21,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.control.cell.TextFieldTreeTableCell;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -30,11 +28,6 @@ import javafx.util.Callback;
 import com.google.inject.Inject;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTreeTableColumn;
-import com.jfoenix.controls.JFXTreeTableView;
-import com.jfoenix.controls.RecursiveTreeItem;
-import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -44,21 +37,20 @@ import edu.wpi.cs3733.d20.teamL.entities.Gift;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.entities.User;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
-import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
-import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 import java.io.IOException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.ResourceBundle;
 
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
-import edu.wpi.cs3733.d20.teamL.util.TableEntityWrapper;
 
 @Slf4j
 public class AdminLandingPageController implements Initializable {
     private FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
+    private static final TimerManager timerManager = new TimerManager();
     private final ObservableList<String> tableOptions = FXCollections.observableArrayList("Map Nodes", "Map Edges", "Gift Inventory", "User Information", "Doctor Information");
 	private ArrayList<TableEntityWrapper.TableNode> editedNodes = new ArrayList<>();
 	private ArrayList<TableEntityWrapper.TableEdge> editedEdges = new ArrayList<>();
@@ -83,8 +75,6 @@ public class AdminLandingPageController implements Initializable {
 	@FXML
 	private JFXComboBox<String> tableSelector;
 	@FXML
-	private JFXButton btnChangePass;
-	@FXML
 	private Label timeLabel;
     @Inject
     private ILoginManager loginManager;
@@ -93,11 +83,9 @@ public class AdminLandingPageController implements Initializable {
     @Inject
 	private IDatabaseCache cache;
 
-	private final Timer timer = new Timer();
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-		timer.scheduleAtFixedRate(timerWrapper(this::updateTime), 0, 1000);
+		timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
 		tableSelector.setItems(tableOptions);
 		tableSelector.getSelectionModel().select(0);
 		hideAllTablesExceptCurrent("Nodes");
@@ -133,7 +121,7 @@ public class AdminLandingPageController implements Initializable {
     @FXML
     private void rebuildDatabaseClicked() {
         try {
-            Parent root = loaderFactory.getFXMLLoader("Admin/databaseDialogue").load();
+            Parent root = loaderFactory.getFXMLLoader("admin/RebuildDatabaseDialogue").load();
             loaderFactory.setupPopup(new Stage(), new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
@@ -143,7 +131,6 @@ public class AdminLandingPageController implements Initializable {
     @FXML
     private void addUserClicked() {
         try {
-            System.out.println("Got here");
             Parent root = loaderFactory.getFXMLLoader("admin/AddPerson").load();
 			loaderFactory.setupPopup(new Stage(), new Scene(root));
         } catch (IOException ex) {
@@ -151,47 +138,18 @@ public class AdminLandingPageController implements Initializable {
         }
     }
 
-
-    @FXML
-    public void importDBClicked() {
-        try {
-            Parent root = loaderFactory.getFXMLLoader("dialogues/ImportDialogue").load();
-            loaderFactory.setupPopup(new Stage(), new Scene(root));
-        } catch (IOException ex) {
-            log.error("Encountered IOException", ex);
-        }
-    }
-
 	@FXML
-	private void btnAddPatientClicked() {
+	private void btnAddDoctorClicked() {
 		try {
-			Parent root = loaderFactory.getFXMLLoader("AddPatient").load();
+			Parent root = loaderFactory.getFXMLLoader("admin/AddDoctor").load();
 			loaderFactory.setupScene(new Scene(root));
 		} catch (IOException ex) {
 			log.error("Encountered IOException", ex);
 		}
 	}
-    @FXML
-    public void saveDBClicked() {
-        try {
-            Parent root = loaderFactory.getFXMLLoader("dialogues/ExportDialogue").load();
-            loaderFactory.setupPopup(new Stage(), new Scene(root));
-        } catch (IOException ex) {
-            log.error("Encountered IOException", ex);
-        }
-    }
 
 	@FXML
 	public void btnImportClicked() {
-		try {
-			Parent root = loaderFactory.getFXMLLoader("dialogues/ImportDialogue").load();
-			loaderFactory.setupPopup(new Stage(), new Scene(root));
-		} catch (IOException ex) {
-			log.error("Encountered IOException", ex);
-		}
-	}
-	@FXML
-	public void importCSVClicked() {
 		try {
 			Parent root = loaderFactory.getFXMLLoader("dialogues/ImportDialogue").load();
 			loaderFactory.setupPopup(new Stage(), new Scene(root));
@@ -209,25 +167,6 @@ public class AdminLandingPageController implements Initializable {
 			log.error("Encountered IOException", ex);
 		}
 	}
-	@FXML
-	public void saveCSVClicked() {
-		try {
-			Parent root = loaderFactory.getFXMLLoader("dialogues/ExportDialogue").load();
-			loaderFactory.setupPopup(new Stage(), new Scene(root));
-		} catch (IOException ex) {
-			log.error("Encountered IOException", ex);
-		}
-	}
-
-    @FXML
-    private void btnRebuildClicked() {
-        try {
-            Parent root = loaderFactory.getFXMLLoader("Admin/databaseDialogue").load();
-            loaderFactory.setupPopup(new Stage(), new Scene(root));
-        } catch (IOException ex) {
-            log.error("Encountered IOException", ex);
-        }
-    }
 
     @FXML
 	private void btnSaveClicked() {
@@ -279,6 +218,13 @@ public class AdminLandingPageController implements Initializable {
 
 	private void loadNodesTable() {
 		JFXTreeTableColumn<TableEntityWrapper.TableNode, String> idCol = new JFXTreeTableColumn<>("id");
+		idCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableEntityWrapper.TableNode, String> param) -> {
+			if (idCol.validateValue(param)) {
+				return param.getValue().getValue().getID();
+			} else {
+				return idCol.getComputedValue(param);
+			}
+		});
 
 		JFXTreeTableColumn<TableEntityWrapper.TableNode, String> xPosCol = new JFXTreeTableColumn<>("x_pos");
 		xPosCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableEntityWrapper.TableNode, String> param) -> {
@@ -353,10 +299,8 @@ public class AdminLandingPageController implements Initializable {
 					final JFXButton btn = new JFXButton("X");;
 					{
 						btn.setOnAction(event -> {
-							TableEntityWrapper.TableNode deletedNode = nodesTable.getTreeItem(getIndex()).getValue();
-							//Not working
-							nodesTable.getTreeItem(getIndex()).getParent().getChildren().remove(deletedNode);
-							deletedNodes.add(deletedNode);
+							deletedNodes.add(nodesTable.getTreeItem(getIndex()).getValue());
+							nodesTable.getTreeItem(getIndex()).getParent().getChildren().remove(nodesTable.getTreeItem(getIndex()));
 						});
 					}
 
@@ -503,12 +447,11 @@ public class AdminLandingPageController implements Initializable {
 			@Override
 			public TreeTableCell<TableEntityWrapper.TableEdge, String> call(final TreeTableColumn<TableEntityWrapper.TableEdge, String> param) {
 				return new TreeTableCell<>() {
-					final JFXButton btn = new JFXButton("X");;
+					final JFXButton btn = new JFXButton("X");
 					{
 						btn.setOnAction(event -> {
-							TableEntityWrapper.TableEdge deletedEdge = edgesTable.getTreeItem(getIndex()).getValue();
-							edgesTable.getTreeItem(getIndex()).getParent().getChildren().remove(deletedEdge);
-							deletedEdges.add(deletedEdge);
+							deletedEdges.add(edgesTable.getTreeItem(getIndex()).getValue());
+							edgesTable.getTreeItem(getIndex()).getParent().getChildren().remove(edgesTable.getTreeItem(getIndex()));
 						});
 					}
 
@@ -630,9 +573,8 @@ public class AdminLandingPageController implements Initializable {
 					final JFXButton btn = new JFXButton("X");;
 					{
 						btn.setOnAction(event -> {
-							TableEntityWrapper.TableGift deletedGift = giftsTable.getTreeItem(getIndex()).getValue();
-							giftsTable.getTreeItem(getIndex()).getParent().getChildren().remove(deletedGift);
-							deletedGifts.add(deletedGift);
+							deletedGifts.add(giftsTable.getTreeItem(getIndex()).getValue());
+							giftsTable.getTreeItem(getIndex()).getParent().getChildren().remove(giftsTable.getTreeItem(getIndex()));
 						});
 					}
 
@@ -785,9 +727,8 @@ public class AdminLandingPageController implements Initializable {
 					final JFXButton btn = new JFXButton("X");;
 					{
 						btn.setOnAction(event -> {
-							TableEntityWrapper.TableUser deletedUser = usersTable.getTreeItem(getIndex()).getValue();
-							usersTable.getTreeItem(getIndex()).getParent().getChildren().remove(deletedUser);
-							deletedUsers.add(deletedUser);
+							deletedUsers.add(usersTable.getTreeItem(getIndex()).getValue());
+							usersTable.getTreeItem(getIndex()).getParent().getChildren().remove(usersTable.getTreeItem(getIndex()));
 						});
 					}
 
@@ -952,9 +893,8 @@ public class AdminLandingPageController implements Initializable {
 					final JFXButton btn = new JFXButton("X");;
 					{
 						btn.setOnAction(event -> {
-							TableEntityWrapper.TableDoctor deletedDoctor = doctorsTable.getTreeItem(getIndex()).getValue();
-							doctorsTable.getTreeItem(getIndex()).getParent().getChildren().remove(deletedDoctor);
-							deletedDoctors.add(deletedDoctor);
+							deletedDoctors.add(doctorsTable.getTreeItem(getIndex()).getValue());
+							doctorsTable.getTreeItem(getIndex()).getParent().getChildren().remove(doctorsTable.getTreeItem(getIndex()));
 						});
 					}
 
@@ -1130,27 +1070,13 @@ public class AdminLandingPageController implements Initializable {
 		table.setMouseTransparent(!visible);
 	}
 
-
 	@FXML
-	private void changePasswordClicked(ActionEvent actionEvent) {
+	private void changePasswordClicked() {
 		try {
 			Parent root = loaderFactory.getFXMLLoader("admin/ChangePassword").load();
 			loaderFactory.setupPopup(new Stage(), new Scene(root));
 		} catch (IOException ex) {
 			log.error("Encountered IOException", ex);
 		}
-	}
-
-	private TimerTask timerWrapper(Runnable r) {
-		return new TimerTask() {
-			@Override
-			public void run() {
-				r.run();
-			}
-		};
-	}
-
-	private void updateTime() {
-		Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("E, MMM d | h:mm aa").format(new Date())));
 	}
 }
