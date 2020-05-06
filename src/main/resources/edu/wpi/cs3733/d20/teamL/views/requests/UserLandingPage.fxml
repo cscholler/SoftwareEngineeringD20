@@ -171,15 +171,14 @@
                                  </image>
                               </ImageView>
                            </graphic></JFXButton>
-                        <JFXButton fx:id="btnAPI" onAction="#launchAPIntment" styleClass="services-button-jfx" text="Appointment">
+                        <JFXButton fx:id="btnAddPatient" onAction="#launchAddPatient" styleClass="services-button-jfx" text="Add Patient" visible="false">
                            <graphic>
-                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="50.0" fitWidth="50.0">
                                  <image>
-                                    <Image url="@../../assets/service_icons/schedulerService.png" />
+                                    <Image url="@../../assets/service_icons/addPerson.png" />
                                  </image>
                               </ImageView>
-                           </graphic>
-                        </JFXButton>
+                           </graphic></JFXButton>
                      </children>
                   </VBox>
                </content>
