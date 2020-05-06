@@ -67,17 +67,19 @@ public class TimerManager {
 	}
 
 	public void logOutIfNoInput() {
-		Platform.runLater(() -> {
-			log.info("No input for 1 minute. Logging out...");
-			loginManager.logOut(true);
-			FXMLLoaderFactory.resetHistory();
-			try {
-				Parent root = loaderFactory.getFXMLLoader("map_viewer/MapViewer").load();
-				loaderFactory.setupScene(new Scene(root));
-			} catch (IOException ex) {
-				log.error("Encountered IOException", ex);
-			}
-		});
+		if (!AsyncTaskManager.isTaskRunning) {
+			Platform.runLater(() -> {
+				log.info("No input for 1 minute. Logging out...");
+				loginManager.logOut(true);
+				FXMLLoaderFactory.resetHistory();
+				try {
+					Parent root = loaderFactory.getFXMLLoader("map_viewer/MapViewer").load();
+					loaderFactory.setupScene(new Scene(root));
+				} catch (IOException ex) {
+					log.error("Encountered IOException", ex);
+				}
+			});
+		}
 	}
 
 	public Timer startTimer(VoidMethod updateFunction, long delay, long period) {

@@ -16,8 +16,8 @@ import java.util.concurrent.FutureTask;
 
 @Slf4j
 public class AsyncTaskManager {
-
     private static final ForkJoinPool forkJoinPool = new ForkJoinPool();
+    public static boolean isTaskRunning = false;
 
     public static ForkJoinTask newTask(VoidMethod task) {
         ForkJoinTask newForkJoinTask = new ForkJoinTask() {
@@ -36,8 +36,9 @@ public class AsyncTaskManager {
                 return true;
             }
         };
-
+		isTaskRunning = true;
         forkJoinPool.execute(newForkJoinTask);
+        isTaskRunning = false;
 
         return newForkJoinTask;
     }
