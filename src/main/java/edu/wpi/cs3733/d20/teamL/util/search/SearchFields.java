@@ -154,7 +154,9 @@ public class SearchFields {
             query = query.substring(0, query.length() - 15);
             building = "Faulkner";
         }else if(query.contains("(" + MapViewerController.MAIN)) {
-            query = query.substring(0, query.length() - 11);
+            if(query.contains("L2") || query.contains("L1"))
+                query = query.substring(0, query.length() - 12);
+            else  query = query.substring(0, query.length() - 11);
             building = MapViewerController.MAIN;
         }
 

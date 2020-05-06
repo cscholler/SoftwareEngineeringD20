@@ -150,7 +150,7 @@ public class MapViewerController {
 
         setFloor(2);
 
-        map.setZoomLevel(0.25);
+        map.setZoomLevel(0.25 * App.UI_SCALE);
         map.init();
 
         // Populate autocomplete
@@ -226,7 +226,7 @@ public class MapViewerController {
         int prevFloor = map.getFloor();
         generateFloorButtons();
         setFloor(Math.max(map.getBuilding().getMinFloor(), Math.min(prevFloor, map.getBuilding().getMaxFloor())));
-        map.setZoomLevel(.25);
+        map.setZoomLevel(.25 * App.UI_SCALE);
         if (!path.getPathNodes().isEmpty()) highLightPath();
     }
 
@@ -315,6 +315,7 @@ public class MapViewerController {
             map.resetNodeVisibility(start);
             map.resetNodeVisibility(end);
         }
+        path.getPathNodes().clear();
 
         path = pathfinderService.pathfind(map.getAllNodes(), source, destination);
         highLightPath();
@@ -624,12 +625,12 @@ public class MapViewerController {
             }
 
             generateFloorButtons();
-            map.setZoomLevel(.25);
+            map.setZoomLevel(.25 * App.UI_SCALE);
         } else {
             if (!(subpath.get(0).getBuilding().equals(map.getBuilding().getName()))) {
                 map.setBuilding(subpath.get(0).getBuilding());
                 generateFloorButtons();
-                map.setZoomLevel(.25);
+                map.setZoomLevel(.25 * App.UI_SCALE);
                 goToSelected();
             }
             if (!(subpath.get(0).getFloorAsString().equals(map.getFloor())))

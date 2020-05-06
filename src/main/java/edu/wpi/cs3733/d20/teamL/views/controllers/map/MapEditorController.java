@@ -127,7 +127,7 @@ public class MapEditorController {
         map.init();
         openFromDB();
 
-        map.setZoomLevel(0.65);
+        map.setZoomLevel(0.65 * App.UI_SCALE);
 
         // Add options for buildings and select Faulkner by default
         buildingChooser.getItems().addAll("Faulkner", MapViewerController.MAIN);
@@ -143,8 +143,6 @@ public class MapEditorController {
         //Hides the edges editor VBox
         nodeConnectionsTab.setPrefWidth(0);
         nodeConnectionsTab.setVisible(false);
-
-        map.recalculatePositions();
 
         eraser.setDisableAnimation(true);
 

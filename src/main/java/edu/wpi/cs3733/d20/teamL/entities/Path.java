@@ -151,7 +151,7 @@ public class Path implements Iterable<Node> {
             subpath.add(curr);
 
             if (curr.getType().equals("ELEV") && next.getType().equals("ELEV")) {
-                message.add("Take the elevator to floor " + next.getFloor() + ".");
+                message.add("Take the elevator to floor " + next.getFloorAsString() + ".");
 
                 lastRoom = null;
                 rights = 0;
@@ -159,7 +159,7 @@ public class Path implements Iterable<Node> {
                 subpaths.add(addSubPath(subpath));
                 subpath.clear();
             } else if (curr.getType().equals("STAI") && next.getType().equals("STAI")) {
-                message.add("Take the stairs to floor " + next.getFloor() + ".");
+                message.add("Take the stairs to floor " + next.getFloorAsString() + ".");
 
                 lastRoom = null;
                 rights = 0;

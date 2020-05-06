@@ -62,6 +62,7 @@ public class PathfinderService implements IPathfinderService {
      * @return a list of Nodes in representing the path between source and destination (inclusive).
      */
     public Path pathfind(Graph graph, Node source, Node destination) {
+        priorityQueue.clear();
         switch (pathfindingMethod) {
             default:
             case DSPF:
