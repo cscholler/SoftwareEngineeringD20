@@ -109,7 +109,7 @@ public class MapViewerController {
     private Collection<String> retailNodes = new ArrayList<>();
     private Collection<String> confNodes = new ArrayList<>();
     
-    private final String MAIN = "Main";
+    public static final String MAIN = "Main";
 
     @FXML
     private void initialize() {
