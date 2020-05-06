@@ -171,6 +171,7 @@
                                  </image>
                               </ImageView>
                            </graphic></JFXButton>
+                        <JFXButton fx:id="btnAddPatient" onAction="#launchAddPatient" styleClass="services-button-jfx" text="Add Patient" />
                      </children>
                   </VBox>
                </content>

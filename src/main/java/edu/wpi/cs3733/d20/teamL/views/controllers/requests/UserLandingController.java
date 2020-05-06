@@ -25,6 +25,7 @@ import java.util.TimerTask;
 @Slf4j
 public class UserLandingController {
     public ImageView btnClose;
+    public JFXButton btnAddPatient;
     FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
     @FXML
     private Label timeLabel, requestLabel, userLabel;
@@ -125,8 +126,14 @@ public class UserLandingController {
         btnOnCallBed.setStyle("-fx-background-color: #DCDCDC");
     }
 
+    @FXML
+    private void launchAddPatient() throws IOException {
+        resetAndLoadPane("AddPatient", "Add Patient");
+        btnAddPatient.setStyle("-fx-background-color: #DCDCDC");
+    }
+
     private void resetAndLoadPane(String regionName, String labelText) throws IOException {
-        JFXButton[] allButtons = new JFXButton[]{btnGift, btnSecurity, btnSanitation, btnMaintenance, btnIT, btnInternal, btnExternal, btnInterpreter, btnMedication, btnOnCallBed, btnReflectionRoom};
+        JFXButton[] allButtons = new JFXButton[]{btnGift, btnSecurity, btnSanitation, btnMaintenance, btnIT, btnInternal, btnExternal, btnInterpreter, btnMedication, btnOnCallBed, btnReflectionRoom, btnAddPatient};
         for (JFXButton currButton:allButtons) {
             currButton.setStyle("-fx-background-color: white;");
         }

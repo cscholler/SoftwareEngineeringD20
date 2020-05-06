@@ -62,8 +62,8 @@
     -fx-background-color: WHITE;
     -fx-pref-width: 385;
     -fx-max-width: 385;
-    -fx-pref-height: 100;
-    -fx-max-height: 100;
+    -fx-pref-height: 75;
+    -fx-max-height: 75;
     -fx-alignment: center-left;
     -jfx-button-type: RAISED;
 }
