@@ -46,7 +46,7 @@ public class MapEditorController {
     @FXML
     JFXButton pathFind, btnCancel, btnSave, saveToDB, saveToCSV, open, node, saveOptions, loadOptions, pathfindingOptions, floorUp, floorDown;
     @FXML
-    JFXButton hall, elev, rest, stai, dept, labs, info, conf, exit, retl, serv;
+    JFXButton hall, elev, rest, stai, dept, labs, info, conf, exit, retl, serv, kios;
     @FXML
     JFXToggleNode eraser;
     @FXML
@@ -83,7 +83,7 @@ public class MapEditorController {
     private char pathFindingAlg;
     private Path path = new Path();
 
-    private final List<String> types = Arrays.asList("HALL", "ELEV", "REST", "STAI", "DEPT", "LABS", "INFO", "CONF", "EXIT", "RETL", "SERV");
+    private final List<String> types = Arrays.asList("HALL", "ELEV", "REST", "STAI", "DEPT", "LABS", "INFO", "CONF", "EXIT", "RETL", "SERV", "KIOS");
     private int defaultFloor = 2;
     private String defaultBuilding = "Faulkner";
 
@@ -502,6 +502,10 @@ public class MapEditorController {
             newNode.setType("SERV");
             newNode.setLongName("New Service Room");
             newNode.setShortName("Service Room");
+        } else if (event.getSource() == kios) {
+        newNode.setType("KIOS");
+        newNode.setLongName("New Kiosk " + newNode.getFloor());
+        newNode.setShortName("Kiosk" + newNode.getFloor());
         }
 
         newNode.setId(map.getCurrentFloor().getUniqueNodeID(newNode));

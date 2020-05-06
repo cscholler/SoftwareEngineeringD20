@@ -684,7 +684,7 @@ public class MapPane extends ScrollPane {
             } catch (IllegalArgumentException ex) {
                 nodeGUI.getCircle().setFill(nodeColor);
             }
-            List<String> visibleNodeTypes = Arrays.asList("EXIT", "REST", "ELEV", "STAI", "INFO", "RETL");
+            List<String> visibleNodeTypes = Arrays.asList("EXIT", "REST", "ELEV", "STAI", "INFO", "RETL", "KIOS");
             if (!visibleNodeTypes.contains(nodeGUI.getNode().getType()))
                 nodeGUI.setVisible(false);
         }
