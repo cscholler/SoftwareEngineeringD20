@@ -94,8 +94,8 @@
     -fx-max-height: 40;
     -fx-pref-width: 240;
     -fx-background-radius: 0;
-    -fx-focus-color: white;
-    -fx-unfocus-color: white;
+    -jfx-focus-color: white;
+    -jfx-unfocus-color: white;
     -fx-background-color: white;
 }
 
