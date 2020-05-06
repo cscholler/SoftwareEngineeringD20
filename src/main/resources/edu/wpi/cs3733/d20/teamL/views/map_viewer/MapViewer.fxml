@@ -25,7 +25,7 @@
                       <children>
                           <HBox alignment="CENTER" prefHeight="40.0" prefWidth="300.0" style="-fx-border-radius: 10; -fx-background-radius: 10;">
                               <children>
-                                  <JFXTextField fx:id="startingPoint" focusColor="WHITE" labelFloat="true" maxHeight="30.0" onKeyTyped="#startingPointAutocomplete" prefHeight="22.0" promptText="Starting Point" styleClass="search-bar-text-field-jfx" text="Kiosk  - (Faulkner 3)" unFocusColor="WHITE">
+                                  <JFXTextField fx:id="startingPoint" focusColor="WHITE" maxHeight="30.0" onKeyTyped="#startingPointAutocomplete" prefHeight="22.0" promptText="Starting Point" styleClass="search-bar-text-field-jfx" text="Kiosk  - (Faulkner 3)" unFocusColor="WHITE">
                                       <font>
                                           <Font size="16.0" />
                                       </font>
@@ -54,7 +54,7 @@
                           </HBox>
                           <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="300.0" style="-fx-border-radius: 10; -fx-background-radius: 10;">
                               <children>
-                                  <JFXTextField fx:id="destination" focusColor="WHITE" labelFloat="true" maxHeight="30.0" onKeyTyped="#destinationAutocomplete" promptText="Destination" styleClass="search-bar-text-field-jfx" unFocusColor="WHITE">
+                                  <JFXTextField fx:id="destination" focusColor="WHITE" maxHeight="30.0" onKeyTyped="#destinationAutocomplete" promptText="Destination" styleClass="search-bar-text-field-jfx" unFocusColor="WHITE">
                                       <font>
                                           <Font size="16.0" />
                                       </font>
@@ -180,11 +180,16 @@
                   <URL value="@../../css/MapStyles.css" />
                </stylesheets>
                <children>
-                  <Label text="Where to?" textFill="WHITE">
+                  <Label text="Welcome to" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="68.0" />
                      </font>
                   </Label>
+                  <ImageView fitHeight="75.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../assets/home_page/BWH%20logo.png" />
+                     </image>
+                  </ImageView>
                </children>
             </HBox>
             <Label fx:id="timeLabel" alignment="CENTER" prefHeight="64.0" styleClass="bottom-bar-time-label-fx" text="Label" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="18.0">
