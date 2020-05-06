@@ -43,7 +43,7 @@ public class AddPersonController implements Initializable {
 
     //for user
     ObservableList<String> serviceOptions = FXCollections.observableArrayList("Security", "Internal Transport", "External Transport", "Sanitation", "Maintenance", "Gift Shop", "Interpreter", "Information Technology");
-    ObservableList<String> userOptions = FXCollections.observableArrayList("staff", "Nurse", "Doctor", "admin");
+    ObservableList<String> userOptions = FXCollections.observableArrayList("Staff", "Nurse", "Doctor", "Admin");
     ObservableList<String> languageOptions = FXCollections.observableArrayList("Spanish", "Italian", "Chinese", "ASL", "French");
 
 
@@ -95,7 +95,7 @@ public class AddPersonController implements Initializable {
 
         switch (userCombo.getValue()) {
             default:
-            case "staff":
+            case "Staff":
                 type = "0";
                 break;
             case "Nurse":
@@ -104,7 +104,7 @@ public class AddPersonController implements Initializable {
             case "Doctor":
                 type = "2";
                 break;
-            case "admin":
+            case "Admin":
                 type = "3";
         }
         int rows = 0;
@@ -207,7 +207,7 @@ public class AddPersonController implements Initializable {
     @FXML
     private void userSelected() {
         String user = userCombo.getValue();
-        if (user.equals("staff")) {
+        if (user.equals("Staff")) {
             managerBox.setVisible(true);
             managerBox.setDisable(false);
             if (managerBox.isSelected()) {
