@@ -14,18 +14,20 @@ import lombok.extern.slf4j.Slf4j;
 public class DatabaseCache implements IDatabaseCache {
     private ArrayList<Node> nodeCache = new ArrayList<>();
     private ArrayList<Edge> edgeCache = new ArrayList<>();
+	private ArrayList<Gift> giftCache = new ArrayList<>();
+	private ArrayList<User> userCache = new ArrayList<>();
+	private ArrayList<Doctor> doctorCache = new ArrayList<>();
+	private Map<String, Integer> cartCache = new HashMap<>();
+
     private ArrayList<Node> editedNodes = new ArrayList<>();
     private ArrayList<Node> addedNodes = new ArrayList<>();
     private ArrayList<Edge> addedEdges = new ArrayList<>();
     private ArrayList<Node> deletedNodes = new ArrayList<>();
     private ArrayList<Edge> deletedEdges = new ArrayList<>();
 
-    private ArrayList<Gift> giftCache = new ArrayList<>();
-    private Map<String, Integer> cartCache = new HashMap<>();
 
-    private ArrayList<User> userCache = new ArrayList<>();
 
-    private ArrayList<Doctor> doctorCache = new ArrayList<>();
+
 
     @Inject
     private IDatabaseService db;
