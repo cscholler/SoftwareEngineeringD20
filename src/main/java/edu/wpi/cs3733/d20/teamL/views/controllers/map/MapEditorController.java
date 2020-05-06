@@ -709,7 +709,7 @@ public class MapEditorController {
     @FXML
     private void btnTableClicked() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("Admin/AdminView").load();
+            Parent root = loaderHelper.getFXMLLoader("admin/AdminView").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
