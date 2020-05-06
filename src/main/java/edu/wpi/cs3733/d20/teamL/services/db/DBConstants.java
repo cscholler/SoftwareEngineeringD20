@@ -27,11 +27,11 @@ public class DBConstants {
 					"id VARCHAR(16) NOT NULL PRIMARY KEY, " +
 					"x_pos DOUBLE NOT NULL, " +
 					"y_pos DOUBLE NOT NULL, " +
-					"floor CHAR(1) NOT NULL, " +
+					"floor CHAR(2) NOT NULL, " +
 					"building VARCHAR(64) NOT NULL, " +
 					"node_type CHAR(4) NOT NULL, " +
 					"l_name VARCHAR(64) NOT NULL, " +
-					"s_name VARCHAR(32) NOT NULL)";
+					"s_name VARCHAR(64) NOT NULL)";
 
 	public static final String CREATE_EDGE_TABLE =
 			"CREATE TABLE Edges(" +
@@ -120,6 +120,15 @@ public class DBConstants {
 					"status CHAR(1) NOT NULL, " +
 					"date_and_time CHAR(19) NOT NULL)";
 
+	public static final String CREATE_RESERVATIONS_TABLE =
+			"CREATE TABLE Reservations(" +
+					"id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
+					"username VARCHAR(32) NOT NULL REFERENCES Users(username), " +
+					"place VARCHAR(32) NOT NULL, " +
+					"date CHAR(10) NOT NULL, " +
+					"start_time CHAR(5) NOT NULL, " +
+					"end_time CHAR(5) NOT NULL)";
+
 	public static final String DROP_NODE_TABLE =
 			"DROP TABLE IF EXISTS Nodes";
 
@@ -182,6 +191,10 @@ public class DBConstants {
 	public static final String ADD_SERVICE_REQUEST =
 			"INSERT INTO Service_Requests(patient_id, request_username, assignee_username, location, service, type, notes, status, date_and_time)" +
 					"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+	public static final String ADD_ROOM_REQUEST =
+			"INSERT INTO Reservations(username, place, date, start_time, end_time)" +
+					"VALUES(?, ?, ?, ?, ?)";
 
 	public static final String SELECT_ALL_NODES =
 			"SELECT * " +
@@ -308,6 +321,11 @@ public class DBConstants {
 					"FROM Service_Requests " +
 					"WHERE service = ?";
 
+	public static final String GET_ALL_ROOM_REQUESTS =
+			"SELECT * " +
+					"FROM Reservations "+
+					"WHERE place = ? AND date = ?";
+
 	public static final String UPDATE_NODE =
 			"UPDATE Nodes " +
 					"SET x_pos = ?, y_pos = ?, floor = ?, building = ?, node_type = ?, l_name = ?, s_name = ? " +
@@ -320,17 +338,22 @@ public class DBConstants {
 
 	public static final String UPDATE_GIFT =
 			"UPDATE Gifts " +
+					"SET type = ?, subtype = ?, description = ?, inventory = ?" +
+					"WHERE id = ?";
+
+	public static final String UPDATE_GIFT_INVENTORY =
+			"UPDATE Gifts " +
 					"SET inventory = ?" +
+					"WHERE id = ?";
+
+	public static final String UPDATE_USER =
+			"UPDATE Users " +
+					"SET f_name = ?, l_name = ?, username = ?, acct_type = ?, services = ?, manager = ? " +
 					"WHERE id = ?";
 
 	public static final String UPDATE_USER_NAME =
 			"UPDATE Users " +
 					"SET f_name = ?, l_name = ? " +
-					"WHERE id = ?";
-
-	public static final String UPDATE_DOCTOR_USERNAME =
-			"UPDATE Doctors " +
-					"SET username = ?" +
 					"WHERE id = ?";
 
 	public static final String UPDATE_USER_PASSWORD =
@@ -341,6 +364,16 @@ public class DBConstants {
 	public static final String UPDATE_USER_ACCT_TYPE =
 			"UPDATE Users " +
 					"SET acct_type = ? " +
+					"WHERE id = ?";
+
+	public static final String UPDATE_DOCTOR =
+			"UPDATE Doctors " +
+					"SET f_name = ?, l_name = ?, username = ?, office_id = ?. addl_info = ? " +
+					"WHERE id = ?";
+
+	public static final String UPDATE_DOCTOR_USERNAME =
+			"UPDATE Doctors " +
+					"SET username = ? " +
 					"WHERE id = ?";
 
 	public static final String UPDATE_GIFT_DELIVERY_REQUEST =
@@ -409,6 +442,18 @@ public class DBConstants {
 
 	public static final String REMOVE_EDGE =
 			"DELETE FROM Edges " +
+					"WHERE id = ?";
+
+	public static final String REMOVE_USER =
+			"DELETE FROM Users " +
+					"WHERE id = ?";
+
+	public static final String REMOVE_DOCTOR =
+			"DELETE FROM Doctors " +
+					"WHERE id = ?";
+
+	public static final String REMOVE_GIFT =
+			"DELETE FROM Gifts " +
 					"WHERE id = ?";
 
 	public static final String REMOVE_GIFT_DELIVERY_REQUEST =

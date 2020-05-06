@@ -5,11 +5,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class Edge {
-
-    //TODO make private & getters/setters
-    private Node source;
-    private Node destination;
-    private String id;
+	private String id;
+    Node source;
+    Node destination;
 
     private HashMap<String, Object> data = new HashMap<>();
 
@@ -20,8 +18,16 @@ public class Edge {
     }
 
     public double getLength() {
-        return source.getPosition().distance(destination.getPosition()) + (Math.abs(source.getFloor() - destination.getFloor()) * 100);
+        return source.distanceTo(destination);
     }
+
+	public String getID() {
+		return id;
+	}
+
+	public void setID(String id) {
+		this.id = id;
+	}
 
     public Node getDestination() {
         return destination;
@@ -29,14 +35,6 @@ public class Edge {
 
     public void setDestination(Node destination) {
         this.destination = destination;
-    }
-
-    public String getID() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     /**

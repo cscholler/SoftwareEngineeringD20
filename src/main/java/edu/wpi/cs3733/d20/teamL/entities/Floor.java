@@ -22,6 +22,10 @@ public class Floor extends Graph {
         return floor;
     }
 
+    public String getFloorAsString() {
+        return Node.floorIntToString(this.floor);
+    }
+
     /**
      * Sets the floor to a given number to restrict all incoming nodes to that floor.
      *
@@ -38,9 +42,7 @@ public class Floor extends Graph {
     public void addNode(Node newNode) {
         String name = newNode.getID();
 
-        if (floor == 0)
-            floor = newNode.getFloor();
-        else if (floor != newNode.getFloor()) {
+        if (floor != newNode.getFloor()) {
             throw new IllegalArgumentException("A node at floor " + newNode.getFloor() + " cannot be added to floor " + getFloor());
         }
 

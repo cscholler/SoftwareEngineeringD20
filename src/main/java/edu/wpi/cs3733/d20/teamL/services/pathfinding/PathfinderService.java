@@ -33,7 +33,10 @@ public class PathfinderService implements IPathfinderService {
         public double absoluteDist() {
             if (Integer.MAX_VALUE - shortestPath < distFromDest) return Integer.MAX_VALUE;
 
-            return shortestPath + distFromDest;
+            if (pathfindingMethod != PathfindingMethod.DSPF)
+                return shortestPath + distFromDest;
+            else
+                return shortestPath;
         }
     }
 
@@ -44,7 +47,7 @@ public class PathfinderService implements IPathfinderService {
     private boolean hasCoords = false;
 
     public enum PathfindingMethod {
-        Astar, BFS, DFS
+        Astar, BFS, DFS, DSPF
     }
 
 
@@ -61,6 +64,7 @@ public class PathfinderService implements IPathfinderService {
     public Path pathfind(Graph graph, Node source, Node destination) {
         switch (pathfindingMethod) {
             default:
+            case DSPF:
             case Astar:
                 return aStarPathFind(graph, source, destination);
             case BFS:
@@ -91,9 +95,7 @@ public class PathfinderService implements IPathfinderService {
         // Calculate the distance of each node from the destination if coordinates are in the data
         if (hasCoords) {
             for (NodeEntry entry : priorityQueue) {
-                double twoDimensionalDistance = entry.node.getPosition().distance(destination.getPosition());
-
-                entry.distFromDest = twoDimensionalDistance + Math.abs(entry.node.getFloor() - destination.getFloor()) * 100;
+                entry.distFromDest = entry.node.distanceTo(destination);
             }
         }
 
@@ -167,9 +169,11 @@ public class PathfinderService implements IPathfinderService {
     }
 
     private void setShortestPath(NodeEntry nodeEntry, double newShortestPath) {
-        priorityQueue.remove(nodeEntry);
-        nodeEntry.shortestPath = newShortestPath;
-        priorityQueue.add(nodeEntry);
+        if(nodeEntry != null) {
+            priorityQueue.remove(nodeEntry);
+            nodeEntry.shortestPath = newShortestPath;
+            priorityQueue.add(nodeEntry);
+        }
     }
 
     @Override

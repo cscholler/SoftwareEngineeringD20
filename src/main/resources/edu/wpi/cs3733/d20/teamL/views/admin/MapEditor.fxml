@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXNodesList?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXToggleNode?>
 <?import java.lang.String?>
+<?import java.net.URL?>
 <?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ComboBox?>
@@ -20,7 +22,7 @@
 
 <?import edu.wpi.cs3733.d20.teamL.views.components.MapPane?>
 
-<BorderPane fx:id="root" prefHeight="720" prefWidth="1280" stylesheets="@../../css/MapStyles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.map.MapEditorController">
+<BorderPane fx:id="root" prefHeight="720" prefWidth="1280" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.map.MapEditorController">
     <center>
     </center>
    <right>
@@ -88,6 +90,7 @@
                                                  <String fx:id="EXIT" fx:value="Exit/Entrance" />
                                                  <String fx:id="RETL" fx:value="Food/Shops" />
                                                  <String fx:id="SERV" fx:value="Non-medical Services" />
+                                                 <String fx:id="KIOS" fx:value="Kiosk" />
                                              </FXCollections>
                                          </items>
                                          <value>
@@ -388,6 +391,18 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
+                        <JFXButton fx:id="pathFindingK" buttonType="RAISED" onMouseClicked="#dijkstraSelected" prefHeight="146.0" prefWidth="206.0" styleClass="nodeListButton" text=" ">
+                           <tooltip>
+                              <Tooltip text="Dijkstra's Algorithm" />
+                           </tooltip>
+                           <graphic>
+                              <ImageView fitHeight="18.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true" scaleX="3.5" scaleY="3.5" translateX="4.0">
+                                 <image>
+                                    <Image url="@../../assets/map_editor/dijkstra.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
                      </children>
                   </JFXNodesList>
                   <JFXToggleNode fx:id="eraser" onAction="#handleTools" onMouseClicked="#eraserMouse" prefHeight="68.0" style="-fx-background-radius: 68;">
@@ -414,6 +429,11 @@
                   <JFXButton fx:id="floorDown" buttonType="RAISED" onAction="#changeFloor" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 0 0 20 20;" styleClass="floorChangeButton" text="▼" textFill="WHITE" />
                </children>
             </VBox>
+            <HBox alignment="BOTTOM_CENTER" layoutX="412.0" layoutY="680.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="350.0" AnchorPane.rightAnchor="350.0">
+               <children>
+                  <JFXComboBox fx:id="buildingChooser" onAction="#switchBuilding" promptText="Select Building" styleClass="combo-box-jfx" />
+               </children>
+            </HBox>
             <HBox layoutX="228.0" layoutY="225.0" spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0">
                <children>
                   <JFXNodesList rotate="270.0" spacing="10.0">
@@ -541,6 +561,18 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
+                        <JFXButton fx:id="kios" onAction="#handleAdd" styleClass="nodeTypeButton" text=" ">
+                           <tooltip>
+                              <Tooltip text="KIOS (Kiosk)" />
+                           </tooltip>
+                           <graphic>
+                              <ImageView fitHeight="9.0" fitWidth="7.0" pickOnBounds="true" preserveRatio="true" scaleX="2.75" scaleY="2.75" translateX="2.5">
+                                 <image>
+                                    <Image url="@../../assets/nodes/KIOS.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
                         <JFXButton fx:id="retl" layoutX="15.0" layoutY="442.0" onAction="#handleAdd" styleClass="nodeTypeButton" text=" ">
                            <tooltip>
                               <Tooltip text="RETL (Shops, Food, Payphone, etc.)" />
@@ -575,4 +607,8 @@
          </children>
       </AnchorPane>
    </center>
+   <stylesheets>
+      <URL value="@../../css/GlobalStyleSheet.css" />
+      <URL value="@../../css/MapStyles.css" />
+   </stylesheets>
 </BorderPane>

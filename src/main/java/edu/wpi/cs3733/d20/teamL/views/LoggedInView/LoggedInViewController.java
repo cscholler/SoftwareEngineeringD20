@@ -69,7 +69,7 @@ public class LoggedInViewController implements Initializable{
     @FXML
     private void notifsClicked() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("Staff/NotificationsPage").load();
+            Parent root = loaderHelper.getFXMLLoader("staff/NotificationsPage").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
@@ -79,7 +79,7 @@ public class LoggedInViewController implements Initializable{
     @FXML
     private void addUserClicked(){
         try {
-            Parent root = loaderHelper.getFXMLLoader("Admin/AddUser").load();
+            Parent root = loaderHelper.getFXMLLoader("admin/AddUser").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException e) {
             log.error("Encountered IOException", e);
@@ -89,7 +89,7 @@ public class LoggedInViewController implements Initializable{
     @FXML
     private void addDoctorClicked(){
         try {
-            Parent root = loaderHelper.getFXMLLoader("Admin/AddDoctor").load();
+            Parent root = loaderHelper.getFXMLLoader("admin/AddDoctor").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException e) {
             log.error("Encountered IOException", e);
@@ -100,7 +100,7 @@ public class LoggedInViewController implements Initializable{
     @FXML
     private void addPatientClicked(){
         try {
-            Parent root = loaderHelper.getFXMLLoader("Staff/AddPatient").load();
+            Parent root = loaderHelper.getFXMLLoader("staff/AddPatient").load();
             loaderHelper.setupScene(new Scene(root));
         } catch (IOException e) {
             log.error("Encountered IOException", e);
@@ -154,60 +154,8 @@ public class LoggedInViewController implements Initializable{
 
 	@FXML
 	public void clearClicked() {
-		App.allowCacheUpdates = false;
-    	log.warn("Rebuilding database");
-
-    	Executor uiExec = Platform::runLater;
-
-        Alert loading = new Alert(Alert.AlertType.NONE);
-        loading.setResult(ButtonType.OK);
-        ImageView spinner = new ImageView(new Image("edu/wpi/cs3733/d20/teamL/assets/spinner.gif"));
-        spinner.setPreserveRatio(true);
-        spinner.setFitWidth(40);
-        loading.setGraphic(spinner);
-        loading.setContentText("Rebuilding database...");
-
-        Button btn = new Button("Start");
-        btn.setOnAction(evt -> {
-            btn.setDisable(true);
-
-            // make alert appear / disappear
-            Thread t = new Thread(() -> {
-                boolean showing = false;
-                while (true) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ex) {
-                        log.error("{}", ex);
-                    }
-                    Runnable action = showing ? loading::close : loading::show;
-                    Platform.runLater(action);
-                    showing = !showing;
-                }
-            });
-            t.setDaemon(true);
-            t.start();
-        });
-
-        loading.show();
-
-        AsyncTaskManager.newTask(() -> {
-            db.rebuildDatabase();
-            log.info("Finished rebuilding database");
-            uiExec.execute(new FutureTask<>(() -> {
-                loading.close();
-                showDoneDialogue();
-                return null;
-            }));
-        });
+        AsyncTaskManager.startTaskWithPopup(db::rebuildDatabase, "Rebuilding database...", "Finished rebuilding database");
+        log.warn("Rebuilding database");
 	}
 
-	private Boolean showDoneDialogue() {
-        log.info("showDone() Called");
-        Alert done = new Alert(Alert.AlertType.INFORMATION);
-        done.setContentText("Finished rebuilding database");
-        done.showAndWait();
-
-        return true;
-    }
 }
