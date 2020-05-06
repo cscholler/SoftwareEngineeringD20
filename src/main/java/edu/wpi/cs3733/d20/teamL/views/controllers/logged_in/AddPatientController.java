@@ -1,7 +1,8 @@
-package edu.wpi.cs3733.d20.teamL.views.LoggedInView;
+package edu.wpi.cs3733.d20.teamL.views.controllers.logged_in;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import javax.inject.Inject;
 
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
@@ -9,7 +10,6 @@ import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
-
 
 import com.jfoenix.controls.JFXAutoCompletePopup;
 import com.jfoenix.controls.JFXTextField;
@@ -21,28 +21,25 @@ import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 
-import javax.inject.Inject;
-
 @Slf4j
-public class AddDoctorController {
+public class AddPatientController {
     private FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
     private DBTableFormatter formatter = new DBTableFormatter();
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
+    @FXML
+    private JFXTextField fNameText, lNameText, IDText, doctorIDText, roomNumText, addInfoText;
+    @FXML
+    private Label lblConfirmation;
     @Inject
     private IDatabaseService db;
     @Inject
-    private IDatabaseCache cache;
-    @FXML
-    private Label lblConfirmation;
-    @FXML
-    private JFXTextField fNameText, lNameText, emailText, doctorIDText, officeNumText, addInfoText;
-
+    private IDatabaseCache dbCache;
 
     @FXML
     private void initialize() {
         lblConfirmation.setVisible(false);
-        sf = new SearchFields(cache.getNodeCache());
+        sf = new SearchFields(dbCache.getNodeCache());
         sf.getFields().add(SearchFields.Field.nodeID);
         sf.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
@@ -51,14 +48,14 @@ public class AddDoctorController {
 
     @FXML
     private void autocomplete() {
-        sf.applyAutocomplete(officeNumText, autoCompletePopup);
+        sf.applyAutocomplete(roomNumText, autoCompletePopup);
     }
 
     /**
-     * goes back to admin view page when back button is clicked
+     * goes back to staff_view page when back button is clicked
      */
     @FXML
-    public void btnBackClicked() {
+    private void btnBackClicked() {
         loaderHelper.goBack();
     }
 
@@ -67,29 +64,31 @@ public class AddDoctorController {
      */
     @FXML
     private void btnSubmitClicked() {
-        String docID = doctorIDText.getText();
+        String patID = IDText.getText();
         String fName = fNameText.getText();
         String lName = lNameText.getText();
-        String email = emailText.getText();
-        String roomNum = officeNumText.getText();
+        String docID = doctorIDText.getText();
+        String roomNum = roomNumText.getText();
         String additionalInfo = addInfoText.getText();
-        if (db.executeUpdate(new SQLEntry(DBConstants.ADD_DOCTOR, new ArrayList<>(Arrays.asList(docID, fName, lName, null, roomNum, additionalInfo)))) == 0) {
+        if (db.executeUpdate(new SQLEntry(DBConstants.ADD_PATIENT, new ArrayList<>(Arrays.asList(patID, fName, lName, docID, roomNum, additionalInfo)))) == 0) {
+            lblConfirmation.setText("Submission failed!");
             lblConfirmation.setTextFill(Color.RED);
-            lblConfirmation.setText("Submission failed");
         } else {
+            //show the submitted label and clear the fields
+            lblConfirmation.setText("Patient Submitted!");
             lblConfirmation.setTextFill(Color.BLACK);
-            lblConfirmation.setText("Doctor Added");
+            IDText.setText("");
             fNameText.setText("");
             lNameText.setText("");
-            emailText.setText("");
             doctorIDText.setText("");
-            officeNumText.setText("");
+            roomNumText.setText("");
             addInfoText.setText("");
         }
+        lblConfirmation.setVisible(true);
+        //fade the label out
         loaderHelper.showAndFade(lblConfirmation);
-        formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_DOCTORS)));
+        formatter.reportQueryResults(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_PATIENTS)));
     }
 }
-
 
 

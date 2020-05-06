@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamL.views.LoggedInView;
+package edu.wpi.cs3733.d20.teamL.views.controllers.logged_in;
 
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTreeTableColumn;
@@ -46,6 +46,7 @@ import java.util.Collections;
 import java.util.ResourceBundle;
 
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
+import org.apache.commons.math3.util.Precision;
 
 @Slf4j
 public class AdminLandingPageController implements Initializable {
@@ -225,6 +226,7 @@ public class AdminLandingPageController implements Initializable {
 				return idCol.getComputedValue(param);
 			}
 		});
+		idCol.setPrefWidth(200);
 
 		JFXTreeTableColumn<TableEntityWrapper.TableNode, String> xPosCol = new JFXTreeTableColumn<>("x_pos");
 		xPosCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableEntityWrapper.TableNode, String> param) -> {
@@ -289,7 +291,7 @@ public class AdminLandingPageController implements Initializable {
 			}
 		});
 
-		JFXTreeTableColumn<TableEntityWrapper.TableNode, String> removeCol = new JFXTreeTableColumn<>("");
+		JFXTreeTableColumn<TableEntityWrapper.TableNode, String> removeCol = new JFXTreeTableColumn<>("Remove");
 		removeCol.setPrefWidth(50);
 
 		Callback<TreeTableColumn<TableEntityWrapper.TableNode, String>, TreeTableCell<TableEntityWrapper.TableNode, String>> removeColCellFactory = new Callback<>() {
@@ -321,8 +323,9 @@ public class AdminLandingPageController implements Initializable {
 
 		ObservableList<TableEntityWrapper.TableNode> nodes = FXCollections.observableArrayList();
 		for (Node node : cache.getNodeCache()) {
-			nodes.add(new TableEntityWrapper.TableNode(node.getID(), String.valueOf(node.getPosition().getX()), String.valueOf(node.getPosition().getY()),
-					String.valueOf(node.getFloor()), node.getBuilding(), node.getType(), node.getLongName(), node.getShortName()));
+			nodes.add(new TableEntityWrapper.TableNode(node.getID(), String.valueOf(Precision.round(node.getPosition().getX(), 2)),
+					String.valueOf(Precision.round(node.getPosition().getY(), 2)), node.getFloorAsString(), node.getBuilding(), node.getType(),
+					node.getLongName(), node.getShortName()));
 		}
 
 		final TreeItem<TableEntityWrapper.TableNode> root = new RecursiveTreeItem<>(nodes, RecursiveTreeObject::getChildren);
@@ -440,7 +443,7 @@ public class AdminLandingPageController implements Initializable {
 			}
 		});
 
-		JFXTreeTableColumn<TableEntityWrapper.TableEdge, String> removeCol = new JFXTreeTableColumn<>("");
+		JFXTreeTableColumn<TableEntityWrapper.TableEdge, String> removeCol = new JFXTreeTableColumn<>("Remove");
 		removeCol.setPrefWidth(50);
 
 		Callback<TreeTableColumn<TableEntityWrapper.TableEdge, String>, TreeTableCell<TableEntityWrapper.TableEdge, String>> removeColCellFactory = new Callback<>() {
@@ -563,7 +566,7 @@ public class AdminLandingPageController implements Initializable {
 			}
 		});
 
-		JFXTreeTableColumn<TableEntityWrapper.TableGift, String> removeCol = new JFXTreeTableColumn<>("");
+		JFXTreeTableColumn<TableEntityWrapper.TableGift, String> removeCol = new JFXTreeTableColumn<>("Remove");
 		removeCol.setPrefWidth(50);
 
 		Callback<TreeTableColumn<TableEntityWrapper.TableGift, String>, TreeTableCell<TableEntityWrapper.TableGift, String>> removeColCellFactory = new Callback<>() {
@@ -717,7 +720,7 @@ public class AdminLandingPageController implements Initializable {
 			}
 		});
 
-		JFXTreeTableColumn<TableEntityWrapper.TableUser, String> removeCol = new JFXTreeTableColumn<>("");
+		JFXTreeTableColumn<TableEntityWrapper.TableUser, String> removeCol = new JFXTreeTableColumn<>("Remove");
 		removeCol.setPrefWidth(50);
 
 		Callback<TreeTableColumn<TableEntityWrapper.TableUser, String>, TreeTableCell<TableEntityWrapper.TableUser, String>> removeColCellFactory = new Callback<>() {
@@ -883,7 +886,7 @@ public class AdminLandingPageController implements Initializable {
 			}
 		});
 
-		JFXTreeTableColumn<TableEntityWrapper.TableDoctor, String> removeCol = new JFXTreeTableColumn<>("");
+		JFXTreeTableColumn<TableEntityWrapper.TableDoctor, String> removeCol = new JFXTreeTableColumn<>("Remove");
 		removeCol.setPrefWidth(50);
 
 		Callback<TreeTableColumn<TableEntityWrapper.TableDoctor, String>, TreeTableCell<TableEntityWrapper.TableDoctor, String>> removeColCellFactory = new Callback<>() {

@@ -1,6 +1,5 @@
 package edu.wpi.cs3733.d20.teamL.util;
 
-import com.google.inject.Inject;
 import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import javafx.animation.FadeTransition;
@@ -33,7 +32,7 @@ public class FXMLLoaderFactory {
 	}
 
 	public static void resetHistory() {
-		history = new Stack<>();
+		history.clear();
 	}
 
 	/**
