@@ -114,6 +114,7 @@ public class AssignPopupController implements Initializable {
 				db.executeUpdate(new SQLEntry(DBConstants.UPDATE_SERVICE_REQUEST_NOTES, new ArrayList<>(Arrays.asList(updatedNotes, currentServiceReq.getID()))));
 				currentServiceReq.setStatus("2");
 				currentServiceReq.setNotes(updatedNotes);
+				log.info(currentServiceReq.getID());
 			}
 		}
 		addInfo.setText(updatedNotes);
