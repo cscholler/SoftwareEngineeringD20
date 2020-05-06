@@ -12,7 +12,6 @@
       <JFXButton fx:id="close" style="-fx-background-color: transparent; -fx-text-alignment: center;" text="x"/>
    </children>
    <stylesheets>
-      <URL value="@../../css/GlobalStyles.css" />
       <URL value="@../../css/MapStyles.css" />
    </stylesheets>
 </fx:root>

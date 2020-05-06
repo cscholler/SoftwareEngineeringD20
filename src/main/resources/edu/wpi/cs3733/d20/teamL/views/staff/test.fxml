@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@../../css/test.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Line endX="100.0" layoutX="344.0" layoutY="207.0" startX="-189.19998168945312" startY="1.52587890625E-5" styleClass="line" />
+   </children>
+</AnchorPane>
