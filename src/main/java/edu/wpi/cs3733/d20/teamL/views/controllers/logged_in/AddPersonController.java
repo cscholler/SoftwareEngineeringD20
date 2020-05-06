@@ -50,7 +50,9 @@ public class AddPersonController implements Initializable {
     private final FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
 
     @FXML
-    JFXTextField doctorIDText, fNameText, lNameText, usernameText, passwordText;
+    JFXTextField doctorIDText, fNameText, lNameText, usernameText;
+    @FXML
+    JFXPasswordField passwordText;
     @FXML
     private JFXComboBox<String> serviceCombo, userCombo, languages;
     @FXML
