@@ -41,7 +41,7 @@
                                           <Font name="Corbel Light" size="10.0" />
                                       </font>
                                   </JFXButton>
-                        <JFXButton fx:id="btnChangeLoc" contentDisplay="CENTER" disable="true" maxHeight="30.0" onAction="#handleLocationChange" prefHeight="35.0" prefWidth="41.0" style="-fx-background-color: transparent;" text=" " visible="false">
+                        <JFXButton fx:id="btnChangeLoc" contentDisplay="CENTER" maxHeight="30.0" onAction="#handleLocationChange" prefHeight="35.0" prefWidth="41.0" style="-fx-background-color: transparent;" text=" ">
                            <graphic>
                               <ImageView fitHeight="20.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" scaleX="1.5" scaleY="1.5">
                                  <image>
