@@ -10,6 +10,10 @@ import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import edu.wpi.cs3733.d20.teamL.util.TimerManager;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -31,6 +35,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Line;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -38,6 +43,7 @@ import javafx.stage.Stage;
 
 import com.google.inject.Inject;
 
+import javafx.util.Duration;
 import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
@@ -51,16 +57,12 @@ import org.apache.xmlgraphics.image.codec.png.PNGEncodeParam;
 public class MapViewerController {
     @FXML
     private MapPane map;
-
     @FXML
     private JFXTextField startingPoint, destination;
-
     @FXML
     private JFXButton btnNavigate, floorUp, floorDown;
-
     @FXML
     private ScrollPane scroll;
-
     @FXML
     private VBox sideBox, instructions;
     @FXML
@@ -265,14 +267,14 @@ public class MapViewerController {
             start = start.substring(0, start.length() - 15);
             buildingS = "Faulkner";
         }else if(start.contains("(" + MAIN)) {
-            start= start.substring(0, start.length()-10);
+            start= start.substring(0, start.length()-11);
             buildingS = MAIN;
         }
         if (end.contains("(Faulkner")) {
             end = end.substring(0, end.length() - 15);
             buildingE = "Faulkner";
         }else if(end.contains("(" + MAIN)) {
-            end= end.substring(0, end.length()-10);
+            end= end.substring(0, end.length()-11);
             buildingE = MAIN;
         }
 
@@ -285,6 +287,9 @@ public class MapViewerController {
             buildingChooser.getSelectionModel().select(startNode.getBuilding());
         }
 
+        // Set the building and floor to the start node so it doesn't break
+        map.setBuilding(startNode.getBuilding());
+        buildingChooser.getSelectionModel().select(startNode.getBuilding());
         setFloor(startNode.getFloor());
 
         if (startNode != null && destNode != null) {
@@ -302,7 +307,9 @@ public class MapViewerController {
 
         System.out.println("Here");
         hideAccordion();
+        hideTextualDirections();
         showTextualDirections();
+
     }
 
     /**
@@ -414,6 +421,19 @@ public class MapViewerController {
         while (nodeIterator.hasNext()) {
             nextNode = nodeIterator.next();
             EdgeGUI edgeGUI = map.getEdgeGUI(currentNode.getEdge(nextNode));
+
+            // Please help me untangle my spaghetti
+            if (edgeGUI != null) {
+                edgeGUI.getHighlightGUI().getStrokeDashArray().setAll(5d, 20d, 20d, 5d);
+                Line highlight = map.getEdgeGUI(currentNode.getEdge(nextNode)).getHighlightGUI();
+
+                final double maxOffset = highlight.getStrokeDashArray().stream().reduce(0d, (a, b) -> a + b);
+                Timeline timeline = new Timeline(new KeyFrame(Duration.ZERO, new KeyValue(highlight.strokeDashOffsetProperty(), maxOffset, Interpolator.LINEAR)),
+                        new KeyFrame(Duration.seconds(2), new KeyValue(highlight.strokeDashOffsetProperty(), 0, Interpolator.LINEAR)));
+
+                timeline.setCycleCount(Timeline.INDEFINITE);
+                timeline.play();
+            }
 
             if (edgeGUI != null) map.getSelector().add(edgeGUI);
 
