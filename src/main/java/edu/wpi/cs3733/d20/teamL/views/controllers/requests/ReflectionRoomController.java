@@ -147,22 +147,29 @@ public class ReflectionRoomController {
                 String dateChosen = date.getValue().toString();
                 //TODO check values for null, past date, time
 
-                int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_ROOM_REQUEST,
-                        new ArrayList<>(Arrays.asList(manager.getCurrentUser().getUsername(), room, dateChosen, startTime, endTime)))));
+                //check if room is available
+                if(availability.equals("Reserved")){
+                    confirmation.setText("Select an Open Time Slot");
+                    loaderHelper.showAndFade(confirmation);
+                } else {
 
-                //clear selected values
-                rooms.setValue(null);
-                date.setValue(null);
-                table.getSelectionModel().clearSelection();
+                    int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_ROOM_REQUEST,
+                            new ArrayList<>(Arrays.asList(manager.getCurrentUser().getUsername(), room, dateChosen, startTime, endTime)))));
 
-                loaderHelper.showAndFade(requestReceived);
+                    //clear selected values
+                    rooms.setValue(null);
+                    date.setValue(null);
+                    table.getSelectionModel().clearSelection();
 
-                table.setVisible(false);
-                btnLoadTimes.setVisible(true);
-                tableErrorLbl.setVisible(false);
-                table.getColumns().clear();
+                    loaderHelper.showAndFade(requestReceived);
 
-                requestReceived.toBack();
+                    table.setVisible(false);
+                    btnLoadTimes.setVisible(true);
+                    tableErrorLbl.setVisible(false);
+                    table.getColumns().clear();
+
+                    requestReceived.toBack();
+                }
             }
         }
     }

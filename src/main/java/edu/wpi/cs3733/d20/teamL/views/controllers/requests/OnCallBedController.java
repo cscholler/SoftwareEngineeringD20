@@ -147,34 +147,47 @@ public class OnCallBedController {
 
                 //TODO check values for null, past date, time, reserved
 
-                System.out.println(rows.size() + " rows are selected.");
+                ArrayList<String> availabilities = new ArrayList<>();
 
-                //add each hour to the database
                 for (TreeItem<TimeSlot> ti : rows) {
                     TimeSlot t = ti.getValue();
-                    String startTime = t.start.getValue();
-                    String endTime = t.end.getValue();
-                    String availability = t.availability.getValue();
-
-                    int r = db.executeUpdate((new SQLEntry(DBConstants.ADD_ROOM_REQUEST,
-                            new ArrayList<>(Arrays.asList(manager.getCurrentUser().getUsername(), bed, dateChosen, startTime, endTime)))));
+                    String a = t.availability.getValue();
+                    availabilities.add(a);
                 }
 
-                //clear selected values
-                beds.setValue(null);
-                date.setValue(null);
-                table.getSelectionModel().clearSelection();
+                //check if time slot is reserved
+                if (availabilities.contains("Reserved")) {
+                    confirmation.setText("Select an Open Time");
+                    loaderHelper.showAndFade(confirmation);
+                } else {
 
-                requestReceived.toFront();
+                    //add each hour to the database
+                    for (TreeItem<TimeSlot> ti : rows) {
+                        TimeSlot t = ti.getValue();
+                        String startTime = t.start.getValue();
+                        String endTime = t.end.getValue();
+                        String availability = t.availability.getValue();
 
-                loaderHelper.showAndFade(requestReceived);
+                        int r = db.executeUpdate((new SQLEntry(DBConstants.ADD_ROOM_REQUEST,
+                                new ArrayList<>(Arrays.asList(manager.getCurrentUser().getUsername(), bed, dateChosen, startTime, endTime)))));
+                    }
 
-                table.setVisible(false);
-                btnLoadTimes.setVisible(true);
-                tableErrorLbl.setVisible(false);
-                table.getColumns().clear();
+                    //clear selected values
+                    beds.setValue(null);
+                    date.setValue(null);
+                    table.getSelectionModel().clearSelection();
 
-                requestReceived.toBack();
+                    requestReceived.toFront();
+
+                    loaderHelper.showAndFade(requestReceived);
+
+                    table.setVisible(false);
+                    btnLoadTimes.setVisible(true);
+                    tableErrorLbl.setVisible(false);
+                    table.getColumns().clear();
+
+                    requestReceived.toBack();
+                }
             }
         }
     }
