@@ -29,7 +29,7 @@
             <Insets bottom="10.0" top="10.0" />
          </BorderPane.margin>
          <children>
-            <HBox alignment="CENTER_LEFT" layoutX="466.0" layoutY="10.0" prefHeight="70.0" prefWidth="560.0" spacing="10.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="450.0" AnchorPane.rightAnchor="264.0" AnchorPane.topAnchor="5.0">
+            <HBox alignment="CENTER_LEFT" layoutX="466.0" layoutY="10.0" prefHeight="70.0" prefWidth="321.0" spacing="10.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="450.0" AnchorPane.rightAnchor="509.0" AnchorPane.topAnchor="5.0">
                <children>
                   <JFXButton contentDisplay="GRAPHIC_ONLY" onAction="#addUserClicked" prefHeight="44.0" prefWidth="45.0" styleClass="database-buttons-jfx">
                      <graphic>
@@ -47,9 +47,9 @@
                         </Tooltip>
                      </tooltip>
                   </JFXButton>
-                  <JFXButton contentDisplay="GRAPHIC_ONLY" onAction="#importDBClicked" styleClass="database-buttons-jfx">
+                  <JFXButton contentDisplay="GRAPHIC_ONLY" onAction="#btnImportClicked" styleClass="database-buttons-jfx">
                      <graphic>
-                        <ImageView fx:id="importClicked1" fitHeight="38.0" fitWidth="42.0">
+                        <ImageView fitHeight="38.0" fitWidth="42.0">
                            <image>
                               <Image url="@../../assets/map_editor/UploadFromDBFolder.png" />
                            </image>
@@ -79,38 +79,6 @@
                         </Tooltip>
                      </tooltip>
                   </JFXButton>
-                  <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#importCSVClicked" styleClass="database-buttons-jfx">
-                     <graphic>
-                        <ImageView fitHeight="34.0" fitWidth="41.0">
-                           <image>
-                              <Image url="@../../assets/map_editor/UploadFromCSVFolder.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <tooltip>
-                        <Tooltip text="Import CSV">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Tooltip>
-                     </tooltip>
-                  </JFXButton>
-                  <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#saveCSVClicked" styleClass="database-buttons-jfx">
-                     <graphic>
-                        <ImageView fitHeight="38.0" fitWidth="37.0">
-                           <image>
-                              <Image url="@../../assets/map_editor/SaveToCSV.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <tooltip>
-                        <Tooltip text="Save to CSV">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Tooltip>
-                     </tooltip>
-                  </JFXButton>
                   <JFXButton fx:id="btnChangePass" onAction="#changePasswordClicked" styleClass="database-buttons-jfx">
                      <tooltip>
                         <Tooltip text="Change Password">
@@ -119,7 +87,6 @@
                            </font>
                         </Tooltip>
                      </tooltip></JFXButton>
-                  <JFXButton fx:id="btnChangePass" onAction="#changePasswordClicked" prefWidth="58.0" styleClass="database-buttons-jfx" visible="false" />
                </children>
                <padding>
                   <Insets right="10.0" />
