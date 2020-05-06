@@ -20,18 +20,8 @@
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" BorderPane.alignment="CENTER">
                <children>
                   <JFXComboBox fx:id="rooms" promptText="Select Room" styleClass="combo-box-jfx" />
-                  <JFXDatePicker fx:id="date" defaultColor="#00043b" promptText="Select Date" />
-                  <StackPane>
-                     <children>
-                        <JFXTreeTableView fx:id="table" />
-                        <JFXButton fx:id="btnLoadTimes" onAction="#loadTimes" styleClass="save-button-jfx" text="Load Times" />
-                        <Label fx:id="tableErrorLbl" styleClass="table-error-label" text="Select a Room and Day" textAlignment="CENTER" textFill="RED">
-                           <StackPane.margin>
-                              <Insets top="100.0" />
-                           </StackPane.margin>
-                        </Label>
-                     </children>
-                  </StackPane>
+                  <JFXDatePicker fx:id="date" defaultColor="#00043b" editable="false" promptText="Select Date" styleClass="jfx-date-picker" />
+                  <JFXTreeTableView fx:id="table" />
                </children>
                <BorderPane.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -39,13 +29,17 @@
             </VBox>
          </center>
          <bottom>
-            <HBox alignment="CENTER" BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER" spacing="100.0" BorderPane.alignment="CENTER">
                <children>
                   <JFXButton fx:id="btnSubmit" maxHeight="120.0" onAction="#handleSubmit" prefHeight="120.0" styleClass="save-button-jfx" text="Submit" />
+                  <Label fx:id="confirmation" styleClass="submission-failed-label-fx" textFill="RED" visible="false" />
                </children>
                <BorderPane.margin>
-                  <Insets bottom="20.0" left="20.0" right="20.0" />
+                  <Insets bottom="20.0" />
                </BorderPane.margin>
+               <padding>
+                  <Insets left="350.0" />
+               </padding>
             </HBox>
          </bottom>
       </BorderPane>
@@ -54,7 +48,7 @@
             <Image url="@../../assets/service_icons/serviceRecieved.png" />
          </image>
          <StackPane.margin>
-            <Insets top="300.0" />
+            <Insets />
          </StackPane.margin>
       </ImageView>
    </children>

@@ -91,15 +91,15 @@ public class MapViewerController {
     private Path path = new Path();
     private final ObservableList<String> direct = FXCollections.observableArrayList();
 
-    private final Image IMAGE_LEFT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/left.png");
-    private final Image IMAGE_RIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/right.jpg");
-    private final Image IMAGE_SHLEFT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/sharp left.jpg");
-    private final Image IMAGE_SHRIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/sharp right.jpg");
-    private final Image IMAGE_SLLEFT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/slightLeft.jpg");
-    private final Image IMAGE_SLRIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/slightRight.jpg");
-    private final Image IMAGE_ELEV = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/elevator.jpg");
-    private final Image IMAGE_STAIR = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/stair.png");
-    private final Image IMAGE_DEST = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/destFlag.png");
+    private final Image IMAGE_LEFT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/left.png", 15, 15, true, false, true);
+    private final Image IMAGE_RIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/right.jpg", 15, 15, true, false, true);
+    private final Image IMAGE_SHLEFT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/sharp left.jpg", 15, 15, true, false, true);
+    private final Image IMAGE_SHRIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/sharp right.jpg", 15, 15, true, false, true);
+    private final Image IMAGE_SLLEFT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/slightLeft.jpg", 15, 15, true, false, true);
+    private final Image IMAGE_SLRIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/slightRight.jpg", 15, 15, true, false, true);
+    private final Image IMAGE_ELEV = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/elevator.jpg", 15, 15, true, false, true);
+    private final Image IMAGE_STAIR = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/stair.png", 15, 15, true, false, true);
+    private final Image IMAGE_DEST = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/destFlag.png", 15, 15, true, false, true);
     private final Image IMAGE_FTOM = new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/FaulkToMain.PNG");
     private final Image IMAGE_MTOF = new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/MainToFaulk.PNG");
 
@@ -109,10 +109,13 @@ public class MapViewerController {
     private Collection<String> retailNodes = new ArrayList<>();
     private Collection<String> confNodes = new ArrayList<>();
 
+    public static final String MAIN = "Main";
+
     @FXML
     private void initialize() {
         timer.scheduleAtFixedRate(timerWrapper(this::updateTime), 0, 1000);
         cache.cacheAllFromDB();
+        dirList.addEventHandler(MouseEvent.MOUSE_CLICKED, (mouseEvent -> goToSelected()));
 
         map.setEditable(false);
         map.setHighLightColor(Color.GOLD);
@@ -123,11 +126,11 @@ public class MapViewerController {
         // Import all the nodes from the cache and set the current building to Faulkner
         String startB = "Faulkner";
         Building faulkner = cache.getBuilding("Faulkner");
-        Building btm = cache.getBuilding("BTM");
+        Building main = cache.getBuilding(MAIN);
 
         if(!faulkner.getNodes().isEmpty()) map.setBuilding(faulkner);
-        if(!btm.getNodes().isEmpty()) map.getBuildings().add(btm);
-        buildingChooser.getItems().addAll("Faulkner", "BTM");
+        if(!main.getNodes().isEmpty()) map.getBuildings().add(main);
+        buildingChooser.getItems().addAll("Faulkner", MAIN);
         buildingChooser.getSelectionModel().select(startB);
 
         // Add floor buttons
@@ -145,14 +148,19 @@ public class MapViewerController {
         autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
 
-        Collection <Node> allNodes = map.getBuilding().getNodes();
+        Collection<Node> allNodes = map.getBuilding().getNodes();
 
         for (Node node : allNodes) {
-            if (node.getType().equals("DEPT")) { deptNodes.add(node.getLongName());
-            } else if (node.getType().equals("LABS")) { labNodes.add(node.getLongName());
-            } else if ((node.getType().equals("SERV") || node.getType().equals("INFO"))) { serviceNodes.add(node.getLongName());
-            } else if (node.getType().equals("RETL")) { retailNodes.add(node.getLongName());
-            } else if (node.getType().equals("CONF")) { confNodes.add(node.getLongName());
+            if (node.getType().equals("DEPT")) {
+                deptNodes.add(node.getLongName() + " - (" + node.getBuilding() + " " + node.getFloor() + ")");
+            } else if (node.getType().equals("LABS")) {
+                labNodes.add(node.getLongName() + " - (" + node.getBuilding() + " " + node.getFloor() + ")");
+            } else if ((node.getType().equals("SERV") || node.getType().equals("INFO"))) {
+                serviceNodes.add(node.getLongName() + " - (" + node.getBuilding() + " " + node.getFloor() + ")");
+            } else if (node.getType().equals("RETL")) {
+                retailNodes.add(node.getLongName() + " - (" + node.getBuilding() + " " + node.getFloor() + ")");
+            } else if (node.getType().equals("CONF")) {
+                confNodes.add(node.getLongName() + " - (" + node.getBuilding() + " " + node.getFloor() + ")");
             }
         }
 
@@ -162,8 +170,8 @@ public class MapViewerController {
         listF4 = new JFXListView();
         listF5 = new JFXListView();
 
-        JFXListView[] listOfListViews = new JFXListView[]{listF1,listF2,listF3,listF4,listF5};
-        for (JFXListView list : listOfListViews){
+        JFXListView[] listOfListViews = new JFXListView[]{listF1, listF2, listF3, listF4, listF5};
+        for (JFXListView list : listOfListViews) {
             list.addEventHandler(MouseEvent.MOUSE_CLICKED, (mouseEvent -> {
                 destination.setText((String) list.getSelectionModel().getSelectedItem());
                 navigate();
@@ -240,25 +248,23 @@ public class MapViewerController {
         String end = destination.getText();
         String buildingS;
         String buildingE;
-        String floorS = start.substring(start.length()-2,start.length()-1);
-        String floorE = end.substring(end.length()-2,end.length()-1);
+        String floorS = start.substring(start.length() - 2, start.length() - 1);
+        String floorE = end.substring(end.length() - 2, end.length() - 1);
 
 
-        if(start.contains("(Faulkner"))
-        {
-            start= start.substring(0, start.length()-15);
+        if (start.contains("(Faulkner")) {
+            start = start.substring(0, start.length() - 15);
             buildingS = "Faulkner";
-        }else if(start.contains("(BTM")){
+        }else if(start.contains("(" + MAIN)) {
             start= start.substring(0, start.length()-10);
-            buildingS = "BTM";
+            buildingS = MAIN;
         }
-        if(end.contains("(Faulkner"))
-        {
-            end= end.substring(0, end.length()-15);
+        if (end.contains("(Faulkner")) {
+            end = end.substring(0, end.length() - 15);
             buildingE = "Faulkner";
-        }else if(end.contains("(BTM")){
+        }else if(end.contains("(" + MAIN)) {
             end= end.substring(0, end.length()-10);
-            buildingE = "BTM";
+            buildingE = MAIN;
         }
 
         Node startNode = sf.getNode(start);
@@ -333,8 +339,6 @@ public class MapViewerController {
                         setGraphic(null);
                         setText(null);
                         // other stuff to do...
-                        imageView.setFitWidth(15);
-                        imageView.setFitHeight(15);
                     } else {
 
                         if (item.contains("right")) {
@@ -359,6 +363,8 @@ public class MapViewerController {
                             imageView.setImage(IMAGE_STAIR);
                         } else if (item.contains("destination")) {
                             imageView.setImage(IMAGE_DEST);
+                        } else {
+                            imageView.setImage(null);
                         }
                         setText(item);
                         setGraphic(imageView);
@@ -617,7 +623,7 @@ public class MapViewerController {
             if (subpath.get(0).getBuilding().equals("Faulkner")) {
                 map.setBuilding(new Building("Google"));
                 map.setMapImage(IMAGE_FTOM);
-            } else if (subpath.get(0).getBuilding().equals("BTM")) {
+            } else if (subpath.get(0).getBuilding().equals(MAIN)) {
                 map.setBuilding(new Building("Google"));
                 map.setMapImage(IMAGE_MTOF);
             }
@@ -628,8 +634,10 @@ public class MapViewerController {
             if (!(subpath.get(0).getBuilding().equals(map.getBuilding().getName()))) {
                 map.setBuilding(subpath.get(0).getBuilding());
                 generateFloorButtons();
+                goToSelected();
             }
-            setFloor(subpath.get(0).getFloor());
+            if (!(subpath.get(0).getFloorAsString().equals(map.getFloor())))
+                setFloor(subpath.get(0).getFloor());
 
             double totalX = 0;
             double totalY = 0;
@@ -668,7 +676,7 @@ public class MapViewerController {
     }
 
     private void showAccordion() {
-        sideBox.getChildren().add(2,accordion); //eventually this should be 1
+        sideBox.getChildren().add(2, accordion); //eventually this should be 1
     }
 
     private void hideAccordion() {

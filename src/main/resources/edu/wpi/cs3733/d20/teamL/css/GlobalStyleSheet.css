@@ -99,6 +99,14 @@
     -fx-background-color: white;
 }
 
+.search-bar-text-field-jfx .input-line {
+    -fx-pref-height: 0;
+}
+
+.search-bar-text-field-jfx .input-focused-line {
+    -fx-pref-height: 0;
+}
+
 .clear-button-jfx {
     -fx-pref-width: 30;
     -fx-pref-height: 40;
