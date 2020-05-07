@@ -6,6 +6,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.control.TreeTableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -35,7 +36,7 @@
                      <graphic>
                         <ImageView fitHeight="43.0" fitWidth="41.0">
                            <image>
-                              <Image url="@../../staff_view/Add.png" />
+                              <Image url="@../../assets/map_editor/addPerson.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -47,15 +48,22 @@
                         </Tooltip>
                      </tooltip>
                   </JFXButton>
-                  <JFXButton fx:id="btnChangePass" onAction="#changePasswordClicked" styleClass="database-buttons-jfx">
+                  <JFXButton fx:id="btnChangePass" alignment="CENTER_RIGHT" buttonType="RAISED" contentDisplay="CENTER" onAction="#changePasswordClicked" prefHeight="43.0" prefWidth="35.0" styleClass="database-buttons-jfx" text=" ">
                      <tooltip>
                         <Tooltip text="Change Password">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Tooltip>
-                     </tooltip></JFXButton>
-                  <JFXButton onAction="#btnExportClicked" prefHeight="73.0" prefWidth="99.0" styleClass="database-buttons-jfx" text="⬆" textFill="WHITE">
+                     </tooltip>
+                     <graphic>
+                        <ImageView fitHeight="38.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../assets/map_editor/resetPassword.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></JFXButton>
+                  <JFXButton contentDisplay="CENTER" onAction="#btnExportClicked" prefHeight="61.0" prefWidth="61.0" styleClass="database-buttons-jfx" text=" " textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -66,8 +74,15 @@
                            </font>
                         </Tooltip>
                      </tooltip>
+                     <graphic>
+                        <ImageView fitHeight="38.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../assets/map_editor/importTable.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
                   </JFXButton>
-                  <JFXButton onAction="#btnImportClicked" styleClass="database-buttons-jfx" text="⬇" textFill="WHITE">
+                  <JFXButton contentDisplay="CENTER" onAction="#btnImportClicked" styleClass="database-buttons-jfx" text=" " textFill="WHITE">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -78,6 +93,13 @@
                            </font>
                         </Tooltip>
                      </tooltip>
+                     <graphic>
+                        <ImageView fitHeight="38.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../assets/map_editor/exportTable.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
                   </JFXButton>
                </children>
                <padding>
@@ -97,11 +119,26 @@
    <center>
       <AnchorPane>
          <children>
-            <JFXTreeTableView fx:id="nodesTable" editable="true" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="0.0" />
-            <JFXTreeTableView fx:id="edgesTable" editable="true" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="0.0" />
-            <JFXTreeTableView fx:id="giftsTable" editable="true" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="0.0" />
-            <JFXTreeTableView fx:id="usersTable" editable="true" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="0.0" />
-            <JFXTreeTableView fx:id="doctorsTable" editable="true" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="0.0" />
+            <JFXTreeTableView fx:id="nodesTable" editable="true" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="0.0">
+               <columnResizePolicy>
+                  <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy></JFXTreeTableView>
+            <JFXTreeTableView fx:id="edgesTable" editable="true" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="0.0">
+               <columnResizePolicy>
+                  <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy></JFXTreeTableView>
+            <JFXTreeTableView fx:id="giftsTable" editable="true" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="0.0">
+               <columnResizePolicy>
+                  <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy></JFXTreeTableView>
+            <JFXTreeTableView fx:id="usersTable" editable="true" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="0.0">
+               <columnResizePolicy>
+                  <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy></JFXTreeTableView>
+            <JFXTreeTableView fx:id="doctorsTable" editable="true" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="0.0">
+               <columnResizePolicy>
+                  <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy></JFXTreeTableView>
          </children>
       </AnchorPane>
    </center>

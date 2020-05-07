@@ -21,7 +21,6 @@
 <?import javafx.scene.text.Font?>
 
 <?import edu.wpi.cs3733.d20.teamL.views.components.MapPane?>
-
 <BorderPane fx:id="root" prefHeight="720" prefWidth="1280" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.map.MapEditorController">
     <center>
     </center>
@@ -91,6 +90,7 @@
                                                  <String fx:id="RETL" fx:value="Food/Shops" />
                                                  <String fx:id="SERV" fx:value="Non-medical Services" />
                                                  <String fx:id="KIOS" fx:value="Kiosk" />
+                                                 <String fx:id="REFL" fx:value="Reflection Room" />
                                              </FXCollections>
                                          </items>
                                          <value>
@@ -431,7 +431,7 @@
             </VBox>
             <HBox alignment="BOTTOM_CENTER" layoutX="412.0" layoutY="680.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="350.0" AnchorPane.rightAnchor="350.0">
                <children>
-                  <JFXComboBox fx:id="buildingChooser" onAction="#switchBuilding" promptText="Select Building" styleClass="combo-box-jfx" />
+                  <JFXComboBox fx:id="buildingChooser" onAction="#switchBuilding" promptText="Select Building" style="-fx-background-color: white; -fx-border-color: #0d2e57; -fx-border-width: 3;" styleClass="combo-box-jfx" />
                </children>
             </HBox>
             <HBox layoutX="228.0" layoutY="225.0" spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0">
@@ -593,6 +593,18 @@
                               <ImageView fitHeight="25.0" fitWidth="6.0" pickOnBounds="true" preserveRatio="true" scaleX="5.0" scaleY="5.0" translateX="3.0" translateY="2.0">
                                  <image>
                                     <Image url="@../../assets/nodes/SERV.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
+                        <JFXButton fx:id="refl" onAction="#handleAdd" styleClass="nodeTypeButton" text=" ">
+                           <tooltip>
+                              <Tooltip text="REFL (Reflection Room)" />
+                           </tooltip>
+                           <graphic>
+                              <ImageView fitHeight="25.0" fitWidth="6.0" pickOnBounds="true" preserveRatio="true" scaleX="5.0" scaleY="5.0" translateX="3.0" translateY="2.0">
+                                 <image>
+                                    <Image url="@../../assets/nodes/REFL.png" />
                                  </image>
                               </ImageView>
                            </graphic>

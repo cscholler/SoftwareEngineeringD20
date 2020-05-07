@@ -46,22 +46,23 @@ import java.util.Collections;
 import java.util.ResourceBundle;
 
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
+import org.apache.commons.math3.util.Precision;
 
 @Slf4j
 public class AdminLandingPageController implements Initializable {
     private FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
     private static final TimerManager timerManager = new TimerManager();
     private final ObservableList<String> tableOptions = FXCollections.observableArrayList("Map Nodes", "Map Edges", "Gift Inventory", "User Information", "Doctor Information");
-	private ArrayList<TableEntityWrapper.TableNode> editedNodes = new ArrayList<>();
-	private ArrayList<TableEntityWrapper.TableEdge> editedEdges = new ArrayList<>();
-	private ArrayList<TableEntityWrapper.TableGift> editedGifts = new ArrayList<>();
-    private ArrayList<TableEntityWrapper.TableUser> editedUsers = new ArrayList<>();
-    private ArrayList<TableEntityWrapper.TableDoctor> editedDoctors = new ArrayList<>();
-	private ArrayList<TableEntityWrapper.TableNode> deletedNodes = new ArrayList<>();
-	private ArrayList<TableEntityWrapper.TableEdge> deletedEdges = new ArrayList<>();
-	private ArrayList<TableEntityWrapper.TableGift> deletedGifts = new ArrayList<>();
-	private ArrayList<TableEntityWrapper.TableUser> deletedUsers = new ArrayList<>();
-	private ArrayList<TableEntityWrapper.TableDoctor> deletedDoctors = new ArrayList<>();
+	private ArrayList<TableEntityWrapper.TableNode> editedNodes;
+	private ArrayList<TableEntityWrapper.TableEdge> editedEdges;
+	private ArrayList<TableEntityWrapper.TableGift> editedGifts;
+    private ArrayList<TableEntityWrapper.TableUser> editedUsers;
+    private ArrayList<TableEntityWrapper.TableDoctor> editedDoctors;
+	private ArrayList<TableEntityWrapper.TableNode> deletedNodes;
+	private ArrayList<TableEntityWrapper.TableEdge> deletedEdges;
+	private ArrayList<TableEntityWrapper.TableGift> deletedGifts;
+	private ArrayList<TableEntityWrapper.TableUser> deletedUsers;
+	private ArrayList<TableEntityWrapper.TableDoctor> deletedDoctors;
     @FXML
 	private JFXTreeTableView<TableEntityWrapper.TableNode> nodesTable;
 	@FXML
@@ -89,6 +90,16 @@ public class AdminLandingPageController implements Initializable {
 		tableSelector.setItems(tableOptions);
 		tableSelector.getSelectionModel().select(0);
 		hideAllTablesExceptCurrent("Nodes");
+		editedNodes = new ArrayList<>();
+		editedEdges = new ArrayList<>();
+		editedGifts = new ArrayList<>();
+		editedUsers = new ArrayList<>();
+		editedDoctors = new ArrayList<>();
+		deletedNodes = new ArrayList<>();
+		deletedEdges = new ArrayList<>();
+		deletedGifts = new ArrayList<>();
+		deletedUsers = new ArrayList<>();
+		deletedDoctors = new ArrayList<>();
 		loadNodesTable();
     }
 
@@ -217,6 +228,8 @@ public class AdminLandingPageController implements Initializable {
 	}
 
 	private void loadNodesTable() {
+		nodesTable.setColumnResizePolicy(nodesTable.CONSTRAINED_RESIZE_POLICY);
+
 		JFXTreeTableColumn<TableEntityWrapper.TableNode, String> idCol = new JFXTreeTableColumn<>("id");
 		idCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableEntityWrapper.TableNode, String> param) -> {
 			if (idCol.validateValue(param)) {
@@ -225,6 +238,7 @@ public class AdminLandingPageController implements Initializable {
 				return idCol.getComputedValue(param);
 			}
 		});
+		idCol.setMaxWidth(2300);
 
 		JFXTreeTableColumn<TableEntityWrapper.TableNode, String> xPosCol = new JFXTreeTableColumn<>("x_pos");
 		xPosCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableEntityWrapper.TableNode, String> param) -> {
@@ -234,6 +248,7 @@ public class AdminLandingPageController implements Initializable {
 				return xPosCol.getComputedValue(param);
 			}
 		});
+		xPosCol.setMaxWidth(1500);
 
 		JFXTreeTableColumn<TableEntityWrapper.TableNode, String> yPosCol = new JFXTreeTableColumn<>("y_pos");
 		yPosCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableEntityWrapper.TableNode, String> param) -> {
@@ -243,6 +258,7 @@ public class AdminLandingPageController implements Initializable {
 				return yPosCol.getComputedValue(param);
 			}
 		});
+		yPosCol.setMaxWidth(1500);
 
 		JFXTreeTableColumn<TableEntityWrapper.TableNode, String> floorCol = new JFXTreeTableColumn<>("floor");
 		floorCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableEntityWrapper.TableNode, String> param) -> {
@@ -252,6 +268,7 @@ public class AdminLandingPageController implements Initializable {
 				return floorCol.getComputedValue(param);
 			}
 		});
+		floorCol.setMaxWidth(1200);
 
 		JFXTreeTableColumn<TableEntityWrapper.TableNode, String> buildingCol = new JFXTreeTableColumn<>("building");
 		buildingCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableEntityWrapper.TableNode, String> param) -> {
@@ -261,6 +278,7 @@ public class AdminLandingPageController implements Initializable {
 				return buildingCol.getComputedValue(param);
 			}
 		});
+		buildingCol.setMaxWidth(2500);
 
 		JFXTreeTableColumn<TableEntityWrapper.TableNode, String> typeCol = new JFXTreeTableColumn<>("type");
 		typeCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableEntityWrapper.TableNode, String> param) -> {
@@ -270,6 +288,7 @@ public class AdminLandingPageController implements Initializable {
 				return typeCol.getComputedValue(param);
 			}
 		});
+		typeCol.setMaxWidth((1200));
 
 		JFXTreeTableColumn<TableEntityWrapper.TableNode, String> lNameCol = new JFXTreeTableColumn<>("l_name");
 		lNameCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableEntityWrapper.TableNode, String> param) -> {
@@ -289,8 +308,8 @@ public class AdminLandingPageController implements Initializable {
 			}
 		});
 
-		JFXTreeTableColumn<TableEntityWrapper.TableNode, String> removeCol = new JFXTreeTableColumn<>("");
-		removeCol.setPrefWidth(50);
+		JFXTreeTableColumn<TableEntityWrapper.TableNode, String> removeCol = new JFXTreeTableColumn<>("Remove");
+		removeCol.setMaxWidth(2300);
 
 		Callback<TreeTableColumn<TableEntityWrapper.TableNode, String>, TreeTableCell<TableEntityWrapper.TableNode, String>> removeColCellFactory = new Callback<>() {
 			@Override
@@ -321,8 +340,9 @@ public class AdminLandingPageController implements Initializable {
 
 		ObservableList<TableEntityWrapper.TableNode> nodes = FXCollections.observableArrayList();
 		for (Node node : cache.getNodeCache()) {
-			nodes.add(new TableEntityWrapper.TableNode(node.getID(), String.valueOf(node.getPosition().getX()), String.valueOf(node.getPosition().getY()),
-					String.valueOf(node.getFloor()), node.getBuilding(), node.getType(), node.getLongName(), node.getShortName()));
+			nodes.add(new TableEntityWrapper.TableNode(node.getID(), String.valueOf(Precision.round(node.getPosition().getX(), 2)),
+					String.valueOf(Precision.round(node.getPosition().getY(), 2)), node.getFloorAsString(), node.getBuilding(), node.getType(),
+					node.getLongName(), node.getShortName()));
 		}
 
 		final TreeItem<TableEntityWrapper.TableNode> root = new RecursiveTreeItem<>(nodes, RecursiveTreeObject::getChildren);
@@ -413,6 +433,8 @@ public class AdminLandingPageController implements Initializable {
 	}
 
 	private void loadEdgesTable() {
+		edgesTable.setColumnResizePolicy(edgesTable.CONSTRAINED_RESIZE_POLICY);
+
 		JFXTreeTableColumn<TableEntityWrapper.TableEdge, String> idCol = new JFXTreeTableColumn<>("id");
 		idCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableEntityWrapper.TableEdge, String> param) -> {
 			if (idCol.validateValue(param)) {
@@ -440,8 +462,8 @@ public class AdminLandingPageController implements Initializable {
 			}
 		});
 
-		JFXTreeTableColumn<TableEntityWrapper.TableEdge, String> removeCol = new JFXTreeTableColumn<>("");
-		removeCol.setPrefWidth(50);
+		JFXTreeTableColumn<TableEntityWrapper.TableEdge, String> removeCol = new JFXTreeTableColumn<>("Remove");
+		removeCol.setMaxWidth(2300);
 
 		Callback<TreeTableColumn<TableEntityWrapper.TableEdge, String>, TreeTableCell<TableEntityWrapper.TableEdge, String>> removeColCellFactory = new Callback<>() {
 			@Override
@@ -518,6 +540,8 @@ public class AdminLandingPageController implements Initializable {
 	}
 
 	private void loadGiftsTable() {
+		giftsTable.setColumnResizePolicy(edgesTable.CONSTRAINED_RESIZE_POLICY);
+
 		JFXTreeTableColumn<TableEntityWrapper.TableGift, String> idCol = new JFXTreeTableColumn<>("id");
 		idCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableEntityWrapper.TableGift, String> param) -> {
 			if (idCol.validateValue(param)) {
@@ -526,6 +550,7 @@ public class AdminLandingPageController implements Initializable {
 				return idCol.getComputedValue(param);
 			}
 		});
+		idCol.setMaxWidth(500);
 
 		JFXTreeTableColumn<TableEntityWrapper.TableGift, String> typeCol = new JFXTreeTableColumn<>("type");
 		typeCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableEntityWrapper.TableGift, String> param) -> {
@@ -535,6 +560,7 @@ public class AdminLandingPageController implements Initializable {
 				return typeCol.getComputedValue(param);
 			}
 		});
+		typeCol.setMaxWidth(2500);
 
 		JFXTreeTableColumn<TableEntityWrapper.TableGift, String> subtypeCol = new JFXTreeTableColumn<>("subtype");
 		subtypeCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableEntityWrapper.TableGift, String> param) -> {
@@ -544,6 +570,7 @@ public class AdminLandingPageController implements Initializable {
 				return subtypeCol.getComputedValue(param);
 			}
 		});
+		subtypeCol.setMaxWidth(2500);
 
 		JFXTreeTableColumn<TableEntityWrapper.TableGift, String> descCol = new JFXTreeTableColumn<>("description");
 		descCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableEntityWrapper.TableGift, String> param) -> {
@@ -562,9 +589,10 @@ public class AdminLandingPageController implements Initializable {
 				return invCol.getComputedValue(param);
 			}
 		});
+		invCol.setMaxWidth(1500);
 
-		JFXTreeTableColumn<TableEntityWrapper.TableGift, String> removeCol = new JFXTreeTableColumn<>("");
-		removeCol.setPrefWidth(50);
+		JFXTreeTableColumn<TableEntityWrapper.TableGift, String> removeCol = new JFXTreeTableColumn<>("Remove");
+		removeCol.setMaxWidth(2300);
 
 		Callback<TreeTableColumn<TableEntityWrapper.TableGift, String>, TreeTableCell<TableEntityWrapper.TableGift, String>> removeColCellFactory = new Callback<>() {
 			@Override
@@ -654,6 +682,8 @@ public class AdminLandingPageController implements Initializable {
 	}
 
 	private void loadUsersTable() {
+		usersTable.setColumnResizePolicy(usersTable.CONSTRAINED_RESIZE_POLICY);
+
 		JFXTreeTableColumn<TableEntityWrapper.TableUser, String> idCol = new JFXTreeTableColumn<>("id");
 		idCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableEntityWrapper.TableUser, String> param) -> {
 			if (idCol.validateValue(param)) {
@@ -662,6 +692,7 @@ public class AdminLandingPageController implements Initializable {
 				return idCol.getComputedValue(param);
 			}
 		});
+		idCol.setMaxWidth(1000);
 
 		JFXTreeTableColumn<TableEntityWrapper.TableUser, String> fNameCol = new JFXTreeTableColumn<>("f_name");
 		fNameCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableEntityWrapper.TableUser, String> param) -> {
@@ -717,8 +748,8 @@ public class AdminLandingPageController implements Initializable {
 			}
 		});
 
-		JFXTreeTableColumn<TableEntityWrapper.TableUser, String> removeCol = new JFXTreeTableColumn<>("");
-		removeCol.setPrefWidth(50);
+		JFXTreeTableColumn<TableEntityWrapper.TableUser, String> removeCol = new JFXTreeTableColumn<>("Remove");
+		removeCol.setMaxWidth(2300);
 
 		Callback<TreeTableColumn<TableEntityWrapper.TableUser, String>, TreeTableCell<TableEntityWrapper.TableUser, String>> removeColCellFactory = new Callback<>() {
 			@Override
@@ -829,6 +860,9 @@ public class AdminLandingPageController implements Initializable {
 	}
 
 	private void loadDoctorsTable() {
+		doctorsTable.setColumnResizePolicy(doctorsTable.CONSTRAINED_RESIZE_POLICY);
+
+
 		JFXTreeTableColumn<TableEntityWrapper.TableDoctor, String> idCol = new JFXTreeTableColumn<>("id");
 		idCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<TableEntityWrapper.TableDoctor, String> param) -> {
 			if (idCol.validateValue(param)) {
@@ -883,8 +917,8 @@ public class AdminLandingPageController implements Initializable {
 			}
 		});
 
-		JFXTreeTableColumn<TableEntityWrapper.TableDoctor, String> removeCol = new JFXTreeTableColumn<>("");
-		removeCol.setPrefWidth(50);
+		JFXTreeTableColumn<TableEntityWrapper.TableDoctor, String> removeCol = new JFXTreeTableColumn<>("Remove");
+		removeCol.setMaxWidth(2300);
 
 		Callback<TreeTableColumn<TableEntityWrapper.TableDoctor, String>, TreeTableCell<TableEntityWrapper.TableDoctor, String>> removeColCellFactory = new Callback<>() {
 			@Override

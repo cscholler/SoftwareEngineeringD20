@@ -23,12 +23,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+@Slf4j
 public class InterpreterPaneController implements Initializable {
     public JFXButton btnSpanish;
     public JFXButton btnFrench;
@@ -62,8 +64,8 @@ public class InterpreterPaneController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         sf = new SearchFields(dbCache.getNodeCache());
-        sf.getFields().add(SearchFields.Field.longName);
-        sf.getFields().add(SearchFields.Field.shortName);
+        sf.getFields().add(SearchFields.Field.nodeID);
+//        sf.getFields().add(SearchFields.Field.shortName);
         sf.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
@@ -95,7 +97,7 @@ public class InterpreterPaneController implements Initializable {
         } else if (e.getSource() == btnSubmit){
             String interpreterType = interpType.getText();
             String patientID = patientIDText.getText();
-            String roomNumber = roomNumText.getText() == null ? sf.getNode(roomNumText.getText()).getID() : null;
+            String roomNumber = roomNumText.getText();
             String additionalInfo = additionalText.getText();
             String firstName = patientFN.getText();
 
@@ -115,6 +117,7 @@ public class InterpreterPaneController implements Initializable {
                 validFields = false;
             } else interpType.setStyle("-fx-text-fill: GRAY");
             if(db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_NAME, new ArrayList<>(Collections.singletonList(patientID))))).size() == 0) {
+                log.info("Did not find patient");
                 patientIDText.setStyle("-fx-prompt-text-fill: RED");
                 validFields = false;
             } else patientIDText.setStyle("-fx-text-fill: GRAY");

@@ -30,11 +30,6 @@ public class ImportDialogue {
 	private JFXCheckBox appendCheckbox;
 
     @FXML
-    private void initialize() {
-    	tableSelector.getItems().addAll(dbService.getTableUpdateMappings().keySet());
-    }
-
-    @FXML
     private void importClicked() {
     	boolean doAppend = appendCheckbox.isSelected();
         String selected = tableSelector.getSelectionModel().getSelectedItem();

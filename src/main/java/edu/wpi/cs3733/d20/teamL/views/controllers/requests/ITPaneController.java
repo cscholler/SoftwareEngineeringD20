@@ -63,13 +63,12 @@ public class ITPaneController implements Initializable {
 	private SearchFields searchFields;
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-        sf = new SearchFields(dbCache.getNodeCache());
-        sf.getFields().add(SearchFields.Field.longName);
-        sf.getFields().add(SearchFields.Field.shortName);
-        sf.populateSearchFields();
+//        sf = new SearchFields(dbCache.getNodeCache());
+//        sf.getFields().add(SearchFields.Field.longName);
+//        sf.getFields().add(SearchFields.Field.shortName);
+//        sf.populateSearchFields();
 		searchFields = new SearchFields(dbCache.getNodeCache());
-		searchFields.getFields().add(SearchFields.Field.longName);
-		searchFields.getFields().add(SearchFields.Field.shortName);
+		searchFields.getFields().add(SearchFields.Field.nodeID);
 		searchFields.populateSearchFields();
 		autoCompletePopup.getSuggestions().addAll(searchFields.getSuggestions());
 
@@ -116,7 +115,7 @@ public class ITPaneController implements Initializable {
 
         int rows = 0;
         if(validFields) rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
-                new ArrayList<>(Arrays.asList(null, userName, null, searchFields.getNode(location).getID(), "information technology", type, notes, status, dateAndTime))));
+                new ArrayList<>(Arrays.asList(null, userName, null, location, "information technology", type, notes, status, dateAndTime))));
 
         if (rows == 0) {
             confirmation.setTextFill(Color.RED);

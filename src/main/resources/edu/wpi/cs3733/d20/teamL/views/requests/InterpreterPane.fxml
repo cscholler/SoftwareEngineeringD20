@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.InterpreterPaneController">
+<StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.InterpreterPaneController">
    <children>
       <BorderPane fx:id="borderPane" maxHeight="598.0" prefHeight="598.0" styleClass="services-pane-jfx" stylesheets="@../../css/GlobalStyleSheet.css">
          <center>
@@ -112,7 +118,7 @@
                            <children>
                               <JFXTextField fx:id="patientIDText" onAction="#handleButtonAction" promptText="  Patient ID" styleClass="text-field-jfx" />
                               <JFXTextField fx:id="patientFN" onAction="#handleButtonAction" promptText="  Patient First Name" styleClass="text-field-jfx" />
-                              <JFXTextField fx:id="roomNumText" onAction="#handleButtonAction" promptText="  Patient Room Number" styleClass="text-field-jfx" />
+                              <JFXTextField fx:id="roomNumText" onAction="#handleButtonAction" onKeyTyped="#autocomplete" promptText="  Patient Room Number" styleClass="text-field-jfx" />
                            </children>
                         </VBox>
                         <JFXTextArea fx:id="additionalText" promptText="  Additional Information" styleClass="text-area-jfx" />

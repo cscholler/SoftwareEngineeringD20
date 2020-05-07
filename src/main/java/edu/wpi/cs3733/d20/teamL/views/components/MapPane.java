@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamL.views.components;
 
 import com.jfoenix.controls.JFXButton;
+import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import javafx.beans.property.ObjectProperty;
@@ -443,7 +444,8 @@ public class MapPane extends ScrollPane {
                 addEdge(edge);
         }
         try {
-            setMapImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/" + getBuilding().getName() + "Floor" + currentFloor.getFloorAsString() + "LM.png"));
+            Image img = new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/" + getBuilding().getName() + "Floor" + currentFloor.getFloorAsString() + "LM.png");
+            setMapImage(img);
         } catch (IllegalArgumentException ex) {
 
         }
@@ -491,8 +493,8 @@ public class MapPane extends ScrollPane {
 
     // Sets the zoom level by changing the spacing between all the nodes
     public void setZoomLevel(double zoomLevel) {
-        if (currentBuilding.getName().equals("Faulkner")) zoomLevel = Math.max(zoomLevel, .5);
-        if (currentBuilding.getName().equals("Google")) zoomLevel = Math.max(zoomLevel, .8);
+        if (currentBuilding.getName().equals("Faulkner")) zoomLevel = Math.max(zoomLevel, .5 * App.UI_SCALE);
+        if (currentBuilding.getName().equals("Google")) zoomLevel = Math.max(zoomLevel, .8 * App.UI_SCALE);
         else zoomLevel = Math.max(zoomLevel, .25);
         zoomLevel = Math.min(zoomLevel, 4);
 
@@ -675,7 +677,6 @@ public class MapPane extends ScrollPane {
 
         body.getChildren().add(nodeGUI);
 
-        recalculatePositions();
         return nodeGUI;
     }
 
@@ -688,7 +689,7 @@ public class MapPane extends ScrollPane {
             } catch (IllegalArgumentException ex) {
                 nodeGUI.getCircle().setFill(nodeColor);
             }
-            List<String> visibleNodeTypes = Arrays.asList("EXIT", "REST", "ELEV", "STAI", "INFO", "RETL", "KIOS");
+            List<String> visibleNodeTypes = Arrays.asList("EXIT", "REST", "ELEV", "STAI", "INFO", "RETL", "KIOS", "REFL");
             if (!visibleNodeTypes.contains(nodeGUI.getNode().getType()))
                 nodeGUI.setVisible(false);
         }

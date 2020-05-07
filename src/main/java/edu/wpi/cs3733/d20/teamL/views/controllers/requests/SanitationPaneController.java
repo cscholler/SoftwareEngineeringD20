@@ -52,8 +52,7 @@ public class SanitationPaneController {
     @FXML
     public void initialize(){
         sf = new SearchFields(dbCache.getNodeCache());
-        sf.getFields().add(SearchFields.Field.longName);
-        sf.getFields().add(SearchFields.Field.shortName);
+        sf.getFields().add(SearchFields.Field.nodeID);
         sf.populateSearchFields();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
 

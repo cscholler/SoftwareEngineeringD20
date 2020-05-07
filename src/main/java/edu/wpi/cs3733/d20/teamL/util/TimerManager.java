@@ -7,10 +7,13 @@ import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -67,19 +70,24 @@ public class TimerManager {
 	}
 
 	public void logOutIfNoInput() {
-		if (!AsyncTaskManager.isTaskRunning) {
-			Platform.runLater(() -> {
-				log.info("No input for 1 minute. Logging out...");
-				loginManager.logOut(true);
-				FXMLLoaderFactory.resetHistory();
+		Platform.runLater(() -> {
+			log.info("No input for 1 minute. Logging out...");
+			loginManager.logOut(true);
+			FXMLLoaderFactory.resetHistory();
+			try {
 				try {
-					Parent root = loaderFactory.getFXMLLoader("map_viewer/MapViewer").load();
-					loaderFactory.setupScene(new Scene(root));
-				} catch (IOException ex) {
-					log.error("Encountered IOException", ex);
+					Stage openPopup = (Stage) Stage.getWindows().stream().filter(Window::isFocused).findFirst().orElse(null);
+					assert openPopup != null;
+					openPopup.close();
+				} catch (NullPointerException ex) {
+					log.warn("Attempted to close an unfocused window on timeout.");
 				}
-			});
-		}
+				Parent root = loaderFactory.getFXMLLoader("map_viewer/MapViewer").load();
+				loaderFactory.setupScene(new Scene(root));
+			} catch (IOException ex) {
+				log.error("Encountered IOException", ex);
+			}
+		});
 	}
 
 	public Timer startTimer(VoidMethod updateFunction, long delay, long period) {
