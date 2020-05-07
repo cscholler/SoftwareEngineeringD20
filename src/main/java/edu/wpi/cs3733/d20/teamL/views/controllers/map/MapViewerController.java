@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Timer;
 
 import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamL.App;
@@ -24,15 +25,14 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Line;
@@ -52,6 +52,8 @@ import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
 import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
 import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
 import org.apache.xmlgraphics.image.codec.png.PNGEncodeParam;
+
+import javax.swing.*;
 
 @Slf4j
 public class MapViewerController {
@@ -74,13 +76,13 @@ public class MapViewerController {
     @FXML
     private JFXButton btnTextMe, btnQR;
     @FXML
-    StackPane stackPane;
+    StackPane stackPane, keyStackPane;
     @FXML
     private JFXListView listF1, listF2, listF3, listF4, listF5;
     @FXML
     private JFXComboBox<String> buildingChooser;
     @FXML
-    private Label timeLabel;
+    private Label timeLabel, dateLabel;
 
     @Inject
     private IDatabaseCache cache;
@@ -113,6 +115,13 @@ public class MapViewerController {
     private final Image IMAGE_FTOM = new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/FaulkToMain.PNG");
     private final Image IMAGE_MTOF = new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/MainToFaulk.PNG");
 
+    private final Image EXIT_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/EXIT_filled.png",45,45,true,true,true);
+    private final Image REST_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/REST_filled.png",45,45,true,false,true);
+    private final Image INFO_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/INFO_filled.png",45,45,true,false,true);
+    private final Image ELEV_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/ELEV_filled.png",45,45,true,false,true);
+    private final Image STAI_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/STAI_filled.png",45,45,true,false,true);
+    private final Image RETL_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/RETL_filled.png",45,45,true,false,true);
+
     private Collection<String> deptNodes = new ArrayList<>();
     private Collection<String> labNodes = new ArrayList<>();
     private Collection<String> serviceNodes = new ArrayList<>();
@@ -124,6 +133,8 @@ public class MapViewerController {
     @FXML
     private void initialize() {
         timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
+        timerManager.startTimer(() -> timerManager.updateDate(dateLabel), 0, 1000);
+
         if (App.doUpdateCacheOnLoad) {
             cache.cacheAllFromDB();
             App.doUpdateCacheOnLoad = false;
@@ -134,6 +145,7 @@ public class MapViewerController {
         btnNavigate.setDisableVisualFocus(true);
 
         stackPane.setPickOnBounds(false);
+        keyStackPane.setPickOnBounds(false);
         dirList.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent -> goToSelected()));
         // Import all the nodes from the cache and set the current building to Faulkner
         String startB = "Faulkner";
@@ -297,12 +309,65 @@ public class MapViewerController {
      */
     @FXML
     private void showLegend() {
-        try {
-            Parent root = loaderHelper.getFXMLLoader("map_viewer/LegendPopup").load();
-            loaderHelper.setupPopup(new Stage(), new Scene(root));
-        } catch (IOException ex) {
-            log.error("Couldn't load LegendPopup.fxml", ex);
-        }
+            JFXDialogLayout legendContent = new JFXDialogLayout();
+            Label title = new Label("Map Legend");
+            title.setStyle("-fx-font-size: 30;" + "-fx-text-fill: #0d2e57;" + "-fx-font-weight: bold");
+            legendContent.setHeading(title);
+
+            HBox contentHBox = new HBox();
+            VBox colorKey = new VBox();
+            colorKey.setMinWidth(300);
+            colorKey.setSpacing(5);
+            VBox iconKey = new VBox();
+            iconKey.setMinWidth(150);
+            iconKey.setSpacing(5);
+
+            String[] colors = new String[]{" #7DA7D9"," #FCB963"," #FFF77D"," #79BD92"," #8881BD"," #F69679"," #6DCFF6"," #AD87AD"," #BDDEA2"," #F5989D"," #7DA7D9"};
+            String[] colorText = new String[]{"Departments/Clinics/Waiting Area","Stairwell","Restrooms","Food/Shops/Payphone/etc.","Labs/Imaging/Testing Areas",
+            "Exits/Entrances","Info Desk/Security/Lost and Found","Conference Rooms","Elevators","Interpreters/Spiritual/Library/etc","Departments/Clinics/Waiting Area"};
+            Image[] icons = new Image[]{EXIT_filled,REST_filled,INFO_filled,ELEV_filled,STAI_filled,RETL_filled};
+            String[] iconText = new String[]{"Exit/Entrance","Restrooms","Information Desk","Elevator","Stairs","Retail Locations"};
+
+            for (int i = 0; i < colors.length; i++) {
+                JFXButton colorSwatch = new JFXButton();
+                String fxColor = "-fx-background-color: " + colors[i] +";";
+                colorSwatch.setStyle("-fx-min-height: 30;" + "-fx-min-width: 30;" + "-fx-border-radius: 0;" + fxColor);
+
+                VBox swatchText = new VBox(new Label(colorText[i]));
+                swatchText.setAlignment(Pos.CENTER);
+
+                HBox colorRow = new HBox();
+                colorRow.setSpacing(5);
+                colorRow.getChildren().setAll(colorSwatch, swatchText);
+
+                colorKey.getChildren().add(colorRow);
+            }
+
+            for (int i = 0; i < icons.length; i++){
+                ImageView icon = new ImageView(icons[i]);
+
+                VBox displayText = new VBox(new Label(iconText[i]));
+                displayText.setAlignment(Pos.CENTER);
+
+                HBox iconRow = new HBox();
+                iconRow.setSpacing(5);
+                iconRow.getChildren().setAll(icon,displayText);
+
+                iconKey.getChildren().add(iconRow);
+            }
+
+            contentHBox.getChildren().addAll(colorKey,iconKey);
+        legendContent.setBody(contentHBox);
+
+        JFXDialog legend = new JFXDialog(keyStackPane, legendContent, JFXDialog.DialogTransition.TOP);
+
+
+        JFXButton btnClose = new JFXButton("X");
+        btnClose.setStyle("-fx-font-weight: bolder");
+        btnClose.setOnAction(e -> legend.close());
+        legendContent.setActions(btnClose);
+
+        legend.show();
     }
 
     private String highlightSourceToDestination(Node source, Node destination) {
@@ -554,7 +619,7 @@ public class MapViewerController {
                 "UI Engineer: Winnie Ly\n" +
                 "Documentation Analyst: Zaiyang Zhong\n\n" +
                 "Thank you Brigham and Women's Hospital \nand Andrew Shinn for your time and input."));
-        JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
+        JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
         JFXButton btnDone = new JFXButton("Done");
         btnDone.setOnAction(new EventHandler<ActionEvent>() {
             @Override
