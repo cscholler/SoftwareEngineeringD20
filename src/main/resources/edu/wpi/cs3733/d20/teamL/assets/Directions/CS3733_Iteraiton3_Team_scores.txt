@@ -1,0 +1,13 @@
+Andrew Sam Chris Michael Wong
+    A   S   C   M   W
+K - 2 + 1 + 1 + _ + 1 = 5
+N - 2 + _ + 2 + 2 + 2 = 8
+M - 2 + _ + 1 + 1 + 2 = 6
+P - 2 + 2 + 2 + _ + 2 = 8
+O - _ + 1 + 1 + 1 + 1 = 4
+L - 2 + 1 + _ + 1 + 1 = 5
+
+
+0 - thumbs down
+1 - thumbs in the middle
+2 - thumbs up
