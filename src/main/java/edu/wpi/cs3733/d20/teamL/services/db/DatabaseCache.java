@@ -239,7 +239,7 @@ public class DatabaseCache implements IDatabaseCache {
         ArrayList<ArrayList<String>> giftsDB = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_GIFTS)));
         clearGiftsCache();
         for (ArrayList<String> g : giftsDB) {
-            giftCache.add(new Gift(g.get(0), g.get(1), g.get(2), g.get(3), g.get(4)));
+            giftCache.add(new Gift(g.get(0), g.get(1), g.get(2), g.get(3), g.get(4), Double.parseDouble(g.get(5))));//Double.parseDouble(g.get(5))
         }
     }
 

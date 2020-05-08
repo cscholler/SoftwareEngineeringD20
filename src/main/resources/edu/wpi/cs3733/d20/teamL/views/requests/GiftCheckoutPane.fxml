@@ -30,18 +30,28 @@
                                  <VBox.margin>
                                     <Insets top="10.0" />
                                  </VBox.margin>
+                                 <graphic>
+                                    <Label text="Label" />
+                                 </graphic>
                               </Label>
-                              <ScrollPane hbarPolicy="NEVER" prefHeight="300.0" prefWidth="350.0">
+                              <ScrollPane hbarPolicy="NEVER" prefHeight="285.0" prefWidth="362.0">
                                  <content>
-                                    <TableView fx:id="orderTable" prefWidth="350.0">
+                                    <TableView fx:id="orderTable" prefHeight="415.0" prefWidth="347.0">
                                       <columns>
-                                        <TableColumn fx:id="giftColumn" maxWidth="1.7976931348623157E308" prefWidth="180.0" text="Gift" />
-                                        <TableColumn fx:id="qtyColumn" maxWidth="1.7976931348623157E308" prefWidth="75.0" text="Qty." />
+                                        <TableColumn fx:id="giftColumn" maxWidth="1.7976931348623157E308" prefWidth="171.0" text="Gift" />
+                                        <TableColumn fx:id="qtyColumn" maxWidth="1.7976931348623157E308" prefWidth="84.0" text="Qty." />
+                                          <TableColumn fx:id="costColumn" maxWidth="1.7976931348623157E308" prefWidth="75.0" text="Cost" />
                                           <TableColumn fx:id="removeColumn" maxWidth="1.7976931348623157E308" prefWidth="75.0" text="Remove" />
                                       </columns>
                                     </TableView>
                                  </content>
                               </ScrollPane>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label text="Total Cost:" />
+                                    <Label fx:id="totalCostLbl" text="insert cost" />
+                                 </children>
+                              </HBox>
                            </children>
                         </VBox>
                         <VBox alignment="TOP_CENTER" prefHeight="525.0" prefWidth="302.0" spacing="20.0">
