@@ -1,7 +1,15 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 
+import com.google.api.client.auth.oauth2.Credential;
 import com.jfoenix.controls.JFXButton;
-import edu.wpi.cs3733.c20.teamR.AppointmentRequest;
+import com.uber.sdk.core.auth.OAuth2Credentials;
+import com.uber.sdk.core.auth.Scope;
+import com.uber.sdk.core.client.CredentialsSession;
+import com.uber.sdk.core.client.ServerTokenSession;
+import com.uber.sdk.core.client.SessionConfiguration;
+import com.uber.sdk.rides.client.UberRidesApi;
+import com.uber.sdk.rides.client.model.Product;
+import com.uber.sdk.rides.client.services.RidesService;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import javafx.application.Platform;
@@ -15,16 +23,36 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 import lombok.extern.slf4j.Slf4j;
+import retrofit2.Response;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 @Slf4j
 public class UserLandingController {
+    SessionConfiguration config = new SessionConfiguration.Builder()
+            .setClientId("U2kFfAINgolQSICDl4d_-mVHFXX1ha13")
+            .setClientSecret("<CLIENT_SECRET>")
+            .setEnvironment(SessionConfiguration.Environment.SANDBOX)
+            .setScopes(Arrays.asList(Scope.PROFILE, Scope.REQUEST))
+            .setRedirectUri("<REDIRECT_URI>")
+            .build();
+
+    OAuth2Credentials credentials = new OAuth2Credentials.Builder()
+            .setSessionConfiguration(config)
+            .build();
+
+    Credential credential = credentials.authenticate(authorizationCode, userId);
+    CredentialsSession session = new CredentialsSession(config, credential)
+    RidesService service = UberRidesApi.with(session).createService();
+
+    String authorizationUrl = credentials.getAuthorizationUrl();
+
+
+    ServerTokenSession session = new ServerTokenSession(config);
     public ImageView btnClose;
     public JFXButton btnAddPatient;
     FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
@@ -37,6 +65,9 @@ public class UserLandingController {
             btnMedication, btnReflectionRoom, btnOnCallBed, btnLaunchAPI;
     @Inject
     ILoginManager login;
+
+    public UserLandingController() throws UnsupportedEncodingException {
+    }
 
     @FXML
     public void initialize() throws IOException {
@@ -60,20 +91,23 @@ public class UserLandingController {
 
     @FXML
     private void launchAPIntment() throws Exception {
-        AppointmentRequest app = new AppointmentRequest();
-        app.run(0, 0, 1280,720,"/edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css", null, null);
+        Response<List<Product>> response = service.getProducts(37.79f, -122.39f).execute();
+        List<Product> products = response.body();
+        String productId = products.get(0).getProductId();
+//        AppointmentRequest app = new AppointmentRequest();
+//        app.run(0, 0, 1280,720,"/edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css", null, null);
     }
 
 
     @FXML
-    public void launchDefaultPane() throws IOException{
+    public void launchDefaultPane() throws IOException {
         resetAndLoadPane("DefaultPane", " ");
         requestLabel.setVisible(false);
         btnClose.setVisible(false);
     }
 
     @FXML
-    public void launchSecurityPane() throws IOException{
+    public void launchSecurityPane() throws IOException {
         resetAndLoadPane("SecurityPane", "Security Request");
         btnSecurity.setStyle("-fx-background-color: #DCDCDC");
     }
@@ -145,8 +179,8 @@ public class UserLandingController {
     }
 
     private void resetAndLoadPane(String regionName, String labelText) throws IOException {
-        JFXButton[] allButtons = new JFXButton[] {
-        		btnGift, btnSecurity, btnSanitation, btnMaintenance, btnIT, btnInternal, btnExternal, btnInterpreter, btnMedication, btnOnCallBed, btnReflectionRoom, btnAddPatient
+        JFXButton[] allButtons = new JFXButton[]{
+                btnGift, btnSecurity, btnSanitation, btnMaintenance, btnIT, btnInternal, btnExternal, btnInterpreter, btnMedication, btnOnCallBed, btnReflectionRoom, btnAddPatient
         };
         for (JFXButton currButton : allButtons) {
             currButton.setStyle("-fx-background-color: white;");
