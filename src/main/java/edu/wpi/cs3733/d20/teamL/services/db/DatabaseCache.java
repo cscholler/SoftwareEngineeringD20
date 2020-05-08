@@ -39,6 +39,7 @@ public class DatabaseCache implements IDatabaseCache {
         cacheGiftsFromDB();
         cacheUsersFromDB();
         cacheDoctorsFromDB();
+        //cacheQuestionsFromDB();
     }
 
     /**
