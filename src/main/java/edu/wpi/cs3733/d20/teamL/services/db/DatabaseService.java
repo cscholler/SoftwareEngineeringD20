@@ -337,7 +337,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Mangas", "Death Note", "A collection of Japanese manga Death Note", "99.99"))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Mangas", "Attack on Titan", "A collection of Japanese manga Attack on Titan", "199.99"))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Mangas", "Slam Dunk", "A collection of Japanese manga Slam Dunk", "299.99"))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Mangas", "Naruto", "A collection of Japanese manga Naruto", "500", "199.99"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Mangas", "Naruto", "A collection of Japanese manga Naruto", "500", "189.99"))));
 	}
 
 	/**
