@@ -151,7 +151,7 @@ public class ReflectionRoomController {
                     loaderHelper.showAndFade(confirmation);
                 } else {
 
-                    int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_ROOM_REQUEST,
+                    int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_RESERVATION,
                             new ArrayList<>(Arrays.asList(manager.getCurrentUser().getUsername(), room, dateChosen, startTime, endTime)))));
 
                     if(rows == 0) {

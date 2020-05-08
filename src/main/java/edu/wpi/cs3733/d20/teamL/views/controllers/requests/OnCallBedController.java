@@ -172,7 +172,7 @@ public class OnCallBedController {
                         String endTime = t.end.getValue();
                         String availability = t.availability.getValue();
 
-                        int r = db.executeUpdate((new SQLEntry(DBConstants.ADD_ROOM_REQUEST,
+                        int r = db.executeUpdate((new SQLEntry(DBConstants.ADD_RESERVATION,
                                 new ArrayList<>(Arrays.asList(manager.getCurrentUser().getUsername(), bed, dateChosen, startTime, endTime)))));
 
                         if(r == 0) {

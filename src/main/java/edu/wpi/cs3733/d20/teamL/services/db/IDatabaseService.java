@@ -25,7 +25,7 @@ public interface IDatabaseService {
 
 	ArrayList<Integer> executeUpdates(ArrayList<SQLEntry> updates);
 
-	PreparedStatement fillPreparedStatement(SQLEntry entry);
+	void fillPreparedStatement(SQLEntry entry);
 
 	void rebuildDatabase();
 
@@ -40,5 +40,7 @@ public interface IDatabaseService {
 	ArrayList<ArrayList<String>> getTableFromResultSet(ResultSet resSet);
 
 	Map<String, ArrayList<String>> getTableUpdateMappings();
+
+	void createPreparedStatements() throws SQLException;
 }
 

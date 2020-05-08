@@ -1,12 +1,15 @@
 package edu.wpi.cs3733.d20.teamL.services.db;
 
+import com.google.inject.Inject;
+
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class DBConstants {
 	static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
 	static final String DB_PREFIX = "jdbc:mysql://";
-	static final String DB_URL = "abcs3733-bwh-db.cqqsqwjmcbj4.us-east-2.rds.amazonaws.com";
+	static final String DB_URL = "cs3733-bwh-db.cqqsqwjmcbj4.us-east-2.rds.amazonaws.com";
 	static final String DB_PORT = ":5008";
 	// Development database
 	static final String DB_NAME_DEV = "/bwh_dev";
@@ -142,9 +145,9 @@ public class DBConstants {
 			"CREATE TABLE Screening_Questions(" +
 					"id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
 					"question VARCHAR(256) NOT NULL, " +
-					"order INT NOT NULL, " +
+					"order2 INT NOT NULL, " +
 					"weight INT, " +
-					"reqs INT";
+					"reqs INT)";
 
 	public static final String DROP_NODE_TABLE =
 			"DROP TABLE IF EXISTS Nodes";
@@ -164,7 +167,7 @@ public class DBConstants {
 	public static final String DROP_GIFT_TABLE =
 			"DROP TABLE IF EXISTS Gifts";
 
-	public static final String DROP_GIFT_DELIVER_REQUEST_TABLE =
+	public static final String DROP_GIFT_DELIVERY_REQUEST_TABLE =
 			"DROP TABLE IF EXISTS Gift_Delivery_Requests";
 
 	public static final String DROP_MEDICATION_REQUEST_TABLE =
@@ -218,7 +221,7 @@ public class DBConstants {
 			"INSERT INTO Service_Requests(patient_id, request_username, assignee_username, location, service, type, notes, status, date_and_time)" +
 					"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-	public static final String ADD_ROOM_REQUEST =
+	public static final String ADD_RESERVATION =
 			"INSERT INTO Reservations(username, place, date, start_time, end_time)" +
 					"VALUES(?, ?, ?, ?, ?)";
 
