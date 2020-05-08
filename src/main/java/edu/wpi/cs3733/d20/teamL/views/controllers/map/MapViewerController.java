@@ -62,7 +62,7 @@ public class MapViewerController {
     @FXML
     private JFXTextField startingPoint, destination;
     @FXML
-    private JFXButton btnNavigate, floorUp, floorDown;
+    private JFXButton btnNavigate, floorUp, floorDown, btnScreening;
     @FXML
     private ScrollPane scroll;
     @FXML
@@ -76,7 +76,7 @@ public class MapViewerController {
     @FXML
     private JFXButton btnTextMe, btnQR;
     @FXML
-    StackPane stackPane, keyStackPane;
+    StackPane stackPane, keyStackPane, screeningPane;
     @FXML
     private JFXListView listF1, listF2, listF3, listF4, listF5;
     @FXML
@@ -146,6 +146,7 @@ public class MapViewerController {
 
         stackPane.setPickOnBounds(false);
         keyStackPane.setPickOnBounds(false);
+        screeningPane.setPickOnBounds(false);
         dirList.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent -> goToSelected()));
         // Import all the nodes from the cache and set the current building to Faulkner
         String startB = "Faulkner";
@@ -642,6 +643,17 @@ public class MapViewerController {
 
         startingPoint.setText(destLoc);
         destination.setText(startLoc);
+    }
+
+    @FXML
+    public void openScreening() throws IOException{
+
+
+        //screeningPane.getChildren().add();
+        JFXDialogLayout layout = loaderHelper.getFXMLLoader("/map_viewer/ScreeningPage").load();
+
+        JFXDialog screeningDialog = new JFXDialog(screeningPane, layout, JFXDialog.DialogTransition.TOP);
+        screeningDialog.show();
     }
 
     @FXML

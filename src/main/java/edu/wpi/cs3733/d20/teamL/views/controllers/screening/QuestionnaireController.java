@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.screening;
 
 import com.jfoenix.controls.JFXCheckBox;
+import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXRadioButton;
 import edu.wpi.cs3733.d20.teamL.entities.Question;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
@@ -22,7 +23,9 @@ public class QuestionnaireController {
     @FXML
     private Label questionnaireTitle;
     @FXML
-    private VBox allQuestionsBox;
+    private VBox dialogVbox;
+    @FXML
+    private JFXDialogLayout screeningDialog;
 
     @FXML
     private void initialize(){
@@ -30,6 +33,7 @@ public class QuestionnaireController {
 
         int i = 0;
         while (i < allQuestions.size() - 1) {
+            VBox allQuestionsBox = new VBox();
             int currentQuestionOrder = allQuestions.get(i).getOrder();
             ToggleGroup toggleGroup = new ToggleGroup();
             while (allQuestions.get(i).getOrder() == (currentQuestionOrder)) {
@@ -48,7 +52,11 @@ public class QuestionnaireController {
                 }
                 i++;
             }
+            questionCards.add(allQuestionsBox);
         }
+
+        dialogVbox = questionCards.get(0);
+        screeningDialog.setHeading(questionnaireTitle);
     }
 
 

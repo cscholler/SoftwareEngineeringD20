@@ -246,6 +246,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 			updates.add(new SQLEntry(DBConstants.CREATE_MEDICATION_REQUEST_TABLE));
 			updates.add(new SQLEntry(DBConstants.CREATE_SERVICE_REQUEST_TABLE));
 			updates.add(new SQLEntry(DBConstants.CREATE_RESERVATIONS_TABLE));
+			updates.add(new SQLEntry(DBConstants.CREATE_SCREENING_QUESTIONS_TABLE));
 		} else if (dbType == DB_TYPE.DERBY) {
 			updates.add(new SQLEntry(DerbyConstants.CREATE_NODE_TABLE));
 			updates.add(new SQLEntry(DerbyConstants.CREATE_EDGE_TABLE));
@@ -256,6 +257,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 			updates.add(new SQLEntry(DerbyConstants.CREATE_GIFT_DELIVERY_REQUEST_TABLE));
 			updates.add(new SQLEntry(DerbyConstants.CREATE_MEDICATION_REQUEST_TABLE));
 			updates.add(new SQLEntry(DerbyConstants.CREATE_SERVICE_REQUEST_TABLE));
+			updates.add(new SQLEntry(DBConstants.CREATE_SCREENING_QUESTIONS_TABLE));
 		} else {
 			log.error("Invalid database type.");
 		}
@@ -318,6 +320,8 @@ public class DatabaseService extends Service implements IDatabaseService {
 		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Movies", "LOTR Films", "The three Lord of the Rings movies from the trilogy", "100"))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Movies", "Star Wars", "All 6 Canon Star Wars movies", "100"))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Movies", "Pulp Fiction", "A copy of the movie Pulp Fiction", "3"))));
+
+		//executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Test question", "0", "0", "0"))));
 	}
 
 	/**
@@ -383,6 +387,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 			updates.add(new SQLEntry(DBConstants.DROP_USER_TABLE));
 			updates.add(new SQLEntry(DBConstants.DROP_EDGE_TABLE));
 			updates.add(new SQLEntry(DBConstants.DROP_NODE_TABLE));
+			updates.add(new SQLEntry(DBConstants.DROP_SCREENING_QUESTIONS_TABLE));
 			executeUpdates(updates);
 		} else if (dbType == DB_TYPE.DERBY) {
 			ResultSet resSet;
@@ -397,6 +402,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 			dropTableUpdates.add(DerbyConstants.DROP_GIFT_DELIVER_REQUEST_TABLE);
 			dropTableUpdates.add(DerbyConstants.DROP_MEDICATION_REQUEST_TABLE);
 			dropTableUpdates.add(DerbyConstants.DROP_SERVICE_REQUEST_TABLE);
+			updates.add(new SQLEntry(DBConstants.DROP_SCREENING_QUESTIONS_TABLE));
 			try {
 				for (int i = 0; i < DBConstants.GET_TABLE_NAMES().size(); i++) {
 					resSet = connection.getMetaData().getTables(null, "APP", DBConstants.GET_TABLE_NAMES().get(i).toUpperCase(), null);

@@ -19,7 +19,7 @@ public class DBConstants {
 	public static final String SERVICE_NAME = "mysql-db-01";
 
 	public static ArrayList<String> GET_TABLE_NAMES() {
-		return new ArrayList<>(Arrays.asList("Nodes", "Edges", "Users", "Doctors", "Patients", "Gifts", "Gift_Delivery_Requests", "Medication_Requests", "Service_Requests", "Reservations"));
+		return new ArrayList<>(Arrays.asList("Nodes", "Edges", "Users", "Doctors", "Patients", "Gifts", "Gift_Delivery_Requests", "Medication_Requests", "Service_Requests", "Reservations", "Screening_Questions"));
 	}
 
 	public static final String CREATE_NODE_TABLE =
@@ -361,10 +361,10 @@ public class DBConstants {
 					"FROM Kiosk_Settings " +
 					"ORDER BY id";
 
-	public static final String GET_SCREENING_QUESTIONS =
+	public static final String SELECT_ALL_SCREENING_QUESTIONS =
 			"SELECT * " +
 					"FROM Screening_Questions " +
-					"WHERE order = ?";
+					"ORDER BY id";
 
 	public static final String GET_KIOSK_SETTINGS =
 			"SELECT * " +

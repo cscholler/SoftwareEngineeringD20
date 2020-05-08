@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamL.services.db;
 import java.sql.ResultSet;
 import java.util.*;
 
+import com.google.j2objc.annotations.ObjectiveCName;
 import edu.wpi.cs3733.d20.teamL.entities.*;
 import javafx.geometry.Point2D;
 
@@ -24,6 +25,7 @@ public class DatabaseCache implements IDatabaseCache {
     private ArrayList<Edge> addedEdges = new ArrayList<>();
     private ArrayList<Node> deletedNodes = new ArrayList<>();
     private ArrayList<Edge> deletedEdges = new ArrayList<>();
+    private ArrayList<Question> questionCache = new ArrayList<>();
 
 
 
@@ -39,7 +41,7 @@ public class DatabaseCache implements IDatabaseCache {
         cacheGiftsFromDB();
         cacheUsersFromDB();
         cacheDoctorsFromDB();
-        //cacheQuestionsFromDB();
+        cacheQuestionsFromDB();
     }
 
     /**
@@ -325,4 +327,17 @@ public class DatabaseCache implements IDatabaseCache {
 	public void clearDoctorCache() {
     	doctorCache.clear();
 	}
+
+    @Override
+    public void cacheQuestionsFromDB() {
+        ArrayList<ArrayList<String>> questionTable = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_SCREENING_QUESTIONS)));
+        for(ArrayList<String> row : questionTable) {
+            questionCache.add(new Question(row.get(0), Integer.parseInt(row.get(1)), Integer.parseInt(row.get(2)), Integer.parseInt(row.get(3))));
+        }
+    }
+
+    @Override
+    public ArrayList<Question> getQuestions() {
+        return questionCache;
+    }
 }
