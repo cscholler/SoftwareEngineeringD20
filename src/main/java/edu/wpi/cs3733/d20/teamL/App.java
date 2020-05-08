@@ -19,9 +19,10 @@ import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 public class App extends Application {
 	private final FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
 	private static final TimerManager timerManager = new TimerManager();
-	public static Timer forceCacheUpdateTimer;
-	public static Timer idleCacheUpdateTimer;
 	public static Timer idleLogoutTimer;
+	public static Timer idleCacheUpdateTimer;
+	public static Timer forceCacheUpdateTimer;
+	public static Timer screenSaverTimer;
 	public static Stage stage;
 	public static final double SCREEN_WIDTH = Screen.getPrimary().getVisualBounds().getWidth();
 	public static final double SCREEN_HEIGHT = Screen.getPrimary().getVisualBounds().getHeight();
@@ -29,25 +30,32 @@ public class App extends Application {
 	public static boolean allowCacheUpdates = true;
 	public static double UI_SCALE = 1.34 * (SCREEN_WIDTH / 1920);
 
-	public static void startForceUpdateTimer() {
-		if (forceCacheUpdateTimer != null) {
-			forceCacheUpdateTimer.cancel();
+	public static void startLogoutTimer() {
+		if (idleLogoutTimer != null) {
+			idleLogoutTimer.cancel();
 		}
-		forceCacheUpdateTimer = timerManager.startTimer(timerManager::forceUpdateCache, 180000, 180000);
+		idleLogoutTimer = timerManager.startTimer("logOutIfNoInput");
 	}
 
 	public static void startIdleTimer() {
 		if (idleCacheUpdateTimer != null) {
 			idleCacheUpdateTimer.cancel();
 		}
-		idleCacheUpdateTimer = timerManager.startTimer(timerManager::updateCacheIfNoInput, 30000, 30000);
+		idleCacheUpdateTimer = timerManager.startTimer("updateCacheIfNoInput");
 	}
 
-	public static void startLogoutTimer() {
-		if (idleLogoutTimer != null) {
-			idleLogoutTimer.cancel();
+	public static void startForceUpdateTimer() {
+		if (forceCacheUpdateTimer != null) {
+			forceCacheUpdateTimer.cancel();
 		}
-		idleLogoutTimer = timerManager.startTimer(timerManager::logOutIfNoInput, 60000, 60000);
+		forceCacheUpdateTimer = timerManager.startTimer("forceUpdateCache");
+	}
+
+	public static void startScreenSaverTimer() {
+		if (screenSaverTimer != null) {
+			screenSaverTimer.cancel();
+		}
+		screenSaverTimer = timerManager.startTimer("showScreensaverIfNoInput");
 	}
 
 	@Override
@@ -66,9 +74,11 @@ public class App extends Application {
 		stage.setTitle("Team L");
 		stage.show();
 		FXMLLoaderFactory.getHistory().push(homeScene);
-		homeScene.addEventHandler(Event.ANY, event -> startIdleTimer());
-		startIdleTimer();
-		startForceUpdateTimer();
+		homeScene.addEventHandler(Event.ANY, event -> {
+			startIdleTimer();
+			startForceUpdateTimer();
+			startScreenSaverTimer();
+		});
 	}
 
 	@Override

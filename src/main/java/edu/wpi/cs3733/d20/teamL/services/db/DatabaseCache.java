@@ -1,7 +1,11 @@
 package edu.wpi.cs3733.d20.teamL.services.db;
 
 import java.sql.ResultSet;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import edu.wpi.cs3733.d20.teamL.entities.*;
 import javafx.geometry.Point2D;
@@ -14,21 +18,16 @@ import lombok.extern.slf4j.Slf4j;
 public class DatabaseCache implements IDatabaseCache {
     private ArrayList<Node> nodeCache = new ArrayList<>();
     private ArrayList<Edge> edgeCache = new ArrayList<>();
-	private ArrayList<Gift> giftCache = new ArrayList<>();
-	private ArrayList<User> userCache = new ArrayList<>();
-	private ArrayList<Doctor> doctorCache = new ArrayList<>();
+	private final ArrayList<Gift> giftCache = new ArrayList<>();
+	private final ArrayList<User> userCache = new ArrayList<>();
+	private final ArrayList<Doctor> doctorCache = new ArrayList<>();
+	private final ArrayList<Kiosk> kioskCache = new ArrayList<>();
 	private Map<String, Integer> cartCache = new HashMap<>();
-
     private ArrayList<Node> editedNodes = new ArrayList<>();
-    private ArrayList<Node> addedNodes = new ArrayList<>();
-    private ArrayList<Edge> addedEdges = new ArrayList<>();
-    private ArrayList<Node> deletedNodes = new ArrayList<>();
-    private ArrayList<Edge> deletedEdges = new ArrayList<>();
-
-
-
-
-
+    private final ArrayList<Node> addedNodes = new ArrayList<>();
+    private final ArrayList<Edge> addedEdges = new ArrayList<>();
+    private final ArrayList<Node> deletedNodes = new ArrayList<>();
+    private final ArrayList<Edge> deletedEdges = new ArrayList<>();
     @Inject
     private IDatabaseService db;
 
@@ -39,6 +38,7 @@ public class DatabaseCache implements IDatabaseCache {
         cacheGiftsFromDB();
         cacheUsersFromDB();
         cacheDoctorsFromDB();
+        cacheKiosksFromDB();
     }
 
     /**
@@ -54,7 +54,7 @@ public class DatabaseCache implements IDatabaseCache {
         for (Node node : nodeCache) {
             if (!newNodes.contains(node)) deletedNodes.add(node);
         }
-        editedNodes.removeIf(node -> deletedNodes.contains(node));
+        editedNodes.removeIf(deletedNodes::contains);
         this.editedNodes = editedNodes;
         this.nodeCache = newNodes;
     }
@@ -323,5 +323,24 @@ public class DatabaseCache implements IDatabaseCache {
 	@Override
 	public void clearDoctorCache() {
     	doctorCache.clear();
+	}
+
+	@Override
+	public void cacheKiosksFromDB() {
+		ArrayList<ArrayList<String>> kiosksTable = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_KIOSK_SETTINGS)));
+		clearDoctorCache();
+		for (ArrayList<String> row : kiosksTable) {
+			kioskCache.add(new Kiosk(row.get(0), row.get(1), Long.parseLong(row.get(2)), Long.parseLong(row.get(3)), Long.parseLong(row.get(4)), Long.parseLong(row.get(5))));
+		}
+	}
+
+	@Override
+	public ArrayList<Kiosk> getKioskCache() {
+		return kioskCache;
+	}
+
+	@Override
+	public void clearKioskCache() {
+
 	}
 }

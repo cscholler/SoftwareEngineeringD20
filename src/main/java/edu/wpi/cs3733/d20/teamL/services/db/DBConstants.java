@@ -135,8 +135,8 @@ public class DBConstants {
 					"node_id VARCHAR(16) REFERENCES Nodes(id), " +
 					"logout_timeout BIGINT DEFAULT 60000, " +
 					"idle_cache_timeout BIGINT DEFAULT 30000, " +
-					"force_cache_timeout BIGINT DEFAULT 180000, " +
-					"screen_saver_timeout BIGINT DEFAULT 300000)";
+					"force_cache_timeout BIGINT DEFAULT 120000, " +
+					"screen_saver_timeout BIGINT DEFAULT 180000)";
 
 	public static final String CREATE_SCREENING_QUESTIONS_TABLE =
 			"CREATE TABLE Screening_Questions(" +
@@ -221,6 +221,14 @@ public class DBConstants {
 	public static final String ADD_ROOM_REQUEST =
 			"INSERT INTO Reservations(username, place, date, start_time, end_time)" +
 					"VALUES(?, ?, ?, ?, ?)";
+
+	public static final String ADD_KIOSK =
+			"INSERT INTO Kiosk_Settings(node_id, logout_timeout, idle_cache_timeout, force_cache_timeout, screen_saver_timeout)" +
+					"VALUES(?, ?, ?, ?, ?)";
+
+	public static final String ADD_DEFAULT_KIOSK =
+			"INSERT INTO Kiosk_Settings(node_id)" +
+					"VALUES(?)";
 
 	public static final String SELECT_ALL_NODES =
 			"SELECT * " +
@@ -472,7 +480,7 @@ public class DBConstants {
 					"SET notes = ? " +
 					"WHERE id = ?";
 
-	public static final String UPDATE_KIOSK_NODE =
+	public static final String UPDATE_KIOSK_LOCATION =
 			"UPDATE Kiosk_Settings " +
 					"SET node_id = ?";
 

@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamL.util;
 
 import edu.wpi.cs3733.d20.teamL.App;
+import edu.wpi.cs3733.d20.teamL.entities.Kiosk;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import javafx.application.Platform;
@@ -12,6 +13,8 @@ import javafx.stage.Window;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,6 +31,10 @@ public class TimerManager {
 	private final IDatabaseCache cache = FXMLLoaderFactory.injector.getInstance(IDatabaseCache.class);
 	private final ILoginManager loginManager = FXMLLoaderFactory.injector.getInstance(ILoginManager.class);
 	private final FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
+	private long logoutTimeoutPeriod;
+	private long idleCacheTimeoutPeriod;
+	private long forceCacheTimeoutPeriod;
+	private long screeSaverTimeout;
 
 	public TimerTask timerWrapper(Runnable r) {
 		return new TimerTask() {
@@ -48,31 +55,6 @@ public class TimerManager {
 		if (timeLabel != null) {
 			Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("E, MMM d").format(new Date())));
 		}
-	}
-
-	public void forceUpdateCache() {
-		if (!isCacheBeingUpdated && App.allowCacheUpdates) {
-			isCacheBeingUpdated = true;
-			Platform.runLater(() -> {
-				log.info("5 minutes have passed since last update. Caching from database...");
-				assert cache != null;
-				cache.cacheAllFromDB();
-			});
-		}
-		isCacheBeingUpdated = false;
-	}
-
-	public void updateCacheIfNoInput() {
-		if (!isCacheBeingUpdated && App.allowCacheUpdates) {
-			isCacheBeingUpdated = true;
-			Platform.runLater(() -> {
-				log.info("No input for 30 seconds. Caching from database...");
-				assert cache != null;
-				cache.cacheAllFromDB();
-				App.startForceUpdateTimer();
-			});
-		}
-		isCacheBeingUpdated = false;
 	}
 
 	public void logOutIfNoInput() {
@@ -96,9 +78,125 @@ public class TimerManager {
 		});
 	}
 
-	public Timer startTimer(VoidMethod updateFunction, long delay, long period) {
+	public void updateCacheIfNoInput() {
+		if (!isCacheBeingUpdated && App.allowCacheUpdates) {
+			isCacheBeingUpdated = true;
+			Platform.runLater(() -> {
+				log.info("No input for 30 seconds. Caching from database...");
+				assert cache != null;
+				cache.cacheAllFromDB();
+				App.startForceUpdateTimer();
+			});
+		}
+		isCacheBeingUpdated = false;
+	}
+
+	public void forceUpdateCache() {
+		if (!isCacheBeingUpdated && App.allowCacheUpdates) {
+			isCacheBeingUpdated = true;
+			Platform.runLater(() -> {
+				log.info("5 minutes have passed since last update. Caching from database...");
+				assert cache != null;
+				cache.cacheAllFromDB();
+			});
+		}
+		isCacheBeingUpdated = false;
+	}
+
+	public void showScreensaverIfNoInput() {
+		Platform.runLater(() -> {
+			log.info("5 minutes have passed since last update. Caching from database...");
+			assert cache != null;
+			cache.cacheAllFromDB();
+		});
+	}
+
+	public long determineTimeoutPeriod(String methodName) {
+		long period;
+		cache.cacheKiosksFromDB();
+		// Hard coded to only kiosk in database. Could be changed to find kiosk by ip.
+		Kiosk currentKiosk = cache.getKioskCache().get(0);
+		switch (methodName) {
+			case "logOutIfNoInput": {
+				period = currentKiosk.getLogoutTimeoutPeriod();
+			}
+			break;
+			case "updateCacheIfNoInput": {
+				period = currentKiosk.getIdleCacheTimeout();
+			}
+			break;
+			case "forceUpdateCache": {
+				period = currentKiosk.getForceCacheTimout();
+			}
+			break;
+			case "showScreensaverIfNoInput": {
+				period = currentKiosk.getScreenSaverTimeout();
+			}
+			break;
+			default: {
+				log.warn("Attempted to obtain timeout period for invalid timer task. Using default value of 30 seconds.");
+				period = 30000;
+			}
+		}
+		return period;
+	}
+
+	public Timer startTimer(String methodName) {
 		Timer timer = new Timer();
-		timer.scheduleAtFixedRate(timerWrapper(updateFunction::execute), delay, period);
+		long period = determineTimeoutPeriod(methodName);
+		try {
+			Method updateMethod = this.getClass().getDeclaredMethod(methodName);
+			timer.scheduleAtFixedRate(timerWrapper(() -> {
+				try {
+					updateMethod.invoke(this);
+				} catch (IllegalAccessException ex) {
+					log.error("Encountered IllegalAccessException.", ex);
+				} catch (InvocationTargetException ex) {
+					log.error("Encountered InvocationTargetException.", ex);
+				}
+			}), period, period);
+			return timer;
+		} catch (NoSuchMethodException ex) {
+			log.error("Encountered NoSuchMethodException.", ex);
+		}
+		return null;
+	}
+
+	public Timer startTimer(VoidMethod updateMethod, long delay, long period) {
+		Timer timer = new Timer();
+		timer.scheduleAtFixedRate(timerWrapper(updateMethod::execute), delay, period);
 		return timer;
+	}
+
+	public long getLogoutTimeoutPeriod() {
+		return logoutTimeoutPeriod;
+	}
+
+	public void setLogoutTimeoutPeriod(long logoutTimeoutPeriod) {
+		this.logoutTimeoutPeriod = logoutTimeoutPeriod;
+	}
+
+	public long getIdleCacheTimeoutPeriod() {
+		return idleCacheTimeoutPeriod;
+	}
+
+	public void setIdleCacheTimeoutPeriod(long idleCacheTimeoutPeriod) {
+		this.idleCacheTimeoutPeriod = idleCacheTimeoutPeriod;
+	}
+
+	public long getForceCacheTimeoutPeriod() {
+		return forceCacheTimeoutPeriod;
+	}
+
+	public void setForceCacheTimeoutPeriod(long forceCacheTimeoutPeriod) {
+		this.forceCacheTimeoutPeriod = forceCacheTimeoutPeriod;
+	}
+
+	public long getScreeSaverTimeout() {
+		return screeSaverTimeout;
+	}
+
+	public void setScreeSaverTimeout(long screeSaverTimeout) {
+		this.screeSaverTimeout = screeSaverTimeout;
 	}
 }
