@@ -20,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
 import edu.wpi.cs3733.d20.teamL.services.Service;
-import org.sqlite.core.DB;
 
 @Slf4j
 public class DatabaseService extends Service implements IDatabaseService {
@@ -49,9 +48,9 @@ public class DatabaseService extends Service implements IDatabaseService {
 		}
 		// Rebuild the database if using Derby
 		// TODO: only rebuild if db doesn't exist and tables dont' exist
-		if (dbType == DB_TYPE.DERBY) {
+		//if (dbType == DB_TYPE.DERBY) {
 			rebuildDatabase();
-		}
+		//}
 	}
 
 	private void populateTableUpdateMappings() {
@@ -81,7 +80,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 			log.error("Encountered ClassNotFoundException", ex);
 		}
 		try {
-			connection = DriverManager.getConnection( DBConstants.DB_PREFIX + DBConstants.DB_URL + DBConstants.DB_PORT + DBConstants.DB_NAME_PROD, DBConstants.DB_USER, DBConstants.DB_PASSWORD);
+			connection = DriverManager.getConnection( DBConstants.DB_PREFIX + DBConstants.DB_URL + DBConstants.DB_PORT + DBConstants.DB_NAME_DEV, DBConstants.DB_USER, DBConstants.DB_PASSWORD);
 			log.info("Connection established.");
 			dbType = DB_TYPE.MY_SQL;
 		} catch (SQLException ex) {
@@ -334,9 +333,9 @@ public class DatabaseService extends Service implements IDatabaseService {
 
 		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Mangas", "Fullmetal Alchemist", "A collection of Japanese manga Fullmetal Alchemist", "500", "199.99"))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Mangas", "One-Punch Man", "A collection of Japanese manga One-Punch Man", "500", "99.99"))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Mangas", "Death Note", "A collection of Japanese manga Death Note", "99.99"))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Mangas", "Attack on Titan", "A collection of Japanese manga Attack on Titan", "199.99"))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Mangas", "Slam Dunk", "A collection of Japanese manga Slam Dunk", "299.99"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Mangas", "Death Note", "A collection of Japanese manga Death Note", "123", "99.99"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Mangas", "Attack on Titan", "A collection of Japanese manga Attack on Titan", "2", "199.99"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Mangas", "Slam Dunk", "A collection of Japanese manga Slam Dunk", "100", "299.99"))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Mangas", "Naruto", "A collection of Japanese manga Naruto", "500", "189.99"))));
 	}
 
