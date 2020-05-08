@@ -222,6 +222,10 @@ public class DBConstants {
 			"INSERT INTO Reservations(username, place, date, start_time, end_time)" +
 					"VALUES(?, ?, ?, ?, ?)";
 
+	public static final String ADD_SCREENING_QUESTION =
+			"INSERT INTO Screening_Questions(question, order, weight, reqs)" +
+					"VALUES(?, ?, ?, ?)";
+
 	public static final String SELECT_ALL_NODES =
 			"SELECT * " +
 					"FROM Nodes " +
@@ -357,6 +361,11 @@ public class DBConstants {
 					"FROM Kiosk_Settings " +
 					"ORDER BY id";
 
+	public static final String GET_SCREENING_QUESTIONS =
+			"SELECT * " +
+					"FROM Screening_Questions " +
+					"WHERE order = ?";
+
 	public static final String GET_KIOSK_SETTINGS =
 			"SELECT * " +
 					"FROM Kiosk_Settings " +
@@ -480,6 +489,10 @@ public class DBConstants {
 			"UPDATE Kiosk_Settings " +
 					"SET logout_timout = ?, idle_cache_timeout = ?, force_cache_timeout = ?, screen_saver_timout = ?";
 
+	public static final String UPDATE_SCREENING_QUESTIONS =
+			"UPDATE Screening_Questions " +
+					"SET question = ?, order = ?, weight = ?, reqs = ?";
+
 	public static final String REMOVE_NODE =
 			"DELETE FROM Nodes " +
 					"WHERE id = ?";
@@ -544,4 +557,7 @@ public class DBConstants {
 
 	public static final String DELETE_ALL_KIOSK_SETTINGS =
 			"DELETE FROM Kiosk_Settings";
+
+	public static final String DELETE_ALL_SCREENING_QUESTIONS =
+			"DELETE FROM Screening_Questions";
 }
