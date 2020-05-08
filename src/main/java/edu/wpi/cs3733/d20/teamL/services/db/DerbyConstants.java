@@ -112,6 +112,35 @@ public class DerbyConstants {
 					"date_and_time CHAR(19) NOT NULL, " +
 					"PRIMARY KEY (id))";
 
+	public static final String CREATE_RESERVATIONS_TABLE =
+			"CREATE TABLE Reservations(" +
+					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
+					"username VARCHAR(32) NOT NULL REFERENCES Users(username), " +
+					"place VARCHAR(32) NOT NULL, " +
+					"date CHAR(10) NOT NULL, " +
+					"start_time CHAR(5) NOT NULL, " +
+					"end_time CHAR(5) NOT NULL, " +
+					"PRIMARY KEY (id))";
+
+	public static final String CREATE_KIOSK_SETTINGS_TABLE =
+			"CREATE TABLE Kiosk_Settings(" +
+					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
+					"node_id VARCHAR(16) REFERENCES Nodes(id), " +
+					"logout_timeout BIGINT, " +
+					"idle_cache_timeout BIGINT, " +
+					"force_cache_timeout BIGINT, " +
+					"screen_saver_timeout BIGINT, " +
+					"PRIMARY KEY (id))";
+
+	public static final String CREATE_SCREENING_QUESTIONS_TABLE =
+			"CREATE TABLE Screening_Questions(" +
+					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
+					"question VARCHAR(256) NOT NULL, " +
+					"order2 INT NOT NULL, " +
+					"weight INT, " +
+					"reqs INT, " +
+					"PRIMARY KEY (id))";
+
 	public static final String DROP_NODE_TABLE =
 			"DROP TABLE Nodes";
 
@@ -138,4 +167,13 @@ public class DerbyConstants {
 
 	public static final String DROP_SERVICE_REQUEST_TABLE =
 			"DROP TABLE Service_Requests";
+
+	public static final String DROP_RESERVATIONS_TABLE =
+			"DROP TABLE Reservations";
+
+	public static final String DROP_KIOSK_SETTINGS_TABLE =
+			"DROP TABLE Kiosk_Settings";
+
+	public static final String DROP_SCREENING_QUESTIONS_TABLE =
+			"DROP TABLE Screening_Questions";
 }

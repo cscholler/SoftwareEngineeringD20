@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamL.services.db;
 
 import java.io.File;
+import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -15,13 +16,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.mysql.cj.jdbc.exceptions.CommunicationsException;
 import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.services.users.PasswordManager;
 import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
 import edu.wpi.cs3733.d20.teamL.services.Service;
-import org.sqlite.core.DB;
 
 @Slf4j
 public class DatabaseService extends Service implements IDatabaseService {
@@ -87,6 +88,8 @@ public class DatabaseService extends Service implements IDatabaseService {
 			dbType = DB_TYPE.MY_SQL;
 		} catch (SQLException ex) {
 			log.error("Encountered SQLException.", ex);
+		} catch (CommunicationsException ex) {
+
 		}
 		if (dbType != DB_TYPE.MY_SQL) {
 			log.info("Unable to connect to remote MySQL database. Attempting to connect to fallback embedded Derby Database...");
@@ -176,11 +179,13 @@ public class DatabaseService extends Service implements IDatabaseService {
 			if (update.getValues().size() == 0) {
 				Statement stmt;
 				stmt = connection.createStatement();
+				log.info("Statement: " + update.getStatement() +"\nValues: " + update.getValues());
 				numRowsAffected = stmt.executeUpdate(update.getStatement());
 				stmt.close();
 			} else {
 				PreparedStatement pStmt = fillPreparedStatement(update);
 				numRowsAffected = pStmt.executeUpdate();
+				log.info("Statement: " + update.getStatement() +"\nValues: " + update.getValues());
 				pStmt.close();
 			}
 		} catch (SQLException ex) {
@@ -259,7 +264,9 @@ public class DatabaseService extends Service implements IDatabaseService {
 			updates.add(new SQLEntry(DerbyConstants.CREATE_GIFT_DELIVERY_REQUEST_TABLE));
 			updates.add(new SQLEntry(DerbyConstants.CREATE_MEDICATION_REQUEST_TABLE));
 			updates.add(new SQLEntry(DerbyConstants.CREATE_SERVICE_REQUEST_TABLE));
-			//TODO: add kiosk and screening tables
+			updates.add(new SQLEntry(DerbyConstants.CREATE_RESERVATIONS_TABLE));
+			updates.add(new SQLEntry(DerbyConstants.CREATE_KIOSK_SETTINGS_TABLE));
+			updates.add(new SQLEntry(DerbyConstants.CREATE_SCREENING_QUESTIONS_TABLE));
 		} else {
 			log.error("Invalid database type.");
 		}
@@ -406,6 +413,9 @@ public class DatabaseService extends Service implements IDatabaseService {
 			dropTableUpdates.add(DerbyConstants.DROP_GIFT_DELIVER_REQUEST_TABLE);
 			dropTableUpdates.add(DerbyConstants.DROP_MEDICATION_REQUEST_TABLE);
 			dropTableUpdates.add(DerbyConstants.DROP_SERVICE_REQUEST_TABLE);
+			dropTableUpdates.add(DerbyConstants.DROP_SCREENING_QUESTIONS_TABLE);
+			dropTableUpdates.add(DerbyConstants.DROP_KIOSK_SETTINGS_TABLE);
+			dropTableUpdates.add(DerbyConstants.DROP_RESERVATIONS_TABLE);
 			try {
 				for (int i = 0; i < DBConstants.GET_TABLE_NAMES().size(); i++) {
 					resSet = connection.getMetaData().getTables(null, "APP", DBConstants.GET_TABLE_NAMES().get(i).toUpperCase(), null);
