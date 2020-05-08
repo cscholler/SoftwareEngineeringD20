@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXTabPane?>
+<?import javafx.scene.control.Tab?>
 <?import javafx.scene.layout.BorderPane?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="950.0" styleClass="JFX-tab-pane" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.logged_in.AddPersonController">
    <center>
-      <JFXTabPane BorderPane.alignment="CENTER" />
+      <JFXTabPane BorderPane.alignment="CENTER">
+         <tabs>
+            <Tab>
+               <content>
+                  <BorderPane />
+               </content>
+            </Tab>
+            <Tab>
+               <content>
+                  <BorderPane />
+               </content>
+            </Tab>
+         </tabs></JFXTabPane>
    </center>
 </BorderPane>
