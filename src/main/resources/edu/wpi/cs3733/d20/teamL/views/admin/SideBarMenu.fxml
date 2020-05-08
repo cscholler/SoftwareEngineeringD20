@@ -6,11 +6,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="454.0" prefWidth="158.0" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.logged_in.SideBarController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="567.0" prefWidth="190.0" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.logged_in.SideBarController">
    <children>
       <HBox alignment="CENTER" prefHeight="109.0" prefWidth="158.0">
          <children>
-            <JFXButton contentDisplay="CENTER" onAction="#addUserClicked" prefHeight="135.0" prefWidth="172.0" styleClass="sidebar-buttons-jfx" text=" " textFill="WHITE">
+            <JFXButton contentDisplay="CENTER" onAction="#addUserClicked" prefHeight="102.0" prefWidth="211.0" styleClass="sidebar-buttons-jfx" text=" " textFill="WHITE">
                <graphic>
                   <ImageView fitHeight="40.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
                      <image>
