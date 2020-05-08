@@ -1,10 +1,8 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.logged_in;
 
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTreeTableColumn;
-import com.jfoenix.controls.JFXTreeTableView;
-import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
@@ -22,12 +20,12 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.cell.TextFieldTreeTableCell;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import com.google.inject.Inject;
-
-import com.jfoenix.controls.JFXButton;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -77,6 +75,10 @@ public class AdminLandingPageController implements Initializable {
 	private JFXComboBox<String> tableSelector;
 	@FXML
 	private Label timeLabel;
+	@FXML
+	private JFXHamburger hamburger;
+	@FXML
+	private  JFXDrawer drawer;
     @Inject
     private ILoginManager loginManager;
     @Inject
@@ -101,7 +103,32 @@ public class AdminLandingPageController implements Initializable {
 		deletedUsers = new ArrayList<>();
 		deletedDoctors = new ArrayList<>();
 		loadNodesTable();
+		initSideBar();
     }
+
+    @FXML
+	private void initSideBar() {
+    	try {
+			VBox sideBar = loaderFactory.getFXMLLoader("admin/SideBarMenu").load();
+			drawer.setSidePane(sideBar);
+
+			HamburgerBackArrowBasicTransition task = new HamburgerBackArrowBasicTransition(hamburger);
+			task.setRate(-1);
+
+			hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
+				task.setRate(task.getRate() * -1);
+				task.play();
+
+				if (drawer.isOpened()) {
+					drawer.close();
+				} else {
+					drawer.open();
+				}
+			});
+		} catch (IOException ex) {
+			log.error("Encountered IOException", ex);
+		}
+	}
 
 	@FXML
 	public void tableSelected() {
@@ -139,16 +166,6 @@ public class AdminLandingPageController implements Initializable {
         }
     }
 
-    @FXML
-    private void addUserClicked() {
-        try {
-            Parent root = loaderFactory.getFXMLLoader("admin/AddPerson").load();
-			loaderFactory.setupPopup(new Stage(), new Scene(root));
-        } catch (IOException ex) {
-            log.error("Encountered IOException", ex);
-        }
-    }
-
 	@FXML
 	private void btnAddDoctorClicked() {
 		try {
@@ -159,25 +176,6 @@ public class AdminLandingPageController implements Initializable {
 		}
 	}
 
-	@FXML
-	public void btnImportClicked() {
-		try {
-			Parent root = loaderFactory.getFXMLLoader("dialogues/ImportDialogue").load();
-			loaderFactory.setupPopup(new Stage(), new Scene(root));
-		} catch (IOException ex) {
-			log.error("Encountered IOException", ex);
-		}
-	}
-
-	@FXML
-	public void btnExportClicked() {
-		try {
-			Parent root = loaderFactory.getFXMLLoader("dialogues/ExportDialogue").load();
-			loaderFactory.setupPopup(new Stage(), new Scene(root));
-		} catch (IOException ex) {
-			log.error("Encountered IOException", ex);
-		}
-	}
 
     @FXML
 	private void btnSaveClicked() {
@@ -1104,13 +1102,4 @@ public class AdminLandingPageController implements Initializable {
 		table.setMouseTransparent(!visible);
 	}
 
-	@FXML
-	private void changePasswordClicked() {
-		try {
-			Parent root = loaderFactory.getFXMLLoader("admin/ChangePassword").load();
-			loaderFactory.setupPopup(new Stage(), new Scene(root));
-		} catch (IOException ex) {
-			log.error("Encountered IOException", ex);
-		}
-	}
 }
