@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.KioskTimeoutController">
+   <top>
+      <Label styleClass="service-request-header-label-fx" text="Kiosk Timeout Settings" BorderPane.alignment="CENTER" />
+   </top>
+   <center>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="30.0" BorderPane.alignment="CENTER">
+         <children>
+            <JFXTextField fx:id="logoutTime" promptText="Logout Timeout" styleClass="text-field-jfx" />
+            <JFXTextField fx:id="idleCacheTime" promptText="Idle Cache Timeout" styleClass="text-field-jfx" />
+            <JFXTextField fx:id="ForcedCacheTime" promptText="Forced Cache Update Timeout" styleClass="text-field-jfx" />
+            <JFXTextField fx:id="ScreenTime" promptText="Screen Timeout" styleClass="text-field-jfx" />
+         </children>
+      </VBox>
+   </center>
+   <bottom>
+      <HBox alignment="CENTER" prefHeight="90.0" prefWidth="700.0" spacing="40.0" BorderPane.alignment="CENTER">
+         <children>
+            <JFXButton fx:id="cancel" styleClass="cancel-button-jfx" text="Cancel" />
+            <JFXButton fx:id="save" styleClass="save-button-jfx" text="Save" />
+         </children>
+      </HBox>
+   </bottom>
+</BorderPane>
