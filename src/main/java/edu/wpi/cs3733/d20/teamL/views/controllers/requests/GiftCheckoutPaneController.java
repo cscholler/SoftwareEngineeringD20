@@ -27,6 +27,7 @@ import java.util.*;
 
 public class GiftCheckoutPaneController {
     private Map<String,Integer> cart = new HashMap<>();
+    private double totalCost = 0;
 
     @Inject
     private IDatabaseCache cache;
@@ -40,13 +41,13 @@ public class GiftCheckoutPaneController {
     @FXML
     private TableView orderTable;
     @FXML
-    private TableColumn giftColumn, qtyColumn, removeColumn;
+    private TableColumn giftColumn, qtyColumn, costColumn,removeColumn;
     @FXML
     private JFXTextField firstNameText, lastNameText, senderText;
     @FXML
     private JFXTextArea additionalNotesText, specialMessageText;
     @FXML
-    private Label confirmation, orderTxt;
+    private Label confirmation, orderTxt, totalCostLbl;
 
     @FXML
     public void initialize() {
@@ -54,9 +55,9 @@ public class GiftCheckoutPaneController {
         ObservableList<GiftDetails> giftDetailsObservableList = FXCollections.observableArrayList();
         requestReceived.setPickOnBounds(false);
 
-        giftColumn.setCellValueFactory(
-                new PropertyValueFactory<GiftDetails, String>("name"));
+        giftColumn.setCellValueFactory(new PropertyValueFactory<GiftDetails, String>("name"));
         qtyColumn.setCellValueFactory(new PropertyValueFactory<GiftDetails, TextField>("qty"));
+        costColumn.setCellValueFactory(new PropertyValueFactory<GiftDetails, TextField>("cost"));
 
         removeColumn.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
         Callback<TableColumn<GiftDetails, String>, TableCell<GiftDetails, String>> cellFactory = new Callback<>() {
@@ -69,6 +70,9 @@ public class GiftCheckoutPaneController {
                                     GiftDetails deletedItem = (GiftDetails) orderTable.getItems().get(getIndex());
                                     orderTable.getItems().remove(getIndex());
                                     cart.remove(deletedItem.getName());
+
+                                    totalCost -= deletedItem.getQty() * deletedItem.getCostAsDouble();
+                                    totalCostLbl.setText("$" + totalCost);
                                 });
                             }
 
@@ -90,10 +94,18 @@ public class GiftCheckoutPaneController {
         removeColumn.setEditable(true);
         orderTable.setEditable(true);
 
-        for (String giftType : cart.keySet()) {
-            GiftDetails gd = new GiftDetails(giftType,cart.get(giftType));
-            giftDetailsObservableList.add(gd);
+        ArrayList<Gift> allGifts = cache.getGiftCache();
+        for(Gift gift : allGifts) {
+            if(cart.containsKey(gift.getSubtype())) {
+                int qty = cart.get(gift.getSubtype());
+                double cost = gift.getCost() * qty;
+                GiftDetails gd = new GiftDetails(gift.getSubtype(), qty, gift.costToString(qty));
+                giftDetailsObservableList.add(gd);
+                totalCost += cost;
+            }
         }
+
+        totalCostLbl.setText("$" + totalCost);
 
         orderTable.setItems(giftDetailsObservableList);
         removeColumn.setCellFactory(cellFactory);
@@ -164,10 +176,12 @@ public class GiftCheckoutPaneController {
     public class GiftDetails {
         private String name;
         private Integer qty;
+        private String cost;
 
-        private GiftDetails(String name, Integer qty) {
+        private GiftDetails(String name, Integer qty, String cost) {
             this.name = name;
             this.qty = qty;
+            this.cost = cost;
         }
 
         public String getName() {
@@ -180,6 +194,14 @@ public class GiftCheckoutPaneController {
 
         public void setQty(Integer qty) {
             this.qty = qty;
+        }
+
+        public String getCost() {
+            return cost;
+        }
+
+        public double getCostAsDouble() {
+            return Double.parseDouble(cost.substring(1));
         }
     }
 }

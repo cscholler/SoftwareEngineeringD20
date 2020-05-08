@@ -40,7 +40,13 @@ public class TimerManager {
 
 	public void updateTime(Label timeLabel) {
 		if (timeLabel != null) {
-			Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("E, MMM d h:mm aa").format(new Date())));
+			Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("h:mm aa").format(new Date())));
+		}
+	}
+
+	public void updateDate(Label timeLabel) {
+		if (timeLabel != null) {
+			Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("E, MMM d").format(new Date())));
 		}
 	}
 
