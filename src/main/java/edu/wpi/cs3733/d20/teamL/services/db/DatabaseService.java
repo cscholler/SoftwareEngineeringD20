@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
 import edu.wpi.cs3733.d20.teamL.services.Service;
+import org.sqlite.core.DB;
 
 @Slf4j
 public class DatabaseService extends Service implements IDatabaseService {
@@ -246,6 +247,8 @@ public class DatabaseService extends Service implements IDatabaseService {
 			updates.add(new SQLEntry(DBConstants.CREATE_MEDICATION_REQUEST_TABLE));
 			updates.add(new SQLEntry(DBConstants.CREATE_SERVICE_REQUEST_TABLE));
 			updates.add(new SQLEntry(DBConstants.CREATE_RESERVATIONS_TABLE));
+			updates.add(new SQLEntry(DBConstants.CREATE_KIOSK_SETTINGS_TABLE));
+			updates.add(new SQLEntry(DBConstants.CREATE_SCREENING_QUESTIONS_TABLE));
 		} else if (dbType == DB_TYPE.DERBY) {
 			updates.add(new SQLEntry(DerbyConstants.CREATE_NODE_TABLE));
 			updates.add(new SQLEntry(DerbyConstants.CREATE_EDGE_TABLE));
@@ -256,6 +259,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 			updates.add(new SQLEntry(DerbyConstants.CREATE_GIFT_DELIVERY_REQUEST_TABLE));
 			updates.add(new SQLEntry(DerbyConstants.CREATE_MEDICATION_REQUEST_TABLE));
 			updates.add(new SQLEntry(DerbyConstants.CREATE_SERVICE_REQUEST_TABLE));
+			//TODO: add kiosk and screening tables
 		} else {
 			log.error("Invalid database type.");
 		}
@@ -376,6 +380,8 @@ public class DatabaseService extends Service implements IDatabaseService {
 	public void dropTables() {
 		ArrayList<SQLEntry> updates = new ArrayList<>();
 		if (dbType == DB_TYPE.MY_SQL) {
+			updates.add(new SQLEntry(DBConstants.DROP_SCREENING_QUESTIONS_TABLE));
+			updates.add(new SQLEntry(DBConstants.DROP_KIOSK_SETTINGS_TABLE));
 			updates.add(new SQLEntry(DBConstants.DROP_RESERVATIONS_TABLE));
 			updates.add(new SQLEntry(DBConstants.DROP_SERVICE_REQUEST_TABLE));
 			updates.add(new SQLEntry(DBConstants.DROP_MEDICATION_REQUEST_TABLE));

@@ -35,6 +35,8 @@ public class TimerManager {
 	private long idleCacheTimeoutPeriod;
 	private long forceCacheTimeoutPeriod;
 	private long screeSaverTimeout;
+	private boolean isLogoutDialogueOpen = false;
+	private int logoutTicks = 15;
 
 	public TimerTask timerWrapper(Runnable r) {
 		return new TimerTask() {
@@ -57,25 +59,37 @@ public class TimerManager {
 		}
 	}
 
-	public void logOutIfNoInput() {
-		Platform.runLater(() -> {
-			log.info("No input for 1 minute. Logging out...");
-			loginManager.logOut(true);
-			FXMLLoaderFactory.resetHistory();
-			try {
-				try {
-					Stage openPopup = (Stage) Stage.getWindows().stream().filter(Window::isFocused).findFirst().orElse(null);
-					assert openPopup != null;
-					openPopup.close();
-				} catch (NullPointerException ex) {
-					log.warn("Attempted to close an unfocused window on timeout.");
-				}
-				Parent root = loaderFactory.getFXMLLoader("map_viewer/MapViewer").load();
-				loaderFactory.setupScene(new Scene(root));
-			} catch (IOException ex) {
-				log.error("Encountered IOException", ex);
+	public void logOutTick() {
+		if (!isLogoutDialogueOpen) {
+			//TODO: open popup
+		} else {
+			logoutTicks++;
+			if (logoutTicks >= 15) {
+				Platform.runLater(() -> {
+					log.info("No input for 1 minute. Logging out...");
+					loginManager.logOut(true);
+					FXMLLoaderFactory.resetHistory();
+					try {
+						try {
+							Stage openPopup = (Stage) Stage.getWindows().stream().filter(Window::isFocused).findFirst().orElse(null);
+							assert openPopup != null;
+							openPopup.close();
+						} catch (NullPointerException ex) {
+							log.warn("Attempted to close an unfocused window on timeout.");
+						}
+						Parent root = loaderFactory.getFXMLLoader("map_viewer/MapViewer").load();
+						loaderFactory.setupScene(new Scene(root));
+					} catch (IOException ex) {
+						log.error("Encountered IOException", ex);
+					}
+				});
 			}
-		});
+			//TODO: increment tick and logout if 15
+		}
+	}
+
+	public void showLogoutDialogueIfNoInput() {
+		Platform.runLater(() -> startTimer(this::logOutTick, 1000, 1000));
 	}
 
 	public void updateCacheIfNoInput() {
