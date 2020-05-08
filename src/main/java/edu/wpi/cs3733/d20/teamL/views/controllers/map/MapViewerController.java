@@ -167,8 +167,8 @@ public class MapViewerController {
 
         // Populate autocomplete
         sf = new SearchFields(cache.getNodeCache());
-        sf.getFields().addAll(Arrays.asList(SearchFields.Field.shortName, SearchFields.Field.longName));
-        sf.populateMapSearchFields();
+       // sf.getFields().addAll(Arrays.asList(SearchFields.Field.shortName, SearchFields.Field.longName));
+        sf.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
 
