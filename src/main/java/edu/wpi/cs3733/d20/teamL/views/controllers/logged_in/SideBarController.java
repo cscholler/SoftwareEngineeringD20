@@ -55,18 +55,18 @@ public class SideBarController {
         }
     }
 
-
+    @FXML
     public void handleTimeoutSettings() {
 
+    }
+
+    @FXML
+    public void handleAnalytics() {
         try {
             Parent root = loaderFactory.getFXMLLoader("admin/AnalyticsPage").load();
             loaderFactory.setupScene(new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
         }
-
-    }
-
-    public void handleAnalytics() {
     }
 }
