@@ -34,7 +34,7 @@
                   <Insets right="10.0" />
                </padding>
                <children>
-                  <JFXHamburger fx:id="hamburger" onMousePressed="#initSideBar" prefHeight="70.0" prefWidth="89.0" />
+                  <JFXHamburger fx:id="hamburger" prefHeight="70.0" prefWidth="89.0" />
                </children>
             </HBox>
             <JFXComboBox fx:id="tableSelector" layoutX="455.0" layoutY="9.0" maxHeight="60.0" maxWidth="366.0" minWidth="366.0" onAction="#tableSelected" prefHeight="60.0" prefWidth="366.0" style="-fx-min-width: 400;" styleClass="combo-box-jfx" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="455.0" AnchorPane.topAnchor="9.0" />
@@ -70,7 +70,7 @@
                <columnResizePolicy>
                   <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy></JFXTreeTableView>
-            <JFXDrawer fx:id="drawer" defaultDrawerSize="190.0" prefHeight="567.0" prefWidth="259.0" style="-fx-background-color: transparent;" />
+            <JFXDrawer fx:id="drawer" defaultDrawerSize="190.0" prefHeight="567.0" prefWidth="190.0" style="-fx-background-color: transparent;" />
          </children>
       </AnchorPane>
    </center>

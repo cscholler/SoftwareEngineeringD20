@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.logged_in;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
+import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
@@ -112,17 +113,18 @@ public class AdminLandingPageController implements Initializable {
 			VBox sideBar = loaderFactory.getFXMLLoader("admin/SideBarMenu").load();
 			drawer.setSidePane(sideBar);
 
-			HamburgerBackArrowBasicTransition task = new HamburgerBackArrowBasicTransition(hamburger);
+			HamburgerSlideCloseTransition task = new HamburgerSlideCloseTransition(hamburger);
 			task.setRate(-1);
 
-			hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
+			hamburger.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
 				task.setRate(task.getRate() * -1);
 				task.play();
-
 				if (drawer.isOpened()) {
 					drawer.close();
+					//drawer.setMinWidth(190);
 				} else {
 					drawer.open();
+					//drawer.setMinWidth(0);
 				}
 			});
 		} catch (IOException ex) {
