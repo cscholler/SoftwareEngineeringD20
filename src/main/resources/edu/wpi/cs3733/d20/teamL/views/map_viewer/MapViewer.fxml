@@ -203,7 +203,7 @@
                <children>
                   <ImageView fitHeight="75.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../assets/home_page/BWH%20logo.png" />
+                        <Image url="@../../assets/home_page/BWH logo.png" />
                      </image>
                   </ImageView>
                </children>
