@@ -6,11 +6,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="454.0" prefWidth="158.0" style="-fx-background-color: #0D2E57;" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.logged_in.SideBarController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="454.0" prefWidth="158.0" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.logged_in.SideBarController">
    <children>
       <HBox alignment="CENTER" prefHeight="109.0" prefWidth="158.0">
          <children>
-            <JFXButton contentDisplay="CENTER" onAction="#addUserClicked" prefHeight="135.0" prefWidth="172.0" text=" " textFill="WHITE">
+            <JFXButton contentDisplay="CENTER" onAction="#addUserClicked" prefHeight="135.0" prefWidth="172.0" styleClass="sidebar-buttons-jfx" text=" " textFill="WHITE">
                <graphic>
                   <ImageView fitHeight="40.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -23,7 +23,7 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <JFXButton contentDisplay="CENTER" onAction="#changePasswordClicked" prefHeight="147.0" prefWidth="204.0" text=" " textFill="WHITE">
+            <JFXButton contentDisplay="CENTER" onAction="#changePasswordClicked" prefHeight="147.0" prefWidth="204.0" styleClass="sidebar-buttons-jfx" text=" " textFill="WHITE">
                <graphic>
                   <ImageView fitHeight="41.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -36,7 +36,7 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <JFXButton contentDisplay="CENTER" onAction="#btnExportClicked" prefHeight="179.0" prefWidth="239.0" text=" " textFill="WHITE">
+            <JFXButton contentDisplay="CENTER" onAction="#btnExportClicked" prefHeight="179.0" prefWidth="239.0" styleClass="sidebar-buttons-jfx" text=" " textFill="WHITE">
                <graphic>
                   <ImageView fitHeight="40.0" fitWidth="43.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -49,7 +49,7 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <JFXButton contentDisplay="CENTER" onAction="#btnImportClicked" prefHeight="167.0" prefWidth="200.0" text=" " textFill="WHITE">
+            <JFXButton contentDisplay="CENTER" onAction="#btnImportClicked" prefHeight="167.0" prefWidth="200.0" styleClass="sidebar-buttons-jfx" text=" " textFill="WHITE">
                <graphic>
                   <ImageView fitHeight="37.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -62,20 +62,12 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <JFXButton contentDisplay="CENTER" text="Anayltics" textFill="WHITE">
-               <graphic>
-                  <ImageView fitHeight="59.0" fitWidth="123.0" pickOnBounds="true" preserveRatio="true" />
-               </graphic>
-            </JFXButton>
+            <JFXButton contentDisplay="CENTER" onAction="#handleAnalytics" prefHeight="103.0" prefWidth="295.0" styleClass="sidebar-buttons-jfx" text="Anayltics" textFill="WHITE" />
          </children>
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <JFXButton contentDisplay="CENTER" prefHeight="100.0" prefWidth="202.0" text="Timeout Settings" textFill="WHITE">
-               <graphic>
-                  <ImageView fitHeight="45.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true" />
-               </graphic>
-            </JFXButton>
+            <JFXButton contentDisplay="CENTER" onAction="#handleTimeoutSettings" prefHeight="100.0" prefWidth="202.0" styleClass="sidebar-buttons-jfx" text="Timeout Settings" textFill="WHITE" />
          </children>
       </HBox>
    </children>

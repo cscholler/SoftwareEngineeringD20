@@ -277,6 +277,15 @@
     -fx-background-radius: 0;
 }
 
+.sidebar-buttons-jfx {
+    -fx-background-color: #0d2e57;
+    -fx-background-radius: 0;
+}
+
+.sidebar-buttons-jfx:hover {
+    -fx-background-color: #405784;
+}
+
 /*-----------------------------Tab Panes-----------------------------------*/
 /*applies automatically*/
 

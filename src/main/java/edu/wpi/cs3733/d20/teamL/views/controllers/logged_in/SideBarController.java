@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.logged_in;
 
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -55,8 +56,17 @@ public class SideBarController {
     }
 
 
+    public void handleTimeoutSettings() {
 
+        try {
+            Parent root = loaderFactory.getFXMLLoader("admin/Analytics").load();
+            loaderFactory.setupScene(new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
 
+    }
 
-
+    public void handleAnalytics() {
+    }
 }
