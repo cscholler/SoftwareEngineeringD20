@@ -59,7 +59,7 @@ public class SideBarController {
     public void handleTimeoutSettings() {
 
         try {
-            Parent root = loaderFactory.getFXMLLoader("admin/Analytics").load();
+            Parent root = loaderFactory.getFXMLLoader("admin/AnalyticsPage").load();
             loaderFactory.setupScene(new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
