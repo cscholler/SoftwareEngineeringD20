@@ -48,9 +48,9 @@ public class DatabaseService extends Service implements IDatabaseService {
 		}
 		// Rebuild the database if using Derby
 		// TODO: only rebuild if db doesn't exist and tables dont' exist
-		//if (dbType == DB_TYPE.DERBY) {
+		if (dbType == DB_TYPE.DERBY) {
 			rebuildDatabase();
-		//}
+		}
 	}
 
 	private void populateTableUpdateMappings() {
