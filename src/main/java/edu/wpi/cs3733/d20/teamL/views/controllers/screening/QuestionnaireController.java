@@ -29,6 +29,7 @@ public class QuestionnaireController {
     private boolean testFinished, done;
 
     public QuestionnaireController(ArrayList<Question> questionsList){
+        dialogVBox.getStylesheets().add("/edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css");
         //cache.cacheQuestionsFromDB();
         //allQuestions = cache.getQuestions();
         allQuestions = questionsList;
@@ -48,9 +49,11 @@ public class QuestionnaireController {
                     allQuestionsBox.getChildren().add(sectionHeader);
                 } else if (allQuestions.get(i).getRecs() == 0 && allQuestions.get(i).getOrder() != -3) {
                     JFXCheckBox andQuestion = new JFXCheckBox(allQuestions.get(i).getQuestion());
+                    andQuestion.getStyleClass().add("check-box-jfx");
                     allQuestionsBox.getChildren().add(andQuestion);
                 } else if (allQuestions.get(i).getRecs() == 1 && allQuestions.get(i).getOrder() != -3){
                     JFXRadioButton orQuestion = new JFXRadioButton(allQuestions.get(i).getQuestion());
+                    orQuestion.getStyleClass().add("radio-button-jfx");
                     allQuestionsBox.getChildren().add(orQuestion);
                     orQuestion.setToggleGroup(toggleGroup);
                 } else if (allQuestions.get(i).getOrder() == -3) {
@@ -79,31 +82,6 @@ public class QuestionnaireController {
         System.out.println("questioncards size 2: " + questionCards.size());
         System.out.println("Index is: " + index);
 
-        //dialogVBox.getChildren().clear();
-        //dialogVBox.getChildren().addAll(questionCards.get(index-1).getChildren());
-
-        //ObservableList<Node> children = dialogVBox.getChildren();
-
-        //calculates score with check boxes
-        /*if (allQuestions.get(index - 1).getRecs() == 0) {
-            for (Node n : children) {
-                JFXCheckBox box = (JFXCheckBox) n;
-                if (((JFXCheckBox) n).isSelected()) {
-                    total += 1;
-                }
-            }
-            //calculates score with radiobuttons
-        } else if (allQuestions.get(index - 1).getRecs() == 1 && allQuestions.get(index - 1).getWeight() >= 0) {
-            for (Node n : children) {
-                JFXRadioButton box = (JFXRadioButton) n;
-                if (((JFXCheckBox) n).isSelected()) {
-                    total += 1;
-                }
-            }
-        }
-
-        weights.add(index-1, total);*/
-
         if (index == questionCards.size()-2) {
             testFinished = true;
         }
@@ -120,6 +98,9 @@ public class QuestionnaireController {
             done = true;
 
             dialogVBox.getChildren().clear();
+            Label bwhSuggestions = new Label("BWH's Suggestions for You");
+            bwhSuggestions.getStyleClass().add("service-request-label-fx");
+            dialogVBox.getChildren().add(bwhSuggestions);
 
             int grandTotal = 0;
             for (int i : weights) {
