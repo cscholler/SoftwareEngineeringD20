@@ -1,11 +1,17 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
+import java.net.URL;
 import java.util.*;
 import java.util.Timer;
 
 import com.jfoenix.controls.*;
+import com.lynden.gmapsfx.GoogleMapView;
+import com.lynden.gmapsfx.MapComponentInitializedListener;
+import com.lynden.gmapsfx.javascript.object.LatLong;
+import com.lynden.gmapsfx.javascript.object.MapOptions;
+import com.lynden.gmapsfx.javascript.object.MapTypeIdEnum;
+import com.lynden.gmapsfx.service.directions.*;
 import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
@@ -16,14 +22,13 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import edu.wpi.cs3733.d20.teamL.util.TimerManager;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -36,8 +41,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Line;
-import javafx.scene.paint.Paint;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -51,12 +54,9 @@ import edu.wpi.cs3733.d20.teamL.entities.Path;
 import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
 import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
 import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
-import org.apache.xmlgraphics.image.codec.png.PNGEncodeParam;
-
-import javax.swing.*;
 
 @Slf4j
-public class MapViewerController {
+public class MapViewerController implements Initializable, MapComponentInitializedListener {
     @FXML
     private MapPane map;
     @FXML
@@ -83,6 +83,10 @@ public class MapViewerController {
     private JFXComboBox<String> buildingChooser;
     @FXML
     private Label timeLabel, dateLabel;
+    @FXML
+    private AnchorPane viewerContainer;
+    @FXML
+    private BorderPane root;
 
     @Inject
     private IDatabaseCache cache;
@@ -101,6 +105,13 @@ public class MapViewerController {
     private final Timer timer = new Timer();
     private Path path = new Path();
     private final ObservableList<String> direct = FXCollections.observableArrayList();
+    private GoogleMapView googleMapView = new GoogleMapView("english", "AIzaSyDuWk9RV1yVAfw6-ZLuZhZN9AiBdKSdyxE");
+    private DirectionsServiceCallback directionsServiceCallback = new DirectionsServiceCallback() {
+        @Override
+        public void directionsReceived(DirectionsResult results, DirectionStatus status) {
+
+        }
+    };
 
     private final Image IMAGE_LEFT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/left.png", 15, 15, true, false, true);
     private final Image IMAGE_RIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/right.jpg", 15, 15, true, false, true);
@@ -130,8 +141,8 @@ public class MapViewerController {
 
     public static final String MAIN = "Main";
 
-    @FXML
-    private void initialize() {
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
         timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
         timerManager.startTimer(() -> timerManager.updateDate(dateLabel), 0, 1000);
 
@@ -222,6 +233,9 @@ public class MapViewerController {
 
         accordion.getPanes().addAll(departments, labs, services, amenities, conferenceRooms);
         showAccordion();
+
+        googleMapView.addMapInializedListener(this);
+        switchToGoogle(Direction.FaulknerToMain);
     }
 
     private void generateFloorButtons() {
@@ -301,7 +315,6 @@ public class MapViewerController {
         hideAccordion();
         hideTextualDirections();
         showTextualDirections();
-
     }
 
     /**
@@ -672,6 +685,56 @@ public class MapViewerController {
     public void navigateFloor5() {
         destination.setText((String) listF5.getSelectionModel().getSelectedItem());
         navigate();
+    }
+
+    private enum Direction {
+        MainToFaulkner, FaulknerToMain, None
+    }
+
+    private void switchToGoogle(Direction direction) {
+        DirectionsRequest directionsRequest;
+
+        try {
+            switch (direction) {
+                case FaulknerToMain:
+                    directionsRequest = new DirectionsRequest("place_id:ChIJN4gB7Dt544kRm5DzJWfM45U",
+                            "place_id:ChIJLZ31ZI5544kRQ4BU_KTfYic", TravelModes.DRIVING);
+                    getRoute(directionsRequest);
+                    break;
+                case MainToFaulkner:
+                    directionsRequest = new DirectionsRequest("Brigham And Women's Hospital, Francis Street, Boston, MA",
+                            "Brigham and Women's Faulkner Hospital, Centre Street, Boston, MA", TravelModes.DRIVING);
+                    getRoute(directionsRequest);
+                    break;
+                default:
+                    break;
+            }
+        } catch (Exception ex) {
+            log.error("Encountered Exception", ex);
+        }
+
+        root.setCenter(googleMapView);
+    }
+
+    private void getRoute(DirectionsRequest directionsRequest) {
+        DirectionsService directionsService = new DirectionsService();
+        directionsService.getRoute(directionsRequest, directionsServiceCallback,
+                new DirectionsRenderer(true, googleMapView.getMap(), googleMapView.getDirec()));
+    }
+
+    @Override
+    public void mapInitialized() {
+        MapOptions mapOptions = new MapOptions();
+        mapOptions.center(new LatLong(42.319098, -71.119194))
+                .mapType(MapTypeIdEnum.ROADMAP)
+                .rotateControl(false)
+                .streetViewControl(false)
+                .zoom(14.5);
+        googleMapView.createMap(mapOptions);
+    }
+
+    private void switchToMapPane() {
+        root.setCenter(viewerContainer);
     }
 
     @FXML

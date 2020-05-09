@@ -69,7 +69,7 @@ public class Graph implements Iterable<Node> {
     /**
      * Gets a collection of edges removing one from each pair of two-way-edges.
      *
-     * @return A collection of edges with none that are inverses of each other
+     * @return A collection of edges with None that are inverses of each other
      */
     public Collection<Edge> getEdgesOneWay() {
         Collection<Edge> oneWayEdges = new ArrayList<>();

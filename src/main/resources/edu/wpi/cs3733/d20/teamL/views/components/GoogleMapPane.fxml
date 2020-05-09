@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.web.WebView?>
+
+<?import com.lynden.gmapsfx.GoogleMapView?>
+
+
+<fx:root type="com.lynden.gmapsfx.GoogleMapView" fx:controller="edu.wpi.cs3733.d20.teamL.views.components.GoogleMapPane"
+         xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"/>
