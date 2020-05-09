@@ -650,11 +650,17 @@ public class MapViewerController {
         qc = new QuestionnaireController(cache.getQuestions());
 
         JFXDialogLayout layout = new JFXDialogLayout();
+        layout.getStylesheets().add("/edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css");
         layout.setHeading(qc.getQuestionnaireTitle());
         layout.setBody(qc.nextClicked());
 
         JFXDialog screeningDialog = new JFXDialog(screeningPane, layout, JFXDialog.DialogTransition.TOP);
+        screeningDialog.getStylesheets().add("/edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css");
         screeningDialog.show();
+
+        JFXButton btnClose = new JFXButton("Quit");
+        btnClose.getStyleClass().add("cancel-button-jfx");
+        btnClose.setOnAction(e -> screeningDialog.close());
 
         JFXButton btnNext = new JFXButton("Next");
         btnNext.getStyleClass().add("save-button-jfx");
@@ -668,13 +674,13 @@ public class MapViewerController {
                 qc.calculateScore();
                 btnNext.setText("Close");
                 layout.setHeading(qc.nextClicked());
-
-
+                btnClose.setVisible(false);
+                btnClose.setDisable(true);
             } else if (qc.getDone()) {
                 screeningDialog.close();
             }
         });
-        layout.setActions(btnNext);
+        layout.setActions(btnClose, btnNext);
     }
 
     @FXML

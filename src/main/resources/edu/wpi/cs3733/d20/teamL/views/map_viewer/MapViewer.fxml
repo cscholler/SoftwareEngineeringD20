@@ -190,6 +190,15 @@
                   </JFXButton>
                </children>
             </StackPane>
+            <HBox alignment="CENTER" layoutX="65.0" layoutY="11.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="15.0">
+               <children>
+                  <StackPane fx:id="screeningPane">
+                     <children>
+                        <JFXButton fx:id="btnScreening" onAction="#openScreening" />
+                     </children>
+                  </StackPane>
+               </children>
+            </HBox>
             </children>
         </AnchorPane>
     </center>
@@ -222,11 +231,6 @@
                   </Label>
                </children>
             </VBox>
-            <StackPane fx:id="screeningPane" layoutX="1209.0" layoutY="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-               <children>
-                  <JFXButton fx:id="btnScreening" onAction="#openScreening" />
-               </children>
-            </StackPane>
          </children>
       </AnchorPane>
    </top>
