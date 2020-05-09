@@ -15,6 +15,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import edu.wpi.cs3733.d20.teamL.views.components.MapPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.control.Tooltip?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="950.0" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.logged_in.AnalyticsController">
    <center>
       <JFXTabPane BorderPane.alignment="CENTER">
@@ -61,7 +68,56 @@
             </Tab>
             <Tab text="Heat Maps">
                <content>
-                  <BorderPane prefHeight="200.0" prefWidth="200.0" />
+                  <AnchorPane BorderPane.alignment="CENTER">
+                     <children>
+                        <MapPane fx:id="map" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <VBox alignment="BOTTOM_RIGHT" cache="true" layoutX="883.0" layoutY="510.0" maxHeight="100.0" maxWidth="50.0" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="20.0">
+                           <children>
+                              <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" minHeight="40.0" minWidth="40.0" onAction="#zoomIn" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 20 20 0 0; -fx-pref-width: 40; -fx-pref-height: 40; -fx-background-color: #0d2e57;" text="+" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets right="20.0" />
+                                 </padding>
+                              </JFXButton>
+                              <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" minHeight="40.0" minWidth="40.0" onAction="#zoomOut" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 0 0 20 20; -fx-pref-height: 40; -fx-pref-width: 40; -fx-background-color: #0d2e57;" text="-" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets right="20.0" />
+                                 </padding>
+                              </JFXButton>
+                           </children>
+                        </VBox>
+                        <VBox fx:id="floorSelector" maxHeight="300.0" maxWidth="40.0" prefHeight="720.0" prefWidth="855.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
+                           <children>
+                              <JFXButton fx:id="floorUp" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#handleFloor" prefWidth="0.0" ripplerFill="WHITE" style="-fx-background-color: #0d2e57; -fx-background-radius: 20 20 0 0;" styleClass="floor-buttons" text="▲" textAlignment="CENTER" textFill="WHITE">
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </JFXButton>
+                              <JFXButton fx:id="floorDown" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#handleFloor" ripplerFill="WHITE" style="-fx-background-color: #0d2e57; -fx-background-radius: 0 0 20 20;" styleClass="floor-buttons" text="▼" textAlignment="CENTER" textFill="WHITE">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </JFXButton>
+                           </children>
+                        </VBox>
+                        <HBox alignment="BOTTOM_CENTER" layoutX="369.0" layoutY="570.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0">
+                           <children>
+                              <JFXComboBox fx:id="buildingChooser" onAction="#switchBuilding" promptText="Select Building" style="-fx-border-color: #0d2e57; -fx-border-width: 3; -fx-background-color: white;" styleClass="combo-box-jfx" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
                </content>
             </Tab>
             <Tab text="Pie Charts">
