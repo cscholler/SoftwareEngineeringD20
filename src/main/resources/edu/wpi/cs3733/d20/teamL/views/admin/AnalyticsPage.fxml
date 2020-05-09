@@ -23,10 +23,10 @@
                      <top>
                         <HBox prefHeight="100.0" prefWidth="950.0" BorderPane.alignment="CENTER">
                            <children>
-                              <JFXButton onAction="#handleLive" text="Live" />
-                              <JFXButton onAction="#handleRefresh" text="Refresh" />
-                              <JFXComboBox fx:id="timeBox" maxWidth="247.0" prefHeight="45.0" prefWidth="247.0" styleClass="combo-box-jfx" />
-                              <JFXButton text="Back" />
+                              <JFXButton onAction="#handleLive" styleClass="analytics-buttons-jfx" text="Live" />
+                              <JFXButton onAction="#handleRefresh" styleClass="analytics-buttons-jfx" text="Refresh" />
+                              <JFXComboBox fx:id="timeBox" maxHeight="80.0" maxWidth="251.0" prefHeight="80.0" prefWidth="251.0" promptText="Any time" styleClass="combo-box-jfx" />
+                              <JFXButton fx:id="btnCancel" onAction="#handleCancel" styleClass="analytics-buttons-jfx" text="Back" />
                            </children>
                         </HBox>
                      </top>
