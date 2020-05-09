@@ -17,7 +17,7 @@ import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 
 @Slf4j
 public class App extends Application {
-	private final FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
+	private final FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
 	private static final TimerManager timerManager = new TimerManager();
 	public static Timer idleLogoutTimer;
 	public static Timer idleCacheUpdateTimer;
@@ -66,7 +66,7 @@ public class App extends Application {
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 		stage = primaryStage;
-		Scene homeScene = new Scene(loaderHelper.getFXMLLoader("map_viewer/MapViewer").load());
+		Scene homeScene = new Scene(loaderFactory.getFXMLLoader("map_viewer/MapViewer").load());
 		stage.setScene(homeScene);
 		stage.setMaximized(true);
 		stage.setWidth(SCREEN_WIDTH);

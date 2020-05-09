@@ -19,7 +19,7 @@ public class DBConstants {
 	public static final String SERVICE_NAME = "mysql-db-01";
 
 	public static ArrayList<String> GET_TABLE_NAMES() {
-		return new ArrayList<>(Arrays.asList("Nodes", "Edges", "Users", "Doctors", "Patients", "Gifts", "Gift_Delivery_Requests", "Medication_Requests", "Service_Requests", "Reservations"));
+		return new ArrayList<>(Arrays.asList("Nodes", "Edges", "Users", "Doctors", "Patients", "Gifts", "Gift_Delivery_Requests", "Medication_Requests", "Service_Requests", "Reservations", "Kiosk_Settings", "Screening Questions"));
 	}
 
 	public static final String CREATE_NODE_TABLE =
@@ -230,6 +230,10 @@ public class DBConstants {
 			"INSERT INTO Kiosk_Settings(node_id)" +
 					"VALUES(?)";
 
+	public static final String ADD_SCREENING_QUESTION =
+			"INSERT INTO Screening_Questions(question, page, weight, reqs)" +
+					"VALUES(?, ?, ?, ?)";
+
 	public static final String SELECT_ALL_NODES =
 			"SELECT * " +
 					"FROM Nodes " +
@@ -370,6 +374,11 @@ public class DBConstants {
 					"FROM Kiosk_Settings " +
 					"WHERE id = ?";
 
+	public static final String SELECT_ALL_SCREENING_QUESTIONS =
+			"SELECT * " +
+					"FROM Screening_Questions " +
+					"ORDER BY id";
+
 	public static final String UPDATE_NODE =
 			"UPDATE Nodes " +
 					"SET x_pos = ?, y_pos = ?, floor = ?, building = ?, node_type = ?, l_name = ?, s_name = ? " +
@@ -486,7 +495,12 @@ public class DBConstants {
 
 	public static final String UPDATE_KIOSK_TIMEOUTS =
 			"UPDATE Kiosk_Settings " +
-					"SET logout_timout = ?, idle_cache_timeout = ?, force_cache_timeout = ?, screen_saver_timout = ?";
+					"SET logout_timeout = ?, idle_cache_timeout = ?, force_cache_timeout = ?, screen_saver_timeout = ? " +
+					"WHERE id = ?";
+
+	public static final String UPDATE_SCREENING_QUESTIONS =
+			"UPDATE Screening_Questions " +
+					"SET question = ?, page = ?, weight = ?, reqs = ?";
 
 	public static final String REMOVE_NODE =
 			"DELETE FROM Nodes " +
@@ -552,4 +566,7 @@ public class DBConstants {
 
 	public static final String DELETE_ALL_KIOSK_SETTINGS =
 			"DELETE FROM Kiosk_Settings";
+
+	public static final String DELETE_ALL_SCREENING_QUESTIONS =
+			"DELETE FROM Screening_Questions";
 }
