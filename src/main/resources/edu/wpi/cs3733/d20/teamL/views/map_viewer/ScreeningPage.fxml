@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDialogLayout?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.VBox?>
+
+<JFXDialogLayout fx:id="screeningDialog" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.screening.QuestionnaireController">
+   <children>
+      <VBox fx:id="dialogVBox" prefHeight="200.0" prefWidth="100.0" />
+      <JFXButton fx:id="btnNext" onAction="#nextClicked" styleClass="save-button-jfx" text="Next" />
+   </children>
+   <padding>
+      <Insets bottom="10.0" />
+   </padding>
+</JFXDialogLayout>

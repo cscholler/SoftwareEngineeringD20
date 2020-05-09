@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.j2objc.annotations.ObjectiveCName;
 import edu.wpi.cs3733.d20.teamL.entities.*;
 import javafx.geometry.Point2D;
 
@@ -28,6 +29,12 @@ public class DatabaseCache implements IDatabaseCache {
     private final ArrayList<Edge> addedEdges = new ArrayList<>();
     private final ArrayList<Node> deletedNodes = new ArrayList<>();
     private final ArrayList<Edge> deletedEdges = new ArrayList<>();
+    private ArrayList<Question> questionCache = new ArrayList<>();
+
+
+
+
+
     @Inject
     private IDatabaseService db;
 
@@ -38,6 +45,7 @@ public class DatabaseCache implements IDatabaseCache {
         cacheGiftsFromDB();
         cacheUsersFromDB();
         cacheDoctorsFromDB();
+        cacheQuestionsFromDB();
         cacheKiosksFromDB();
     }
 
@@ -343,4 +351,17 @@ public class DatabaseCache implements IDatabaseCache {
 	public void clearKioskCache() {
 
 	}
+
+    @Override
+    public void cacheQuestionsFromDB() {
+        ArrayList<ArrayList<String>> questionTable = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_SCREENING_QUESTIONS)));
+        for(ArrayList<String> row : questionTable) {
+            questionCache.add(new Question(row.get(1), Integer.parseInt(row.get(2)), Integer.parseInt(row.get(3)), Integer.parseInt(row.get(4))));
+        }
+    }
+
+    @Override
+    public ArrayList<Question> getQuestions() {
+        return questionCache;
+    }
 }
