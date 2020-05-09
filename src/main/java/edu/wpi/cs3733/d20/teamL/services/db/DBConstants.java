@@ -142,9 +142,9 @@ public class DBConstants {
 			"CREATE TABLE Screening_Questions(" +
 					"id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
 					"question VARCHAR(256) NOT NULL, " +
-					"order INT NOT NULL, " +
+					"page INT NOT NULL, " +
 					"weight INT, " +
-					"reqs INT";
+					"reqs INT)";
 
 	public static final String DROP_NODE_TABLE =
 			"DROP TABLE IF EXISTS Nodes";

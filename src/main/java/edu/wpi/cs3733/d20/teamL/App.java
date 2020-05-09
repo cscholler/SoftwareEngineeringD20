@@ -34,28 +34,28 @@ public class App extends Application {
 		if (idleLogoutTimer != null) {
 			idleLogoutTimer.cancel();
 		}
-		idleLogoutTimer = timerManager.startTimer("logOutIfNoInput");
+		idleLogoutTimer = timerManager.startTimer(timerManager::showLogoutDialogueIfNoInput, "showLogoutDialogueIfNoInput");
 	}
 
 	public static void startIdleTimer() {
 		if (idleCacheUpdateTimer != null) {
 			idleCacheUpdateTimer.cancel();
 		}
-		idleCacheUpdateTimer = timerManager.startTimer("updateCacheIfNoInput");
+		idleCacheUpdateTimer = timerManager.startTimer(timerManager::updateCacheIfNoInput, "updateCacheIfNoInput");
 	}
 
 	public static void startForceUpdateTimer() {
 		if (forceCacheUpdateTimer != null) {
 			forceCacheUpdateTimer.cancel();
 		}
-		forceCacheUpdateTimer = timerManager.startTimer("forceUpdateCache");
+		forceCacheUpdateTimer = timerManager.startTimer(timerManager::forceUpdateCache, "forceUpdateCache");
 	}
 
 	public static void startScreenSaverTimer() {
 		if (screenSaverTimer != null) {
 			screenSaverTimer.cancel();
 		}
-		screenSaverTimer = timerManager.startTimer("showScreensaverIfNoInput");
+		screenSaverTimer = timerManager.startTimer(timerManager::showScreensaverIfNoInput, "showScreensaverIfNoInput");
 	}
 
 	@Override
@@ -73,6 +73,7 @@ public class App extends Application {
 		stage.setHeight(SCREEN_HEIGHT);
 		stage.setTitle("Team L");
 		stage.show();
+		timerManager.determineTimeoutPeriods();
 		FXMLLoaderFactory.getHistory().push(homeScene);
 		homeScene.addEventHandler(Event.ANY, event -> {
 			startIdleTimer();
