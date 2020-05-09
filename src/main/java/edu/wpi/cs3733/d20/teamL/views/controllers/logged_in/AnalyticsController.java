@@ -72,7 +72,7 @@ public class AnalyticsController implements Initializable {
 
         timeBox.setItems(timeOptions);
         setServiceReqHisto();
-        setServiceReqPieChart();
+        handleAllServiceReq();
 
         if (App.doUpdateCacheOnLoad) {
             cache.cacheAllFromDB();
@@ -141,7 +141,7 @@ public class AnalyticsController implements Initializable {
         ServiceReqHisto.getData().addAll(set);
     }
 
-    public void setServiceReqPieChart() {
+    public void handleAllServiceReq() {
         //Hard-coded Test Data
         ObservableList<PieChart.Data> serviceReqData = FXCollections.observableArrayList(
                 new PieChart.Data("Gift Delivery", 20),
@@ -155,6 +155,7 @@ public class AnalyticsController implements Initializable {
                 new PieChart.Data("Reflection Room", 35),
                 new PieChart.Data("On-Call Bed", 10));
 
+        servicePieChart.setTitle("Service Request Pie Chart");
         servicePieChart.setData(serviceReqData);
         servicePieChart.setStartAngle(90);
     }
@@ -176,7 +177,151 @@ public class AnalyticsController implements Initializable {
                 new PieChart.Data("Star Wars", 10),
                 new PieChart.Data("Pulp Fiction", 10));
 
+        servicePieChart.setTitle("Gift Delivery Pie Chart");
         servicePieChart.setData(giftData);
+        servicePieChart.setStartAngle(90);
+    }
+    @FXML
+    void handleSanitationPieChart() {
+
+        ObservableList<PieChart.Data> sanitationData = FXCollections.observableArrayList(
+                new PieChart.Data("Biohazard", 10),
+                new PieChart.Data("Spill", 10));
+
+        servicePieChart.setTitle("Sanitation Pie Chart");
+        servicePieChart.setData(sanitationData);
+        servicePieChart.setStartAngle(90);
+    }
+
+    @FXML
+    void handleSecurityPieChart() {
+
+        ObservableList<PieChart.Data> securityData = FXCollections.observableArrayList(
+                new PieChart.Data("High Priority", 10),
+                new PieChart.Data("Medium Priority", 10),
+                new PieChart.Data("Low Priority", 10));
+
+        servicePieChart.setTitle("Security Pie Chart");
+        servicePieChart.setData(securityData);
+        servicePieChart.setStartAngle(90);
+    }
+
+    @FXML
+    void handleMaintenancePieChart() {
+
+        ObservableList<PieChart.Data> maintenanceData = FXCollections.observableArrayList(
+                new PieChart.Data("Plumbing", 10),
+                new PieChart.Data("Medical Equipment", 10),
+                new PieChart.Data("Electrical", 10),
+                new PieChart.Data("IT", 10),
+                new PieChart.Data("Other", 10));
+
+        servicePieChart.setTitle("Maintenance Pie Chart");
+        servicePieChart.setData(maintenanceData);
+        servicePieChart.setStartAngle(90);
+
+    }
+
+    @FXML
+    void handleMedicationPieChart() {
+
+        ObservableList<PieChart.Data> medicationData = FXCollections.observableArrayList(
+                new PieChart.Data("Ibuprofen", 10),
+                new PieChart.Data("Advil", 10),
+                new PieChart.Data("Pain Killers", 10),
+                new PieChart.Data("Other", 10));
+
+        servicePieChart.setTitle("Medication Pie Chart");
+        servicePieChart.setData(medicationData);
+        servicePieChart.setStartAngle(90);
+    }
+
+    @FXML
+    void handleOnCallPieChart() {
+
+        ObservableList<PieChart.Data> onCallData = FXCollections.observableArrayList(
+                new PieChart.Data("Bed 1", 10),
+                new PieChart.Data("Bed 2", 10),
+                new PieChart.Data("Bed 3", 10),
+                new PieChart.Data("Bed 4", 10),
+                new PieChart.Data("Bed 5", 10),
+                new PieChart.Data("Bed 6", 10),
+                new PieChart.Data("Bed 7", 10));
+
+        servicePieChart.setTitle("On-Call Bed Pie Chart");
+        servicePieChart.setData(onCallData);
+        servicePieChart.setStartAngle(90);
+    }
+
+    @FXML
+    void handleReflectionPieChart() {
+
+        ObservableList<PieChart.Data> reflectionData = FXCollections.observableArrayList(
+                new PieChart.Data("Floor 1", 10),
+                new PieChart.Data("Floor 3", 10),
+                new PieChart.Data("Floor 4", 10));
+
+        servicePieChart.setTitle("Reflection Room Pie Chart");
+        servicePieChart.setData(reflectionData);
+        servicePieChart.setStartAngle(90);
+    }
+
+    @FXML
+    void handleITPieChart() {
+
+        ObservableList<PieChart.Data> ITData = FXCollections.observableArrayList(
+                new PieChart.Data("General Help", 10),
+                new PieChart.Data("Data Backup", 10),
+                new PieChart.Data("Hardware/Software Issues", 10),
+                new PieChart.Data("Cyber Attacks", 10));
+
+        servicePieChart.setTitle("IT Pie Chart");
+        servicePieChart.setData(ITData);
+        servicePieChart.setStartAngle(90);
+
+    }
+
+    @FXML
+    void handleInternalPieChart() {
+
+        ObservableList<PieChart.Data> internalData = FXCollections.observableArrayList(
+                new PieChart.Data("Wheelchair w/ Operator", 10),
+                new PieChart.Data("Wheelchair w/o Operator", 10),
+                new PieChart.Data("Crutches", 10),
+                new PieChart.Data("Walker", 10),
+                new PieChart.Data("Gurnie", 10));
+
+        servicePieChart.setTitle("Internal Transportation Pie Chart");
+        servicePieChart.setData(internalData);
+        servicePieChart.setStartAngle(90);
+    }
+
+    @FXML
+    void handleExternalPieChart() {
+
+        ObservableList<PieChart.Data> externalData = FXCollections.observableArrayList(
+                new PieChart.Data("Taxi", 10),
+                new PieChart.Data("Bus", 10),
+                new PieChart.Data("Uber", 10),
+                new PieChart.Data("Lyft", 10));
+
+        servicePieChart.setTitle("External Transportation Pie Chart");
+        servicePieChart.setData(externalData);
+        servicePieChart.setStartAngle(90);
+    }
+
+    @FXML
+    void handleInterpreterPieChart() {
+
+        ObservableList<PieChart.Data> interpreterData = FXCollections.observableArrayList(
+                new PieChart.Data("French", 10),
+                new PieChart.Data("Chinese", 10),
+                new PieChart.Data("American Sign Language", 10),
+                new PieChart.Data("Spanish", 10),
+                new PieChart.Data("Italian", 10));
+
+        servicePieChart.setTitle("Interpreter Pie Chart");
+        servicePieChart.setData(interpreterData);
         servicePieChart.setStartAngle(90);
     }
 
