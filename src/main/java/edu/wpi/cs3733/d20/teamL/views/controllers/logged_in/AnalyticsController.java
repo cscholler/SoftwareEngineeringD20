@@ -6,11 +6,14 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.entities.Building;
+import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
+import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
 import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
+import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
 import edu.wpi.cs3733.d20.teamL.views.controllers.map.MapViewerController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,12 +29,14 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.ResourceBundle;
@@ -93,6 +98,9 @@ public class AnalyticsController implements Initializable {
 
         map.setZoomLevel(0.25 * App.UI_SCALE);
         map.init();
+
+        burnAllNodes(map.getCurrentFloor().getNodes());
+        burnAllEdges(map.getCurrentFloor().getEdges());
     }
 
     @FXML
@@ -231,5 +239,29 @@ public class AnalyticsController implements Initializable {
     @FXML
     private void zoomOut() {
         map.setZoomLevelToPosition(map.getZoomLevel() * 0.8, new Point2D(map.getBody().getWidth() / 2, map.getBody().getHeight() / 2));
+    }
+
+    private void burnAllNodes(Collection<Node> nodes) {
+        for(Node node : nodes) {
+            if(node.getFreq() > 0) {
+                NodeGUI nodeGUI =  map.getNodeGUI(node);
+                nodeGUI.setHighlightColor(Color.RED);
+                nodeGUI.setHighlightThickness(node.getFreq());
+                nodeGUI.setHighlighted(true);
+            }
+        }
+    }
+
+    private void burnAllEdges(Collection<Edge> edges) {
+        for(Edge edge : edges) {
+            if(edge.getFreq() > 0) {
+                EdgeGUI edgeGUI = map.getEdgeGUI(edge);
+                if(edgeGUI != null) {
+                    edgeGUI.setHighlightColor(Color.RED);
+                    edgeGUI.setHighlightThickness(edge.getFreq());
+                    edgeGUI.setHighlighted(true);
+                }
+            }
+        }
     }
 }

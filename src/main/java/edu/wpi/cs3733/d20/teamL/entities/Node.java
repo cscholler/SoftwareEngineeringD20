@@ -15,6 +15,7 @@ public class Node {
     private String type;
     private int shaft = 0;
     private int floor;
+    private int freq = 5;
 
     private HashMap<String, Object> data = new HashMap<>(); //TODO remove Hashmap and add NodeGUI Field
 
@@ -197,6 +198,14 @@ public class Node {
         this.shaft = shaft;
     }
 
+    public int getFreq() {
+        return freq;
+    }
+
+    public void setFreq(int freq) {
+        this.freq = freq;
+    }
+
     /**
      * Adds a new edge to the Node.
      *
@@ -321,7 +330,7 @@ public class Node {
      */
     public ArrayList<String> toArrayList() {
         return new ArrayList<>(Arrays.asList(getID(), String.valueOf(getPosition().getX()), String.valueOf(getPosition().getY()),
-                String.valueOf(getFloor()), getBuilding(), getType(), getLongName(), getShortName()));
+                String.valueOf(getFloor()), getBuilding(), getType(), getLongName(), getShortName(), String.valueOf(getFreq())));
     }
 
     /**

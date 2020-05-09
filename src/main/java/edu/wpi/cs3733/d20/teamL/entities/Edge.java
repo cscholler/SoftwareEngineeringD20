@@ -6,8 +6,9 @@ import java.util.HashMap;
 
 public class Edge {
 	private String id;
-    Node source;
-    Node destination;
+	Node source;
+	Node destination;
+    private int freq = 3;
 
     private HashMap<String, Object> data = new HashMap<>();
 
@@ -37,6 +38,14 @@ public class Edge {
         this.destination = destination;
     }
 
+    public int getFreq() {
+        return freq;
+    }
+
+    public void setFreq(int freq) {
+        this.freq = freq;
+    }
+
     /**
      * Getter for source, the node this edge comes from.
      *
@@ -58,7 +67,7 @@ public class Edge {
     }
 
     public ArrayList<String> toArrayList() {
-        return new ArrayList<>(Arrays.asList(getID(), getSource().getID(), getDestination().getID()));
+        return new ArrayList<>(Arrays.asList(getID(), getSource().getID(), getDestination().getID(), String.valueOf(getFreq())));
     }
 
     /**
