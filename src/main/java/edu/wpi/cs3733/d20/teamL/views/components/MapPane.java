@@ -101,9 +101,9 @@ public class MapPane extends ScrollPane {
             double prevZoomLevel = getZoomLevel();
 
             // Change the zoom level
-           // setZoomLevelToPosition(prevZoomLevel * (1 + event.getDeltaY() / 500), new Point2D(event.getX(), event.getY()));
+            setZoomLevelToPosition(prevZoomLevel * (1 + event.getDeltaY() / 500), new Point2D(event.getX(), event.getY()));
             double dir = event.getDeltaY();
-            testZoom((1 + event.getDeltaY() / 500), new Point2D(event.getX(), event.getY()));
+            //setZoomLevelToPosition((1 + event.getDeltaY() / 500), new Point2D(event.getX(), event.getY()));
             //else testZoom(1.2, new Point2D(event.getX(), event.getY()));
 
             event.consume();
