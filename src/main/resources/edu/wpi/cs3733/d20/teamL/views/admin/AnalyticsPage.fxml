@@ -73,22 +73,22 @@
                      <left>
                         <VBox prefHeight="600.0" prefWidth="388.0" BorderPane.alignment="CENTER">
                            <children>
-                              <Label prefHeight="30.0" prefWidth="388.0" styleClass="service-request-label-fx" text="Label" />
+                              <Label minHeight="50.0" prefHeight="30.0" prefWidth="388.0" styleClass="service-request-label-fx" text="Label" />
                               <ScrollPane prefHeight="607.0" prefWidth="388.0">
                                  <content>
                                     <VBox prefHeight="837.0" prefWidth="388.0">
                                        <children>
                                           <JFXButton onAction="#handleGiftPieChart" styleClass="services-button-jfx" text="Gift Delivery" />
-                                          <JFXButton styleClass="services-button-jfx" text="Security" />
-                                          <JFXButton styleClass="services-button-jfx" text="Maintenance" />
-                                          <JFXButton styleClass="services-button-jfx" text="Internal Transport" />
-                                          <JFXButton styleClass="services-button-jfx" text="External Transport" />
-                                          <JFXButton styleClass="services-button-jfx" text="Medication" />
-                                          <JFXButton styleClass="services-button-jfx" text="Sanitation" />
-                                          <JFXButton styleClass="services-button-jfx" text="IT" />
-                                          <JFXButton styleClass="services-button-jfx" text="Interpreter" />
-                                          <JFXButton styleClass="services-button-jfx" text="Reflection Room" />
-                                          <JFXButton styleClass="services-button-jfx" text="On-Call Bed" />
+                                          <JFXButton onAction="#handleSecurityPieChart" styleClass="services-button-jfx" text="Security" />
+                                          <JFXButton onAction="#handleMaintenancePieChart" styleClass="services-button-jfx" text="Maintenance" />
+                                          <JFXButton onAction="#handleInternalPieChart" styleClass="services-button-jfx" text="Internal Transport" />
+                                          <JFXButton onAction="#handleExternalPieChart" styleClass="services-button-jfx" text="External Transport" />
+                                          <JFXButton onAction="#handleMedicationPieChart" styleClass="services-button-jfx" text="Medication" />
+                                          <JFXButton onAction="#handleSanitationPieChart" styleClass="services-button-jfx" text="Sanitation" />
+                                          <JFXButton onAction="#handleITPieChart" styleClass="services-button-jfx" text="IT" />
+                                          <JFXButton onAction="#handleInterpreterPieChart" styleClass="services-button-jfx" text="Interpreter" />
+                                          <JFXButton onAction="#handleReflectionPieChart" styleClass="services-button-jfx" text="Reflection Room" />
+                                          <JFXButton onAction="#handleOnCallPieChart" styleClass="services-button-jfx" text="On-Call Bed" />
                                        </children>
                                     </VBox>
                                  </content>
