@@ -11,6 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,12 +21,11 @@ import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
 import edu.wpi.cs3733.d20.teamL.services.Service;
-import org.sqlite.core.DB;
 
 @Slf4j
 public class DatabaseService extends Service implements IDatabaseService {
 	private Connection connection;
-	private Map<String, ArrayList<String>> tableUpdateMappings = new HashMap<>();
+	private final Map<String, ArrayList<String>> tableUpdateMappings = new HashMap<>();
 
 	public enum DB_TYPE {
 		MY_SQL,
@@ -247,6 +247,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 			updates.add(new SQLEntry(DBConstants.CREATE_SERVICE_REQUEST_TABLE));
 			updates.add(new SQLEntry(DBConstants.CREATE_RESERVATIONS_TABLE));
 			updates.add(new SQLEntry(DBConstants.CREATE_SCREENING_QUESTIONS_TABLE));
+			updates.add(new SQLEntry(DBConstants.CREATE_KIOSK_SETTINGS_TABLE));
 		} else if (dbType == DB_TYPE.DERBY) {
 			updates.add(new SQLEntry(DerbyConstants.CREATE_NODE_TABLE));
 			updates.add(new SQLEntry(DerbyConstants.CREATE_EDGE_TABLE));
@@ -258,6 +259,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 			updates.add(new SQLEntry(DerbyConstants.CREATE_MEDICATION_REQUEST_TABLE));
 			updates.add(new SQLEntry(DerbyConstants.CREATE_SERVICE_REQUEST_TABLE));
 			updates.add(new SQLEntry(DBConstants.CREATE_SCREENING_QUESTIONS_TABLE));
+			//TODO: add kiosk and screening tables
 		} else {
 			log.error("Invalid database type.");
 		}
@@ -320,6 +322,9 @@ public class DatabaseService extends Service implements IDatabaseService {
 		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Movies", "LOTR Films", "The three Lord of the Rings movies from the trilogy", "100"))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Movies", "Star Wars", "All 6 Canon Star Wars movies", "100"))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Movies", "Pulp Fiction", "A copy of the movie Pulp Fiction", "3"))));
+
+		executeUpdate(new SQLEntry(DBConstants.ADD_DEFAULT_KIOSK, new ArrayList<>(Collections.singletonList("LKIOS00101"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_DEFAULT_KIOSK, new ArrayList<>(Collections.singletonList("LKIOS00103"))));
 
 		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Select your age range:", "1", "-1", "1"))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Are you 18 yrs or under", "1", "0", "1"))));
@@ -410,6 +415,8 @@ public class DatabaseService extends Service implements IDatabaseService {
 	public void dropTables() {
 		ArrayList<SQLEntry> updates = new ArrayList<>();
 		if (dbType == DB_TYPE.MY_SQL) {
+			updates.add(new SQLEntry(DBConstants.DROP_SCREENING_QUESTIONS_TABLE));
+			updates.add(new SQLEntry(DBConstants.DROP_KIOSK_SETTINGS_TABLE));
 			updates.add(new SQLEntry(DBConstants.DROP_RESERVATIONS_TABLE));
 			updates.add(new SQLEntry(DBConstants.DROP_SERVICE_REQUEST_TABLE));
 			updates.add(new SQLEntry(DBConstants.DROP_MEDICATION_REQUEST_TABLE));
@@ -420,7 +427,6 @@ public class DatabaseService extends Service implements IDatabaseService {
 			updates.add(new SQLEntry(DBConstants.DROP_USER_TABLE));
 			updates.add(new SQLEntry(DBConstants.DROP_EDGE_TABLE));
 			updates.add(new SQLEntry(DBConstants.DROP_NODE_TABLE));
-			updates.add(new SQLEntry(DBConstants.DROP_SCREENING_QUESTIONS_TABLE));
 			executeUpdates(updates);
 		} else if (dbType == DB_TYPE.DERBY) {
 			ResultSet resSet;
