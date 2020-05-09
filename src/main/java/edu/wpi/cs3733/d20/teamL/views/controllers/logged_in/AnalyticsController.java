@@ -6,9 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.PieChart;
-import javafx.scene.chart.XYChart;
+import javafx.scene.chart.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
@@ -21,7 +19,7 @@ public class AnalyticsController implements Initializable {
     private JFXComboBox<String> timeBox;
 
     @FXML
-    private BarChart<?, ?> ServiceReqHisto;
+    private BarChart<String, Number> ServiceReqHisto;
 
     @FXML
     private PieChart servicePieChart;
@@ -56,6 +54,7 @@ public class AnalyticsController implements Initializable {
     }
 
     public void setServiceReqHisto() {
+
         XYChart.Series set = new XYChart.Series<>();
         set.setName("Type of Request");
 
@@ -64,8 +63,8 @@ public class AnalyticsController implements Initializable {
         set.getData().add(new XYChart.Data("Gift Delivery", 10));
         set.getData().add(new XYChart.Data("Security", 20));
         set.getData().add(new XYChart.Data("Maintenance", 14));
-        set.getData().add(new XYChart.Data("Internal Transportation", 23));
-        set.getData().add(new XYChart.Data("External Transportation", 36));
+        set.getData().add(new XYChart.Data("Internal", 23));
+        set.getData().add(new XYChart.Data("External", 36));
         set.getData().add(new XYChart.Data("Medicine", 47));
         set.getData().add(new XYChart.Data("Sanitation", 50));
         set.getData().add(new XYChart.Data("IT", 13));
@@ -74,6 +73,7 @@ public class AnalyticsController implements Initializable {
         set.getData().add(new XYChart.Data("On-Call Bed", 55));
 
         ServiceReqHisto.getData().addAll(set);
+
     }
 
     public void handleAllServiceReq() {
