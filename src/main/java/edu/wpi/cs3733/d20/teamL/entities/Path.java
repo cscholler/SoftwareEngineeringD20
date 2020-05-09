@@ -114,19 +114,21 @@ public class Path implements Iterable<Node> {
         int time = 0;
         for(int i = 0; i < pathNodes.size() - 1; i++) {
             Edge edge = pathNodes.get(i).getEdge(pathNodes.get(i+1));
-            if(edge.getSource().getBuilding().equals(edge.getDestination().getBuilding())) {
+            if(!edge.getSource().getBuilding().equals(edge.getDestination().getBuilding())) {
                 if(transportation.equals("driving")) time += 10000;
                 else if (transportation.equals("walking")) time += 100000;
+            } else if (edge.getSource().getFloor() != edge.getDestination().getFloor()) {
+                if(edge.getSource().getType().equals("ELEV")) time += 15 / .338;
+                else time += 11 / .338;
             } else {
                 time += edge.getLength();
             }
         }
-        return time;
+        return (int) Math.round(time * .338 / 60);
     }
 
     public void generateTextMessage() {
         ArrayList<Node> subpath = new ArrayList<>();
-
         Point2D start, end;
         Node prev, curr, next;
         Node goal = pathNodes.get(pathNodes.size() - 1);
@@ -139,6 +141,11 @@ public class Path implements Iterable<Node> {
         boolean lastStatement = true;
 
         subpath.add(pathNodes.get(0));
+
+        int pathTime = getPathTime("walking");
+        if (pathTime == 0) message.add("Estimated Path Time: less than a minute.");
+        else message.add("Estimated Path Time: " + getPathTime("walking") + " minutes.");
+        subpaths.add(subpath);
         for (int i = 1; i < pathNodes.size() - 1; i++) {
             prev = pathNodes.get(i - 1);
             curr = pathNodes.get(i);
