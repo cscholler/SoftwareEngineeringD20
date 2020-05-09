@@ -2,6 +2,8 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.logged_in;
 
 
 import com.jfoenix.controls.JFXComboBox;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
@@ -14,15 +16,19 @@ import java.util.ResourceBundle;
 @Slf4j
 public class AnalyticsController implements Initializable {
     @FXML
-    private JFXComboBox histoBox;
+    private JFXComboBox<String> timeBox;
 
     @FXML
     private BarChart<?, ?> ServiceReqHisto;
 
+    ObservableList<String> timeOptions = FXCollections.observableArrayList("Any time", "Past hour", "Past 24 hours", "Past month", "Past year");
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        timeBox.setItems(timeOptions);
         XYChart.Series set = new XYChart.Series<>();
+        set.setName("Type of Request");
 
         set.getData().add(new XYChart.Data("Gift Delivery", 10));
         set.getData().add(new XYChart.Data("Security", 20));
