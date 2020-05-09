@@ -33,7 +33,8 @@ dependencies {
             'com.github.kenglxn.QRGen:javase:2.6.0',
             'org.jetbrains:annotations:15.0',
             'com.github.kenglxn.QRGen:javase:2.6.0',
-            'org.mindrot:jbcrypt:0.3m'
+            'org.mindrot:jbcrypt:0.3m',
+            'software.amazon.awssdk:rekognition:2.13.13'
     )
 
     testImplementation(
