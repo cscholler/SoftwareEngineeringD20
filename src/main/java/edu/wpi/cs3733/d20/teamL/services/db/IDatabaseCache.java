@@ -11,7 +11,7 @@ public interface IDatabaseCache {
 
 	void cacheNodes(ArrayList<Node> newNodes, ArrayList<Node> editedNodes);
 
-	void cacheEdges(ArrayList<Edge> newEdges);
+	void cacheEdges(ArrayList<Edge> newEdges, ArrayList<Edge> editedEdges);
 
 	void updateDB();
 

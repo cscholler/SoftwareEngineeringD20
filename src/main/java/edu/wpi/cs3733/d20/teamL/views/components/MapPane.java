@@ -525,12 +525,6 @@ public class MapPane extends ScrollPane {
      * @param position     The coordinates of the position to zoom to.
      */
     public void setZoomLevelToPosition(double newZoomLevel, Point2D position) {
-        System.out.println("getWidth: " + body.getWidth());
-        System.out.println("getLayoutX: " + body.getLayoutX());
-        System.out.println("getTranslateX: " + body.getTranslateX());
-        System.out.println("getScaleX: " + body.getScaleX());
-
-
         double percentX = position.getX() / body.getWidth();
         double percentY = position.getY() / body.getHeight();
 

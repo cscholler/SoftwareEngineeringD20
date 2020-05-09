@@ -24,10 +24,7 @@ public class DatabaseCache implements IDatabaseCache {
     private ArrayList<Edge> addedEdges = new ArrayList<>();
     private ArrayList<Node> deletedNodes = new ArrayList<>();
     private ArrayList<Edge> deletedEdges = new ArrayList<>();
-
-
-
-
+    private ArrayList<Edge> editedEdges = new ArrayList<>();
 
     @Inject
     private IDatabaseService db;
@@ -65,15 +62,14 @@ public class DatabaseCache implements IDatabaseCache {
      * @param newEdges A new list of edges to set the edges cache to.
      */
     @Override
-    public void cacheEdges(ArrayList<Edge> newEdges) {
+    public void cacheEdges(ArrayList<Edge> newEdges, ArrayList<Edge> editedEdges) {
         for (Edge edge : newEdges) {
             if (!edgeCache.contains(edge)) {
                 addedEdges.add(edge);
             }
         }
-
         for (Edge edge : edgeCache) if (!newEdges.contains(edge)) deletedEdges.add(edge);
-
+        this.editedEdges = editedEdges;
         this.edgeCache = newEdges;
     }
 
@@ -107,6 +103,13 @@ public class DatabaseCache implements IDatabaseCache {
             currentNode.remove(0);
             currentNode.add(nodeID);
             updates.add(new SQLEntry(DBConstants.UPDATE_NODE, currentNode));
+        }
+        // Edit edges
+        for (ArrayList<String> currentEdge : convertEdgesToValuesList(editedEdges)) {
+            String edgeID = currentEdge.get(0);
+            currentEdge.remove(0);
+            currentEdge.add(edgeID);
+            updates.add(new SQLEntry(DBConstants.UPDATE_NODE, currentEdge));
         }
 
         db.executeUpdates(updates);

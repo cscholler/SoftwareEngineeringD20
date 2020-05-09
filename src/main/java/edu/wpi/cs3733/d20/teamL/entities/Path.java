@@ -1,17 +1,20 @@
 package edu.wpi.cs3733.d20.teamL.entities;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import javafx.geometry.Point2D;
+
+import javax.inject.Inject;
 
 public class Path implements Iterable<Node> {
     private ArrayList<String> message = new ArrayList<>();
     private ArrayList<ArrayList<Node>> subpaths = new ArrayList<>();
     private List<Node> pathNodes = new LinkedList<>();
     private int length = 0;
+
+    @Inject
+    IDatabaseCache cache;
 
     public List<Node> getPathNodes() {
         return pathNodes;
@@ -111,13 +114,20 @@ public class Path implements Iterable<Node> {
     }
 
     public int getPathTime(String transportation) {
+        ArrayList<Edge> editedEdges = new ArrayList<>();
+        ArrayList<Node> editedNodes = new ArrayList<>();
+
         int time = 0;
-        pathNodes.get(0).setFreq(pathNodes.get(0).getFreq()+1);
-        pathNodes.get(pathNodes.size()-1).setFreq(pathNodes.get(pathNodes.size()-1).getFreq()+1);
+        Node start = pathNodes.get(0);
+        Node end = pathNodes.get(pathNodes.size()-1);
+        start.setFreq(start.getFreq()+1);
+        end.setFreq(end.getFreq()+1);
+        editedNodes.addAll(Arrays.asList(start, end));
 
         for(int i = 0; i < pathNodes.size() - 1; i++) {
             Edge edge = pathNodes.get(i).getEdge(pathNodes.get(i+1));
             edge.setFreq(edge.getFreq()+1);
+            editedEdges.add(edge);
             if(!edge.getSource().getBuilding().equals(edge.getDestination().getBuilding())) {
                 if(transportation.equals("driving")) time += 10000;
                 else if (transportation.equals("walking")) time += 100000;
@@ -128,6 +138,11 @@ public class Path implements Iterable<Node> {
                 time += edge.getLength();
             }
         }
+
+        cache.cacheNodes(new ArrayList<>(), editedNodes);
+        cache.cacheEdges(new ArrayList<>(), editedEdges);
+        cache.updateDB();
+
         return (int) Math.round(time * .338 / 60);
     }
 
