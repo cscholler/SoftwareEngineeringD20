@@ -1,7 +1,6 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Timer;
 
@@ -17,12 +16,10 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import edu.wpi.cs3733.d20.teamL.util.TimerManager;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
@@ -37,8 +34,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Line;
-import javafx.scene.paint.Paint;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -52,9 +47,6 @@ import edu.wpi.cs3733.d20.teamL.entities.Path;
 import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
 import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
 import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
-import org.apache.xmlgraphics.image.codec.png.PNGEncodeParam;
-
-import javax.swing.*;
 
 @Slf4j
 public class MapViewerController {
@@ -651,7 +643,7 @@ public class MapViewerController {
 
     @FXML
     public void openScreening() throws IOException{
-        qc = new QuestionnaireController();
+        qc = new QuestionnaireController(cache.getQuestions());
 
         JFXDialogLayout layout = new JFXDialogLayout();
         layout.setHeading(qc.getQuestionnaireTitle());
@@ -662,7 +654,21 @@ public class MapViewerController {
 
         JFXButton btnNext = new JFXButton("Next");
         btnNext.getStyleClass().add("save-button-jfx");
-        btnNext.setOnAction(e -> layout.setHeading(qc.nextClicked()));
+        btnNext.setOnAction(e -> {
+            if(!qc.getTestFinished()) {
+                System.out.println("first statement");
+                qc.calculateScore();
+                layout.setHeading(qc.nextClicked());
+            } else if (qc.getTestFinished() && !qc.getDone()){
+                System.out.println("second statement");
+                qc.calculateScore();
+                layout.setHeading(qc.nextClicked());
+                btnNext.setText("Close");
+
+            } else if (qc.getDone()) {
+                screeningDialog.close();
+            }
+        });
         layout.setActions(btnNext);
     }
 
