@@ -7,6 +7,8 @@
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -66,8 +68,34 @@
                <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <center>
-                        <PieChart fx:id="servicePieChart" title="Service Request Pie Chart" BorderPane.alignment="CENTER" />
+                        <PieChart fx:id="servicePieChart" prefHeight="563.0" prefWidth="705.0" title="Service Request Pie Chart" BorderPane.alignment="CENTER" />
                      </center>
+                     <left>
+                        <VBox prefHeight="600.0" prefWidth="388.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <Label prefHeight="30.0" prefWidth="388.0" styleClass="service-request-label-fx" text="Label" />
+                              <ScrollPane prefHeight="607.0" prefWidth="388.0">
+                                 <content>
+                                    <VBox prefHeight="837.0" prefWidth="388.0">
+                                       <children>
+                                          <JFXButton onAction="#handleGiftPieChart" styleClass="services-button-jfx" text="Gift Delivery" />
+                                          <JFXButton styleClass="services-button-jfx" text="Security" />
+                                          <JFXButton styleClass="services-button-jfx" text="Maintenance" />
+                                          <JFXButton styleClass="services-button-jfx" text="Internal Transport" />
+                                          <JFXButton styleClass="services-button-jfx" text="External Transport" />
+                                          <JFXButton styleClass="services-button-jfx" text="Medication" />
+                                          <JFXButton styleClass="services-button-jfx" text="Sanitation" />
+                                          <JFXButton styleClass="services-button-jfx" text="IT" />
+                                          <JFXButton styleClass="services-button-jfx" text="Interpreter" />
+                                          <JFXButton styleClass="services-button-jfx" text="Reflection Room" />
+                                          <JFXButton styleClass="services-button-jfx" text="On-Call Bed" />
+                                       </children>
+                                    </VBox>
+                                 </content>
+                              </ScrollPane>
+                           </children>
+                        </VBox>
+                     </left>
                   </BorderPane>
                </content>
             </Tab>

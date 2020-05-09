@@ -100,4 +100,25 @@ public class AnalyticsController implements Initializable {
         servicePieChart.setData(serviceReqData);
         servicePieChart.setStartAngle(90);
     }
+
+    @FXML
+    void handleGiftPieChart() {
+
+        ObservableList<PieChart.Data> giftData = FXCollections.observableArrayList(
+                new PieChart.Data("Roses", 10),
+                new PieChart.Data("Tulips", 10),
+                new PieChart.Data("Dandelions", 10),
+                new PieChart.Data("Building blocks", 10),
+                new PieChart.Data("Play-Do", 10),
+                new PieChart.Data("Hot Wheels", 10),
+                new PieChart.Data("LOTR", 10),
+                new PieChart.Data("Harry Potter", 10),
+                new PieChart.Data("Inheritance", 10),
+                new PieChart.Data("LORT films", 10),
+                new PieChart.Data("Star Wars", 10),
+                new PieChart.Data("Pulp Fiction", 10));
+
+        servicePieChart.setData(giftData);
+        servicePieChart.setStartAngle(90);
+    }
 }
