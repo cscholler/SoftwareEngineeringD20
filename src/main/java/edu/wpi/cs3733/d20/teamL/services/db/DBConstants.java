@@ -142,9 +142,9 @@ public class DBConstants {
 			"CREATE TABLE Screening_Questions(" +
 					"id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
 					"question VARCHAR(256) NOT NULL, " +
-					"order INT NOT NULL, " +
+					"page INT NOT NULL, " +
 					"weight INT, " +
-					"reqs INT";
+					"reqs INT)";
 
 	public static final String DROP_NODE_TABLE =
 			"DROP TABLE IF EXISTS Nodes";
@@ -223,7 +223,7 @@ public class DBConstants {
 					"VALUES(?, ?, ?, ?, ?)";
 
 	public static final String ADD_SCREENING_QUESTION =
-			"INSERT INTO Screening_Questions(question, order, weight, reqs)" +
+			"INSERT INTO Screening_Questions(question, page, weight, reqs)" +
 					"VALUES(?, ?, ?, ?)";
 
 	public static final String SELECT_ALL_NODES =
@@ -491,7 +491,7 @@ public class DBConstants {
 
 	public static final String UPDATE_SCREENING_QUESTIONS =
 			"UPDATE Screening_Questions " +
-					"SET question = ?, order = ?, weight = ?, reqs = ?";
+					"SET question = ?, page = ?, weight = ?, reqs = ?";
 
 	public static final String REMOVE_NODE =
 			"DELETE FROM Nodes " +

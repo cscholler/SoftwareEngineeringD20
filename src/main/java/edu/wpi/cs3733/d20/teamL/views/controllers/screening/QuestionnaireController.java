@@ -10,7 +10,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
 
@@ -26,9 +25,9 @@ public class QuestionnaireController {
     private IDatabaseCache cache;
 
     @FXML
-    private Label questionnaireTitle;
+    private Label questionnaireTitle = new Label("");
     @FXML
-    private VBox dialogVbox;
+    private VBox dialogVBox;
     @FXML
     private JFXDialogLayout screeningDialog;
     @FXML
@@ -58,12 +57,15 @@ public class QuestionnaireController {
                     allQuestionsBox.getChildren().add(orQuestion);
                     orQuestion.setToggleGroup(toggleGroup);
                 }
+                if(i == allQuestions.size() - 1) {
+                    break;
+                }
                 i++;
             }
             questionCards.add(allQuestionsBox);
         }
 
-        dialogVbox = questionCards.get(0);
+        dialogVBox = questionCards.get(0);
         screeningDialog.setHeading(questionnaireTitle);
     }
 
@@ -71,7 +73,7 @@ public class QuestionnaireController {
     private void nextClicked() {
         int total = 0;
 
-        ObservableList<Node> children = dialogVbox.getChildren();
+        ObservableList<Node> children = dialogVBox.getChildren();
 
         //is a checkbox
         if (allQuestions.get(index - 1).getRecs() == 0) {
@@ -82,7 +84,7 @@ public class QuestionnaireController {
                 }
             }
             //is a radiobutton
-        } else if (allQuestions.get(index - 1).getRecs() == 1) {
+        } else if (allQuestions.get(index - 1).getRecs() == 1 && allQuestions.get(index - 1).getWeight() >= 0) {
             for (Node n : children) {
                 JFXRadioButton box = (JFXRadioButton) n;
                 if (((JFXCheckBox) n).isSelected()) {
@@ -94,12 +96,12 @@ public class QuestionnaireController {
         weights.set(index-1, total);
 
         //go to next set of questions
-        dialogVbox = questionCards.get(index);
+        dialogVBox = questionCards.get(index);
         if (index < questionCards.size()) {
             index++;
         }
         else {
-            dialogVbox.getChildren().clear();
+            dialogVBox.getChildren().clear();
 
             int grandTotal = 0;
             for (int i : weights) {
@@ -111,17 +113,17 @@ public class QuestionnaireController {
                     //always show
                     if(q.getWeight() == 0) {
                         Label l = new Label(q.getQuestion());
-                        dialogVbox.getChildren().add(l);
+                        dialogVBox.getChildren().add(l);
                     } else if (q.getRecs() == -10 && q.getWeight() < grandTotal){
                         Label l = new Label(q.getQuestion());
-                        dialogVbox.getChildren().add(l);
+                        dialogVBox.getChildren().add(l);
                     } else if (weights.get(q.getRecs() - 1) >= 1 && q.getWeight() < grandTotal - weights.get(q.getRecs() -1)) {
                         Label l = new Label(q.getQuestion());
-                        dialogVbox.getChildren().add(l);
+                        dialogVBox.getChildren().add(l);
                     } else if (q.getRecs() < 0) {
                         if(weights.get(Math.abs(q.getRecs()) -1) < 1 && q.getWeight() < grandTotal - weights.get(Math.abs(q.getRecs()-1))) {
                             Label l = new Label(q.getQuestion());
-                            dialogVbox.getChildren().add(l);
+                            dialogVBox.getChildren().add(l);
                         }
 
                     }

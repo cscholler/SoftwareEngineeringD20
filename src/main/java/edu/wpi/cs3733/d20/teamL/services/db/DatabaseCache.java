@@ -332,7 +332,7 @@ public class DatabaseCache implements IDatabaseCache {
     public void cacheQuestionsFromDB() {
         ArrayList<ArrayList<String>> questionTable = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_SCREENING_QUESTIONS)));
         for(ArrayList<String> row : questionTable) {
-            questionCache.add(new Question(row.get(0), Integer.parseInt(row.get(1)), Integer.parseInt(row.get(2)), Integer.parseInt(row.get(3))));
+            questionCache.add(new Question(row.get(1), Integer.parseInt(row.get(2)), Integer.parseInt(row.get(3)), Integer.parseInt(row.get(4))));
         }
     }
 
