@@ -73,11 +73,16 @@
                      <left>
                         <VBox prefHeight="600.0" prefWidth="388.0" BorderPane.alignment="CENTER">
                            <children>
-                              <Label minHeight="50.0" prefHeight="30.0" prefWidth="388.0" styleClass="service-request-label-fx" text="Label" />
+                              <Label alignment="CENTER" minHeight="60.0" prefHeight="91.0" prefWidth="388.0" style="-fx-background-color: #00042B;" text="Service Requests" textFill="WHITE">
+                                 <font>
+                                    <Font size="40.0" />
+                                 </font>
+                              </Label>
                               <ScrollPane prefHeight="607.0" prefWidth="388.0">
                                  <content>
                                     <VBox prefHeight="837.0" prefWidth="388.0">
                                        <children>
+                                          <JFXButton onAction="#handleAllServiceReq" styleClass="services-button-jfx" text="All Service Requests" />
                                           <JFXButton onAction="#handleGiftPieChart" styleClass="services-button-jfx" text="Gift Delivery" />
                                           <JFXButton onAction="#handleSecurityPieChart" styleClass="services-button-jfx" text="Security" />
                                           <JFXButton onAction="#handleMaintenancePieChart" styleClass="services-button-jfx" text="Maintenance" />
