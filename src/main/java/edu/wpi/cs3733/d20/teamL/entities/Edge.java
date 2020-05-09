@@ -8,7 +8,7 @@ public class Edge {
 	private String id;
 	Node source;
 	Node destination;
-    private int freq = 3;
+    private int freq = 0;
 
     private HashMap<String, Object> data = new HashMap<>();
 

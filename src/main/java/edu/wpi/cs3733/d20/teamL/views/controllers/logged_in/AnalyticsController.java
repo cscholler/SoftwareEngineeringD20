@@ -374,6 +374,8 @@ public class AnalyticsController implements Initializable {
                     floorButton.getStyleClass().add("selected-floor");
             }
         }
+        burnAllNodes(map.getCurrentFloor().getNodes());
+        burnAllEdges(map.getCurrentFloor().getEdges());
     }
 
     @FXML

@@ -15,7 +15,7 @@ public class Node {
     private String type;
     private int shaft = 0;
     private int floor;
-    private int freq = 5;
+    private int freq = 0;
 
     private HashMap<String, Object> data = new HashMap<>(); //TODO remove Hashmap and add NodeGUI Field
 
