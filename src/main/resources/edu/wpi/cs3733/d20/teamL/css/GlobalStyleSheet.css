@@ -430,14 +430,15 @@
     -fx-text-fill: red;
 }
 /*-------------------------Analytics Page -------------------------------------------*/
-.analytics-buttons-jfx {
-    -fx-font-size: 20;
+.analytics-circle-buttons-jfx {
+    -fx-font-size: 30;
     -fx-background-color: #00043B;
     -fx-text-fill: white;
 
-    -fx-pref-width: 150;
-    -fx-pref-height: 50;
-    -fx-max-width: 150;
-    -fx-max-height: 50;
+    -fx-pref-width: 80;
+    -fx-pref-height: 60;
+    -fx-max-width: 70;
+    -fx-max-height: 70;
+    -fx-background-radius: 50;
     -jfx-button-type: RAISED;
 }
