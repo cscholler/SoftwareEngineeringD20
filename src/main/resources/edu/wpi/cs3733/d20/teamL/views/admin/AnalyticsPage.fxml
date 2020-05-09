@@ -66,7 +66,7 @@
                <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <center>
-                        <PieChart BorderPane.alignment="CENTER" />
+                        <PieChart fx:id="servicePieChart" title="Service Request Pie Chart" BorderPane.alignment="CENTER" />
                      </center>
                   </BorderPane>
                </content>
