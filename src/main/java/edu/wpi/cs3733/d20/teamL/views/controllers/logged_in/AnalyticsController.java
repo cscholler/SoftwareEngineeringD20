@@ -1,25 +1,18 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.logged_in;
 
-
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
-import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.function.ToDoubleBiFunction;
 
 @Slf4j
 public class AnalyticsController implements Initializable {
@@ -85,6 +78,7 @@ public class AnalyticsController implements Initializable {
 
     public void handleAllServiceReq() {
         //Hard-coded Test Data
+        //TODO: Add actual data
         ObservableList<PieChart.Data> serviceReqData = FXCollections.observableArrayList(
                 new PieChart.Data("Gift Delivery", 20),
                 new PieChart.Data("Security", 10),
@@ -105,6 +99,7 @@ public class AnalyticsController implements Initializable {
     @FXML
     void handleGiftPieChart() {
 
+        //TODO: Add actual data
         ObservableList<PieChart.Data> giftData = FXCollections.observableArrayList(
                 new PieChart.Data("Roses", 10),
                 new PieChart.Data("Tulips", 10),
@@ -126,6 +121,7 @@ public class AnalyticsController implements Initializable {
     @FXML
     void handleSanitationPieChart() {
 
+        //TODO: Add actual data
         ObservableList<PieChart.Data> sanitationData = FXCollections.observableArrayList(
                 new PieChart.Data("Biohazard", 10),
                 new PieChart.Data("Spill", 10));
@@ -138,6 +134,7 @@ public class AnalyticsController implements Initializable {
     @FXML
     void handleSecurityPieChart() {
 
+        //TODO: Add actual data
         ObservableList<PieChart.Data> securityData = FXCollections.observableArrayList(
                 new PieChart.Data("High Priority", 10),
                 new PieChart.Data("Medium Priority", 10),
@@ -151,6 +148,7 @@ public class AnalyticsController implements Initializable {
     @FXML
     void handleMaintenancePieChart() {
 
+        //TODO: Add actual data
         ObservableList<PieChart.Data> maintenanceData = FXCollections.observableArrayList(
                 new PieChart.Data("Plumbing", 10),
                 new PieChart.Data("Medical Equipment", 10),
@@ -161,12 +159,12 @@ public class AnalyticsController implements Initializable {
         servicePieChart.setTitle("Maintenance Pie Chart");
         servicePieChart.setData(maintenanceData);
         servicePieChart.setStartAngle(90);
-
     }
 
     @FXML
     void handleMedicationPieChart() {
 
+        //TODO: Add actual data
         ObservableList<PieChart.Data> medicationData = FXCollections.observableArrayList(
                 new PieChart.Data("Ibuprofen", 10),
                 new PieChart.Data("Advil", 10),
@@ -181,6 +179,7 @@ public class AnalyticsController implements Initializable {
     @FXML
     void handleOnCallPieChart() {
 
+        //TODO: Add actual data
         ObservableList<PieChart.Data> onCallData = FXCollections.observableArrayList(
                 new PieChart.Data("Bed 1", 10),
                 new PieChart.Data("Bed 2", 10),
@@ -198,6 +197,7 @@ public class AnalyticsController implements Initializable {
     @FXML
     void handleReflectionPieChart() {
 
+        //TODO: Add actual data
         ObservableList<PieChart.Data> reflectionData = FXCollections.observableArrayList(
                 new PieChart.Data("Floor 1", 10),
                 new PieChart.Data("Floor 3", 10),
@@ -211,6 +211,7 @@ public class AnalyticsController implements Initializable {
     @FXML
     void handleITPieChart() {
 
+        //TODO: Add actual data
         ObservableList<PieChart.Data> ITData = FXCollections.observableArrayList(
                 new PieChart.Data("General Help", 10),
                 new PieChart.Data("Data Backup", 10),
@@ -226,6 +227,7 @@ public class AnalyticsController implements Initializable {
     @FXML
     void handleInternalPieChart() {
 
+        //TODO: Add actual data
         ObservableList<PieChart.Data> internalData = FXCollections.observableArrayList(
                 new PieChart.Data("Wheelchair w/ Operator", 10),
                 new PieChart.Data("Wheelchair w/o Operator", 10),
@@ -241,6 +243,7 @@ public class AnalyticsController implements Initializable {
     @FXML
     void handleExternalPieChart() {
 
+        //TODO: Add actual data
         ObservableList<PieChart.Data> externalData = FXCollections.observableArrayList(
                 new PieChart.Data("Taxi", 10),
                 new PieChart.Data("Bus", 10),
@@ -255,6 +258,7 @@ public class AnalyticsController implements Initializable {
     @FXML
     void handleInterpreterPieChart() {
 
+        //TODO: Add actual data
         ObservableList<PieChart.Data> interpreterData = FXCollections.observableArrayList(
                 new PieChart.Data("French", 10),
                 new PieChart.Data("Chinese", 10),

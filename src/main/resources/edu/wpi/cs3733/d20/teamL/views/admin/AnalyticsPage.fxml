@@ -28,22 +28,32 @@
                      <top>
                         <HBox prefHeight="100.0" prefWidth="950.0" spacing="20.0" BorderPane.alignment="CENTER">
                            <children>
-                              <JFXButton fx:id="btnCancel" maxWidth="75.0" onAction="#handleCancel" prefHeight="65.0" prefWidth="75.0" styleClass="analytics-circle-buttons-jfx" text="Back">
+                              <JFXButton fx:id="btnCancel" contentDisplay="CENTER" maxWidth="75.0" minWidth="70.0" onAction="#handleCancel" prefHeight="65.0" prefWidth="75.0" styleClass="analytics-circle-buttons-jfx" text=" ">
                                  <HBox.margin>
                                     <Insets left="10.0" />
                                  </HBox.margin>
+                                 <graphic>
+                                    <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../assets/map_editor/backArrow.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
                               </JFXButton>
                               <JFXComboBox fx:id="timeBox" maxHeight="50.0" maxWidth="384.0" minHeight="50.0" minWidth="300.0" prefHeight="50.0" prefWidth="384.0" promptText="Any time" styleClass="combo-box-jfx">
                                  <HBox.margin>
-                                    <Insets left="200.0" />
+                                    <Insets left="200.0" top="10.0" />
                                  </HBox.margin>
                               </JFXComboBox>
-                              <JFXButton onAction="#handleLive" prefHeight="100.0" prefWidth="97.0" style="-fx-background-radius: 50;" styleClass="analytics-circle-buttons-jfx" text="Live">
+                              <JFXButton minHeight="52.0" minWidth="160.0" onAction="#handleLive" prefHeight="61.0" prefWidth="160.0" styleClass="save-button-jfx" text="Live" textFill="WHITE">
                                  <HBox.margin>
-                                    <Insets left="180.0" />
+                                    <Insets left="70.0" top="10.0" />
                                  </HBox.margin>
+                                 <font>
+                                    <Font size="30.0" />
+                                 </font>
                               </JFXButton>
-                              <JFXButton maxHeight="113.0" maxWidth="119.0" onAction="#handleRefresh" prefHeight="113.0" prefWidth="95.0" styleClass="analytics-circle-buttons-jfx" text="Refresh" />
+                              <JFXButton maxHeight="113.0" maxWidth="79.0" minWidth="70.0" onAction="#handleRefresh" prefHeight="70.0" prefWidth="79.0" styleClass="analytics-circle-buttons-jfx" text="Refresh" />
                            </children>
                            <BorderPane.margin>
                               <Insets top="10.0" />
