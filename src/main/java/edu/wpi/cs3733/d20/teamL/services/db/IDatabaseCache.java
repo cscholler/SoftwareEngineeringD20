@@ -60,4 +60,14 @@ public interface IDatabaseCache {
 	ArrayList<Doctor> getDoctorCache();
 
 	void clearDoctorCache();
+
+	void cacheKiosksFromDB();
+
+	ArrayList<Kiosk> getKioskCache();
+
+	void clearKioskCache();
+
+	void cacheQuestionsFromDB();
+
+	ArrayList<Question> getQuestions();
 }
