@@ -81,7 +81,7 @@ public class ReflectionRoomController {
             String d = date.getValue().toString();
 
             ArrayList<ArrayList<String>> requests = new ArrayList<>();
-            requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_ALL_ROOM_REQUESTS,  new ArrayList<>((Arrays.asList(r, d))))));
+            requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_ROOM_REQUESTS,  new ArrayList<>((Arrays.asList(r, d))))));
 
             JFXTreeTableColumn<TimeSlot, String> startTime = new JFXTreeTableColumn<>("Start Time");
             startTime.setCellValueFactory(param -> param.getValue().getValue().start);

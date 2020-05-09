@@ -190,6 +190,15 @@
                   </JFXButton>
                </children>
             </StackPane>
+            <HBox alignment="CENTER" layoutX="65.0" layoutY="11.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="15.0">
+               <children>
+                  <StackPane fx:id="screeningPane">
+                     <children>
+                        <JFXButton fx:id="btnScreening" onAction="#openScreening" style="-fx-font-size: 18; -fx-max-width: 300; -fx-pref-width: 300;" styleClass="save-button-jfx" />
+                     </children>
+                  </StackPane>
+               </children>
+            </HBox>
             </children>
         </AnchorPane>
     </center>
@@ -203,7 +212,7 @@
                <children>
                   <ImageView fitHeight="75.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../assets/home_page/BWH%20logo.png" />
+                        <Image url="@../../assets/home_page/BWH logo.png" />
                      </image>
                   </ImageView>
                </children>

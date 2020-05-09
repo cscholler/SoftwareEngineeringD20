@@ -1,7 +1,7 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 
 import com.jfoenix.controls.JFXButton;
-import edu.wpi.cs3733.c20.teamR.AppointmentRequest;
+//import edu.wpi.cs3733.c20.teamR.AppointmentRequest;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import javafx.application.Platform;
@@ -60,8 +60,8 @@ public class UserLandingController {
 
     @FXML
     private void launchAPIntment() throws Exception {
-        AppointmentRequest app = new AppointmentRequest();
-        app.run(0, 0, 1280,720,"/edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css", null, null);
+//        AppointmentRequest app = new AppointmentRequest();
+//        app.run(0, 0, 1280,720,"/edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css", null, null);
     }
 
 

@@ -16,10 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableCell;
-import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTreeTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -49,6 +46,7 @@ import org.apache.commons.math3.util.Precision;
 
 @Slf4j
 public class AdminLandingPageController implements Initializable {
+    public Button timeoutSettings;
     private FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
     private static final TimerManager timerManager = new TimerManager();
     private final ObservableList<String> tableOptions = FXCollections.observableArrayList("Map Nodes", "Map Edges", "Gift Inventory", "User Information", "Doctor Information");
@@ -137,6 +135,16 @@ public class AdminLandingPageController implements Initializable {
 		loadCurrentTable();
 	}
 
+	@FXML
+	private void timeoutPressed() {
+		try {
+			Parent root = loaderFactory.getFXMLLoader("admin/KioskTimeout").load();
+			loaderFactory.setupPopup(new Stage(), new Scene(root));
+		} catch (IOException ex) {
+			log.error("Encountered IOException", ex);
+		}
+	}
+
     @FXML
     public void btnLogoutClicked() {
         loginManager.logOut(true);
@@ -177,6 +185,16 @@ public class AdminLandingPageController implements Initializable {
 			log.error("Encountered IOException", ex);
 		}
 	}
+    @FXML
+    private void addUserClicked() {
+        try {
+            Parent root = loaderFactory.getFXMLLoader("admin/AddPerson").load();
+			loaderFactory.setupPopup(new Stage(), new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
+    }
+
 
 
     @FXML
