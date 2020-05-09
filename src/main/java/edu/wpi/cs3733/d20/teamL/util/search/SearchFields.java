@@ -162,7 +162,7 @@ public class SearchFields {
             else  query = query.substring(0, query.length() - 11);
             building = MapViewerController.MAIN;
         }
-        log.info(building);
+
         if (building.isEmpty()) {
             for (Node node : nodeCache) {
                 if (query.equals(node.getShortName()) || query.equals(node.getLongName())) return node;
