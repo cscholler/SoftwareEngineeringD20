@@ -193,9 +193,9 @@ public class AddPersonController implements Initializable {
                 Webcam webcam = Webcam.getDefault();
                 webcam.open();
                 BufferedImage image = webcam.getImage();
-                ImageIO.write(image, "PNG", new File(imagePath));
+                ImageIO.write(image, "PNG", new File("newUser"));
 
-                byte[] fileContent = FileUtils.readFileToByteArray(new File(imagePath));
+                byte[] fileContent = FileUtils.readFileToByteArray(new File("newUser"));
                 String encodedString = Base64.getEncoder().encodeToString(fileContent);
 //                OkHttpClient client = new OkHttpClient();
 //
