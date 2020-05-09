@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXRadioButton;
 import edu.wpi.cs3733.d20.teamL.entities.Question;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleGroup;
@@ -50,12 +51,14 @@ public class QuestionnaireController {
                 } else if (allQuestions.get(i).getRecs() == 0 && allQuestions.get(i).getOrder() != -3) {
                     JFXCheckBox andQuestion = new JFXCheckBox(allQuestions.get(i).getQuestion());
                     andQuestion.getStyleClass().add("check-box-jfx");
+                    andQuestion.setStyle("-fx-font-size: 18;");
                     allQuestionsBox.getChildren().add(andQuestion);
                 } else if (allQuestions.get(i).getRecs() == 1 && allQuestions.get(i).getOrder() != -3){
                     JFXRadioButton orQuestion = new JFXRadioButton(allQuestions.get(i).getQuestion());
                     orQuestion.getStyleClass().add("radio-button-jfx");
                     allQuestionsBox.getChildren().add(orQuestion);
                     orQuestion.setToggleGroup(toggleGroup);
+                    orQuestion.setStyle("-fx-font-size: 18;");
                 } else if (allQuestions.get(i).getOrder() == -3) {
                     Label label = new Label(allQuestions.get(i).getQuestion());
                     allQuestionsBox.getChildren().add(label);
@@ -67,7 +70,7 @@ public class QuestionnaireController {
             }
             questionCards.add(allQuestionsBox);
         }
-        System.out.println("questioncards size: " + questionCards.size());
+        //System.out.println("questioncards size: " + questionCards.size());
     }
 
     public Label getQuestionnaireTitle() {
@@ -79,8 +82,8 @@ public class QuestionnaireController {
 
 
         //int total = 0;
-        System.out.println("questioncards size 2: " + questionCards.size());
-        System.out.println("Index is: " + index);
+        //System.out.println("questioncards size 2: " + questionCards.size());
+        //System.out.println("Index is: " + index);
 
         if (index == questionCards.size()-2) {
             testFinished = true;
@@ -98,13 +101,15 @@ public class QuestionnaireController {
             done = true;
 
             dialogVBox.getChildren().clear();
-            Label bwhSuggestions = new Label("BWH's Suggestions for You");
+            dialogVBox.setSpacing(5);
+            Label bwhSuggestions = new Label("BWH's suggestions for you:");
             bwhSuggestions.getStyleClass().add("service-request-label-fx");
+            bwhSuggestions.setPadding(new Insets(0,0,5,0));
             dialogVBox.getChildren().add(bwhSuggestions);
 
             int grandTotal = 0;
             for (int i : weights) {
-                System.out.println("Weight= " + i);
+                //System.out.println("Weight= " + i);
                 grandTotal += i;//weights.get(i);
             }
 
@@ -112,24 +117,22 @@ public class QuestionnaireController {
                 if (q.getOrder() == -3) {
                     //always show
                     if(q.getWeight() == 0) {
-                        Label l = new Label(q.getQuestion());
+                        Label l = new Label("• " + q.getQuestion());
+                        l.setStyle("-fx-font-size: 18;");
                         dialogVBox.getChildren().add(l);
                     } else if (q.getRecs() == -10 && q.getWeight() < grandTotal) {
-                        Label l = new Label(q.getQuestion());
+                        Label l = new Label("• " + q.getQuestion());
+                        l.setStyle("-fx-font-size: 18;");
                         dialogVBox.getChildren().add(l);
                     } else if (q.getRecs() == -1 && weights.get(1) > q.getWeight() && weights.get(3) == 0 && weights.get(0) == 0) {
-                        Label l = new Label(q.getQuestion());
+                        Label l = new Label("• " + q.getQuestion());
+                        l.setStyle("-fx-font-size: 18;");
                         dialogVBox.getChildren().add(l);
                     } else if (q.getRecs() == 1 && weights.get(1) > q.getWeight() && (weights.get(3) > 0 || weights.get(0) > 0)) {
-                        Label l = new Label(q.getQuestion());
+                        Label l = new Label("• " + q.getQuestion());
+                        l.setStyle("-fx-font-size: 18;");
                         dialogVBox.getChildren().add(l);
-                    }//else if (q.getRecs() < 0) {
-                       // if (weights.get(Math.abs(q.getRecs()) - 1) < 1 && q.getWeight() < grandTotal - weights.get(Math.abs(q.getRecs() - 1))) {
-                         //   Label l = new Label(q.getQuestion());
-                           // dialogVBox.getChildren().add(l);
-                        //}
-
-                    //}
+                    }
                 }
             }
         }

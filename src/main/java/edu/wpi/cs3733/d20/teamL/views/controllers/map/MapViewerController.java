@@ -651,7 +651,10 @@ public class MapViewerController {
 
         JFXDialogLayout layout = new JFXDialogLayout();
         layout.getStylesheets().add("/edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css");
-        layout.setHeading(qc.getQuestionnaireTitle());
+        Label headingLabel = new Label ("Coronavirus Screening Test");
+        headingLabel.getStyleClass().add("service-request-header-label-fx");
+        headingLabel.setStyle("-fx-font-size: 30;");
+        layout.setHeading(headingLabel);
         layout.setBody(qc.nextClicked());
 
         JFXDialog screeningDialog = new JFXDialog(screeningPane, layout, JFXDialog.DialogTransition.TOP);
@@ -660,17 +663,19 @@ public class MapViewerController {
 
         JFXButton btnClose = new JFXButton("Quit");
         btnClose.getStyleClass().add("cancel-button-jfx");
+        btnClose.setStyle("-fx-pref-width: 75;" + "-fx-pref-height: 50");
         btnClose.setOnAction(e -> screeningDialog.close());
 
         JFXButton btnNext = new JFXButton("Next");
         btnNext.getStyleClass().add("save-button-jfx");
+        btnNext.setStyle("-fx-pref-width: 75;" + "-fx-pref-height: 50");
         btnNext.setOnAction(e -> {
             if(!qc.getTestFinished()) {
-                System.out.println("first statement");
+                //System.out.println("first statement");
                 qc.calculateScore();
                 layout.setHeading(qc.nextClicked());
             } else if (qc.getTestFinished() && !qc.getDone()){
-                System.out.println("second statement");
+                //System.out.println("second statement");
                 qc.calculateScore();
                 btnNext.setText("Close");
                 layout.setHeading(qc.nextClicked());

@@ -81,7 +81,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 			log.error("Encountered ClassNotFoundException", ex);
 		}
 		try {
-			connection = DriverManager.getConnection( DBConstants.DB_PREFIX + DBConstants.DB_URL + DBConstants.DB_PORT + DBConstants.DB_NAME_CANARY, DBConstants.DB_USER, DBConstants.DB_PASSWORD);
+			connection = DriverManager.getConnection( DBConstants.DB_PREFIX + DBConstants.DB_URL + DBConstants.DB_PORT + DBConstants.DB_NAME_DEV, DBConstants.DB_USER, DBConstants.DB_PASSWORD);
 			log.info("Connection established.");
 			dbType = DB_TYPE.MY_SQL;
 		} catch (SQLException ex) {
@@ -355,12 +355,6 @@ public class DatabaseService extends Service implements IDatabaseService {
 		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Minimize contact with others", "-3", "0", "0"))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("You are not at risk however you could be a carrier remain in self isolation", "-3", "2", "-1"))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("You should contact a staff member for immediate testing", "-3", "3", "1"))));
-		//executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Coronavirus Screening Test", "-1", "-100", "-100"))));
-		//executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Think you have COVID-19?", "-2", "-100", "-100"))));
-
-
-
-
 	}
 
 	/**
