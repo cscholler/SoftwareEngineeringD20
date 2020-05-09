@@ -1,6 +1,5 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.screening;
 
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXRadioButton;
 import edu.wpi.cs3733.d20.teamL.entities.Question;
@@ -14,8 +13,6 @@ import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 
 public class QuestionnaireController {
-    //@Inject
-    //private IDatabaseCache cache;
 
     private ArrayList<Question> allQuestions;
     private ArrayList<VBox> questionCards = new ArrayList<>();
@@ -24,15 +21,12 @@ public class QuestionnaireController {
     private Label questionnaireTitle = new Label("");
     private VBox dialogVBox = new VBox();
 
-    private JFXButton btnNext;
     private int index = 0, counter = 0;
 
     private boolean testFinished, done;
 
     public QuestionnaireController(ArrayList<Question> questionsList){
         dialogVBox.getStylesheets().add("/edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css");
-        //cache.cacheQuestionsFromDB();
-        //allQuestions = cache.getQuestions();
         allQuestions = questionsList;
         testFinished = false;
         done = false;
@@ -70,7 +64,6 @@ public class QuestionnaireController {
             }
             questionCards.add(allQuestionsBox);
         }
-        //System.out.println("questioncards size: " + questionCards.size());
     }
 
     public Label getQuestionnaireTitle() {
@@ -79,18 +72,11 @@ public class QuestionnaireController {
 
     public VBox nextClicked() {
 
-
-
-        //int total = 0;
-        //System.out.println("questioncards size 2: " + questionCards.size());
-        //System.out.println("Index is: " + index);
-
         if (index == questionCards.size()-2) {
             testFinished = true;
         }
 
         //go to next set of questions
-        //dialogVBox = questionCards.get(index);
         if (index < questionCards.size()-1) {
             index++;
             dialogVBox.getChildren().clear();
@@ -109,8 +95,7 @@ public class QuestionnaireController {
 
             int grandTotal = 0;
             for (int i : weights) {
-                //System.out.println("Weight= " + i);
-                grandTotal += i;//weights.get(i);
+                grandTotal += i;
             }
 
             for(Question q : allQuestions) {
@@ -150,38 +135,26 @@ public class QuestionnaireController {
         //account for first label
         counter++;
 
-
-        //System.out.println("Counter = " + counter);
-
         //calculates score with check boxes
         if (allQuestions.get(counter - 1).getRecs() == 0) {
             for (int i = 1; i < children.size(); i++) {
                 JFXCheckBox box = (JFXCheckBox) children.get(i);
                 if (box.isSelected()) {
-                    System.out.println("Counter is: " + counter);
                     total += allQuestions.get(counter).getWeight();
                 }
                 counter++;
             }
             //calculates score with radiobuttons
-        } else if (allQuestions.get(counter - 1).getRecs() == 1 /*&& allQuestions.get(counter - 1).getWeight() >= 0*/) {
+        } else if (allQuestions.get(counter - 1).getRecs() == 1) {
             for (int i = 1; i < children.size(); i++) {
                 JFXRadioButton box = (JFXRadioButton) children.get(i);
                 if (box.isSelected()) {
-                    //total += 1;
-                    System.out.println("Counter is: " + counter);
                     total += allQuestions.get(counter).getWeight();
                 }
                 counter++;
             }
         }
-
-
-
-        System.out.println("Weight is: " + total);
-        //System.out.println("Index is: " + index);
         weights.add(index-1, total);
-
     }
 
     public boolean getTestFinished() {
