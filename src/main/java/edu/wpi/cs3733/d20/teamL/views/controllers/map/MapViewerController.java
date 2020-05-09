@@ -219,6 +219,9 @@ public class MapViewerController {
 
         accordion.getPanes().addAll(departments, labs, services, amenities, conferenceRooms);
         showAccordion();
+
+        qc = new QuestionnaireController(cache.getQuestions());
+        btnScreening.setText(qc.getButtonText());
     }
 
     private void generateFloorButtons() {
@@ -643,7 +646,7 @@ public class MapViewerController {
 
     @FXML
     public void openScreening() throws IOException{
-        qc = new QuestionnaireController(cache.getQuestions());
+
 
         JFXDialogLayout layout = new JFXDialogLayout();
         layout.setHeading(qc.getQuestionnaireTitle());
@@ -662,8 +665,9 @@ public class MapViewerController {
             } else if (qc.getTestFinished() && !qc.getDone()){
                 System.out.println("second statement");
                 qc.calculateScore();
-                layout.setHeading(qc.nextClicked());
                 btnNext.setText("Close");
+                layout.setHeading(qc.nextClicked());
+
 
             } else if (qc.getDone()) {
                 screeningDialog.close();

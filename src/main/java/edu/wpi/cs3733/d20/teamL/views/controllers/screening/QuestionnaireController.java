@@ -123,7 +123,8 @@ public class QuestionnaireController {
 
             int grandTotal = 0;
             for (int i : weights) {
-                grandTotal += weights.get(i);
+                System.out.println("Weight= " + i);
+                grandTotal += i;//weights.get(i);
             }
 
             for(Question q : allQuestions) {
@@ -135,16 +136,19 @@ public class QuestionnaireController {
                     } else if (q.getRecs() == -10 && q.getWeight() < grandTotal) {
                         Label l = new Label(q.getQuestion());
                         dialogVBox.getChildren().add(l);
-                    } else if (weights.get(q.getRecs() - 1) >= 1 && q.getWeight() < grandTotal - weights.get(q.getRecs() - 1)) {
+                    } else if (q.getRecs() == -1 && weights.get(1) > q.getWeight() && weights.get(3) == 0 && weights.get(0) == 0) {
                         Label l = new Label(q.getQuestion());
                         dialogVBox.getChildren().add(l);
-                    } else if (q.getRecs() < 0) {
-                        if (weights.get(Math.abs(q.getRecs()) - 1) < 1 && q.getWeight() < grandTotal - weights.get(Math.abs(q.getRecs() - 1))) {
-                            Label l = new Label(q.getQuestion());
-                            dialogVBox.getChildren().add(l);
-                        }
+                    } else if (q.getRecs() == 1 && weights.get(1) > q.getWeight() && (weights.get(3) > 0 || weights.get(0) > 0)) {
+                        Label l = new Label(q.getQuestion());
+                        dialogVBox.getChildren().add(l);
+                    }//else if (q.getRecs() < 0) {
+                       // if (weights.get(Math.abs(q.getRecs()) - 1) < 1 && q.getWeight() < grandTotal - weights.get(Math.abs(q.getRecs() - 1))) {
+                         //   Label l = new Label(q.getQuestion());
+                           // dialogVBox.getChildren().add(l);
+                        //}
 
-                    }
+                    //}
                 }
             }
         }
@@ -163,14 +167,15 @@ public class QuestionnaireController {
         counter++;
 
 
-        System.out.println("Counter = " + counter);
+        //System.out.println("Counter = " + counter);
 
         //calculates score with check boxes
         if (allQuestions.get(counter - 1).getRecs() == 0) {
             for (int i = 1; i < children.size(); i++) {
                 JFXCheckBox box = (JFXCheckBox) children.get(i);
                 if (box.isSelected()) {
-                    total += 1;
+                    System.out.println("Counter is: " + counter);
+                    total += allQuestions.get(counter).getWeight();
                 }
                 counter++;
             }
@@ -179,7 +184,9 @@ public class QuestionnaireController {
             for (int i = 1; i < children.size(); i++) {
                 JFXRadioButton box = (JFXRadioButton) children.get(i);
                 if (box.isSelected()) {
-                    total += 1;
+                    //total += 1;
+                    System.out.println("Counter is: " + counter);
+                    total += allQuestions.get(counter).getWeight();
                 }
                 counter++;
             }
@@ -188,7 +195,7 @@ public class QuestionnaireController {
 
 
         System.out.println("Weight is: " + total);
-        System.out.println("Index is: " + index);
+        //System.out.println("Index is: " + index);
         weights.add(index-1, total);
 
     }
@@ -199,5 +206,14 @@ public class QuestionnaireController {
 
     public boolean getDone() {
         return done;
+    }
+
+    public String getButtonText() {
+        for (Question q : allQuestions) {
+            if(q.getOrder() == -2) {
+                return q.getQuestion();
+            }
+        }
+        return "Test";
     }
 }
