@@ -207,13 +207,4 @@ public class QuestionnaireController {
     public boolean getDone() {
         return done;
     }
-
-    public String getButtonText() {
-        for (Question q : allQuestions) {
-            if(q.getOrder() == -2) {
-                return q.getQuestion();
-            }
-        }
-        return "Test";
-    }
 }

@@ -220,8 +220,8 @@ public class MapViewerController {
         accordion.getPanes().addAll(departments, labs, services, amenities, conferenceRooms);
         showAccordion();
 
-        qc = new QuestionnaireController(cache.getQuestions());
-        btnScreening.setText(qc.getButtonText());
+
+        btnScreening.setText("Think you have COVID-19?");
     }
 
     private void generateFloorButtons() {
@@ -647,6 +647,7 @@ public class MapViewerController {
     @FXML
     public void openScreening() throws IOException{
 
+        qc = new QuestionnaireController(cache.getQuestions());
 
         JFXDialogLayout layout = new JFXDialogLayout();
         layout.setHeading(qc.getQuestionnaireTitle());
