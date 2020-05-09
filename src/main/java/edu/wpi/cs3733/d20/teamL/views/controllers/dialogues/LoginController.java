@@ -1,7 +1,12 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.dialogues;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.util.Base64;
 
+import com.github.sarxos.webcam.Webcam;
+import com.squareup.okhttp.*;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,9 +26,15 @@ import com.jfoenix.controls.JFXTextField;
 
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
+import org.json.JSONObject;
 
+import javax.imageio.ImageIO;
+
+@Slf4j
 public class LoginController {
-	FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
+    FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
     @FXML
     private JFXTextField usernameField;
     @FXML
@@ -35,10 +46,11 @@ public class LoginController {
     @FXML
     private AnchorPane anchorPane;
     @Inject
-	private ILoginManager loginManager;
+    private ILoginManager loginManager;
 
     /**
      * logs the user in when the enter key is pressed
+     *
      * @param event Tracks which key is pressed
      */
     @FXML
@@ -51,18 +63,24 @@ public class LoginController {
 
     /**
      * Dummy function to allow enter to be pressed from the password box
+     *
      * @throws
      */
     @FXML
-    private void bugfix() {}
+    private void bugfix() {
+    }
 
     /**
      * Controls the login feature setting usernames and passwords and only accepting correct usernames and passwords
+     *
      * @param event Tracks which button is pressed
      * @throws IOException
      */
     @FXML
     private void handleLogin(ActionEvent event) throws IOException {
+
+
+
         Stage stage;
 
         String username = usernameField.getText();
@@ -77,25 +95,59 @@ public class LoginController {
 
         //closes login popup
         if (event.getSource() == btnCancel) {
-            stage = (Stage) btnCancel.getScene().getWindow();
-            stage.close();
+//            stage = (Stage) btnCancel.getScene().getWindow();
+//            stage.close();
+            Webcam webcam = Webcam.getDefault();
+            webcam.open();
+            BufferedImage image = webcam.getImage();
+            ImageIO.write(image, "PNG", new File("loginAttempt.png"));
+
+            byte[] fileContent = FileUtils.readFileToByteArray(new File("loginAttempt.png"));
+            String encodedString = Base64.getEncoder().encodeToString(fileContent);
+
+            JSONObject json = new JSONObject();
+            json.put("image", encodedString);
+            json.put("gallery_name", "MyGallery");
+
+            OkHttpClient client = new OkHttpClient();
+
+            MediaType mediaType = MediaType.parse("application/json");
+            RequestBody body = RequestBody.create(mediaType, json.toString());
+            log.info(json.toString());
+
+            Request request = new Request.Builder()
+                    .url("https://kairosapi-karios-v1.p.rapidapi.com/recognize")
+                    .post(body)
+                    .addHeader("x-rapidapi-host", "kairosapi-karios-v1.p.rapidapi.com")
+                    .addHeader("x-rapidapi-key", "e9d19d8ab2mshee9ab7d6044378bp106222jsnc2e9a579d919")
+                    .addHeader("content-type", "application/json")
+                    .addHeader("accept", "application/json")
+                    .build();
+
+            Response response = client.newCall(request).execute();
+
+            log.info(response.code()+"");
+            log.info(response.body().string());
         } else if (event.getSource() == login) {
             loginManager.logIn(username, password);
             if (loginManager.isAuthenticated()) {
-				((Stage) login.getScene().getWindow()).close();
+                ((Stage) login.getScene().getWindow()).close();
                 String view;
                 if (loginManager.getCurrentUser().getAcctType().equals("3")) {
-                	view = "admin/AdminView";
-				} else {
-					view = "requests/UserLandingPage";
-				}
-				loaderHelper.setupScene(new Scene(loaderHelper.getFXMLLoader(view).load()));
-			} else {
-				incorrectText.setVisible(true);
-				fadeTransition.play();
-			}
+                    view = "admin/AdminView";
+                } else {
+                    view = "requests/UserLandingPage";
+                }
+                loaderHelper.setupScene(new Scene(loaderHelper.getFXMLLoader(view).load()));
+            } else {
+                incorrectText.setVisible(true);
+                fadeTransition.play();
+            }
             usernameField.clear();
-			passwordField.clear();
+            passwordField.clear();
+
         }
     }
 }
+
+
