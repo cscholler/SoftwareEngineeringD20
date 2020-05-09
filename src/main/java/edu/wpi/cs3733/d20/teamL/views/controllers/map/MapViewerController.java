@@ -597,6 +597,21 @@ public class MapViewerController {
         }
     }
 
+//    // credit page
+//    /**
+//     * Displays the Creadit page
+//     */
+//    @FXML
+//    public void handleCredit(){
+//        JFXDialogLayout content = new JFXDialogLayout();
+//        content.setHeading(new Text("Credit"));
+//        content.setBody(new Text(" lists the APIs you used in the application \n and the teams that created them \n+list the external APIs that you used such as Google Maps.\n"));
+//        JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
+//    }
+
+
+
+
     /**
      * Displays the About page of the application
      */
@@ -608,7 +623,7 @@ public class MapViewerController {
         content.setBody(new Text("WPI Computer Science Department\n" +
                 "CS3733-D20 Software Engineering\n" +
                 "Prof. Wilson Wong\n" +
-                "Team Coach: Chris Myers\n" +
+                "Team Coach: Chris Myers\n\n" +
                 "Lead Software Engineer: Conrad Tulig\n" +
                 "Assistant Lead Software Engineer: Luke Bodwell\n" +
                 "Assistant Lead Software Engineer: Caleb Farwell\n" +
@@ -618,8 +633,27 @@ public class MapViewerController {
                 "Algorithms Specialist: Cameron Jacobson\n" +
                 "UI Engineer: Winnie Ly\n" +
                 "Documentation Analyst: Zaiyang Zhong\n\n" +
-                "Thank you Brigham and Women's Hospital \nand Andrew Shinn for your time and input."));
+                "Thank you Brigham and Women's Hospital \nand Andrew Shinn for your time and input.\n\n\n" +
+                "Credit \n\n" +
+                "AppointmentRequest\n" +
+                "jfoenix\n" +
+                "mysql\n" +
+                "apache.derby\n" +
+                "apache.commons\n" +
+                "slf4j\n" +
+                "google.inject\n" +
+                "twilio.sdk        \n" +
+                "sendgrid\n" +
+                "github.kenglxn.QRGen\n" +
+                "jetbrains\n" +
+                "github.kenglxn.QRGen\n" +
+                "mindrot\n" +
+                "amazon.awssdk\n" +
+                "junit.jupiter\n" +
+                "testfx"));
         JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
+
+        dialog.show();
         JFXButton btnDone = new JFXButton("Done");
         btnDone.setOnAction(new EventHandler<ActionEvent>() {
             @Override
