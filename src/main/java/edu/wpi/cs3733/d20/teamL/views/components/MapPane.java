@@ -103,6 +103,9 @@ public class MapPane extends ScrollPane {
             double centerX = MathUtils.lerp(scroller.getWidth()/2, body.getWidth() - (scroller.getWidth()/2), scroller.getHvalue());
             double centerY = MathUtils.lerp(scroller.getHeight()/2, body.getHeight() - (scroller.getHeight()/2), scroller.getVvalue());
 
+            System.out.println("Center = " + new Point2D(Math.round(centerX), Math.round(centerY)));
+            System.out.println("MousePos = " + new Point2D(event.getX(), event.getY()));
+
             // Change the zoom level
             setZoomLevelToPosition(prevZoomLevel * (1 + event.getDeltaY() / 500), new Point2D(centerX, centerY));
 
@@ -521,28 +524,35 @@ public class MapPane extends ScrollPane {
      * @param position     The coordinates of the position to zoom to.
      */
     public void setZoomLevelToPosition(double newZoomLevel, Point2D position) {
-        double deltaZoom = newZoomLevel / zoomLevel;
+//        System.out.println("Zooming to " + position);
+        double zoomFactor = newZoomLevel / zoomLevel;
+
+//        double percentX = position.getX() / body.getWidth();
+//        double percentY = position.getY() / body.getHeight();
 
         setZoomLevel(newZoomLevel);
 
+        // The bounds for the max and min positions the center of the screen can be at relative to the map
         double minX = scroller.getWidth()/2;
         double maxX = body.getWidth() - scroller.getWidth()/2;
 
         double minY = scroller.getHeight()/2;
         double maxY = body.getHeight() - scroller.getHeight()/2;
 
-        position = position.multiply(deltaZoom);
+        // Multiply the position to account for the new zoomed position and bound it to the max and min center positions
+        position = position.multiply(zoomFactor);
         position = new Point2D(MathUtils.bound(minX, maxX, position.getX()), MathUtils.bound(minY, maxY, position.getY()));
+
+        System.out.println("New center = " + position);
 
         double percentX = MathUtils.invLerp(minX, maxX, position.getX());
         double percentY = MathUtils.invLerp(minY, maxY, position.getY());
-
-        System.out.println("Zooming to " + new Point2D(percentX, percentY));
 
         scroller.layout();
 
         scroller.setHvalue(percentX * scroller.getHmax());
         scroller.setVvalue(percentY * scroller.getVmax());
+
     }
 
     public boolean isEditable() {
