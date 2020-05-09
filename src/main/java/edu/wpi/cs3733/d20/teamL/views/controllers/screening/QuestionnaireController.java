@@ -17,25 +17,21 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 
 public class QuestionnaireController {
-    private ArrayList<Question> allQuestions = new ArrayList<>();
-    private ArrayList<VBox> questionCards = new ArrayList<>();
-    private ArrayList<Integer> weights = new ArrayList<>();
-
     @Inject
     private IDatabaseCache cache;
 
-    @FXML
+    private ArrayList<Question> allQuestions;
+    private ArrayList<VBox> questionCards = new ArrayList<>();
+    private ArrayList<Integer> weights = new ArrayList<>();
+
     private Label questionnaireTitle = new Label("");
-    @FXML
     private VBox dialogVBox;
-    @FXML
-    private JFXDialogLayout screeningDialog;
-    @FXML
+
     private JFXButton btnNext;
     private int index = 1;
 
-    @FXML
-    private void initialize(){
+    public QuestionnaireController(){
+        cache.cacheQuestionsFromDB();
         allQuestions = cache.getQuestions();
 
         int i=0;
@@ -64,18 +60,18 @@ public class QuestionnaireController {
             }
             questionCards.add(allQuestionsBox);
         }
-
-        dialogVBox = questionCards.get(0);
-        screeningDialog.setHeading(questionnaireTitle);
     }
 
-    @FXML
-    private void nextClicked() {
+    public Label getQuestionnaireTitle() {
+        return questionnaireTitle;
+    }
+
+    public VBox nextClicked() {
         int total = 0;
 
         ObservableList<Node> children = dialogVBox.getChildren();
 
-        //is a checkbox
+        //calculates score with check boxes
         if (allQuestions.get(index - 1).getRecs() == 0) {
             for (Node n : children) {
                 JFXCheckBox box = (JFXCheckBox) n;
@@ -83,7 +79,7 @@ public class QuestionnaireController {
                     total += 1;
                 }
             }
-            //is a radiobutton
+            //calculates score with radiobuttons
         } else if (allQuestions.get(index - 1).getRecs() == 1 && allQuestions.get(index - 1).getWeight() >= 0) {
             for (Node n : children) {
                 JFXRadioButton box = (JFXRadioButton) n;
@@ -100,6 +96,7 @@ public class QuestionnaireController {
         if (index < questionCards.size()) {
             index++;
         }
+        // creates results page
         else {
             dialogVBox.getChildren().clear();
 
@@ -114,14 +111,14 @@ public class QuestionnaireController {
                     if(q.getWeight() == 0) {
                         Label l = new Label(q.getQuestion());
                         dialogVBox.getChildren().add(l);
-                    } else if (q.getRecs() == -10 && q.getWeight() < grandTotal){
+                    } else if (q.getRecs() == -10 && q.getWeight() < grandTotal) {
                         Label l = new Label(q.getQuestion());
                         dialogVBox.getChildren().add(l);
-                    } else if (weights.get(q.getRecs() - 1) >= 1 && q.getWeight() < grandTotal - weights.get(q.getRecs() -1)) {
+                    } else if (weights.get(q.getRecs() - 1) >= 1 && q.getWeight() < grandTotal - weights.get(q.getRecs() - 1)) {
                         Label l = new Label(q.getQuestion());
                         dialogVBox.getChildren().add(l);
                     } else if (q.getRecs() < 0) {
-                        if(weights.get(Math.abs(q.getRecs()) -1) < 1 && q.getWeight() < grandTotal - weights.get(Math.abs(q.getRecs()-1))) {
+                        if (weights.get(Math.abs(q.getRecs()) - 1) < 1 && q.getWeight() < grandTotal - weights.get(Math.abs(q.getRecs() - 1))) {
                             Label l = new Label(q.getQuestion());
                             dialogVBox.getChildren().add(l);
                         }
@@ -129,9 +126,7 @@ public class QuestionnaireController {
                     }
                 }
             }
-
-
-            //TODO show results
         }
+        return dialogVBox;
     }
 }

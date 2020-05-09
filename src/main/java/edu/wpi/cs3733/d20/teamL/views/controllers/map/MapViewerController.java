@@ -11,6 +11,7 @@ import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
+import edu.wpi.cs3733.d20.teamL.views.controllers.screening.QuestionnaireController;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -127,6 +128,9 @@ public class MapViewerController {
     private Collection<String> serviceNodes = new ArrayList<>();
     private Collection<String> retailNodes = new ArrayList<>();
     private Collection<String> confNodes = new ArrayList<>();
+
+    private QuestionnaireController qc;
+
 
     public static final String MAIN = "Main";
 
@@ -647,13 +651,19 @@ public class MapViewerController {
 
     @FXML
     public void openScreening() throws IOException{
+        qc = new QuestionnaireController();
 
-
-        //screeningPane.getChildren().add();
-        JFXDialogLayout layout = loaderHelper.getFXMLLoader("/map_viewer/ScreeningPage").load();
+        JFXDialogLayout layout = new JFXDialogLayout();
+        layout.setHeading(qc.getQuestionnaireTitle());
+        layout.setBody(qc.nextClicked());
 
         JFXDialog screeningDialog = new JFXDialog(screeningPane, layout, JFXDialog.DialogTransition.TOP);
         screeningDialog.show();
+
+        JFXButton btnNext = new JFXButton("Next");
+        btnNext.getStyleClass().add("save-button-jfx");
+        btnNext.setOnAction(e -> layout.setHeading(qc.nextClicked()));
+        layout.setActions(btnNext);
     }
 
     @FXML
