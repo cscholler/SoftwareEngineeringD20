@@ -41,7 +41,7 @@ public class MapPane extends ScrollPane {
     @FXML
     private ImageView mapImage;
 
-    FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
+    private FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
 
     private Map<Node, NodeGUI> nodes = new ConcurrentHashMap<>();
     private Map<Edge, EdgeGUI> edges = new ConcurrentHashMap<>();

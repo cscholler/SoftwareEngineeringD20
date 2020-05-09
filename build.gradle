@@ -2,20 +2,22 @@ plugins {
     id 'application'
     id 'java'
     id 'jacoco'
+    id 'idea'
     id 'com.diffplug.gradle.spotless' version '3.27.1'
     id 'org.openjfx.javafxplugin' version '0.0.8'
     id "io.freefair.lombok" version "5.0.0-rc6"
 }
 
-mainClassName = 'edu.wpi.cs3733.d20.teamL.Main'
-
 repositories {
     mavenCentral()
     jcenter()
     google()
-    maven {url 'https://www.jitpack.io'}
-    maven {url 'https://apisite.crmyers.dev/maven'}
+    maven { url 'https://www.jitpack.io' }
+    maven { url 'https://apisite.crmyers.dev/maven' }
+    maven { url 'https://maven.teamdev.com/repository/products' }
 }
+
+mainClassName = 'edu.wpi.cs3733.d20.teamL.Main'
 
 dependencies {
     implementation(
@@ -36,6 +38,8 @@ dependencies {
             'org.mindrot:jbcrypt:0.3m',
             [group: 'com.lynden', name: 'GMapsFX', version: '2.12.0']
     )
+
+    compile 'com.teamdev.jxbrowser:jxbrowser-cross-platform:7.6'
 
     testImplementation(
             'org.junit.jupiter:junit-jupiter:5.6.0',

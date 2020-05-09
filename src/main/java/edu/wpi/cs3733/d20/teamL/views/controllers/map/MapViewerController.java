@@ -42,6 +42,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
 import com.google.inject.Inject;
@@ -112,6 +113,8 @@ public class MapViewerController implements Initializable, MapComponentInitializ
 
         }
     };
+
+    private WebView googleMap = new WebView();
 
     private final Image IMAGE_LEFT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/left.png", 15, 15, true, false, true);
     private final Image IMAGE_RIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/right.jpg", 15, 15, true, false, true);
@@ -234,8 +237,11 @@ public class MapViewerController implements Initializable, MapComponentInitializ
         accordion.getPanes().addAll(departments, labs, services, amenities, conferenceRooms);
         showAccordion();
 
-        googleMapView.addMapInializedListener(this);
-        switchToGoogle(Direction.FaulknerToMain);
+//        googleMapView.addMapInializedListener(this);
+//        switchToGoogle(Direction.FaulknerToMain);
+
+        googleMap.getEngine().load("https://goo.gl/maps/F9c7gbuhXpZH3hKY8");
+        root.setCenter(googleMap);
     }
 
     private void generateFloorButtons() {
