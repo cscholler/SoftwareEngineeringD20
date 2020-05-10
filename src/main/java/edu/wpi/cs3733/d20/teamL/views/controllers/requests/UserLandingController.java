@@ -1,6 +1,6 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 
-import com.github.sarxos.webcam.Webcam;
+
 import com.jfoenix.controls.JFXButton;
 //import edu.wpi.cs3733.c20.teamR.AppointmentRequest;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;

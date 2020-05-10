@@ -4,9 +4,8 @@ import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.github.sarxos.webcam.Webcam;
 import com.google.inject.Inject;
 import com.jfoenix.controls.*;
-import com.squareup.mimecraft.Multipart;
-import com.squareup.mimecraft.Part;
 import com.squareup.okhttp.*;
+import edu.wpi.cs3733.d20.teamL.services.HTTPClientService;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
@@ -78,6 +77,8 @@ public class AddPersonController implements Initializable {
     private VBox boxOService;
     @FXML
     private JFXButton btnCancel;
+    @Inject
+    private HTTPClientService client;
 
     @FXML
     private void setBtnCancel() {
@@ -190,6 +191,7 @@ public class AddPersonController implements Initializable {
                 webcam.open();
                 BufferedImage image = webcam.getImage();
                 ImageIO.write(image, "PNG", new File("newUser"));
+                webcam.close();
 
                 byte[] fileContent = FileUtils.readFileToByteArray(new File("newUser"));
                 String encodedString = Base64.getEncoder().encodeToString(fileContent);
@@ -199,7 +201,6 @@ public class AddPersonController implements Initializable {
                 json.put("gallery_name", "users");
                 json.put("subject_id", username);
 
-                OkHttpClient client = new OkHttpClient();
 
                 MediaType mediaType = MediaType.parse("application/json");
                 RequestBody body = RequestBody.create(mediaType, json.toString());
@@ -213,11 +214,9 @@ public class AddPersonController implements Initializable {
                         .addHeader("accept", "application/json")
                         .build();
 
-                Response response = client.newCall(request).execute();
+                Response response = client.getClient().newCall(request).execute();
                 log.info("" + response.code());
                 log.info(response.body().string());
-
-
 
 
                 lblConfirmation.setTextFill(Color.BLACK);

@@ -104,6 +104,7 @@ public class LoginController {
             webcam.open();
             BufferedImage image = webcam.getImage();
             ImageIO.write(image, "PNG", new File("loginAttempt.png"));
+            webcam.close();
 
             byte[] fileContent = FileUtils.readFileToByteArray(new File("loginAttempt.png"));
             String encodedString = Base64.getEncoder().encodeToString(fileContent);
