@@ -124,6 +124,7 @@ public class MapViewerController {
 
     @FXML
     private void initialize() {
+
         timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
         timerManager.startTimer(() -> timerManager.updateDate(dateLabel), 0, 1000);
 

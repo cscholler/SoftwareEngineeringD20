@@ -1,6 +1,5 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 
-import com.github.sarxos.webcam.Webcam;
 import com.jfoenix.controls.JFXButton;
 //import edu.wpi.cs3733.c20.teamR.AppointmentRequest;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
@@ -17,16 +16,8 @@ import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Timer;
@@ -72,6 +63,7 @@ public class UserLandingController {
 //        AppointmentRequest app = new AppointmentRequest();
 //        app.run(0, 0, 1280,720,"/edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css", null, null);
     }
+
 
     @FXML
     public void launchDefaultPane() throws IOException{

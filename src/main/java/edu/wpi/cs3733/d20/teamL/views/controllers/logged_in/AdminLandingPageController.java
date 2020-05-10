@@ -5,6 +5,11 @@ import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
+import edu.wpi.cs3733.d20.teamL.services.IHTTPClientService;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
@@ -44,6 +49,7 @@ import java.util.ResourceBundle;
 
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import org.apache.commons.math3.util.Precision;
+import org.json.JSONObject;
 
 @Slf4j
 public class AdminLandingPageController implements Initializable {
@@ -81,6 +87,8 @@ public class AdminLandingPageController implements Initializable {
     private IDatabaseService db;
     @Inject
 	private IDatabaseCache cache;
+    @Inject
+	private IHTTPClientService client;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -142,6 +150,19 @@ public class AdminLandingPageController implements Initializable {
         try {
             Parent root = loaderFactory.getFXMLLoader("admin/RebuildDatabaseDialogue").load();
             loaderFactory.setupPopup(new Stage(), new Scene(root));
+
+			MediaType mediaType = MediaType.parse("application/json");
+			RequestBody body = RequestBody.create(mediaType, "{    \"gallery_name\":\"users\"}");
+			Request request = new Request.Builder()
+					.url("https://kairosapi-karios-v1.p.rapidapi.com/gallery/remove")
+					.post(body)
+					.addHeader("x-rapidapi-host", "kairosapi-karios-v1.p.rapidapi.com")
+					.addHeader("x-rapidapi-key", "e9d19d8ab2mshee9ab7d6044378bp106222jsnc2e9a579d919")
+					.addHeader("content-type", "application/json")
+					.addHeader("accept", "application/json")
+					.build();
+
+			Response response = client.getClient().newCall(request).execute();
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
         }
@@ -179,7 +200,7 @@ public class AdminLandingPageController implements Initializable {
 	}
 
     @FXML
-	private void btnSaveClicked() {
+	private void btnSaveClicked() throws IOException {
 		ArrayList<SQLEntry> updates = new ArrayList<>();
 		for (TableEntityWrapper.TableDoctor doctor : deletedDoctors) {
 			updates.add(new SQLEntry(DBConstants.REMOVE_DOCTOR, new ArrayList<>(Collections.singletonList(doctor.getID().get()))));
@@ -214,6 +235,24 @@ public class AdminLandingPageController implements Initializable {
 
 		for (TableEntityWrapper.TableUser user : deletedUsers) {
 			updates.add(new SQLEntry(DBConstants.REMOVE_USER, new ArrayList<>(Collections.singletonList(user.getID().get()))));
+
+			String username = user.getUsername().getValue();
+			JSONObject json = new JSONObject();
+			json.put("gallery_name", "users");
+			json.put("subject_id", username);
+			MediaType mediaType = MediaType.parse("application/json");
+			RequestBody body = RequestBody.create(mediaType, json.toString());
+			Request request = new Request.Builder()
+					.url("https://kairosapi-karios-v1.p.rapidapi.com/gallery/remove_subject")
+					.post(body)
+					.addHeader("x-rapidapi-host", "kairosapi-karios-v1.p.rapidapi.com")
+					.addHeader("x-rapidapi-key", "e9d19d8ab2mshee9ab7d6044378bp106222jsnc2e9a579d919")
+					.addHeader("content-type", "application/json")
+					.addHeader("accept", "application/json")
+					.build();
+
+			Response response = client.getClient().newCall(request).execute();
+			log.info(response.body().string());
 		}
 		for (TableEntityWrapper.TableUser user : editedUsers) {
 			updates.add(new SQLEntry(DBConstants.UPDATE_USER, new ArrayList<>(Arrays.asList(user.getFName().get(), user.getLName().get(), user.getUsername().get(),
