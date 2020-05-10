@@ -146,7 +146,7 @@ public class InternalPaneController implements Initializable {
 
         int rows = 0;
         if(validFields)
-            rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST, new ArrayList<>(Arrays.asList(patientID, manager.getCurrentUser().getUsername(), null, start, "internal transportation", type, concatenatedNotes, status, dateAndTime))));
+            rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST, new ArrayList<>(Arrays.asList(patientID, manager.getCurrentUser().getUsername(), null, start, "Internal Transportation", type, concatenatedNotes, status, dateAndTime))));
 
 
         if (rows == 0) {

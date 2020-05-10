@@ -115,7 +115,7 @@ public class ITPaneController implements Initializable {
 
         int rows = 0;
         if(validFields) rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
-                new ArrayList<>(Arrays.asList(null, userName, null, location, "information technology", type, notes, status, dateAndTime))));
+                new ArrayList<>(Arrays.asList(null, userName, null, location, "IT", type, notes, status, dateAndTime))));
 
         if (rows == 0) {
             confirmation.setTextFill(Color.RED);

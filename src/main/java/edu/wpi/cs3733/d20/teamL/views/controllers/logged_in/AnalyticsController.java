@@ -116,7 +116,7 @@ public class AnalyticsController implements Initializable {
     }
 
     private void intiFreq() {
-        List<String> requests = Arrays.asList( "Gift Delivery", "Security", "Maintenance", "Internal Transportation", "External Transportation", "IT", "Interpreter", "Reflection Room","On-Call Bed");
+        List<String> requests = Arrays.asList("Gift Delivery", "Security", "Maintenance", "Internal Transportation", "External Transportation", "IT", "Interpreter", "Reflection Room","On-Call Bed");
 
         for(String req : requests) {
             freq.put(req, 0);
@@ -211,21 +211,14 @@ public class AnalyticsController implements Initializable {
 
     public void handleAllServiceReq() {
         //Hard-coded Test Data
-        //TODO: Add actual data
-        ObservableList<PieChart.Data> serviceReqData = FXCollections.observableArrayList(
-                new PieChart.Data("Gift Delivery", 20),
-                new PieChart.Data("Security", 10),
-                new PieChart.Data("Maintenance", 5),
-                new PieChart.Data("Internal Transportation", 25),
-                new PieChart.Data("External Transportation", 30),
-                new PieChart.Data("Medicine", 10),
-                new PieChart.Data("IT", 25),
-                new PieChart.Data("Interpreter", 40),
-                new PieChart.Data("Reflection Room", 35),
-                new PieChart.Data("On-Call Bed", 10));
+
+        ObservableList<PieChart.Data> allData = FXCollections.observableArrayList();
+        for (String type : freq.keySet()) {
+            allData.add(new PieChart.Data(type, freq.get(type)));
+        }
 
         servicePieChart.setTitle("Service Request Pie Chart");
-        servicePieChart.setData(serviceReqData);
+        servicePieChart.setData(allData);
         servicePieChart.setStartAngle(90);
     }
 
@@ -262,7 +255,7 @@ public class AnalyticsController implements Initializable {
     @FXML
     void handleSecurityPieChart() {
 
-        ArrayList<ServiceRequest> security = cache.getAllSpecificRequest("security");
+        ArrayList<ServiceRequest> security = cache.getAllSpecificRequest("Security");
         Map<String, Integer> freq = typeFreq(security);
 
         ObservableList<PieChart.Data> securityData = FXCollections.observableArrayList();
@@ -278,7 +271,7 @@ public class AnalyticsController implements Initializable {
     @FXML
     void handleMaintenancePieChart() {
 
-        ArrayList<ServiceRequest> maintenance = cache.getAllSpecificRequest("maintenance");
+        ArrayList<ServiceRequest> maintenance = cache.getAllSpecificRequest("Maintenance");
         Map<String, Integer> freq = typeFreq(maintenance);
 
         ObservableList<PieChart.Data> maintenanceData = FXCollections.observableArrayList();
@@ -341,7 +334,7 @@ public class AnalyticsController implements Initializable {
     @FXML
     void handleITPieChart() {
 
-        ArrayList<ServiceRequest> it = cache.getAllSpecificRequest("information technology");
+        ArrayList<ServiceRequest> it = cache.getAllSpecificRequest("IT");
         Map<String, Integer> freq = typeFreq(it);
 
         ObservableList<PieChart.Data> ITData = FXCollections.observableArrayList();
@@ -357,7 +350,7 @@ public class AnalyticsController implements Initializable {
     @FXML
     void handleInternalPieChart() {
 
-        ArrayList<ServiceRequest> internal = cache.getAllSpecificRequest("internal transportation");
+        ArrayList<ServiceRequest> internal = cache.getAllSpecificRequest("Internal Transportation");
         Map<String, Integer> freq = typeFreq(internal);
 
         ObservableList<PieChart.Data> internalData = FXCollections.observableArrayList();
@@ -373,7 +366,7 @@ public class AnalyticsController implements Initializable {
     @FXML
     void handleExternalPieChart() {
 
-        ArrayList<ServiceRequest> external = cache.getAllSpecificRequest("external transportation");
+        ArrayList<ServiceRequest> external = cache.getAllSpecificRequest("External Transportation");
         Map<String, Integer> freq = typeFreq(external);
 
         ObservableList<PieChart.Data> externalData = FXCollections.observableArrayList();
@@ -389,7 +382,7 @@ public class AnalyticsController implements Initializable {
     @FXML
     void handleInterpreterPieChart() {
 
-        ArrayList<ServiceRequest> interpreter = cache.getAllSpecificRequest("interpreter");
+        ArrayList<ServiceRequest> interpreter = cache.getAllSpecificRequest("Interpreter");
         Map<String, Integer> freq = typeFreq(interpreter);
 
         ObservableList<PieChart.Data> interpreterData = FXCollections.observableArrayList();
