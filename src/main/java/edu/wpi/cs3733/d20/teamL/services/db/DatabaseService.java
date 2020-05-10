@@ -11,6 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +25,7 @@ import edu.wpi.cs3733.d20.teamL.services.Service;
 @Slf4j
 public class DatabaseService extends Service implements IDatabaseService {
 	private Connection connection;
-	private Map<String, ArrayList<String>> tableUpdateMappings = new HashMap<>();
+	private final Map<String, ArrayList<String>> tableUpdateMappings = new HashMap<>();
 
 	public enum DB_TYPE {
 		MY_SQL,
@@ -245,6 +246,8 @@ public class DatabaseService extends Service implements IDatabaseService {
 			updates.add(new SQLEntry(DBConstants.CREATE_MEDICATION_REQUEST_TABLE));
 			updates.add(new SQLEntry(DBConstants.CREATE_SERVICE_REQUEST_TABLE));
 			updates.add(new SQLEntry(DBConstants.CREATE_RESERVATIONS_TABLE));
+			updates.add(new SQLEntry(DBConstants.CREATE_SCREENING_QUESTIONS_TABLE));
+			updates.add(new SQLEntry(DBConstants.CREATE_KIOSK_SETTINGS_TABLE));
 		} else if (dbType == DB_TYPE.DERBY) {
 			updates.add(new SQLEntry(DerbyConstants.CREATE_NODE_TABLE));
 			updates.add(new SQLEntry(DerbyConstants.CREATE_EDGE_TABLE));
@@ -255,6 +258,8 @@ public class DatabaseService extends Service implements IDatabaseService {
 			updates.add(new SQLEntry(DerbyConstants.CREATE_GIFT_DELIVERY_REQUEST_TABLE));
 			updates.add(new SQLEntry(DerbyConstants.CREATE_MEDICATION_REQUEST_TABLE));
 			updates.add(new SQLEntry(DerbyConstants.CREATE_SERVICE_REQUEST_TABLE));
+			updates.add(new SQLEntry(DBConstants.CREATE_SCREENING_QUESTIONS_TABLE));
+			//TODO: add kiosk and screening tables
 		} else {
 			log.error("Invalid database type.");
 		}
@@ -336,7 +341,46 @@ public class DatabaseService extends Service implements IDatabaseService {
 		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Mangas", "Death Note", "A collection of Japanese manga Death Note", "123", "99.99"))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Mangas", "Attack on Titan", "A collection of Japanese manga Attack on Titan", "2", "199.99"))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Mangas", "Slam Dunk", "A collection of Japanese manga Slam Dunk", "100", "299.99"))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Mangas", "Naruto", "A collection of Japanese manga Naruto", "500", "189.99"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Mangas", "Naruto", "A collection of Japanese manga Naruto", "500", "189.99"))))
+
+		executeUpdate(new SQLEntry(DBConstants.ADD_DEFAULT_KIOSK, new ArrayList<>(Collections.singletonList("LKIOS00101"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_DEFAULT_KIOSK, new ArrayList<>(Collections.singletonList("LKIOS00103"))));
+
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Select your age range:", "1", "-1", "1"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Are you 18 yrs or under", "1", "0", "1"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Are you 18-64 years old?", "1", "0", "1"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Are you 65+ years old?", "1", "1", "1"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Do you have any of the following symptoms?", "2", "-1", "0"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Do you have a fever?", "2", "1", "0"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Do have a new or worsening cough?", "2", "1", "0"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Do you have a sore throat?", "2", "1", "0"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Do you have diarrhea?", "2", "1", "0"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Do you have nausea or vomiting?", "2", "1", "0"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Have you been experiencing chills or sweating?", "2", "1", "0"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Have you experiences a new loss of smell or taste?", "2", "1", "0"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Are you experiencing full body aches?", "2", "1", "0"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Do you have any new difficulty breathing?", "2", "1", "0"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Check which of the following applies to you:", "3", "-1", "0"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Do you work or volunteer in a health care setting", "3", "1", "0"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("In the last two weeks have you been to a place where COVID-19 is widespread?", "3", "1", "0"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("In the last two weeks have you traveled outside the United States?", "3", "1", "0"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Do you have any of the following high-risk conditions?", "4", "-1", "0"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Chronic lung disease", "4", "1", "0"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Asthma", "4", "1", "0"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Serious heart condition", "4", "1", "0"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Diabetes", "4", "1", "0"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Weakened ability to cough", "4", "1", "0"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Immunocompromised", "4", "1", "0"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Dialysis", "4", "1", "0"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Liver disease", "4", "1", "0"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Pregnancy", "4", "1", "0"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Severe obesity", "4", "1", "0"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Keep yourself and others safe, stay 6ft away from others", "-3", "0", "0"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Wear a mask in public and wash your hands frequently", "-3", "0", "0"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Minimize contact with others", "-3", "0", "0"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("You are not at risk however you could be a carrier remain in self isolation", "-3", "2", "-1"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("You should contact a staff member for immediate testing", "-3", "3", "1"))));
+
 	}
 
 	/**
@@ -392,6 +436,8 @@ public class DatabaseService extends Service implements IDatabaseService {
 	public void dropTables() {
 		ArrayList<SQLEntry> updates = new ArrayList<>();
 		if (dbType == DB_TYPE.MY_SQL) {
+			updates.add(new SQLEntry(DBConstants.DROP_SCREENING_QUESTIONS_TABLE));
+			updates.add(new SQLEntry(DBConstants.DROP_KIOSK_SETTINGS_TABLE));
 			updates.add(new SQLEntry(DBConstants.DROP_RESERVATIONS_TABLE));
 			updates.add(new SQLEntry(DBConstants.DROP_SERVICE_REQUEST_TABLE));
 			updates.add(new SQLEntry(DBConstants.DROP_MEDICATION_REQUEST_TABLE));
@@ -416,6 +462,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 			dropTableUpdates.add(DerbyConstants.DROP_GIFT_DELIVER_REQUEST_TABLE);
 			dropTableUpdates.add(DerbyConstants.DROP_MEDICATION_REQUEST_TABLE);
 			dropTableUpdates.add(DerbyConstants.DROP_SERVICE_REQUEST_TABLE);
+			updates.add(new SQLEntry(DBConstants.DROP_SCREENING_QUESTIONS_TABLE));
 			try {
 				for (int i = 0; i < DBConstants.GET_TABLE_NAMES().size(); i++) {
 					resSet = connection.getMetaData().getTables(null, "APP", DBConstants.GET_TABLE_NAMES().get(i).toUpperCase(), null);

@@ -145,6 +145,15 @@
                         </JFXButton>
                     </children>
                 </VBox>
+            <HBox alignment="CENTER" layoutX="65.0" layoutY="11.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="15.0">
+               <children>
+                  <StackPane fx:id="screeningPane" alignment="TOP_CENTER">
+                     <children>
+                        <JFXButton fx:id="btnScreening" onAction="#openScreening" style="-fx-font-size: 18; -fx-max-width: 300; -fx-pref-width: 300;" styleClass="save-button-jfx" />
+                     </children>
+                  </StackPane>
+               </children>
+            </HBox>
                 <VBox fx:id="floorSelector" maxHeight="300.0" maxWidth="40.0" prefHeight="720.0" prefWidth="855.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
                     <children>
                         <JFXButton fx:id="floorUp" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#handleFloor" prefWidth="0.0" ripplerFill="WHITE" style="-fx-background-color: #0d2e57; -fx-background-radius: 20 20 0 0;" styleClass="floor-buttons" text="▲" textAlignment="CENTER" textFill="WHITE">
@@ -203,7 +212,7 @@
                <children>
                   <ImageView fitHeight="75.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../assets/home_page/BWH%20logo.png" />
+                        <Image url="@../../assets/home_page/BWH logo.png" />
                      </image>
                   </ImageView>
                </children>
