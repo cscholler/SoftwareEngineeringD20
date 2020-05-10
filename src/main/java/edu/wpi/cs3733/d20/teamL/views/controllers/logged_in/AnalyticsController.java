@@ -418,7 +418,8 @@ public class AnalyticsController implements Initializable {
             NodeGUI nodeGUI =  map.getNodeGUI(node);
             if(node.getFreq() > 0) {
                 nodeGUI.setVisible(true);
-                nodeGUI.setHighlightColor(Color.RED);
+                //nodeGUI.setHighlightColor(Color.RED);
+                nodeGUI.setGradientNode();
                 nodeGUI.setHighlightThickness(node.getFreq());
                 nodeGUI.setHighlighted(true);
             } else {
