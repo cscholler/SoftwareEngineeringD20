@@ -3,6 +3,8 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -22,5 +24,14 @@
               </font>
           </JFXButton>
           <Text fx:id="incorrectText" fill="#c94031" layoutX="101.0" layoutY="164.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username or password is incorrect." visible="false" wrappingWidth="232.0" />
+      <JFXButton contentDisplay="CENTER" layoutX="361.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#facialRecognition" prefHeight="20.0" prefWidth="20.0" style="-fx-background-color: #001540;" text=" " AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../assets/service_icons/facial_recog.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
     </children>
 </AnchorPane>
