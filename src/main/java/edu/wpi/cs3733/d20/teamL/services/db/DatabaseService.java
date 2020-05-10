@@ -248,6 +248,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 			updates.add(new SQLEntry(DBConstants.CREATE_RESERVATIONS_TABLE));
 			updates.add(new SQLEntry(DBConstants.CREATE_SCREENING_QUESTIONS_TABLE));
 			updates.add(new SQLEntry(DBConstants.CREATE_KIOSK_SETTINGS_TABLE));
+			updates.add(new SQLEntry(DBConstants.CREATE_FEEDBACK_TABLE));
 		} else if (dbType == DB_TYPE.DERBY) {
 			updates.add(new SQLEntry(DerbyConstants.CREATE_NODE_TABLE));
 			updates.add(new SQLEntry(DerbyConstants.CREATE_EDGE_TABLE));
@@ -258,8 +259,9 @@ public class DatabaseService extends Service implements IDatabaseService {
 			updates.add(new SQLEntry(DerbyConstants.CREATE_GIFT_DELIVERY_REQUEST_TABLE));
 			updates.add(new SQLEntry(DerbyConstants.CREATE_MEDICATION_REQUEST_TABLE));
 			updates.add(new SQLEntry(DerbyConstants.CREATE_SERVICE_REQUEST_TABLE));
-			updates.add(new SQLEntry(DBConstants.CREATE_SCREENING_QUESTIONS_TABLE));
-			//TODO: add kiosk and screening tables
+			//updates.add(new SQLEntry(DerbyConstants.CREATE_SCREENING_QUESTIONS_TABLE));
+			updates.add(new SQLEntry(DerbyConstants.CREATE_FEEDBACK_TABLE));
+			//TODO: add kiosk and screening and feedback tables
 		} else {
 			log.error("Invalid database type.");
 		}
@@ -427,6 +429,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 			updates.add(new SQLEntry(DBConstants.DROP_USER_TABLE));
 			updates.add(new SQLEntry(DBConstants.DROP_EDGE_TABLE));
 			updates.add(new SQLEntry(DBConstants.DROP_NODE_TABLE));
+			updates.add(new SQLEntry(DBConstants.DROP_FEEDBACK_TABLE));
 			executeUpdates(updates);
 		} else if (dbType == DB_TYPE.DERBY) {
 			ResultSet resSet;
@@ -441,7 +444,8 @@ public class DatabaseService extends Service implements IDatabaseService {
 			dropTableUpdates.add(DerbyConstants.DROP_GIFT_DELIVER_REQUEST_TABLE);
 			dropTableUpdates.add(DerbyConstants.DROP_MEDICATION_REQUEST_TABLE);
 			dropTableUpdates.add(DerbyConstants.DROP_SERVICE_REQUEST_TABLE);
-			updates.add(new SQLEntry(DBConstants.DROP_SCREENING_QUESTIONS_TABLE));
+			//updates.add(new SQLEntry(DerbyConstants.DROP_SCREENING_QUESTIONS_TABLE)); //TODO
+			dropTableUpdates.add(DerbyConstants.DROP_FEEDBACK_TABLE);
 			try {
 				for (int i = 0; i < DBConstants.GET_TABLE_NAMES().size(); i++) {
 					resSet = connection.getMetaData().getTables(null, "APP", DBConstants.GET_TABLE_NAMES().get(i).toUpperCase(), null);

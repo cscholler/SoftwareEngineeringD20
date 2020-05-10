@@ -146,6 +146,13 @@ public class DBConstants {
 					"weight INT, " +
 					"reqs INT)";
 
+	public static final String CREATE_FEEDBACK_TABLE =
+			"CREATE TABLE Feedback(" +
+					"id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
+					"expectations VARCHAR(256) NOT NULL, " +
+					"application VARCHAR(256) NOT NULL, " +
+					"notes VARCHAR(256))";
+
 	public static final String DROP_NODE_TABLE =
 			"DROP TABLE IF EXISTS Nodes";
 
@@ -181,6 +188,9 @@ public class DBConstants {
 
 	public static final String DROP_SCREENING_QUESTIONS_TABLE =
 			"DROP TABLE IF EXISTS Screening_Questions";
+
+	public static final String DROP_FEEDBACK_TABLE =
+			"DROP TABLE IF EXISTS Feedback";
 
 	public static final String ADD_NODE =
 			"INSERT INTO Nodes(id, x_pos, y_pos, floor, building, node_type, l_name, s_name)" +
@@ -233,6 +243,10 @@ public class DBConstants {
 	public static final String ADD_SCREENING_QUESTION =
 			"INSERT INTO Screening_Questions(question, page, weight, reqs)" +
 					"VALUES(?, ?, ?, ?)";
+
+	public static final String ADD_FEEDBACK =
+			"INSERT INTO Feedback(expectations, application, notes)" +
+					"VALUES(?, ?, ?)";
 
 	public static final String SELECT_ALL_NODES =
 			"SELECT * " +
@@ -372,6 +386,11 @@ public class DBConstants {
 	public static final String SELECT_ALL_SCREENING_QUESTIONS =
 			"SELECT * " +
 					"FROM Screening_Questions " +
+					"ORDER BY id";
+
+	public static final String GET_ALL_FEEDBACK =
+			"SELECT * " +
+					"FROM Feedback " +
 					"ORDER BY id";
 
 	public static final String GET_KIOSK_SETTINGS =
