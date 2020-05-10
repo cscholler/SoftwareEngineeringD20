@@ -12,10 +12,11 @@ public class Edge {
 
     private HashMap<String, Object> data = new HashMap<>();
 
-    public Edge(Node source, Node destination) {
+    public Edge(Node source, Node destination, int freq) {
         this.id = source.getID() + "_" + destination.getID();
         this.source = source;
         this.destination = destination;
+        this.freq = freq;
     }
 
     public double getLength() {

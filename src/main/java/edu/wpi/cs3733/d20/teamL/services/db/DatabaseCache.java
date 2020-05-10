@@ -56,6 +56,16 @@ public class DatabaseCache implements IDatabaseCache {
         this.nodeCache = newNodes;
     }
 
+    @Override
+    public void setEditedNodes(ArrayList<Node> editedNodes) {
+        this.editedNodes = editedNodes;
+    }
+
+    @Override
+    public void setEditedEdges(ArrayList<Edge> editedEdges) {
+        this.editedEdges = editedEdges;
+    }
+
     /**
      * Sets the edges cache to the given ArrayList of edges. This will overwrite the cache and eventually overwrite the database, use this when you are sure you want to make changes to the map.
      *
@@ -109,7 +119,7 @@ public class DatabaseCache implements IDatabaseCache {
             String edgeID = currentEdge.get(0);
             currentEdge.remove(0);
             currentEdge.add(edgeID);
-            updates.add(new SQLEntry(DBConstants.UPDATE_NODE, currentEdge));
+            updates.add(new SQLEntry(DBConstants.UPDATE_EDGE, currentEdge));
         }
 
         db.executeUpdates(updates);
@@ -117,6 +127,7 @@ public class DatabaseCache implements IDatabaseCache {
         addedNodes.clear();
         addedEdges.clear();
         editedNodes.clear();
+        editedEdges.clear();
         deletedEdges.clear();
         deletedNodes.clear();
     }
@@ -166,7 +177,7 @@ public class DatabaseCache implements IDatabaseCache {
         for (ArrayList<String> row : nodeData) {
             nodeCache.add(new Node(row.get(0),
                     new Point2D(Double.parseDouble(row.get(1)), Double.parseDouble(row.get(2))),
-                    row.get(3), row.get(4), row.get(5), row.get(6), row.get(7)));
+                    row.get(3), row.get(4), row.get(5), row.get(6), row.get(7), Integer.parseInt(row.get(8))));
         }
     }
 
@@ -197,7 +208,7 @@ public class DatabaseCache implements IDatabaseCache {
         ArrayList<ArrayList<String>> edgeData = db.getTableFromResultSet(resSet);
 
         for (ArrayList<String> row : edgeData) {
-            Edge newEdge = new Edge(searchNodeCache(row.get(1)), searchNodeCache(row.get(2)));
+            Edge newEdge = new Edge(searchNodeCache(row.get(1)), searchNodeCache(row.get(2)), Integer.parseInt(row.get(3)));
             edgeCache.add(newEdge);
         }
     }

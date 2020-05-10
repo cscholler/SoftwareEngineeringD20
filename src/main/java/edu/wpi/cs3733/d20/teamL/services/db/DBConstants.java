@@ -328,7 +328,7 @@ public class DBConstants {
 
 	public static final String GET_ALL_ROOM_REQUESTS =
 			"SELECT * " +
-					"FROM Reservations "+
+					"FROM Reservations " +
 					"WHERE place = ? AND date = ?";
 
 	public static final String UPDATE_NODE =

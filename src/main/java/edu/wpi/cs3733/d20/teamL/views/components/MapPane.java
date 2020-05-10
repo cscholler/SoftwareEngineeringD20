@@ -140,7 +140,7 @@ public class MapPane extends ScrollPane {
 
                         Node source = tempEdge.getSource().getNode();
 
-                        Edge edge = new Edge(source, dest);
+                        Edge edge = new Edge(source, dest,0);
                         source.addEdgeTwoWay(edge);
 
                         addEdge(edge);
@@ -639,7 +639,7 @@ public class MapPane extends ScrollPane {
                     Node source = tempEdge.getSource().getNode();
                     Node dest = nodeGUI.getNode();
 
-                    Edge edge = new Edge(source, dest);
+                    Edge edge = new Edge(source, dest, 0);
                     source.addEdgeTwoWay(edge);
 
                     addEdge(edge);
@@ -712,8 +712,8 @@ public class MapPane extends ScrollPane {
                 nodeGUI.getCircle().setFill(nodeColor);
             }
             List<String> visibleNodeTypes = Arrays.asList("EXIT", "REST", "ELEV", "STAI", "INFO", "RETL", "KIOS", "REFL");
-            if (!visibleNodeTypes.contains(nodeGUI.getNode().getType()))
-                nodeGUI.setVisible(false);
+            //if (!visibleNodeTypes.contains(nodeGUI.getNode().getType()))
+                //nodeGUI.setVisible(false);
         }
     }
 

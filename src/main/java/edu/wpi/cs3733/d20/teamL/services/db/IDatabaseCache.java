@@ -13,6 +13,10 @@ public interface IDatabaseCache {
 
 	void cacheEdges(ArrayList<Edge> newEdges, ArrayList<Edge> editedEdges);
 
+	void setEditedNodes(ArrayList<Node> editedNodes);
+
+	void setEditedEdges(ArrayList<Edge> editedEdges);
+
 	void updateDB();
 
 	ArrayList<ArrayList<String>> convertNodesToValuesList(List<Node> nodes);

@@ -3,9 +3,8 @@ package edu.wpi.cs3733.d20.teamL.entities;
 import java.util.*;
 
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import javafx.geometry.Point2D;
-
-import javax.inject.Inject;
 
 public class Path implements Iterable<Node> {
     private ArrayList<String> message = new ArrayList<>();
@@ -13,8 +12,7 @@ public class Path implements Iterable<Node> {
     private List<Node> pathNodes = new LinkedList<>();
     private int length = 0;
 
-    @Inject
-    IDatabaseCache cache;
+    private final IDatabaseCache cache = FXMLLoaderFactory.injector.getInstance(IDatabaseCache.class);
 
     public List<Node> getPathNodes() {
         return pathNodes;
@@ -139,8 +137,8 @@ public class Path implements Iterable<Node> {
             }
         }
 
-        cache.cacheNodes(new ArrayList<>(), editedNodes);
-        cache.cacheEdges(new ArrayList<>(), editedEdges);
+        cache.setEditedNodes(editedNodes);
+        cache.setEditedEdges(editedEdges);
         cache.updateDB();
 
         return (int) Math.round(time * .338 / 60);

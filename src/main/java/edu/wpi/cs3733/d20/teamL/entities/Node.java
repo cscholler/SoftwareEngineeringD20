@@ -15,11 +15,22 @@ public class Node {
     private String type;
     private int shaft = 0;
     private int floor;
-    private int freq = 0;
+    private int freq;
 
     private HashMap<String, Object> data = new HashMap<>(); //TODO remove Hashmap and add NodeGUI Field
 
     private Collection<Edge> edges = new ArrayList<>();
+
+    public Node(String id, Point2D position, int floor, String building, String type, String longName, String shortName, int freq) {
+        this.id = id;
+        this.position = position;
+        this.floor = floor;
+        this.building = building;
+        this.type = type;
+        this.longName = longName;
+        this.shortName = shortName;
+        this.freq = freq;
+    }
 
     public Node(String id, Point2D position, int floor, String building, String type, String longName, String shortName) {
         this.id = id;
@@ -29,6 +40,7 @@ public class Node {
         this.type = type;
         this.longName = longName;
         this.shortName = shortName;
+        this.freq = 0;
     }
 
     public Node(String id, Point2D position, int floor, String building) {
@@ -39,10 +51,11 @@ public class Node {
         this.longName = "Hallway Intersection X Level " + floor;
         this.type = "HALL L" + floor + "XXX";
         this.building = building;
+        this.freq = 0;
     }
 
-    public Node(String id, Point2D position, String floor, String building, String type, String longName, String shortName) {
-        this(id, position, floorStringToInt(floor), building, type, longName, shortName);
+    public Node(String id, Point2D position, String floor, String building, String type, String longName, String shortName, int freq) {
+        this(id, position, floorStringToInt(floor), building, type, longName, shortName, freq);
     }
 
     public Node(String id, Point2D position, String floor, String building) {
@@ -222,7 +235,7 @@ public class Node {
      * @param otherNode The node this edge leads to
      */
     public Edge addEdge(Node otherNode) {
-        Edge newEdge = new Edge(this, otherNode);
+        Edge newEdge = new Edge(this, otherNode, freq);
         addEdge(newEdge);
 
         return getEdge(otherNode);
