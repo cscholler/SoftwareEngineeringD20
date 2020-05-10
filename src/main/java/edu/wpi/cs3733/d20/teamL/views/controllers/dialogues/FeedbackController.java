@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -17,13 +18,16 @@ public class FeedbackController implements Initializable {
     private JFXTextField expectationsText, applicationText, otherText;
 
     @FXML
-    private JFXButton btnSubmit;
+    private JFXButton btnCancel, btnSubmit;
 
     @FXML
     private JFXRadioButton expectationsYes, expectationsNo, easyYes, easyNo, navigateYes, navigateNo, nextYes, nextNo;
 
     @FXML
     private ToggleGroup expectationsGroup, easyGroup, navigateGroup, nextGroup;
+
+    @FXML
+    private Stage stage;
 
 
     @Override
@@ -43,6 +47,8 @@ public class FeedbackController implements Initializable {
     @FXML
     void handleCancel() {
 
+        stage = (Stage) btnCancel.getScene().getWindow();
+        stage.close();
     }
 
     @FXML

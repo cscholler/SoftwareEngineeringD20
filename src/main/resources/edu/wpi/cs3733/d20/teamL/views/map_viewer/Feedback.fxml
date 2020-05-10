@@ -131,7 +131,7 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="900.0" spacing="30.0" BorderPane.alignment="CENTER">
          <children>
-            <JFXButton buttonType="RAISED" onAction="#handleCancel" styleClass="cancel-button-jfx" text="Cancel" />
+            <JFXButton fx:id="btnCancel" buttonType="RAISED" onAction="#handleCancel" styleClass="cancel-button-jfx" text="Cancel" />
             <JFXButton fx:id="btnSubmit" buttonType="RAISED" onAction="#handleSubmit" styleClass="save-button-jfx" text="Submit" />
          </children>
       </HBox>
