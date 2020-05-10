@@ -49,7 +49,7 @@ public class AnalyticsController implements Initializable {
     @FXML
     MapPane map;
     @FXML
-    private JFXComboBox<String> timeBox, buildingChooser;
+    private JFXComboBox<String> timeBox, buildingChooser, heatBox;
     @FXML
     private BarChart<String, Number> ServiceReqHisto;
     @FXML
@@ -61,6 +61,8 @@ public class AnalyticsController implements Initializable {
 
     private FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
     ObservableList<String> timeOptions = FXCollections.observableArrayList("Any time", "Past hour", "Past 24 hours", "Past month", "Past year");
+    ObservableList<String> heatOptions = FXCollections.observableArrayList("Pathfinding", "Gift Delivery", "Security", "Maintenance", "Internal Transportation",
+    "External Transportation", "Medicine", "Sanitation", "IT", "Interpreter", "Reflection Room", "On-Call Bed", "All Service Request Locations");
     private String defaultBuilding = "Faulkner";
     private int defaultFloor = 2;
     public static final String MAIN = "Main";
@@ -72,6 +74,7 @@ public class AnalyticsController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         timeBox.setItems(timeOptions);
+        heatBox.setItems(heatOptions);
         setServiceReqHisto();
         handleAllServiceReq();
 
@@ -354,6 +357,11 @@ public class AnalyticsController implements Initializable {
         setFloor(Math.max(map.getBuilding().getMinFloor(), Math.min(prevFloor, map.getBuilding().getMaxFloor())));
         map.setZoomLevel(.25 * App.UI_SCALE);
         //if (!path.getPathNodes().isEmpty()) highLightPath();
+    }
+
+    @FXML
+    private void switchHeatMap(ActionEvent event) {
+
     }
 
     private void generateFloorButtons() {

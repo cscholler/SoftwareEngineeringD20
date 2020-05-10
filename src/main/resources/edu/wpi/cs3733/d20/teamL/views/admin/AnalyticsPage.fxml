@@ -13,18 +13,14 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <?import edu.wpi.cs3733.d20.teamL.views.components.MapPane?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.control.Tooltip?>
+
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="950.0" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.logged_in.AnalyticsController">
    <center>
       <JFXTabPane BorderPane.alignment="CENTER">
@@ -142,6 +138,15 @@
                         <HBox alignment="BOTTOM_CENTER" layoutX="369.0" layoutY="570.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0">
                            <children>
                               <JFXComboBox fx:id="buildingChooser" onAction="#switchBuilding" promptText="Select Building" style="-fx-border-color: #0d2e57; -fx-border-width: 3; -fx-background-color: white;" styleClass="combo-box-jfx" />
+                           </children>
+                        </HBox>
+                        <HBox layoutX="47.0" layoutY="27.0" prefHeight="89.0" prefWidth="291.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="20.0">
+                           <children>
+                              <JFXComboBox fx:id="heatBox" maxWidth="228.0" minWidth="250.0" onAction="#switchHeatMap" prefWidth="228.0" promptText="Select Type of Heat Map" style="-fx-background-color: white; -fx-border-color: #0d2e57; -fx-border-width: 3;" styleClass="combo-box-jfx">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </JFXComboBox>
                            </children>
                         </HBox>
                      </children>
