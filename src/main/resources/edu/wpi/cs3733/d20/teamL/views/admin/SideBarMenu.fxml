@@ -90,7 +90,7 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <JFXButton contentDisplay="TOP" graphicTextGap="10.0" onAction="#handleTimeoutSettings" prefHeight="100.0" prefWidth="202.0" styleClass="sidebar-buttons-jfx" text="Timeout Settings" textFill="WHITE">
+            <JFXButton fx:id="timeoutSettings" contentDisplay="TOP" graphicTextGap="10.0" onAction="#timeoutPressed" prefHeight="100.0" prefWidth="202.0" styleClass="sidebar-buttons-jfx" text="Timeout Settings" textFill="WHITE">
                <font>
                   <Font size="15.0" />
                </font>
@@ -101,6 +101,15 @@
                      </image>
                   </ImageView>
                </graphic></JFXButton>
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <JFXButton contentDisplay="TOP" graphicTextGap="10.0" onAction="#rebuildDatabaseClicked" prefHeight="102.0" prefWidth="230.0" styleClass="sidebar-buttons-jfx" text="Rebuild Database" textFill="WHITE">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </JFXButton>
          </children>
       </HBox>
    </children>

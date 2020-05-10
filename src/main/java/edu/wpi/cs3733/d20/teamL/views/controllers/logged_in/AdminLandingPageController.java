@@ -135,16 +135,6 @@ public class AdminLandingPageController implements Initializable {
 		loadCurrentTable();
 	}
 
-	@FXML
-	private void timeoutPressed() {
-		try {
-			Parent root = loaderFactory.getFXMLLoader("admin/KioskTimeout").load();
-			loaderFactory.setupPopup(new Stage(), new Scene(root));
-		} catch (IOException ex) {
-			log.error("Encountered IOException", ex);
-		}
-	}
-
     @FXML
     public void btnLogoutClicked() {
         loginManager.logOut(true);
@@ -161,16 +151,6 @@ public class AdminLandingPageController implements Initializable {
         try {
             Parent root = loaderFactory.getFXMLLoader("admin/MapEditor").load();
             loaderFactory.setupScene(new Scene(root));
-        } catch (IOException ex) {
-            log.error("Encountered IOException", ex);
-        }
-    }
-
-    @FXML
-    private void rebuildDatabaseClicked() {
-        try {
-            Parent root = loaderFactory.getFXMLLoader("admin/RebuildDatabaseDialogue").load();
-            loaderFactory.setupPopup(new Stage(), new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
         }

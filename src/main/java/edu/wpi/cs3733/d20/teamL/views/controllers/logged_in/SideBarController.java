@@ -56,8 +56,13 @@ public class SideBarController {
     }
 
     @FXML
-    public void handleTimeoutSettings() {
-
+    private void timeoutPressed() {
+        try {
+            Parent root = loaderFactory.getFXMLLoader("admin/KioskTimeout").load();
+            loaderFactory.setupPopup(new Stage(), new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
     }
 
     @FXML
@@ -65,6 +70,16 @@ public class SideBarController {
         try {
             Parent root = loaderFactory.getFXMLLoader("admin/AnalyticsPage").load();
             loaderFactory.setupScene(new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
+    }
+
+    @FXML
+    private void rebuildDatabaseClicked() {
+        try {
+            Parent root = loaderFactory.getFXMLLoader("admin/RebuildDatabaseDialogue").load();
+            loaderFactory.setupPopup(new Stage(), new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
         }
