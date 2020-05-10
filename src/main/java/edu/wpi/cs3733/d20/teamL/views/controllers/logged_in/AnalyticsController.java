@@ -6,9 +6,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.cs3733.d20.teamL.App;
-import edu.wpi.cs3733.d20.teamL.entities.Building;
-import edu.wpi.cs3733.d20.teamL.entities.Edge;
-import edu.wpi.cs3733.d20.teamL.entities.Node;
+import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
@@ -18,6 +16,7 @@ import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
 import edu.wpi.cs3733.d20.teamL.views.controllers.map.MapViewerController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -38,10 +37,8 @@ import lombok.extern.slf4j.Slf4j;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 public class AnalyticsController implements Initializable {
@@ -60,7 +57,12 @@ public class AnalyticsController implements Initializable {
     JFXButton floorUp, floorDown;
 
     private FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
-    ObservableList<String> timeOptions = FXCollections.observableArrayList("Any time", "Past hour", "Past 24 hours", "Past month", "Past year");
+    private ObservableList<String> timeOptions = FXCollections.observableArrayList("Any time", "Past hour", "Past 24 hours", "Past month", "Past year");
+    private ObservableList<ServiceRequest> requests;
+    private ObservableList<GiftDeliveryRequest> giftRequests;
+
+    private Map<String, Integer> freq = new ConcurrentHashMap<>();
+
     private String defaultBuilding = "Faulkner";
     private int defaultFloor = 2;
     public static final String MAIN = "Main";
@@ -70,15 +72,21 @@ public class AnalyticsController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        if (App.doUpdateCacheOnLoad) {
+            cache.cacheAllFromDB();
+            App.doUpdateCacheOnLoad = false;
+        }
+
+        cache.cacheRequestsFromDB();
+
+        requests = FXCollections.observableArrayList(cache.getAllRequests());
+        giftRequests = FXCollections.observableArrayList(cache.getAllGiftRequests());
+        updateFreq();
 
         timeBox.setItems(timeOptions);
         setServiceReqHisto();
         handleAllServiceReq();
 
-        if (App.doUpdateCacheOnLoad) {
-            cache.cacheAllFromDB();
-            App.doUpdateCacheOnLoad = false;
-        }
         map.setEditable(false);
         map.setHighLightColor(Color.GOLD);
 
@@ -104,6 +112,16 @@ public class AnalyticsController implements Initializable {
         burnAllEdges(map.getEdges());
     }
 
+    private void updateFreq() {
+        for(ServiceRequest request : requests) {
+            if(!freq.containsKey(request.getService())) {
+                freq.put(request.getService(), 1);
+            } else {
+                freq.replace(request.getService(), freq.get(request.getService())+1);
+            }
+        }
+    }
+
     @FXML
     void handleCancel() {
         try {
@@ -126,19 +144,9 @@ public class AnalyticsController implements Initializable {
         XYChart.Series set = new XYChart.Series<>();
         set.setName("Type of Request");
 
-        //Hard-coded Data
-        //TODO: Add actual data
-        set.getData().add(new XYChart.Data("Gift Delivery", 10));
-        set.getData().add(new XYChart.Data("Security", 20));
-        set.getData().add(new XYChart.Data("Maintenance", 14));
-        set.getData().add(new XYChart.Data("Internal", 23));
-        set.getData().add(new XYChart.Data("External", 36));
-        set.getData().add(new XYChart.Data("Medicine", 47));
-        set.getData().add(new XYChart.Data("Sanitation", 50));
-        set.getData().add(new XYChart.Data("IT", 13));
-        set.getData().add(new XYChart.Data("Interpreter", 25));
-        set.getData().add(new XYChart.Data("Reflection Room", 33));
-        set.getData().add(new XYChart.Data("On-Call Bed", 55));
+        for (String type : freq.keySet()) {
+            set.getData().add(new XYChart.Data(type, freq.get(type)));
+        }
 
         ServiceReqHisto.getData().addAll(set);
 
