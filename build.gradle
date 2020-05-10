@@ -35,7 +35,8 @@ dependencies {
             'org.jetbrains:annotations:15.0',
             'com.github.kenglxn.QRGen:javase:2.6.0',
             'org.mindrot:jbcrypt:0.3m',
-            'com.google.cloud:google-cloud-texttospeech:1.0.2'
+            'com.google.cloud:google-cloud-texttospeech:1.0.2',
+            'com.google.cloud:google-cloud-speech:1.23.0'
     )
 
     testImplementation(
