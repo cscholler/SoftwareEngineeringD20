@@ -7,7 +7,7 @@ import java.util.Base64;
 
 import com.github.sarxos.webcam.Webcam;
 import com.squareup.okhttp.*;
-import edu.wpi.cs3733.d20.teamL.services.HTTPClientService;
+import edu.wpi.cs3733.d20.teamL.services.IHTTPClientService;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -50,7 +50,7 @@ public class LoginController {
     @Inject
     private ILoginManager loginManager;
     @Inject
-    private HTTPClientService clientService;
+    private IHTTPClientService clientService;
 
     /**
      * logs the user in when the enter key is pressed
