@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.dialogues;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Base64;
@@ -9,9 +10,11 @@ import com.github.sarxos.webcam.Webcam;
 import com.squareup.okhttp.*;
 import edu.wpi.cs3733.d20.teamL.services.IHTTPClientService;
 import javafx.animation.FadeTransition;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -134,10 +137,11 @@ public class LoginController {
         Webcam webcam = Webcam.getDefault();
         webcam.open();
         BufferedImage image = webcam.getImage();
-        ImageIO.write(image, "PNG", new File("loginAttempt.png"));
         webcam.close();
 
-        byte[] fileContent = FileUtils.readFileToByteArray(new File("loginAttempt.png"));
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ImageIO.write(image, "PNG", bos);
+        byte[] fileContent = bos.toByteArray();
         String encodedString = Base64.getEncoder().encodeToString(fileContent);
 
         JSONObject json = new JSONObject();
