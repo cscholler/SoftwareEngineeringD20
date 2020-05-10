@@ -242,7 +242,7 @@
                      <children>
                         <BorderPane layoutX="400.0" layoutY="207.0" prefHeight="563.0" prefWidth="950.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <center>
-                              <ImageView fx:id="face" fitHeight="150.0" fitWidth="228.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="face" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../assets/gift_delivery/noImage.png" />
                                  </image>
