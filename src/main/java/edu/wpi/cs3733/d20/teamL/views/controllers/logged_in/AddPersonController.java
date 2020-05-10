@@ -1,7 +1,12 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.logged_in;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.github.sarxos.webcam.Webcam;
 import com.google.inject.Inject;
 import com.jfoenix.controls.*;
+import com.squareup.mimecraft.Multipart;
+import com.squareup.mimecraft.Part;
+import com.squareup.okhttp.*;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
@@ -19,11 +24,23 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
+import netscape.javascript.JSObject;
+import org.apache.commons.io.FileUtils;
+import org.json.JSONObject;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.ResourceBundle;
+//import javax.ws.rs.client.Client;
+//import javax.ws.rs.client.ClientBuilder;
+//import javax.ws.rs.client.Entity;
+//import javax.ws.rs.core.MediaType;
 
 @Slf4j
 public class AddPersonController implements Initializable {
@@ -84,7 +101,7 @@ public class AddPersonController implements Initializable {
 
     //for user
     @FXML
-    private void submitClicked() {
+    private void submitClicked() throws IOException {
         String firstName = fNameText.getText();
         String lastName = lNameText.getText();
         String username = usernameText.getText();
@@ -162,12 +179,47 @@ public class AddPersonController implements Initializable {
                 rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(firstName, lastName, username, PasswordManager.hashPassword(password), type, services, manager))));
             }
             if (doctorIDText.getText() != null && !(doctorIDText.getText().isEmpty())) {
-				rows = db.executeUpdate(new SQLEntry(DBConstants.UPDATE_DOCTOR_USERNAME, new ArrayList<>(Arrays.asList(username, doctorID))));
-			}
+                rows = db.executeUpdate(new SQLEntry(DBConstants.UPDATE_DOCTOR_USERNAME, new ArrayList<>(Arrays.asList(username, doctorID))));
+            }
             if (rows == 0) {
                 lblConfirmation.setTextFill(Color.RED);
                 lblConfirmation.setText("Submission failed");
             } else if (rows == 1) {
+
+                Webcam webcam = Webcam.getDefault();
+                webcam.open();
+                BufferedImage image = webcam.getImage();
+                ImageIO.write(image, "PNG", new File("newUser"));
+
+                byte[] fileContent = FileUtils.readFileToByteArray(new File("newUser"));
+                String encodedString = Base64.getEncoder().encodeToString(fileContent);
+
+                JSONObject json = new JSONObject();
+                json.put("image", encodedString);
+                json.put("gallery_name", "users");
+                json.put("subject_id", username);
+
+                OkHttpClient client = new OkHttpClient();
+
+                MediaType mediaType = MediaType.parse("application/json");
+                RequestBody body = RequestBody.create(mediaType, json.toString());
+                log.info(json.toString());
+                Request request = new Request.Builder()
+                        .url("https://kairosapi-karios-v1.p.rapidapi.com/enroll")
+                        .post(body)
+                        .addHeader("x-rapidapi-host", "kairosapi-karios-v1.p.rapidapi.com")
+                        .addHeader("x-rapidapi-key", "e9d19d8ab2mshee9ab7d6044378bp106222jsnc2e9a579d919")
+                        .addHeader("content-type", "application/json")
+                        .addHeader("accept", "application/json")
+                        .build();
+
+                Response response = client.newCall(request).execute();
+                log.info("" + response.code());
+                log.info(response.body().string());
+
+
+
+
                 lblConfirmation.setTextFill(Color.BLACK);
                 lblConfirmation.setText("User added");
                 lNameText.setText("");
@@ -200,8 +252,8 @@ public class AddPersonController implements Initializable {
                 log.error("SQL update affected more than 1 row.");
             }
             loaderHelper.showAndFade(lblConfirmation);
-			cache.cacheUsersFromDB();
-			cache.cacheDoctorsFromDB();
+            cache.cacheUsersFromDB();
+            cache.cacheDoctorsFromDB();
         }
     }
 
@@ -279,11 +331,15 @@ public class AddPersonController implements Initializable {
             doctorIDText.setText("");
             officeText.setText("");
             addlInfoText.setText("");
-		} else {
-			log.error("SQL update affected more than 1 row.");
-		}
+        } else {
+            log.error("SQL update affected more than 1 row.");
+        }
         loaderHelper.showAndFade(confirmation);
-		cache.cacheDoctorsFromDB();
+        cache.cacheDoctorsFromDB();
     }
+
+
+
 }
+
 
