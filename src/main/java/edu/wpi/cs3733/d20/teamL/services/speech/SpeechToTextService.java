@@ -1,5 +1,21 @@
 package edu.wpi.cs3733.d20.teamL.services.speech;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.TargetDataLine;
+
 import com.google.api.gax.core.FixedCredentialsProvider;
 import com.google.cloud.speech.v1.RecognitionAudio;
 import com.google.cloud.speech.v1.RecognitionConfig;
@@ -9,16 +25,12 @@ import com.google.cloud.speech.v1.SpeechRecognitionAlternative;
 import com.google.cloud.speech.v1.SpeechRecognitionResult;
 import com.google.cloud.speech.v1.SpeechSettings;
 import com.google.protobuf.ByteString;
-import edu.wpi.cs3733.d20.teamL.services.Service;
+
 import lombok.extern.slf4j.Slf4j;
 
-import javax.sound.sampled.*;
-import java.io.*;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
+import edu.wpi.cs3733.d20.teamL.services.Service;
+
+//TODO: convert to service and implement locks on recording
 
 @Slf4j
 public class SpeechToTextService extends Service {
