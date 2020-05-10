@@ -125,12 +125,30 @@ public class AnalyticsController implements Initializable {
 
     private void updateFreq() {
         for(ServiceRequest request : requests) {
-            if(!freq.containsKey(request.getService())) {
+            if (!freq.containsKey(request.getService())) {
                 freq.put(request.getService(), 1);
             } else {
-                freq.replace(request.getService(), freq.get(request.getService())+1);
+                freq.replace(request.getService(), freq.get(request.getService()) + 1);
             }
         }
+        freq.replace("Gift Delivery", giftRequests.size());
+    }
+
+    private ArrayList<ServiceRequest> getRequestsByDate(ArrayList<ServiceRequest> reqs, String date) {
+        ArrayList<ServiceRequest> timeMask = new ArrayList<>();
+        switch(date) {
+            case "Any time":
+                break;
+            case "Past hour":
+                break;
+            case "Past 24 hours":
+                break;
+            case "Past month":
+                break;
+            case "Past year":
+                break;
+        }
+        return timeMask;
     }
 
     @FXML
@@ -210,8 +228,6 @@ public class AnalyticsController implements Initializable {
     }
 
     public void handleAllServiceReq() {
-        //Hard-coded Test Data
-
         ObservableList<PieChart.Data> allData = FXCollections.observableArrayList();
         for (String type : freq.keySet()) {
             allData.add(new PieChart.Data(type, freq.get(type)));
