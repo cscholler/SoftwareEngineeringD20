@@ -94,8 +94,7 @@ public class MaintenancePaneController implements Initializable {
             urge = urgency.getSelectionModel().getSelectedItem().toString();
         }
         String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm aa").format(new Date());
-        String roomNum = location.getText();
-//                == null ? searchFields.getNode(location.getText()).getID() : null;
+        String roomNum = location.getText() != null ? searchFields.getNode(location.getText()).getID() : null;
 
         String notes = urge + "|" + description.getText();
 

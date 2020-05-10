@@ -92,7 +92,7 @@ public class MedicationPaneController implements Initializable {
 		String dose = doseText.getText();
 		String patientFName = patFNameText.getText();
 		String patientLName = patLNameText.getText();
-		String roomNum = roomNumText.getText();
+		String roomNum = roomNumText.getText() != null ? sf.getNode(roomNumText.getText()).getID() : null;
 		String additionalInfo = addInfoText.getText();
 		String doctorID = "";
 		String patientID = "";

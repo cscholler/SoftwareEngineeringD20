@@ -85,7 +85,7 @@ public class LoginController {
 
 
         Stage stage;
-        String loginUser = null;
+
         String username = usernameField.getText();
         String password = passwordField.getText();
         incorrectText.setVisible(false);
@@ -98,49 +98,16 @@ public class LoginController {
 
         //closes login popup
         if (event.getSource() == btnCancel) {
-//            stage = (Stage) btnCancel.getScene().getWindow();
-//            stage.close();
-            Webcam webcam = Webcam.getDefault();
-            webcam.open();
-            BufferedImage image = webcam.getImage();
-            ImageIO.write(image, "PNG", new File("loginAttempt.png"));
-            webcam.close();
-
-            byte[] fileContent = FileUtils.readFileToByteArray(new File("loginAttempt.png"));
-            String encodedString = Base64.getEncoder().encodeToString(fileContent);
-
-            JSONObject json = new JSONObject();
-            json.put("image", encodedString);
-            json.put("gallery_name", "users");
+            stage = (Stage) btnCancel.getScene().getWindow();
+            stage.close();
 
 
-            MediaType mediaType = MediaType.parse("application/json");
-            RequestBody body = RequestBody.create(mediaType, json.toString());
-            log.info(json.toString());
 
-            Request request = new Request.Builder()
-                    .url("https://kairosapi-karios-v1.p.rapidapi.com/recognize")
-                    .post(body)
-                    .addHeader("x-rapidapi-host", "kairosapi-karios-v1.p.rapidapi.com")
-                    .addHeader("x-rapidapi-key", "e9d19d8ab2mshee9ab7d6044378bp106222jsnc2e9a579d919")
-                    .addHeader("content-type", "application/json")
-                    .addHeader("accept", "application/json")
-                    .build();
-
-            Response response = clientService.getClient().newCall(request).execute();
-
-            String result = response.body().string();
-            {
-                JSONObject obj = new JSONObject(result);
-                JSONArray arr = obj.getJSONArray("images");
-                for (int i = 0; i < arr.length(); i++) {
-                    JSONObject find = arr.getJSONObject(i);
-                    JSONObject transaction = find.getJSONObject("transaction");
-                    loginUser = transaction.getString("subject_id");
-                    System.out.println(loginUser);
-                }
-            }
-            loginManager.logInFR(loginUser);
+//            log.info(response.code()+"");
+//            log.info(response.body().string());
+        } else if (event.getSource() == login) {
+            loginManager.logIn(username, password);
+            if (loginManager.isAuthenticated()) {
                 ((Stage) login.getScene().getWindow()).close();
                 String view;
                 if (loginManager.getCurrentUser().getAcctType().equals("3")) {
@@ -149,29 +116,69 @@ public class LoginController {
                     view = "requests/UserLandingPage";
                 }
                 loaderHelper.setupScene(new Scene(loaderHelper.getFXMLLoader(view).load()));
-
-//            log.info(response.code()+"");
-//            log.info(response.body().string());
-            } else if (event.getSource() == login) {
-                loginManager.logIn(username, password);
-                if (loginManager.isAuthenticated()) {
-                    ((Stage) login.getScene().getWindow()).close();
-                    String view;
-                    if (loginManager.getCurrentUser().getAcctType().equals("3")) {
-                        view = "admin/AdminView";
-                    } else {
-                        view = "requests/UserLandingPage";
-                    }
-                    loaderHelper.setupScene(new Scene(loaderHelper.getFXMLLoader(view).load()));
-                } else {
-                    incorrectText.setVisible(true);
-                    fadeTransition.play();
-                }
-                usernameField.clear();
-                passwordField.clear();
-
+            } else {
+                incorrectText.setVisible(true);
+                fadeTransition.play();
             }
+            usernameField.clear();
+            passwordField.clear();
+
         }
     }
 
+    @FXML
+    private void facialRecognition() throws IOException {
 
+
+        String loginUser = null;
+        Webcam webcam = Webcam.getDefault();
+        webcam.open();
+        BufferedImage image = webcam.getImage();
+        ImageIO.write(image, "PNG", new File("loginAttempt.png"));
+        webcam.close();
+
+        byte[] fileContent = FileUtils.readFileToByteArray(new File("loginAttempt.png"));
+        String encodedString = Base64.getEncoder().encodeToString(fileContent);
+
+        JSONObject json = new JSONObject();
+        json.put("image", encodedString);
+        json.put("gallery_name", "users");
+
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, json.toString());
+        log.info(json.toString());
+
+        Request request = new Request.Builder()
+                .url("https://kairosapi-karios-v1.p.rapidapi.com/recognize")
+                .post(body)
+                .addHeader("x-rapidapi-host", "kairosapi-karios-v1.p.rapidapi.com")
+                .addHeader("x-rapidapi-key", "e9d19d8ab2mshee9ab7d6044378bp106222jsnc2e9a579d919")
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .build();
+
+        Response response = clientService.getClient().newCall(request).execute();
+
+        String result = response.body().string();
+        {
+            JSONObject obj = new JSONObject(result);
+            JSONArray arr = obj.getJSONArray("images");
+            for (int i = 0; i < arr.length(); i++) {
+                JSONObject find = arr.getJSONObject(i);
+                JSONObject transaction = find.getJSONObject("transaction");
+                loginUser = transaction.getString("subject_id");
+                System.out.println(loginUser);
+            }
+        }
+        loginManager.logInFR(loginUser);
+        ((Stage) login.getScene().getWindow()).close();
+        String view;
+        if (loginManager.getCurrentUser().getAcctType().equals("3")) {
+            view = "admin/AdminView";
+        } else {
+            view = "requests/UserLandingPage";
+        }
+        loaderHelper.setupScene(new Scene(loaderHelper.getFXMLLoader(view).load()));
+    }
+}
