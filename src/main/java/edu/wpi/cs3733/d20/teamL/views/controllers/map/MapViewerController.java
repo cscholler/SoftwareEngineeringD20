@@ -7,7 +7,7 @@ import com.google.cloud.texttospeech.v1.SsmlVoiceGender;
 import com.google.protobuf.ByteString;
 import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamL.App;
-import edu.wpi.cs3733.d20.teamL.services.accessability.ITextToSpeechService;
+import edu.wpi.cs3733.d20.teamL.services.speech.ITextToSpeechService;
 import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
@@ -125,10 +125,6 @@ public class MapViewerController {
 
     @FXML
     private void initialize() {
-    	ByteString audio1 = textToSpeech.convertTextToSpeech("Test 1", "en-US", SsmlVoiceGender.MALE);
-		ByteString audio2 = textToSpeech.convertTextToSpeech("Test 2", "en-US", SsmlVoiceGender.FEMALE);
-    	//textToSpeech.writeSpeechToFile(audio);
-
         timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
         timerManager.startTimer(() -> timerManager.updateDate(dateLabel), 0, 1000);
 

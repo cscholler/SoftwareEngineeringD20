@@ -66,7 +66,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 	 * Stops the database service
 	 */
 	@Override
-	public void stopService() {
+	protected void stopService() {
 		disconnect();
 	}
 
