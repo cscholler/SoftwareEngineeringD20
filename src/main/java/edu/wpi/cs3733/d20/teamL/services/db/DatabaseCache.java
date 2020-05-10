@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.util.*;
 
 import edu.wpi.cs3733.d20.teamL.entities.*;
+import edu.wpi.cs3733.d20.teamL.services.Service;
 import javafx.geometry.Point2D;
 
 import com.google.inject.Inject;
@@ -376,5 +377,16 @@ public class DatabaseCache implements IDatabaseCache {
     @Override
     public ArrayList<GiftDeliveryRequest> getAllGiftRequests() {
         return giftRequests;
+    }
+
+    @Override
+    public ArrayList<ServiceRequest> getAllSpecificRequest(String service) {
+        ArrayList<ServiceRequest> reqs = new ArrayList<>();
+        for(ServiceRequest req : requests) {
+            if(req.getService().equals(service)) {
+                reqs.add(req);
+            }
+        }
+        return reqs;
     }
 }

@@ -72,4 +72,7 @@ public interface IDatabaseCache {
 	ArrayList<ServiceRequest> getAllRequests();
 
 	ArrayList<GiftDeliveryRequest> getAllGiftRequests();
+
+	ArrayList<ServiceRequest> getAllSpecificRequest(String service);
+
 }

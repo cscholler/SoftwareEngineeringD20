@@ -82,6 +82,7 @@ public class AnalyticsController implements Initializable {
 
         requests = FXCollections.observableArrayList(cache.getAllRequests());
         giftRequests = FXCollections.observableArrayList(cache.getAllGiftRequests());
+        intiFreq();
         updateFreq();
 
         heatBox.setItems(heatOptions);
@@ -112,6 +113,14 @@ public class AnalyticsController implements Initializable {
 
         burnAllNodes(map.getCurrentFloor().getNodes());
         burnAllEdges(map.getEdges());
+    }
+
+    private void intiFreq() {
+        List<String> requests = Arrays.asList( "Gift Delivery", "Security", "Maintenance", "Internal Transportation", "External Transportation", "IT", "Interpreter", "Reflection Room","On-Call Bed");
+
+        for(String req : requests) {
+            freq.put(req, 0);
+        }
     }
 
     private void updateFreq() {
@@ -154,6 +163,52 @@ public class AnalyticsController implements Initializable {
 
     }
 
+    private Map<String, Integer> typeFreq (ArrayList<ServiceRequest> reqs) {
+        Map<String, Integer> frequencies = new ConcurrentHashMap<>();
+        for(ServiceRequest request : reqs) {
+            if(!frequencies.containsKey(request.getType())) {
+                frequencies.put(request.getType(), 1);
+            } else {
+                frequencies.replace(request.getType(), frequencies.get(request.getType())+1);
+            }
+        }
+        return frequencies;
+    }
+
+    private Map<String, Integer> totalGiftFreq (ArrayList<GiftDeliveryRequest> reqs) {
+        Map<String, Integer> frequencies = new ConcurrentHashMap<>();
+        for(GiftDeliveryRequest request : reqs) {
+            Map<String, Integer> oneGift = oneGiftFreq(request.getGifts());
+            for(String gift : oneGift.keySet()) {
+                if (!frequencies.containsKey(gift)) {
+                    frequencies.put(gift, oneGift.get(gift));
+                } else {
+                    frequencies.replace(gift, frequencies.get(gift) + oneGift.get(gift));
+                }
+            }
+        }
+        return frequencies;
+    }
+
+    private Map<String, Integer> oneGiftFreq (String gifts) {
+        Map<String, Integer> freqs = new ConcurrentHashMap<>();
+
+        while(gifts.length() > 1) {
+            int freq = Integer.parseInt(gifts.substring(1, gifts.indexOf("x")));
+            gifts = gifts.substring(gifts.indexOf("x") + 3);
+            String gift;
+            if(gifts.contains(",")) {
+                gift = gifts.substring(0, gifts.indexOf(","));
+                gifts = gifts.substring(gifts.indexOf(",") + 2);
+            } else {
+                gift = gifts.substring(0, gifts.indexOf("."));
+                gifts = gifts.substring(gifts.indexOf("."));
+            }
+            freqs.put(gift, freq);
+        }
+        return freqs;
+    }
+
     public void handleAllServiceReq() {
         //Hard-coded Test Data
         //TODO: Add actual data
@@ -176,21 +231,14 @@ public class AnalyticsController implements Initializable {
 
     @FXML
     void handleGiftPieChart() {
+        ArrayList<GiftDeliveryRequest> giftRequests = cache.getAllGiftRequests();
+        Map<String, Integer> freq = totalGiftFreq(giftRequests);
 
-        //TODO: Add actual data
-        ObservableList<PieChart.Data> giftData = FXCollections.observableArrayList(
-                new PieChart.Data("Roses", 10),
-                new PieChart.Data("Tulips", 10),
-                new PieChart.Data("Dandelions", 10),
-                new PieChart.Data("Building blocks", 10),
-                new PieChart.Data("Play-Do", 10),
-                new PieChart.Data("Hot Wheels", 10),
-                new PieChart.Data("LOTR", 10),
-                new PieChart.Data("Harry Potter", 10),
-                new PieChart.Data("Inheritance", 10),
-                new PieChart.Data("LORT films", 10),
-                new PieChart.Data("Star Wars", 10),
-                new PieChart.Data("Pulp Fiction", 10));
+        ObservableList<PieChart.Data> giftData = FXCollections.observableArrayList();
+        for (String type : freq.keySet()) {
+            giftData.add(new PieChart.Data(type, freq.get(type)));
+        }
+
 
         servicePieChart.setTitle("Gift Delivery Pie Chart");
         servicePieChart.setData(giftData);
@@ -198,11 +246,13 @@ public class AnalyticsController implements Initializable {
     }
     @FXML
     void handleSanitationPieChart() {
+        ArrayList<ServiceRequest> sanitation = cache.getAllSpecificRequest("Sanitation");
+        Map<String, Integer> freq = typeFreq(sanitation);
 
-        //TODO: Add actual data
-        ObservableList<PieChart.Data> sanitationData = FXCollections.observableArrayList(
-                new PieChart.Data("Biohazard", 10),
-                new PieChart.Data("Spill", 10));
+        ObservableList<PieChart.Data> sanitationData = FXCollections.observableArrayList();
+        for (String type : freq.keySet()) {
+            sanitationData.add(new PieChart.Data(type, freq.get(type)));
+        }
 
         servicePieChart.setTitle("Sanitation Pie Chart");
         servicePieChart.setData(sanitationData);
@@ -212,11 +262,13 @@ public class AnalyticsController implements Initializable {
     @FXML
     void handleSecurityPieChart() {
 
-        //TODO: Add actual data
-        ObservableList<PieChart.Data> securityData = FXCollections.observableArrayList(
-                new PieChart.Data("High Priority", 10),
-                new PieChart.Data("Medium Priority", 10),
-                new PieChart.Data("Low Priority", 10));
+        ArrayList<ServiceRequest> security = cache.getAllSpecificRequest("security");
+        Map<String, Integer> freq = typeFreq(security);
+
+        ObservableList<PieChart.Data> securityData = FXCollections.observableArrayList();
+        for (String type : freq.keySet()) {
+            securityData.add(new PieChart.Data(type, freq.get(type)));
+        }
 
         servicePieChart.setTitle("Security Pie Chart");
         servicePieChart.setData(securityData);
@@ -226,13 +278,13 @@ public class AnalyticsController implements Initializable {
     @FXML
     void handleMaintenancePieChart() {
 
-        //TODO: Add actual data
-        ObservableList<PieChart.Data> maintenanceData = FXCollections.observableArrayList(
-                new PieChart.Data("Plumbing", 10),
-                new PieChart.Data("Medical Equipment", 10),
-                new PieChart.Data("Electrical", 10),
-                new PieChart.Data("IT", 10),
-                new PieChart.Data("Other", 10));
+        ArrayList<ServiceRequest> maintenance = cache.getAllSpecificRequest("maintenance");
+        Map<String, Integer> freq = typeFreq(maintenance);
+
+        ObservableList<PieChart.Data> maintenanceData = FXCollections.observableArrayList();
+        for (String type : freq.keySet()) {
+            maintenanceData.add(new PieChart.Data(type, freq.get(type)));
+        }
 
         servicePieChart.setTitle("Maintenance Pie Chart");
         servicePieChart.setData(maintenanceData);
@@ -289,13 +341,13 @@ public class AnalyticsController implements Initializable {
     @FXML
     void handleITPieChart() {
 
-        //TODO: Add actual data
-        ObservableList<PieChart.Data> ITData = FXCollections.observableArrayList(
-                new PieChart.Data("General Help", 10),
-                new PieChart.Data("Data Backup", 10),
-                new PieChart.Data("Hardware/Software Issues", 10),
-                new PieChart.Data("Cyber Attacks", 10));
+        ArrayList<ServiceRequest> it = cache.getAllSpecificRequest("information technology");
+        Map<String, Integer> freq = typeFreq(it);
 
+        ObservableList<PieChart.Data> ITData = FXCollections.observableArrayList();
+        for (String type : freq.keySet()) {
+            ITData.add(new PieChart.Data(type, freq.get(type)));
+        }
         servicePieChart.setTitle("IT Pie Chart");
         servicePieChart.setData(ITData);
         servicePieChart.setStartAngle(90);
@@ -305,13 +357,13 @@ public class AnalyticsController implements Initializable {
     @FXML
     void handleInternalPieChart() {
 
-        //TODO: Add actual data
-        ObservableList<PieChart.Data> internalData = FXCollections.observableArrayList(
-                new PieChart.Data("Wheelchair w/ Operator", 10),
-                new PieChart.Data("Wheelchair w/o Operator", 10),
-                new PieChart.Data("Crutches", 10),
-                new PieChart.Data("Walker", 10),
-                new PieChart.Data("Gurnie", 10));
+        ArrayList<ServiceRequest> internal = cache.getAllSpecificRequest("internal transportation");
+        Map<String, Integer> freq = typeFreq(internal);
+
+        ObservableList<PieChart.Data> internalData = FXCollections.observableArrayList();
+        for (String type : freq.keySet()) {
+            internalData.add(new PieChart.Data(type, freq.get(type)));
+        }
 
         servicePieChart.setTitle("Internal Transportation Pie Chart");
         servicePieChart.setData(internalData);
@@ -321,12 +373,13 @@ public class AnalyticsController implements Initializable {
     @FXML
     void handleExternalPieChart() {
 
-        //TODO: Add actual data
-        ObservableList<PieChart.Data> externalData = FXCollections.observableArrayList(
-                new PieChart.Data("Taxi", 10),
-                new PieChart.Data("Bus", 10),
-                new PieChart.Data("Uber", 10),
-                new PieChart.Data("Lyft", 10));
+        ArrayList<ServiceRequest> external = cache.getAllSpecificRequest("external transportation");
+        Map<String, Integer> freq = typeFreq(external);
+
+        ObservableList<PieChart.Data> externalData = FXCollections.observableArrayList();
+        for (String type : freq.keySet()) {
+            externalData.add(new PieChart.Data(type, freq.get(type)));
+        }
 
         servicePieChart.setTitle("External Transportation Pie Chart");
         servicePieChart.setData(externalData);
@@ -336,13 +389,13 @@ public class AnalyticsController implements Initializable {
     @FXML
     void handleInterpreterPieChart() {
 
-        //TODO: Add actual data
-        ObservableList<PieChart.Data> interpreterData = FXCollections.observableArrayList(
-                new PieChart.Data("French", 10),
-                new PieChart.Data("Chinese", 10),
-                new PieChart.Data("American Sign Language", 10),
-                new PieChart.Data("Spanish", 10),
-                new PieChart.Data("Italian", 10));
+        ArrayList<ServiceRequest> interpreter = cache.getAllSpecificRequest("interpreter");
+        Map<String, Integer> freq = typeFreq(interpreter);
+
+        ObservableList<PieChart.Data> interpreterData = FXCollections.observableArrayList();
+        for (String type : freq.keySet()) {
+            interpreterData.add(new PieChart.Data(type, freq.get(type)));
+        }
 
         servicePieChart.setTitle("Interpreter Pie Chart");
         servicePieChart.setData(interpreterData);
