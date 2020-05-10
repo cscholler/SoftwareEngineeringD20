@@ -9,7 +9,7 @@
 
 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="567.0" prefWidth="190.0" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.logged_in.SideBarController">
    <children>
-      <HBox alignment="CENTER" prefHeight="109.0" prefWidth="158.0">
+      <HBox alignment="CENTER" minHeight="75.0" prefHeight="109.0" prefWidth="158.0">
          <children>
             <JFXButton contentDisplay="TOP" graphicTextGap="10.0" onAction="#addUserClicked" prefHeight="102.0" prefWidth="211.0" styleClass="sidebar-buttons-jfx" text="Add User" textFill="WHITE">
                <graphic>
@@ -25,7 +25,7 @@
             </JFXButton>
          </children>
       </HBox>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+      <HBox alignment="CENTER" minHeight="75.0" prefHeight="100.0" prefWidth="200.0">
          <children>
             <JFXButton contentDisplay="TOP" graphicTextGap="10.0" onAction="#changePasswordClicked" prefHeight="147.0" prefWidth="204.0" styleClass="sidebar-buttons-jfx" text="Change Password" textFill="WHITE">
                <graphic>
@@ -41,7 +41,7 @@
             </JFXButton>
          </children>
       </HBox>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+      <HBox alignment="CENTER" minHeight="75.0" prefHeight="100.0" prefWidth="200.0">
          <children>
             <JFXButton contentDisplay="TOP" graphicTextGap="10.0" onAction="#btnExportClicked" prefHeight="179.0" prefWidth="239.0" styleClass="sidebar-buttons-jfx" text="Export" textFill="WHITE">
                <graphic>
@@ -57,7 +57,7 @@
             </JFXButton>
          </children>
       </HBox>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+      <HBox alignment="CENTER" minHeight="75.0" prefHeight="100.0" prefWidth="200.0">
          <children>
             <JFXButton contentDisplay="TOP" graphicTextGap="10.0" onAction="#btnImportClicked" prefHeight="167.0" prefWidth="200.0" styleClass="sidebar-buttons-jfx" text="Import" textFill="WHITE">
                <graphic>
@@ -73,7 +73,7 @@
             </JFXButton>
          </children>
       </HBox>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+      <HBox alignment="CENTER" minHeight="75.0" prefHeight="100.0" prefWidth="200.0">
          <children>
             <JFXButton contentDisplay="TOP" graphicTextGap="10.0" onAction="#handleAnalytics" prefHeight="103.0" prefWidth="295.0" styleClass="sidebar-buttons-jfx" text="Anayltics" textFill="WHITE">
                <graphic>
@@ -88,7 +88,7 @@
                </font></JFXButton>
          </children>
       </HBox>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+      <HBox alignment="CENTER" minHeight="75.0" prefHeight="100.0" prefWidth="200.0">
          <children>
             <JFXButton fx:id="timeoutSettings" contentDisplay="TOP" graphicTextGap="10.0" onAction="#timeoutPressed" prefHeight="100.0" prefWidth="202.0" styleClass="sidebar-buttons-jfx" text="Timeout Settings" textFill="WHITE">
                <font>
@@ -103,12 +103,19 @@
                </graphic></JFXButton>
          </children>
       </HBox>
-      <HBox prefHeight="100.0" prefWidth="200.0">
+      <HBox minHeight="75.0" prefHeight="100.0" prefWidth="200.0">
          <children>
             <JFXButton contentDisplay="TOP" graphicTextGap="10.0" onAction="#rebuildDatabaseClicked" prefHeight="102.0" prefWidth="230.0" styleClass="sidebar-buttons-jfx" text="Rebuild Database" textFill="WHITE">
                <font>
                   <Font size="15.0" />
                </font>
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../assets/analytics/nuke.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </JFXButton>
          </children>
       </HBox>
