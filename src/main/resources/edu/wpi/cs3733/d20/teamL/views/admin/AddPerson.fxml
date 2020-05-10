@@ -19,7 +19,7 @@
    <center>
       <JFXTabPane tabMaxWidth="30.0" BorderPane.alignment="CENTER">
          <tabs>
-            <Tab text="Add Staff">
+            <Tab style="-fx-pref-width: 180;" text="Add Staff">
               <content>
                   <BorderPane>
                      <center>
@@ -29,7 +29,7 @@
                                  <children>
                                     <VBox spacing="30.0">
                                        <children>
-                                          <JFXTextField fx:id="sFname" promptText="First Name " styleClass="text-field-jfx" />
+                                          <JFXTextField fx:id="sFName" promptText="First Name " styleClass="text-field-jfx" />
                                           <JFXTextField fx:id="sLName" promptText="Last Name " styleClass="text-field-jfx" />
                                        </children>
                                     </VBox>
@@ -42,7 +42,7 @@
                                                 <Insets />
                                              </VBox.margin>
                                              <children>
-                                                <JFXComboBox fx:id="languages" promptText="Languages" styleClass="combo-box-jfx" />
+                                                <JFXComboBox fx:id="languages" disable="true" promptText="Languages" styleClass="combo-box-jfx" />
                                              </children>
                                           </HBox>
                                        </children>
@@ -86,7 +86,7 @@
                   </BorderPane>
               </content>
             </Tab>
-            <Tab text="Add Doctor">
+            <Tab style="-fx-pref-width: 180;" text="Add Doctor">
                <content>
                   <BorderPane>
                      <center>
@@ -97,12 +97,12 @@
                                     <JFXTextField fx:id="doctorFN" promptText="Doctor First Name" styleClass="text-field-jfx" />
                                     <JFXTextField fx:id="doctorLN" promptText="Doctor Last Name" styleClass="text-field-jfx" />
                                     <JFXTextField fx:id="doctorUn" promptText="Username" styleClass="text-field-jfx" />
-                                    <JFXTextField fx:id="doctorPw" promptText="Password" styleClass="text-field-jfx" />
+                                    <JFXPasswordField fx:id="doctorPw" promptText="Password" styleClass="text-field-jfx" />
                                  </children>
                               </VBox>
                               <VBox alignment="CENTER" prefHeight="563.0" prefWidth="300.0" spacing="30.0">
                                  <children>
-                                    <JFXTextField fx:id="docID" promptText="Doctor ID" styleClass="text-field-jfx" />
+                                    <JFXTextField fx:id="doctorIDText" promptText="Doctor ID" styleClass="text-field-jfx" />
                                     <JFXTextField fx:id="officeText" onKeyTyped="#autocomplete" promptText="Office " styleClass="text-field-jfx" />
                                     <JFXTextArea fx:id="addlInfoText" promptText="Additonal Information" styleClass="text-area-jfx" />
                                  </children>
@@ -122,7 +122,7 @@
                   </BorderPane>
                </content>
             </Tab>
-            <Tab text="Add Nurse">
+            <Tab style="-fx-pref-width: 180;" text="Add Nurse">
               <content>
                   <BorderPane>
                      <center>
@@ -130,31 +130,32 @@
                            <children>
                               <VBox alignment="CENTER" prefHeight="200.0" prefWidth="300.0" spacing="30.0">
                                  <children>
-                                    <JFXTextField fx:id="nFname" promptText="First Name" styleClass="text-field-jfx" />
+                                    <JFXTextField fx:id="nFName" promptText="First Name" styleClass="text-field-jfx" />
                                     <JFXTextField fx:id="nLName" promptText="Last Name" styleClass="text-field-jfx" />
                                  </children>
                               </VBox>
                               <VBox alignment="CENTER" prefHeight="200.0" prefWidth="300.0" spacing="30.0">
                                  <children>
                                     <JFXTextField fx:id="nUn" promptText="Username" styleClass="text-field-jfx" />
-                                    <JFXTextField fx:id="nPw" promptText="Password" styleClass="text-field-jfx" />
+                                    <JFXPasswordField fx:id="nPw" promptText="Password" styleClass="text-field-jfx" />
                                  </children>
                               </VBox>
                            </children>
                         </HBox>
                      </center>
                      <bottom>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
+                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
                            <children>
-                              <JFXButton onAction="#setBtnCancel" styleClass="cancel-button-jfx" text="Close" />
-                              <JFXButton onAction="#submitNurse" styleClass="save-button-jfx" text="Submit" />
+                              <JFXButton fx:id="btnCancel2" onAction="#setBtnCancel" styleClass="cancel-button-jfx" text="Close" />
+                              <JFXButton fx:id="btnSubmit1" onAction="#submitNurse" styleClass="save-button-jfx" text="Submit" />
+                              <Label fx:id="confirmation1" styleClass="submission-failed-label-fx" />
                            </children>
                         </HBox>
                      </bottom>
                   </BorderPane>
               </content>
             </Tab>
-            <Tab text="Add Admin">
+            <Tab style="-fx-pref-width: 180;" text="Add Admin">
               <content>
                   <BorderPane>
                      <center>
@@ -169,24 +170,25 @@
                               <VBox alignment="CENTER" prefHeight="200.0" prefWidth="300.0" spacing="30.0">
                                  <children>
                                     <JFXTextField fx:id="aUn" promptText="Username" styleClass="text-field-jfx" />
-                                    <JFXTextField fx:id="aPw" promptText="Password" styleClass="text-field-jfx" />
+                                    <JFXPasswordField fx:id="aPw" promptText="Password" styleClass="text-field-jfx" />
                                  </children>
                               </VBox>
                            </children>
                         </HBox>
                      </center>
                      <bottom>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
+                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
                            <children>
-                              <JFXButton onAction="#setBtnCancel" styleClass="cancel-button-jfx" text="Close" />
-                              <JFXButton onAction="#submitAdmin" styleClass="save-button-jfx" text="Submit" />
+                              <JFXButton fx:id="btnCancel3" onAction="#setBtnCancel" styleClass="cancel-button-jfx" text="Close" />
+                              <JFXButton fx:id="btnSubmit2" onAction="#submitAdmin" styleClass="save-button-jfx" text="Submit" />
+                              <Label fx:id="confirmation2" styleClass="submission-failed-label-fx" />
                            </children>
                         </HBox>
                      </bottom>
                   </BorderPane>
               </content>
             </Tab>
-            <Tab text="Add Staff">
+            <Tab style="-fx-pref-width: 180;" text="Add Manager">
                <content>
                   <BorderPane>
                      <center>
