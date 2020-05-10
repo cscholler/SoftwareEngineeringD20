@@ -293,8 +293,6 @@ public class MapViewerController {
 //            textDirNode.setDisable(false);
 //            textDirNode.setVisible(true);
         }
-
-        System.out.println("Here");
         hideAccordion();
         hideTextualDirections();
         showTextualDirections();
@@ -673,10 +671,9 @@ public class MapViewerController {
 
     @FXML
     private void goToSelected() {
+		AsyncTaskManager.newTask(() -> textToSpeech.playSpeech(textToSpeech.convertTextToSpeech(dirList.getSelectionModel().getSelectedItem().toString(), "en-US", SsmlVoiceGender.MALE)));
         int index = dirList.getSelectionModel().getSelectedIndex();
-
         ArrayList<Node> subpath = path.getSubpaths().get(index);
-        AsyncTaskManager.newTask(() -> textToSpeech.playSpeech(textToSpeech.convertTextToSpeech(dirList.getSelectionModel().getSelectedItem().toString(), "en-US", SsmlVoiceGender.MALE)));
         if (dirList.getSelectionModel().getSelectedItem().toString().contains("Navigate")) {
             if (subpath.get(0).getBuilding().equals("Faulkner")) {
                 map.setBuilding(new Building("Google"));
