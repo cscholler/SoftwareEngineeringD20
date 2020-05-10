@@ -660,24 +660,8 @@ public class MapViewerController {
                 "Algorithms Specialist: Cameron Jacobson\n" +
                 "UI Engineer: Winnie Ly\n" +
                 "Documentation Analyst: Zaiyang Zhong\n\n" +
-                "Thank you Brigham and Women's Hospital \nand Andrew Shinn for your time and input.\n\n\n" +
-                "Credit \n\n" +
-                "AppointmentRequest\n" +
-                "jfoenix\n" +
-                "mysql\n" +
-                "apache.derby\n" +
-                "apache.commons\n" +
-                "slf4j\n" +
-                "google.inject\n" +
-                "twilio.sdk        \n" +
-                "sendgrid\n" +
-                "github.kenglxn.QRGen\n" +
-                "jetbrains\n" +
-                "github.kenglxn.QRGen\n" +
-                "mindrot\n" +
-                "amazon.awssdk\n" +
-                "junit.jupiter\n" +
-                "testfx"));
+                "Thank you Brigham and Women's Hospital \nand Andrew Shinn for your time and input.\n\n\n"
+                ));
 
         JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
         JFXButton btnDone = new JFXButton("Done");
