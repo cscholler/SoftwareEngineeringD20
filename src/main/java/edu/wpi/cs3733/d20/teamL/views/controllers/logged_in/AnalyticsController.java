@@ -46,7 +46,7 @@ public class AnalyticsController implements Initializable {
     @FXML
     MapPane map;
     @FXML
-    private JFXComboBox<String> timeBox, buildingChooser;
+    private JFXComboBox<String> timeBox, buildingChooser, heatBox;
     @FXML
     private BarChart<String, Number> ServiceReqHisto;
     @FXML
@@ -60,7 +60,8 @@ public class AnalyticsController implements Initializable {
     private ObservableList<String> timeOptions = FXCollections.observableArrayList("Any time", "Past hour", "Past 24 hours", "Past month", "Past year");
     private ObservableList<ServiceRequest> requests;
     private ObservableList<GiftDeliveryRequest> giftRequests;
-
+    ObservableList<String> heatOptions = FXCollections.observableArrayList("Pathfinding", "Gift Delivery", "Security", "Maintenance", "Internal Transportation",
+            "External Transportation", "Medicine", "Sanitation", "IT", "Interpreter", "Reflection Room", "On-Call Bed", "All Service Request Locations");
     private Map<String, Integer> freq = new ConcurrentHashMap<>();
 
     private String defaultBuilding = "Faulkner";
@@ -83,6 +84,7 @@ public class AnalyticsController implements Initializable {
         giftRequests = FXCollections.observableArrayList(cache.getAllGiftRequests());
         updateFreq();
 
+        heatBox.setItems(heatOptions);
         timeBox.setItems(timeOptions);
         setServiceReqHisto();
         handleAllServiceReq();
@@ -364,6 +366,11 @@ public class AnalyticsController implements Initializable {
         //if (!path.getPathNodes().isEmpty()) highLightPath();
     }
 
+    @FXML
+    private void switchHeatMap(ActionEvent event) {
+
+    }
+
     private void generateFloorButtons() {
         map.generateFloorButtons(floorSelector, this::handleFloor);
     }
@@ -418,7 +425,8 @@ public class AnalyticsController implements Initializable {
             NodeGUI nodeGUI =  map.getNodeGUI(node);
             if(node.getFreq() > 0) {
                 nodeGUI.setVisible(true);
-                nodeGUI.setHighlightColor(Color.RED);
+                //nodeGUI.setHighlightColor(Color.RED);
+                nodeGUI.setGradientNode();
                 nodeGUI.setHighlightThickness(node.getFreq());
                 nodeGUI.setHighlighted(true);
             } else {
