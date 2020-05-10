@@ -107,19 +107,28 @@
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <JFXTextField fx:id="expectationsText" alignment="TOP_LEFT" maxHeight="60.0" maxWidth="313.0" minHeight="90.0" minWidth="480.0" prefHeight="60.0" prefWidth="283.0" styleClass="text-field-jfx" />
+                  <JFXTextField fx:id="expectationsText" alignment="TOP_LEFT" maxHeight="60.0" maxWidth="313.0" minHeight="90.0" minWidth="480.0" prefHeight="60.0" prefWidth="283.0" promptText="Enter your response here" style="-fx-background-color: #dcdcdc;">
+                     <font>
+                        <Font size="15.0" />
+                     </font></JFXTextField>
                   <Label text="What do you like most about the application?">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <JFXTextField fx:id="applicationText" alignment="TOP_LEFT" maxHeight="92.0" maxWidth="504.0" minHeight="90.0" minWidth="480.0" prefHeight="92.0" prefWidth="504.0" styleClass="text-field-jfx" />
+                  <JFXTextField fx:id="applicationText" alignment="TOP_LEFT" maxHeight="92.0" maxWidth="504.0" minHeight="90.0" minWidth="480.0" prefHeight="92.0" prefWidth="504.0" promptText="Enter your response here" style="-fx-background-color: #dcdcdc;">
+                     <font>
+                        <Font size="15.0" />
+                     </font></JFXTextField>
                   <Label text="Is there anything else you would like us to know about your experience?">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <JFXTextField fx:id="otherText" alignment="TOP_LEFT" maxHeight="165.0" maxWidth="480.0" minHeight="140.0" minWidth="480.0" prefHeight="165.0" prefWidth="480.0" styleClass="text-field-jfx" />
+                  <JFXTextField fx:id="otherText" alignment="TOP_LEFT" maxHeight="165.0" maxWidth="480.0" minHeight="140.0" minWidth="480.0" prefHeight="165.0" prefWidth="480.0" promptText="Enter your response here" style="-fx-background-color: #dcdcdc;">
+                     <font>
+                        <Font size="15.0" />
+                     </font></JFXTextField>
                </children>
                <HBox.margin>
                   <Insets left="10.0" top="20.0" />
@@ -131,8 +140,19 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="900.0" spacing="30.0" BorderPane.alignment="CENTER">
          <children>
-            <JFXButton fx:id="btnCancel" buttonType="RAISED" onAction="#handleCancel" styleClass="cancel-button-jfx" text="Cancel" />
+            <JFXButton fx:id="btnCancel" buttonType="RAISED" onAction="#handleCancel" styleClass="cancel-button-jfx" text="Cancel">
+               <HBox.margin>
+                  <Insets left="270.0" />
+               </HBox.margin></JFXButton>
             <JFXButton fx:id="btnSubmit" buttonType="RAISED" onAction="#handleSubmit" styleClass="save-button-jfx" text="Submit" />
+            <Label fx:id="submissionLabel" minHeight="20.0" minWidth="250.0" text="Please fill out all fields" textFill="RED" visible="false">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
          </children>
       </HBox>
    </bottom>
