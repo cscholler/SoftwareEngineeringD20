@@ -116,6 +116,15 @@
                         <Insets />
                      </StackPane.margin>
                   </JFXButton>
+                  <JFXButton fx:id="btnCredit" buttonType="RAISED" graphicTextGap="0.0" onAction="#handleCredit" prefHeight="37.0" prefWidth="210.0" style="-fx-background-color: transparent;" text="Credit">
+                     <graphic>
+                        <ImageView fitHeight="47.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" translateX="-5.0">
+                           <image>
+                              <Image url="@../../assets/home_page/white-info-icon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
                </children>
             </StackPane>
          </children>

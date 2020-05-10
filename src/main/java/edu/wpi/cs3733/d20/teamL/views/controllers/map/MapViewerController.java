@@ -597,19 +597,46 @@ public class MapViewerController {
         }
     }
 
-//    // credit page
-//    /**
-//     * Displays the Creadit page
-//     */
-//    @FXML
-//    public void handleCredit(){
-//        JFXDialogLayout content = new JFXDialogLayout();
-//        content.setHeading(new Text("Credit"));
-//        content.setBody(new Text(" lists the APIs you used in the application \n and the teams that created them \n+list the external APIs that you used such as Google Maps.\n"));
-//        JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
-//    }
+    /**
+     * Displays the credit page of the application
+     */
+    @FXML
+    public void handleCredit() {
+
+        JFXDialogLayout content = new JFXDialogLayout();
+        content.setHeading(new Text("Credit"));
+        content.setBody(new Text(
+                "AppointmentRequest\n" +
+                "jfoenix\n" +
+                "mysql\n" +
+                "apache.derby\n" +
+                "apache.commons\n" +
+                "slf4j\n" +
+                "google.inject\n" +
+                "twilio.sdk        \n" +
+                "sendgrid\n" +
+                "github.kenglxn.QRGen\n" +
+                "jetbrains\n" +
+                "github.kenglxn.QRGen\n" +
+                "mindrot\n" +
+                "amazon.awssdk\n" +
+                "junit.jupiter\n" +
+                "testfx"));
+
+        JFXDialog dialog2 = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
+        JFXButton btnDone = new JFXButton("Done");
 
 
+        dialog2.show();
+        btnDone.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                dialog2.close();
+            }
+        });
+        content.setActions(btnDone);
+        dialog2.show();
+    }
 
 
     /**
@@ -651,10 +678,12 @@ public class MapViewerController {
                 "amazon.awssdk\n" +
                 "junit.jupiter\n" +
                 "testfx"));
+
         JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
+        JFXButton btnDone = new JFXButton("Done");
+
 
         dialog.show();
-        JFXButton btnDone = new JFXButton("Done");
         btnDone.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -664,7 +693,6 @@ public class MapViewerController {
         content.setActions(btnDone);
         dialog.show();
     }
-
     /**
      * Changes starting location with destination and vice-versa.
      */
