@@ -101,7 +101,7 @@ public class AnalyticsController implements Initializable {
         map.init();
 
         burnAllNodes(map.getCurrentFloor().getNodes());
-        burnAllEdges(map.getCurrentFloor().getEdges());
+        burnAllEdges(map.getEdges());
     }
 
     @FXML
@@ -339,6 +339,9 @@ public class AnalyticsController implements Initializable {
         servicePieChart.setStartAngle(90);
     }
 
+
+    // -------------------------- HEAT MAP CODE ------------------------- //
+
     @FXML
     private void switchBuilding() {
         String selected = buildingChooser.getSelectionModel().getSelectedItem();
@@ -389,7 +392,7 @@ public class AnalyticsController implements Initializable {
             }
         }
         burnAllNodes(map.getCurrentFloor().getNodes());
-        burnAllEdges(map.getCurrentFloor().getEdges());
+        burnAllEdges(map.getEdges());
     }
 
     @FXML
@@ -416,13 +419,13 @@ public class AnalyticsController implements Initializable {
         }
     }
 
-    private void burnAllEdges(Collection<Edge> edges) {
-        for(Edge edge : edges) {
-            if(edge.getFreq() > 0) {
-                EdgeGUI edgeGUI = map.getEdgeGUI(edge);
+    private void burnAllEdges(Collection<EdgeGUI> edges) {
+        for(EdgeGUI edgeGUI : edges) {
+            edgeGUI.setVisible(true);
+            if(edgeGUI.getEdge().getFreq() > 0) {
                 if(edgeGUI != null) {
                     edgeGUI.setHighlightColor(Color.RED);
-                    edgeGUI.setHighlightThickness(edge.getFreq());
+                    edgeGUI.setHighlightThickness(edgeGUI.getEdge().getFreq());
                     edgeGUI.setHighlighted(true);
                 }
             }

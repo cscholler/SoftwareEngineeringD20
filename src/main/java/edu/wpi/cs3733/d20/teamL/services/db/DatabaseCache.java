@@ -26,6 +26,8 @@ public class DatabaseCache implements IDatabaseCache {
     private ArrayList<Edge> deletedEdges = new ArrayList<>();
     private ArrayList<Edge> editedEdges = new ArrayList<>();
 
+    private ArrayList<ArrayList<String>> requests = new ArrayList<>();
+
     @Inject
     private IDatabaseService db;
 
@@ -338,4 +340,17 @@ public class DatabaseCache implements IDatabaseCache {
 	public void clearDoctorCache() {
     	doctorCache.clear();
 	}
+
+	/*@Override
+	public void cacheRequestsFromDB() {
+        ResultSet resSet = db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_SERVICE_REQUESTS));
+        //clearNodeCache();
+        ArrayList<ArrayList<String>> requestData = db.getTableFromResultSet(resSet);
+
+        for (ArrayList<String> row : nodeData) {
+            nodeCache.add(new Node(row.get(0),
+                    new Point2D(Double.parseDouble(row.get(1)), Double.parseDouble(row.get(2))),
+                    row.get(3), row.get(4), row.get(5), row.get(6), row.get(7), Integer.parseInt(row.get(8))));
+        }
+    }*/
 }

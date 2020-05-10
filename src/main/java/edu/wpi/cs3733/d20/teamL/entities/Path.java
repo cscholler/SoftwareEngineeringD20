@@ -124,8 +124,11 @@ public class Path implements Iterable<Node> {
 
         for(int i = 0; i < pathNodes.size() - 1; i++) {
             Edge edge = pathNodes.get(i).getEdge(pathNodes.get(i+1));
+            Edge adjEdge = edge.getDestination().getEdge(edge.getSource());
             edge.setFreq(edge.getFreq()+1);
+            adjEdge.setFreq(adjEdge.getFreq()+1);
             editedEdges.add(edge);
+            editedEdges.add(adjEdge);
             if(!edge.getSource().getBuilding().equals(edge.getDestination().getBuilding())) {
                 if(transportation.equals("driving")) time += 10000;
                 else if (transportation.equals("walking")) time += 100000;
