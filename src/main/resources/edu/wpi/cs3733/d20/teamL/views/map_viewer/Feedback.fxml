@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXRadioButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -27,65 +27,63 @@
       </HBox>
    </top>
    <center>
-      <HBox prefHeight="456.0" prefWidth="538.0" BorderPane.alignment="CENTER">
+      <HBox prefHeight="193.0" prefWidth="900.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="436.0" prefWidth="400.0" spacing="20.0">
+            <VBox prefHeight="489.0" prefWidth="434.0" spacing="20.0">
                <children>
                   <Label text="Did we meet your expectations?">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Label>
+                  <JFXCheckBox />
+                  <JFXCheckBox />
                   <Label prefHeight="21.0" prefWidth="322.0" text="Was it easy to find what you were looking for?">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <Label text="How could we have exceeded your expectations?">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
-                  <JFXTextField alignment="TOP_LEFT" minHeight="125.0" minWidth="400.0" prefHeight="102.0" prefWidth="563.0" styleClass="text-field-jfx" />
-                  <Label text="What do you like most about the application?">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
-                  <JFXTextField alignment="TOP_LEFT" maxHeight="125.0" maxWidth="400.0" minHeight="125.0" minWidth="400.0" prefHeight="125.0" prefWidth="400.0" styleClass="text-field-jfx" />
+                  <JFXCheckBox />
+                  <JFXCheckBox />
                </children>
                <HBox.margin>
                   <Insets left="20.0" top="20.0" />
                </HBox.margin>
             </VBox>
-            <JFXRadioButton text="Yes">
+            <VBox prefHeight="421.0" prefWidth="569.0" spacing="20.0">
+               <children>
+                  <Label text="How could we have exceeded your expectations?">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <JFXTextField alignment="TOP_LEFT" maxHeight="60.0" maxWidth="313.0" minHeight="60.0" minWidth="283.0" prefHeight="60.0" prefWidth="283.0" styleClass="text-field-jfx" />
+                  <Label text="What do you like most about the application?">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <JFXTextField alignment="TOP_LEFT" maxHeight="92.0" maxWidth="504.0" minHeight="92.0" minWidth="264.0" prefHeight="92.0" prefWidth="504.0" styleClass="text-field-jfx" />
+                  <Label text="Is there anything else you would like us to know about your experience?">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <JFXTextField maxHeight="65.0" maxWidth="368.0" prefHeight="65.0" prefWidth="368.0" styleClass="text-field-jfx" />
+               </children>
                <HBox.margin>
-                  <Insets top="20.0" />
+                  <Insets left="10.0" />
                </HBox.margin>
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </JFXRadioButton>
-            <JFXRadioButton text="No">
-               <font>
-                  <Font size="15.0" />
-               </font>
-               <HBox.margin>
-                  <Insets left="30.0" top="20.0" />
-               </HBox.margin>
-            </JFXRadioButton>
+            </VBox>
          </children>
       </HBox>
    </center>
    <bottom>
-      <HBox alignment="CENTER" prefHeight="109.0" prefWidth="1280.0" spacing="30.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="900.0" spacing="30.0" BorderPane.alignment="CENTER">
          <children>
             <JFXButton />
             <JFXButton />
          </children>
       </HBox>
    </bottom>
-   <right>
-      <HBox prefHeight="421.0" prefWidth="305.0" BorderPane.alignment="CENTER" />
-   </right>
 </BorderPane>
