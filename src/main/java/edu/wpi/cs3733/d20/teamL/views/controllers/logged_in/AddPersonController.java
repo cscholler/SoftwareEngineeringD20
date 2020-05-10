@@ -2,9 +2,6 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.logged_in;
 
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.github.sarxos.webcam.Webcam;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.google.inject.Inject;
 import com.jfoenix.controls.*;
 import com.squareup.mimecraft.Multipart;
@@ -189,7 +186,6 @@ public class AddPersonController implements Initializable {
                 lblConfirmation.setText("Submission failed");
             } else if (rows == 1) {
 
-                String imagePath = firstName + "." + lastName + ".png";
                 Webcam webcam = Webcam.getDefault();
                 webcam.open();
                 BufferedImage image = webcam.getImage();
@@ -197,71 +193,11 @@ public class AddPersonController implements Initializable {
 
                 byte[] fileContent = FileUtils.readFileToByteArray(new File("newUser"));
                 String encodedString = Base64.getEncoder().encodeToString(fileContent);
-//                OkHttpClient client = new OkHttpClient();
-//
-//                MediaType mediaType = MediaType.parse("application/json");
-//                RequestBody body = RequestBody.create(mediaType, "{  \"image\": image,  \"gallery_name\": MyGallery,  \"subject_id\": Elizabeth}");
-//                Request request = new Request.Builder()
-//                        .url("https://kairosapi-karios-v1.p.rapidapi.com/enroll")
-//                        .post(body)
-//                        .addHeader("x-rapidapi-host", "kairosapi-karios-v1.p.rapidapi.com")
-//                        .addHeader("x-rapidapi-key", "e9d19d8ab2mshee9ab7d6044378bp106222jsnc2e9a579d919")
-//                        .addHeader("content-type", "application/json")
-//                        .addHeader("accept", "application/json")
-//                        .build();
-//
-//                Response response = client.newCall(request).execute();
-//                System.out.println(response.body().string());
 
-// avoid creating several instances, should be singleon
-//                OkHttpClient client = new OkHttpClient();
-//
-//                MediaType mediaType = MediaType.parse("application/json");
-//               // RequestBody body = RequestBody.create(mediaType, "{  \"image\": \"https://i.pinimg.com/736x/ea/f2/2e/eaf22e6a189f76ed24054e2ca7feb00f.jpg\",  \"gallery_name\": \"MyGallery\",  \"subject_id\": \"Elizabeth\"}");
-//
-//                RequestBody body = new MultipartBuilder()
-//                        .addFormDataPart("gallery_name", "MyGallery")
-//                        .addFormDataPart("subject_id", lastName + firstName)
-//                        .addFormDataPart("image", imagePath,
-//                                RequestBody.create( MediaType.parse("image/png"), new File(imagePath)))
-//                        .build();
-//
-//
-//                Request request = new Request.Builder()
-//                        .url("https://kairosapi-karios-v1.p.rapidapi.com/enroll")
-//                        .post(body)
-//                        .addHeader("x-rapidapi-host", "kairosapi-karios-v1.p.rapidapi.com")
-//                        .addHeader("x-rapidapi-key", "e9d19d8ab2mshee9ab7d6044378bp106222jsnc2e9a579d919")
-//                        .addHeader("content-type", "application/json")
-//                        .addHeader("accept", "application/json")
-//                        .build();
-
-
-//                             OkHttpClient client = new OkHttpClient();
-//
-//                JSONObject json = new JSONObject();
-//                json.put("image:", encodedString);
-//                json.put("gallery_name:", "MyGallery");
-//                json.put("subject_id:", lastName + "," + firstName);
-//
-//                RequestBody body = RequestBody.create(
-//                        MediaType.parse("application/json"), json.toString());
-//
-//                Request request = new Request.Builder()
-//                        .url("https://kairosapi-karios-v1.p.rapidapi.com/enroll")
-//                        .post(body)
-//                        .addHeader("x-rapidapi-host", "kairosapi-karios-v1.p.rapidapi.com")
-//                        .addHeader("x-rapidapi-key", "47cff1c2f7msh808be5a504f1a49p175068jsn3e1302e95cb5")
-//                        .addHeader("content-type", "application/json")
-//                        .addHeader("accept", "application/json")
-//                        .build();
-//
-//                Call call = client.newCall(request);
-//                Response response = call.execute();
                 JSONObject json = new JSONObject();
                 json.put("image", encodedString);
-                json.put("gallery_name", "MyGallery");
-                json.put("subject_id", lastName + "," + firstName);
+                json.put("gallery_name", "users");
+                json.put("subject_id", username);
 
                 OkHttpClient client = new OkHttpClient();
 
@@ -282,18 +218,6 @@ public class AddPersonController implements Initializable {
                 log.info(response.body().string());
 
 
-//
-//                Client client = ClientBuilder.newClient();
-//                Entity payload = Entity.json("{  \"image\": \"https://media.kairos.com/kairos-team1.jpg\",  \"subject_id\": \"kairos-team\",  \"gallery_name\": \"MyGallery\",  \"multiple_faces\": \"false\"}");
-//                Response response = client.target("https://api.kairos.com/enroll")
-//                        .request(MediaType.APPLICATION_JSON_TYPE)
-//                        .header("app_id", "d2ac37b0")
-//                        .header("app_key", "5c66fbe00e182e47dc3be8cf73507c4a")
-//                        .post(payload);
-//
-//                System.out.println("status: " + response.getStatus());
-//                System.out.println("headers: " + response.getHeaders());
-//                System.out.println("body:" + response.readEntity(String.class));
 
 
                 lblConfirmation.setTextFill(Color.BLACK);
@@ -415,18 +339,7 @@ public class AddPersonController implements Initializable {
     }
 
 
-    public void parseJson(String json) {
-        JsonObject jsonObject = new JsonParser().parse(json).getAsJsonObject();
 
-        String pageName = jsonObject.getAsJsonObject("pageInfo").get("pageName").getAsString();
-        System.out.println(pageName);
-
-        JsonArray arr = jsonObject.getAsJsonArray("posts");
-        for (int i = 0; i < arr.size(); i++) {
-            String post_id = arr.get(i).getAsJsonObject().get("post_id").getAsString();
-            System.out.println(post_id);
-        }
-    }
 }
 
 

@@ -23,5 +23,6 @@ public class ServiceProvider extends AbstractModule {
 		bind(ILoginManager.class).to(LoginManager.class).asEagerSingleton();
 		bind(IMessengerService.class).to(MessengerService.class).asEagerSingleton();
 		bind(IRequestHandlerService.class).to(RequestHandlerService.class).asEagerSingleton();
+		bind(IHTTPClientService.class).to(HTTPClientService.class).asEagerSingleton();
 	}
 }
