@@ -225,6 +225,7 @@ public class MapViewerController {
 
         btnScreening.setText("Think you have COVID-19?");
         btnScreening.setStyle("-fx-font-weight: bold");
+        btnScreening.setMinWidth(300);
     }
 
     private void generateFloorButtons() {

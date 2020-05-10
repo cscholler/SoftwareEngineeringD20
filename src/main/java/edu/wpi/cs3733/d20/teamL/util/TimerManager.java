@@ -91,7 +91,7 @@ public class TimerManager {
 				try {
 					String[] currentWeather = getCurrentWeather();
 						tempLabel.setText(currentWeather[0].substring(0,currentWeather[0].indexOf('.')) + "\u00B0 F");
-						weatherPic.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/weather/" + currentWeather[1] + ".png", 0, 45, true, false, true));
+						weatherPic.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/weather/" + currentWeather[1] + ".png", 0, 100, true, true, true));
 						weatherPic.setFitHeight(45);
 				} catch (IOException ex) {
 					log.error("Encountered IOException", ex);
