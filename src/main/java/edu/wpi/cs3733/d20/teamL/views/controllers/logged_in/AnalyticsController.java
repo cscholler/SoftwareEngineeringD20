@@ -53,8 +53,6 @@ public class AnalyticsController implements Initializable {
     @FXML
     private BarChart<String, Number> ServiceReqHisto;
     @FXML
-    private BarChart<?, ?> ServiceReqHisto;
-    @FXML
     private PieChart servicePieChart;
     @FXML
     VBox floorSelector;
@@ -406,11 +404,14 @@ public class AnalyticsController implements Initializable {
 
     private void burnAllNodes(Collection<Node> nodes) {
         for(Node node : nodes) {
+            NodeGUI nodeGUI =  map.getNodeGUI(node);
             if(node.getFreq() > 0) {
-                NodeGUI nodeGUI =  map.getNodeGUI(node);
+                nodeGUI.setVisible(true);
                 nodeGUI.setHighlightColor(Color.RED);
                 nodeGUI.setHighlightThickness(node.getFreq());
                 nodeGUI.setHighlighted(true);
+            } else {
+                nodeGUI.setVisible(false);
             }
         }
     }
