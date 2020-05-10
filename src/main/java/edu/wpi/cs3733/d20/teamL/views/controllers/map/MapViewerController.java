@@ -71,7 +71,9 @@ public class MapViewerController {
     @FXML
     private JFXComboBox<String> buildingChooser;
     @FXML
-    private Label timeLabel, dateLabel;
+    private Label timeLabel, dateLabel, currentTempLabel;
+    @FXML
+    private ImageView currentWeatherIcon;
 
     @Inject
     private IDatabaseCache cache;
@@ -127,6 +129,7 @@ public class MapViewerController {
 
         timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
         timerManager.startTimer(() -> timerManager.updateDate(dateLabel), 0, 1000);
+        timerManager.startTimer(() -> timerManager.updateWeather(currentTempLabel, currentWeatherIcon), 0,1800000);
 
         if (App.doUpdateCacheOnLoad) {
             cache.cacheAllFromDB();
@@ -137,10 +140,11 @@ public class MapViewerController {
         map.setHighLightColor(Color.GOLD);
         btnNavigate.setDisableVisualFocus(true);
 
+        // Stops stackPanes from stoping you clicking on whats underneath
         stackPane.setPickOnBounds(false);
         keyStackPane.setPickOnBounds(false);
-
         screeningPane.setPickOnBounds(false);
+
         dirList.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent -> goToSelected()));
         // Import all the nodes from the cache and set the current building to Faulkner
         String startB = "Faulkner";
@@ -220,6 +224,7 @@ public class MapViewerController {
 
 
         btnScreening.setText("Think you have COVID-19?");
+        btnScreening.setStyle("-fx-font-weight: bold");
     }
 
     private void generateFloorButtons() {
@@ -366,6 +371,14 @@ public class MapViewerController {
         legendContent.setActions(btnClose);
 
         legend.show();
+    }
+
+    /**
+     * Shows the future weather
+     */
+    @FXML
+    private void openNextHoursWeather() {
+
     }
 
     private String highlightSourceToDestination(Node source, Node destination) {
