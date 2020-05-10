@@ -1,6 +1,5 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.dialogues;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Base64;
@@ -67,7 +66,6 @@ public class LoginController {
 
     /**
      * Dummy function to allow enter to be pressed from the password box
-     *
      * @throws
      */
     @FXML
@@ -76,14 +74,11 @@ public class LoginController {
 
     /**
      * Controls the login feature setting usernames and passwords and only accepting correct usernames and passwords
-     *
      * @param event Tracks which button is pressed
      * @throws IOException
      */
     @FXML
     private void handleLogin(ActionEvent event) throws IOException {
-
-
         Stage stage;
         String loginUser = null;
         String username = usernameField.getText();
@@ -172,5 +167,3 @@ public class LoginController {
             }
         }
     }
-
-
