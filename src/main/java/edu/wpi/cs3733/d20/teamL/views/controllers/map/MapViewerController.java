@@ -798,4 +798,9 @@ public class MapViewerController {
     private void hideTextualDirections() {
         sideBox.getChildren().remove(dirList);
     }
+
+    @FXML
+    private void handleFeedback() {
+
+    }
 }

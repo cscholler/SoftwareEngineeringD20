@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXRadioButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <HBox alignment="TOP_CENTER" prefHeight="70.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Feedback Request Form">
+               <HBox.margin>
+                  <Insets top="10.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="System Bold" size="30.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <HBox prefHeight="456.0" prefWidth="538.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox prefHeight="436.0" prefWidth="400.0" spacing="20.0">
+               <children>
+                  <Label text="Did we meet your expectations?">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label prefHeight="21.0" prefWidth="322.0" text="Was it easy to find what you were looking for?">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label text="How could we have exceeded your expectations?">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <JFXTextField alignment="TOP_LEFT" minHeight="125.0" minWidth="400.0" prefHeight="102.0" prefWidth="563.0" styleClass="text-field-jfx" />
+                  <Label text="What do you like most about the application?">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <JFXTextField alignment="TOP_LEFT" maxHeight="125.0" maxWidth="400.0" minHeight="125.0" minWidth="400.0" prefHeight="125.0" prefWidth="400.0" styleClass="text-field-jfx" />
+               </children>
+               <HBox.margin>
+                  <Insets left="20.0" top="20.0" />
+               </HBox.margin>
+            </VBox>
+            <JFXRadioButton text="Yes">
+               <HBox.margin>
+                  <Insets top="20.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </JFXRadioButton>
+            <JFXRadioButton text="No">
+               <font>
+                  <Font size="15.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="30.0" top="20.0" />
+               </HBox.margin>
+            </JFXRadioButton>
+         </children>
+      </HBox>
+   </center>
+   <bottom>
+      <HBox alignment="CENTER" prefHeight="109.0" prefWidth="1280.0" spacing="30.0" BorderPane.alignment="CENTER">
+         <children>
+            <JFXButton />
+            <JFXButton />
+         </children>
+      </HBox>
+   </bottom>
+   <right>
+      <HBox prefHeight="421.0" prefWidth="305.0" BorderPane.alignment="CENTER" />
+   </right>
+</BorderPane>
