@@ -97,11 +97,6 @@
                           <Insets bottom="20.0" left="20.0" right="20.0" top="30.0" />
                       </padding>
                   </VBox>
-            <JFXButton buttonType="RAISED" onAction="#handleFeedback" style="-fx-background-color: tranparent;" text="Feedback" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="140.0">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </JFXButton>
             <JFXButton onAction="#loginBtnClicked" style="-fx-background-color: transparent;" text="Login" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0">
                <font>
                   <Font size="15.0" />
@@ -236,6 +231,15 @@
                   </Label>
                </children>
             </VBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="141.0" AnchorPane.rightAnchor="10.0">
+               <children>
+                  <JFXButton buttonType="RAISED" onAction="#handleFeedback" prefHeight="61.0" prefWidth="173.0" style="-fx-background-color: #0d2e57; -fx-border-color: white; -fx-border-radius: 10;" text="Feedback">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+            </HBox>
          </children>
       </AnchorPane>
    </top>

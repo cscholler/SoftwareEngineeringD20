@@ -801,6 +801,12 @@ public class MapViewerController {
 
     @FXML
     private void handleFeedback() {
+        try {
+            Parent root = loaderHelper.getFXMLLoader("map_viewer/Feedback").load();
+            loaderHelper.setupPopup(new Stage(), new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
 
     }
 }

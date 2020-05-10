@@ -5,12 +5,13 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.FeedbackController">
    <top>
       <HBox alignment="TOP_CENTER" prefHeight="70.0" prefWidth="600.0" style="-fx-background-color: #00043B;" BorderPane.alignment="CENTER">
          <children>
@@ -35,12 +36,15 @@
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <JFXRadioButton styleClass="radio-button-jfx" text="Yes">
+                  <JFXRadioButton fx:id="expectationsYes" styleClass="radio-button-jfx" text="Yes">
                      <font>
                         <Font size="15.0" />
                      </font>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="expectationsGroup" />
+                     </toggleGroup>
                   </JFXRadioButton>
-                  <JFXRadioButton styleClass="radio-button-jfx" text="No">
+                  <JFXRadioButton fx:id="expectationsNo" styleClass="radio-button-jfx" text="No" toggleGroup="$expectationsGroup">
                      <font>
                         <Font size="15.0" />
                      </font>
@@ -50,12 +54,15 @@
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <JFXRadioButton styleClass="radio-button-jfx" text="Yes">
+                  <JFXRadioButton fx:id="easyYes" styleClass="radio-button-jfx" text="Yes">
                      <font>
                         <Font size="15.0" />
                      </font>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="easyGroup" />
+                     </toggleGroup>
                   </JFXRadioButton>
-                  <JFXRadioButton styleClass="radio-button-jfx" text="No">
+                  <JFXRadioButton fx:id="easyNo" styleClass="radio-button-jfx" text="No" toggleGroup="$easyGroup">
                      <font>
                         <Font size="15.0" />
                      </font>
@@ -65,12 +72,15 @@
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <JFXRadioButton styleClass="radio-button-jfx" text="Yes">
+                  <JFXRadioButton fx:id="navigateYes" styleClass="radio-button-jfx" text="Yes">
                      <font>
                         <Font size="15.0" />
                      </font>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="navigateGroup" />
+                     </toggleGroup>
                   </JFXRadioButton>
-                  <JFXRadioButton styleClass="radio-button-jfx" text="No">
+                  <JFXRadioButton fx:id="navigateNo" styleClass="radio-button-jfx" text="No" toggleGroup="$navigateGroup">
                      <font>
                         <Font size="15.0" />
                      </font>
@@ -80,8 +90,11 @@
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <JFXRadioButton styleClass="radio-button-jfx" text="Yes" />
-                  <JFXRadioButton styleClass="radio-button-jfx" text="No" />
+                  <JFXRadioButton fx:id="nextYes" styleClass="radio-button-jfx" text="Yes">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="nextGroup" />
+                     </toggleGroup></JFXRadioButton>
+                  <JFXRadioButton fx:id="nextNo" styleClass="radio-button-jfx" text="No" toggleGroup="$nextGroup" />
                </children>
                <HBox.margin>
                   <Insets left="20.0" top="20.0" />
@@ -94,19 +107,19 @@
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <JFXTextField alignment="TOP_LEFT" maxHeight="60.0" maxWidth="313.0" minHeight="90.0" minWidth="480.0" prefHeight="60.0" prefWidth="283.0" styleClass="text-field-jfx" />
+                  <JFXTextField fx:id="expectationsText" alignment="TOP_LEFT" maxHeight="60.0" maxWidth="313.0" minHeight="90.0" minWidth="480.0" prefHeight="60.0" prefWidth="283.0" styleClass="text-field-jfx" />
                   <Label text="What do you like most about the application?">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <JFXTextField alignment="TOP_LEFT" maxHeight="92.0" maxWidth="504.0" minHeight="90.0" minWidth="480.0" prefHeight="92.0" prefWidth="504.0" styleClass="text-field-jfx" />
+                  <JFXTextField fx:id="applicationText" alignment="TOP_LEFT" maxHeight="92.0" maxWidth="504.0" minHeight="90.0" minWidth="480.0" prefHeight="92.0" prefWidth="504.0" styleClass="text-field-jfx" />
                   <Label text="Is there anything else you would like us to know about your experience?">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <JFXTextField alignment="TOP_LEFT" maxHeight="165.0" maxWidth="480.0" minHeight="140.0" minWidth="480.0" prefHeight="165.0" prefWidth="480.0" styleClass="text-field-jfx" />
+                  <JFXTextField fx:id="otherText" alignment="TOP_LEFT" maxHeight="165.0" maxWidth="480.0" minHeight="140.0" minWidth="480.0" prefHeight="165.0" prefWidth="480.0" styleClass="text-field-jfx" />
                </children>
                <HBox.margin>
                   <Insets left="10.0" top="20.0" />
@@ -118,8 +131,8 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="900.0" spacing="30.0" BorderPane.alignment="CENTER">
          <children>
-            <JFXButton buttonType="RAISED" styleClass="cancel-button-jfx" text="Cancel" />
-            <JFXButton buttonType="RAISED" styleClass="save-button-jfx" text="Submit" />
+            <JFXButton buttonType="RAISED" onAction="#handleCancel" styleClass="cancel-button-jfx" text="Cancel" />
+            <JFXButton fx:id="btnSubmit" buttonType="RAISED" onAction="#handleSubmit" styleClass="save-button-jfx" text="Submit" />
          </children>
       </HBox>
    </bottom>
