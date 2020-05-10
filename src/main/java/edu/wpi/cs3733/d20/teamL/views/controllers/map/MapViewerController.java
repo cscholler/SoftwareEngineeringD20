@@ -57,11 +57,7 @@ public class MapViewerController {
     @FXML
     private JFXButton btnNavigate, floorUp, floorDown, btnScreening;
     @FXML
-    private ScrollPane scroll;
-    @FXML
-    private VBox sideBox, instructions;
-    @FXML
-    private JFXNodesList textDirNode;
+    private VBox sideBox;
     @FXML
     private VBox floorSelector;
     @FXML

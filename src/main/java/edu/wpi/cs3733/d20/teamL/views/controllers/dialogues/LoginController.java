@@ -98,4 +98,9 @@ public class LoginController {
 			passwordField.clear();
         }
     }
+
+    @FXML
+    private void facialRecognition(){
+
+    }
 }
