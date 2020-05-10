@@ -26,7 +26,8 @@ public class DatabaseCache implements IDatabaseCache {
     private ArrayList<Edge> deletedEdges = new ArrayList<>();
     private ArrayList<Edge> editedEdges = new ArrayList<>();
 
-    private ArrayList<ArrayList<String>> requests = new ArrayList<>();
+    private ArrayList<ServiceRequest> requests = new ArrayList<>();
+    private ArrayList<GiftDeliveryRequest> giftRequests = new ArrayList<>();
 
     @Inject
     private IDatabaseService db;
@@ -341,16 +342,39 @@ public class DatabaseCache implements IDatabaseCache {
     	doctorCache.clear();
 	}
 
-	/*@Override
+	@Override
 	public void cacheRequestsFromDB() {
         ResultSet resSet = db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_SERVICE_REQUESTS));
-        //clearNodeCache();
+        clearRequestCache();
         ArrayList<ArrayList<String>> requestData = db.getTableFromResultSet(resSet);
 
-        for (ArrayList<String> row : nodeData) {
-            nodeCache.add(new Node(row.get(0),
-                    new Point2D(Double.parseDouble(row.get(1)), Double.parseDouble(row.get(2))),
-                    row.get(3), row.get(4), row.get(5), row.get(6), row.get(7), Integer.parseInt(row.get(8))));
+        for (ArrayList<String> row : requestData) {
+            requests.add(new ServiceRequest(row.get(0), null, null, null, null, row.get(4), row.get(5), row.get(6), row.get(7), row.get(8), row.get(9)));
         }
-    }*/
+
+        resSet = db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_GIFT_DELIVERY_REQUESTS));
+        requestData = db.getTableFromResultSet(resSet);
+
+        for (ArrayList<String> row : requestData) {
+            String patientID = row.get(1);
+            String roomID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ROOM, new ArrayList<>(Collections.singletonList(patientID))))).get(0).get(0);
+            giftRequests.add(new GiftDeliveryRequest(row.get(0), null, null, roomID, null, null, null, row.get(5), row.get(6), row.get(7), row.get(8), row.get(9)));
+        }
+    }
+
+    @Override
+    public void clearRequestCache() {
+        requests.clear();
+        giftRequests.clear();
+    }
+
+    @Override
+    public ArrayList<ServiceRequest> getAllRequests() {
+        return requests;
+    }
+
+    @Override
+    public ArrayList<GiftDeliveryRequest> getAllGiftRequests() {
+        return giftRequests;
+    }
 }

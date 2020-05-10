@@ -64,4 +64,12 @@ public interface IDatabaseCache {
 	ArrayList<Doctor> getDoctorCache();
 
 	void clearDoctorCache();
+
+	void cacheRequestsFromDB();
+
+	void clearRequestCache();
+
+	ArrayList<ServiceRequest> getAllRequests();
+
+	ArrayList<GiftDeliveryRequest> getAllGiftRequests();
 }
