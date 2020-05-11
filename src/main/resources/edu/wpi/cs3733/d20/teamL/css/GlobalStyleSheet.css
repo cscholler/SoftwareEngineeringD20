@@ -325,7 +325,7 @@
 /*applies automatically*/
 
 .jfx-tab-pane .tab-header-background {
-    -fx-background-color: white;
+    -fx-background-color: lightgrey;
 }
 
 .jfx-tab-pane .tab-selected-line {

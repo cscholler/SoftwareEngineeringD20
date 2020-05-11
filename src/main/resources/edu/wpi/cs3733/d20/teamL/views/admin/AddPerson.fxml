@@ -10,6 +10,9 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -19,7 +22,7 @@
    <center>
       <JFXTabPane tabMaxWidth="30.0" BorderPane.alignment="CENTER">
          <tabs>
-            <Tab style="-fx-pref-width: 180;" text="Add Staff">
+            <Tab style="-fx-pref-width: 160;" text="Add Staff">
               <content>
                   <BorderPane>
                      <center>
@@ -86,7 +89,7 @@
                   </BorderPane>
               </content>
             </Tab>
-            <Tab style="-fx-pref-width: 180;" text="Add Doctor">
+            <Tab style="-fx-pref-width: 160;" text="Add Doctor">
                <content>
                   <BorderPane>
                      <center>
@@ -122,7 +125,7 @@
                   </BorderPane>
                </content>
             </Tab>
-            <Tab style="-fx-pref-width: 180;" text="Add Nurse">
+            <Tab style="-fx-pref-width: 160;" text="Add Nurse">
               <content>
                   <BorderPane>
                      <center>
@@ -155,7 +158,7 @@
                   </BorderPane>
               </content>
             </Tab>
-            <Tab style="-fx-pref-width: 180;" text="Add Admin">
+            <Tab style="-fx-pref-width: 160;" text="Add Admin">
               <content>
                   <BorderPane>
                      <center>
@@ -188,7 +191,7 @@
                   </BorderPane>
               </content>
             </Tab>
-            <Tab style="-fx-pref-width: 180;" text="Add Manager">
+            <Tab style="-fx-pref-width: 160;" text="Add Manager">
                <content>
                   <BorderPane>
                      <center>
@@ -232,6 +235,38 @@
                      </bottom>
                   </BorderPane>
                </content>
+            </Tab>
+            <Tab style="-fx-pref-width: 75;">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0">
+                     <children>
+                        <BorderPane layoutX="400.0" layoutY="207.0" prefHeight="563.0" prefWidth="950.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <center>
+                              <ImageView fx:id="face" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/gift_delivery/noImage.png" />
+                                 </image>
+                              </ImageView>
+                           </center>
+                           <bottom>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <JFXButton onAction="#delete" styleClass="cancel-button-jfx" text="Delete Picture" />
+                                    <JFXButton onAction="#capture" styleClass="save-button-jfx" text="Take Picture" />
+                                 </children>
+                              </HBox>
+                           </bottom>
+                        </BorderPane>
+                     </children>
+                  </AnchorPane>
+              </content>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../assets/service_icons/facial_recog.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Tab>
          </tabs></JFXTabPane>
    </center>
