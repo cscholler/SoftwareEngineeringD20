@@ -179,7 +179,7 @@ public class AdminLandingPageController implements Initializable {
 	}
 
     @FXML
-	private void btnSaveClicked() {
+	private void btn1ked() {
 		ArrayList<SQLEntry> updates = new ArrayList<>();
 		for (TableEntityWrapper.TableDoctor doctor : deletedDoctors) {
 			updates.add(new SQLEntry(DBConstants.REMOVE_DOCTOR, new ArrayList<>(Collections.singletonList(doctor.getID().get()))));

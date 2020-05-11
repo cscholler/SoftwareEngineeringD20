@@ -4,11 +4,15 @@ import java.io.IOException;
 import java.util.*;
 import java.util.Timer;
 
+import com.google.cloud.texttospeech.v1.SsmlVoiceGender;
+import com.google.protobuf.ByteString;
 import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamL.App;
+import edu.wpi.cs3733.d20.teamL.services.accessability.ITextToSpeechService;
 import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
+import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import edu.wpi.cs3733.d20.teamL.views.controllers.screening.QuestionnaireController;
 import javafx.animation.Interpolator;
@@ -50,6 +54,12 @@ import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
 
 @Slf4j
 public class MapViewerController {
+	private final FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
+	private final TimerManager timerManager = new TimerManager();
+	private SearchFields searchFields;
+	private JFXAutoCompletePopup<String> autoCompletePopup;
+	private final ObservableList<String> directions = FXCollections.observableArrayList();
+	private Path path = new Path();
     @FXML
     private MapPane map;
     @FXML
@@ -70,26 +80,18 @@ public class MapViewerController {
     private JFXListView listF1, listF2, listF3, listF4, listF5;
     @FXML
     private JFXComboBox<String> buildingChooser;
+	@FXML
+	private Accordion accordion = new Accordion();
     @FXML
     private Label timeLabel, dateLabel;
-
     @Inject
     private IDatabaseCache cache;
     @Inject
     private IPathfinderService pathfinderService;
     @Inject
     private IMessengerService messenger;
-    private static final TimerManager timerManager = new TimerManager();
-
-    @FXML
-    private Accordion accordion = new Accordion();
-
-    private SearchFields sf;
-    private JFXAutoCompletePopup<String> autoCompletePopup;
-    private FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
-    private final Timer timer = new Timer();
-    private Path path = new Path();
-    private final ObservableList<String> direct = FXCollections.observableArrayList();
+    @Inject
+	private ITextToSpeechService textToSpeech;
 
     private final Image IMAGE_LEFT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/left.png", 15, 15, true, false, true);
     private final Image IMAGE_RIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/right.jpg", 15, 15, true, false, true);
@@ -124,6 +126,10 @@ public class MapViewerController {
 
     @FXML
     private void initialize() {
+    	ByteString audio1 = textToSpeech.convertTextToSpeech("Test 1", "en-US", SsmlVoiceGender.MALE);
+		ByteString audio2 = textToSpeech.convertTextToSpeech("Test 2", "en-US", SsmlVoiceGender.FEMALE);
+    	//textToSpeech.writeSpeechToFile(audio);
+
         timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
         timerManager.startTimer(() -> timerManager.updateDate(dateLabel), 0, 1000);
 
@@ -160,11 +166,11 @@ public class MapViewerController {
         map.init();
 
         // Populate autocomplete
-        sf = new SearchFields(cache.getNodeCache());
-       // sf.getFields().addAll(Arrays.asList(SearchFields.Field.shortName, SearchFields.Field.longName));
-        sf.populateSearchFields();
+        searchFields = new SearchFields(cache.getNodeCache());
+        searchFields.getFields().addAll(Arrays.asList(SearchFields.Field.shortName, SearchFields.Field.longName));
+        searchFields.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
-        autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
+        autoCompletePopup.getSuggestions().addAll(searchFields.getSuggestions());
 
         Collection<Node> allNodes = map.getBuilding().getNodes();
 
@@ -241,12 +247,12 @@ public class MapViewerController {
 
     @FXML
     private void startingPointAutocomplete() {
-        sf.applyAutocomplete(startingPoint, autoCompletePopup);
+        searchFields.applyAutocomplete(startingPoint, autoCompletePopup);
     }
 
     @FXML
     private void destinationAutocomplete() {
-        sf.applyAutocomplete(destination, autoCompletePopup);
+        searchFields.applyAutocomplete(destination, autoCompletePopup);
     }
 
     public void setStartingPoint(String startingPoint) {
@@ -268,8 +274,8 @@ public class MapViewerController {
         String start = startingPoint.getText();
         String end = destination.getText();
 
-        Node startNode = sf.getNode(start);
-        Node destNode = sf.getNode(end);
+        Node startNode = searchFields.getNode(start);
+        Node destNode = searchFields.getNode(end);
 
         if (!(startNode.getBuilding().equals(map.getBuilding().getName()))) {
             map.setBuilding(startNode.getBuilding());
@@ -293,8 +299,6 @@ public class MapViewerController {
 //            textDirNode.setDisable(false);
 //            textDirNode.setVisible(true);
         }
-
-        System.out.println("Here");
         hideAccordion();
         hideTextualDirections();
         showTextualDirections();
@@ -443,9 +447,9 @@ public class MapViewerController {
                 }
             };
         });
-        direct.clear();
-        direct.addAll(message);
-        dirList.getItems().addAll(direct);
+        directions.clear();
+        directions.addAll(message);
+        dirList.getItems().addAll(directions);
 
         for (String direction : message) {
             builder.append(direction + "\n\n");
@@ -503,8 +507,8 @@ public class MapViewerController {
     @FXML
     public void handleText() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("map_viewer/SendDirectionsPage").load();
-            loaderHelper.setupPopup(new Stage(), new Scene(root));
+            Parent root = loaderFactory.getFXMLLoader("map_viewer/SendDirectionsPage").load();
+            loaderFactory.setupPopup(new Stage(), new Scene(root));
         } catch (IOException e) {
             log.error("Encountered IOException", e);
         }
@@ -513,8 +517,8 @@ public class MapViewerController {
     @FXML
     public void genQR() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("map_viewer/QRCode").load();
-            loaderHelper.setupPopup(new Stage(), new Scene(root));
+            Parent root = loaderFactory.getFXMLLoader("map_viewer/QRCode").load();
+            loaderFactory.setupPopup(new Stage(), new Scene(root));
         } catch (IOException e) {
             log.error("Encountered IOException", e);
         }
@@ -587,8 +591,8 @@ public class MapViewerController {
     @FXML
     private void loginBtnClicked() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("staff/LoginPage").load();
-            loaderHelper.setupPopup(new Stage(), new Scene(root));
+            Parent root = loaderFactory.getFXMLLoader("staff/LoginPage").load();
+            loaderFactory.setupPopup(new Stage(), new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
         }
@@ -717,10 +721,9 @@ public class MapViewerController {
 
     @FXML
     private void goToSelected() {
+		AsyncTaskManager.newTask(() -> textToSpeech.playSpeech(textToSpeech.convertTextToSpeech(dirList.getSelectionModel().getSelectedItem().toString(), "en-US", SsmlVoiceGender.MALE)));
         int index = dirList.getSelectionModel().getSelectedIndex();
-
         ArrayList<Node> subpath = path.getSubpaths().get(index);
-
         if (dirList.getSelectionModel().getSelectedItem().toString().contains("Navigate")) {
             if (subpath.get(0).getBuilding().equals("Faulkner")) {
                 map.setBuilding(new Building("Google"));
