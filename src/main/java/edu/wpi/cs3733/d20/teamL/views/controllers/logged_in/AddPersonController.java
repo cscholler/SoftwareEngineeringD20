@@ -1,18 +1,19 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.logged_in;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.github.sarxos.webcam.Webcam;
 import com.google.inject.Inject;
 import com.jfoenix.controls.*;
-import com.squareup.okhttp.*;
-import edu.wpi.cs3733.d20.teamL.services.HTTPClientService;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
+import edu.wpi.cs3733.d20.teamL.services.IHTTPClientService;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 import edu.wpi.cs3733.d20.teamL.services.users.PasswordManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
-import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,25 +27,17 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
-import netscape.javascript.JSObject;
-import org.apache.commons.io.FileUtils;
 import org.json.JSONObject;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.ResourceBundle;
-//import javax.ws.rs.client.Client;
-//import javax.ws.rs.client.ClientBuilder;
-//import javax.ws.rs.client.Entity;
-//import javax.ws.rs.core.MediaType;
 
 @Slf4j
 public class AddPersonController implements Initializable {
@@ -56,23 +49,13 @@ public class AddPersonController implements Initializable {
     @Inject
     private IDatabaseCache cache;
     @FXML
-    private Label lblConfirmation, confirmation;
+    private Label lblConfirmation;
     @FXML
     private JFXTextArea addlInfoText;
     @FXML
-    private JFXTextField doctorFN, doctorLN, docID, officeText;
+    private JFXTextField doctorFN, doctorLN, officeText;
     @FXML
     private ImageView face;
-    private BufferedImage image;
-
-    //for user
-    ObservableList<String> serviceOptions = FXCollections.observableArrayList("Security", "Internal Transport", "External Transport", "Sanitation", "Maintenance", "Gift Shop", "Interpreter", "Information Technology");
-    ObservableList<String> userOptions = FXCollections.observableArrayList("Staff", "Nurse", "Doctor", "Admin");
-    ObservableList<String> languageOptions = FXCollections.observableArrayList("Spanish", "Italian", "Chinese", "ASL", "French");
-
-
-    private final FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
-
     @FXML
     JFXTextField doctorIDText, doctorUn, sFName, sLName, sUn, mFName, mLName, mUn, nFName, nLName, nUn, aFName, aLName, aUn;
     @FXML
@@ -85,8 +68,18 @@ public class AddPersonController implements Initializable {
     private VBox boxOService;
     @FXML
     private JFXButton btnCancel;
+    private BufferedImage image;
+
+    //for user
+    ObservableList<String> serviceOptions = FXCollections.observableArrayList("Security", "Internal Transport", "External Transport", "Sanitation", "Maintenance", "Gift Shop", "Interpreter", "Information Technology");
+    ObservableList<String> languageOptions = FXCollections.observableArrayList("Spanish", "Italian", "Chinese", "ASL", "French");
+
+
+    private final FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
+
+
     @Inject
-    private HTTPClientService client;
+    private IHTTPClientService client;
     boolean pictureTaken = false;
 
 
@@ -101,7 +94,6 @@ public class AddPersonController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         serviceCombo.setItems(serviceOptions);
         languages.setItems(languageOptions);
-
         sf = new SearchFields(cache.getNodeCache());
         sf.getFields().add(SearchFields.Field.nodeID);
         sf.populateSearchFields();

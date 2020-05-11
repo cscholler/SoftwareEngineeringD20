@@ -105,7 +105,6 @@ public class LoginController {
             stage.close();
 
 
-
 //            log.info(response.code()+"");
 //            log.info(response.body().string());
         } else if (event.getSource() == login) {
@@ -120,6 +119,7 @@ public class LoginController {
                 }
                 loaderHelper.setupScene(new Scene(loaderHelper.getFXMLLoader(view).load()));
             } else {
+                incorrectText.setText("Invalid username or password");
                 incorrectText.setVisible(true);
                 fadeTransition.play();
             }
@@ -132,8 +132,9 @@ public class LoginController {
     @FXML
     private void facialRecognition() throws IOException {
 
-
+        FadeTransition fadeTransition = new FadeTransition(Duration.millis(200), anchorPane);
         String loginUser = null;
+        double confidence = 0;
         Webcam webcam = Webcam.getDefault();
         webcam.open();
         BufferedImage image = webcam.getImage();
@@ -165,24 +166,40 @@ public class LoginController {
         Response response = clientService.getClient().newCall(request).execute();
 
         String result = response.body().string();
-        {
-            JSONObject obj = new JSONObject(result);
-            JSONArray arr = obj.getJSONArray("images");
-            for (int i = 0; i < arr.length(); i++) {
-                JSONObject find = arr.getJSONObject(i);
-                JSONObject transaction = find.getJSONObject("transaction");
-                loginUser = transaction.getString("subject_id");
-                System.out.println(loginUser);
+
+        try{
+        JSONObject obj = new JSONObject(result);
+        JSONArray arr = obj.getJSONArray("images");
+        for (int i = 0; i < arr.length(); i++) {
+            JSONObject find = arr.getJSONObject(i);
+            JSONObject transaction = find.getJSONObject("transaction");
+            loginUser = transaction.getString("subject_id");
+            confidence = transaction.getDouble("confidence");
+            System.out.println(loginUser);
+            System.out.println(confidence);
+        }
+        } catch(org.json.JSONException e){
+            incorrectText.setText("Invalid photo");
+            incorrectText.setVisible(true);
+            fadeTransition.play();
+            }
+
+        if (!(loginUser == null)) {
+            loginManager.logInFR(loginUser, confidence);
+            if (loginManager.isAuthenticated()) {
+            ((Stage) login.getScene().getWindow()).close();
+                String view;
+                if (loginManager.getCurrentUser().getAcctType().equals("3")) {
+                    view = "admin/AdminView";
+                } else {
+                    view = "requests/UserLandingPage";
+                }
+                loaderHelper.setupScene(new Scene(loaderHelper.getFXMLLoader(view).load()));
+            } else {
+                incorrectText.setText("No user found");
+                incorrectText.setVisible(true);
+                fadeTransition.play();
             }
         }
-        loginManager.logInFR(loginUser);
-        ((Stage) login.getScene().getWindow()).close();
-        String view;
-        if (loginManager.getCurrentUser().getAcctType().equals("3")) {
-            view = "admin/AdminView";
-        } else {
-            view = "requests/UserLandingPage";
-        }
-        loaderHelper.setupScene(new Scene(loaderHelper.getFXMLLoader(view).load()));
     }
 }

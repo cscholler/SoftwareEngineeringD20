@@ -9,7 +9,7 @@ public interface ILoginManager {
 
 	void logIn(String username, String password);
 
-	void logInFR(String username);
+	void logInFR(String username, double confidence);
 
 	void logOut(boolean verbose);
 
