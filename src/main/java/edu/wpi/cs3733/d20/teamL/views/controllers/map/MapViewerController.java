@@ -66,9 +66,11 @@ public class MapViewerController {
     @FXML
     private JFXTextField startingPoint, destination;
     @FXML
-    private JFXButton btnNavigate, floorUp, floorDown, btnScreening, btnTextMe, btnQR, btnRobot, btnTextToSpeachStart, btnTextToSpeachDestination, btnMute;
+    private JFXButton btnNavigate, floorUp, floorDown, btnScreening, btnTextMe, btnQR, btnRobot, btnTextToSpeechStart, btnTextToSpeechDestination, btnMute;
     @FXML
     private VBox sideBox, floorSelector, directionButtonsVBox, textDirectionsVBox;
+    @FXML
+    private HBox getDirectionsHBox;
     @FXML
     private JFXListView dirList = new JFXListView();
     @FXML
@@ -260,12 +262,13 @@ public class MapViewerController {
         speakAllButton.setStyle("-fx-background-color: transparent;" + "-fx-content-display: graphic-only;");
         speakAllButton.setOnAction(e -> speakAllDirections());
 
-        JFXButton btnMute = new JFXButton("un-muted");
-        btnMute.setStyle("-fx-text-fill: white;" + "-fx-font-size: 16;" + "-fx-background-color: transparent;");
+        btnMute = new JFXButton("un-muted");
+        btnMute.setStyle("-fx-text-fill: white;" + "-fx-font-size: 16;" + "-fx-background-color: transparent;" + "-fx-max-height: 15;");
+        btnMute.setPadding(Insets.EMPTY);
         btnMute.setOnAction(e -> toggleAudio());
 
         HBox muteHBox = new HBox();
-        muteHBox.setStyle("-fx-alignment: center;" + "-fx-background-color: #00043B;");
+        muteHBox.setStyle("-fx-alignment: center-left;" + "-fx-background-color: #00043B;");
 
         dirListHeader.getChildren().addAll(etaLabel,speakAllButton);
         muteHBox.getChildren().addAll(btnMute);
@@ -861,21 +864,19 @@ public class MapViewerController {
     }
 
     private void showDefaultOptions() {
-        try {
-            sideBox.getChildren().removeAll(textDirectionsVBox, directionButtonsVBox);
-        } catch (Exception e){
+        if (sideBox.getChildren().contains(textDirectionsVBox)) sideBox.getChildren().remove(textDirectionsVBox);
+        if (sideBox.getChildren().contains(directionButtonsVBox)) sideBox.getChildren().remove(directionButtonsVBox);
 
-        }
-        sideBox.getChildren().add(accordion);
+        if (!sideBox.getChildren().contains(getDirectionsHBox)) sideBox.getChildren().add(getDirectionsHBox);
+        if (!sideBox.getChildren().contains(accordion)) sideBox.getChildren().add(accordion);
     }
 
     private void showPathFindingOptions() {
-        try {
-            sideBox.getChildren().remove(accordion);
-        } catch (Exception e) {
+        if (sideBox.getChildren().contains(accordion)) sideBox.getChildren().remove(accordion);
+        if (sideBox.getChildren().contains(getDirectionsHBox)) sideBox.getChildren().remove(getDirectionsHBox);
 
-        }
-        sideBox.getChildren().addAll(textDirectionsVBox, directionButtonsVBox);
+        if (!sideBox.getChildren().contains(textDirectionsVBox)) sideBox.getChildren().add(textDirectionsVBox);
+        if (!sideBox.getChildren().contains(directionButtonsVBox)) sideBox.getChildren().add(directionButtonsVBox);
     }
 
     public void textToSpeachStartIcon(ActionEvent actionEvent) {
