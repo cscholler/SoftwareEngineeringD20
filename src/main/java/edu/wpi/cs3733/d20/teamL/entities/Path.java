@@ -110,6 +110,41 @@ public class Path implements Iterable<Node> {
         return newPath;
     }
 
+    public String generateRobotPath() {
+        StringBuilder robotPath = new StringBuilder("#");
+
+        Point2D start, end;
+        Node prev, curr, next;
+        double angle;
+        String sign;
+
+        for (int i = 1; i < pathNodes.size() - 1; i++) {
+            prev = pathNodes.get(i - 1);
+            curr = pathNodes.get(i);
+            next = pathNodes.get(i + 1);
+
+            start = delta(prev, curr);
+            end = delta(curr, next);
+            angle = start.angle(end);
+
+            if (angle > 10) {
+                sign = determineDirection(start, end);
+
+                if(sign.equals("left")) robotPath.append("1,");
+                else robotPath.append("3,");
+
+            } else {
+                robotPath.append("2 ");
+                int length = (int)curr.getEdge(next).getLength();
+                robotPath.append(length + ",");
+            }
+        }
+
+        robotPath.append("#");
+
+        return robotPath.toString();
+    }
+
     public int getPathTime(String transportation) {
         int time = 0;
         for(int i = 0; i < pathNodes.size() - 1; i++) {

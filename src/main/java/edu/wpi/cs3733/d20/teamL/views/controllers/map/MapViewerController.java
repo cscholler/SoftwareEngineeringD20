@@ -40,6 +40,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import com.fazecast.jSerialComm.*;
 
 import com.google.inject.Inject;
 
@@ -249,7 +250,7 @@ public class MapViewerController {
         btnRobot.setStyle("-jfx-button-type: RAISED;" + "-fx-pref-width: 200;" + "-fx-max-width: 200;" + "-fx-background-color: #00043B;" + "-fx-background-radius:  50;");
         btnRobot.setOnAction(actionEvent -> launchRobot());
 
-        directionsVBox.getChildren().addAll(btnTextMe,btnQR);
+        directionsVBox.getChildren().addAll(btnTextMe,btnQR,btnRobot);
         showDefaultOptions();
 
         // Create Screening Button
@@ -819,7 +820,12 @@ public class MapViewerController {
     }
 
     private void launchRobot() {
-        System.out.println("Wheres the robot Conrad?!?");
+        Node source = path.getPathNodes().get(0);
+        Node destination =  path.getPathNodes().get(path.getPathNodes().size()-1);
+        if(source.getBuilding().equals("Faulkner") && destination.getBuilding().equals("Faulkner") && source.getFloor() == 1 && destination.getFloor() == 1) {
+            String robotPath = path.generateRobotPath();
+            System.out.println(robotPath);
+        }
     }
 
     private void showDefaultOptions() {
