@@ -66,11 +66,11 @@ public class AddPersonController implements Initializable {
     private final FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
 
     @FXML
-    JFXTextField doctorIDText, fNameText, lNameText, usernameText;
+    JFXTextField doctorIDText, doctorUn,  sFName, sLName, sUn, mFName, mLName, mUn, nFName, nLName, nUn, aFName, aLName, aUn;
     @FXML
-    JFXPasswordField passwordText;
+    JFXPasswordField doctorPw, sPw, mPw, nPw, aPw;
     @FXML
-    private JFXComboBox<String> serviceCombo, userCombo, languages;
+    private JFXComboBox<String> serviceCombo, languages;
     @FXML
     private JFXCheckBox securityBox, inTransportBox, exTransportBox, maintenanceBox, sanitationBox, pharmacistBox, giftShopBox, itBox, interpreterBox, managerBox;
     @FXML
@@ -90,7 +90,6 @@ public class AddPersonController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         serviceCombo.setItems(serviceOptions);
-        userCombo.setItems(userOptions);
         languages.setItems(languageOptions);
 
         sf = new SearchFields(cache.getNodeCache());
@@ -100,33 +99,100 @@ public class AddPersonController implements Initializable {
         autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
     }
 
-    //for user
+    //Add doctor
     @FXML
-    private void submitClicked() throws IOException {
-        String firstName = fNameText.getText();
-        String lastName = lNameText.getText();
-        String username = usernameText.getText();
-        String password = passwordText.getText();
-        String doctorID = doctorIDText.getText();
-        String type;
-        String services;
-        String manager;
+    private void autocomplete() {
+        sf.applyAutocomplete(officeText, autoCompletePopup);
+    }
 
-        switch (userCombo.getValue()) {
-            default:
-            case "Staff":
-                type = "0";
-                break;
-            case "Nurse":
-                type = "1";
-                break;
-            case "Doctor":
-                type = "2";
-                break;
-            case "Admin":
-                type = "3";
-        }
+    /**
+     * Handles UI portion of submit being clicked giving confirmation when it succeeds
+     */
+
+    //Nurse
+    @FXML
+    private void submitNurse() {
         int rows = 0;
+
+        String firstName = nFName.getText();
+        String lastName = nLName.getText();
+        String username = nUn.getText();
+        String password = nPw.getText();
+        String type = "1";
+        String services = null;
+        String manager = null;
+
+        rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(firstName, lastName, username, PasswordManager.hashPassword(password), type, services, manager))));
+        confirm(rows);
+    }
+
+    //Admin
+    @FXML
+    private void submitAdmin() {
+        int rows = 0;
+
+        String firstName = aFName.getText();
+        String lastName = aLName.getText();
+        String username = aUn.getText();
+        String password = aPw.getText();
+        String type = "3";
+        String services = null;
+        String manager = null;
+
+        rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(firstName, lastName, username, PasswordManager.hashPassword(password), type, services, manager))));
+        confirm(rows);
+    }
+
+    //Manager
+    @FXML
+    private void submitManager() {
+        int rows = 0;
+
+        String firstName = mFName.getText();
+        String lastName = mLName.getText();
+        String username = mUn.getText();
+        String password = mPw.getText();
+        String type = "0";
+        String services = null;
+        String manager = serviceCombo.getValue();
+
+        rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(firstName, lastName, username, PasswordManager.hashPassword(password), type, services, manager))));
+        confirm(rows);
+    }
+
+    //Doctor
+    @FXML
+    private void submitDoc() {
+        int rows = 0;
+
+        String firstName = doctorFN.getText();
+        String lastName = doctorLN.getText();
+        String username = doctorUn.getText();
+        String password = doctorPw.getText();
+        String doctorID = doctorIDText.getText();
+        String roomNum = officeText.getText();
+        String additionalInfo = addlInfoText.getText();
+        String type = "2";
+        String services = null;
+        String manager = "pharmacist";
+
+        rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(firstName, lastName, username, PasswordManager.hashPassword(password), type, services, manager))));
+        int rows1 = db.executeUpdate(new SQLEntry(DBConstants.ADD_DOCTOR, new ArrayList<>(Arrays.asList(doctorID, firstName, lastName, null, roomNum, additionalInfo))));
+        confirm(rows);
+    }
+
+    //Staff
+    @FXML
+    private void submitStaff() {
+        int rows = 0;
+
+        String firstName = sFName.getText();
+        String lastName = sLName.getText();
+        String username = sUn.getText();
+        String password = sPw.getText();
+        String type = "0";
+        String services = null;
+        String manager = null;
 
         if (firstName != null) {
             StringBuilder servicesList = new StringBuilder();
@@ -170,143 +236,52 @@ public class AddPersonController implements Initializable {
             if (anyServicesSelected) {
                 servicesList.setLength(servicesList.length() - 1);
             }
-            manager = managerBox.isSelected() ? serviceCombo.getSelectionModel().getSelectedItem().toLowerCase().replace(" ", "_") : null;
 
-            services = managerBox.isSelected() ? null : servicesList.toString();
-            if (type.equals("1") || type.equals("2")) {
-                services = "pharmacy";
-            }
-            if (!(firstName.isBlank() || lastName.isBlank() || username.isBlank() || password.isBlank() || userCombo.getValue().isBlank())) {
-                rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(firstName, lastName, username, PasswordManager.hashPassword(password), type, services, manager))));
-            }
-            if (doctorIDText.getText() != null && !(doctorIDText.getText().isEmpty())) {
-                rows = db.executeUpdate(new SQLEntry(DBConstants.UPDATE_DOCTOR_USERNAME, new ArrayList<>(Arrays.asList(username, doctorID))));
-            }
-            if (rows == 0) {
-                lblConfirmation.setTextFill(Color.RED);
-                lblConfirmation.setText("Submission failed");
-            } else if (rows == 1) {
-
-                lblConfirmation.setTextFill(Color.BLACK);
-                lblConfirmation.setText("User added");
-                lNameText.setText("");
-                fNameText.setText("");
-                usernameText.setText("");
-                passwordText.setText("");
-                doctorIDText.setText("");
-                languages.setValue(null);
-                managerBox.setSelected(false);
-                managerBox.setVisible(false);
-                serviceCombo.setVisible(false);
-                serviceCombo.setDisable(false);
-                boxOService.setVisible(false);
-                boxOService.setDisable(false);
-                languages.setVisible(false);
-                languages.setDisable(false);
-                doctorIDText.setVisible(false);
-                doctorIDText.setDisable(false);
-                userCombo.setValue("");
-                securityBox.setSelected(false);
-                inTransportBox.setSelected(false);
-                exTransportBox.setSelected(false);
-                maintenanceBox.setSelected(false);
-                sanitationBox.setSelected(false);
-                pharmacistBox.setSelected(false);
-                giftShopBox.setSelected(false);
-                itBox.setSelected(false);
-                interpreterBox.setSelected(false);
-            } else {
-                log.error("SQL update affected more than 1 row.");
-            }
-            loaderHelper.showAndFade(lblConfirmation);
-            cache.cacheUsersFromDB();
-            cache.cacheDoctorsFromDB();
-        }
-    }
-
-    @FXML
-    private void userSelected() {
-        String user = userCombo.getValue();
-        if (user.equals("Staff")) {
-            managerBox.setVisible(true);
-            managerBox.setDisable(false);
-            if (managerBox.isSelected()) {
-                serviceCombo.setVisible(true);
-                serviceCombo.setDisable(false);
-                boxOService.setVisible(false);
-                boxOService.setDisable(true);
-                languages.setVisible(false);
-                languages.setDisable(true);
-            } else {
-                System.out.println("services");
-                serviceCombo.setVisible(false);
-                serviceCombo.setDisable(true);
-                boxOService.setVisible(true);
-                boxOService.setDisable(false);
-                if (interpreterBox.isSelected()) {
-                    languages.setVisible(true);
-                    languages.setDisable(false);
-                } else {
-                    languages.setVisible(false);
-                    languages.setDisable(true);
-                }
-            }
-        } else {
-            managerBox.setDisable(true);
-            managerBox.setVisible(false);
-            languages.setVisible(false);
-            languages.setDisable(true);
-            boxOService.setVisible(false);
-            boxOService.setDisable(true);
+            services = servicesList.toString();
         }
 
-        if (user.equals("Doctor")) {
-            doctorIDText.setVisible(true);
-            doctorIDText.setDisable(false);
-        } else {
-            doctorIDText.setVisible(false);
-            doctorIDText.setDisable(true);
-        }
+        rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(firstName, lastName, username, PasswordManager.hashPassword(password), type, services, manager))));
+        confirm(rows);
     }
 
-    //Add doctor
-    @FXML
-    private void autocomplete() {
-        sf.applyAutocomplete(officeText, autoCompletePopup);
-    }
-
-    /**
-     * Handles UI portion of submit being clicked giving confirmation when it succeeds
-     */
-
-    @FXML
-    private void btnSubmitClicked() {
-        String doctorID = docID.getText();
-        String fName = doctorFN.getText();
-        String lName = doctorLN.getText();
-        String roomNum = officeText.getText();
-        String additionalInfo = addlInfoText.getText();
-        int rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_DOCTOR, new ArrayList<>(Arrays.asList(doctorID, fName, lName, null, roomNum, additionalInfo))));
+    private void confirm(int rows){
         if (rows == 0) {
-            confirmation.setTextFill(Color.RED);
-            confirmation.setText("Submission failed");
+            lblConfirmation.setTextFill(Color.RED);
+            lblConfirmation.setText("Submission failed");
         } else if (rows == 1) {
-            confirmation.setTextFill(Color.BLACK);
-            confirmation.setText("Doctor Added");
-            doctorFN.setText("");
-            doctorLN.setText("");
-            doctorIDText.setText("");
-            officeText.setText("");
-            addlInfoText.setText("");
+            lblConfirmation.setTextFill(Color.BLACK);
+            lblConfirmation.setText("User added");
+            languages.setValue(null);
+            serviceCombo.setVisible(false);
+            serviceCombo.setDisable(false);
+            boxOService.setVisible(false);
+            boxOService.setDisable(false);
+            languages.setVisible(false);
+            languages.setDisable(false);
+            doctorIDText.setVisible(false);
+            doctorIDText.setDisable(false);
+            securityBox.setSelected(false);
+            inTransportBox.setSelected(false);
+            exTransportBox.setSelected(false);
+            maintenanceBox.setSelected(false);
+            sanitationBox.setSelected(false);
+            pharmacistBox.setSelected(false);
+            giftShopBox.setSelected(false);
+            itBox.setSelected(false);
+            interpreterBox.setSelected(false);
         } else {
             log.error("SQL update affected more than 1 row.");
         }
-        loaderHelper.showAndFade(confirmation);
+        loaderHelper.showAndFade(lblConfirmation);
+        cache.cacheUsersFromDB();
         cache.cacheDoctorsFromDB();
     }
 
-
-
+    @FXML
+    private void userSelected(){
+       languages.setDisable(false);
+    }
 }
+
 
 
