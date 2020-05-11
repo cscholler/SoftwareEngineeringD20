@@ -75,8 +75,6 @@ public class MapViewerController {
     @FXML
     private JFXListView dirList = new JFXListView();
     @FXML
-    private JFXButton btnTextMe, btnQR, btnRobot;
-    @FXML
     StackPane stackPane, keyStackPane, screeningPane;
     @FXML
     private JFXListView listF1, listF2, listF3, listF4, listF5;

@@ -103,51 +103,49 @@
                                   </JFXButton>
                               </children>
                           </HBox>
-                  <JFXButton fx:id="btnNavigate" alignment="CENTER" buttonType="RAISED" graphicTextGap="10.0" minWidth="150.0" onAction="#navigate" prefHeight="40.0" prefWidth="133.0" style="-fx-pref-width: 200; -fx-max-width: 200; -fx-background-color: #00043B; -fx-background-radius: 50;" styleClass="save-button-jfx" text="Get directions" textFill="WHITE">
-                     <graphic>
-                        <ImageView fitHeight="21.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../assets/home_page/search_button_home.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </JFXButton>
-                  <HBox alignment="TOP_CENTER">
+                  <HBox>
                      <children>
-                        <VBox alignment="TOP_CENTER">
+                        <HBox alignment="TOP_CENTER">
                            <children>
-                              <ImageView fitHeight="40.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                              <VBox alignment="CENTER">
+                                 <children>
+                                    <ImageView fitHeight="40.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../assets/map_viewer/walk.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </VBox>
+                              <JFXToggleButton fx:id="handicapToggle" maxWidth="50.0" onAction="#toggleHandicap" text=" " toggleColor="WHITE" toggleLineColor="#999999">
+                                 <HBox.margin>
+                                    <Insets left="-5.0" right="-15.0" />
+                                 </HBox.margin>
+                              </JFXToggleButton>
+                              <VBox alignment="CENTER">
+                                 <children>
+                                    <ImageView fitHeight="40.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../assets/map_viewer/handicap.png" />
+                                       </image>
+                                       <VBox.margin>
+                                          <Insets right="10.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <JFXButton fx:id="btnNavigate" alignment="CENTER" buttonType="RAISED" graphicTextGap="10.0" minWidth="150.0" onAction="#navigate" prefHeight="40.0" prefWidth="133.0" style="-fx-pref-width: 200; -fx-max-width: 200; -fx-background-color: #00043B; -fx-background-radius: 50;" styleClass="save-button-jfx" text="Get directions" textFill="WHITE">
+                           <graphic>
+                              <ImageView fitHeight="21.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../assets/map_viewer/walk.png" />
+                                    <Image url="@../../assets/home_page/search_button_home.png" />
                                  </image>
                               </ImageView>
-                              <Label style="-fx-text-fill: white;" text="Standard" />
-                           </children>
-                        </VBox>
-                        <JFXToggleButton fx:id="handicapToggle" text=" " onAction="#toggleHandicap"/>
-                        <VBox alignment="TOP_CENTER">
-                           <children>
-                              <ImageView fitHeight="40.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../assets/map_viewer/handicap.png" />
-                                 </image>
-                              </ImageView>
-                              <Label prefWidth="60.0" style="-fx-text-fill: white;" text="Handicap Accessible" textAlignment="CENTER" wrapText="true" />
-                           </children>
-                        </VBox>
+                           </graphic>
+                        </JFXButton>
                      </children>
                   </HBox>
-                  <VBox alignment="CENTER" spacing="10.0">
-                     <children>
-                                <JFXButton fx:id="btnTextMe" alignment="CENTER" buttonType="RAISED" minWidth="150.0" onAction="#handleText" prefHeight="40.0" prefWidth="133.0" style="-fx-pref-width: 200; -fx-max-width: 200; -fx-background-color: #405784; -fx-background-radius: 50;" styleClass="save-button-jfx" text="Text me directions" textFill="WHITE" visible="false" />
-                                <JFXButton fx:id="btnQR" alignment="CENTER" buttonType="RAISED" onAction="#genQR" prefHeight="40.0" prefWidth="85.0" style="-fx-pref-width: 200; -fx-max-width: 200; -fx-background-color: #405784; -fx-background-radius: 50;" styleClass="save-button-jfx" text="Scan directions" textFill="WHITE" visible="false">
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                        </JFXButton>
-                        <JFXButton fx:id="btnRobot" buttonType="RAISED" onAction="#handleRobotDirections" style="-fx-pref-width: 200; -fx-max-width: 200; -fx-background-color: #405784; -fx-background-radius: 50;" styleClass="save-button-jfx" text="Robot Directions" visible="false" />
-                     </children>
-                  </VBox>
                       </children>
                       <padding>
                           <Insets bottom="60.0" left="20.0" right="20.0" top="30.0" />
