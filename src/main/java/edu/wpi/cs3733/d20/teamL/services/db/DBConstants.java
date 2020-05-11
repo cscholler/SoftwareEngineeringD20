@@ -19,7 +19,7 @@ public class DBConstants {
 	public static final String SERVICE_NAME = "mysql-db-01";
 
 	public static ArrayList<String> GET_TABLE_NAMES() {
-		return new ArrayList<>(Arrays.asList("Nodes", "Edges", "Users", "Doctors", "Patients", "Gifts", "Gift_Delivery_Requests", "Medication_Requests", "Service_Requests", "Reservations", "Screening_Questions"));
+		return new ArrayList<>(Arrays.asList("Nodes", "Edges", "Users", "Doctors", "Patients", "Gifts", "Gift_Delivery_Requests", "Medication_Requests", "Service_Requests", "Reservations", "Kiosk_Settings", "Screening Questions"));
 	}
 
 	public static final String CREATE_NODE_TABLE =
@@ -76,7 +76,9 @@ public class DBConstants {
 					"type VARCHAR(16) NOT NULL, " +
 					"subtype VARCHAR(16) NOT NULL, " +
 					"description VARCHAR(128) NOT NULL, " +
-					"inventory INT NOT NULL)";
+					"inventory INT NOT NULL, " +
+					"cost DOUBLE NOT NULL)";
+					//"url VARCHAR(64))";
 
 	public static final String CREATE_GIFT_DELIVERY_REQUEST_TABLE =
 			"CREATE TABLE Gift_Delivery_Requests(" +
@@ -203,8 +205,8 @@ public class DBConstants {
 					"VALUES(?, ?, ?, ?, ?, ?)";
 
 	public static final String ADD_GIFT =
-			"INSERT INTO Gifts(type, subtype, description, inventory)" +
-					"VALUES(?, ?, ?, ?)";
+			"INSERT INTO Gifts(type, subtype, description, inventory, cost)" +
+					"VALUES(?, ?, ?, ?, ?)";
 
 	public static final String ADD_GIFT_DELIVERY_REQUEST =
 			"INSERT INTO Gift_Delivery_Requests(patient_id, sender_name, request_username, assignee_username, gifts, message, notes, status, date_and_time)" +
@@ -495,7 +497,8 @@ public class DBConstants {
 
 	public static final String UPDATE_KIOSK_TIMEOUTS =
 			"UPDATE Kiosk_Settings " +
-					"SET logout_timout = ?, idle_cache_timeout = ?, force_cache_timeout = ?, screen_saver_timout = ?";
+					"SET logout_timeout = ?, idle_cache_timeout = ?, force_cache_timeout = ?, screen_saver_timeout = ? " +
+					"WHERE id = ?";
 
 	public static final String UPDATE_SCREENING_QUESTIONS =
 			"UPDATE Screening_Questions " +
