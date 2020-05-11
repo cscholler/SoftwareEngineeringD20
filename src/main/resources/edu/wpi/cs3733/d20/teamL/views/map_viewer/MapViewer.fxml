@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXToggleButton?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -82,6 +83,31 @@
                         </JFXButton>
                               </children>
                           </HBox>
+                  <HBox alignment="TOP_CENTER">
+                     <children>
+                        <VBox alignment="TOP_CENTER">
+                           <children>
+                              <ImageView fitHeight="40.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/map_viewer/walk.png" />
+                                 </image>
+                              </ImageView>
+                              <Label style="-fx-text-fill: white;" text="Standard" />
+                           </children>
+                        </VBox>
+                        <JFXToggleButton fx:id="handicapToggle" text=" " onAction="#toggleHandicap"/>
+                        <VBox alignment="TOP_CENTER">
+                           <children>
+                              <ImageView fitHeight="40.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/map_viewer/handicap.png" />
+                                 </image>
+                              </ImageView>
+                              <Label prefWidth="60.0" style="-fx-text-fill: white;" text="Handicap Accessible" textAlignment="CENTER" wrapText="true" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
                   <VBox alignment="CENTER" spacing="10.0">
                      <children>
                                 <JFXButton fx:id="btnTextMe" alignment="CENTER" buttonType="RAISED" minWidth="150.0" onAction="#handleText" prefHeight="40.0" prefWidth="133.0" style="-fx-pref-width: 200; -fx-max-width: 200; -fx-background-color: #405784; -fx-background-radius: 50;" styleClass="save-button-jfx" text="Text me directions" textFill="WHITE" visible="false" />
