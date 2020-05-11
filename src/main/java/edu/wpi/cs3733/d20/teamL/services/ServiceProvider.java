@@ -2,6 +2,8 @@ package edu.wpi.cs3733.d20.teamL.services;
 
 import com.google.inject.AbstractModule;
 
+import edu.wpi.cs3733.d20.teamL.services.accessability.ITextToSpeechService;
+import edu.wpi.cs3733.d20.teamL.services.accessability.TextToSpeechService;
 import edu.wpi.cs3733.d20.teamL.services.db.DatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.DatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
@@ -23,5 +25,8 @@ public class ServiceProvider extends AbstractModule {
 		bind(ILoginManager.class).to(LoginManager.class).asEagerSingleton();
 		bind(IMessengerService.class).to(MessengerService.class).asEagerSingleton();
 		bind(IRequestHandlerService.class).to(RequestHandlerService.class).asEagerSingleton();
+		bind(IHTTPClientService.class).to(HTTPClientService.class).asEagerSingleton();
+		bind(ITextToSpeechService.class).to(TextToSpeechService.class).asEagerSingleton();
+
 	}
 }
