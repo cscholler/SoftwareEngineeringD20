@@ -210,19 +210,14 @@ public class MapViewerController {
 
         TitledPane departments = new TitledPane("Departments", listF1);
         departments.setStyle("-fx-font-size: 16");
-        departments.setTextOverrun(OverrunStyle.CLIP);
         TitledPane labs = new TitledPane("Labs", listF2);
         labs.setStyle("-fx-font-size: 16");
-        labs.setTextOverrun(OverrunStyle.CLIP);
         TitledPane services = new TitledPane("Services/Information", listF3);
         services.setStyle("-fx-font-size: 16");
-        services.setTextOverrun(OverrunStyle.CLIP);
         TitledPane amenities = new TitledPane("Amenities", listF4);
         amenities.setStyle("-fx-font-size: 16");
-        amenities.setTextOverrun(OverrunStyle.CLIP);
         TitledPane conferenceRooms = new TitledPane("Conference Rooms", listF5);
         conferenceRooms.setStyle("-fx-font-size: 16");
-        conferenceRooms.setTextOverrun(OverrunStyle.CLIP);
 
         accordion.getPanes().addAll(departments, labs, services, amenities, conferenceRooms);
         // Create directions buttons
@@ -653,10 +648,6 @@ public class MapViewerController {
         startingPoint.clear();
         map.getSelector().clear();
         showDefaultOptions();
-        btnTextMe.setDisable(true);
-        btnTextMe.setVisible(false);
-        btnQR.setDisable(true);
-        btnQR.setVisible(false);
     }
 
     /**
@@ -667,10 +658,6 @@ public class MapViewerController {
         destination.clear();
         map.getSelector().clear();
         showDefaultOptions();
-        btnTextMe.setDisable(true);
-        btnTextMe.setVisible(false);
-        btnQR.setDisable(true);
-        btnQR.setVisible(false);
     }
 
     /**
