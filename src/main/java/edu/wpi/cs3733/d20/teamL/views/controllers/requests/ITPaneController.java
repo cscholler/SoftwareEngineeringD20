@@ -40,7 +40,6 @@ public class ITPaneController implements Initializable {
     ObservableList<String> options = FXCollections.observableArrayList("General Help", "Data Backup", "Hardware/Software Issues", "Cyber Attacks");
 
     private FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
-    private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup = new JFXAutoCompletePopup<>();
 
     @Inject
@@ -52,8 +51,6 @@ public class ITPaneController implements Initializable {
     @FXML
     private Label confirmation;
     @FXML
-    private JFXButton btnSubmit;
-    @FXML
     private JFXTextField locationText;
     @FXML
     private JFXTextArea notesText;
@@ -63,10 +60,7 @@ public class ITPaneController implements Initializable {
 	private SearchFields searchFields;
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-//        sf = new SearchFields(dbCache.getNodeCache());
-//        sf.getFields().add(SearchFields.Field.longName);
-//        sf.getFields().add(SearchFields.Field.shortName);
-//        sf.populateSearchFields();
+
 		searchFields = new SearchFields(dbCache.getNodeCache());
 		searchFields.getFields().add(SearchFields.Field.nodeID);
 		searchFields.populateSearchFields();
@@ -84,7 +78,7 @@ public class ITPaneController implements Initializable {
      */
     @FXML
     private void autoComplete() {
-        sf.applyAutocomplete(locationText, autoCompletePopup);
+        searchFields.applyAutocomplete(locationText, autoCompletePopup);
     }
 
     /**
@@ -95,7 +89,7 @@ public class ITPaneController implements Initializable {
     @FXML
     private void submitClicked() {
         String userName = loginManager.getCurrentUser().getUsername();
-        String location = locationText.getText() != null ? sf.getNode(locationText.getText()).getID() : null;
+        String location = locationText.getText() != null ? searchFields.getNode(locationText.getText()).getID() : null;
         String type = typeBox.getValue();
         String notes = notesText.getText();
 

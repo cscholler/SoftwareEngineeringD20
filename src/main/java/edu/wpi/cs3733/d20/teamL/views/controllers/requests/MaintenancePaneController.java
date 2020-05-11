@@ -123,6 +123,8 @@ public class MaintenancePaneController implements Initializable {
                 error.setTextFill(Color.RED);
                 loaderHelper.showAndFade(error);
             } else {
+                urgency.setValue(null);
+                type.setValue(null);
                 location.setText("");
                 description.setText("");
                 loaderHelper.showAndFade(requestReceived);

@@ -159,7 +159,7 @@ public class InternalPaneController implements Initializable {
             startLoc.setText("");
             endLoc.setText("");
             transportSelector.setValue(null);
-            date.setId("");
+            date.setValue(null);
             hour.setText("");
             minutes.setText("");
             patient.setText("");
