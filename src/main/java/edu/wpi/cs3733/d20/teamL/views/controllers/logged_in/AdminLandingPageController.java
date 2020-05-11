@@ -2,6 +2,11 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.logged_in;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
+import edu.wpi.cs3733.d20.teamL.services.IHTTPClientService;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
@@ -16,10 +21,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableCell;
-import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTreeTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -46,9 +48,11 @@ import java.util.ResourceBundle;
 
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import org.apache.commons.math3.util.Precision;
+import org.json.JSONObject;
 
 @Slf4j
 public class AdminLandingPageController implements Initializable {
+    public Button timeoutSettings;
     private FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
     private static final TimerManager timerManager = new TimerManager();
     private final ObservableList<String> tableOptions = FXCollections.observableArrayList("Map Nodes", "Map Edges", "Gift Inventory", "User Information", "Doctor Information");
@@ -86,6 +90,8 @@ public class AdminLandingPageController implements Initializable {
     private IDatabaseService db;
     @Inject
 	private IDatabaseCache cache;
+    @Inject
+	private IHTTPClientService client;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -158,16 +164,6 @@ public class AdminLandingPageController implements Initializable {
         }
     }
 
-    @FXML
-    private void rebuildDatabaseClicked() {
-        try {
-            Parent root = loaderFactory.getFXMLLoader("admin/RebuildDatabaseDialogue").load();
-            loaderFactory.setupPopup(new Stage(), new Scene(root));
-        } catch (IOException ex) {
-            log.error("Encountered IOException", ex);
-        }
-    }
-
 	@FXML
 	private void btnAddDoctorClicked() {
 		try {
@@ -177,10 +173,18 @@ public class AdminLandingPageController implements Initializable {
 			log.error("Encountered IOException", ex);
 		}
 	}
-
-
     @FXML
-	private void btnSaveClicked() {
+    private void addUserClicked() {
+        try {
+            Parent root = loaderFactory.getFXMLLoader("admin/AddPerson").load();
+			loaderFactory.setupPopup(new Stage(), new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
+    }
+
+  @FXML
+	private void btnSaveClicked() throws IOException {
 		ArrayList<SQLEntry> updates = new ArrayList<>();
 		for (TableEntityWrapper.TableDoctor doctor : deletedDoctors) {
 			updates.add(new SQLEntry(DBConstants.REMOVE_DOCTOR, new ArrayList<>(Collections.singletonList(doctor.getID().get()))));
@@ -215,6 +219,24 @@ public class AdminLandingPageController implements Initializable {
 
 		for (TableEntityWrapper.TableUser user : deletedUsers) {
 			updates.add(new SQLEntry(DBConstants.REMOVE_USER, new ArrayList<>(Collections.singletonList(user.getID().get()))));
+
+			String username = user.getUsername().getValue();
+			JSONObject json = new JSONObject();
+			json.put("gallery_name", "users");
+			json.put("subject_id", username);
+			MediaType mediaType = MediaType.parse("application/json");
+			RequestBody body = RequestBody.create(mediaType, json.toString());
+			Request request = new Request.Builder()
+					.url("https://kairosapi-karios-v1.p.rapidapi.com/gallery/remove_subject")
+					.post(body)
+					.addHeader("x-rapidapi-host", "kairosapi-karios-v1.p.rapidapi.com")
+					.addHeader("x-rapidapi-key", "e9d19d8ab2mshee9ab7d6044378bp106222jsnc2e9a579d919")
+					.addHeader("content-type", "application/json")
+					.addHeader("accept", "application/json")
+					.build();
+
+			Response response = client.getClient().newCall(request).execute();
+			log.info(response.body().string());
 		}
 		for (TableEntityWrapper.TableUser user : editedUsers) {
 			updates.add(new SQLEntry(DBConstants.UPDATE_USER, new ArrayList<>(Arrays.asList(user.getFName().get(), user.getLName().get(), user.getUsername().get(),
@@ -1103,5 +1125,4 @@ public class AdminLandingPageController implements Initializable {
 		table.setVisible(visible);
 		table.setMouseTransparent(!visible);
 	}
-
 }

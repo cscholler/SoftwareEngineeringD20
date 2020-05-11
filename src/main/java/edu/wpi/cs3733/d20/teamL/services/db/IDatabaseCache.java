@@ -75,4 +75,14 @@ public interface IDatabaseCache {
 
 	ArrayList<ServiceRequest> getAllSpecificRequest(String service);
 
+
+	void cacheKiosksFromDB();
+
+	ArrayList<Kiosk> getKioskCache();
+
+	void clearKioskCache();
+
+	void cacheQuestionsFromDB();
+
+	ArrayList<Question> getQuestions();
 }

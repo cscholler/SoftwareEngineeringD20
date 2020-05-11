@@ -4,12 +4,14 @@ import com.jfoenix.controls.JFXAutoCompletePopup;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.views.controllers.map.MapViewerController;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public class SearchFields {
     private List<Node> nodeCache;
     private List<String> suggestions;
@@ -34,7 +36,7 @@ public class SearchFields {
     /**
      * populates search arrayList to be searched by navigation bar.
      */
-    public void populateMapSearchFields() {
+    public void populateSearchFields() {
         // TODO: Don't let non-visible nodes show-up
         StringBuilder sb = new StringBuilder();
         String additionLong;
@@ -50,37 +52,37 @@ public class SearchFields {
     }
 
 
-    /**
-     * populates search arrayList to be searched by navigation bar.
-     */
-    public void populateSearchFields() {
-        // TODO: Don't let non-visible nodes show-up
-        StringBuilder sb = new StringBuilder();
-        String additionLong;
-        String additionShort;
-        if (suggestions == null) suggestions = new ArrayList<>();
-        for (Node node : nodeCache) {
-            for (Field field : fields) {
-                switch (field) {
-                    case nodeID:
-                        suggestions.add(node.getID());
-                        break;
-                    case building:
-                        suggestions.add(node.getBuilding());
-                        break;
-                    case longName:
-                        suggestions.add(node.getLongName());
-                        break;
-                    case shortName:
-                        suggestions.add(node.getShortName());
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-        Collections.sort(suggestions);
-    }
+//    /**
+//     * populates search arrayList to be searched by navigation bar.
+//     */
+//    public void populateSearchFields() {
+//        // TODO: Don't let non-visible nodes show-up
+//        StringBuilder sb = new StringBuilder();
+//        String additionLong;
+//        String additionShort;
+//        if (suggestions == null) suggestions = new ArrayList<>();
+//        for (Node node : nodeCache) {
+//            for (Field field : fields) {
+//                switch (field) {
+//                    case nodeID:
+//                        suggestions.add(node.getID());
+//                        break;
+//                    case building:
+//                        suggestions.add(node.getBuilding());
+//                        break;
+//                    case longName:
+//                        suggestions.add(node.getLongName());
+//                        break;
+//                    case shortName:
+//                        suggestions.add(node.getShortName());
+//                        break;
+//                    default:
+//                        break;
+//                }
+//            }
+//        }
+//        Collections.sort(suggestions);
+//    }
 
 
     public void populateWithExits() {
@@ -147,7 +149,6 @@ public class SearchFields {
      * @return If keyword is found it'll return that node, otherwise null if your node isn't found.
      */
     public Node getNode(String query) {
-
         String building = "";
 
         if (query.contains("(Faulkner")) {

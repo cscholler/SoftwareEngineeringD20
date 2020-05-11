@@ -19,7 +19,8 @@ public class DBConstants {
 	public static final String SERVICE_NAME = "mysql-db-01";
 
 	public static ArrayList<String> GET_TABLE_NAMES() {
-		return new ArrayList<>(Arrays.asList("Nodes", "Edges", "Users", "Doctors", "Patients", "Gifts", "Gift_Delivery_Requests", "Medication_Requests", "Service_Requests"));
+		return new ArrayList<>(Arrays.asList("Nodes", "Edges", "Users", "Doctors", "Patients", "Gifts", "Gift_Delivery_Requests", "Medication_Requests", "Service_Requests",
+				"Reservations", "Kiosk_Settings", "Screening Questions", "Feedback"));
 	}
 
 	public static final String CREATE_NODE_TABLE =
@@ -76,9 +77,11 @@ public class DBConstants {
 			"CREATE TABLE Gifts(" +
 					"id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
 					"type VARCHAR(16) NOT NULL, " +
-					"subtype VARCHAR(16) NOT NULL, " +
+					"subtype VARCHAR(32) NOT NULL, " +
 					"description VARCHAR(128) NOT NULL, " +
-					"inventory INT NOT NULL)";
+					"inventory INT NOT NULL, " +
+					"cost DOUBLE NOT NULL)";
+					//"url VARCHAR(64))";
 
 	public static final String CREATE_GIFT_DELIVERY_REQUEST_TABLE =
 			"CREATE TABLE Gift_Delivery_Requests(" +
@@ -131,6 +134,34 @@ public class DBConstants {
 					"start_time CHAR(5) NOT NULL, " +
 					"end_time CHAR(5) NOT NULL)";
 
+	public static final String CREATE_KIOSK_SETTINGS_TABLE =
+			"CREATE TABLE Kiosk_Settings(" +
+					"id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
+					"node_id VARCHAR(16) REFERENCES Nodes(id), " +
+					"logout_timeout BIGINT DEFAULT 60000, " +
+					"idle_cache_timeout BIGINT DEFAULT 30000, " +
+					"force_cache_timeout BIGINT DEFAULT 120000, " +
+					"screen_saver_timeout BIGINT DEFAULT 180000)";
+
+	public static final String CREATE_SCREENING_QUESTIONS_TABLE =
+			"CREATE TABLE Screening_Questions(" +
+					"id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
+					"question VARCHAR(256) NOT NULL, " +
+					"page INT NOT NULL, " +
+					"weight INT, " +
+					"reqs INT)";
+
+	public static final String CREATE_FEEDBACK_TABLE =
+			"CREATE TABLE Feedback(" +
+					"id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
+					"q1 VARCHAR(3) NOT NULL, " +
+					"q2 VARCHAR(3) NOT NULL, " +
+					"q3 VARCHAR(3) NOT NULL, " +
+					"q4 VARCHAR(3) NOT NULL, " +
+					"q5 VARCHAR(256) NOT NULL, " +
+					"q6 VARCHAR(256) NOT NULL, " +
+					"q7 VARCHAR(256))";
+
 	public static final String DROP_NODE_TABLE =
 			"DROP TABLE IF EXISTS Nodes";
 
@@ -161,6 +192,15 @@ public class DBConstants {
 	public static final String DROP_RESERVATIONS_TABLE =
 			"DROP TABLE IF EXISTS Reservations";
 
+	public static final String DROP_KIOSK_SETTINGS_TABLE =
+			"DROP TABLE IF EXISTS Kiosk_Settings";
+
+	public static final String DROP_SCREENING_QUESTIONS_TABLE =
+			"DROP TABLE IF EXISTS Screening_Questions";
+
+	public static final String DROP_FEEDBACK_TABLE =
+			"DROP TABLE IF EXISTS Feedback";
+
 	public static final String ADD_NODE =
 			"INSERT INTO Nodes(id, x_pos, y_pos, floor, building, node_type, l_name, s_name, freq)" +
 					"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -182,8 +222,8 @@ public class DBConstants {
 					"VALUES(?, ?, ?, ?, ?, ?)";
 
 	public static final String ADD_GIFT =
-			"INSERT INTO Gifts(type, subtype, description, inventory)" +
-					"VALUES(?, ?, ?, ?)";
+			"INSERT INTO Gifts(type, subtype, description, inventory, cost)" +
+					"VALUES(?, ?, ?, ?, ?)";
 
 	public static final String ADD_GIFT_DELIVERY_REQUEST =
 			"INSERT INTO Gift_Delivery_Requests(patient_id, sender_name, request_username, assignee_username, gifts, message, notes, status, date_and_time)" +
@@ -200,6 +240,22 @@ public class DBConstants {
 	public static final String ADD_ROOM_REQUEST =
 			"INSERT INTO Reservations(username, place, date, start_time, end_time)" +
 					"VALUES(?, ?, ?, ?, ?)";
+
+	public static final String ADD_KIOSK =
+			"INSERT INTO Kiosk_Settings(node_id, logout_timeout, idle_cache_timeout, force_cache_timeout, screen_saver_timeout)" +
+					"VALUES(?, ?, ?, ?, ?)";
+
+	public static final String ADD_DEFAULT_KIOSK =
+			"INSERT INTO Kiosk_Settings(node_id)" +
+					"VALUES(?)";
+
+	public static final String ADD_SCREENING_QUESTION =
+			"INSERT INTO Screening_Questions(question, page, weight, reqs)" +
+					"VALUES(?, ?, ?, ?)";
+
+	public static final String ADD_FEEDBACK =
+			"INSERT INTO Feedback(q1, q2, q3, q4, q5, q6, q7)" +
+					"VALUES(?, ?, ?, ?, ?, ?, ?)";
 
 	public static final String SELECT_ALL_NODES =
 			"SELECT * " +
@@ -326,10 +382,30 @@ public class DBConstants {
 					"FROM Service_Requests " +
 					"WHERE service = ?";
 
-	public static final String GET_ALL_ROOM_REQUESTS =
+	public static final String SELECT_ALL_ROOM_REQUESTS =
 			"SELECT * " +
 					"FROM Reservations " +
 					"WHERE place = ? AND date = ?";
+
+	public static final String SELECT_ALL_KIOSK_SETTINGS =
+			"SELECT * " +
+					"FROM Kiosk_Settings " +
+					"ORDER BY id";
+
+	public static final String SELECT_ALL_SCREENING_QUESTIONS =
+			"SELECT * " +
+					"FROM Screening_Questions " +
+					"ORDER BY id";
+
+	public static final String GET_ALL_FEEDBACK =
+			"SELECT * " +
+					"FROM Feedback " +
+					"ORDER BY id";
+
+	public static final String GET_KIOSK_SETTINGS =
+			"SELECT * " +
+					"FROM Kiosk_Settings " +
+					"WHERE id = ?";
 
 	public static final String UPDATE_NODE =
 			"UPDATE Nodes " +
@@ -441,6 +517,19 @@ public class DBConstants {
 					"SET notes = ? " +
 					"WHERE id = ?";
 
+	public static final String UPDATE_KIOSK_LOCATION =
+			"UPDATE Kiosk_Settings " +
+					"SET node_id = ?";
+
+	public static final String UPDATE_KIOSK_TIMEOUTS =
+			"UPDATE Kiosk_Settings " +
+					"SET logout_timeout = ?, idle_cache_timeout = ?, force_cache_timeout = ?, screen_saver_timeout = ? " +
+					"WHERE id = ?";
+
+	public static final String UPDATE_SCREENING_QUESTIONS =
+			"UPDATE Screening_Questions " +
+					"SET question = ?, page = ?, weight = ?, reqs = ?";
+
 	public static final String REMOVE_NODE =
 			"DELETE FROM Nodes " +
 					"WHERE id = ?";
@@ -499,4 +588,13 @@ public class DBConstants {
 
 	public static final String DELETE_ALL_SERVICE_REQUESTS =
 			"DELETE FROM SERVICE_REQUESTS";
+
+	public static final String DELETE_ALL_RESERVATIONS =
+			"DELETE FROM Reservations";
+
+	public static final String DELETE_ALL_KIOSK_SETTINGS =
+			"DELETE FROM Kiosk_Settings";
+
+	public static final String DELETE_ALL_SCREENING_QUESTIONS =
+			"DELETE FROM Screening_Questions";
 }

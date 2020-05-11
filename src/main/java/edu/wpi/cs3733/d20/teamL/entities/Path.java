@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamL.entities;
 import java.util.*;
 
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
+import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import javafx.geometry.Point2D;
 
@@ -139,10 +140,11 @@ public class Path implements Iterable<Node> {
                 time += edge.getLength();
             }
         }
-
-        cache.setEditedNodes(editedNodes);
-        cache.setEditedEdges(editedEdges);
-        cache.updateDB();
+        AsyncTaskManager.newTask(() -> {
+			cache.setEditedNodes(editedNodes);
+			cache.setEditedEdges(editedEdges);
+			cache.updateDB();
+		});
 
         return (int) Math.round(time * .338 / 60);
     }

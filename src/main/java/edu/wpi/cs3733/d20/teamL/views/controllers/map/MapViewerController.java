@@ -1,27 +1,29 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Timer;
 
+import com.google.cloud.texttospeech.v1.SsmlVoiceGender;
+import com.google.protobuf.ByteString;
 import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamL.App;
+import edu.wpi.cs3733.d20.teamL.services.accessability.ITextToSpeechService;
 import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
+import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
+import edu.wpi.cs3733.d20.teamL.views.controllers.screening.QuestionnaireController;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import edu.wpi.cs3733.d20.teamL.util.TimerManager;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
@@ -36,8 +38,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Line;
-import javafx.scene.paint.Paint;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -51,38 +51,41 @@ import edu.wpi.cs3733.d20.teamL.entities.Path;
 import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
 import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
 import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
-import org.apache.xmlgraphics.image.codec.png.PNGEncodeParam;
-
-import javax.swing.*;
 
 @Slf4j
 public class MapViewerController {
+	private final FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
+	private final TimerManager timerManager = new TimerManager();
+	private SearchFields searchFields;
+	private JFXAutoCompletePopup<String> autoCompletePopup;
+	private final ObservableList<String> directions = FXCollections.observableArrayList();
+	private Path path = new Path();
     @FXML
     private MapPane map;
     @FXML
     private JFXTextField startingPoint, destination;
     @FXML
-    private JFXButton btnNavigate, floorUp, floorDown;
+    private JFXButton btnNavigate, floorUp, floorDown, btnScreening;
     @FXML
-    private ScrollPane scroll;
-    @FXML
-    private VBox sideBox, instructions;
-    @FXML
-    private JFXNodesList textDirNode;
+    private VBox sideBox;
     @FXML
     private VBox floorSelector;
     @FXML
     private JFXListView dirList = new JFXListView();
     @FXML
-    private JFXButton btnTextMe, btnQR;
+    private JFXButton btnTextMe, btnQR, btnRobot;
     @FXML
-    StackPane stackPane, keyStackPane;
+    StackPane stackPane, keyStackPane, screeningPane;
     @FXML
     private JFXListView listF1, listF2, listF3, listF4, listF5;
     @FXML
     private JFXComboBox<String> buildingChooser;
+	@FXML
+	private Accordion accordion = new Accordion();
     @FXML
-    private Label timeLabel, dateLabel;
+    private Label timeLabel, dateLabel, currentTempLabel;
+    @FXML
+    private ImageView currentWeatherIcon;
 
     @Inject
     private IDatabaseCache cache;
@@ -90,17 +93,8 @@ public class MapViewerController {
     private IPathfinderService pathfinderService;
     @Inject
     private IMessengerService messenger;
-    private static final TimerManager timerManager = new TimerManager();
-
-    @FXML
-    private Accordion accordion = new Accordion();
-
-    private SearchFields sf;
-    private JFXAutoCompletePopup<String> autoCompletePopup;
-    private FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
-    private final Timer timer = new Timer();
-    private Path path = new Path();
-    private final ObservableList<String> direct = FXCollections.observableArrayList();
+    @Inject
+	private ITextToSpeechService textToSpeech;
 
     private final Image IMAGE_LEFT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/left.png", 15, 15, true, false, true);
     private final Image IMAGE_RIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/right.jpg", 15, 15, true, false, true);
@@ -128,12 +122,16 @@ public class MapViewerController {
     private Collection<String> retailNodes = new ArrayList<>();
     private Collection<String> confNodes = new ArrayList<>();
 
+    private QuestionnaireController qc;
+
+
     public static final String MAIN = "Main";
 
     @FXML
     private void initialize() {
         timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
         timerManager.startTimer(() -> timerManager.updateDate(dateLabel), 0, 1000);
+        timerManager.startTimer(() -> timerManager.updateWeather(currentTempLabel, currentWeatherIcon), 0,1800000);
 
         if (App.doUpdateCacheOnLoad) {
             cache.cacheAllFromDB();
@@ -144,8 +142,11 @@ public class MapViewerController {
         map.setHighLightColor(Color.GOLD);
         btnNavigate.setDisableVisualFocus(true);
 
+        // Stops stackPanes from stoping you clicking on whats underneath
         stackPane.setPickOnBounds(false);
         keyStackPane.setPickOnBounds(false);
+        screeningPane.setPickOnBounds(false);
+
         dirList.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent -> goToSelected()));
         // Import all the nodes from the cache and set the current building to Faulkner
         String startB = "Faulkner";
@@ -166,11 +167,11 @@ public class MapViewerController {
         map.init();
 
         // Populate autocomplete
-        sf = new SearchFields(cache.getNodeCache());
-        sf.getFields().addAll(Arrays.asList(SearchFields.Field.shortName, SearchFields.Field.longName));
-        sf.populateMapSearchFields();
+        searchFields = new SearchFields(cache.getNodeCache());
+        searchFields.getFields().addAll(Arrays.asList(SearchFields.Field.shortName, SearchFields.Field.longName));
+        searchFields.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
-        autoCompletePopup.getSuggestions().addAll(sf.getSuggestions());
+        autoCompletePopup.getSuggestions().addAll(searchFields.getSuggestions());
 
         Collection<Node> allNodes = map.getBuilding().getNodes();
 
@@ -222,6 +223,11 @@ public class MapViewerController {
 
         accordion.getPanes().addAll(departments, labs, services, amenities, conferenceRooms);
         showAccordion();
+
+
+        btnScreening.setText("Think you have COVID-19?");
+        btnScreening.setStyle("-fx-font-weight: bold");
+        btnScreening.setMinWidth(300);
     }
 
     private void generateFloorButtons() {
@@ -244,12 +250,12 @@ public class MapViewerController {
 
     @FXML
     private void startingPointAutocomplete() {
-        sf.applyAutocomplete(startingPoint, autoCompletePopup);
+        searchFields.applyAutocomplete(startingPoint, autoCompletePopup);
     }
 
     @FXML
     private void destinationAutocomplete() {
-        sf.applyAutocomplete(destination, autoCompletePopup);
+        searchFields.applyAutocomplete(destination, autoCompletePopup);
     }
 
     public void setStartingPoint(String startingPoint) {
@@ -271,8 +277,8 @@ public class MapViewerController {
         String start = startingPoint.getText();
         String end = destination.getText();
 
-        Node startNode = sf.getNode(start);
-        Node destNode = sf.getNode(end);
+        Node startNode = searchFields.getNode(start);
+        Node destNode = searchFields.getNode(end);
 
         if (!(startNode.getBuilding().equals(map.getBuilding().getName()))) {
             map.setBuilding(startNode.getBuilding());
@@ -293,11 +299,11 @@ public class MapViewerController {
             btnTextMe.setVisible(true);
             btnQR.setDisable(false);
             btnQR.setVisible(true);
+            btnRobot.setDisable(false);
+            btnRobot.setVisible(true);
 //            textDirNode.setDisable(false);
 //            textDirNode.setVisible(true);
         }
-
-        System.out.println("Here");
         hideAccordion();
         hideTextualDirections();
         showTextualDirections();
@@ -368,6 +374,14 @@ public class MapViewerController {
         legendContent.setActions(btnClose);
 
         legend.show();
+    }
+
+    /**
+     * Shows the future weather
+     */
+    @FXML
+    private void openNextHoursWeather() {
+
     }
 
     private String highlightSourceToDestination(Node source, Node destination) {
@@ -446,9 +460,9 @@ public class MapViewerController {
                 }
             };
         });
-        direct.clear();
-        direct.addAll(message);
-        dirList.getItems().addAll(direct);
+        directions.clear();
+        directions.addAll(message);
+        dirList.getItems().addAll(directions);
 
         for (String direction : message) {
             builder.append(direction + "\n\n");
@@ -506,8 +520,8 @@ public class MapViewerController {
     @FXML
     public void handleText() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("map_viewer/SendDirectionsPage").load();
-            loaderHelper.setupPopup(new Stage(), new Scene(root));
+            Parent root = loaderFactory.getFXMLLoader("map_viewer/SendDirectionsPage").load();
+            loaderFactory.setupPopup(new Stage(), new Scene(root));
         } catch (IOException e) {
             log.error("Encountered IOException", e);
         }
@@ -516,8 +530,8 @@ public class MapViewerController {
     @FXML
     public void genQR() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("map_viewer/QRCode").load();
-            loaderHelper.setupPopup(new Stage(), new Scene(root));
+            Parent root = loaderFactory.getFXMLLoader("map_viewer/QRCode").load();
+            loaderFactory.setupPopup(new Stage(), new Scene(root));
         } catch (IOException e) {
             log.error("Encountered IOException", e);
         }
@@ -590,8 +604,8 @@ public class MapViewerController {
     @FXML
     private void loginBtnClicked() {
         try {
-            Parent root = loaderHelper.getFXMLLoader("staff/LoginPage").load();
-            loaderHelper.setupPopup(new Stage(), new Scene(root));
+            Parent root = loaderFactory.getFXMLLoader("staff/LoginPage").load();
+            loaderFactory.setupPopup(new Stage(), new Scene(root));
         } catch (IOException ex) {
             log.error("Encountered IOException", ex);
         }
@@ -645,6 +659,50 @@ public class MapViewerController {
     }
 
     @FXML
+    public void openScreening() throws IOException{
+
+        qc = new QuestionnaireController(cache.getQuestions());
+
+        JFXDialogLayout layout = new JFXDialogLayout();
+        layout.getStylesheets().add("/edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css");
+        Label headingLabel = new Label ("Coronavirus Screening Test");
+        headingLabel.getStyleClass().add("service-request-header-label-fx");
+        headingLabel.setStyle("-fx-font-size: 30;");
+        layout.setHeading(headingLabel);
+        layout.setBody(qc.nextClicked());
+
+        JFXDialog screeningDialog = new JFXDialog(screeningPane, layout, JFXDialog.DialogTransition.TOP);
+        screeningDialog.getStylesheets().add("/edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css");
+        screeningDialog.show();
+
+        JFXButton btnClose = new JFXButton("Quit");
+        btnClose.getStyleClass().add("cancel-button-jfx");
+        btnClose.setStyle("-fx-pref-width: 75;" + "-fx-pref-height: 50");
+        btnClose.setOnAction(e -> screeningDialog.close());
+
+        JFXButton btnNext = new JFXButton("Next");
+        btnNext.getStyleClass().add("save-button-jfx");
+        btnNext.setStyle("-fx-pref-width: 75;" + "-fx-pref-height: 50");
+        btnNext.setOnAction(e -> {
+            if(!qc.getTestFinished()) {
+                //System.out.println("first statement");
+                qc.calculateScore();
+                layout.setHeading(qc.nextClicked());
+            } else if (qc.getTestFinished() && !qc.getDone()){
+                //System.out.println("second statement");
+                qc.calculateScore();
+                btnNext.setText("Close");
+                layout.setHeading(qc.nextClicked());
+                btnClose.setVisible(false);
+                btnClose.setDisable(true);
+            } else if (qc.getDone()) {
+                screeningDialog.close();
+            }
+        });
+        layout.setActions(btnClose, btnNext);
+    }
+
+    @FXML
     public void navigateFloor1() {
         destination.setText((String) listF1.getSelectionModel().getSelectedItem());
         navigate();
@@ -676,10 +734,9 @@ public class MapViewerController {
 
     @FXML
     private void goToSelected() {
+		AsyncTaskManager.newTask(() -> textToSpeech.playSpeech(textToSpeech.convertTextToSpeech(dirList.getSelectionModel().getSelectedItem().toString(), "en-US", SsmlVoiceGender.MALE)));
         int index = dirList.getSelectionModel().getSelectedIndex();
-
         ArrayList<Node> subpath = path.getSubpaths().get(index);
-
         if (dirList.getSelectionModel().getSelectedItem().toString().contains("Navigate")) {
             if (subpath.get(0).getBuilding().equals("Faulkner")) {
                 map.setBuilding(new Building("Google"));
@@ -752,5 +809,26 @@ public class MapViewerController {
 
     private void hideTextualDirections() {
         sideBox.getChildren().remove(dirList);
+    }
+
+    @FXML
+    private void handleFeedback() {
+        try {
+            Parent root = loaderFactory.getFXMLLoader("map_viewer/Feedback").load();
+            loaderFactory.setupPopup(new Stage(), new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
+
+    }
+
+    @FXML
+    private void handleHandicap() {
+
+    }
+
+    @FXML
+    private void handleRobotDirections() {
+
     }
 }

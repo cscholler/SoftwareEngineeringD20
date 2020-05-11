@@ -532,7 +532,6 @@ public class MapPane extends ScrollPane {
 
         scroller.layout();
 
-  //        mapImage.setX(percentX * scroller.getHmax());
         scroller.setHvalue(percentX * scroller.getHmax());
         scroller.setVvalue(percentY * scroller.getVmax());
     }
@@ -712,8 +711,8 @@ public class MapPane extends ScrollPane {
                 nodeGUI.getCircle().setFill(nodeColor);
             }
             List<String> visibleNodeTypes = Arrays.asList("EXIT", "REST", "ELEV", "STAI", "INFO", "RETL", "KIOS", "REFL");
-            //if (!visibleNodeTypes.contains(nodeGUI.getNode().getType()))
-                //nodeGUI.setVisible(false);
+            if (!visibleNodeTypes.contains(nodeGUI.getNode().getType()))
+                nodeGUI.setVisible(false);
         }
     }
 

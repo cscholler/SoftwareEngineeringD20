@@ -448,8 +448,6 @@ public class AnalyticsController implements Initializable {
         } else {
             setFloor(Node.floorStringToInt(sourceButton.getText()));
         }
-
-       // if (!path.getPathNodes().isEmpty()) highLightPath();
     }
 
     public void setFloor(int newFloor) {
@@ -499,7 +497,6 @@ public class AnalyticsController implements Initializable {
 
     private void burnAllEdges(Collection<EdgeGUI> edges) {
         for(EdgeGUI edgeGUI : edges) {
-            edgeGUI.setVisible(true);
             if(edgeGUI.getEdge().getFreq() > 0) {
                 if(edgeGUI != null) {
                     edgeGUI.setHighlightColor(Color.RED);
