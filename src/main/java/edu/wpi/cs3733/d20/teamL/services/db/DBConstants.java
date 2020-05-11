@@ -19,7 +19,8 @@ public class DBConstants {
 	public static final String SERVICE_NAME = "mysql-db-01";
 
 	public static ArrayList<String> GET_TABLE_NAMES() {
-		return new ArrayList<>(Arrays.asList("Nodes", "Edges", "Users", "Doctors", "Patients", "Gifts", "Gift_Delivery_Requests", "Medication_Requests", "Service_Requests", "Reservations", "Screening_Questions"));
+		return new ArrayList<>(Arrays.asList("Nodes", "Edges", "Users", "Doctors", "Patients", "Gifts", "Gift_Delivery_Requests", "Medication_Requests", "Service_Requests",
+				"Reservations", "Kiosk_Settings", "Screening Questions", "Feedback"));
 	}
 
 	public static final String CREATE_NODE_TABLE =
@@ -74,9 +75,11 @@ public class DBConstants {
 			"CREATE TABLE Gifts(" +
 					"id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
 					"type VARCHAR(16) NOT NULL, " +
-					"subtype VARCHAR(16) NOT NULL, " +
+					"subtype VARCHAR(32) NOT NULL, " +
 					"description VARCHAR(128) NOT NULL, " +
-					"inventory INT NOT NULL)";
+					"inventory INT NOT NULL, " +
+					"cost DOUBLE NOT NULL)";
+					//"url VARCHAR(64))";
 
 	public static final String CREATE_GIFT_DELIVERY_REQUEST_TABLE =
 			"CREATE TABLE Gift_Delivery_Requests(" +
@@ -149,9 +152,13 @@ public class DBConstants {
 	public static final String CREATE_FEEDBACK_TABLE =
 			"CREATE TABLE Feedback(" +
 					"id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
-					"expectations VARCHAR(256) NOT NULL, " +
-					"application VARCHAR(256) NOT NULL, " +
-					"notes VARCHAR(256))";
+					"q1 VARCHAR(3) NOT NULL, " +
+					"q2 VARCHAR(3) NOT NULL, " +
+					"q3 VARCHAR(3) NOT NULL, " +
+					"q4 VARCHAR(3) NOT NULL, " +
+					"q5 VARCHAR(256) NOT NULL, " +
+					"q6 VARCHAR(256) NOT NULL, " +
+					"q7 VARCHAR(256))";
 
 	public static final String DROP_NODE_TABLE =
 			"DROP TABLE IF EXISTS Nodes";
@@ -213,8 +220,8 @@ public class DBConstants {
 					"VALUES(?, ?, ?, ?, ?, ?)";
 
 	public static final String ADD_GIFT =
-			"INSERT INTO Gifts(type, subtype, description, inventory)" +
-					"VALUES(?, ?, ?, ?)";
+			"INSERT INTO Gifts(type, subtype, description, inventory, cost)" +
+					"VALUES(?, ?, ?, ?, ?)";
 
 	public static final String ADD_GIFT_DELIVERY_REQUEST =
 			"INSERT INTO Gift_Delivery_Requests(patient_id, sender_name, request_username, assignee_username, gifts, message, notes, status, date_and_time)" +
@@ -245,8 +252,8 @@ public class DBConstants {
 					"VALUES(?, ?, ?, ?)";
 
 	public static final String ADD_FEEDBACK =
-			"INSERT INTO Feedback(expectations, application, notes)" +
-					"VALUES(?, ?, ?)";
+			"INSERT INTO Feedback(q1, q2, q3, q4, q5, q6, q7)" +
+					"VALUES(?, ?, ?, ?, ?, ?, ?)";
 
 	public static final String SELECT_ALL_NODES =
 			"SELECT * " +
@@ -514,7 +521,8 @@ public class DBConstants {
 
 	public static final String UPDATE_KIOSK_TIMEOUTS =
 			"UPDATE Kiosk_Settings " +
-					"SET logout_timout = ?, idle_cache_timeout = ?, force_cache_timeout = ?, screen_saver_timout = ?";
+					"SET logout_timeout = ?, idle_cache_timeout = ?, force_cache_timeout = ?, screen_saver_timeout = ? " +
+					"WHERE id = ?";
 
 	public static final String UPDATE_SCREENING_QUESTIONS =
 			"UPDATE Screening_Questions " +

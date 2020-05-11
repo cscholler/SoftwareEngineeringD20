@@ -127,6 +127,11 @@ public class GiftCartPaneController {
         HBox nameHBox = new HBox(item, giftName);
         nameHBox.setAlignment(Pos.CENTER_LEFT);
 
+        Label cost = new Label("Cost: ");
+        Label costAmount = new Label(gift.costToString(1));
+        HBox costHBox = new HBox(cost, costAmount);
+        costHBox.setAlignment(Pos.CENTER_LEFT);
+
         Label quantity = new Label("Amount in stock: ");
         Label giftQuantity = new Label(gift.getInventory());
         HBox quantityHBox = new HBox(quantity, giftQuantity);
@@ -160,7 +165,7 @@ public class GiftCartPaneController {
         addToCartButton.setOnAction(addToCartAction);
         vbox.setMargin(addToCartButton, new Insets(5, 0, 5, 0));
 
-        vbox.getChildren().addAll(imageView, nameHBox, quantityHBox, descriptionVBox, addToCartButton);
+        vbox.getChildren().addAll(imageView, nameHBox, costHBox,quantityHBox, descriptionVBox, addToCartButton);
 
         return vbox;
     }
@@ -216,6 +221,7 @@ public class GiftCartPaneController {
         public void handle(ActionEvent e) {
             stackPane.getChildren().remove(checkoutFXML);
             stackPane.getChildren().remove(backPane);
+            checkoutButton.setText(CartSize() + " - Go to Checkout");
         }
     };
 }

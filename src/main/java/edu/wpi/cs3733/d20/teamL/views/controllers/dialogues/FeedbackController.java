@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
 import java.net.URL;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
+@Slf4j
 public class FeedbackController implements Initializable {
 
     @FXML
@@ -47,7 +49,6 @@ public class FeedbackController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         expectationsYes.setToggleGroup(expectationsGroup);
         expectationsNo.setToggleGroup(expectationsGroup);
         easyYes.setToggleGroup(easyGroup);
@@ -56,7 +57,6 @@ public class FeedbackController implements Initializable {
         navigateNo.setToggleGroup(navigateGroup);
         nextYes.setToggleGroup(nextGroup);
         nextNo.setToggleGroup(nextGroup);
-
     }
 
     @FXML
@@ -70,42 +70,39 @@ public class FeedbackController implements Initializable {
     void handleSubmit() {
 
         boolean validFields = true;
-
-        String expectations = expectationsText.getText();
+        String meetExpectation = expectationsGroup.getSelectedToggle().toString();
+        String easy = easyGroup.getSelectedToggle().toString();
+        String navigate = navigateGroup.getSelectedToggle().toString();
+        String next = navigateGroup.getSelectedToggle().toString();
+        String exceedExpectations = expectationsText.getText();
         String application = applicationText.getText();
         String other = otherText.getText();
 
-
-        if (expectations == null || expectations.equals("")) {
+        if (exceedExpectations == null || exceedExpectations.isEmpty()) {
             validFields = false;
         } else {
             validFields = true;
         }
-        if (application == null || application.equals("")) {
+        if (application == null || application.isEmpty()) {
             validFields = false;
         } else {
             validFields = true;
         }
-        if (other == null || other.equals("")) {
+        if (other == null || other.isEmpty()) {
             validFields = false;
         } else {
             validFields = true;
         }
 
         int rows = 0;
-
         if (validFields) {
-            rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_FEEDBACK,
-                    new ArrayList<>(Arrays.asList(expectations, application, other)))));
+            rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_FEEDBACK, new ArrayList<>(Arrays.asList(meetExpectation, easy, navigate, next, exceedExpectations, application, other)))));
         }
-
         if (rows == 0) {
 
             submissionLabel.setTextFill(Color.RED);
             submissionLabel.setText("Please fill out all fields");
-
-        } else {
-
+        } else if (rows == 1) {
             submissionLabel.setTextFill(Color.BLACK);
             submissionLabel.setText("Thank you for your time!");
 
@@ -120,7 +117,9 @@ public class FeedbackController implements Initializable {
             navigateNo.setSelected(false);
             nextYes.setSelected(false);
             nextNo.setSelected(false);
-        }
+        } else {
+			log.error("SQL update affected more than 1 row.");
+		}
         loader.showAndFade(submissionLabel);
     }
 }

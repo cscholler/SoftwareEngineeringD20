@@ -217,27 +217,44 @@
                   </ImageView>
                </children>
             </HBox>
-            <VBox alignment="CENTER" layoutY="18.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="10.0">
+             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="141.0" AnchorPane.rightAnchor="15.0">
+                 <children>
+                     <JFXButton buttonType="RAISED" onAction="#handleFeedback" prefHeight="61.0" prefWidth="173.0" style="-fx-background-color: #0d2e57; -fx-border-color: white; -fx-border-radius: 10;" text="Feedback">
+                         <font>
+                             <Font size="24.0" />
+                         </font>
+                     </JFXButton>
+                 </children>
+             </HBox>
+            <HBox layoutY="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="10.0">
                <children>
-                  <Label fx:id="timeLabel" alignment="CENTER" styleClass="bottom-bar-time-label-fx" text="Label" textFill="WHITE">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="dateLabel" alignment="CENTER" layoutX="10.0" layoutY="10.0" style="-fx-font-size: 20;" styleClass="bottom-bar-time-label-fx" text="Label" textFill="WHITE">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-               </children>
-            </VBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="141.0" AnchorPane.rightAnchor="10.0">
-               <children>
-                  <JFXButton buttonType="RAISED" onAction="#handleFeedback" prefHeight="61.0" prefWidth="173.0" style="-fx-background-color: #0d2e57; -fx-border-color: white; -fx-border-radius: 10;" text="Feedback">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </JFXButton>
+                  <VBox alignment="CENTER">
+                     <children>
+                        <Label fx:id="timeLabel" alignment="CENTER" styleClass="bottom-bar-time-label-fx" text="Label" textFill="WHITE">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="dateLabel" alignment="CENTER" layoutX="10.0" layoutY="10.0" style="-fx-font-size: 20;" styleClass="bottom-bar-time-label-fx" text="Label" textFill="WHITE">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" onMouseClicked="#openNextHoursWeather">
+                     <children>
+                        <ImageView fx:id="currentWeatherIcon" fitHeight="45.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../assets/weather/partly-cloudy-day.png" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="currentTempLabel" style="-fx-font-size: 20; -fx-padding: 0;" styleClass="bottom-bar-time-label-fx" text="Label" textAlignment="CENTER" />
+                     </children>
+                     <HBox.margin>
+                        <Insets left="15.0" />
+                     </HBox.margin>
+                  </VBox>
                </children>
             </HBox>
          </children>

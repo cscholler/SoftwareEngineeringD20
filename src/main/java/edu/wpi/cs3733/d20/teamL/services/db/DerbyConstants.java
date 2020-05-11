@@ -65,6 +65,8 @@ public class DerbyConstants {
 					"subtype VARCHAR(16) NOT NULL, " +
 					"description VARCHAR(128) NOT NULL, " +
 					"inventory INT NOT NULL, " +
+					"cost DOUBLE NOT NULL), " +
+					//"url VARCHAR(64), " + ;
 					"PRIMARY KEY (id))";
 
 	public static final String CREATE_GIFT_DELIVERY_REQUEST_TABLE =
