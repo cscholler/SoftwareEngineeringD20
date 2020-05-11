@@ -175,9 +175,9 @@
     -jfx-unfocus-color: white;
     -jfx-focus-color: #405784;
     -fx-pref-width: 300;
-    -fx-pref-height: 150;
+    -fx-pref-height: 142;
     -fx-max-width: 300;
-    -fx-max-height: 150;
+    -fx-max-height: 142;
 
     -fx-font-size: 15;
     -jfx-label-float: true;
@@ -327,7 +327,7 @@
 /*applies automatically*/
 
 .jfx-tab-pane .tab-header-background {
-    -fx-background-color: white;
+    -fx-background-color: lightgrey;
 }
 
 .jfx-tab-pane .tab-selected-line {

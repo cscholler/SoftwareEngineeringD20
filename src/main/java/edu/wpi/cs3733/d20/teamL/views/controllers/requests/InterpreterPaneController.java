@@ -11,7 +11,6 @@ import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
-import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -40,9 +39,7 @@ public class InterpreterPaneController implements Initializable {
     public StackPane stackPane;
     public BorderPane borderPane;
     public ImageView requestReceived;
-
-    DBTableFormatter formatter = new DBTableFormatter();
-    private FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
+    private final FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
     private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup;
     @Inject
@@ -88,10 +85,9 @@ public class InterpreterPaneController implements Initializable {
      */
     @FXML
     public void handleButtonAction(ActionEvent e) throws IOException {
-        //goe back to staff View
+        //goes back to staff View
         if (e.getSource() == btnBack) {
-            Parent root = loaderHelper.getFXMLLoader("StaffView").load();
-            loaderHelper.setupScene(new Scene(root));
+            loaderFactory.goBack();
 
             //sumbits request
         } else if (e.getSource() == btnSubmit){
@@ -128,7 +124,7 @@ public class InterpreterPaneController implements Initializable {
 
             int rows = 0;
             if(validFields) rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
-                    new ArrayList<>(Arrays.asList(patientID, user, null, roomNumber, "interpreter", interpreterType, concatenatedNotes, status, dateAndTime)))));
+                    new ArrayList<>(Arrays.asList(patientID, user, null, roomNumber, "Interpreter", interpreterType, concatenatedNotes, status, dateAndTime)))));
 
             if(rows == 0) {
                 confirmation.setTextFill(Color.RED);
@@ -143,10 +139,10 @@ public class InterpreterPaneController implements Initializable {
                 roomNumText.setText("");
                 additionalText.setText("");
 
-                loaderHelper.showAndFade(requestReceived);
+                loaderFactory.showAndFade(requestReceived);
             }
             confirmation.setVisible(true);
-            loaderHelper.showAndFade(confirmation);
+            loaderFactory.showAndFade(confirmation);
         }
 
     }

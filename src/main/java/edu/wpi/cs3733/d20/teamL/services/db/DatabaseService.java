@@ -8,12 +8,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.services.users.PasswordManager;
@@ -48,7 +43,6 @@ public class DatabaseService extends Service implements IDatabaseService {
 			connect();
 		}
 		// Rebuild the database if using Derby
-		// TODO: only rebuild if db doesn't exist and tables dont' exist
 		if (dbType == DB_TYPE.DERBY) {
 			rebuildDatabase();
 		}
@@ -248,6 +242,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 			updates.add(new SQLEntry(DBConstants.CREATE_RESERVATIONS_TABLE));
 			updates.add(new SQLEntry(DBConstants.CREATE_SCREENING_QUESTIONS_TABLE));
 			updates.add(new SQLEntry(DBConstants.CREATE_KIOSK_SETTINGS_TABLE));
+			updates.add(new SQLEntry(DBConstants.CREATE_FEEDBACK_TABLE));
 		} else if (dbType == DB_TYPE.DERBY) {
 			updates.add(new SQLEntry(DerbyConstants.CREATE_NODE_TABLE));
 			updates.add(new SQLEntry(DerbyConstants.CREATE_EDGE_TABLE));
@@ -258,8 +253,8 @@ public class DatabaseService extends Service implements IDatabaseService {
 			updates.add(new SQLEntry(DerbyConstants.CREATE_GIFT_DELIVERY_REQUEST_TABLE));
 			updates.add(new SQLEntry(DerbyConstants.CREATE_MEDICATION_REQUEST_TABLE));
 			updates.add(new SQLEntry(DerbyConstants.CREATE_SERVICE_REQUEST_TABLE));
-			updates.add(new SQLEntry(DBConstants.CREATE_SCREENING_QUESTIONS_TABLE));
-			//TODO: add kiosk and screening tables
+			updates.add(new SQLEntry(DerbyConstants.CREATE_FEEDBACK_TABLE));
+			//TODO: add kiosk and screening and feedback tables
 		} else {
 			log.error("Invalid database type.");
 		}
@@ -292,7 +287,6 @@ public class DatabaseService extends Service implements IDatabaseService {
 		serviceType = "information_technology";
 		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Spongebob", "Squarepants", serviceType + "_emp1", PasswordManager.hashPassword(serviceType + "_emp1"), "0", serviceType, null))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Barry", "Benson", serviceType + "_emp2", PasswordManager.hashPassword(serviceType + "_emp2"), "0", serviceType, null))));
-
 
 		// Interpreters for French and Spanish, the interpreter form does submit them starting with capital letters
 		String interpreter = "interpreter";
@@ -395,6 +389,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 		CSVHelper csvReader = new CSVHelper();
 		for (ArrayList<String> row : csvReader.readCSVFile(csvFile, true)) {
 			//updates.add(new SQLEntry(getTableUpdateMappings().get(tableName).get(0), row));
+			row.add(String.valueOf(0));
 			if (tableName.equals("Nodes")) {
 				updates.add(new SQLEntry(DBConstants.ADD_NODE, row));
 			} else if (tableName.equals("Edges")) {
@@ -448,6 +443,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 			updates.add(new SQLEntry(DBConstants.DROP_USER_TABLE));
 			updates.add(new SQLEntry(DBConstants.DROP_EDGE_TABLE));
 			updates.add(new SQLEntry(DBConstants.DROP_NODE_TABLE));
+			updates.add(new SQLEntry(DBConstants.DROP_FEEDBACK_TABLE));
 			executeUpdates(updates);
 		} else if (dbType == DB_TYPE.DERBY) {
 			ResultSet resSet;
@@ -462,7 +458,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 			dropTableUpdates.add(DerbyConstants.DROP_GIFT_DELIVER_REQUEST_TABLE);
 			dropTableUpdates.add(DerbyConstants.DROP_MEDICATION_REQUEST_TABLE);
 			dropTableUpdates.add(DerbyConstants.DROP_SERVICE_REQUEST_TABLE);
-			updates.add(new SQLEntry(DBConstants.DROP_SCREENING_QUESTIONS_TABLE));
+			dropTableUpdates.add(DerbyConstants.DROP_FEEDBACK_TABLE);
 			try {
 				for (int i = 0; i < DBConstants.GET_TABLE_NAMES().size(); i++) {
 					resSet = connection.getMetaData().getTables(null, "APP", DBConstants.GET_TABLE_NAMES().get(i).toUpperCase(), null);

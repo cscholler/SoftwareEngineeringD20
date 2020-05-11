@@ -140,7 +140,7 @@ public class MapPane extends ScrollPane {
 
                         Node source = tempEdge.getSource().getNode();
 
-                        Edge edge = new Edge(source, dest);
+                        Edge edge = new Edge(source, dest,0);
                         source.addEdgeTwoWay(edge);
 
                         addEdge(edge);
@@ -638,7 +638,7 @@ public class MapPane extends ScrollPane {
                     Node source = tempEdge.getSource().getNode();
                     Node dest = nodeGUI.getNode();
 
-                    Edge edge = new Edge(source, dest);
+                    Edge edge = new Edge(source, dest, 0);
                     source.addEdgeTwoWay(edge);
 
                     addEdge(edge);
