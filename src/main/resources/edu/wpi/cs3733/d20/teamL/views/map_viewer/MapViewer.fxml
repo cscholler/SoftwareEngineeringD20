@@ -113,7 +113,7 @@
       </AnchorPane>
     </left>
     <center>
-        <AnchorPane onMouseClicked="#clickNode" BorderPane.alignment="CENTER">
+        <AnchorPane BorderPane.alignment="CENTER">
             <children>
                 <MapPane fx:id="map" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                 <VBox alignment="BOTTOM_RIGHT" cache="true" layoutX="883.0" layoutY="510.0" maxHeight="100.0" maxWidth="50.0" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="20.0">
