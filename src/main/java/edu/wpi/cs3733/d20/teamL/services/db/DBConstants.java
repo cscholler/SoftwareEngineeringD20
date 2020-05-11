@@ -76,7 +76,9 @@ public class DBConstants {
 					"type VARCHAR(16) NOT NULL, " +
 					"subtype VARCHAR(16) NOT NULL, " +
 					"description VARCHAR(128) NOT NULL, " +
-					"inventory INT NOT NULL)";
+					"inventory INT NOT NULL, " +
+					"cost DOUBLE NOT NULL)";
+					//"url VARCHAR(64))";
 
 	public static final String CREATE_GIFT_DELIVERY_REQUEST_TABLE =
 			"CREATE TABLE Gift_Delivery_Requests(" +
@@ -203,8 +205,8 @@ public class DBConstants {
 					"VALUES(?, ?, ?, ?, ?, ?)";
 
 	public static final String ADD_GIFT =
-			"INSERT INTO Gifts(type, subtype, description, inventory)" +
-					"VALUES(?, ?, ?, ?)";
+			"INSERT INTO Gifts(type, subtype, description, inventory, cost)" +
+					"VALUES(?, ?, ?, ?, ?)";
 
 	public static final String ADD_GIFT_DELIVERY_REQUEST =
 			"INSERT INTO Gift_Delivery_Requests(patient_id, sender_name, request_username, assignee_username, gifts, message, notes, status, date_and_time)" +
@@ -369,15 +371,15 @@ public class DBConstants {
 					"FROM Kiosk_Settings " +
 					"ORDER BY id";
 
-	public static final String GET_KIOSK_SETTINGS =
-			"SELECT * " +
-					"FROM Kiosk_Settings " +
-					"WHERE id = ?";
-
 	public static final String SELECT_ALL_SCREENING_QUESTIONS =
 			"SELECT * " +
 					"FROM Screening_Questions " +
 					"ORDER BY id";
+
+	public static final String GET_KIOSK_SETTINGS =
+			"SELECT * " +
+					"FROM Kiosk_Settings " +
+					"WHERE id = ?";
 
 	public static final String UPDATE_NODE =
 			"UPDATE Nodes " +

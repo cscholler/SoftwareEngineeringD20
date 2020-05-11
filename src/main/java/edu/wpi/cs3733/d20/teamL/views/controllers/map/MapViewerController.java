@@ -2,6 +2,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.Timer;
 
 import com.google.cloud.texttospeech.v1.SsmlVoiceGender;
 import com.google.protobuf.ByteString;
@@ -13,6 +14,7 @@ import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
+import edu.wpi.cs3733.d20.teamL.views.controllers.screening.QuestionnaireController;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -63,13 +65,9 @@ public class MapViewerController {
     @FXML
     private JFXTextField startingPoint, destination;
     @FXML
-    private JFXButton btnNavigate, floorUp, floorDown;
+    private JFXButton btnNavigate, floorUp, floorDown, btnScreening;
     @FXML
-    private ScrollPane scroll;
-    @FXML
-    private VBox sideBox, instructions;
-    @FXML
-    private JFXNodesList textDirNode;
+    private VBox sideBox;
     @FXML
     private VBox floorSelector;
     @FXML
@@ -77,7 +75,7 @@ public class MapViewerController {
     @FXML
     private JFXButton btnTextMe, btnQR;
     @FXML
-    StackPane stackPane, keyStackPane;
+    StackPane stackPane, keyStackPane, screeningPane;
     @FXML
     private JFXListView listF1, listF2, listF3, listF4, listF5;
     @FXML
@@ -121,6 +119,9 @@ public class MapViewerController {
     private Collection<String> retailNodes = new ArrayList<>();
     private Collection<String> confNodes = new ArrayList<>();
 
+    private QuestionnaireController qc;
+
+
     public static final String MAIN = "Main";
 
     @FXML
@@ -143,6 +144,8 @@ public class MapViewerController {
 
         stackPane.setPickOnBounds(false);
         keyStackPane.setPickOnBounds(false);
+
+        screeningPane.setPickOnBounds(false);
         dirList.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent -> goToSelected()));
         // Import all the nodes from the cache and set the current building to Faulkner
         String startB = "Faulkner";
@@ -219,6 +222,9 @@ public class MapViewerController {
 
         accordion.getPanes().addAll(departments, labs, services, amenities, conferenceRooms);
         showAccordion();
+
+
+        btnScreening.setText("Think you have COVID-19?");
     }
 
     private void generateFloorButtons() {
@@ -637,6 +643,50 @@ public class MapViewerController {
 
         startingPoint.setText(destLoc);
         destination.setText(startLoc);
+    }
+
+    @FXML
+    public void openScreening() throws IOException{
+
+        qc = new QuestionnaireController(cache.getQuestions());
+
+        JFXDialogLayout layout = new JFXDialogLayout();
+        layout.getStylesheets().add("/edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css");
+        Label headingLabel = new Label ("Coronavirus Screening Test");
+        headingLabel.getStyleClass().add("service-request-header-label-fx");
+        headingLabel.setStyle("-fx-font-size: 30;");
+        layout.setHeading(headingLabel);
+        layout.setBody(qc.nextClicked());
+
+        JFXDialog screeningDialog = new JFXDialog(screeningPane, layout, JFXDialog.DialogTransition.TOP);
+        screeningDialog.getStylesheets().add("/edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css");
+        screeningDialog.show();
+
+        JFXButton btnClose = new JFXButton("Quit");
+        btnClose.getStyleClass().add("cancel-button-jfx");
+        btnClose.setStyle("-fx-pref-width: 75;" + "-fx-pref-height: 50");
+        btnClose.setOnAction(e -> screeningDialog.close());
+
+        JFXButton btnNext = new JFXButton("Next");
+        btnNext.getStyleClass().add("save-button-jfx");
+        btnNext.setStyle("-fx-pref-width: 75;" + "-fx-pref-height: 50");
+        btnNext.setOnAction(e -> {
+            if(!qc.getTestFinished()) {
+                //System.out.println("first statement");
+                qc.calculateScore();
+                layout.setHeading(qc.nextClicked());
+            } else if (qc.getTestFinished() && !qc.getDone()){
+                //System.out.println("second statement");
+                qc.calculateScore();
+                btnNext.setText("Close");
+                layout.setHeading(qc.nextClicked());
+                btnClose.setVisible(false);
+                btnClose.setDisable(true);
+            } else if (qc.getDone()) {
+                screeningDialog.close();
+            }
+        });
+        layout.setActions(btnClose, btnNext);
     }
 
     @FXML

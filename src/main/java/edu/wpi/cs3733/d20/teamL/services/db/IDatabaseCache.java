@@ -66,4 +66,8 @@ public interface IDatabaseCache {
 	ArrayList<Kiosk> getKioskCache();
 
 	void clearKioskCache();
+
+	void cacheQuestionsFromDB();
+
+	ArrayList<Question> getQuestions();
 }
