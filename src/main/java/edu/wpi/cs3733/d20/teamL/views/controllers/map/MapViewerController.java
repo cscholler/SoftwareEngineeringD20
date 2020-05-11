@@ -67,7 +67,7 @@ public class MapViewerController {
     @FXML
     private JFXTextField startingPoint, destination;
     @FXML
-    private JFXButton btnNavigate, floorUp, floorDown, btnScreening, btnTextMe, btnQR, btnTextToSpeachStart, btnTextToSpeachDestination;
+    private JFXButton btnNavigate, floorUp, floorDown, btnScreening, btnTextMe, btnQR, btnRobot, btnTextToSpeachStart, btnTextToSpeachDestination;
     @FXML
     private VBox sideBox;
     @FXML
@@ -242,6 +242,12 @@ public class MapViewerController {
         btnQR.getStyleClass().add("save-button-jfx");
         btnQR.setStyle("-jfx-button-type: RAISED;" + "-fx-pref-width: 200;" + "-fx-max-width: 200;" + "-fx-background-color: #00043B;" + "-fx-background-radius:  50;");
         btnQR.setOnAction(actionEvent -> genQR());
+
+        btnRobot = new JFXButton();
+        btnRobot.setText("Escort me there");
+        btnRobot.getStyleClass().add("save-button-jfx");
+        btnRobot.setStyle("-jfx-button-type: RAISED;" + "-fx-pref-width: 200;" + "-fx-max-width: 200;" + "-fx-background-color: #00043B;" + "-fx-background-radius:  50;");
+        btnRobot.setOnAction(actionEvent -> launchRobot());
 
         directionsVBox.getChildren().addAll(btnTextMe,btnQR);
         showDefaultOptions();
@@ -810,6 +816,10 @@ public class MapViewerController {
             map.setZoomLevelToPosition(scale, new Point2D(totalX, totalY));
             highLightPath();
         }
+    }
+
+    private void launchRobot() {
+        System.out.println("Wheres the robot Conrad?!?");
     }
 
     private void showDefaultOptions() {
