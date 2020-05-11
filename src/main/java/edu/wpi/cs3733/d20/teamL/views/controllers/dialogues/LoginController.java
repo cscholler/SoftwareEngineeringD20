@@ -166,7 +166,7 @@ public class LoginController {
         Response response = clientService.getClient().newCall(request).execute();
 
         String result = response.body().string();
-
+        log.info(result);
         try{
         JSONObject obj = new JSONObject(result);
         JSONArray arr = obj.getJSONArray("images");
