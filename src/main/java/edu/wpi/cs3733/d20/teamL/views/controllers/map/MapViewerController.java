@@ -129,15 +129,9 @@ public class MapViewerController {
 
     @FXML
     private void initialize() {
-
-    	ByteString audio1 = textToSpeech.convertTextToSpeech("Test 1", "en-US", SsmlVoiceGender.MALE);
-		ByteString audio2 = textToSpeech.convertTextToSpeech("Test 2", "en-US", SsmlVoiceGender.FEMALE);
-    	//textToSpeech.writeSpeechToFile(audio);
-
-
         timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
         timerManager.startTimer(() -> timerManager.updateDate(dateLabel), 0, 1000);
-        timerManager.startTimer(() -> timerManager.updateWeather(currentTempLabel, currentWeatherIcon), 0,1800000);
+        //timerManager.startTimer(() -> timerManager.updateWeather(currentTempLabel, currentWeatherIcon), 0,1800000);
 
         if (App.doUpdateCacheOnLoad) {
             cache.cacheAllFromDB();
