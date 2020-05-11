@@ -2,7 +2,6 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -19,13 +18,28 @@
          <center>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" BorderPane.alignment="CENTER">
                <children>
-                  <JFXComboBox fx:id="beds" promptText="Select Room" styleClass="combo-box-jfx" />
-                  <JFXDatePicker fx:id="date" defaultColor="#00043b" editable="false" promptText="Select Date" />
+                  <JFXComboBox fx:id="rooms" promptText="Select Room" style="-fx-pref-height: 40; -fx-pref-width: 350; -fx-max-width: 350;" styleClass="combo-box-jfx" />
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <JFXButton onAction="#lastWeekClicked" style="-fx-background-radius: 20 0 0 20;" styleClass="scheduler-button" />
+                        <JFXButton contentDisplay="GRAPHIC_ONLY" onAction="#lastWeekClicked" style="-fx-background-radius: 20 0 0 20;" styleClass="scheduler-button">
+                           <graphic>
+                              <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/staff_view/backwardIcon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
                         <JFXButton onAction="#todayClicked" style="-fx-background-radius: 0 0 0 0;" styleClass="scheduler-button" text="Today" />
-                        <JFXButton onAction="#nextWeekClicked" style="-fx-background-radius: 0 20 20 0;" styleClass="scheduler-button" />
+                        <JFXButton contentDisplay="GRAPHIC_ONLY" onAction="#nextWeekClicked" style="-fx-background-radius: 0 20 20 0;" styleClass="scheduler-button">
+                           <graphic>
+                              <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/staff_view/forwardIcon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
                      </children>
                   </HBox>
                   <JFXTreeTableView fx:id="table" stylesheets="@../../css/RoomSchedulerStyles.css" />

@@ -27,12 +27,16 @@
     -fx-text-alignment: center;
 }
 
-.jfx-tree-table-view > .virtual-flow > .clipped-container > .sheet > .tree-table-row-cell:filled:selected {
-    -fx-background-color: #b9c1de;
-}
+/*.jfx-tree-table-view > .virtual-flow > .clipped-container > .sheet > .tree-table-row-cell:filled:selected {*/
+/*    -fx-background-color: #b9c1de;*/
+/*}*/
 
 .tree-table-view {
     -fx-pref-width: 464;
     -fx-max-width: inherit;
     -fx-pref-height: 500;
+}
+
+.table-view:focused .table-row-cell:selected {
+    -fx-background-color: #b9c1de;
 }

@@ -1,19 +1,29 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
+import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableView;
+import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
+
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ConferenceRoomController {
 
@@ -22,10 +32,32 @@ public class ConferenceRoomController {
 
     @FXML
     private JFXTreeTableView<TimeSlot> table;
+    @FXML
+    private JFXComboBox rooms;
+    @FXML
+    private BorderPane borderPane;
+    @FXML
+    private StackPane stackPane;
+    @FXML
+    private ImageView requestReceived;
+    private FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
+    @Inject
+    private IDatabaseService db;
+    @Inject
+    private IDatabaseCache dbCache;
+    @Inject
+    private ILoginManager manager;
+
+    private ObservableList<String> conferenceRooms = FXCollections.observableArrayList("Flexible Workspace Conference Room");
+    private ArrayList<String> days = new ArrayList<>(Arrays.asList("Monday", "Tuesday", "Wednesday", "thursday", "Friday", "Saturday", "Sunday"));
 
     @FXML
     public void initialize() {
+        rooms.setItems(conferenceRooms);
         loadTable();
+
+        borderPane.prefWidthProperty().bind(stackPane.widthProperty());
+        borderPane.prefHeightProperty().bind(stackPane.heightProperty());
     }
 
     /**
@@ -112,6 +144,8 @@ public class ConferenceRoomController {
         String sa = sat.toString();
         sa = sa.substring(5);
 
+        ArrayList<String> weekDates = new ArrayList<>(Arrays.asList("Monday " + mo, "Tuesday " + tu, "Wednesday " + we, "Thursday " + th, "friday " + fr, "Saturday " + sa, "Sunday" + su));
+
 
         JFXTreeTableColumn<TimeSlot, String> time = new JFXTreeTableColumn<>("Time Slot");
         time.setCellValueFactory(param -> param.getValue().getValue().time);
@@ -172,23 +206,17 @@ public class ConferenceRoomController {
                 e = "12:00 AM";
             }
 
-
-
-
-
-
-            //s = String.format("%02d", i);
-            //s = s + ":00";
-            //String e = String.format("%02d", ((i + 1) % 24));
-            //e = e + ":00";
-
             String timeString = s + "-" + e;
+
+            //TODO loop through database dates and check if weekDates .contains them and the time, then find proper place in arraylist and add reserved
+            //TODO variables for each week day?
 
             slots.add(new TimeSlot(timeString, "open", "open", "open", "open", "open", "open", "open"));
         }
 
         TreeTableView.TreeTableViewSelectionModel<TimeSlot> selection = table.getSelectionModel();
-        selection.setSelectionMode(SelectionMode.MULTIPLE);
+        //selection.setSelectionMode(SelectionMode.MULTIPLE);
+        selection.setCellSelectionEnabled(true);
 
         final TreeItem<TimeSlot> root = new RecursiveTreeItem<>(slots, RecursiveTreeObject::getChildren);
         table.getColumns().setAll(time, monday, tuesday, wednesday, thursday, friday, saturday, sunday);
@@ -198,6 +226,26 @@ public class ConferenceRoomController {
 
     @FXML
     private void handleSubmit() {
+
+        TreeTableView.TreeTableViewSelectionModel<TimeSlot> selection = table.getSelectionModel();
+
+        final ObservableList<TreeTablePosition<TimeSlot, ?>> selectedCells = table.getSelectionModel().getSelectedCells();
+
+        TreeTablePosition<TimeSlot, ?> pos = selectedCells.get(0);
+
+        int col = pos.getColumn();
+
+        TreeItem<TimeSlot> ti = pos.getTreeItem();
+
+        TimeSlot t = ti.getValue();
+
+        //System.out.println(selection.getFocusedIndex());
+        System.out.println(t.availabilities.get(0));
+
+        String date = table.getColumns().get(col).getText();
+        date = date.substring(date.length()-5);
+        System.out.println(date);
+
 
     }
 
@@ -210,6 +258,7 @@ public class ConferenceRoomController {
         StringProperty friday;
         StringProperty saturday;
         StringProperty sunday;
+        ArrayList<String> availabilities;
 
         public TimeSlot(String time, String monday, String tuesday, String wednesday, String thursday, String friday, String saturday, String sunday) {
             this.time = new SimpleStringProperty(time);
@@ -220,6 +269,8 @@ public class ConferenceRoomController {
             this.friday = new SimpleStringProperty(friday);
             this.saturday = new SimpleStringProperty(saturday);
             this.sunday = new SimpleStringProperty(sunday);
+
+            availabilities = new ArrayList<>(Arrays.asList(time, monday, tuesday, wednesday, thursday, friday, saturday, sunday));
         }
     }
 }
