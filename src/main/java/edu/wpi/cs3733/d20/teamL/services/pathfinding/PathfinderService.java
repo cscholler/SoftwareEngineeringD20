@@ -5,7 +5,6 @@ import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.entities.Edge;
 import edu.wpi.cs3733.d20.teamL.entities.Path;
 
-import javax.inject.Inject;
 import java.util.*;
 
 public class PathfinderService implements IPathfinderService {
@@ -40,16 +39,18 @@ public class PathfinderService implements IPathfinderService {
         }
     }
 
+    private final Collection<String> nonHandicappedAccessibleTypes = new ArrayList<>(Arrays.asList("STAI"));
+
     private Comparator<NodeEntry> NodeEntrySorter = Comparator.comparing(NodeEntry::absoluteDist);
     private PriorityQueue<NodeEntry> priorityQueue = new PriorityQueue<>(NodeEntrySorter);
     private Map<Node, NodeEntry> priorityQueueKey = new HashMap<>();
 
     private boolean hasCoords = false;
+    private boolean handicapped = false;
 
     public enum PathfindingMethod {
         Astar, BFS, DFS, DSPF
     }
-
 
     private PathfindingMethod pathfindingMethod = PathfindingMethod.Astar;
 
@@ -76,6 +77,22 @@ public class PathfinderService implements IPathfinderService {
         }
     }
 
+    private boolean isPermitted(Node node) {
+        if (isHandicapped() && nonHandicappedAccessibleTypes.contains(node.getType())) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean isHandicapped() {
+        return handicapped;
+    }
+
+    public void setHandicapped(boolean handicapped) {
+        this.handicapped = handicapped;
+    }
+
     /**
      * Uses the A-Star algorithm to get a path between the source and destination node. Returns null
      * if there is no path
@@ -88,7 +105,7 @@ public class PathfinderService implements IPathfinderService {
 
         // Initialize all nodes in the priority queue to infinity but don't add the source
         for (Node node : graph.getNodes()) {
-            addNode(node);
+            if (isPermitted(node)) addNode(node);
         }
 
         setShortestPath(priorityQueueKey.get(source), 0);
@@ -123,11 +140,13 @@ public class PathfinderService implements IPathfinderService {
             for (Edge edge : currentNode.node.getEdges()) {
                 Node otherNode = edge.getDestination();
 
-                // Set otherNode NodeEntry shortestPath to currentNode.shortestPath + edge.length
-                NodeEntry otherNodeEntry = priorityQueueKey.get(otherNode);
-                if (currentNode.shortestPath + edge.getLength() < otherNodeEntry.shortestPath) {
-                    setShortestPath(otherNodeEntry, currentNode.shortestPath + edge.getLength());
-                    otherNodeEntry.parent = currentNode.node;
+                if (isPermitted(otherNode)) {
+                    // Set otherNode NodeEntry shortestPath to currentNode.shortestPath + edge.length
+                    NodeEntry otherNodeEntry = priorityQueueKey.get(otherNode);
+                    if (currentNode.shortestPath + edge.getLength() < otherNodeEntry.shortestPath) {
+                        setShortestPath(otherNodeEntry, currentNode.shortestPath + edge.getLength());
+                        otherNodeEntry.parent = currentNode.node;
+                    }
                 }
             }
         }

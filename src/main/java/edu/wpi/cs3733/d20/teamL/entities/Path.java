@@ -1,10 +1,10 @@
 package edu.wpi.cs3733.d20.teamL.entities;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
+import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import javafx.geometry.Point2D;
 
 public class Path implements Iterable<Node> {
@@ -12,6 +12,8 @@ public class Path implements Iterable<Node> {
     private ArrayList<ArrayList<Node>> subpaths = new ArrayList<>();
     private List<Node> pathNodes = new LinkedList<>();
     private int length = 0;
+
+    private final IDatabaseCache cache = FXMLLoaderFactory.injector.getInstance(IDatabaseCache.class);
 
     public List<Node> getPathNodes() {
         return pathNodes;
@@ -111,9 +113,23 @@ public class Path implements Iterable<Node> {
     }
 
     public int getPathTime(String transportation) {
+        ArrayList<Edge> editedEdges = new ArrayList<>();
+        ArrayList<Node> editedNodes = new ArrayList<>();
+
         int time = 0;
+        Node start = pathNodes.get(0);
+        Node end = pathNodes.get(pathNodes.size()-1);
+        start.setFreq(start.getFreq()+1);
+        end.setFreq(end.getFreq()+1);
+        editedNodes.addAll(Arrays.asList(start, end));
+
         for(int i = 0; i < pathNodes.size() - 1; i++) {
             Edge edge = pathNodes.get(i).getEdge(pathNodes.get(i+1));
+            Edge adjEdge = edge.getDestination().getEdge(edge.getSource());
+            edge.setFreq(edge.getFreq()+1);
+            adjEdge.setFreq(adjEdge.getFreq()+1);
+            editedEdges.add(edge);
+            editedEdges.add(adjEdge);
             if(!edge.getSource().getBuilding().equals(edge.getDestination().getBuilding())) {
                 if(transportation.equals("driving")) time += 10000;
                 else if (transportation.equals("walking")) time += 100000;
@@ -124,6 +140,12 @@ public class Path implements Iterable<Node> {
                 time += edge.getLength();
             }
         }
+        AsyncTaskManager.newTask(() -> {
+			cache.setEditedNodes(editedNodes);
+			cache.setEditedEdges(editedEdges);
+			cache.updateDB();
+		});
+
         return (int) Math.round(time * .338 / 60);
     }
 

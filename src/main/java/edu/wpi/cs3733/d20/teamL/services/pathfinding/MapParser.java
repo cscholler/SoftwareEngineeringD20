@@ -88,7 +88,7 @@ public class MapParser {
                 String[] data = row.split(",");
 
                 Node newNode = new Node(data[0], new Point2D(Double.parseDouble(data[1]), Double.parseDouble(data[2])),
-                        data[3], data[4], data[5], data[6], data[7]);
+                        data[3], data[4], data[5], data[6], data[7],0);
 
                 newGraph.addNode(newNode);
             }
@@ -113,7 +113,7 @@ public class MapParser {
 
                         int length = (int) Math.round(Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
 
-                        source.addEdgeTwoWay(new Edge(source, destination));
+                        source.addEdgeTwoWay(new Edge(source, destination, 0));
                     }
                 }
             }

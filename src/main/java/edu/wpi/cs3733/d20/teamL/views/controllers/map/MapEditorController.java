@@ -243,7 +243,7 @@ public class MapEditorController {
         ArrayList<Edge> newEdges = new ArrayList<>(nodes.getEdgesOneWay());
 
         cache.cacheNodes(new ArrayList<>(nodes.getNodes()), map.getEditedNodes());
-        cache.cacheEdges(newEdges);
+        cache.cacheEdges(newEdges, new ArrayList<>());
 
         AsyncTaskManager.startTaskWithPopup(cache::updateDB, "Saving...", "Saved successfully");
 

@@ -56,10 +56,12 @@ import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
 public class MapViewerController {
 	private final FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
 	private final TimerManager timerManager = new TimerManager();
-	private SearchFields searchFields;
+    private SearchFields searchFields;
 	private JFXAutoCompletePopup<String> autoCompletePopup;
 	private final ObservableList<String> directions = FXCollections.observableArrayList();
 	private Path path = new Path();
+	@FXML
+    private JFXToggleButton handicapToggle;
     @FXML
     private MapPane map;
     @FXML
@@ -73,7 +75,7 @@ public class MapViewerController {
     @FXML
     private JFXListView dirList = new JFXListView();
     @FXML
-    private JFXButton btnTextMe, btnQR;
+    private JFXButton btnTextMe, btnQR, btnRobot;
     @FXML
     StackPane stackPane, keyStackPane, screeningPane;
     @FXML
@@ -129,12 +131,6 @@ public class MapViewerController {
 
     @FXML
     private void initialize() {
-
-    	ByteString audio1 = textToSpeech.convertTextToSpeech("Test 1", "en-US", SsmlVoiceGender.MALE);
-		ByteString audio2 = textToSpeech.convertTextToSpeech("Test 2", "en-US", SsmlVoiceGender.FEMALE);
-    	//textToSpeech.writeSpeechToFile(audio);
-
-
         timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
         timerManager.startTimer(() -> timerManager.updateDate(dateLabel), 0, 1000);
         timerManager.startTimer(() -> timerManager.updateWeather(currentTempLabel, currentWeatherIcon), 0,1800000);
@@ -305,6 +301,8 @@ public class MapViewerController {
             btnTextMe.setVisible(true);
             btnQR.setDisable(false);
             btnQR.setVisible(true);
+            btnRobot.setDisable(false);
+            btnRobot.setVisible(true);
 //            textDirNode.setDisable(false);
 //            textDirNode.setVisible(true);
         }
@@ -388,7 +386,7 @@ public class MapViewerController {
 
     }
 
-    private String highlightSourceToDestination(Node source, Node destination) {
+    private void clearPath() {
         map.getSelector().clear();
 
         if (!path.getPathNodes().isEmpty()) {
@@ -399,6 +397,10 @@ public class MapViewerController {
             map.resetNodeVisibility(end);
         }
         path.getPathNodes().clear();
+    }
+
+    private String highlightSourceToDestination(Node source, Node destination) {
+        clearPath();
 
         path = pathfinderService.pathfind(map.getAllNodes(), source, destination);
         highLightPath();
@@ -522,6 +524,11 @@ public class MapViewerController {
     }
 
     @FXML
+    private void toggleHandicap() {
+        pathfinderService.setHandicapped(handicapToggle.isSelected());
+    }
+
+    @FXML
     public void handleText() {
         try {
             Parent root = loaderFactory.getFXMLLoader("map_viewer/SendDirectionsPage").load();
@@ -590,6 +597,7 @@ public class MapViewerController {
     @FXML
     private void clearSource() {
         startingPoint.clear();
+        clearPath();
     }
 
     /**
@@ -600,6 +608,7 @@ public class MapViewerController {
         destination.clear();
         hideTextualDirections();
         showAccordion();
+        clearPath();
     }
 
     /**
@@ -813,5 +822,26 @@ public class MapViewerController {
 
     private void hideTextualDirections() {
         sideBox.getChildren().remove(dirList);
+    }
+
+    @FXML
+    private void handleFeedback() {
+        try {
+            Parent root = loaderFactory.getFXMLLoader("map_viewer/Feedback").load();
+            loaderFactory.setupPopup(new Stage(), new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
+
+    }
+
+    @FXML
+    private void handleHandicap() {
+
+    }
+
+    @FXML
+    private void handleRobotDirections() {
+
     }
 }

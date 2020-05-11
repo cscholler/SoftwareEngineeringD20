@@ -191,7 +191,7 @@ public class AddPersonController implements Initializable {
         String manager = "pharmacist";
 
         rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(firstName, lastName, username, PasswordManager.hashPassword(password), type, services, manager))));
-        int rows1 = db.executeUpdate(new SQLEntry(DBConstants.ADD_DOCTOR, new ArrayList<>(Arrays.asList(doctorID, firstName, lastName, null, roomNum, additionalInfo))));
+        db.executeUpdate(new SQLEntry(DBConstants.ADD_DOCTOR, new ArrayList<>(Arrays.asList(doctorID, firstName, lastName, null, roomNum, additionalInfo))));
         confirm(rows);
         if(rows == 1 && pictureTaken){
             sendFace(username);

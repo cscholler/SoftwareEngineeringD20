@@ -6,15 +6,17 @@ import java.util.HashMap;
 
 public class Edge {
 	private String id;
-    Node source;
-    Node destination;
+	Node source;
+	Node destination;
+    private int freq = 0;
 
     private HashMap<String, Object> data = new HashMap<>();
 
-    public Edge(Node source, Node destination) {
+    public Edge(Node source, Node destination, int freq) {
         this.id = source.getID() + "_" + destination.getID();
         this.source = source;
         this.destination = destination;
+        this.freq = freq;
     }
 
     public double getLength() {
@@ -35,6 +37,14 @@ public class Edge {
 
     public void setDestination(Node destination) {
         this.destination = destination;
+    }
+
+    public int getFreq() {
+        return freq;
+    }
+
+    public void setFreq(int freq) {
+        this.freq = freq;
     }
 
     /**
@@ -58,7 +68,7 @@ public class Edge {
     }
 
     public ArrayList<String> toArrayList() {
-        return new ArrayList<>(Arrays.asList(getID(), getSource().getID(), getDestination().getID()));
+        return new ArrayList<>(Arrays.asList(getID(), getSource().getID(), getDestination().getID(), String.valueOf(getFreq())));
     }
 
     /**

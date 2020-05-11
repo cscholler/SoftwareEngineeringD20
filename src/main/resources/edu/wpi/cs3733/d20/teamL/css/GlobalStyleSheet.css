@@ -277,6 +277,15 @@
     -fx-background-radius: 0;
 }
 
+.sidebar-buttons-jfx {
+    -fx-background-color: #0d2e57;
+    -fx-background-radius: 0;
+}
+
+.sidebar-buttons-jfx:hover {
+    -fx-background-color: #405784;
+}
+
 /*----------------------------Gift Cart------------------------------------*/
 .total-cost-label-fx {
     -fx-text-fill: #00043B;
@@ -457,4 +466,17 @@
     -fx-pref-height: 20;
     -fx-font-size: 14;
     -fx-text-fill: red;
+}
+/*-------------------------Analytics Page -------------------------------------------*/
+.analytics-circle-buttons-jfx {
+    -fx-font-size: 30;
+    -fx-background-color: #00043B;
+    -fx-text-fill: white;
+
+    -fx-pref-width: 80;
+    -fx-pref-height: 60;
+    -fx-max-width: 70;
+    -fx-max-height: 70;
+    -fx-background-radius: 50;
+    -jfx-button-type: RAISED;
 }
