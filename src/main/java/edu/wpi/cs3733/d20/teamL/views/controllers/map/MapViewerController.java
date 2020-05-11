@@ -19,6 +19,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import edu.wpi.cs3733.d20.teamL.util.TimerManager;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -289,8 +290,8 @@ public class MapViewerController {
             btnTextMe.setVisible(true);
             btnQR.setDisable(false);
             btnQR.setVisible(true);
-//            textDirNode.setDisable(false);
-//            textDirNode.setVisible(true);
+           // textDirNode.setDisable(false);
+            //textDirNode.setVisible(true);
         }
         hideAccordion();
         hideTextualDirections();
@@ -358,12 +359,10 @@ public class MapViewerController {
 
         JFXButton btnClose = new JFXButton("X");
         btnClose.setStyle("-fx-font-weight: bolder");
-        btnClose.setOnAction(e -> legend.close());
+        btnClose.setOnAction(event -> legend.close());
         legendContent.setActions(btnClose);
 
         legend.show();
-
-		AsyncTaskManager.newTask(() -> System.out.println(speechToText.recordAndConvertAsync()));
     }
 
     private String highlightSourceToDestination(Node source, Node destination) {
@@ -598,7 +597,6 @@ public class MapViewerController {
      */
     @FXML
     public void handleAbout() {
-
         JFXDialogLayout content = new JFXDialogLayout();
         content.setHeading(new Text("About"));
         content.setBody(new Text("WPI Computer Science Department\n" +
@@ -617,12 +615,7 @@ public class MapViewerController {
                 "Thank you Brigham and Women's Hospital \nand Andrew Shinn for your time and input."));
         JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
         JFXButton btnDone = new JFXButton("Done");
-        btnDone.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                dialog.close();
-            }
-        });
+        btnDone.setOnAction(event -> dialog.close());
         content.setActions(btnDone);
         dialog.show();
     }
@@ -631,13 +624,15 @@ public class MapViewerController {
      * Changes starting location with destination and vice-versa.
      */
     @FXML
-    public void handleLocationChange() {
-
-        String startLoc = startingPoint.getText();
-        String destLoc = destination.getText();
-
-        startingPoint.setText(destLoc);
-        destination.setText(startLoc);
+    public void record() {
+    	speechToText.setAllowRecording(!speechToText.allowRecording());
+    	if (speechToText.allowRecording()) {
+			AsyncTaskManager.newTask(() -> {
+				destination.setText(speechToText.recordAndConvertAsync());
+				Platform.runLater(this::navigate);
+			});
+		}
+    	//TODO: add animation
     }
 
     @FXML

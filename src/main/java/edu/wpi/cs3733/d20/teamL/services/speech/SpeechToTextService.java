@@ -17,7 +17,6 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.google.api.gax.core.FixedCredentialsProvider;
 import com.google.cloud.speech.v1.RecognitionAudio;
 import com.google.cloud.speech.v1.RecognitionConfig;
@@ -28,18 +27,16 @@ import com.google.cloud.speech.v1.SpeechRecognitionResult;
 import com.google.cloud.speech.v1.SpeechSettings;
 import com.google.protobuf.ByteString;
 
-import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
 import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.cs3733.d20.teamL.services.Service;
-
-//TODO: convert to service and implement locks on recording
+import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
 
 @Slf4j
 public class SpeechToTextService extends Service implements ISpeechToTextService {
 	private SpeechClient client;
 	private SpeechFileManager speechFileManager;
-	private String currentTranscription;
+	private boolean allowRecording = false;
 
 	public SpeechToTextService() {
 		super();
@@ -69,8 +66,8 @@ public class SpeechToTextService extends Service implements ISpeechToTextService
 
 	@Override
 	public String recordAndConvertAsync() {
-		ForkJoinTask task = AsyncTaskManager.newTask(this::recordSpeech);
-		task.join();
+		ForkJoinTask<Object> recordingTask = AsyncTaskManager.newTask(this::recordSpeech);
+		recordingTask.join();
 		return convertSpeechToText();
 	}
 
@@ -107,10 +104,10 @@ public class SpeechToTextService extends Service implements ISpeechToTextService
 			int numBytesRead;
 			byte[] data = new byte[microphone.getBufferSize() / 5];
 			microphone.start();
-			int bytesRead = 0;
-			while (bytesRead < 320000) {
+			//int bytesRead = 0;
+			while (allowRecording) {
 				numBytesRead = microphone.read(data, 0, 1024);
-				bytesRead += numBytesRead;
+				//bytesRead += numBytesRead;
 				System.out.println("Recording...");
 				recording.write(data, 0, numBytesRead);
 			}
@@ -128,11 +125,13 @@ public class SpeechToTextService extends Service implements ISpeechToTextService
 		}
 	}
 
-	public String getCurrentTranscription() {
-		return currentTranscription;
+	@Override
+	public boolean allowRecording() {
+		return allowRecording;
 	}
 
-	public void setCurrentTranscription(String currentTranscription) {
-		this.currentTranscription = currentTranscription;
+	@Override
+	public void setAllowRecording(boolean allowRecording) {
+		this.allowRecording = allowRecording;
 	}
 }

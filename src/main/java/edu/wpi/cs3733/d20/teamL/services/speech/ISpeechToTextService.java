@@ -12,4 +12,8 @@ public interface ISpeechToTextService {
 	String convertSpeechToText();
 
 	void recordSpeech();
+
+	boolean allowRecording();
+
+	void setAllowRecording(boolean allowRecording);
 }
