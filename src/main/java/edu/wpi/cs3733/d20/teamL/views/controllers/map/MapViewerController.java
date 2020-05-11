@@ -2,10 +2,8 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.Timer;
 
 import com.google.cloud.texttospeech.v1.SsmlVoiceGender;
-import com.google.protobuf.ByteString;
 import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.services.accessability.ITextToSpeechService;
@@ -26,6 +24,7 @@ import javafx.event.ActionEvent;
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -67,11 +66,9 @@ public class MapViewerController {
     @FXML
     private JFXTextField startingPoint, destination;
     @FXML
-    private JFXButton btnNavigate, floorUp, floorDown, btnScreening, btnTextMe, btnQR, btnRobot, btnTextToSpeachStart, btnTextToSpeachDestination;
+    private JFXButton btnNavigate, floorUp, floorDown, btnScreening, btnTextMe, btnQR, btnRobot, btnTextToSpeachStart, btnTextToSpeachDestination, btnMute;
     @FXML
-    private VBox sideBox;
-    @FXML
-    private VBox floorSelector, directionsVBox;
+    private VBox sideBox, floorSelector, directionButtonsVBox, textDirectionsVBox;
     @FXML
     private JFXListView dirList = new JFXListView();
     @FXML
@@ -83,7 +80,7 @@ public class MapViewerController {
 	@FXML
 	private Accordion accordion = new Accordion();
     @FXML
-    private Label timeLabel, dateLabel, currentTempLabel;
+    private Label timeLabel, dateLabel, currentTempLabel, etaLabel;
     @FXML
     private ImageView currentWeatherIcon;
 
@@ -131,7 +128,8 @@ public class MapViewerController {
     private void initialize() {
         timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
         timerManager.startTimer(() -> timerManager.updateDate(dateLabel), 0, 1000);
-        timerManager.startTimer(() -> timerManager.updateWeather(currentTempLabel, currentWeatherIcon), 0,1800000);
+        //ToDO: uncomment this when its time to get weather
+        //timerManager.startTimer(() -> timerManager.updateWeather(currentTempLabel, currentWeatherIcon), 0,1800000);
 
         if (App.doUpdateCacheOnLoad) {
             cache.cacheAllFromDB();
@@ -228,9 +226,9 @@ public class MapViewerController {
 
         accordion.getPanes().addAll(departments, labs, services, amenities, conferenceRooms);
         // Create directions buttons
-        directionsVBox = new VBox();
-        directionsVBox.setAlignment(Pos.CENTER);
-        directionsVBox.setSpacing(10);
+        directionButtonsVBox = new VBox();
+        directionButtonsVBox.setAlignment(Pos.CENTER);
+        directionButtonsVBox.setSpacing(10);
 
         btnTextMe = new JFXButton();
         btnTextMe.setText("Text me directions");
@@ -250,8 +248,35 @@ public class MapViewerController {
         btnRobot.setStyle("-jfx-button-type: RAISED;" + "-fx-pref-width: 200;" + "-fx-max-width: 200;" + "-fx-background-color: #00043B;" + "-fx-background-radius:  50;");
         btnRobot.setOnAction(actionEvent -> launchRobot());
 
-        directionsVBox.getChildren().addAll(btnTextMe,btnQR,btnRobot);
+        directionButtonsVBox.getChildren().addAll(btnTextMe,btnQR,btnRobot);
         showDefaultOptions();
+
+        // Fill text directions box
+        textDirectionsVBox = new VBox();
+        textDirectionsVBox.setStyle("-fx-effect: dropshadow(three-pass-box, derive(BLACK, -20%), 10, 0, 2, 2)");
+        HBox dirListHeader = new HBox();
+        dirListHeader.setStyle("-fx-alignment: center;" + "-fx-background-color: #00043B;");
+
+        etaLabel = new Label("Directions");
+        etaLabel.setStyle("-fx-text-fill: white;" + "-fx-font-weight: bold;" + "-fx-font-size: 16;");
+
+        JFXButton speakAllButton = new JFXButton("", new ImageView(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/speakerIcon.png", 0,15,true, false, true)));
+        speakAllButton.setPadding(Insets.EMPTY);
+        speakAllButton.setStyle("-fx-background-color: transparent;" + "-fx-content-display: graphic-only;");
+        speakAllButton.setOnAction(e -> speakAllDirections());
+
+        JFXButton btnMute = new JFXButton("un-muted");
+        btnMute.setStyle("-fx-text-fill: white;" + "-fx-font-size: 16;" + "-fx-background-color: transparent;");
+        btnMute.setOnAction(e -> toggleAudio());
+
+        HBox muteHBox = new HBox();
+        muteHBox.setStyle("-fx-alignment: center;" + "-fx-background-color: #00043B;");
+
+        dirListHeader.getChildren().addAll(etaLabel,speakAllButton);
+        muteHBox.getChildren().addAll(btnMute);
+        muteHBox.setAlignment(Pos.CENTER_LEFT);
+        muteHBox.setMaxHeight(50);
+        textDirectionsVBox.getChildren().addAll(dirListHeader,dirList, muteHBox);
 
         // Create Screening Button
         btnScreening.setText("Think you have COVID-19?");
@@ -432,6 +457,10 @@ public class MapViewerController {
 
         path.generateTextMessage();
         ArrayList<String> message = path.getMessage();
+        //TODO: make this a separate thing
+        etaLabel.setText(message.get(0));
+        message.remove(0);
+
         StringBuilder builder = new StringBuilder();
 
         dirList.getItems().clear();
@@ -846,7 +875,7 @@ public class MapViewerController {
 
     private void showDefaultOptions() {
         try {
-            sideBox.getChildren().removeAll(dirList,directionsVBox);
+            sideBox.getChildren().removeAll(textDirectionsVBox, directionButtonsVBox);
         } catch (Exception e){
 
         }
@@ -859,7 +888,7 @@ public class MapViewerController {
         } catch (Exception e) {
 
         }
-        sideBox.getChildren().addAll(dirList, directionsVBox);
+        sideBox.getChildren().addAll(textDirectionsVBox, directionButtonsVBox);
     }
 
     public void textToSpeachStartIcon(ActionEvent actionEvent) {
@@ -887,5 +916,15 @@ public class MapViewerController {
     @FXML
     private void handleRobotDirections() {
 
+    }
+
+    private void speakAllDirections() {
+        System.out.println("Ok time to talk now");
+    }
+
+    private void toggleAudio() {
+        System.out.println("Toggle audio");
+        if (btnMute.getText().equals("un-muted")) btnMute.setText("muted");
+        else if (btnMute.getText().equals("muted")) btnMute.setText("un-muted");
     }
 }
