@@ -127,16 +127,16 @@ public class Path implements Iterable<Node> {
             end = delta(curr, next);
             angle = start.angle(end);
 
+            robotPath.append("2 ");
+            int length = (int)curr.getEdge(next).getLength();
+            robotPath.append((length*10) + ",");
+
             if (angle > 10) {
                 sign = determineDirection(start, end);
 
                 if(sign.equals("left")) robotPath.append("1,");
                 else robotPath.append("3,");
 
-            } else {
-                robotPath.append("2 ");
-                int length = (int)curr.getEdge(next).getLength();
-                robotPath.append(length + ",");
             }
         }
 

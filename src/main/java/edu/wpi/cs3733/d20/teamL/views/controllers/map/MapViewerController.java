@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 import java.util.Timer;
 
@@ -62,7 +63,11 @@ public class MapViewerController {
 	private SearchFields searchFields;
 	private JFXAutoCompletePopup<String> autoCompletePopup;
 	private final ObservableList<String> directions = FXCollections.observableArrayList();
-	private Path path = new Path();
+    private static SerialPort kioskArduino = SerialPort.getCommPort("/dev/cu.usbmodem14201");
+    private static SerialPort ports[] = SerialPort.getCommPorts();
+    private static PrintWriter channel;
+
+    private Path path = new Path();
     @FXML
     private MapPane map;
     @FXML
@@ -825,6 +830,19 @@ public class MapViewerController {
         if(source.getBuilding().equals("Faulkner") && destination.getBuilding().equals("Faulkner") && source.getFloor() == 1 && destination.getFloor() == 1) {
             String robotPath = path.generateRobotPath();
             System.out.println(robotPath);
+            kioskArduino = ports[4];
+            kioskArduino.setBaudRate(9600);
+            kioskArduino.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 200, 200);
+            kioskArduino.openPort();
+            //byte test[] = Arrays.toString(robotPath.getBytes());
+            //kioskArduino.getOutputStream().write(robotPath.getBytes());
+            channel = new PrintWriter(kioskArduino.getOutputStream());
+            channel.print(robotPath);
+            channel.flush();
+            System.out.println(robotPath.getBytes()[0]);
+            System.out.println(Arrays.toString(robotPath.getBytes()));
+
+            //kioskArduino.closePort();
         }
     }
 
