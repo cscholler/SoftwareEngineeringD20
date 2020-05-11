@@ -52,16 +52,16 @@ import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
 import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
 import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
 
-import javax.swing.*;
-
 @Slf4j
 public class MapViewerController {
 	private final FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
 	private final TimerManager timerManager = new TimerManager();
-	private SearchFields searchFields;
+    private SearchFields searchFields;
 	private JFXAutoCompletePopup<String> autoCompletePopup;
 	private final ObservableList<String> directions = FXCollections.observableArrayList();
 	private Path path = new Path();
+	@FXML
+    private JFXToggleButton handicapToggle;
     @FXML
     private MapPane map;
     @FXML
@@ -75,6 +75,8 @@ public class MapViewerController {
     @FXML
     private JFXListView dirList = new JFXListView();
     @FXML
+    private JFXButton btnTextMe, btnQR, btnRobot;
+    @FXML
     StackPane stackPane, keyStackPane, screeningPane;
     @FXML
     private JFXListView listF1, listF2, listF3, listF4, listF5;
@@ -83,7 +85,10 @@ public class MapViewerController {
 	@FXML
 	private Accordion accordion = new Accordion();
     @FXML
-    private Label timeLabel, dateLabel;
+    private Label timeLabel, dateLabel, currentTempLabel;
+    @FXML
+    private ImageView currentWeatherIcon;
+
     @Inject
     private IDatabaseCache cache;
     @Inject
@@ -126,12 +131,9 @@ public class MapViewerController {
 
     @FXML
     private void initialize() {
-    	ByteString audio1 = textToSpeech.convertTextToSpeech("Test 1", "en-US", SsmlVoiceGender.MALE);
-		ByteString audio2 = textToSpeech.convertTextToSpeech("Test 2", "en-US", SsmlVoiceGender.FEMALE);
-    	//textToSpeech.writeSpeechToFile(audio);
-
         timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
         timerManager.startTimer(() -> timerManager.updateDate(dateLabel), 0, 1000);
+        timerManager.startTimer(() -> timerManager.updateWeather(currentTempLabel, currentWeatherIcon), 0,1800000);
 
         if (App.doUpdateCacheOnLoad) {
             cache.cacheAllFromDB();
@@ -142,10 +144,11 @@ public class MapViewerController {
         map.setHighLightColor(Color.GOLD);
         btnNavigate.setDisableVisualFocus(true);
 
+        // Stops stackPanes from stoping you clicking on whats underneath
         stackPane.setPickOnBounds(false);
         keyStackPane.setPickOnBounds(false);
-
         screeningPane.setPickOnBounds(false);
+
         dirList.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent -> goToSelected()));
         // Import all the nodes from the cache and set the current building to Faulkner
         String startB = "Faulkner";
@@ -254,6 +257,8 @@ public class MapViewerController {
 
         // Create Screening Button
         btnScreening.setText("Think you have COVID-19?");
+        btnScreening.setStyle("-fx-font-weight: bold");
+        btnScreening.setMinWidth(300);
     }
 
     private void generateFloorButtons() {
@@ -325,6 +330,8 @@ public class MapViewerController {
             btnTextMe.setVisible(true);
             btnQR.setDisable(false);
             btnQR.setVisible(true);
+            btnRobot.setDisable(false);
+            btnRobot.setVisible(true);
 //            textDirNode.setDisable(false);
 //            textDirNode.setVisible(true);
         }
@@ -398,7 +405,15 @@ public class MapViewerController {
         legend.show();
     }
 
-    private String highlightSourceToDestination(Node source, Node destination) {
+    /**
+     * Shows the future weather
+     */
+    @FXML
+    private void openNextHoursWeather() {
+
+    }
+
+    private void clearPath() {
         map.getSelector().clear();
 
         if (!path.getPathNodes().isEmpty()) {
@@ -409,6 +424,10 @@ public class MapViewerController {
             map.resetNodeVisibility(end);
         }
         path.getPathNodes().clear();
+    }
+
+    private String highlightSourceToDestination(Node source, Node destination) {
+        clearPath();
 
         path = pathfinderService.pathfind(map.getAllNodes(), source, destination);
         highLightPath();
@@ -529,6 +548,11 @@ public class MapViewerController {
 
     public MapPane getMap() {
         return map;
+    }
+
+    @FXML
+    private void toggleHandicap() {
+        pathfinderService.setHandicapped(handicapToggle.isSelected());
     }
 
     @FXML
@@ -844,5 +868,26 @@ public class MapViewerController {
     }
 
     public void textToSpeachDestinationIcon(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    private void handleFeedback() {
+        try {
+            Parent root = loaderFactory.getFXMLLoader("map_viewer/Feedback").load();
+            loaderFactory.setupPopup(new Stage(), new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
+
+    }
+
+    @FXML
+    private void handleHandicap() {
+
+    }
+
+    @FXML
+    private void handleRobotDirections() {
+
     }
 }

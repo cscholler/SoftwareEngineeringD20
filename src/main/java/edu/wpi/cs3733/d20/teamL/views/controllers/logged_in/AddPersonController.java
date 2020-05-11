@@ -1,7 +1,11 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.logged_in;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.github.sarxos.webcam.Webcam;
 import com.google.inject.Inject;
 import com.jfoenix.controls.*;
+import com.squareup.okhttp.*;
+import edu.wpi.cs3733.d20.teamL.services.HTTPClientService;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
@@ -19,11 +23,23 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
+import netscape.javascript.JSObject;
+import org.apache.commons.io.FileUtils;
+import org.json.JSONObject;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.ResourceBundle;
+//import javax.ws.rs.client.Client;
+//import javax.ws.rs.client.ClientBuilder;
+//import javax.ws.rs.client.Entity;
+//import javax.ws.rs.core.MediaType;
 
 @Slf4j
 public class AddPersonController implements Initializable {
@@ -61,6 +77,8 @@ public class AddPersonController implements Initializable {
     private VBox boxOService;
     @FXML
     private JFXButton btnCancel;
+    @Inject
+    private HTTPClientService client;
 
     @FXML
     private void setBtnCancel() {
@@ -159,7 +177,7 @@ public class AddPersonController implements Initializable {
         String manager = "pharmacist";
 
         rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(firstName, lastName, username, PasswordManager.hashPassword(password), type, services, manager))));
-        int rows1 = db.executeUpdate(new SQLEntry(DBConstants.ADD_DOCTOR, new ArrayList<>(Arrays.asList(doctorID, firstName, lastName, null, roomNum, additionalInfo))));
+        db.executeUpdate(new SQLEntry(DBConstants.ADD_DOCTOR, new ArrayList<>(Arrays.asList(doctorID, firstName, lastName, null, roomNum, additionalInfo))));
         confirm(rows);
     }
 
@@ -218,6 +236,7 @@ public class AddPersonController implements Initializable {
             if (anyServicesSelected) {
                 servicesList.setLength(servicesList.length() - 1);
             }
+
             services = servicesList.toString();
         }
 

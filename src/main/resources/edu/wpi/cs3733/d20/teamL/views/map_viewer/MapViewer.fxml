@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXToggleButton?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -22,7 +23,7 @@
     <left>
       <AnchorPane>
          <children>
-                  <VBox fx:id="sideBox" alignment="TOP_CENTER" layoutY="-12.0" prefHeight="632.0" prefWidth="350.0" spacing="25.0" style="-fx-background-color: #0d2e57;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="-12.0">
+                  <VBox fx:id="sideBox" alignment="TOP_CENTER" prefWidth="350.0" spacing="25.0" style="-fx-background-color: #0d2e57;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="-12.0">
                       <children>
                           <HBox alignment="CENTER" prefHeight="40.0" prefWidth="300.0" style="-fx-border-radius: 10; -fx-background-radius: 10;">
                               <children>
@@ -111,6 +112,42 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
+                  <HBox alignment="TOP_CENTER">
+                     <children>
+                        <VBox alignment="TOP_CENTER">
+                           <children>
+                              <ImageView fitHeight="40.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/map_viewer/walk.png" />
+                                 </image>
+                              </ImageView>
+                              <Label style="-fx-text-fill: white;" text="Standard" />
+                           </children>
+                        </VBox>
+                        <JFXToggleButton fx:id="handicapToggle" text=" " onAction="#toggleHandicap"/>
+                        <VBox alignment="TOP_CENTER">
+                           <children>
+                              <ImageView fitHeight="40.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/map_viewer/handicap.png" />
+                                 </image>
+                              </ImageView>
+                              <Label prefWidth="60.0" style="-fx-text-fill: white;" text="Handicap Accessible" textAlignment="CENTER" wrapText="true" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <VBox alignment="CENTER" spacing="10.0">
+                     <children>
+                                <JFXButton fx:id="btnTextMe" alignment="CENTER" buttonType="RAISED" minWidth="150.0" onAction="#handleText" prefHeight="40.0" prefWidth="133.0" style="-fx-pref-width: 200; -fx-max-width: 200; -fx-background-color: #405784; -fx-background-radius: 50;" styleClass="save-button-jfx" text="Text me directions" textFill="WHITE" visible="false" />
+                                <JFXButton fx:id="btnQR" alignment="CENTER" buttonType="RAISED" onAction="#genQR" prefHeight="40.0" prefWidth="85.0" style="-fx-pref-width: 200; -fx-max-width: 200; -fx-background-color: #405784; -fx-background-radius: 50;" styleClass="save-button-jfx" text="Scan directions" textFill="WHITE" visible="false">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </JFXButton>
+                        <JFXButton fx:id="btnRobot" buttonType="RAISED" onAction="#handleRobotDirections" style="-fx-pref-width: 200; -fx-max-width: 200; -fx-background-color: #405784; -fx-background-radius: 50;" styleClass="save-button-jfx" text="Robot Directions" visible="false" />
+                     </children>
+                  </VBox>
                       </children>
                       <padding>
                           <Insets bottom="60.0" left="20.0" right="20.0" top="30.0" />
@@ -202,7 +239,7 @@
                <children>
                   <JFXButton buttonType="RAISED" onAction="#showLegend" style="-fx-background-color: #00043B; -fx-background-radius: 50;" text="Legend">
                      <graphic>
-                        <ImageView fitHeight="29.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true" scaleX="1.2" scaleY="1.2">
+                        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" scaleX="1.2" scaleY="1.2">
                            <image>
                               <Image url="@../../assets/home_page/compassRose.png" />
                            </image>
@@ -227,7 +264,7 @@
    <top>
       <AnchorPane prefHeight="100.0" prefWidth="1287.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER_RIGHT" prefHeight="88.0" prefWidth="1280.0" style="-fx-background-color: #00043B; -fx-effect: dropshadow(three-pass-box, derive(BLACK, -20%), 10, 0, 2, 2);" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <HBox alignment="CENTER" prefHeight="88.0" prefWidth="1280.0" style="-fx-background-color: #00043B; -fx-effect: dropshadow(three-pass-box, derive(BLACK, -20%), 10, 0, 2, 2);" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <stylesheets>
                   <URL value="@../../css/MapStyles.css" />
                </stylesheets>
@@ -242,20 +279,46 @@
                   <Insets right="20.0" />
                </padding>
             </HBox>
-            <VBox alignment="CENTER" layoutY="18.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="10.0">
+             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="141.0" AnchorPane.rightAnchor="15.0">
+                 <children>
+                     <JFXButton buttonType="RAISED" onAction="#handleFeedback" prefHeight="61.0" prefWidth="173.0" style="-fx-background-color: #0d2e57; -fx-border-color: white; -fx-border-radius: 10;" text="Feedback">
+                         <font>
+                             <Font size="24.0" />
+                         </font>
+                     </JFXButton>
+                 </children>
+             </HBox>
+            <HBox layoutY="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="10.0">
                <children>
-                  <Label fx:id="timeLabel" alignment="CENTER" styleClass="bottom-bar-time-label-fx" text="Label" textFill="WHITE">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="dateLabel" alignment="CENTER" layoutX="10.0" layoutY="10.0" style="-fx-font-size: 20;" styleClass="bottom-bar-time-label-fx" text="Label" textFill="WHITE">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
+                  <VBox alignment="CENTER">
+                     <children>
+                        <Label fx:id="timeLabel" alignment="CENTER" styleClass="bottom-bar-time-label-fx" text="Label" textFill="WHITE">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="dateLabel" alignment="CENTER" layoutX="10.0" layoutY="10.0" style="-fx-font-size: 20;" styleClass="bottom-bar-time-label-fx" text="Label" textFill="WHITE">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" onMouseClicked="#openNextHoursWeather">
+                     <children>
+                        <ImageView fx:id="currentWeatherIcon" fitHeight="45.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../assets/weather/partly-cloudy-day.png" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="currentTempLabel" style="-fx-font-size: 20; -fx-padding: 0;" styleClass="bottom-bar-time-label-fx" text="Label" textAlignment="CENTER" />
+                     </children>
+                     <HBox.margin>
+                        <Insets left="15.0" />
+                     </HBox.margin>
+                  </VBox>
                </children>
-            </VBox>
+            </HBox>
          </children>
       </AnchorPane>
    </top>

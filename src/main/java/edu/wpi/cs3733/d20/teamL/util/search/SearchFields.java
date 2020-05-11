@@ -149,8 +149,6 @@ public class SearchFields {
      * @return If keyword is found it'll return that node, otherwise null if your node isn't found.
      */
     public Node getNode(String query) {
-        System.out.println("Here");
-
         String building = "";
 
         if (query.contains("(Faulkner")) {

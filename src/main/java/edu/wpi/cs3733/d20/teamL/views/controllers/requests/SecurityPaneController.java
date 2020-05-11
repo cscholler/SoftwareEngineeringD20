@@ -131,7 +131,7 @@ public class SecurityPaneController {
             if(validFields){
 
             int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
-                    new ArrayList<>(Arrays.asList(null, manager.getCurrentUser().getUsername(), null, location, "security", null, concatenatedNotes, status, dateAndTime)))));
+                    new ArrayList<>(Arrays.asList(null, manager.getCurrentUser().getUsername(), null, location, "Security", reason, concatenatedNotes, status, dateAndTime)))));
 
             if(rows == 0) {
                 //TODO database error window

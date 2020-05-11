@@ -1,5 +1,7 @@
 package edu.wpi.cs3733.d20.teamL.services.db;
 
+import edu.wpi.cs3733.d20.teamL.entities.ServiceRequest;
+
 import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -40,5 +42,6 @@ public interface IDatabaseService {
 	ArrayList<ArrayList<String>> getTableFromResultSet(ResultSet resSet);
 
 	Map<String, ArrayList<String>> getTableUpdateMappings();
+
 }
 

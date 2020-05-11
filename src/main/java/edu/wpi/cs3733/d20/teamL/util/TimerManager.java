@@ -2,18 +2,24 @@ package edu.wpi.cs3733.d20.teamL.util;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+import edu.wpi.cs3733.d20.teamL.services.IHTTPClientService;
 import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import lombok.extern.slf4j.Slf4j;
@@ -22,12 +28,14 @@ import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.entities.Kiosk;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
+import org.json.JSONObject;
 
 @Slf4j
 public class TimerManager {
 	private boolean isCacheBeingUpdated = false;
 	private final IDatabaseCache cache = FXMLLoaderFactory.injector.getInstance(IDatabaseCache.class);
 	private final ILoginManager loginManager = FXMLLoaderFactory.injector.getInstance(ILoginManager.class);
+	private final IHTTPClientService clientService = FXMLLoaderFactory.injector.getInstance(IHTTPClientService.class);
 	private final FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
 	private boolean isLogoutDialogueOpen = false;
 	private long logoutTimeoutPeriod;
@@ -74,6 +82,37 @@ public class TimerManager {
 		if (dataLabel != null) {
 			Platform.runLater(() -> dataLabel.setText(new SimpleDateFormat("E, MMM d").format(new Date())));
 		}
+	}
+
+	public void updateWeather(Label tempLabel, ImageView weatherPic) {
+		if (tempLabel != null && weatherPic != null){
+			Platform.runLater(() -> {
+				try {
+					String[] currentWeather = getCurrentWeather();
+					tempLabel.setText(currentWeather[0].substring(0,currentWeather[0].indexOf('.')) + "\u00B0 F");
+					weatherPic.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/weather/" + currentWeather[1] + ".png", 0, 100, true, true, true));
+					weatherPic.setFitHeight(45);
+				} catch (IOException ex) {
+					log.error("Encountered IOException", ex);
+				}
+			});
+		}
+	}
+
+	private String[] getCurrentWeather() throws IOException {
+		String[] currentWeather = new String[2];
+		Request request = new Request.Builder()
+				.url("https://dark-sky.p.rapidapi.com/42.358429,-71.059769?lang=en&extend=hourly&units=auto")
+				.get()
+				.addHeader("x-rapidapi-host", "dark-sky.p.rapidapi.com")
+				.addHeader("x-rapidapi-key", "70ccc13a26mshe5c361ac8a3b00bp1ac6fajsn2a92abbf35b4")
+				.build();
+		Response response = clientService.getClient().newCall(request).execute();
+		JSONObject obj = new JSONObject(response.body().string());
+		currentWeather[0] = String.valueOf(obj.getJSONObject("currently").getDouble("temperature"));
+		currentWeather[1] = obj.getJSONObject("currently").getString("icon");
+
+		return currentWeather;
 	}
 
 	public void logOutTick() {

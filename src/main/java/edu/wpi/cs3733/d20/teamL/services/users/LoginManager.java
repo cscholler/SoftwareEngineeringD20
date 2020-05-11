@@ -59,6 +59,19 @@ public class LoginManager extends Service implements ILoginManager {
 	}
 
 	@Override
+	public void logInFR(String username) {
+		log.info("Attempting to log in...");
+		ArrayList<ArrayList<String>> results = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_USER, new ArrayList<>(Collections.singletonList(username)))));
+		isAuthenticated = true;
+		if (results.size() == 1) {
+			ArrayList<String> userInfo = results.get(0);
+			currentUser = new User(userInfo.get(0), userInfo.get(1), userInfo.get(2), userInfo.get(3), userInfo.get(5), userInfo.get(6), userInfo.get(7));
+				log.info("Logged in as " + currentUser.getUsername());
+		}
+	}
+
+
+	@Override
 	public void logOut(boolean verbose) {
 		if (verbose) {
 			log.info("Logging out...");
