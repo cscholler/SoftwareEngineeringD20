@@ -126,6 +126,7 @@ public class MapViewerController {
     private Collection<String> confNodes = new ArrayList<>();
 
     public static final String MAIN = "Main";
+	private final ArrayList<String> test = new ArrayList<>();
 
     @FXML
     private void initialize() {
@@ -628,11 +629,18 @@ public class MapViewerController {
     	speechToText.setAllowRecording(!speechToText.allowRecording());
     	if (speechToText.allowRecording()) {
 			AsyncTaskManager.newTask(() -> {
-				destination.setText(speechToText.recordAndConvertAsync());
-				Platform.runLater(this::navigate);
+				String transcription = speechToText.recordAndConvertAsync();
+				Platform.runLater(() -> {
+					for (String suggestion : searchFields.getSuggestions()) {
+						if (suggestion.toLowerCase().contains(transcription.toLowerCase())) {
+							destination.setText(suggestion);
+							break;
+						}
+					}
+					navigate();
+				});
 			});
 		}
-    	//TODO: add animation
     }
 
     @FXML
@@ -728,7 +736,9 @@ public class MapViewerController {
     }
 
     private void showAccordion() {
-        sideBox.getChildren().add(2, accordion); //eventually this should be 1
+    	if (!sideBox.getChildren().contains(accordion)) {
+			sideBox.getChildren().add(2, accordion); //eventually this should be 1
+		}
     }
 
     private void hideAccordion() {
