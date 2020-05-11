@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="950.0" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.logged_in.AnalyticsController">
+   <center>
+      <JFXTabPane BorderPane.alignment="CENTER">
+         <tabs>
+            <Tab text="Histograms">
+               <content>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <top>
+                        <HBox prefHeight="100.0" prefWidth="950.0" spacing="20.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <JFXButton fx:id="btnCancel" contentDisplay="CENTER" maxWidth="75.0" minWidth="70.0" onAction="#handleCancel" prefHeight="65.0" prefWidth="75.0" styleClass="analytics-circle-buttons-jfx" text=" ">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                                 <graphic>
+                                    <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../assets/map_editor/backArrow.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </JFXButton>
+                              <JFXComboBox fx:id="timeBox" maxHeight="50.0" maxWidth="384.0" minHeight="50.0" minWidth="300.0" prefHeight="50.0" prefWidth="384.0" promptText="Any time" styleClass="combo-box-jfx">
+                                 <HBox.margin>
+                                    <Insets left="200.0" top="10.0" />
+                                 </HBox.margin>
+                              </JFXComboBox>
+                              <JFXButton minHeight="52.0" minWidth="160.0" onAction="#handleLive" prefHeight="61.0" prefWidth="160.0" styleClass="save-button-jfx" text="Live" textFill="WHITE">
+                                 <HBox.margin>
+                                    <Insets left="70.0" top="10.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font size="30.0" />
+                                 </font>
+                              </JFXButton>
+                              <JFXButton maxHeight="113.0" maxWidth="79.0" minWidth="70.0" onAction="#handleRefresh" prefHeight="70.0" prefWidth="79.0" styleClass="analytics-circle-buttons-jfx" text="Refresh" />
+                           </children>
+                           <BorderPane.margin>
+                              <Insets top="10.0" />
+                           </BorderPane.margin>
+                        </HBox>
+                     </top>
+                     <left>
+                        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+                     </left>
+                     <center>
+                        <BarChart fx:id="ServiceReqHisto" prefHeight="496.0" prefWidth="750.0" title="Service Requests" BorderPane.alignment="CENTER">
+                          <xAxis>
+                            <CategoryAxis prefHeight="45.0" prefWidth="672.0" tickLabelGap="10.0">
+                                 <tickLabelFont>
+                                    <Font size="18.0" />
+                                 </tickLabelFont>
+                              </CategoryAxis>
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis label="Times Used" side="LEFT" tickLabelGap="10.0" upperBound="50.0">
+                                 <tickLabelFont>
+                                    <Font size="18.0" />
+                                 </tickLabelFont>
+                              </NumberAxis>
+                          </yAxis>
+                        </BarChart>
+                     </center>
+                     <right>
+                        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+                     </right>
+                  </BorderPane>
+               </content>
+            </Tab>
+            <Tab text="Heat Maps">
+               <content>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+            <Tab text="Pie Charts">
+               <content>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <center>
+                        <PieChart fx:id="servicePieChart" prefHeight="563.0" prefWidth="705.0" title="Service Request Pie Chart" BorderPane.alignment="CENTER" />
+                     </center>
+                     <left>
+                        <VBox prefHeight="600.0" prefWidth="388.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <Label alignment="CENTER" minHeight="60.0" prefHeight="91.0" prefWidth="388.0" style="-fx-background-color: #00042B;" text="Service Requests" textFill="WHITE">
+                                 <font>
+                                    <Font size="40.0" />
+                                 </font>
+                              </Label>
+                              <ScrollPane prefHeight="607.0" prefWidth="388.0">
+                                 <content>
+                                    <VBox prefHeight="837.0" prefWidth="388.0">
+                                       <children>
+                                          <JFXButton onAction="#handleAllServiceReq" styleClass="services-button-jfx" text="All Service Requests" />
+                                          <JFXButton onAction="#handleGiftPieChart" styleClass="services-button-jfx" text="Gift Delivery">
+                                             <graphic>
+                                                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../assets/service_icons/giftDelivery.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic></JFXButton>
+                                          <JFXButton onAction="#handleSecurityPieChart" styleClass="services-button-jfx" text="Security">
+                                             <graphic>
+                                                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../assets/service_icons/securityRequest.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic></JFXButton>
+                                          <JFXButton onAction="#handleMaintenancePieChart" styleClass="services-button-jfx" text="Maintenance">
+                                             <graphic>
+                                                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../assets/service_icons/mantinenceRequest.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic></JFXButton>
+                                          <JFXButton onAction="#handleInternalPieChart" styleClass="services-button-jfx" text="Internal Transport">
+                                             <graphic>
+                                                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../assets/service_icons/internalTransport.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic></JFXButton>
+                                          <JFXButton onAction="#handleExternalPieChart" styleClass="services-button-jfx" text="External Transport">
+                                             <graphic>
+                                                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../assets/service_icons/externalTransport.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic></JFXButton>
+                                          <JFXButton onAction="#handleMedicationPieChart" styleClass="services-button-jfx" text="Medication">
+                                             <graphic>
+                                                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../assets/service_icons/medicationRequest.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic></JFXButton>
+                                          <JFXButton onAction="#handleSanitationPieChart" styleClass="services-button-jfx" text="Sanitation">
+                                             <graphic>
+                                                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../assets/service_icons/sanitationService.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic></JFXButton>
+                                          <JFXButton onAction="#handleITPieChart" styleClass="services-button-jfx" text="IT">
+                                             <graphic>
+                                                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../assets/service_icons/informationTechnology.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic></JFXButton>
+                                          <JFXButton onAction="#handleInterpreterPieChart" styleClass="services-button-jfx" text="Interpreter">
+                                             <graphic>
+                                                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../assets/service_icons/interpreterRequest.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic></JFXButton>
+                                          <JFXButton onAction="#handleReflectionPieChart" styleClass="services-button-jfx" text="Reflection Room">
+                                             <graphic>
+                                                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../assets/service_icons/reflectionRoom.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic></JFXButton>
+                                          <JFXButton onAction="#handleOnCallPieChart" styleClass="services-button-jfx" text="On-Call Bed">
+                                             <graphic>
+                                                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../assets/service_icons/sleepingArea.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic></JFXButton>
+                                       </children>
+                                    </VBox>
+                                 </content>
+                              </ScrollPane>
+                           </children>
+                        </VBox>
+                     </left>
+                  </BorderPane>
+               </content>
+            </Tab>
+         </tabs>
+      </JFXTabPane>
+   </center>
+</BorderPane>
