@@ -827,4 +827,15 @@ public class MapViewerController {
     private void hideTextualDirections() {
         sideBox.getChildren().remove(dirList);
     }
+
+    @FXML
+    private void handleFeedback() {
+        try {
+            Parent root = loaderFactory.getFXMLLoader("map_viewer/Feedback").load();
+            loaderFactory.setupPopup(new Stage(), new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
+
+    }
 }

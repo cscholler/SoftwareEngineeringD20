@@ -19,7 +19,8 @@ public class DBConstants {
 	public static final String SERVICE_NAME = "mysql-db-01";
 
 	public static ArrayList<String> GET_TABLE_NAMES() {
-		return new ArrayList<>(Arrays.asList("Nodes", "Edges", "Users", "Doctors", "Patients", "Gifts", "Gift_Delivery_Requests", "Medication_Requests", "Service_Requests", "Reservations", "Kiosk_Settings", "Screening Questions"));
+		return new ArrayList<>(Arrays.asList("Nodes", "Edges", "Users", "Doctors", "Patients", "Gifts", "Gift_Delivery_Requests", "Medication_Requests", "Service_Requests",
+				"Reservations", "Kiosk_Settings", "Screening Questions", "Feedback"));
 	}
 
 	public static final String CREATE_NODE_TABLE =
@@ -74,7 +75,7 @@ public class DBConstants {
 			"CREATE TABLE Gifts(" +
 					"id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
 					"type VARCHAR(16) NOT NULL, " +
-					"subtype VARCHAR(16) NOT NULL, " +
+					"subtype VARCHAR(32) NOT NULL, " +
 					"description VARCHAR(128) NOT NULL, " +
 					"inventory INT NOT NULL, " +
 					"cost DOUBLE NOT NULL)";
@@ -148,6 +149,17 @@ public class DBConstants {
 					"weight INT, " +
 					"reqs INT)";
 
+	public static final String CREATE_FEEDBACK_TABLE =
+			"CREATE TABLE Feedback(" +
+					"id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
+					"q1 VARCHAR(3) NOT NULL, " +
+					"q2 VARCHAR(3) NOT NULL, " +
+					"q3 VARCHAR(3) NOT NULL, " +
+					"q4 VARCHAR(3) NOT NULL, " +
+					"q5 VARCHAR(256) NOT NULL, " +
+					"q6 VARCHAR(256) NOT NULL, " +
+					"q7 VARCHAR(256))";
+
 	public static final String DROP_NODE_TABLE =
 			"DROP TABLE IF EXISTS Nodes";
 
@@ -183,6 +195,9 @@ public class DBConstants {
 
 	public static final String DROP_SCREENING_QUESTIONS_TABLE =
 			"DROP TABLE IF EXISTS Screening_Questions";
+
+	public static final String DROP_FEEDBACK_TABLE =
+			"DROP TABLE IF EXISTS Feedback";
 
 	public static final String ADD_NODE =
 			"INSERT INTO Nodes(id, x_pos, y_pos, floor, building, node_type, l_name, s_name)" +
@@ -235,6 +250,10 @@ public class DBConstants {
 	public static final String ADD_SCREENING_QUESTION =
 			"INSERT INTO Screening_Questions(question, page, weight, reqs)" +
 					"VALUES(?, ?, ?, ?)";
+
+	public static final String ADD_FEEDBACK =
+			"INSERT INTO Feedback(q1, q2, q3, q4, q5, q6, q7)" +
+					"VALUES(?, ?, ?, ?, ?, ?, ?)";
 
 	public static final String SELECT_ALL_NODES =
 			"SELECT * " +
@@ -374,6 +393,11 @@ public class DBConstants {
 	public static final String SELECT_ALL_SCREENING_QUESTIONS =
 			"SELECT * " +
 					"FROM Screening_Questions " +
+					"ORDER BY id";
+
+	public static final String GET_ALL_FEEDBACK =
+			"SELECT * " +
+					"FROM Feedback " +
 					"ORDER BY id";
 
 	public static final String GET_KIOSK_SETTINGS =

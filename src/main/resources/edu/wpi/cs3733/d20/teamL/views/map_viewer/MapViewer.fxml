@@ -243,6 +243,15 @@
                   </ImageView>
                </children>
             </HBox>
+             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="141.0" AnchorPane.rightAnchor="15.0">
+                 <children>
+                     <JFXButton buttonType="RAISED" onAction="#handleFeedback" prefHeight="61.0" prefWidth="173.0" style="-fx-background-color: #0d2e57; -fx-border-color: white; -fx-border-radius: 10;" text="Feedback">
+                         <font>
+                             <Font size="24.0" />
+                         </font>
+                     </JFXButton>
+                 </children>
+             </HBox>
             <HBox layoutY="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="10.0">
                <children>
                   <VBox alignment="CENTER">
