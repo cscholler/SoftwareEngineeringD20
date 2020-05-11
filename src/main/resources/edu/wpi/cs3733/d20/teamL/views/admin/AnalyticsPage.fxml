@@ -13,12 +13,13 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="950.0" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.logged_in.AnalyticsController">
+<BorderPane maxHeight="-Infinity" maxWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.logged_in.AnalyticsController">
    <center>
       <JFXTabPane BorderPane.alignment="CENTER">
          <tabs>
@@ -26,34 +27,32 @@
                <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <top>
-                        <HBox prefHeight="100.0" prefWidth="950.0" spacing="20.0" BorderPane.alignment="CENTER">
+                        <HBox prefHeight="100.0" prefWidth="950.0" spacing="50.0" BorderPane.alignment="CENTER">
                            <children>
-                              <JFXButton fx:id="btnCancel" contentDisplay="CENTER" maxWidth="75.0" minWidth="70.0" onAction="#handleCancel" prefHeight="65.0" prefWidth="75.0" styleClass="analytics-circle-buttons-jfx" text=" ">
-                                 <HBox.margin>
-                                    <Insets left="10.0" />
-                                 </HBox.margin>
-                                 <graphic>
-                                    <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../assets/map_editor/backArrow.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </JFXButton>
                               <JFXComboBox fx:id="timeBox" maxHeight="50.0" maxWidth="384.0" minHeight="50.0" minWidth="300.0" prefHeight="50.0" prefWidth="384.0" promptText="Any time" styleClass="combo-box-jfx">
                                  <HBox.margin>
-                                    <Insets left="200.0" top="10.0" />
+                                    <Insets left="150.0" top="10.0" />
                                  </HBox.margin>
                               </JFXComboBox>
                               <JFXButton minHeight="52.0" minWidth="160.0" onAction="#handleLive" prefHeight="61.0" prefWidth="160.0" styleClass="save-button-jfx" text="Live" textFill="WHITE">
                                  <HBox.margin>
-                                    <Insets left="70.0" top="10.0" />
+                                    <Insets left="480.0" top="10.0" />
                                  </HBox.margin>
                                  <font>
                                     <Font size="30.0" />
                                  </font>
                               </JFXButton>
-                              <JFXButton maxHeight="113.0" maxWidth="79.0" minWidth="70.0" onAction="#handleRefresh" prefHeight="70.0" prefWidth="79.0" styleClass="analytics-circle-buttons-jfx" text="Refresh" />
+                              <JFXButton alignment="CENTER" contentDisplay="CENTER" maxHeight="78.0" maxWidth="83.0" minHeight="78.0" minWidth="80.0" onAction="#handleRefresh" prefHeight="78.0" prefWidth="83.0" styleClass="analytics-circle-buttons-jfx" text=" ">
+                                 <graphic>
+                                    <ImageView fitHeight="50.0" fitWidth="53.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../assets/analytics/refresh.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin></JFXButton>
                            </children>
                            <BorderPane.margin>
                               <Insets top="10.0" />
@@ -212,4 +211,13 @@
          </tabs>
       </JFXTabPane>
    </center>
+   <bottom>
+      <AnchorPane maxHeight="76.0" minHeight="52.0" prefHeight="76.0" prefWidth="1280.0" styleClass="bottom-bar-anchor-pane-fx" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="timeLabel" layoutX="42.0" layoutY="30.0" prefHeight="45.0" prefWidth="197.0" styleClass="bottom-bar-time-label-fx" text="Label" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="0.0" />
+            <JFXButton layoutX="596.0" layoutY="26.0" onAction="#handleDashboard" prefHeight="51.0" prefWidth="386.0" styleClass="map-button-jfx" text="Switch to Dashboard" AnchorPane.bottomAnchor="6.333333333333329" AnchorPane.leftAnchor="447.0" AnchorPane.rightAnchor="447.0" />
+            <JFXButton layoutX="1157.0" layoutY="26.0" onAction="#handleLogout" styleClass="bottom-bar-logout-label-fx" text="Logout" AnchorPane.bottomAnchor="6.333333333333329" AnchorPane.rightAnchor="0.0" />
+         </children>
+      </AnchorPane>
+   </bottom>
 </BorderPane>
