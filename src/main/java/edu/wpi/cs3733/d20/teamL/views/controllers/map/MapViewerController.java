@@ -52,6 +52,8 @@ import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
 import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
 import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
 
+import javax.swing.*;
+
 @Slf4j
 public class MapViewerController {
 	private final FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
@@ -65,15 +67,13 @@ public class MapViewerController {
     @FXML
     private JFXTextField startingPoint, destination;
     @FXML
-    private JFXButton btnNavigate, floorUp, floorDown, btnScreening;
+    private JFXButton btnNavigate, floorUp, floorDown, btnScreening, btnTextMe, btnQR, btnTextToSpeachStart, btnTextToSpeachDestination;
     @FXML
     private VBox sideBox;
     @FXML
-    private VBox floorSelector;
+    private VBox floorSelector, directionsVBox;
     @FXML
     private JFXListView dirList = new JFXListView();
-    @FXML
-    private JFXButton btnTextMe, btnQR;
     @FXML
     StackPane stackPane, keyStackPane, screeningPane;
     @FXML
@@ -211,19 +211,42 @@ public class MapViewerController {
 
         TitledPane departments = new TitledPane("Departments", listF1);
         departments.setStyle("-fx-font-size: 16");
+        departments.setTextOverrun(OverrunStyle.CLIP);
         TitledPane labs = new TitledPane("Labs", listF2);
         labs.setStyle("-fx-font-size: 16");
+        labs.setTextOverrun(OverrunStyle.CLIP);
         TitledPane services = new TitledPane("Services/Information", listF3);
         services.setStyle("-fx-font-size: 16");
+        services.setTextOverrun(OverrunStyle.CLIP);
         TitledPane amenities = new TitledPane("Amenities", listF4);
         amenities.setStyle("-fx-font-size: 16");
+        amenities.setTextOverrun(OverrunStyle.CLIP);
         TitledPane conferenceRooms = new TitledPane("Conference Rooms", listF5);
         conferenceRooms.setStyle("-fx-font-size: 16");
+        conferenceRooms.setTextOverrun(OverrunStyle.CLIP);
 
         accordion.getPanes().addAll(departments, labs, services, amenities, conferenceRooms);
-        showAccordion();
+        // Create directions buttons
+        directionsVBox = new VBox();
+        directionsVBox.setAlignment(Pos.CENTER);
+        directionsVBox.setSpacing(10);
 
+        btnTextMe = new JFXButton();
+        btnTextMe.setText("Text me directions");
+        btnTextMe.getStyleClass().add("save-button-jfx");
+        btnTextMe.setStyle("-fx-pref-width: 200;" + "-fx-max-width: 200;" + "-fx-background-color: #00043B;" + "-fx-background-radius: 50;");
+        btnTextMe.setOnAction(actionEvent -> handleText());
 
+        btnQR = new JFXButton();
+        btnQR.setText("Scan directions");
+        btnQR.getStyleClass().add("save-button-jfx");
+        btnQR.setStyle("-jfx-button-type: RAISED;" + "-fx-pref-width: 200;" + "-fx-max-width: 200;" + "-fx-background-color: #00043B;" + "-fx-background-radius:  50;");
+        btnQR.setOnAction(actionEvent -> genQR());
+
+        directionsVBox.getChildren().addAll(btnTextMe,btnQR);
+        showDefaultOptions();
+
+        // Create Screening Button
         btnScreening.setText("Think you have COVID-19?");
     }
 
@@ -299,9 +322,7 @@ public class MapViewerController {
 //            textDirNode.setDisable(false);
 //            textDirNode.setVisible(true);
         }
-        hideAccordion();
-        hideTextualDirections();
-        showTextualDirections();
+        showPathFindingOptions();
 
     }
 
@@ -573,6 +594,12 @@ public class MapViewerController {
     @FXML
     private void clearSource() {
         startingPoint.clear();
+        map.getSelector().clear();
+        showDefaultOptions();
+        btnTextMe.setDisable(true);
+        btnTextMe.setVisible(false);
+        btnQR.setDisable(true);
+        btnQR.setVisible(false);
     }
 
     /**
@@ -581,8 +608,12 @@ public class MapViewerController {
     @FXML
     private void clearDest() {
         destination.clear();
-        hideTextualDirections();
-        showAccordion();
+        map.getSelector().clear();
+        showDefaultOptions();
+        btnTextMe.setDisable(true);
+        btnTextMe.setVisible(false);
+        btnQR.setDisable(true);
+        btnQR.setVisible(false);
     }
 
     /**
@@ -781,20 +812,27 @@ public class MapViewerController {
         }
     }
 
-    private void showAccordion() {
-        sideBox.getChildren().add(2, accordion); //eventually this should be 1
+    private void showDefaultOptions() {
+        try {
+            sideBox.getChildren().removeAll(dirList,directionsVBox);
+        } catch (Exception e){
+
+        }
+        sideBox.getChildren().add(accordion);
     }
 
-    private void hideAccordion() {
-        accordion.getPanes().removeAll();
-        sideBox.getChildren().remove(accordion);
+    private void showPathFindingOptions() {
+        try {
+            sideBox.getChildren().remove(accordion);
+        } catch (Exception e) {
+
+        }
+        sideBox.getChildren().addAll(dirList, directionsVBox);
     }
 
-    private void showTextualDirections() {
-        sideBox.getChildren().add(2, dirList); //eventually this should be 2
+    public void textToSpeachStartIcon(ActionEvent actionEvent) {
     }
 
-    private void hideTextualDirections() {
-        sideBox.getChildren().remove(dirList);
+    public void textToSpeachDestinationIcon(ActionEvent actionEvent) {
     }
 }

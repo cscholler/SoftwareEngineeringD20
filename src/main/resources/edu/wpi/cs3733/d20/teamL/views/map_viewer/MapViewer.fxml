@@ -37,23 +37,33 @@
                                           <Insets />
                                       </opaqueInsets>
                                   </JFXTextField>
-                                  <JFXButton maxHeight="30.0" onAction="#clearSource" prefWidth="29.0" style="-fx-font-size: 10; -fx-pref-width: 30;" styleClass="clear-button-jfx" text="X" textFill="WHITE">
-                                      <font>
-                                          <Font name="Corbel Light" size="10.0" />
-                                      </font>
-                                  </JFXButton>
-                        <JFXButton fx:id="btnChangeLoc" contentDisplay="CENTER" maxHeight="30.0" onAction="#handleLocationChange" prefHeight="35.0" prefWidth="41.0" style="-fx-background-color: transparent;" text=" ">
+                        <JFXButton fx:id="btnTextToSpeachStart" contentDisplay="GRAPHIC_ONLY" onAction="#textToSpeachStartIcon" styleClass="clear-button-jfx">
                            <graphic>
-                              <ImageView fitHeight="20.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" scaleX="1.5" scaleY="1.5">
+                              <ImageView fitHeight="16.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../assets/map_editor/switchWhite.png" />
+                                    <Image url="@../../assets/home_page/textToSpeachReady.png" />
                                  </image>
                               </ImageView>
                            </graphic>
+                           <tooltip>
+                              <Tooltip text="Click to search with voice" />
+                           </tooltip>
                         </JFXButton>
+                                  <JFXButton contentDisplay="GRAPHIC_ONLY" maxHeight="30.0" onAction="#clearSource" prefWidth="29.0" style="-fx-font-size: 10; -fx-pref-width: 30;" styleClass="clear-button-jfx" textFill="WHITE">
+                                      <font>
+                                          <Font name="Corbel Light" size="10.0" />
+                                      </font>
+                           <graphic>
+                              <ImageView fitHeight="16.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="0.9">
+                                 <image>
+                                    <Image url="@../../assets/staff_view/close.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                                  </JFXButton>
                               </children>
                           </HBox>
-                          <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="300.0" style="-fx-border-radius: 10; -fx-background-radius: 10;">
+                          <HBox alignment="CENTER" prefHeight="40.0" prefWidth="300.0" style="-fx-border-radius: 10; -fx-background-radius: 10;">
                               <children>
                                   <JFXTextField fx:id="destination" focusColor="WHITE" maxHeight="30.0" onKeyTyped="#destinationAutocomplete" promptText="Destination" styleClass="search-bar-text-field-jfx" unFocusColor="WHITE">
                                       <font>
@@ -63,38 +73,47 @@
                                           <Insets />
                                       </HBox.margin>
                                   </JFXTextField>
-                                  <JFXButton maxHeight="30.0" onAction="#clearDest" style="-fx-font-size: 10;" styleClass="clear-button-jfx" stylesheets="@../../css/GlobalStyleSheet.css" text="X" textFill="WHITE">
+                        <JFXButton fx:id="btnTextToSpeachDestination" contentDisplay="GRAPHIC_ONLY" onAction="#textToSpeachDestinationIcon" styleClass="clear-button-jfx">
+                           <graphic>
+                              <ImageView fitHeight="16.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/home_page/textToSpeachReady.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <tooltip>
+                              <Tooltip text="Click to search with voice" />
+                           </tooltip>
+                        </JFXButton>
+                                  <JFXButton contentDisplay="GRAPHIC_ONLY" maxHeight="30.0" onAction="#clearDest" style="-fx-font-size: 10;" styleClass="clear-button-jfx" stylesheets="@../../css/GlobalStyleSheet.css" textFill="WHITE">
                                       <font>
                                           <Font name="Corbel Light" size="10.0" />
                                       </font>
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
-                                  </JFXButton>
-                        <JFXButton fx:id="btnNavigate" contentDisplay="CENTER" maxHeight="35.0" onAction="#navigate" prefHeight="35.0" prefWidth="41.0" style="-fx-background-color: transparent;" text=" ">
                            <graphic>
-                              <ImageView fitHeight="21.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="16.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" scaleX="0.9">
                                  <image>
-                                    <Image url="@../../assets/home_page/search_button_home.png" />
+                                    <Image url="@../../assets/staff_view/close.png" />
                                  </image>
                               </ImageView>
                            </graphic>
-                        </JFXButton>
+                                  </JFXButton>
                               </children>
                           </HBox>
-                  <VBox alignment="CENTER" spacing="10.0">
-                     <children>
-                                <JFXButton fx:id="btnTextMe" alignment="CENTER" buttonType="RAISED" minWidth="150.0" onAction="#handleText" prefHeight="40.0" prefWidth="133.0" style="-fx-pref-width: 200; -fx-max-width: 200; -fx-background-color: #405784; -fx-background-radius: 50;" styleClass="save-button-jfx" text="Text me directions" textFill="WHITE" />
-                                <JFXButton fx:id="btnQR" alignment="CENTER" buttonType="RAISED" onAction="#genQR" prefHeight="40.0" prefWidth="85.0" style="-fx-pref-width: 200; -fx-max-width: 200; -fx-background-color: #405784; -fx-background-radius: 50;" styleClass="save-button-jfx" text="Scan directions" textFill="WHITE">
-                           <VBox.margin>
-                              <Insets bottom="40.0" />
-                           </VBox.margin>
-                        </JFXButton>
-                     </children>
-                  </VBox>
+                  <JFXButton fx:id="btnNavigate" alignment="CENTER" buttonType="RAISED" graphicTextGap="10.0" minWidth="150.0" onAction="#navigate" prefHeight="40.0" prefWidth="133.0" style="-fx-pref-width: 200; -fx-max-width: 200; -fx-background-color: #00043B; -fx-background-radius: 50;" styleClass="save-button-jfx" text="Get directions" textFill="WHITE">
+                     <graphic>
+                        <ImageView fitHeight="21.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../assets/home_page/search_button_home.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
                       </children>
                       <padding>
-                          <Insets bottom="20.0" left="20.0" right="20.0" top="30.0" />
+                          <Insets bottom="60.0" left="20.0" right="20.0" top="30.0" />
                       </padding>
                   </VBox>
             <JFXButton onAction="#loginBtnClicked" style="-fx-background-color: transparent;" text="Login" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0">
@@ -149,7 +168,7 @@
                <children>
                   <StackPane fx:id="screeningPane" alignment="TOP_CENTER">
                      <children>
-                        <JFXButton fx:id="btnScreening" onAction="#openScreening" style="-fx-font-size: 18; -fx-max-width: 300; -fx-pref-width: 300;" styleClass="save-button-jfx" />
+                        <JFXButton fx:id="btnScreening" onAction="#openScreening" style="-fx-font-size: 18; -fx-max-width: 300; -fx-pref-width: 300; -fx-background-radius: 50;" styleClass="save-button-jfx" />
                      </children>
                   </StackPane>
                </children>
@@ -181,7 +200,7 @@
             </HBox>
             <StackPane fx:id="keyStackPane" alignment="TOP_LEFT" layoutY="4.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
                <children>
-                  <JFXButton buttonType="RAISED" onAction="#showLegend" style="-fx-background-color: #0d2e57;" text="Legend">
+                  <JFXButton buttonType="RAISED" onAction="#showLegend" style="-fx-background-color: #00043B; -fx-background-radius: 50;" text="Legend">
                      <graphic>
                         <ImageView fitHeight="29.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true" scaleX="1.2" scaleY="1.2">
                            <image>
