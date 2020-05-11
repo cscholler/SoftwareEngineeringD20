@@ -75,7 +75,7 @@ public class MapViewerController {
     @FXML
     private JFXButton btnTextMe, btnQR;
     @FXML
-    StackPane stackPane, keyStackPane, screeningPane;
+    StackPane stackPane, keyStackPane, screeningPane, creditPane;
     @FXML
     private JFXListView listF1, listF2, listF3, listF4, listF5;
     @FXML
@@ -641,7 +641,7 @@ public class MapViewerController {
                 "junit.jupiter\n" +
                 "testfx"));
 
-        JFXDialog dialog2 = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
+        JFXDialog dialog2 = new JFXDialog(creditPane, content, JFXDialog.DialogTransition.BOTTOM);
         JFXButton btnDone = new JFXButton("Done");
 
 
@@ -678,14 +678,12 @@ public class MapViewerController {
                 "Algorithms Specialist: Cameron Jacobson\n" +
                 "UI Engineer: Winnie Ly\n" +
                 "Documentation Analyst: Zaiyang Zhong\n\n" +
-                "Thank you Brigham and Women's Hospital \nand Andrew Shinn for your time and input.\n\n\n"
+                "Thank you Brigham and Women's Hospital \nand Andrew Shinn for your time and input.\n"
                 ));
 
         JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
         JFXButton btnDone = new JFXButton("Done");
 
-
-        dialog.show();
         btnDone.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {

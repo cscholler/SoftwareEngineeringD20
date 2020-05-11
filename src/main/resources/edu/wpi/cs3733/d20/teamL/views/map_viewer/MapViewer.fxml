@@ -116,15 +116,22 @@
                         <Insets />
                      </StackPane.margin>
                   </JFXButton>
-                  <JFXButton fx:id="btnCredit" buttonType="RAISED" graphicTextGap="0.0" onAction="#handleCredit" prefHeight="37.0" prefWidth="210.0" style="-fx-background-color: transparent;" text="Credit">
-                     <graphic>
-                        <ImageView fitHeight="47.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" translateX="-5.0">
-                           <image>
-                              <Image url="@../../assets/home_page/white-info-icon.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </JFXButton>
+                  <StackPane fx:id="creditPane" alignment="BOTTOM_CENTER" maxHeight="100.0" maxWidth="200.0" minWidth="200.0" prefHeight="74.0" prefWidth="200.0">
+                     <children>
+                        <JFXButton fx:id="btnCredit" buttonType="RAISED" graphicTextGap="0.0" onAction="#handleCredit" prefHeight="37.0" prefWidth="91.0" style="-fx-background-color: transparent;" text="Credit">
+                           <graphic>
+                              <ImageView fitHeight="47.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" translateX="-5.0">
+                                 <image>
+                                    <Image url="@../../assets/home_page/white-info-icon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
+                     </children>
+                     <StackPane.margin>
+                        <Insets right="70.0" />
+                     </StackPane.margin>
+                  </StackPane>
                </children>
             </StackPane>
          </children>
