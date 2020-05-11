@@ -63,7 +63,7 @@ public class MapViewerController {
     @FXML
     private JFXListView dirList = new JFXListView();
     @FXML
-    private JFXButton btnTextMe, btnQR;
+    private JFXButton btnTextMe, btnQR, btnRobot;
     @FXML
     StackPane stackPane, keyStackPane, screeningPane;
     @FXML
@@ -290,6 +290,8 @@ public class MapViewerController {
             btnTextMe.setVisible(true);
             btnQR.setDisable(false);
             btnQR.setVisible(true);
+            btnRobot.setDisable(false);
+            btnRobot.setVisible(true);
 //            textDirNode.setDisable(false);
 //            textDirNode.setVisible(true);
         }
@@ -797,6 +799,11 @@ public class MapViewerController {
 
     @FXML
     private void handleHandicap() {
+
+    }
+
+    @FXML
+    private void handleRobotDirections() {
 
     }
 }
