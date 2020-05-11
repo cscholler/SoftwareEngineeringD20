@@ -56,10 +56,12 @@ import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
 public class MapViewerController {
 	private final FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
 	private final TimerManager timerManager = new TimerManager();
-	private SearchFields searchFields;
+    private SearchFields searchFields;
 	private JFXAutoCompletePopup<String> autoCompletePopup;
 	private final ObservableList<String> directions = FXCollections.observableArrayList();
 	private Path path = new Path();
+	@FXML
+    private JFXToggleButton handicapToggle;
     @FXML
     private MapPane map;
     @FXML
@@ -384,7 +386,7 @@ public class MapViewerController {
 
     }
 
-    private String highlightSourceToDestination(Node source, Node destination) {
+    private void clearPath() {
         map.getSelector().clear();
 
         if (!path.getPathNodes().isEmpty()) {
@@ -395,6 +397,10 @@ public class MapViewerController {
             map.resetNodeVisibility(end);
         }
         path.getPathNodes().clear();
+    }
+
+    private String highlightSourceToDestination(Node source, Node destination) {
+        clearPath();
 
         path = pathfinderService.pathfind(map.getAllNodes(), source, destination);
         highLightPath();
@@ -518,6 +524,11 @@ public class MapViewerController {
     }
 
     @FXML
+    private void toggleHandicap() {
+        pathfinderService.setHandicapped(handicapToggle.isSelected());
+    }
+
+    @FXML
     public void handleText() {
         try {
             Parent root = loaderFactory.getFXMLLoader("map_viewer/SendDirectionsPage").load();
@@ -586,6 +597,7 @@ public class MapViewerController {
     @FXML
     private void clearSource() {
         startingPoint.clear();
+        clearPath();
     }
 
     /**
@@ -596,6 +608,7 @@ public class MapViewerController {
         destination.clear();
         hideTextualDirections();
         showAccordion();
+        clearPath();
     }
 
     /**
