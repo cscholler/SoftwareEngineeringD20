@@ -2,7 +2,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.dialogues;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXRadioButton;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXTextArea;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
@@ -23,7 +23,7 @@ import java.util.ResourceBundle;
 public class FeedbackController implements Initializable {
 
     @FXML
-    private JFXTextField expectationsText, applicationText, otherText;
+    private JFXTextArea expectationsText, applicationText, otherText;
 
     @FXML
     private JFXButton btnCancel;
