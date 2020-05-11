@@ -23,7 +23,7 @@
     <left>
       <AnchorPane>
          <children>
-                  <VBox fx:id="sideBox" alignment="TOP_CENTER" prefWidth="350.0" spacing="25.0" style="-fx-background-color: #0d2e57;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="-12.0">
+                  <VBox fx:id="sideBox" alignment="TOP_CENTER" prefWidth="350.0" spacing="25.0" style="-fx-background-color: #0d2e57; -fx-effect: dropshadow(three-pass-box, derive(BLACK, -20%), 10, 0, 2, 2);" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="-12.0">
                       <children>
                           <HBox alignment="CENTER" prefHeight="40.0" prefWidth="300.0" style="-fx-border-radius: 10; -fx-background-radius: 10;">
                               <children>
@@ -95,7 +95,7 @@
                               <Label style="-fx-text-fill: white;" text="Standard" />
                            </children>
                         </VBox>
-                        <JFXToggleButton fx:id="handicapToggle" text=" " onAction="#toggleHandicap"/>
+                        <JFXToggleButton fx:id="handicapToggle" onAction="#toggleHandicap" text=" " />
                         <VBox alignment="TOP_CENTER">
                            <children>
                               <ImageView fitHeight="40.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
@@ -233,7 +233,7 @@
         </AnchorPane>
     </center>
    <top>
-      <AnchorPane prefHeight="100.0" prefWidth="1287.0" BorderPane.alignment="CENTER">
+      <AnchorPane fx:id="borderTopPane" prefHeight="100.0" prefWidth="1287.0" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER" prefHeight="88.0" prefWidth="1280.0" style="-fx-background-color: #00043B; -fx-effect: dropshadow(three-pass-box, derive(BLACK, -20%), 10, 0, 2, 2);" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <stylesheets>
