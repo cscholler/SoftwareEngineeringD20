@@ -88,7 +88,7 @@ public class SecurityPaneController {
     @FXML
     private void handleSubmit() throws IOException {
         String id = patientIDText.getText();
-        String location = locationText.getText();// == null ? sf.getNode(locationText.getText()).getID() : null;
+        String location = locationText.getText() != null ? sf.getNode(locationText.getText()).getID() : null;
         String reason = reasonText.getText();
         String notes = notesText.getText();
         String personnel = personnelText.getText();

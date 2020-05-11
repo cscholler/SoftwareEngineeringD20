@@ -95,7 +95,7 @@ public class ITPaneController implements Initializable {
     @FXML
     private void submitClicked() {
         String userName = loginManager.getCurrentUser().getUsername();
-        String location = locationText.getText();
+        String location = locationText.getText() != null ? sf.getNode(locationText.getText()).getID() : null;
         String type = typeBox.getValue();
         String notes = notesText.getText();
 

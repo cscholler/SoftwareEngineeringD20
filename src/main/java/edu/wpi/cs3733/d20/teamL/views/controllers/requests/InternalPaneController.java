@@ -107,7 +107,7 @@ public class InternalPaneController implements Initializable {
 
     @FXML
     private void submitClicked() {
-        String start = startLoc.getText();
+        String start = startLoc.getText() != null ? sf.getNode(startLoc.getText()).getID() : null;
         String end = endLoc.getText();
         String type = (String) transportSelector.getValue();
         String dateNeeded = date.getId();

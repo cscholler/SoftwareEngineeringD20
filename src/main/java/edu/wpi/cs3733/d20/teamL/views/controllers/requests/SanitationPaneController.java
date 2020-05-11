@@ -66,7 +66,7 @@ public class SanitationPaneController {
     private void autocomplete() {sf.applyAutocomplete(incidentLocationText, autoCompletePopup);}
 
     public void submitServiceRequest() throws IOException {
-        String incidentLocation = incidentLocationText.getText();
+        String incidentLocation = incidentLocationText.getText() != null ? sf.getNode(incidentLocationText.getText()).getID() : null;
         String serviceTags = "";
         if (bioHazardCheckBox.isSelected()) serviceTags += "BioHazard, ";
         if (spillCheckBox.isSelected()) serviceTags += "Spill, ";
