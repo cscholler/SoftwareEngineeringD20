@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXToggleButton?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -202,6 +203,11 @@
                   </JFXButton>
                </children>
             </StackPane>
+            <JFXToggleButton layoutX="8.0" layoutY="537.0" onAction="#handleHandicap" prefHeight="60.0" prefWidth="148.0" style="-fx-background-color: #0D2E57; -fx-background-radius: 100;" text="Handicap" textFill="WHITE" toggleColor="WHITE" toggleLineColor="#009688" unToggleLineColor="RED" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="10.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXToggleButton>
             </children>
         </AnchorPane>
     </center>
