@@ -66,7 +66,7 @@ public class MapViewerController {
     @FXML
     private JFXTextField startingPoint, destination;
     @FXML
-    private JFXButton btnNavigate, floorUp, floorDown, btnScreening, btnTextMe, btnQR, btnRobot, btnTextToSpeechStart, btnTextToSpeechDestination, btnMute;
+    private JFXButton btnNavigate, floorUp, floorDown, btnScreening, btnTextMe, btnQR, btnRobot, btnTextToSpeechStart, btnTextToSpeechDestination;
     @FXML
     private VBox sideBox, floorSelector, directionButtonsVBox, textDirectionsVBox;
     @FXML
@@ -82,7 +82,7 @@ public class MapViewerController {
 	@FXML
 	private Accordion accordion = new Accordion();
     @FXML
-    private Label timeLabel, dateLabel, currentTempLabel, etaLabel;
+    private Label timeLabel, dateLabel, currentTempLabel, etaLabel, btnMute;
     @FXML
     private ImageView currentWeatherIcon;
 
@@ -262,10 +262,10 @@ public class MapViewerController {
         speakAllButton.setStyle("-fx-background-color: transparent;" + "-fx-content-display: graphic-only;");
         speakAllButton.setOnAction(e -> speakAllDirections());
 
-        btnMute = new JFXButton("un-muted");
+        btnMute = new Label("un-muted");
         btnMute.setStyle("-fx-text-fill: white;" + "-fx-font-size: 16;" + "-fx-background-color: transparent;" + "-fx-max-height: 15;");
         btnMute.setPadding(Insets.EMPTY);
-        btnMute.setOnAction(e -> toggleAudio());
+        btnMute.setOnMouseClicked(e -> toggleAudio());
 
         HBox muteHBox = new HBox();
         muteHBox.setStyle("-fx-alignment: center-left;" + "-fx-background-color: #00043B;");

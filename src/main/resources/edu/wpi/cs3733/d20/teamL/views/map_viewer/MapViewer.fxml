@@ -235,7 +235,7 @@
             </HBox>
             <StackPane fx:id="keyStackPane" alignment="TOP_LEFT" layoutY="4.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
                <children>
-                  <JFXButton buttonType="RAISED" onAction="#showLegend" style="-fx-background-color: #00043B; -fx-background-radius: 50;" text="Legend">
+                  <JFXButton buttonType="RAISED" graphicTextGap="10.0" onAction="#showLegend" style="-fx-background-color: #00043B; -fx-background-radius: 50;" text="Legend">
                      <graphic>
                         <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" scaleX="1.2" scaleY="1.2">
                            <image>
@@ -251,7 +251,7 @@
                         </Tooltip>
                      </tooltip>
                      <font>
-                        <Font size="15.0" />
+                        <Font name="System Bold" size="15.0" />
                      </font>
                   </JFXButton>
                </children>
@@ -277,9 +277,9 @@
                   <Insets right="20.0" />
                </padding>
             </HBox>
-             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="141.0" AnchorPane.rightAnchor="15.0">
+             <HBox alignment="CENTER" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
                  <children>
-                     <JFXButton buttonType="RAISED" onAction="#handleFeedback" prefHeight="61.0" prefWidth="173.0" style="-fx-background-color: #0d2e57; -fx-border-color: white; -fx-border-radius: 10;" text="Feedback">
+                     <JFXButton buttonType="RAISED" onAction="#handleFeedback" prefHeight="57.0" prefWidth="211.0" style="-fx-background-color: #0d2e57; -fx-border-color: white; -fx-border-radius: 10;" text="Give us feedback">
                          <font>
                              <Font size="24.0" />
                          </font>
