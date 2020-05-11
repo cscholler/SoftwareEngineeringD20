@@ -57,11 +57,7 @@ public class MapViewerController {
     @FXML
     private JFXButton btnNavigate, floorUp, floorDown, btnScreening;
     @FXML
-    private ScrollPane scroll;
-    @FXML
-    private VBox sideBox, instructions;
-    @FXML
-    private JFXNodesList textDirNode;
+    private VBox sideBox;
     @FXML
     private VBox floorSelector;
     @FXML
@@ -142,6 +138,7 @@ public class MapViewerController {
 
         stackPane.setPickOnBounds(false);
         keyStackPane.setPickOnBounds(false);
+
         screeningPane.setPickOnBounds(false);
         dirList.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent -> goToSelected()));
         // Import all the nodes from the cache and set the current building to Faulkner
