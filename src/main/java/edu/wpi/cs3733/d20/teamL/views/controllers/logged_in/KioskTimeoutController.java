@@ -6,6 +6,8 @@ import java.util.Arrays;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.paint.Color;
 
 import com.google.inject.Inject;
@@ -29,7 +31,7 @@ public class KioskTimeoutController {
 	private final FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
 	private Kiosk currentKiosk;
     @FXML
-    private JFXTextField logoutTimeoutText, idleCacheTimeoutText, forceCacheTimeoutText, screenSaverTimeoutText;
+    private Spinner logoutTimeoutText, idleCacheTimeoutText, forceCacheTimeoutText, screenSaverTimeoutText;
 	@FXML
 	private JFXButton btnClose;
 	//@FXML
@@ -43,6 +45,11 @@ public class KioskTimeoutController {
     private void initialize() {
 		// Hard coded to only kiosk in database. Could be changed to find kiosk by ip.
     	currentKiosk = cache.getKioskCache().get(0);
+    	ArrayList<String> results = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_KIOSK_SETTINGS))).get(0);
+    	logoutTimeoutText.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(30,300,Integer.parseInt(results.get(2))));
+    	idleCacheTimeoutText.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(15,120,Integer.parseInt(results.get(3))));
+    	forceCacheTimeoutText.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(30,300,Integer.parseInt(results.get(4))));
+    	screenSaverTimeoutText.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(30,600,Integer.parseInt(results.get(5))));
     	//TODO: show current values somewhere
 	}
 
@@ -54,10 +61,10 @@ public class KioskTimeoutController {
 
 	@FXML
 	private void btnSavePressed() {
-		String logoutTimeoutPeriod = logoutTimeoutText.getText();
-		String idleCacheTimeoutPeriod = idleCacheTimeoutText.getText();
-		String forceCacheTimeoutPeriod = forceCacheTimeoutText.getText();
-		String screenSaverTimeoutPeriod = screenSaverTimeoutText.getText();
+		String logoutTimeoutPeriod = (String) logoutTimeoutText.getValue();
+		String idleCacheTimeoutPeriod = (String) idleCacheTimeoutText.getValue();
+		String forceCacheTimeoutPeriod = (String) forceCacheTimeoutText.getValue();
+		String screenSaverTimeoutPeriod = (String) screenSaverTimeoutText.getValue();
 		boolean isLogoutTimeoutValid = !logoutTimeoutPeriod.isEmpty() && StringUtils.isNumeric(logoutTimeoutPeriod) && Long.parseLong(logoutTimeoutPeriod) * 1000 >= 300000;
 		boolean isIdleCacheTimeoutValid = !idleCacheTimeoutPeriod.isEmpty() && StringUtils.isNumeric(idleCacheTimeoutPeriod) && Long.parseLong(logoutTimeoutPeriod) * 1000 >= 150000;
 		boolean isForceCacheTimeoutValid = !forceCacheTimeoutPeriod.isEmpty() && StringUtils.isNumeric(forceCacheTimeoutPeriod) && Long.parseLong(logoutTimeoutPeriod) * 1000 >= 300000;

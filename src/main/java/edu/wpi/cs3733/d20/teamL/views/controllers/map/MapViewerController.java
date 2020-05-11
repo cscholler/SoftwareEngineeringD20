@@ -249,7 +249,7 @@ public class MapViewerController {
         btnRobot.setStyle("-jfx-button-type: RAISED;" + "-fx-pref-width: 200;" + "-fx-max-width: 200;" + "-fx-background-color: #00043B;" + "-fx-background-radius:  50;");
         btnRobot.setOnAction(actionEvent -> launchRobot());
 
-        directionsVBox.getChildren().addAll(btnTextMe,btnQR);
+        directionsVBox.getChildren().addAll(btnTextMe,btnQR,btnRobot);
         showDefaultOptions();
 
         // Create Screening Button
