@@ -187,38 +187,6 @@ public class AddPersonController implements Initializable {
                 lblConfirmation.setText("Submission failed");
             } else if (rows == 1) {
 
-                Webcam webcam = Webcam.getDefault();
-                webcam.open();
-                BufferedImage image = webcam.getImage();
-                ImageIO.write(image, "PNG", new File("newUser"));
-                webcam.close();
-
-                byte[] fileContent = FileUtils.readFileToByteArray(new File("newUser"));
-                String encodedString = Base64.getEncoder().encodeToString(fileContent);
-
-                JSONObject json = new JSONObject();
-                json.put("image", encodedString);
-                json.put("gallery_name", "users");
-                json.put("subject_id", username);
-
-
-                MediaType mediaType = MediaType.parse("application/json");
-                RequestBody body = RequestBody.create(mediaType, json.toString());
-                log.info(json.toString());
-                Request request = new Request.Builder()
-                        .url("https://kairosapi-karios-v1.p.rapidapi.com/enroll")
-                        .post(body)
-                        .addHeader("x-rapidapi-host", "kairosapi-karios-v1.p.rapidapi.com")
-                        .addHeader("x-rapidapi-key", "e9d19d8ab2mshee9ab7d6044378bp106222jsnc2e9a579d919")
-                        .addHeader("content-type", "application/json")
-                        .addHeader("accept", "application/json")
-                        .build();
-
-                Response response = client.getClient().newCall(request).execute();
-                log.info("" + response.code());
-                log.info(response.body().string());
-
-
                 lblConfirmation.setTextFill(Color.BLACK);
                 lblConfirmation.setText("User added");
                 lNameText.setText("");
