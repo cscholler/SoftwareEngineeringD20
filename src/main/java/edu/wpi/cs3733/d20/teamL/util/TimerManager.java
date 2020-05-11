@@ -86,18 +86,18 @@ public class TimerManager {
 	}
 
 	public void updateWeather(Label tempLabel, ImageView weatherPic) {
-		if (tempLabel != null && weatherPic != null){
-			Platform.runLater(() -> {
-				try {
-					String[] currentWeather = getCurrentWeather();
-						tempLabel.setText(currentWeather[0].substring(0,currentWeather[0].indexOf('.')) + "\u00B0 F");
-						weatherPic.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/weather/" + currentWeather[1] + ".png", 0, 100, true, true, true));
-						weatherPic.setFitHeight(45);
-				} catch (IOException ex) {
-					log.error("Encountered IOException", ex);
-				}
-			});
-		}
+//		if (tempLabel != null && weatherPic != null){
+//			Platform.runLater(() -> {
+//				try {
+//					String[] currentWeather = getCurrentWeather();
+//						tempLabel.setText(currentWeather[0].substring(0,currentWeather[0].indexOf('.')) + "\u00B0 F");
+//						weatherPic.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/weather/" + currentWeather[1] + ".png", 0, 100, true, true, true));
+//						weatherPic.setFitHeight(45);
+//				} catch (IOException ex) {
+//					log.error("Encountered IOException", ex);
+//				}
+//			});
+//		}
 	}
 
 	private String[] getCurrentWeather() throws IOException {

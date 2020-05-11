@@ -241,6 +241,31 @@ public class MapViewerController {
     }
 
     @FXML
+    private void clickNode(MouseEvent e){
+      double x = e.getSceneX();
+      double y = e.getSceneY();
+      double dist;
+      double closest=0;
+      Node closestNode = null;
+        Collection<Node> allNodes = map.getBuilding().getFloor(map.getFloor()).getNodes();
+
+        for(Node node: allNodes) {
+            if (!node.getType().equals("HALL")){
+                dist = Math.sqrt(Math.pow(node.getPosition().getX() - x, 2) + Math.pow(node.getPosition().getY() - y, 2));
+                if (dist > closest) {
+                    closest = dist;
+                    closestNode = node;
+                    log.info(x + "  " + y);
+                    log.info(map.getFloor()+"");
+                }
+            }
+        }
+                destination.setText(closestNode.getLongName() + " - (" + closestNode.getBuilding() + " " + closestNode.getFloor() + ")");
+                System.out.println(destination);
+        //navigate();
+    }
+
+    @FXML
     private void switchBuilding() {
         String selected = buildingChooser.getSelectionModel().getSelectedItem();
 
