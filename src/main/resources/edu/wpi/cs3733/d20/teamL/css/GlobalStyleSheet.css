@@ -478,3 +478,27 @@
     -fx-background-radius: 50;
     -jfx-button-type: RAISED;
 }
+
+/*-----------------------------------Accordion Menu-----------------------------------*/
+
+.titled-pane > .title
+{
+    -fx-background-color: -fx-body-color;
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 0;
+    -fx-padding: 0.166667em 0.833333em 0.25em 0.833333em; /* 2 10 3 10 */
+}
+
+.titled-pane > .title > .arrow-button .arrow
+{
+    -fx-mark-highlight-color: #00043B;
+    -fx-mark-color: black;
+    -fx-background-insets: 1 0 -1 0, 0;
+    -fx-padding: 0.25em 0.3125em 0.25em 0.3125em; /* 3 3.75 3 3.75 */
+    -fx-shape: "M 0 0 h 7 l -3.5 4 z";
+}
+
+.titled-pane:focused
+{
+    -fx-font-weight: bold;
+}

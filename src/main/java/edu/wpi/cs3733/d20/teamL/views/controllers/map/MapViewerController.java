@@ -139,7 +139,7 @@ public class MapViewerController {
         }
         startingPoint.setLabelFloat(false);
         map.setEditable(false);
-        map.setHighLightColor(Color.GOLD);
+        map.setHighLightColor(Color.SPRINGGREEN);
         btnNavigate.setDisableVisualFocus(true);
 
         // Stops stackPanes from stoping you clicking on whats underneath
@@ -211,15 +211,15 @@ public class MapViewerController {
         listF5.getItems().addAll(confNodes);
 
         TitledPane departments = new TitledPane("Departments", listF1);
-        departments.setStyle("-fx-font-size: 16");
+        departments.setStyle("-fx-font-size: 16;" + "-fx-body-color: #7DA7D9;");
         TitledPane labs = new TitledPane("Labs", listF2);
-        labs.setStyle("-fx-font-size: 16");
+        labs.setStyle("-fx-font-size: 16;" + "-fx-body-color: #8881BD;");
         TitledPane services = new TitledPane("Services/Information", listF3);
-        services.setStyle("-fx-font-size: 16");
+        services.setStyle("-fx-font-size: 16;" + "-fx-body-color: #F5989D;");
         TitledPane amenities = new TitledPane("Amenities", listF4);
-        amenities.setStyle("-fx-font-size: 16");
+        amenities.setStyle("-fx-font-size: 16;" + "-fx-body-color: #79BD92;");
         TitledPane conferenceRooms = new TitledPane("Conference Rooms", listF5);
-        conferenceRooms.setStyle("-fx-font-size: 16");
+        conferenceRooms.setStyle("-fx-font-size: 16;" + "-fx-body-color: #AD87AD;");
 
         accordion.getPanes().addAll(departments, labs, services, amenities, conferenceRooms);
         // Create directions buttons
