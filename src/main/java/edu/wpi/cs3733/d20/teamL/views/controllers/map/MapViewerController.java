@@ -83,7 +83,10 @@ public class MapViewerController {
 	@FXML
 	private Accordion accordion = new Accordion();
     @FXML
-    private Label timeLabel, dateLabel;
+    private Label timeLabel, dateLabel, currentTempLabel;
+    @FXML
+    private ImageView currentWeatherIcon;
+
     @Inject
     private IDatabaseCache cache;
     @Inject
@@ -126,12 +129,15 @@ public class MapViewerController {
 
     @FXML
     private void initialize() {
+
     	ByteString audio1 = textToSpeech.convertTextToSpeech("Test 1", "en-US", SsmlVoiceGender.MALE);
 		ByteString audio2 = textToSpeech.convertTextToSpeech("Test 2", "en-US", SsmlVoiceGender.FEMALE);
     	//textToSpeech.writeSpeechToFile(audio);
 
+
         timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
         timerManager.startTimer(() -> timerManager.updateDate(dateLabel), 0, 1000);
+        timerManager.startTimer(() -> timerManager.updateWeather(currentTempLabel, currentWeatherIcon), 0,1800000);
 
         if (App.doUpdateCacheOnLoad) {
             cache.cacheAllFromDB();
@@ -142,10 +148,11 @@ public class MapViewerController {
         map.setHighLightColor(Color.GOLD);
         btnNavigate.setDisableVisualFocus(true);
 
+        // Stops stackPanes from stoping you clicking on whats underneath
         stackPane.setPickOnBounds(false);
         keyStackPane.setPickOnBounds(false);
-
         screeningPane.setPickOnBounds(false);
+
         dirList.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent -> goToSelected()));
         // Import all the nodes from the cache and set the current building to Faulkner
         String startB = "Faulkner";
@@ -225,6 +232,8 @@ public class MapViewerController {
 
 
         btnScreening.setText("Think you have COVID-19?");
+        btnScreening.setStyle("-fx-font-weight: bold");
+        btnScreening.setMinWidth(300);
     }
 
     private void generateFloorButtons() {
@@ -369,6 +378,14 @@ public class MapViewerController {
         legendContent.setActions(btnClose);
 
         legend.show();
+    }
+
+    /**
+     * Shows the future weather
+     */
+    @FXML
+    private void openNextHoursWeather() {
+
     }
 
     private String highlightSourceToDestination(Node source, Node destination) {
