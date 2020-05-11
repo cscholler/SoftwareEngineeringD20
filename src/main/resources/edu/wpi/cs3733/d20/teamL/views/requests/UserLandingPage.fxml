@@ -187,6 +187,15 @@
                                  </image>
                               </ImageView>
                            </graphic></JFXButton>
+                        <JFXButton fx:id="btnConferenceRoom" layoutX="10.0" layoutY="1210.0" onAction="#launchConferenceRoom" styleClass="services-button-jfx" text="Conference Room" visible="true">
+                           <graphic>
+                              <ImageView fitHeight="50.0" fitWidth="50.0">
+                                 <image>
+                                    <Image url="@../../assets/service_icons/conferenceRequest.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
                      </children>
                   </VBox>
                </content>

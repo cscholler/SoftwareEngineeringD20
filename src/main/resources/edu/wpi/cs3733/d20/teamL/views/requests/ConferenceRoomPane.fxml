@@ -13,7 +13,6 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-
 <StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="895.0" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.ConferenceRoomController">
    <children>
       <BorderPane fx:id="borderPane" prefHeight="200.0" prefWidth="200.0">
@@ -22,7 +21,14 @@
                <children>
                   <JFXComboBox fx:id="beds" promptText="Select Room" styleClass="combo-box-jfx" />
                   <JFXDatePicker fx:id="date" defaultColor="#00043b" editable="false" promptText="Select Date" />
-                  <JFXTreeTableView fx:id="table" />
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <JFXButton onAction="#lastWeekClicked" style="-fx-background-radius: 20 0 0 20;" styleClass="scheduler-button" />
+                        <JFXButton onAction="#todayClicked" style="-fx-background-radius: 0 0 0 0;" styleClass="scheduler-button" text="Today" />
+                        <JFXButton onAction="#nextWeekClicked" style="-fx-background-radius: 0 20 20 0;" styleClass="scheduler-button" />
+                     </children>
+                  </HBox>
+                  <JFXTreeTableView fx:id="table" stylesheets="@../../css/RoomSchedulerStyles.css" />
                </children>
                <BorderPane.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
