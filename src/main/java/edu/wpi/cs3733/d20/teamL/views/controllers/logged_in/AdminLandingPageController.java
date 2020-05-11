@@ -199,7 +199,7 @@ public class AdminLandingPageController implements Initializable {
 		}
 	}
 
-    @FXML
+  @FXML
 	private void btnSaveClicked() throws IOException {
 		ArrayList<SQLEntry> updates = new ArrayList<>();
 		for (TableEntityWrapper.TableDoctor doctor : deletedDoctors) {
