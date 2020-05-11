@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.concurrent.ForkJoinTask;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -16,6 +17,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.google.api.gax.core.FixedCredentialsProvider;
 import com.google.cloud.speech.v1.RecognitionAudio;
 import com.google.cloud.speech.v1.RecognitionConfig;
@@ -26,6 +28,7 @@ import com.google.cloud.speech.v1.SpeechRecognitionResult;
 import com.google.cloud.speech.v1.SpeechSettings;
 import com.google.protobuf.ByteString;
 
+import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
 import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.cs3733.d20.teamL.services.Service;
@@ -33,9 +36,10 @@ import edu.wpi.cs3733.d20.teamL.services.Service;
 //TODO: convert to service and implement locks on recording
 
 @Slf4j
-public class SpeechToTextService extends Service {
+public class SpeechToTextService extends Service implements ISpeechToTextService {
 	private SpeechClient client;
 	private SpeechFileManager speechFileManager;
+	private String currentTranscription;
 
 	public SpeechToTextService() {
 		super();
@@ -52,6 +56,7 @@ public class SpeechToTextService extends Service {
 		client.close();
 	}
 
+	@Override
 	public void createClient() {
 		speechFileManager = new SpeechFileManager();
 		try {
@@ -62,10 +67,17 @@ public class SpeechToTextService extends Service {
 		}
 	}
 
+	@Override
+	public String recordAndConvertAsync() {
+		ForkJoinTask task = AsyncTaskManager.newTask(this::recordSpeech);
+		task.join();
+		return convertSpeechToText();
+	}
+
+	@Override
 	public String convertSpeechToText() {
 		StringBuilder text = new StringBuilder();
 		try {
-			//TODO: change to recording file
 			Path path = Paths.get(speechFileManager.getSpeechFileURI(SpeechFileManager.SpeechServiceType.SPEECH_TO_TEXT));
 			byte[] data = Files.readAllBytes(path);
 			ByteString audioBytes = ByteString.copyFrom(data);
@@ -85,6 +97,7 @@ public class SpeechToTextService extends Service {
 		return text.toString();
 	}
 
+	@Override
 	public void recordSpeech() {
 		AudioFormat format = new AudioFormat(24000, 16, 1, true, false);
 		ByteArrayOutputStream recording = new ByteArrayOutputStream();
@@ -101,12 +114,11 @@ public class SpeechToTextService extends Service {
 				System.out.println("Recording...");
 				recording.write(data, 0, numBytesRead);
 			}
+			System.out.println("Processing...");
 			byte[] audioData = recording.toByteArray();
-			AudioInputStream inputStream = new AudioInputStream(new ByteArrayInputStream(audioData), format,audioData.length / format.getFrameSize());
+			AudioInputStream inputStream = new AudioInputStream(new ByteArrayInputStream(audioData), format, audioData.length / format.getFrameSize());
 			AudioSystem.write(inputStream, AudioFileFormat.Type.WAVE, new File(speechFileManager.getSpeechFileURI(SpeechFileManager.SpeechServiceType.SPEECH_TO_TEXT)));
 			microphone.close();
-			String transcript = convertSpeechToText();
-			System.out.println(transcript.substring(0, 1).toUpperCase() + transcript.substring(1) + ".");
 		} catch (LineUnavailableException ex) {
 			log.error("Encountered LineUnavailableException.", ex);
 		} catch (URISyntaxException ex) {
@@ -114,5 +126,13 @@ public class SpeechToTextService extends Service {
 		} catch (IOException ex) {
 			log.error("Encountered IOException.", ex);
 		}
+	}
+
+	public String getCurrentTranscription() {
+		return currentTranscription;
+	}
+
+	public void setCurrentTranscription(String currentTranscription) {
+		this.currentTranscription = currentTranscription;
 	}
 }

@@ -10,6 +10,10 @@ public interface ITextToSpeechService {
 
 	void createClient();
 
+	void convertAndPlayAsync(String text);
+
+	void convertAndPlayAsync(String text, String lang, SsmlVoiceGender gender);
+
 	ByteString convertTextToSpeech(String text, String lang, SsmlVoiceGender gender);
 
 	void playSpeech(ByteString audio);

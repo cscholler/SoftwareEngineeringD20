@@ -7,6 +7,7 @@ import com.google.cloud.texttospeech.v1.SsmlVoiceGender;
 import com.google.protobuf.ByteString;
 import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamL.App;
+import edu.wpi.cs3733.d20.teamL.services.speech.ISpeechToTextService;
 import edu.wpi.cs3733.d20.teamL.services.speech.ITextToSpeechService;
 import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
@@ -94,6 +95,8 @@ public class MapViewerController {
     private IMessengerService messenger;
     @Inject
 	private ITextToSpeechService textToSpeech;
+    @Inject
+	private ISpeechToTextService speechToText;
 
     private final Image IMAGE_LEFT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/left.png", 15, 15, true, false, true);
     private final Image IMAGE_RIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/right.jpg", 15, 15, true, false, true);
@@ -300,54 +303,54 @@ public class MapViewerController {
      */
     @FXML
     private void showLegend() {
-            JFXDialogLayout legendContent = new JFXDialogLayout();
-            Label title = new Label("Map Legend");
-            title.setStyle("-fx-font-size: 30;" + "-fx-text-fill: #0d2e57;" + "-fx-font-weight: bold");
-            legendContent.setHeading(title);
+		JFXDialogLayout legendContent = new JFXDialogLayout();
+		Label title = new Label("Map Legend");
+		title.setStyle("-fx-font-size: 30;" + "-fx-text-fill: #0d2e57;" + "-fx-font-weight: bold");
+		legendContent.setHeading(title);
 
-            HBox contentHBox = new HBox();
-            VBox colorKey = new VBox();
-            colorKey.setMinWidth(300);
-            colorKey.setSpacing(5);
-            VBox iconKey = new VBox();
-            iconKey.setMinWidth(150);
-            iconKey.setSpacing(5);
+		HBox contentHBox = new HBox();
+		VBox colorKey = new VBox();
+		colorKey.setMinWidth(300);
+		colorKey.setSpacing(5);
+		VBox iconKey = new VBox();
+		iconKey.setMinWidth(150);
+		iconKey.setSpacing(5);
 
-            String[] colors = new String[]{" #7DA7D9"," #FCB963"," #FFF77D"," #79BD92"," #8881BD"," #F69679"," #6DCFF6"," #AD87AD"," #BDDEA2"," #F5989D"," #7DA7D9"};
-            String[] colorText = new String[]{"Departments/Clinics/Waiting Area","Stairwell","Restrooms","Food/Shops/Payphone/etc.","Labs/Imaging/Testing Areas",
-            "Exits/Entrances","Info Desk/Security/Lost and Found","Conference Rooms","Elevators","Interpreters/Spiritual/Library/etc","Departments/Clinics/Waiting Area"};
-            Image[] icons = new Image[]{EXIT_filled,REST_filled,INFO_filled,ELEV_filled,STAI_filled,RETL_filled};
-            String[] iconText = new String[]{"Exit/Entrance","Restrooms","Information Desk","Elevator","Stairs","Retail Locations"};
+		String[] colors = new String[]{" #7DA7D9"," #FCB963"," #FFF77D"," #79BD92"," #8881BD"," #F69679"," #6DCFF6"," #AD87AD"," #BDDEA2"," #F5989D"," #7DA7D9"};
+		String[] colorText = new String[]{"Departments/Clinics/Waiting Area","Stairwell","Restrooms","Food/Shops/Payphone/etc.","Labs/Imaging/Testing Areas",
+		"Exits/Entrances","Info Desk/Security/Lost and Found","Conference Rooms","Elevators","Interpreters/Spiritual/Library/etc","Departments/Clinics/Waiting Area"};
+		Image[] icons = new Image[]{EXIT_filled,REST_filled,INFO_filled,ELEV_filled,STAI_filled,RETL_filled};
+		String[] iconText = new String[]{"Exit/Entrance","Restrooms","Information Desk","Elevator","Stairs","Retail Locations"};
 
-            for (int i = 0; i < colors.length; i++) {
-                JFXButton colorSwatch = new JFXButton();
-                String fxColor = "-fx-background-color: " + colors[i] +";";
-                colorSwatch.setStyle("-fx-min-height: 30;" + "-fx-min-width: 30;" + "-fx-border-radius: 0;" + fxColor);
+		for (int i = 0; i < colors.length; i++) {
+			JFXButton colorSwatch = new JFXButton();
+			String fxColor = "-fx-background-color: " + colors[i] +";";
+			colorSwatch.setStyle("-fx-min-height: 30;" + "-fx-min-width: 30;" + "-fx-border-radius: 0;" + fxColor);
 
-                VBox swatchText = new VBox(new Label(colorText[i]));
-                swatchText.setAlignment(Pos.CENTER);
+			VBox swatchText = new VBox(new Label(colorText[i]));
+			swatchText.setAlignment(Pos.CENTER);
 
-                HBox colorRow = new HBox();
-                colorRow.setSpacing(5);
-                colorRow.getChildren().setAll(colorSwatch, swatchText);
+			HBox colorRow = new HBox();
+			colorRow.setSpacing(5);
+			colorRow.getChildren().setAll(colorSwatch, swatchText);
 
-                colorKey.getChildren().add(colorRow);
-            }
+			colorKey.getChildren().add(colorRow);
+		}
 
-            for (int i = 0; i < icons.length; i++){
-                ImageView icon = new ImageView(icons[i]);
+		for (int i = 0; i < icons.length; i++){
+			ImageView icon = new ImageView(icons[i]);
 
-                VBox displayText = new VBox(new Label(iconText[i]));
-                displayText.setAlignment(Pos.CENTER);
+			VBox displayText = new VBox(new Label(iconText[i]));
+			displayText.setAlignment(Pos.CENTER);
 
-                HBox iconRow = new HBox();
-                iconRow.setSpacing(5);
-                iconRow.getChildren().setAll(icon,displayText);
+			HBox iconRow = new HBox();
+			iconRow.setSpacing(5);
+			iconRow.getChildren().setAll(icon,displayText);
 
-                iconKey.getChildren().add(iconRow);
-            }
+			iconKey.getChildren().add(iconRow);
+		}
 
-            contentHBox.getChildren().addAll(colorKey,iconKey);
+		contentHBox.getChildren().addAll(colorKey,iconKey);
         legendContent.setBody(contentHBox);
 
         JFXDialog legend = new JFXDialog(keyStackPane, legendContent, JFXDialog.DialogTransition.TOP);
@@ -359,6 +362,8 @@ public class MapViewerController {
         legendContent.setActions(btnClose);
 
         legend.show();
+
+		AsyncTaskManager.newTask(() -> System.out.println(speechToText.recordAndConvertAsync()));
     }
 
     private String highlightSourceToDestination(Node source, Node destination) {
@@ -667,8 +672,8 @@ public class MapViewerController {
 
     @FXML
     private void goToSelected() {
-		AsyncTaskManager.newTask(() -> textToSpeech.playSpeech(textToSpeech.convertTextToSpeech(dirList.getSelectionModel().getSelectedItem().toString(), "en-US", SsmlVoiceGender.MALE)));
-        int index = dirList.getSelectionModel().getSelectedIndex();
+        textToSpeech.convertAndPlayAsync(dirList.getSelectionModel().getSelectedItem().toString());
+		int index = dirList.getSelectionModel().getSelectedIndex();
         ArrayList<Node> subpath = path.getSubpaths().get(index);
         if (dirList.getSelectionModel().getSelectedItem().toString().contains("Navigate")) {
             if (subpath.get(0).getBuilding().equals("Faulkner")) {

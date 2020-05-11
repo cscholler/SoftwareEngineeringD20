@@ -23,6 +23,7 @@ import com.google.cloud.texttospeech.v1.TextToSpeechSettings;
 import com.google.cloud.texttospeech.v1.VoiceSelectionParams;
 import com.google.protobuf.ByteString;
 
+import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
 import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.cs3733.d20.teamL.services.Service;
@@ -60,6 +61,16 @@ public class TextToSpeechService extends Service implements ITextToSpeechService
 		} catch (IOException ex) {
 			log.error("Encountered IOException.", ex);
 		}
+	}
+
+	@Override
+	public void convertAndPlayAsync(String text) {
+		convertAndPlayAsync(text, "en-US", SsmlVoiceGender.MALE);
+	}
+
+	@Override
+	public void convertAndPlayAsync(String text, String lang, SsmlVoiceGender gender) {
+		AsyncTaskManager.newTask(() -> playSpeech(convertTextToSpeech(text, lang, gender)));
 	}
 
 	@Override
