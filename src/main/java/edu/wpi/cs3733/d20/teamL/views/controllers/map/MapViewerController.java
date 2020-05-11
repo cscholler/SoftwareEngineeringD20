@@ -54,12 +54,12 @@ import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
 
 @Slf4j
 public class MapViewerController {
-    private final FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
-    private final TimerManager timerManager = new TimerManager();
-    private SearchFields searchFields;
-    private JFXAutoCompletePopup<String> autoCompletePopup;
-    private final ObservableList<String> directions = FXCollections.observableArrayList();
-    private Path path = new Path();
+	private final FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
+	private final TimerManager timerManager = new TimerManager();
+	private SearchFields searchFields;
+	private JFXAutoCompletePopup<String> autoCompletePopup;
+	private final ObservableList<String> directions = FXCollections.observableArrayList();
+	private Path path = new Path();
     @FXML
     private MapPane map;
     @FXML
@@ -73,15 +73,15 @@ public class MapViewerController {
     @FXML
     private JFXListView dirList = new JFXListView();
     @FXML
-    private JFXButton btnTextMe, btnQR;
+    private JFXButton btnTextMe, btnQR, btnRobot;
     @FXML
     StackPane stackPane, keyStackPane, screeningPane;
     @FXML
     private JFXListView listF1, listF2, listF3, listF4, listF5;
     @FXML
     private JFXComboBox<String> buildingChooser;
-    @FXML
-    private Accordion accordion = new Accordion();
+	@FXML
+	private Accordion accordion = new Accordion();
     @FXML
     private Label timeLabel, dateLabel, currentTempLabel;
     @FXML
@@ -94,7 +94,7 @@ public class MapViewerController {
     @Inject
     private IMessengerService messenger;
     @Inject
-    private ITextToSpeechService textToSpeech;
+	private ITextToSpeechService textToSpeech;
 
     private final Image IMAGE_LEFT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/left.png", 15, 15, true, false, true);
     private final Image IMAGE_RIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/right.jpg", 15, 15, true, false, true);
@@ -109,12 +109,12 @@ public class MapViewerController {
     private final Image IMAGE_FTOM = new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/FaulkToMain.PNG");
     private final Image IMAGE_MTOF = new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/MainToFaulk.PNG");
 
-    private final Image EXIT_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/EXIT_filled.png", 45, 45, true, true, true);
-    private final Image REST_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/REST_filled.png", 45, 45, true, false, true);
-    private final Image INFO_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/INFO_filled.png", 45, 45, true, false, true);
-    private final Image ELEV_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/ELEV_filled.png", 45, 45, true, false, true);
-    private final Image STAI_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/STAI_filled.png", 45, 45, true, false, true);
-    private final Image RETL_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/RETL_filled.png", 45, 45, true, false, true);
+    private final Image EXIT_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/EXIT_filled.png",45,45,true,true,true);
+    private final Image REST_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/REST_filled.png",45,45,true,false,true);
+    private final Image INFO_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/INFO_filled.png",45,45,true,false,true);
+    private final Image ELEV_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/ELEV_filled.png",45,45,true,false,true);
+    private final Image STAI_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/STAI_filled.png",45,45,true,false,true);
+    private final Image RETL_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/RETL_filled.png",45,45,true,false,true);
 
     private Collection<String> deptNodes = new ArrayList<>();
     private Collection<String> labNodes = new ArrayList<>();
@@ -130,12 +130,6 @@ public class MapViewerController {
 
     @FXML
     private void initialize() {
-
-        ByteString audio1 = textToSpeech.convertTextToSpeech("Test 1", "en-US", SsmlVoiceGender.MALE);
-        ByteString audio2 = textToSpeech.convertTextToSpeech("Test 2", "en-US", SsmlVoiceGender.FEMALE);
-        //textToSpeech.writeSpeechToFile(audio);
-
-
         timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
         timerManager.startTimer(() -> timerManager.updateDate(dateLabel), 0, 1000);
         timerManager.startTimer(() -> timerManager.updateWeather(currentTempLabel, currentWeatherIcon), 0, 1800000);
@@ -334,6 +328,8 @@ public class MapViewerController {
             btnTextMe.setVisible(true);
             btnQR.setDisable(false);
             btnQR.setVisible(true);
+            btnRobot.setDisable(false);
+            btnRobot.setVisible(true);
 //            textDirNode.setDisable(false);
 //            textDirNode.setVisible(true);
         }
@@ -348,54 +344,54 @@ public class MapViewerController {
      */
     @FXML
     private void showLegend() {
-        JFXDialogLayout legendContent = new JFXDialogLayout();
-        Label title = new Label("Map Legend");
-        title.setStyle("-fx-font-size: 30;" + "-fx-text-fill: #0d2e57;" + "-fx-font-weight: bold");
-        legendContent.setHeading(title);
+            JFXDialogLayout legendContent = new JFXDialogLayout();
+            Label title = new Label("Map Legend");
+            title.setStyle("-fx-font-size: 30;" + "-fx-text-fill: #0d2e57;" + "-fx-font-weight: bold");
+            legendContent.setHeading(title);
 
-        HBox contentHBox = new HBox();
-        VBox colorKey = new VBox();
-        colorKey.setMinWidth(300);
-        colorKey.setSpacing(5);
-        VBox iconKey = new VBox();
-        iconKey.setMinWidth(150);
-        iconKey.setSpacing(5);
+            HBox contentHBox = new HBox();
+            VBox colorKey = new VBox();
+            colorKey.setMinWidth(300);
+            colorKey.setSpacing(5);
+            VBox iconKey = new VBox();
+            iconKey.setMinWidth(150);
+            iconKey.setSpacing(5);
 
-        String[] colors = new String[]{" #7DA7D9", " #FCB963", " #FFF77D", " #79BD92", " #8881BD", " #F69679", " #6DCFF6", " #AD87AD", " #BDDEA2", " #F5989D", " #7DA7D9"};
-        String[] colorText = new String[]{"Departments/Clinics/Waiting Area", "Stairwell", "Restrooms", "Food/Shops/Payphone/etc.", "Labs/Imaging/Testing Areas",
-                "Exits/Entrances", "Info Desk/Security/Lost and Found", "Conference Rooms", "Elevators", "Interpreters/Spiritual/Library/etc", "Departments/Clinics/Waiting Area"};
-        Image[] icons = new Image[]{EXIT_filled, REST_filled, INFO_filled, ELEV_filled, STAI_filled, RETL_filled};
-        String[] iconText = new String[]{"Exit/Entrance", "Restrooms", "Information Desk", "Elevator", "Stairs", "Retail Locations"};
+            String[] colors = new String[]{" #7DA7D9"," #FCB963"," #FFF77D"," #79BD92"," #8881BD"," #F69679"," #6DCFF6"," #AD87AD"," #BDDEA2"," #F5989D"," #7DA7D9"};
+            String[] colorText = new String[]{"Departments/Clinics/Waiting Area","Stairwell","Restrooms","Food/Shops/Payphone/etc.","Labs/Imaging/Testing Areas",
+            "Exits/Entrances","Info Desk/Security/Lost and Found","Conference Rooms","Elevators","Interpreters/Spiritual/Library/etc","Departments/Clinics/Waiting Area"};
+            Image[] icons = new Image[]{EXIT_filled,REST_filled,INFO_filled,ELEV_filled,STAI_filled,RETL_filled};
+            String[] iconText = new String[]{"Exit/Entrance","Restrooms","Information Desk","Elevator","Stairs","Retail Locations"};
 
-        for (int i = 0; i < colors.length; i++) {
-            JFXButton colorSwatch = new JFXButton();
-            String fxColor = "-fx-background-color: " + colors[i] + ";";
-            colorSwatch.setStyle("-fx-min-height: 30;" + "-fx-min-width: 30;" + "-fx-border-radius: 0;" + fxColor);
+            for (int i = 0; i < colors.length; i++) {
+                JFXButton colorSwatch = new JFXButton();
+                String fxColor = "-fx-background-color: " + colors[i] +";";
+                colorSwatch.setStyle("-fx-min-height: 30;" + "-fx-min-width: 30;" + "-fx-border-radius: 0;" + fxColor);
 
-            VBox swatchText = new VBox(new Label(colorText[i]));
-            swatchText.setAlignment(Pos.CENTER);
+                VBox swatchText = new VBox(new Label(colorText[i]));
+                swatchText.setAlignment(Pos.CENTER);
 
-            HBox colorRow = new HBox();
-            colorRow.setSpacing(5);
-            colorRow.getChildren().setAll(colorSwatch, swatchText);
+                HBox colorRow = new HBox();
+                colorRow.setSpacing(5);
+                colorRow.getChildren().setAll(colorSwatch, swatchText);
 
-            colorKey.getChildren().add(colorRow);
-        }
+                colorKey.getChildren().add(colorRow);
+            }
 
-        for (int i = 0; i < icons.length; i++) {
-            ImageView icon = new ImageView(icons[i]);
+            for (int i = 0; i < icons.length; i++){
+                ImageView icon = new ImageView(icons[i]);
 
-            VBox displayText = new VBox(new Label(iconText[i]));
-            displayText.setAlignment(Pos.CENTER);
+                VBox displayText = new VBox(new Label(iconText[i]));
+                displayText.setAlignment(Pos.CENTER);
 
-            HBox iconRow = new HBox();
-            iconRow.setSpacing(5);
-            iconRow.getChildren().setAll(icon, displayText);
+                HBox iconRow = new HBox();
+                iconRow.setSpacing(5);
+                iconRow.getChildren().setAll(icon,displayText);
 
-            iconKey.getChildren().add(iconRow);
-        }
+                iconKey.getChildren().add(iconRow);
+            }
 
-        contentHBox.getChildren().addAll(colorKey, iconKey);
+            contentHBox.getChildren().addAll(colorKey,iconKey);
         legendContent.setBody(contentHBox);
 
         JFXDialog legend = new JFXDialog(keyStackPane, legendContent, JFXDialog.DialogTransition.TOP);
@@ -692,13 +688,13 @@ public class MapViewerController {
     }
 
     @FXML
-    public void openScreening() throws IOException {
+    public void openScreening() throws IOException{
 
         qc = new QuestionnaireController(cache.getQuestions());
 
         JFXDialogLayout layout = new JFXDialogLayout();
         layout.getStylesheets().add("/edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css");
-        Label headingLabel = new Label("Coronavirus Screening Test");
+        Label headingLabel = new Label ("Coronavirus Screening Test");
         headingLabel.getStyleClass().add("service-request-header-label-fx");
         headingLabel.setStyle("-fx-font-size: 30;");
         layout.setHeading(headingLabel);
@@ -717,11 +713,11 @@ public class MapViewerController {
         btnNext.getStyleClass().add("save-button-jfx");
         btnNext.setStyle("-fx-pref-width: 75;" + "-fx-pref-height: 50");
         btnNext.setOnAction(e -> {
-            if (!qc.getTestFinished()) {
+            if(!qc.getTestFinished()) {
                 //System.out.println("first statement");
                 qc.calculateScore();
                 layout.setHeading(qc.nextClicked());
-            } else if (qc.getTestFinished() && !qc.getDone()) {
+            } else if (qc.getTestFinished() && !qc.getDone()){
                 //System.out.println("second statement");
                 qc.calculateScore();
                 btnNext.setText("Close");
@@ -767,7 +763,7 @@ public class MapViewerController {
 
     @FXML
     private void goToSelected() {
-        AsyncTaskManager.newTask(() -> textToSpeech.playSpeech(textToSpeech.convertTextToSpeech(dirList.getSelectionModel().getSelectedItem().toString(), "en-US", SsmlVoiceGender.MALE)));
+		AsyncTaskManager.newTask(() -> textToSpeech.playSpeech(textToSpeech.convertTextToSpeech(dirList.getSelectionModel().getSelectedItem().toString(), "en-US", SsmlVoiceGender.MALE)));
         int index = dirList.getSelectionModel().getSelectedIndex();
         ArrayList<Node> subpath = path.getSubpaths().get(index);
         if (dirList.getSelectionModel().getSelectedItem().toString().contains("Navigate")) {
@@ -848,5 +844,26 @@ public class MapViewerController {
 
     private void hideTextualDirections() {
         sideBox.getChildren().remove(dirList);
+    }
+
+    @FXML
+    private void handleFeedback() {
+        try {
+            Parent root = loaderFactory.getFXMLLoader("map_viewer/Feedback").load();
+            loaderFactory.setupPopup(new Stage(), new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
+
+    }
+
+    @FXML
+    private void handleHandicap() {
+
+    }
+
+    @FXML
+    private void handleRobotDirections() {
+
     }
 }

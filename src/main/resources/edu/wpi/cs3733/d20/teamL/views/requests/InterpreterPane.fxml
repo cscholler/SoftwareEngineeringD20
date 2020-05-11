@@ -128,7 +128,7 @@
             </VBox>
          </center>
          <bottom>
-            <HBox alignment="CENTER" prefHeight="75.0" prefWidth="895.0" spacing="100.0" BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="895.0" spacing="100.0" BorderPane.alignment="CENTER">
                <children>
                   <JFXButton fx:id="btnSubmit" onAction="#handleButtonAction" styleClass="save-button-jfx" text="Submit" textFill="WHITE" />
                   <Label fx:id="confirmation" styleClass="submission-failed-label-fx" text=" " />

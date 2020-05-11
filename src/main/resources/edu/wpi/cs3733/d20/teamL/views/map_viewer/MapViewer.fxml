@@ -13,7 +13,7 @@
     <left>
       <AnchorPane>
          <children>
-                  <VBox fx:id="sideBox" alignment="TOP_CENTER" prefWidth="350.0" spacing="25.0" style="-fx-background-color: #0d2e57;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox fx:id="sideBox" alignment="TOP_CENTER" prefWidth="350.0" spacing="25.0" style="-fx-background-color: #0d2e57;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="-12.0">
                       <children>
                           <HBox alignment="CENTER" prefHeight="40.0" prefWidth="300.0" style="-fx-border-radius: 10; -fx-background-radius: 10;">
                               <children>
@@ -75,12 +75,13 @@
                           </HBox>
                   <VBox alignment="CENTER" spacing="10.0">
                      <children>
-                                <JFXButton fx:id="btnTextMe" alignment="CENTER" buttonType="RAISED" minWidth="150.0" onAction="#handleText" prefHeight="40.0" prefWidth="133.0" style="-fx-pref-width: 200; -fx-max-width: 200;" styleClass="save-button-jfx" text="Text me directions" textFill="WHITE" visible="false" />
-                                <JFXButton fx:id="btnQR" alignment="CENTER" buttonType="RAISED" onAction="#genQR" prefHeight="40.0" prefWidth="85.0" style="-fx-pref-width: 200; -fx-max-width: 200;" styleClass="save-button-jfx" text="Scan directions" textFill="WHITE" visible="false">
+                                <JFXButton fx:id="btnTextMe" alignment="CENTER" buttonType="RAISED" minWidth="150.0" onAction="#handleText" prefHeight="40.0" prefWidth="133.0" style="-fx-pref-width: 200; -fx-max-width: 200; -fx-background-color: #405784; -fx-background-radius: 50;" styleClass="save-button-jfx" text="Text me directions" textFill="WHITE" visible="false" />
+                                <JFXButton fx:id="btnQR" alignment="CENTER" buttonType="RAISED" onAction="#genQR" prefHeight="40.0" prefWidth="85.0" style="-fx-pref-width: 200; -fx-max-width: 200; -fx-background-color: #405784; -fx-background-radius: 50;" styleClass="save-button-jfx" text="Scan directions" textFill="WHITE" visible="false">
                            <VBox.margin>
-                              <Insets bottom="40.0" />
+                              <Insets />
                            </VBox.margin>
                         </JFXButton>
+                        <JFXButton fx:id="btnRobot" buttonType="RAISED" onAction="#handleRobotDirections" style="-fx-pref-width: 200; -fx-max-width: 200; -fx-background-color: #405784; -fx-background-radius: 50;" styleClass="save-button-jfx" text="Robot Directions" visible="false" />
                      </children>
                   </VBox>
                       </children>
@@ -187,6 +188,9 @@
                            </font>
                         </Tooltip>
                      </tooltip>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
                   </JFXButton>
                </children>
             </StackPane>
@@ -196,18 +200,30 @@
    <top>
       <AnchorPane prefHeight="100.0" prefWidth="1287.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="1287.0" spacing="20.0" style="-fx-background-color: #00043B; -fx-effect: dropshadow(three-pass-box, derive(BLACK, -20%), 10, 0, 2, 2);" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <HBox alignment="CENTER" prefHeight="88.0" prefWidth="1280.0" style="-fx-background-color: #00043B; -fx-effect: dropshadow(three-pass-box, derive(BLACK, -20%), 10, 0, 2, 2);" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <stylesheets>
                   <URL value="@../../css/MapStyles.css" />
                </stylesheets>
                <children>
-                  <ImageView fitHeight="75.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="63.0" fitWidth="252.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../assets/home_page/BWH logo.png" />
                      </image>
                   </ImageView>
                </children>
+               <padding>
+                  <Insets right="20.0" />
+               </padding>
             </HBox>
+             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="141.0" AnchorPane.rightAnchor="15.0">
+                 <children>
+                     <JFXButton buttonType="RAISED" onAction="#handleFeedback" prefHeight="61.0" prefWidth="173.0" style="-fx-background-color: #0d2e57; -fx-border-color: white; -fx-border-radius: 10;" text="Feedback">
+                         <font>
+                             <Font size="24.0" />
+                         </font>
+                     </JFXButton>
+                 </children>
+             </HBox>
             <HBox layoutY="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="10.0">
                <children>
                   <VBox alignment="CENTER">
