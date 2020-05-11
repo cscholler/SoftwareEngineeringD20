@@ -257,7 +257,7 @@ public class MapViewerController {
         }
 
         // Autofill and navigate to the respective node only if it is within a certain radius of the mouse and there is a starting point
-        if (closest < 20 && !startingPoint.getText().isBlank()) {
+        if (closest < 50 && !startingPoint.getText().isBlank()) {
             destination.setText(closestNode.getLongName() + " - (" + closestNode.getBuilding() + " " + closestNode.getFloor() + ")");
             navigate();
         }
