@@ -124,7 +124,7 @@ public class InterpreterPaneController implements Initializable {
 
             int rows = 0;
             if(validFields) rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
-                    new ArrayList<>(Arrays.asList(patientID, user, null, roomNumber, "interpreter", interpreterType, concatenatedNotes, status, dateAndTime)))));
+                    new ArrayList<>(Arrays.asList(patientID, user, null, roomNumber, "Interpreter", interpreterType, concatenatedNotes, status, dateAndTime)))));
 
             if(rows == 0) {
                 confirmation.setTextFill(Color.RED);

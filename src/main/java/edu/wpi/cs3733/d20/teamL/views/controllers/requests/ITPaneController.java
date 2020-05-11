@@ -60,7 +60,6 @@ public class ITPaneController implements Initializable {
 	private SearchFields searchFields;
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-
 		searchFields = new SearchFields(dbCache.getNodeCache());
 		searchFields.getFields().add(SearchFields.Field.nodeID);
 		searchFields.populateSearchFields();
@@ -108,8 +107,8 @@ public class ITPaneController implements Initializable {
         } else typeBox.setStyle("-fx-text-fill: GRAY");
 
         int rows = 0;
-        if (validFields) rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
-                new ArrayList<>(Arrays.asList(null, userName, null, location, "information technology", type, notes, status, dateAndTime))));
+        if(validFields) rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
+                new ArrayList<>(Arrays.asList(null, userName, null, location, "IT", type, notes, status, dateAndTime))));
 
         if (rows == 0) {
             confirmation.setTextFill(Color.RED);
