@@ -7,7 +7,7 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Paint;
+import javafx.scene.paint.*;
 import javafx.scene.shape.Circle;
 
 import java.util.ArrayList;
@@ -93,6 +93,21 @@ public class NodeGUI extends Circle implements Highlightable {
 
     public void setHighlightColor(Paint color) {
         getCircle().setStroke(color);
+    }
+
+    public void setGradientNode() {
+
+        Stop[] stops = new Stop [] {
+                new Stop(0.0, Color.RED),
+                new Stop (0.5, Color.LIGHTYELLOW),
+                new Stop(1.0, Color.LIGHTGREEN)
+        };
+        getCircle().getRadius();
+
+        RadialGradient radialGradient = new RadialGradient(0,0, getCenterX(), getCenterY(), getCircle().getRadius(),
+                false, CycleMethod.NO_CYCLE, stops);
+
+        getCircle().setFill(radialGradient);
     }
 
     public void setSelected(boolean selected) {

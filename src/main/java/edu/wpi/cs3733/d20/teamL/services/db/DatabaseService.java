@@ -8,12 +8,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.services.users.PasswordManager;
@@ -48,7 +43,6 @@ public class DatabaseService extends Service implements IDatabaseService {
 			connect();
 		}
 		// Rebuild the database if using Derby
-		// TODO: only rebuild if db doesn't exist and tables dont' exist
 		if (dbType == DB_TYPE.DERBY) {
 			rebuildDatabase();
 		}
@@ -395,6 +389,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 		CSVHelper csvReader = new CSVHelper();
 		for (ArrayList<String> row : csvReader.readCSVFile(csvFile, true)) {
 			//updates.add(new SQLEntry(getTableUpdateMappings().get(tableName).get(0), row));
+			row.add(String.valueOf(0));
 			if (tableName.equals("Nodes")) {
 				updates.add(new SQLEntry(DBConstants.ADD_NODE, row));
 			} else if (tableName.equals("Edges")) {
@@ -463,7 +458,6 @@ public class DatabaseService extends Service implements IDatabaseService {
 			dropTableUpdates.add(DerbyConstants.DROP_GIFT_DELIVER_REQUEST_TABLE);
 			dropTableUpdates.add(DerbyConstants.DROP_MEDICATION_REQUEST_TABLE);
 			dropTableUpdates.add(DerbyConstants.DROP_SERVICE_REQUEST_TABLE);
-			//updates.add(new SQLEntry(DerbyConstants.DROP_SCREENING_QUESTIONS_TABLE)); //TODO
 			dropTableUpdates.add(DerbyConstants.DROP_FEEDBACK_TABLE);
 			try {
 				for (int i = 0; i < DBConstants.GET_TABLE_NAMES().size(); i++) {

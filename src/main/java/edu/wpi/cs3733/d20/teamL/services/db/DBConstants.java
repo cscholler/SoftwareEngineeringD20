@@ -32,13 +32,15 @@ public class DBConstants {
 					"building VARCHAR(64) NOT NULL, " +
 					"node_type CHAR(4) NOT NULL, " +
 					"l_name VARCHAR(64) NOT NULL, " +
-					"s_name VARCHAR(64) NOT NULL)";
+					"s_name VARCHAR(64) NOT NULL, " +
+					"freq INT)";
 
 	public static final String CREATE_EDGE_TABLE =
 			"CREATE TABLE Edges(" +
 					"id VARCHAR(21) NOT NULL PRIMARY KEY, " +
 					"node_start VARCHAR(16) NOT NULL REFERENCES Nodes(id), " +
-					"node_end VARCHAR(16) NOT NULL REFERENCES Nodes(id))";
+					"node_end VARCHAR(16) NOT NULL REFERENCES Nodes(id), " +
+					"freq INT)";
 
 	public static final String CREATE_USER_TABLE =
 			"CREATE TABLE Users(" +
@@ -200,12 +202,12 @@ public class DBConstants {
 			"DROP TABLE IF EXISTS Feedback";
 
 	public static final String ADD_NODE =
-			"INSERT INTO Nodes(id, x_pos, y_pos, floor, building, node_type, l_name, s_name)" +
-					"VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+			"INSERT INTO Nodes(id, x_pos, y_pos, floor, building, node_type, l_name, s_name, freq)" +
+					"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	public static final String ADD_EDGE =
-			"INSERT INTO Edges(id, node_start, node_end)" +
-					"VALUES(?, ?, ?)";
+			"INSERT INTO Edges(id, node_start, node_end, freq)" +
+					"VALUES(?, ?, ?, ?)";
 
 	public static final String ADD_USER =
 			"INSERT INTO Users(f_name, l_name, username, password, acct_type, services, manager)" +
@@ -382,7 +384,7 @@ public class DBConstants {
 
 	public static final String SELECT_ALL_ROOM_REQUESTS =
 			"SELECT * " +
-					"FROM Reservations "+
+					"FROM Reservations " +
 					"WHERE place = ? AND date = ?";
 
 	public static final String SELECT_ALL_KIOSK_SETTINGS =
@@ -407,12 +409,12 @@ public class DBConstants {
 
 	public static final String UPDATE_NODE =
 			"UPDATE Nodes " +
-					"SET x_pos = ?, y_pos = ?, floor = ?, building = ?, node_type = ?, l_name = ?, s_name = ? " +
+					"SET x_pos = ?, y_pos = ?, floor = ?, building = ?, node_type = ?, l_name = ?, s_name = ?, freq = ? " +
 					"WHERE id = ?";
 
 	public static final String UPDATE_EDGE =
 			"UPDATE Edges " +
-					"SET node_start = ?, node_end = ? " +
+					"SET node_start = ?, node_end = ?, freq = ? " +
 					"WHERE id = ?";
 
 	public static final String UPDATE_GIFT =
