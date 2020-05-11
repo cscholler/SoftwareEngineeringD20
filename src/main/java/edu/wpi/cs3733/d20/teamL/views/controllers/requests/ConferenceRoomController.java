@@ -154,25 +154,20 @@ public class ConferenceRoomController {
             if (i == 0) {
                 s = "12:00" + end;
             } else if(i < 12) {
-                s = String.format("%02d", i);
-                s = s + ":00" + end;
+                s = i + ":00" + end;
             } else if (i == 12) {
                 end = " PM";
-                s = String.format("%02d", i);
-                s = s + ":00" + end;
+                s = i + ":00" + end;
             } else {
-                s = String.format("%02d", i % 12);
-                s = s + ":00" + end;
+                s = (i % 12) + ":00" + end;
             }
 
             if(i < 11) {
-                e = String.format("%02d", i + 1);
-                e = e + ":00" + end;
+                e = i + 1 + ":00" + end;
             } else if (i == 11) {
                 e = "12:00 PM";
             } else if (i < 23){
-                e = String.format("%02d", (i + 1) % 12);
-                e = e + ":00" + end;
+                e = ((i + 1) % 12) + ":00" + end;
             } else {
                 e = "12:00 AM";
             }
