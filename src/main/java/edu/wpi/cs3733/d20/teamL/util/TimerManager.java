@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.Executor;
 
 import javafx.application.Platform;
 import javafx.scene.Parent;
@@ -37,7 +36,7 @@ public class TimerManager {
 	private long screenSaverTimeoutPeriod;
 	private int logoutTicks = 15;
 	private Alert logoutWarning;
-	private Timer logOutTickTimer;
+	private Timer logoutTickTimer;
 
 	public TimerTask timerWrapper(Runnable r) {
 		return new TimerTask() {
@@ -79,7 +78,7 @@ public class TimerManager {
 
 	public void logOutTick() {
 		Platform.runLater(() -> {
-			if (!isLogoutDialogueOpen) {
+			if (!isLogoutDialogueOpen && loginManager.isAuthenticated()) {
 				isLogoutDialogueOpen = true;
 				logoutWarning = new Alert(Alert.AlertType.WARNING);
 				logoutWarning.setContentText("Press 'OK' to remain logged in.");
@@ -87,7 +86,7 @@ public class TimerManager {
 				Optional<ButtonType> result = logoutWarning.showAndWait();
 				if (result.isPresent()) {
 					if (result.get() == ButtonType.OK) {
-						logOutTickTimer.cancel();
+						logoutTickTimer.cancel();
 						isLogoutDialogueOpen = false;
 						logoutTicks = 15;
 					}
@@ -98,8 +97,10 @@ public class TimerManager {
 				}
 				logoutWarning.setHeaderText("Session will expire in " + logoutTicks + " seconds.");
 				if (logoutTicks == 0) {
-					log.info("No input for " + millisToMinsAndSecs(logoutTimeoutPeriod) + ". Logging out...");
-					loginManager.logOut(true);
+					log.info("No input for " + millisToMinsAndSecs(logoutTimeoutPeriod) + ". Ending session...");
+					if (loginManager.isAuthenticated()) {
+						loginManager.logOut(true);
+					}
 					FXMLLoaderFactory.resetHistory();
 					Object[] windowObjects =  Stage.getWindows().toArray();
 					ArrayList<Stage> openStages = new ArrayList<>();
@@ -118,7 +119,7 @@ public class TimerManager {
 					} catch (IOException ex) {
 						log.error("Encountered IOException", ex);
 					}
-					logOutTickTimer.cancel();
+					logoutTickTimer.cancel();
 					isLogoutDialogueOpen = false;
 					logoutTicks = 15;
 				}
@@ -128,8 +129,10 @@ public class TimerManager {
 
 	public void showLogoutDialogueIfNoInput() {
 		Platform.runLater(() -> {
-			log.info("here");
-			logOutTickTimer = startTimer(this::logOutTick, 0, 1000);
+			if (logoutTickTimer != null) {
+				logoutTickTimer.cancel();
+			}
+			logoutTickTimer = startTimer(this::logOutTick, 0, 1000);
 		});
 	}
 

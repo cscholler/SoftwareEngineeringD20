@@ -68,7 +68,7 @@ public class AsyncTaskManager {
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException ex) {
-                        log.error("{}", ex);
+                        log.error("Encountered InterruptedException.", ex);
                     }
                     Runnable action = showing ? loading::close : loading::show;
                     Platform.runLater(action);

@@ -293,7 +293,6 @@ public class DatabaseService extends Service implements IDatabaseService {
 		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Spongebob", "Squarepants", serviceType + "_emp1", PasswordManager.hashPassword(serviceType + "_emp1"), "0", serviceType, null))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Barry", "Benson", serviceType + "_emp2", PasswordManager.hashPassword(serviceType + "_emp2"), "0", serviceType, null))));
 
-
 		// Interpreters for French and Spanish, the interpreter form does submit them starting with capital letters
 		String interpreter = "interpreter";
 		executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList("Jacques", "Cousteau", interpreter + "_emp1", PasswordManager.hashPassword(interpreter + "_emp1"), "0", interpreter + "(French)", null))));

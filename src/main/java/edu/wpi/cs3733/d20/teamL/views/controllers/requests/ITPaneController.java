@@ -104,17 +104,17 @@ public class ITPaneController implements Initializable {
 
         boolean validFields = true;
 
-        if(location == null || location.length() == 0) {
+        if (location == null || location.length() == 0) {
             locationText.setStyle("-fx-prompt-text-fill: RED");
             validFields = false;
         } else locationText.setStyle("-fx-prompt-text-fill: GRAY");
-        if(type == null || type.length() == 0) {
+        if (type == null || type.length() == 0) {
             typeBox.setStyle("-fx-prompt-text-fill: RED");
             validFields = false;
         } else typeBox.setStyle("-fx-text-fill: GRAY");
 
         int rows = 0;
-        if(validFields) rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
+        if (validFields) rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
                 new ArrayList<>(Arrays.asList(null, userName, null, location, "information technology", type, notes, status, dateAndTime))));
 
         if (rows == 0) {
