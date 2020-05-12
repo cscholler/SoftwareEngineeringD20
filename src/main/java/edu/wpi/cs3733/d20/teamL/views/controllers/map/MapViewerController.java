@@ -31,6 +31,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -317,27 +318,29 @@ public class MapViewerController {
 
     @FXML
     private void clickNode(MouseEvent e) {
-        double dist;
-        double closest = Integer.MAX_VALUE;
-        Node closestNode = null;
+        if (e.getButton().equals(MouseButton.PRIMARY) && e.isStillSincePress()) {
+            double dist;
+            double closest = Integer.MAX_VALUE;
+            Node closestNode = null;
 
-        Collection<Node> allNodes = map.getBuilding().getFloor(map.getFloor()).getNodes();
+            Collection<Node> allNodes = map.getBuilding().getFloor(map.getFloor()).getNodes();
 
-        // Sort through every node on the floor (except hallway nodes) and find the closest one to the mouse
-        for (Node node : allNodes) {
-            if (!node.getType().equals("HALL")) {
-                dist = map.getNodeGUI(node).getLayoutPos().distance(new Point2D(e.getX(), e.getY()));
-                if (dist < closest) {
-                    closest = dist;
-                    closestNode = node;
+            // Sort through every node on the floor (except hallway nodes) and find the closest one to the mouse
+            for (Node node : allNodes) {
+                if (!node.getType().equals("HALL")) {
+                    dist = map.getNodeGUI(node).getLayoutPos().distance(new Point2D(e.getX(), e.getY()));
+                    if (dist < closest) {
+                        closest = dist;
+                        closestNode = node;
+                    }
                 }
             }
-        }
 
-        // Autofill and navigate to the respective node only if it is within a certain radius of the mouse and there is a starting point
-        if (closest < 50 && !startingPoint.getText().isBlank()) {
-            destination.setText(closestNode.getLongName() + " - (" + closestNode.getBuilding() + " " + closestNode.getFloor() + ")");
-            navigate();
+            // Autofill and navigate to the respective node only if it is within a certain radius of the mouse and there is a starting point
+            if (closest < 50 && !startingPoint.getText().isBlank()) {
+                destination.setText(closestNode.getLongName() + " - (" + closestNode.getBuilding() + " " + closestNode.getFloor() + ")");
+                navigate();
+            }
         }
     }
 
