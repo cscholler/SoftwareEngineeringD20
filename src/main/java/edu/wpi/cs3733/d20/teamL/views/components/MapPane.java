@@ -364,6 +364,17 @@ public class MapPane extends ScrollPane {
             nodeGUI.getCircle().setFill(nodeColor);
     }
 
+    public Color getHallNodeColor() {
+        return hallNodeColor;
+    }
+
+    public void setHallNodeColor(Color hallNodeColor) {
+        this.hallNodeColor = hallNodeColor;
+        for (NodeGUI nodeGUI : nodes.values())
+            if (nodeGUI.getNode().getType().equals("HALL"))
+                nodeGUI.getCircle().setFill(hallNodeColor);
+    }
+
     public Color getEdgeColor() {
         return edgeColor;
     }
@@ -516,6 +527,13 @@ public class MapPane extends ScrollPane {
                 edgeGUI.setGradient(edgeGUI.getStrokeWidth() * (zoomLevel / this.zoomLevel));
         }
 
+        if (isEditable()) {
+            if (zoomLevel < 0.55 * App.UI_SCALE)
+                setHallVisibility(false);
+            else
+                setHallVisibility(true);
+        }
+
         // Scale the image
         mapImage.setFitWidth(mapImage.getFitWidth() * (zoomLevel / this.zoomLevel));
 
@@ -524,6 +542,15 @@ public class MapPane extends ScrollPane {
 
 
         this.zoomLevel = zoomLevel;
+    }
+
+    public void setHallVisibility(boolean visibility) {
+        for (NodeGUI nodeGUI : nodes.values()) {
+            if (nodeGUI.getNode().getType().equals("HALL")) {
+                nodeGUI.setVisible(visibility);
+                nodeGUI.setMouseTransparent(!visibility);
+            }
+        }
     }
 
     /**
