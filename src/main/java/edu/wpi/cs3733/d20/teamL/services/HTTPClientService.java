@@ -11,12 +11,14 @@ import java.io.IOException;
 @Slf4j
 public class HTTPClientService implements IHTTPClientService {
     private OkHttpClient client = new OkHttpClient();
-    private String currLang = "en";
+    private String currLang;
 
+    @Override
     public void setCurrLang(String currLang) {
         this.currLang = currLang;
     }
 
+    @Override
     public String getCurrLang() {
         return currLang;
     }
@@ -27,10 +29,14 @@ public class HTTPClientService implements IHTTPClientService {
     }
 
     @Override
+    public String currLang() { return currLang; }
+
+    @Override
     public void setClient(OkHttpClient client) {
         this.client = client;
     }
 
+    @Override
     public String translate(String from, String language, String text) throws IOException {
 
         HttpUrl.Builder urlBuilder
@@ -52,11 +58,9 @@ public class HTTPClientService implements IHTTPClientService {
         Response response = client.newCall(request).execute();
 
         text = response.body().string();
-        System.out.println(text);
         int endIndex = text.indexOf('<', 5);
         int startIndex = text.indexOf('>') + 1;
         text = text.substring(startIndex, endIndex);
-        log.info(text);
         currLang = language;
         return text;
     }

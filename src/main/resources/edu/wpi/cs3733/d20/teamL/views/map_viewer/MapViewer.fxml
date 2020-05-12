@@ -231,6 +231,7 @@
             <HBox alignment="BOTTOM_CENTER" layoutX="369.0" layoutY="570.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0">
                <children>
                   <JFXComboBox fx:id="buildingChooser" onAction="#switchBuilding" promptText="Select Building" style="-fx-border-color: #0d2e57; -fx-border-width: 3; -fx-background-color: white;" styleClass="combo-box-jfx" />
+                  <JFXComboBox fx:id="languagePicker" onAction="#languageChosen" styleClass="combo-box-jfx" />
                </children>
             </HBox>
             <StackPane fx:id="keyStackPane" alignment="TOP_LEFT" layoutY="4.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">

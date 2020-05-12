@@ -85,7 +85,7 @@ public class MapViewerController {
     @FXML
     private JFXListView listF1, listF2, listF3, listF4, listF5;
     @FXML
-    private JFXComboBox<String> buildingChooser;
+    private JFXComboBox<String> buildingChooser, languagePicker;
     @FXML
     private Accordion accordion = new Accordion();
     @FXML
@@ -138,6 +138,8 @@ public class MapViewerController {
     private ArrayList<String> newRetailNodes = new ArrayList<>();
     private ArrayList<String> newConfNodes = new ArrayList<>();
 
+    private ArrayList<String> languages = new ArrayList<String>(Arrays.asList("English - en", "Espanol - es", "French - fr", "Mandarin - zh"));
+
     private QuestionnaireController qc;
     private String currentLang = "en";
 
@@ -145,7 +147,9 @@ public class MapViewerController {
     public static final String MAIN = "Main";
 
     @FXML
-    private void initialize() throws IOException {
+    private void initialize(){
+        httpClient.setCurrLang("en");
+        System.out.println(httpClient.getCurrLang());
         timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
         timerManager.startTimer(() -> timerManager.updateDate(dateLabel), 0, 1000);
         //ToDO: uncomment this when its time to get weather
@@ -170,13 +174,16 @@ public class MapViewerController {
         Building faulkner = cache.getBuilding("Faulkner");
         Building main = cache.getBuilding(MAIN);
 
+
+
         if (!faulkner.getNodes().isEmpty()) map.setBuilding(faulkner);
         if (!main.getNodes().isEmpty()) map.getBuildings().add(main);
         buildingChooser.getItems().addAll("Faulkner", MAIN);
         buildingChooser.getSelectionModel().select(startB);
 
         //Set Current Language
-
+        languagePicker.getItems().addAll(languages);
+        languagePicker.setValue("English - en");
 
         // Add floor buttons
         generateFloorButtons();
@@ -221,18 +228,18 @@ public class MapViewerController {
                 if (currentLang.equals("en")) {
                     destination.setText((String) list.getSelectionModel().getSelectedItem());
                 } else {
-                if (listF1.equals(list)) {
-                    destination.setText(deptNodes.get(newDeptNodes.indexOf(listF1.getSelectionModel().getSelectedItem())));
-                } else if (listF2.equals(list)) {
-                    destination.setText(labNodes.get(newLabNodes.indexOf(listF2.getSelectionModel().getSelectedItem())));
-                } else if (listF3.equals(list)) {
-                    destination.setText(serviceNodes.get(newServiceNodes.indexOf(listF3.getSelectionModel().getSelectedItem())));
-                } else if (listF4.equals(list)) {
-                    destination.setText(retailNodes.get(newRetailNodes.indexOf(listF4.getSelectionModel().getSelectedItem())));
-                } else if (listF5.equals(list)) {
-                    destination.setText(confNodes.get(newConfNodes.indexOf(listF5.getSelectionModel().getSelectedItem())));
+                    if (listF1.equals(list)) {
+                        destination.setText(deptNodes.get(newDeptNodes.indexOf(listF1.getSelectionModel().getSelectedItem())));
+                    } else if (listF2.equals(list)) {
+                        destination.setText(labNodes.get(newLabNodes.indexOf(listF2.getSelectionModel().getSelectedItem())));
+                    } else if (listF3.equals(list)) {
+                        destination.setText(serviceNodes.get(newServiceNodes.indexOf(listF3.getSelectionModel().getSelectedItem())));
+                    } else if (listF4.equals(list)) {
+                        destination.setText(retailNodes.get(newRetailNodes.indexOf(listF4.getSelectionModel().getSelectedItem())));
+                    } else if (listF5.equals(list)) {
+                        destination.setText(confNodes.get(newConfNodes.indexOf(listF5.getSelectionModel().getSelectedItem())));
+                    }
                 }
-                  }
                 navigate();
             }));
             list.setStyle("-fx-font-size: 16");
@@ -738,41 +745,59 @@ public class MapViewerController {
      */
     @FXML
     public void handleAbout() {
-        AsyncTaskManager.newTask(() -> {
-            Platform.runLater(() -> {
-                try {
-                    translateMapViewer("es");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
+
+        JFXDialogLayout content = new JFXDialogLayout();
+        JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
+        JFXButton btnDone = new JFXButton();
+
+        if (currentLang.equals("en")) {
+            content.setHeading(new Text("About"));
+            content.setBody(new Text("WPI Computer Science Department\n" +
+                    "CS3733-D20 Software Engineering\n" +
+                    "Prof. Wilson Wong\n" +
+                    "Team Coach: Chris Myers\n" +
+                    "Lead Software Engineer: Conrad Tulig\n" +
+                    "Assistant Lead Software Engineer: Luke Bodwell\n" +
+                    "Assistant Lead Software Engineer: Caleb Farwell\n" +
+                    "Project Manager: Joshua Hoy\n" +
+                    "Scrum Master: Colin Scholler\n" +
+                    "Product Owner: Tori Buyck\n" +
+                    "Algorithms Specialist: Cameron Jacobson\n" +
+                    "UI Engineer: Winnie Ly\n" +
+                    "Documentation Analyst: Zaiyang Zhong\n\n" +
+                    "Thank you Brigham and Women's Hospital \nand Andrew Shinn for your time and input."));
+            btnDone = new JFXButton("Done");
+        } else {
+            try {
+                content.setHeading(new Text(httpClient.translate("en", currentLang, "About")));
+                content.setBody(new Text(httpClient.translate("en", currentLang, "WPI Computer Science Department") + "\n" +
+                        httpClient.translate("en", currentLang, "CS3733-D20 Software Engineering") + "\n" +
+                        httpClient.translate("en", currentLang, "Prof. Wilson Wong") + "\n" +
+                        httpClient.translate("en", currentLang, "Team Coach: Chris Myers") + "\n" +
+                        httpClient.translate("en", currentLang, "Lead Software Engineer: Conrad Tulig") + "\n" +
+                        httpClient.translate("en", currentLang, "Assistant Lead Software Engineer: Luke Bodwell") + "\n" +
+                        httpClient.translate("en", currentLang, "Assistant Lead Software Engineer: Caleb Farwell") + "\n" +
+                        httpClient.translate("en", currentLang, "Project Manager: Joshua Hoy") + "\n" +
+                        httpClient.translate("en", currentLang, "Scrum Master: Colin Scholler") + "\n" +
+                        httpClient.translate("en", currentLang, "Product Owner: Tori Buyck") + "\n" +
+                        httpClient.translate("en", currentLang, "Algorithms Specialist: Cameron Jacobson") + "\n" +
+                        httpClient.translate("en", currentLang, "UI Engineer: Winnie Ly") + "\n" +
+                        httpClient.translate("en", currentLang, "Documentation Analyst: Zaiyang Zhong") + "\n\n" +
+                        httpClient.translate("en", currentLang, "Thank you Brigham and Women's Hospital \nand Andrew Shinn for your time and input.")));
+                btnDone = new JFXButton(httpClient.translate("en", currentLang, "Done"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+        btnDone.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                dialog.close();
+            }
         });
-//        JFXDialogLayout content = new JFXDialogLayout();
-//        content.setHeading(new Text("About"));
-//        content.setBody(new Text("WPI Computer Science Department\n" +
-//                "CS3733-D20 Software Engineering\n" +
-//                "Prof. Wilson Wong\n" +
-//                "Team Coach: Chris Myers\n" +
-//                "Lead Software Engineer: Conrad Tulig\n" +
-//                "Assistant Lead Software Engineer: Luke Bodwell\n" +
-//                "Assistant Lead Software Engineer: Caleb Farwell\n" +
-//                "Project Manager: Joshua Hoy\n" +
-//                "Scrum Master: Colin Scholler\n" +
-//                "Product Owner: Tori Buyck\n" +
-//                "Algorithms Specialist: Cameron Jacobson\n" +
-//                "UI Engineer: Winnie Ly\n" +
-//                "Documentation Analyst: Zaiyang Zhong\n\n" +
-//                "Thank you Brigham and Women's Hospital \nand Andrew Shinn for your time and input."));
-//        JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
-//        JFXButton btnDone = new JFXButton("Done");
-//        btnDone.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent event) {
-//                dialog.close();
-//            }
-//        });
-//        content.setActions(btnDone);
-//        dialog.show();
+        content.setActions(btnDone);
+        dialog.show();
     }
 
     /**
@@ -790,8 +815,7 @@ public class MapViewerController {
 
     @FXML
     public void openScreening() throws IOException {
-
-        qc = new QuestionnaireController(cache.getQuestions());
+        qc = new QuestionnaireController(cache.getQuestions(), currentLang, httpClient);
 
         JFXDialogLayout layout = new JFXDialogLayout();
         layout.getStylesheets().add("/edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css");
@@ -801,6 +825,7 @@ public class MapViewerController {
         layout.setHeading(headingLabel);
         layout.setBody(qc.nextClicked());
 
+
         JFXDialog screeningDialog = new JFXDialog(screeningPane, layout, JFXDialog.DialogTransition.TOP);
         screeningDialog.getStylesheets().add("/edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css");
         screeningDialog.show();
@@ -809,6 +834,7 @@ public class MapViewerController {
         btnClose.getStyleClass().add("cancel-button-jfx");
         btnClose.setStyle("-fx-pref-width: 75;" + "-fx-pref-height: 50");
         btnClose.setOnAction(e -> screeningDialog.close());
+
 
         JFXButton btnNext = new JFXButton("Next");
         btnNext.getStyleClass().add("save-button-jfx");
@@ -829,6 +855,10 @@ public class MapViewerController {
                 screeningDialog.close();
             }
         });
+        if(!currentLang.equals("en")){
+            btnClose.setText(httpClient.translate("en", currentLang, "Quit"));
+            btnNext.setText(httpClient.translate("en", currentLang, btnNext.getText()));
+        }
         layout.setActions(btnClose, btnNext);
     }
 
@@ -866,7 +896,7 @@ public class MapViewerController {
     private void goToSelected() {
         AsyncTaskManager.newTask(() -> {
             try {
-                textToSpeech.playSpeech( textToSpeech.convertTextToSpeech(currentLang.equals("en") ? dirList.getSelectionModel().getSelectedItem().toString(): httpClient.translate("en", currentLang, dirList.getSelectionModel().getSelectedItem().toString() ), currentLang.equals("en") ? "en-US" : currentLang, SsmlVoiceGender.MALE));
+                textToSpeech.playSpeech(textToSpeech.convertTextToSpeech(currentLang.equals("en") ? dirList.getSelectionModel().getSelectedItem().toString() : httpClient.translate("en", currentLang, dirList.getSelectionModel().getSelectedItem().toString()), currentLang.equals("en") ? "en-US" : currentLang, SsmlVoiceGender.MALE));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -987,16 +1017,27 @@ public class MapViewerController {
         else if (btnMute.getText().equals("muted")) btnMute.setText("un-muted");
     }
 
+@FXML
+public void languageChosen(){
+        String l = languagePicker.getValue();
+        l = l.substring(l.length()-2);
+    try {
+        translateMapViewer(l);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+
+}
 
     public void translateMapViewer(String language) throws IOException {
         btnNavigate.setText(httpClient.translate("en", language, "Get Directions"));
-        btnScreening.setText(httpClient.translate(currentLang, language, btnScreening.getText()));
-        btnAbout.setText(httpClient.translate(currentLang, language, btnAbout.getText()));
-        btnTextMe.setText(httpClient.translate(currentLang, language, btnTextMe.getText()));
-        btnRobot.setText(httpClient.translate(currentLang, language, btnRobot.getText()));
-        btnQR.setText(httpClient.translate(currentLang, language, btnQR.getText()));
+        btnScreening.setText(httpClient.translate(currentLang, language, "Think you have COVID-19?"));
+        btnAbout.setText(httpClient.translate(currentLang, language, "About"));
+        btnTextMe.setText(httpClient.translate(currentLang, language, "Send me directions"));
+        btnRobot.setText(httpClient.translate(currentLang, language, "Escort me there"));
+        btnQR.setText(httpClient.translate(currentLang, language, "Scan directions"));
         btnLegend.setText(httpClient.translate("en", language, "Legend"));
-        btnFeedback.setText(httpClient.translate(currentLang, language, btnFeedback.getText()));
+        btnFeedback.setText(httpClient.translate(currentLang, language, "Give us feedback"));
         departments.setText(httpClient.translate("en", language, "Directions"));
         labs.setText(httpClient.translate("en", language, "Labs"));
         services.setText(httpClient.translate("en", language, "Services/Information"));

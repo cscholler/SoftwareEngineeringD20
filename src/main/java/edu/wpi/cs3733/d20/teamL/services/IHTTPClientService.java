@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public interface IHTTPClientService {
     OkHttpClient getClient();
-    String currLang = "en";
+    String currLang();
 
     void setClient(OkHttpClient client);
 

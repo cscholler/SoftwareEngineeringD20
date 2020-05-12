@@ -3,7 +3,6 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.screening;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXRadioButton;
 import edu.wpi.cs3733.d20.teamL.entities.Question;
-import edu.wpi.cs3733.d20.teamL.services.HTTPClientService;
 import edu.wpi.cs3733.d20.teamL.services.IHTTPClientService;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -12,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -31,28 +31,31 @@ public class QuestionnaireController {
     private boolean testFinished, done;
 
     @Inject
-    private IHTTPClientService client = new HTTPClientService();
+    private IHTTPClientService client;
 
-    private String lang = client.getCurrLang();
 
-    public QuestionnaireController(ArrayList<Question> questionsList) {
-//        ArrayList<Question> newQuestionsList = null;
-//        Question newQ = null;
-//
-//        if(client.getCurrLang().equals("en")){
-//            allQuestions = questionsList;
-//        } else {
-//          for(Question q: questionsList){
-//              try {
-//                  newQ = q;
-//                  newQ.setQuestion(client.translate("en", client.getCurrLang(), q.getQuestion()));
-//              } catch (IOException e) {
-//                  e.printStackTrace();
-//              }
-//              newQuestionsList.add(newQ);
-//          }
-//            allQuestions = newQuestionsList;
-//        }
+
+    public QuestionnaireController(ArrayList<Question> questionsList, String lang, IHTTPClientService client) {
+        ArrayList<Question> newQuestionsList = new ArrayList<Question>();
+        Question newQ = null;
+
+        System.out.println(lang);
+        if(lang.equals("en")){
+            allQuestions = questionsList;
+        } else {
+          for(Question q: questionsList){
+              try {
+                  newQ = q;
+                  newQ.setQuestion(client.translate("en", lang, q.getQuestion()));
+              } catch (IOException e) {
+                  e.printStackTrace();
+              }
+              newQuestionsList.add(newQ);
+              System.out.println(newQ.getQuestion());
+          }
+            allQuestions = newQuestionsList;
+
+        }
 
         dialogVBox.getStylesheets().add("/edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css");
         allQuestions = questionsList;
