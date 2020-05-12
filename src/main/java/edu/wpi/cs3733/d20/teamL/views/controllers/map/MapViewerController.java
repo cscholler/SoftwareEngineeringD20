@@ -51,6 +51,8 @@ import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
 import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
 import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
 
+import static java.awt.Color.BLACK;
+
 @Slf4j
 public class MapViewerController {
 	private final FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
@@ -222,6 +224,7 @@ public class MapViewerController {
         conferenceRooms.setStyle("-fx-font-size: 16;" + "-fx-body-color: #AD87AD;");
 
         accordion.getPanes().addAll(departments, labs, services, amenities, conferenceRooms);
+        accordion.setStyle("-fx-effect: dropshadow(three-pass-box, derive(BLACK, -20%), 10, 0, 2, 2)");
         // Create directions buttons
         directionButtonsVBox = new VBox();
         directionButtonsVBox.setAlignment(Pos.CENTER);
