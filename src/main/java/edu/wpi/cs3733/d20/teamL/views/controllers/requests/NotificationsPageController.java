@@ -2,11 +2,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import edu.wpi.cs3733.d20.teamL.entities.Gift;
 import edu.wpi.cs3733.d20.teamL.entities.GiftDeliveryRequest;
@@ -25,7 +21,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -43,6 +42,25 @@ import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 
 @Slf4j
 public class NotificationsPageController implements Initializable {
+	private HashMap<GiftDeliveryRequest,HBox> giftMap = new HashMap<>();
+	private HashMap<ServiceRequest,HBox> serviceMap = new HashMap<>();
+	private HashMap<MedicationRequest,HBox> medicationMap = new HashMap<>();
+	private HashMap<String, String> status = new HashMap<>() {{
+		put("0","Pending");
+		put("1","Approved");
+		put("2","Assigned");
+		put("3","Denied");
+		put("4","Completed");
+	}};
+
+	private HashMap<String, ImageView> statusIcons = new HashMap<>() {{
+		put("0", new ImageView(new Image("/edu/wpi/cs3733/d20/teamL/assets/notification_status/pending.png", 0, 15, true, false, true)));
+		put("1", new ImageView(new Image("/edu/wpi/cs3733/d20/teamL/assets/notification_status/approved.png", 0, 15, true, false, true)));
+		put("2", new ImageView(new Image("/edu/wpi/cs3733/d20/teamL/assets/notification_status/assigned.png", 0, 15, true, false, true)));
+		put("3", new ImageView(new Image("/edu/wpi/cs3733/d20/teamL/assets/notification_status/denied.png", 0, 15, true, false, true)));
+		put("4", new ImageView(new Image("/edu/wpi/cs3733/d20/teamL/assets/notification_status/completed.png", 0, 15, true, false, true)));
+	}};
+
 	private final ObservableList<MedicationRequest> medReqList = FXCollections.observableArrayList();
 	private final ObservableList<GiftDeliveryRequest> giftReqList = FXCollections.observableArrayList();
 	private final ObservableList<ServiceRequest> serviceReqList = FXCollections.observableArrayList();
@@ -60,6 +78,8 @@ public class NotificationsPageController implements Initializable {
 	private JFXListView<GiftDeliveryRequest> giftReqs;
 	@FXML
 	private Label reqMessage, addInfo, lblMed, lblService, lblGift;
+	@FXML
+	private VBox allNotifications;
 	@Inject
 	private IDatabaseService db;
 	@Inject
@@ -81,16 +101,18 @@ public class NotificationsPageController implements Initializable {
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		user = loginManager.getCurrentUser();
+
 		resetButtons();
-		determineNotificationsToDisplay(user);
-		setCellFactories();
+		//determineNotificationsToDisplay(user);
+		//setCellFactories();
+		allNotifications.getChildren().clear();
 		loadRequests("medication");
 		loadRequests("gift");
 		loadRequests("service");
 	}
 
 	/**
-	 * Loads data to the list view in the form of MedicineRequest Objects
+	 * Loads all relevant notifications as cards into the ScrollPane
 	 */
 	private void loadRequests(String type) {
 		resetButtons();
@@ -98,8 +120,6 @@ public class NotificationsPageController implements Initializable {
 		ArrayList<ArrayList<String>> requests = new ArrayList<>();
 		switch (type) {
 			case "medication": {
-				medReqs.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-				medReqList.removeAll();
 				switch (user.getAcctType()) {
 					// staff member
 					default:
@@ -119,18 +139,16 @@ public class NotificationsPageController implements Initializable {
 				}
 
 				for (ArrayList<String> row : requests) {
+					System.out.print("creating medication notification");
 					String patientID = row.get(1);
 					String patientName = getPatientFullName(patientID);
 					String roomID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ROOM, new ArrayList<>(Collections.singletonList(patientID))))).get(0).get(0);
-					medReqList.add(new MedicationRequest(row.get(0), row.get(1), patientName, row.get(2), roomID, row.get(3), row.get(4), row.get(5), row.get(6), row.get(7), row.get(8), row.get(9)));
+
+					allNotifications.getChildren().add(createMedicationRequestCard(new MedicationRequest(row.get(0), row.get(1), patientName, row.get(2), roomID, row.get(3), row.get(4), row.get(5), row.get(6), row.get(7), row.get(8), row.get(9))));
 				}
-				Collections.reverse(medReqList);
-				medReqs.getItems().addAll(medReqList);
 			}
 			break;
 			case "gift": {
-				giftReqs.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-				giftReqList.removeAll();
 				if (user.isManager() && user.getDept().equals("gift_shop")) {
 					requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_GIFT_DELIVERY_REQUESTS)));
 				} else {
@@ -138,20 +156,17 @@ public class NotificationsPageController implements Initializable {
 				}
 
 				for (ArrayList<String> row : requests) {
+					System.out.print("creating gift notification");
 					String patientID = row.get(1);
 					String patientName = getPatientFullName(patientID);
 					String roomID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ROOM, new ArrayList<>(Collections.singletonList(patientID))))).get(0).get(0);
 
-					giftReqList.add(new GiftDeliveryRequest(row.get(0), row.get(1), patientName, roomID, row.get(2), row.get(3), row.get(4), row.get(5), row.get(6), row.get(7), row.get(8), row.get(9)));
+					allNotifications.getChildren().add(createGiftRequestCard(new GiftDeliveryRequest(row.get(0), row.get(1), patientName, roomID, row.get(2), row.get(3), row.get(4), row.get(5), row.get(6), row.get(7), row.get(8), row.get(9))));
 				}
-				Collections.reverse(giftReqList);
-				giftReqs.getItems().addAll(giftReqList);
 			}
 			break;
 			default:
 			case "service": {
-				serviceReqs.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-				serviceReqList.removeAll();
 				if (user.isManager()) {
 					requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_SERVICE_REQUESTS_FOR_MANAGER, new ArrayList<>(Collections.singletonList(user.getDept())))));
 				} else {
@@ -159,19 +174,24 @@ public class NotificationsPageController implements Initializable {
 				}
 
 				for (ArrayList<String> row : requests) {
+					System.out.println("creating service notification");
 					String patientID = row.get(1);
 					String patientName = patientID != null ? getPatientFullName(patientID) : null;
-					serviceReqList.add(new ServiceRequest(row.get(0), row.get(1), patientName, row.get(2), row.get(3), row.get(4), row.get(5), row.get(6), row.get(7), row.get(8), row.get(9)));
+
+					allNotifications.getChildren().add(createServiceRequestCard(new ServiceRequest(row.get(0), row.get(1), patientName, row.get(2), row.get(3), row.get(4), row.get(5), row.get(6), row.get(7), row.get(8), row.get(9))));
 				}
-				Collections.reverse(serviceReqList);
-				serviceReqs.getItems().addAll(serviceReqList);
 			}
+		}
+		if (allNotifications.getChildren().isEmpty()) {
+			Label empty = new Label("No notifications found");
+			empty.setStyle("-fx-font-size: 20; -fx-font-weight: bold; -fx-padding: 50 0 0 0");
 		}
 	}
 
 	/**
 	 * Checks for anyone clicking on the listView of medReq and opens them in the pane to the right
 	 */
+	//TODO: Update this
 	@FXML
 	private void displaySelectedMedReq() {
 		resetButtons();
@@ -215,6 +235,7 @@ public class NotificationsPageController implements Initializable {
 		}
 	}
 
+	//TODO: Update this
 	@FXML
 	private void displaySelectedGiftReq() {
 		resetButtons();
@@ -258,6 +279,7 @@ public class NotificationsPageController implements Initializable {
 		}
 	}
 
+	//TODO: Update this
 	@FXML
 	private void displaySelectedServiceReq() {
 		resetButtons();
@@ -561,6 +583,90 @@ public class NotificationsPageController implements Initializable {
 				}
 			}
 		});
+	}
+
+	private HBox createGiftRequestCard(GiftDeliveryRequest request) {
+		//ToDo: finish this
+
+		ImageView statusIcon = statusIcons.get((request.getStatus()));
+		statusIcon.setStyle("-fx-pref-height: 15;");
+		Label statusLabel = new Label(status.get(request.getStatus()));
+		statusLabel.setStyle("-fx-font-size: 16;");
+		HBox statusBox = new HBox(statusIcon,statusLabel);
+		statusBox.setStyle("-fx-spacing: 10;");
+
+		Label cardHeader = new Label("Gift(s) for " + request.getPatientName()); //Set header text
+		cardHeader.setStyle("-fx-font-size: 16; -fx-font-weight: bold");
+		Label time = new Label("[" + request.getDateAndTime() + "]");
+		time.setStyle("-fx-font-size: 16;");
+		VBox titleNotes = new VBox(cardHeader,time,statusBox);
+		titleNotes.setStyle("-fx-padding: 5 5 5 5;");
+
+		JFXButton btnDeleteCard = new JFXButton("", new ImageView(new Image("/edu/wpi/cs3733/d20/teamL/assets/staff_view/close.png", 0,15,true,false,true)));
+		btnDeleteCard.setStyle("-fx-background-color: transparent; -fx-content-display: graphic-only;");
+		btnDeleteCard.setOnAction(e -> btnDeclineClicked());	//Set onAction
+
+		HBox card = new HBox(titleNotes,btnDeleteCard);
+		card.setStyle("-fx-fill-width: true; -fx-background-color: white; ");
+
+		giftMap.put(request,card);
+		return card;
+	}
+
+	private HBox createMedicationRequestCard(MedicationRequest request) {
+		//ToDo: finish this
+
+		ImageView statusIcon = statusIcons.get((request.getStatus()));
+		statusIcon.setStyle("-fx-pref-height: 15;");
+		Label statusLabel = new Label(status.get(request.getStatus()));
+		statusLabel.setStyle("-fx-font-size: 16;");
+		HBox statusBox = new HBox(statusIcon,statusLabel);
+		statusBox.setStyle("-fx-spacing: 10;");
+
+		Label cardHeader = new Label(request.getPatientName() + " - " + request.getDose() + " " + request.getMedType()); //Set header text
+		cardHeader.setStyle("-fx-font-size: 16; -fx-font-weight: bold");
+		Label time = new Label("[" + request.getDateAndTime() + "]");
+		time.setStyle("-fx-font-size: 16;");
+		VBox titleNotes = new VBox(cardHeader,time,statusBox);
+		titleNotes.setStyle("-fx-padding: 5 5 5 5;");
+
+		JFXButton btnDeleteCard = new JFXButton("", new ImageView(new Image("/edu/wpi/cs3733/d20/teamL/assets/staff_view/close.png", 0,15,true,false,true)));
+		btnDeleteCard.setStyle("-fx-background-color: transparent; -fx-content-display: graphic-only;");
+		btnDeleteCard.setOnAction(e -> btnDeclineClicked());	//Set onAction
+
+		HBox card = new HBox(titleNotes,btnDeleteCard);
+		card.setStyle("-fx-max-width: 200; -fx-background-color: white; ");
+
+		medicationMap.put(request,card);
+		return card;
+	}
+
+	private HBox createServiceRequestCard(ServiceRequest request) {
+		//ToDo: finish this
+
+		ImageView statusIcon = new ImageView(new Image("/edu/wpi/cs3733/d20/teamL/assets/notification_status/" + status.get(request.getStatus()).toLowerCase() + ".png",0,15,true,false,true));
+		statusIcon.setStyle("-fx-pref-height: 15; -fx-max-height: 15;");
+		Label statusLabel = new Label(status.get(request.getStatus()));
+		statusLabel.setStyle("-fx-font-size: 16;");
+		HBox statusBox = new HBox(statusIcon,statusLabel);
+		statusBox.setStyle("-fx-spacing: 5; -fx-alignment: center-left");
+
+		Label cardHeader = new Label(request.getService() + " Request"); //Set header text
+		cardHeader.setStyle("-fx-font-size: 16; -fx-font-weight: bold");
+		Label time = new Label("[" + request.getDateAndTime() + "]");
+		time.setStyle("-fx-font-size: 16;");
+		VBox titleNotes = new VBox(cardHeader,time,statusBox);
+		titleNotes.setStyle("-fx-padding: 5 5 5 5; -fx-pref-width: 325");
+
+		JFXButton btnDeleteCard = new JFXButton("", new ImageView(new Image("/edu/wpi/cs3733/d20/teamL/assets/staff_view/close.png", 0,15,true,false,true)));
+		btnDeleteCard.setStyle("-fx-background-color: transparent; -fx-content-display: graphic-only;");
+		btnDeleteCard.setOnAction(e -> btnDeclineClicked());	//Set onAction
+
+		HBox card = new HBox(titleNotes,btnDeleteCard);
+		card.setStyle("-fx-background-color: white; -fx-fill-width: true; -fx-pref-width: 350; -fx-effect: dropshadow(three-pass-box, derive(BLACK, -20%), 10, 0, 2, 2);");
+
+		serviceMap.put(request,card);
+		return card;
 	}
 
 	/**
