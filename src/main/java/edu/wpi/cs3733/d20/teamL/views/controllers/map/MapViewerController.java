@@ -651,6 +651,7 @@ public class MapViewerController {
         startingPoint.clear();
         map.getSelector().clear();
         showDefaultOptions();
+        clearPath();
     }
 
     /**
@@ -661,6 +662,7 @@ public class MapViewerController {
         destination.clear();
         map.getSelector().clear();
         showDefaultOptions();
+        clearPath();
     }
 
     /**
