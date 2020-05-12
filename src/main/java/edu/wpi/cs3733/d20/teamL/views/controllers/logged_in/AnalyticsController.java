@@ -511,7 +511,7 @@ public class AnalyticsController implements Initializable {
             if(edgeGUI.getEdge().getFreq() > 0) {
                 if(edgeGUI != null) {
                     edgeGUI.setVisible(true);
-                    edgeGUI.setGradient(edgeGUI.getEdge().getFreq() * 2);
+                    edgeGUI.setGradient(map.getZoomLevel() * Math.log10(edgeGUI.getEdge().getFreq()) * 20);
                 }
             }
         }
