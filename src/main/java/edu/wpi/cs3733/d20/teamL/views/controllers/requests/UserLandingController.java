@@ -64,6 +64,60 @@ public class UserLandingController {
 //        app.run(0, 0, 1280,720,"/edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css", null, null);
     }
 
+    @FXML
+    public void launchSecurityAPI() throws IOException{
+        resetAndLoadPane("SecurityPane", "Security Request");
+        btnSecurity.setStyle("-fx-background-color: #DCDCDC");
+    }
+
+    @FXML
+    public void launchSanitationAPI() throws IOException {
+        resetAndLoadPane("SanitationPane", "Sanitation Request");
+        btnSanitation.setStyle("-fx-background-color: #DCDCDC");
+    }
+
+    @FXML
+    public void launchGiftAPI() throws IOException {
+        resetAndLoadPane("GiftCartPane", "Gift Request");
+        btnGift.setStyle("-fx-background-color: #DCDCDC");
+    }
+
+    @FXML
+    public void launchMaintenanceAPI() throws IOException {
+        resetAndLoadPane("MaintenancePane", "Maintenance Request");
+        btnMaintenance.setStyle("-fx-background-color: #DCDCDC");
+    }
+
+    @FXML
+    public void launchMedicationAPI() throws IOException {
+        resetAndLoadPane("MedicationPane", "Medication Request");
+        btnMedication.setStyle("-fx-background-color: #DCDCDC");
+    }
+
+    @FXML
+    public void launchInternalAPI() throws IOException {
+
+        resetAndLoadPane("InternalPane", "Internal Transport");
+        btnInternal.setStyle("-fx-background-color: #DCDCDC");
+    }
+
+    @FXML
+    public void launchExternalAPI() throws IOException {
+        resetAndLoadPane("ExternalPane", "External Transport");
+        btnExternal.setStyle("-fx-background-color: #DCDCDC");
+    }
+
+    @FXML
+    public void launchITAPI() throws IOException {
+        resetAndLoadPane("ITPane", "IT Request");
+        btnIT.setStyle("-fx-background-color: #DCDCDC");
+    }
+
+    @FXML
+    public void launchInterpreterAPI() throws IOException {
+        resetAndLoadPane("InterpreterPane", "Interpreter Request");
+        btnInterpreter.setStyle("-fx-background-color: #DCDCDC");
+    }
 
     @FXML
     public void launchDefaultPane() throws IOException{

@@ -218,7 +218,7 @@
                            <content>
                               <VBox alignment="CENTER_LEFT" prefWidth="385.0">
                                  <children>
-                                    <JFXButton fx:id="btnGift1" onAction="#launchGiftPane" styleClass="services-button-jfx" text="API 1" VBox.vgrow="ALWAYS">
+                                    <JFXButton fx:id="btnGift1" onAction="#launchGiftAPI" styleClass="services-button-jfx" text="API 1" VBox.vgrow="ALWAYS">
                                        <graphic>
                                           <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -227,7 +227,7 @@
                                           </ImageView>
                                        </graphic>
                                     </JFXButton>
-                                    <JFXButton fx:id="btnSecurity1" onAction="#launchSecurityPane" styleClass="services-button-jfx" text="API 2">
+                                    <JFXButton fx:id="btnSecurity1" onAction="#launchSecurityAPI" styleClass="services-button-jfx" text="API 2">
                                        <graphic>
                                           <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -236,7 +236,7 @@
                                           </ImageView>
                                        </graphic>
                                     </JFXButton>
-                                    <JFXButton fx:id="btnMaintenance1" onAction="#launchMaintenancePane" styleClass="services-button-jfx" text="API 3">
+                                    <JFXButton fx:id="btnMaintenance1" onAction="#launchMaintenanceAPI" styleClass="services-button-jfx" text="API 3">
                                        <graphic>
                                           <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -245,7 +245,7 @@
                                           </ImageView>
                                        </graphic>
                                     </JFXButton>
-                                    <JFXButton fx:id="btnInternal1" onAction="#launchInternalPane" styleClass="services-button-jfx" text="API 4">
+                                    <JFXButton fx:id="btnInternal1" onAction="#launchInternalAPI" styleClass="services-button-jfx" text="API 4">
                                        <graphic>
                                           <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -254,7 +254,7 @@
                                           </ImageView>
                                        </graphic>
                                     </JFXButton>
-                                    <JFXButton fx:id="btnExternal1" onAction="#launchExternalPane" styleClass="services-button-jfx" text="API 5">
+                                    <JFXButton fx:id="btnExternal1" onAction="#launchExternalAPI" styleClass="services-button-jfx" text="API 5">
                                        <graphic>
                                           <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -263,7 +263,7 @@
                                           </ImageView>
                                        </graphic>
                                     </JFXButton>
-                                    <JFXButton fx:id="btnMedication1" onAction="#launchMedicationPane" styleClass="services-button-jfx" text="API 6">
+                                    <JFXButton fx:id="btnMedication1" onAction="#launchMedicationAPI" styleClass="services-button-jfx" text="API 6">
                                        <graphic>
                                           <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -272,7 +272,7 @@
                                           </ImageView>
                                        </graphic>
                                     </JFXButton>
-                                    <JFXButton fx:id="btnSanitation1" onAction="#launchSanitationPane" styleClass="services-button-jfx" text="API 7">
+                                    <JFXButton fx:id="btnSanitation1" onAction="#launchSanitationAPI" styleClass="services-button-jfx" text="API 7">
                                        <graphic>
                                           <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
