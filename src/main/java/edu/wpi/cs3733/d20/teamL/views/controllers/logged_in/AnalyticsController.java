@@ -25,6 +25,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -49,8 +51,11 @@ public class AnalyticsController implements Initializable {
     private ObservableList<ServiceRequest> requests;
     private ObservableList<GiftDeliveryRequest> giftRequests;
     ObservableList<String> heatOptions = FXCollections.observableArrayList("Pathfinding", "All Service Request Locations", "Security", "Maintenance", "Internal Transportation",
-            "IT", "Interpreter","Gift Delivery");
+            "IT", "Interpreter");
     private Map<String, Integer> freq = new ConcurrentHashMap<>();
+    private Map<String, Integer> locations = new ConcurrentHashMap<>();
+
+    private boolean pathfinding = true;
 
     private String defaultBuilding = "Faulkner";
     private int defaultFloor = 2;
@@ -122,21 +127,34 @@ public class AnalyticsController implements Initializable {
         freq.replace("Gift Delivery", giftRequests.size());
     }
 
-    private ArrayList<ServiceRequest> getRequestsByDate(ArrayList<ServiceRequest> reqs, String date) {
+    private void getRequestsByDate(String date) {
         ArrayList<ServiceRequest> timeMask = new ArrayList<>();
+        String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm aa").format(new Date());
+        Date newDate = null;
+        try {
+            newDate = new SimpleDateFormat("M/dd/yy | h:mm aa").parse(dateAndTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         switch(date) {
             case "Any time":
+                newDate.setYear(newDate.getYear()-100);
                 break;
             case "Past hour":
+                newDate.setHours(newDate.getHours()-1);
                 break;
             case "Past 24 hours":
+                newDate.setDate(newDate.getDate()-1);
                 break;
             case "Past month":
+                newDate.setMonth(newDate.getMonth()-1);
                 break;
             case "Past year":
+                newDate.setYear(newDate.getYear()-1);
                 break;
         }
-        return timeMask;
+        cache.setTimestamp(newDate);
+        updateFreq();
     }
 
     @FXML
@@ -366,44 +384,60 @@ public class AnalyticsController implements Initializable {
         generateFloorButtons();
         setFloor(Math.max(map.getBuilding().getMinFloor(), Math.min(prevFloor, map.getBuilding().getMaxFloor())));
         map.setZoomLevel(.25 * App.UI_SCALE);
-        //if (!path.getPathNodes().isEmpty()) highLightPath();
     }
 
     @FXML
     private void switchHeatMap(ActionEvent event) {
+        pathfinding = false;
+
         switch (heatBox.getSelectionModel().getSelectedItem()) {
             case "Pathfinding":
-                switchBuilding();
+                pathfinding = true;
                 break;
             case "All Service Request Locations":
-
+                locationFreq(cache.getAllRequests());
                 break;
             case "Security":
+                locationFreq(cache.getAllSpecificRequest("Security"));
                 break;
             case "Internal Transportation":
+                locationFreq(cache.getAllSpecificRequest("Internal Transportation"));
                 break;
             case "Interpreter":
+                locationFreq(cache.getAllSpecificRequest("Interpreter"));
                 break;
-            case "Gift Delivery":
+            case "IT":
+                locationFreq(cache.getAllSpecificRequest("IT"));
+                break;
+            case "Maintenance":
+                locationFreq(cache.getAllSpecificRequest("Maintenance"));
                 break;
         }
+        switchBuilding();
     }
 
-    private Map<String, Integer> locationFreq (ArrayList<ServiceRequest> reqs) {
-        Map<String, Integer> frequencies = new ConcurrentHashMap<>();
+    private void locationFreq (ArrayList<ServiceRequest> reqs) {
+        locations.clear();
         for(ServiceRequest request : reqs) {
             if(request.getLocation() != null) {
-                if (!frequencies.containsKey(request.getLocation())) {
-                    frequencies.put(request.getLocation(), 1);
+                if (!locations.containsKey(request.getLocation())) {
+                    locations.put(request.getLocation(), 1);
                 } else {
-                    frequencies.replace(request.getLocation(), frequencies.get(request.getLocation()) + 1);
+                    locations.replace(request.getLocation(), locations.get(request.getLocation()) + 1);
                 }
             }
         }
-        return frequencies;
     }
 
-    private void burn
+    private void burnServiceNodes(Map<String, Integer> nodes) {
+        for(Node node : map.getCurrentFloor().getNodes()) {
+            NodeGUI nodeGUI =  map.getNodeGUI(node);
+            if(nodes.containsKey(node.getID()))
+                applyBurn(nodeGUI, nodes.get(node.getID()));
+            else
+                applyBurn(nodeGUI, 0);
+        }
+    }
 
     private void generateFloorButtons() {
         map.generateFloorButtons(floorSelector, this::handleFloor);
@@ -438,8 +472,12 @@ public class AnalyticsController implements Initializable {
                     floorButton.getStyleClass().add("selected-floor");
             }
         }
-        burnAllNodes(map.getCurrentFloor().getNodes());
-        burnAllEdges(map.getEdges());
+        if(pathfinding) {
+            burnAllNodes(map.getCurrentFloor().getNodes());
+            burnAllEdges(map.getEdges());
+        } else {
+            burnServiceNodes(locations);
+        }
     }
 
     @FXML
@@ -455,13 +493,16 @@ public class AnalyticsController implements Initializable {
     private void burnAllNodes(Collection<Node> nodes) {
         for(Node node : nodes) {
             NodeGUI nodeGUI =  map.getNodeGUI(node);
-            if(node.getFreq() > 0) {
-                nodeGUI.setVisible(true);
-                //nodeGUI.setHighlightColor(Color.RED);
-                nodeGUI.setGradient(map.getZoomLevel() * nodeGUI.getNode().getFreq() * 5);
-            } else {
-                nodeGUI.setVisible(false);
-            }
+            applyBurn(nodeGUI, nodeGUI.getNode().getFreq());
+        }
+    }
+
+    private void applyBurn(NodeGUI nodeGUI, int freq) {
+        if(freq > 0) {
+            nodeGUI.setVisible(true);
+            nodeGUI.setGradient(map.getZoomLevel() * freq * 5);
+        } else {
+            nodeGUI.setVisible(false);
         }
     }
 

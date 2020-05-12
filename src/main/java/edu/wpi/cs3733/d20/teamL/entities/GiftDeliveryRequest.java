@@ -1,6 +1,9 @@
 package edu.wpi.cs3733.d20.teamL.entities;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class GiftDeliveryRequest {
 	private String id;
@@ -87,5 +90,14 @@ public class GiftDeliveryRequest {
 
 	public String getDateAndTime() {
 		return dateAndTime;
+	}
+
+	public Date getActualDateAndTime() {
+		try {
+			return new SimpleDateFormat("M/dd/yy | h:mm aa").parse(dateAndTime);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
