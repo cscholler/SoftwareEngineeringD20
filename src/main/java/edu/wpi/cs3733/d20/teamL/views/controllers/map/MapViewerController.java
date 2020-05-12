@@ -689,20 +689,21 @@ public class MapViewerController {
 
         JFXDialogLayout content = new JFXDialogLayout();
         content.setHeading(new Text("Credit"));
-        content.setBody(new Text("External API/Software:\n\n" +
-                "Apache Commons\n" +
-                "Apache Derby\n" +
-                "Cloud Text-to-Speech\n" +
-                "Google Juice\n" +
-                "jBCrpyt\n" +
-                "JetBrains\n" +
-                "JFoenix\n" +
-                "JSON\n" +
-                "MySQL Connector\n" +
-                "OkHttp\n" +
-                "QRGen\n" +
-                "SendGrid\n" +
-                "Twilio\n" +
+        content.setBody(new Text("Software:\t\t\t\t" +
+                "Apache Commons\n\t\t\t\t\t" +
+                "Apache Derby\n\t\t\t\t\t" +
+                "Google Juice\n\t\t\t\t\t" +
+                "jBCrpyt\n\t\t\t\t\t" +
+                "JetBrains\n\t\t\t\t\t" +
+                "JFoenix\n\n" +
+                "External APIs:\t\t\t" +
+                "Cloud Text-to-Speech\n\t\t\t\t\t" +
+                "JSON\n\t\t\t\t\t" +
+                "MySQL Connector\n\t\t\t\t\t" +
+                "OkHttp\n\t\t\t\t\t" +
+                "QRGen\n\t\t\t\t\t" +
+                "SendGrid\n\t\t\t\t\t" +
+                "Twilio\n\t\t\t\t\t" +
                 "Webcam-Capture"
         ));
 
