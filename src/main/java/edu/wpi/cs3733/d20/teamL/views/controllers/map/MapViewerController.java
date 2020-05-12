@@ -45,6 +45,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import lombok.extern.slf4j.Slf4j;
@@ -632,8 +633,10 @@ public class MapViewerController {
      */
     @FXML
     public void handleAbout() {
+    	//Uncomment to run snake
     	SnakeController snakeController = new SnakeController((Stage) btnNavigate.getScene().getWindow());
-        /*JFXDialogLayout content = new JFXDialogLayout();
+
+        JFXDialogLayout content = new JFXDialogLayout();
         content.setHeading(new Text("About"));
         content.setBody(new Text("WPI Computer Science Department\n" +
                 "CS3733-D20 Software Engineering\n" +
@@ -653,7 +656,7 @@ public class MapViewerController {
         JFXButton btnDone = new JFXButton("Done");
         btnDone.setOnAction(event -> dialog.close());
         content.setActions(btnDone);
-        dialog.show();*/
+        dialog.show();
     }
 
     /**
