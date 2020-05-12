@@ -2,8 +2,13 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 
 import com.jfoenix.controls.JFXButton;
 //import edu.wpi.cs3733.c20.teamR.AppointmentRequest;
+import edu.wpi.cs3733.d20.teamE.onCallBeds;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
+import edu.wpi.cs3733.d20.teamM.AudioVisualRequest;
+import edu.wpi.cs3733.d20.teamM.ServiceException;
+import edu.wpi.cs3733.d20.teamP.APIController;
+import flowerapi.FlowerAPI;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -59,64 +64,25 @@ public class UserLandingController {
     }
 
     @FXML
-    private void launchAPIntment() throws Exception {
-//        AppointmentRequest app = new AppointmentRequest();
-//        app.run(0, 0, 1280,720,"/edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css", null, null);
-    }
-
-    @FXML
-    public void launchSecurityAPI() throws IOException{
-        resetAndLoadPane("SecurityPane", "Security Request");
-        btnSecurity.setStyle("-fx-background-color: #DCDCDC");
-    }
-
-    @FXML
-    public void launchSanitationAPI() throws IOException {
-        resetAndLoadPane("SanitationPane", "Sanitation Request");
-        btnSanitation.setStyle("-fx-background-color: #DCDCDC");
-    }
-
-    @FXML
-    public void launchGiftAPI() throws IOException {
+    public void launchGiftAPI() throws IOException, edu.wpi.cs3733.d20.teamP.ServiceException {
+       APIController.run(0, 0, 1280, 720, "edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css", new String(), new String());
         resetAndLoadPane("GiftCartPane", "Gift Request");
         btnGift.setStyle("-fx-background-color: #DCDCDC");
     }
 
     @FXML
-    public void launchMaintenanceAPI() throws IOException {
+    public void launchMaintenanceAPI() throws IOException, ServiceException {
+        AudioVisualRequest.run(0, 0, 1280, 720, "edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css", new String(), new String());
         resetAndLoadPane("MaintenancePane", "Maintenance Request");
         btnMaintenance.setStyle("-fx-background-color: #DCDCDC");
     }
 
-    @FXML
-    public void launchMedicationAPI() throws IOException {
-        resetAndLoadPane("MedicationPane", "Medication Request");
-        btnMedication.setStyle("-fx-background-color: #DCDCDC");
-    }
 
     @FXML
-    public void launchInternalAPI() throws IOException {
-
-        resetAndLoadPane("InternalPane", "Internal Transport");
-        btnInternal.setStyle("-fx-background-color: #DCDCDC");
-    }
-
-    @FXML
-    public void launchExternalAPI() throws IOException {
+    public void launchExternalAPI() throws IOException, flowerapi.ServiceException {
+        FlowerAPI.run(0, 0, 1280, 720, "edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css", new String(), new String());
         resetAndLoadPane("ExternalPane", "External Transport");
         btnExternal.setStyle("-fx-background-color: #DCDCDC");
-    }
-
-    @FXML
-    public void launchITAPI() throws IOException {
-        resetAndLoadPane("ITPane", "IT Request");
-        btnIT.setStyle("-fx-background-color: #DCDCDC");
-    }
-
-    @FXML
-    public void launchInterpreterAPI() throws IOException {
-        resetAndLoadPane("InterpreterPane", "Interpreter Request");
-        btnInterpreter.setStyle("-fx-background-color: #DCDCDC");
     }
 
     @FXML

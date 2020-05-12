@@ -218,69 +218,9 @@
                            <content>
                               <VBox alignment="CENTER_LEFT" prefWidth="385.0">
                                  <children>
-                                    <JFXButton fx:id="btnGift1" onAction="#launchGiftAPI" styleClass="services-button-jfx" text="API 1" VBox.vgrow="ALWAYS">
-                                       <graphic>
-                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../assets/service_icons/giftDelivery.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </JFXButton>
-                                    <JFXButton fx:id="btnSecurity1" onAction="#launchSecurityAPI" styleClass="services-button-jfx" text="API 2">
-                                       <graphic>
-                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../assets/service_icons/securityRequest.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </JFXButton>
-                                    <JFXButton fx:id="btnMaintenance1" onAction="#launchMaintenanceAPI" styleClass="services-button-jfx" text="API 3">
-                                       <graphic>
-                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../assets/service_icons/mantinenceRequest.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </JFXButton>
-                                    <JFXButton fx:id="btnInternal1" onAction="#launchInternalAPI" styleClass="services-button-jfx" text="API 4">
-                                       <graphic>
-                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../assets/service_icons/internalTransport.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </JFXButton>
-                                    <JFXButton fx:id="btnExternal1" onAction="#launchExternalAPI" styleClass="services-button-jfx" text="API 5">
-                                       <graphic>
-                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../assets/service_icons/externalTransport.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </JFXButton>
-                                    <JFXButton fx:id="btnMedication1" onAction="#launchMedicationAPI" styleClass="services-button-jfx" text="API 6">
-                                       <graphic>
-                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../assets/service_icons/medicationRequest.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </JFXButton>
-                                    <JFXButton fx:id="btnSanitation1" onAction="#launchSanitationAPI" styleClass="services-button-jfx" text="API 7">
-                                       <graphic>
-                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../assets/service_icons/sanitationService.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </JFXButton>
+                                    <JFXButton fx:id="btnGift1" onAction="#launchGiftAPI" styleClass="services-button-jfx" text="Team P Food Request" VBox.vgrow="ALWAYS" />
+                                    <JFXButton fx:id="btnMaintenance1" onAction="#launchMaintenanceAPI" styleClass="services-button-jfx" text="Team M A/V Request " />
+                                    <JFXButton fx:id="btnExternal1" onAction="#launchExternalAPI" styleClass="services-button-jfx" text="Team A Flower Request" />
                                  </children>
                               </VBox>
                            </content>
