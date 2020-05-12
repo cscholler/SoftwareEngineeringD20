@@ -118,7 +118,7 @@ public class AssignPopupController implements Initializable {
 			}
 		}
 		addInfo.setText(updatedNotes);
-		getNotificationsPageController().setCellFactories();
+		getNotificationsPageController().resetCards();
 		getNotificationsPageController().getBtnAssign().setText("Re-Assign");
 		((Stage) btnSubmit.getScene().getWindow()).close();
 	}
