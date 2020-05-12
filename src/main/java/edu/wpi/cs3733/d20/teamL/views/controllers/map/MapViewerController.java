@@ -954,6 +954,7 @@ public class MapViewerController {
         int startIndex = text.indexOf('>') + 1;
         text = text.substring(startIndex, endIndex);
         log.info(text);
+        currLang = language;
         return text;
     }
 }
