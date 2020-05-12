@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamL.views.components;
+package edu.wpi.cs3733.d20.teamL.views.components.map;
 
 import com.google.inject.Inject;
 import com.jfoenix.controls.JFXAutoCompletePopup;

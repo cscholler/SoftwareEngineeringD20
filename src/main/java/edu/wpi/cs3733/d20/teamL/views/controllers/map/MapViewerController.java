@@ -23,8 +23,11 @@ import edu.wpi.cs3733.d20.teamL.util.TimerManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+<<<<<<< Updated upstream
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import javafx.event.EventHandler;
+=======
+>>>>>>> Stashed changes
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
@@ -47,10 +50,25 @@ import javafx.util.Duration;
 import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
+<<<<<<< Updated upstream
 import edu.wpi.cs3733.d20.teamL.entities.Path;
 import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
 import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
 import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
+=======
+import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
+import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
+import edu.wpi.cs3733.d20.teamL.services.speech.ISpeechToTextService;
+import edu.wpi.cs3733.d20.teamL.services.speech.ITextToSpeechService;
+import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
+import edu.wpi.cs3733.d20.teamL.util.SearchFields;
+import edu.wpi.cs3733.d20.teamL.util.TimerManager;
+import edu.wpi.cs3733.d20.teamL.views.components.map.EdgeGUI;
+import edu.wpi.cs3733.d20.teamL.views.components.map.MapPane;
+import edu.wpi.cs3733.d20.teamL.views.components.map.NodeGUI;
+import edu.wpi.cs3733.d20.teamL.views.controllers.screening.QuestionnaireController;
+>>>>>>> Stashed changes
 
 @Slf4j
 public class MapViewerController {
@@ -629,8 +647,13 @@ public class MapViewerController {
      */
     @FXML
     public void handleAbout() {
-
-        JFXDialogLayout content = new JFXDialogLayout();
+		try {
+			Parent root = loaderFactory.getFXMLLoader("game/Snake").load();
+			loaderFactory.setupScene(new Scene(root));
+		} catch (IOException ex) {
+			log.error("Encountered IOException", ex);
+		}
+        /*JFXDialogLayout content = new JFXDialogLayout();
         content.setHeading(new Text("About"));
         content.setBody(new Text("WPI Computer Science Department\n" +
                 "CS3733-D20 Software Engineering\n" +
@@ -648,14 +671,9 @@ public class MapViewerController {
                 "Thank you Brigham and Women's Hospital \nand Andrew Shinn for your time and input."));
         JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
         JFXButton btnDone = new JFXButton("Done");
-        btnDone.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                dialog.close();
-            }
-        });
+        btnDone.setOnAction(event -> dialog.close());
         content.setActions(btnDone);
-        dialog.show();
+        dialog.show();*/
     }
 
     /**

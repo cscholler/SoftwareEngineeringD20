@@ -13,8 +13,16 @@ import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import edu.wpi.cs3733.d20.teamL.util.TimerManager;
 import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
+<<<<<<< Updated upstream
 import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import edu.wpi.cs3733.d20.teamL.views.components.*;
+=======
+import edu.wpi.cs3733.d20.teamL.util.SearchFields;
+import edu.wpi.cs3733.d20.teamL.views.components.map.EdgeField;
+import edu.wpi.cs3733.d20.teamL.views.components.map.EdgeGUI;
+import edu.wpi.cs3733.d20.teamL.views.components.map.MapPane;
+import edu.wpi.cs3733.d20.teamL.views.components.map.NodeGUI;
+>>>>>>> Stashed changes
 import edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.DataDialogue;
 
 import javafx.application.Platform;
@@ -56,7 +64,7 @@ public class MapEditorController {
     @FXML
     BorderPane root;
     @FXML
-    MapPane map;
+	MapPane map;
     @FXML
     Label nodeIDText, numberlbl, timeLabel;
     @FXML
