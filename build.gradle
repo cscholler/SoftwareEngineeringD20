@@ -39,7 +39,6 @@ dependencies {
             'org.mindrot:jbcrypt:0.3m',
             'com.squareup.okhttp:okhttp:2.5.0',
             'com.google.cloud:google-cloud-texttospeech:1.0.2'
-
     )
 
     testImplementation(
