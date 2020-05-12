@@ -151,7 +151,7 @@
                           <Insets bottom="60.0" left="20.0" right="20.0" top="30.0" />
                       </padding>
                   </VBox>
-            <JFXButton onAction="#loginBtnClicked" style="-fx-background-color: transparent;" text="Login" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0">
+            <JFXButton layoutX="-1.0" onAction="#loginBtnClicked" prefHeight="41.0" prefWidth="68.0" style="-fx-background-color: transparent;" text="Login" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="-1.0">
                <font>
                   <Font size="15.0" />
                </font>
@@ -173,14 +173,21 @@
                         <Font size="15.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton fx:id="btnCredit" buttonType="RAISED" graphicTextGap="0.0" onAction="#handleCredit" prefHeight="37.0" prefWidth="91.0" style="-fx-background-color: transparent;" text="Credit">
+                  <StackPane fx:id="creditPane" alignment="BOTTOM_CENTER" maxWidth="300.0" minWidth="130.0" prefHeight="197.0" prefWidth="130.0">
+                     <children>
+                        <JFXButton fx:id="btnCredit" buttonType="RAISED" graphicTextGap="0.0" onAction="#handleCredit" prefHeight="37.0" prefWidth="91.0" style="-fx-background-color: transparent;" text="Credit">
+                           <StackPane.margin>
+                              <Insets />
+                           </StackPane.margin>
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </JFXButton>
+                     </children>
                      <StackPane.margin>
-                        <Insets right="130.0" />
+                        <Insets left="20.0" right="30.0" />
                      </StackPane.margin>
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </JFXButton>
+                  </StackPane>
                </children>
             </StackPane>
          </children>
@@ -267,7 +274,6 @@
                   </JFXButton>
                </children>
             </StackPane>
-            <StackPane fx:id="creditPane" alignment="BOTTOM_CENTER" layoutX="138.0" layoutY="426.0" maxHeight="100.0" maxWidth="200.0" minHeight="300.0" minWidth="300.0" prefHeight="74.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" />
             </children>
         </AnchorPane>
     </center>
