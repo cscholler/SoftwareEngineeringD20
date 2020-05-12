@@ -36,7 +36,6 @@ import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
 public class SpeechToTextService extends Service implements ISpeechToTextService {
 	private SpeechClient client;
 	private SpeechFileManager speechFileManager;
-	private boolean allowRecording = false;
 	private boolean isStartRecording = false;
 	private boolean isDestRecording = false;
 
@@ -109,12 +108,12 @@ public class SpeechToTextService extends Service implements ISpeechToTextService
 			byte[] data = new byte[microphone.getBufferSize() / 5];
 			microphone.start();
 			if (type.equals("start")) {
-				while (isStartRecording()) {
+				while (allowStartRecording()) {
 					numBytesRead = microphone.read(data, 0, 1024);
 					recording.write(data, 0, numBytesRead);
 				}
 			} else if (type.equals("dest")) {
-				while (isDestRecording()) {
+				while (allowDestRecording()) {
 					numBytesRead = microphone.read(data, 0, 1024);
 					recording.write(data, 0, numBytesRead);
 				}
@@ -133,7 +132,7 @@ public class SpeechToTextService extends Service implements ISpeechToTextService
 	}
 
 	@Override
-	public boolean isStartRecording() {
+	public boolean allowStartRecording() {
 		return isStartRecording;
 	}
 
@@ -143,22 +142,12 @@ public class SpeechToTextService extends Service implements ISpeechToTextService
 	}
 
 	@Override
-	public boolean isDestRecording() {
+	public boolean allowDestRecording() {
 		return isDestRecording;
 	}
 
 	@Override
 	public void setDestRecording(boolean destRecording) {
 		isDestRecording = destRecording;
-	}
-
-	@Override
-	public boolean allowRecording() {
-		return allowRecording;
-	}
-
-	@Override
-	public void setAllowRecording(boolean allowRecording) {
-		this.allowRecording = allowRecording;
 	}
 }

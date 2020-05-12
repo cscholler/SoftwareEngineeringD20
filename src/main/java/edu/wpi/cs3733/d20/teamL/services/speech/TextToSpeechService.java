@@ -34,6 +34,7 @@ public class TextToSpeechService extends Service implements ITextToSpeechService
 	private AudioConfig audioConfig;
 	private SpeechFileManager speechFileManager;
 	private ArrayList<Clip> activeClips;
+	private boolean isMuted = false;
 
 	public TextToSpeechService() {
 		super();
@@ -61,6 +62,7 @@ public class TextToSpeechService extends Service implements ITextToSpeechService
 		} catch (IOException ex) {
 			log.error("Encountered IOException.", ex);
 		}
+		convertTextToSpeech("load");
 	}
 
 	@Override
@@ -71,6 +73,16 @@ public class TextToSpeechService extends Service implements ITextToSpeechService
 	@Override
 	public void convertAndPlayAsync(String text, String lang, SsmlVoiceGender gender) {
 		AsyncTaskManager.newTask(() -> playSpeech(convertTextToSpeech(text, lang, gender)));
+	}
+
+	@Override
+	public ByteString convertTextToSpeech(String text) {
+		SynthesisInput input = SynthesisInput.newBuilder().setText(text).build();
+		VoiceSelectionParams voice = VoiceSelectionParams.newBuilder().setLanguageCode("en-US").setSsmlGender(SsmlVoiceGender.MALE).build();
+		SynthesizeSpeechResponse response = client.synthesizeSpeech(input, voice, audioConfig);
+		ByteString audioContent = response.getAudioContent();
+		speechFileManager.writeSpeechToFile(audioContent.toByteArray(), SpeechFileManager.SpeechServiceType.TEXT_TO_SPEECH);
+		return audioContent;
 	}
 
 	@Override
@@ -85,19 +97,17 @@ public class TextToSpeechService extends Service implements ITextToSpeechService
 
 	@Override
 	public void playSpeech(ByteString audio) {
+		for (Clip currentClip : activeClips) {
+			currentClip.stop();
+			currentClip.close();
+		}
 		try {
 			File audioFile = new File(speechFileManager.getSpeechFileURI(SpeechFileManager.SpeechServiceType.TEXT_TO_SPEECH));
 			AudioInputStream stream = AudioSystem.getAudioInputStream(audioFile);
 			Clip clip = (Clip) AudioSystem.getLine(new DataLine.Info(Clip.class, stream.getFormat()));
-			for (Clip currentClip : activeClips) {
-				if (currentClip != clip) {
-					currentClip.stop();
-					currentClip.close();
-				}
-			}
-			activeClips.add(clip);
 			clip.open(stream);
 			clip.start();
+			activeClips.add(clip);
 		} catch (URISyntaxException ex) {
 			log.error("Encountered URISyntaxException", ex);
 		} catch (UnsupportedAudioFileException ex) {
@@ -107,5 +117,15 @@ public class TextToSpeechService extends Service implements ITextToSpeechService
 		} catch (IOException ex) {
 			log.error("Encountered IOException", ex);
 		}
+	}
+
+	@Override
+	public boolean isMuted() {
+		return isMuted;
+	}
+
+	@Override
+	public void setMuted(boolean muted) {
+		isMuted = muted;
 	}
 }

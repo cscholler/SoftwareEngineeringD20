@@ -13,15 +13,11 @@ public interface ISpeechToTextService {
 
 	void recordSpeech(String type);
 
-	boolean isStartRecording();
+	boolean allowStartRecording();
 
 	void setStartRecording(boolean startRecording);
 
-	boolean isDestRecording();
+	boolean allowDestRecording();
 
 	void setDestRecording(boolean destRecording);
-
-	boolean allowRecording();
-
-	void setAllowRecording(boolean allowRecording);
 }

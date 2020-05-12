@@ -14,7 +14,13 @@ public interface ITextToSpeechService {
 
 	void convertAndPlayAsync(String text, String lang, SsmlVoiceGender gender);
 
+	ByteString convertTextToSpeech(String text);
+
 	ByteString convertTextToSpeech(String text, String lang, SsmlVoiceGender gender);
 
 	void playSpeech(ByteString audio);
+
+	boolean isMuted();
+
+	void setMuted(boolean muted);
 }

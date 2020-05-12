@@ -5,7 +5,6 @@ import java.util.*;
 
 import com.google.cloud.texttospeech.v1.SsmlVoiceGender;
 import com.jfoenix.controls.*;
-import com.jfoenix.skins.JFXTextAreaSkin;
 import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
@@ -55,8 +54,6 @@ import edu.wpi.cs3733.d20.teamL.entities.Path;
 import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
 import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
 import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
-
-import javax.swing.*;
 
 @Slf4j
 public class MapViewerController {
@@ -387,7 +384,7 @@ public class MapViewerController {
 	@FXML
 	private void btnRecordClicked(ActionEvent evt) {
     	if (evt.getSource() == btnRecordStart) {
-			if (speechToText.isStartRecording()) {
+			if (speechToText.allowStartRecording()) {
 				startMicIcon.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/speech_to_text_ready.png"));
 				speechToText.setStartRecording(false);
 			} else {
@@ -395,7 +392,7 @@ public class MapViewerController {
 				speechToText.setDestRecording(false);
 				speechToText.setStartRecording(true);
 			}
-			if (speechToText.isStartRecording()) {
+			if (speechToText.allowStartRecording()) {
 				AsyncTaskManager.newTask(() -> {
 					String transcription = speechToText.recordAndConvertAsync("start");
 					Platform.runLater(() -> {
@@ -407,7 +404,7 @@ public class MapViewerController {
 				});
 			}
 		} else if (evt.getSource() == btnRecordDest) {
-    		if (speechToText.isDestRecording()) {
+    		if (speechToText.allowDestRecording()) {
 				destMicIcon.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/speech_to_text_ready.png"));
     			speechToText.setDestRecording(false);
 			} else {
@@ -415,7 +412,7 @@ public class MapViewerController {
 				speechToText.setStartRecording(false);
 				speechToText.setDestRecording(true);
 			}
-			if (speechToText.isDestRecording()) {
+			if (speechToText.allowDestRecording()) {
 				AsyncTaskManager.newTask(() -> {
 					String transcription = speechToText.recordAndConvertAsync("dest");
 					System.out.println(transcription);
@@ -856,9 +853,12 @@ public class MapViewerController {
 
     @FXML
     private void goToSelected() {
-		AsyncTaskManager.newTask(() -> textToSpeech.playSpeech(textToSpeech.convertTextToSpeech(dirList.getSelectionModel().getSelectedItem().toString(), "en-US", SsmlVoiceGender.MALE)));
+    	if (!textToSpeech.isMuted()) {
+			textToSpeech.convertAndPlayAsync(dirList.getSelectionModel().getSelectedItem().toString());
+		}
+		//AsyncTaskManager.newTask(() -> textToSpeech.playSpeech(textToSpeech.convertTextToSpeech(dirList.getSelectionModel().getSelectedItem().toString(), "en-US", SsmlVoiceGender.MALE)));
         int index = dirList.getSelectionModel().getSelectedIndex();
-        ArrayList<Node> subpath = path.getSubpaths().get(index);
+        ArrayList<Node> subpath = path.getSubpaths().get(index + 1);
         if (dirList.getSelectionModel().getSelectedItem().toString().contains("Navigate")) {
             if (subpath.get(0).getBuilding().equals("Faulkner")) {
                 map.setBuilding(new Building("Google"));
@@ -958,12 +958,18 @@ public class MapViewerController {
     }
 
     private void speakAllDirections() {
-        System.out.println("Ok time to talk now");
+    	if (!textToSpeech.isMuted()) {
+			StringBuilder allDirections = new StringBuilder();
+			for (String step : directions) {
+				allDirections.append(step).append(". ");
+			}
+			textToSpeech.convertAndPlayAsync(allDirections.toString());
+		}
     }
 
     private void toggleAudio() {
-        System.out.println("Toggle audio");
         if (btnMute.getText().equals("un-muted")) btnMute.setText("muted");
         else if (btnMute.getText().equals("muted")) btnMute.setText("un-muted");
+		textToSpeech.setMuted(!textToSpeech.isMuted());
     }
 }
