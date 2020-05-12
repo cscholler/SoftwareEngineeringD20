@@ -19,8 +19,8 @@ public class AsyncTaskManager {
     private static final ForkJoinPool forkJoinPool = new ForkJoinPool();
     public static boolean isTaskRunning = false;
 
-    public static ForkJoinTask newTask(VoidMethod task) {
-        ForkJoinTask newForkJoinTask = new ForkJoinTask() {
+    public static ForkJoinTask<Object> newTask(VoidMethod task) {
+        ForkJoinTask<Object> newForkJoinTask = new ForkJoinTask<>() {
             @Override
             public Object getRawResult() {
                 return null;

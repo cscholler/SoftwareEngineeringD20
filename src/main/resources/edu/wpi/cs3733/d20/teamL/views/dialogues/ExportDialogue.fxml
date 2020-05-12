@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="root" prefHeight="400.0" prefWidth="600.0" styleClass="background" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.ExportDialogue">
+<BorderPane fx:id="root" prefHeight="175.0" prefWidth="400.0" styleClass="background" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.ExportDialogue">
     <top>
         <Label alignment="CENTER" prefWidth="600.0" styleClass="service-request-header-label-fx" text="Export a Table" BorderPane.alignment="CENTER">
             <padding>
@@ -30,7 +30,7 @@
    <bottom>
       <Label fx:id="message" style="-fx-text-fill: white; -fx-font-size: 16;" text="Label" visible="false" BorderPane.alignment="CENTER">
          <BorderPane.margin>
-            <Insets bottom="20.0" />
+            <Insets bottom="10.0" />
          </BorderPane.margin>
       </Label>
    </bottom>

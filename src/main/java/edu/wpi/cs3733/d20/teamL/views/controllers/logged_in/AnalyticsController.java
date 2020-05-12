@@ -1,19 +1,29 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.logged_in;
 
+import com.google.inject.Inject;
 import com.jfoenix.controls.JFXComboBox;
+import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
+import edu.wpi.cs3733.d20.teamL.util.TimerManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.*;
+import javafx.scene.control.Label;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 @Slf4j
 public class AnalyticsController implements Initializable {
+
+    @Inject
+    private ILoginManager loginManager;
 
     @FXML
     private JFXComboBox<String> timeBox;
@@ -24,6 +34,10 @@ public class AnalyticsController implements Initializable {
     @FXML
     private PieChart servicePieChart;
 
+    @FXML
+    private Label timeLabel;
+
+    private static final TimerManager timerManager = new TimerManager();
     private FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
 
     ObservableList<String> timeOptions = FXCollections.observableArrayList("Any time", "Past hour", "Past 24 hours", "Past month", "Past year");
@@ -31,17 +45,30 @@ public class AnalyticsController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
         timeBox.setItems(timeOptions);
         setServiceReqHisto();
         handleAllServiceReq();
     }
 
     @FXML
-    void handleCancel() {
+    private void handleLogout() {
+        loginManager.logOut(true);
         try {
-            loaderFactory.goBack();
-        } catch (Exception ex) {
-            log.error("Encountered Exception.", ex);
+            Parent root = loaderFactory.getFXMLLoader("map_viewer/MapViewer").load();
+            loaderFactory.setupScene(new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
+    }
+
+    @FXML
+    private void handleDashboard() {
+        try {
+            Parent root = loaderFactory.getFXMLLoader("admin/AdminView").load();
+            loaderFactory.setupScene(new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
         }
     }
 

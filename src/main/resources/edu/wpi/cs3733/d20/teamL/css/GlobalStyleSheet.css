@@ -301,7 +301,7 @@
 .table-cell {
     -fx-alignment: center-left;
     -fx-border-color: white;
-    -fx-font-size: 20;
+    -fx-font-size: 25;
 }
 
 .table-row-cell {
@@ -309,8 +309,6 @@
     /*-fx-background-insets: 0, 0 0 1 0;*/
     -fx-border-color: lightgray;
 }
-
-
 
 .jfx-table-view > .virtual-flow > .clipped-container > .sheet > .table-row-cell:filled:selected {
     -fx-background-color: rebeccapurple;
@@ -327,7 +325,7 @@
 /*applies automatically*/
 
 .jfx-tab-pane .tab-header-background {
-    -fx-background-color: white;
+    -fx-background-color: lightgrey;
 }
 
 .jfx-tab-pane .tab-selected-line {
@@ -415,7 +413,7 @@
 /*-------------------------Room Scheduler Times -------------------------------------------*/
 /*applies automatically*/
 .tree-table-cell {
-    -fx-alignment: center;
+    -fx-alignment: center-left;
     -fx-font-size: 15;
 }
 
@@ -480,3 +478,28 @@
     -fx-background-radius: 50;
     -jfx-button-type: RAISED;
 }
+
+/*-----------------------------------Accordion Menu-----------------------------------*/
+
+.titled-pane > .title
+{
+    -fx-background-color: -fx-body-color;
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 0;
+    -fx-padding: 0.166667em 0.833333em 0.25em 0.833333em; /* 2 10 3 10 */
+}
+
+.titled-pane > .title > .arrow-button .arrow
+{
+    -fx-mark-highlight-color: #00043B;
+    -fx-mark-color: black;
+    -fx-background-insets: 1 0 -1 0, 0;
+    -fx-padding: 0.25em 0.3125em 0.25em 0.3125em; /* 3 3.75 3 3.75 */
+    -fx-shape: "M 0 0 h 7 l -3.5 4 z";
+}
+
+.titled-pane:focused
+{
+    -fx-font-weight: bold;
+}
+
