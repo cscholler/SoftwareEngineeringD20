@@ -180,6 +180,7 @@ public class NotificationsPageController implements Initializable {
 	private void displaySelectedMedReq(MedicationRequest request) {
 		resetButtons();
 		try {
+			setCurrentMedicationRequest(request);
 			if (request != null) {
 				reqHandler.setCurrentRequestType("medication");
 				reqMessage.setWrapText(true);
@@ -225,6 +226,7 @@ public class NotificationsPageController implements Initializable {
 	private void displaySelectedGiftReq(GiftDeliveryRequest request) {
 		resetButtons();
 		try {
+			setCurrentGiftRequest(request);
 			if (request != null) {
 				reqHandler.setCurrentRequestType("gift");
 				reqMessage.setWrapText(true);
@@ -506,6 +508,7 @@ public class NotificationsPageController implements Initializable {
 		card.getChildren().addAll(titleNotes,btnDeleteCard);
 		card.setStyle("-fx-fill-width: true; -fx-background-color: white; ");
 		card.setOnMouseClicked(e -> {
+			reqHandler.setCurrentRequestType("gift");
 			displaySelectedGiftReq(request);
 		});
 
