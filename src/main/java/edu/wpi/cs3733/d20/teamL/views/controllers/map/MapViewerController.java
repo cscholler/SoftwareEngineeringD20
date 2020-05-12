@@ -5,7 +5,9 @@ import java.util.*;
 
 import com.google.cloud.texttospeech.v1.SsmlVoiceGender;
 import com.jfoenix.controls.*;
+import com.squareup.okhttp.*;
 import edu.wpi.cs3733.d20.teamL.App;
+import edu.wpi.cs3733.d20.teamL.services.IHTTPClientService;
 import edu.wpi.cs3733.d20.teamL.services.accessability.ITextToSpeechService;
 import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
@@ -50,18 +52,19 @@ import edu.wpi.cs3733.d20.teamL.entities.Path;
 import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
 import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
 import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
+import org.json.JSONObject;
 
 import static java.awt.Color.BLACK;
 
 @Slf4j
 public class MapViewerController {
-	private final FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
-	private final TimerManager timerManager = new TimerManager();
+    private final FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
+    private final TimerManager timerManager = new TimerManager();
     private SearchFields searchFields;
-	private JFXAutoCompletePopup<String> autoCompletePopup;
-	private final ObservableList<String> directions = FXCollections.observableArrayList();
-	private Path path = new Path();
-	@FXML
+    private JFXAutoCompletePopup<String> autoCompletePopup;
+    private final ObservableList<String> directions = FXCollections.observableArrayList();
+    private Path path = new Path();
+    @FXML
     private JFXToggleButton handicapToggle;
     @FXML
     private MapPane map;
@@ -81,8 +84,8 @@ public class MapViewerController {
     private JFXListView listF1, listF2, listF3, listF4, listF5;
     @FXML
     private JFXComboBox<String> buildingChooser;
-	@FXML
-	private Accordion accordion = new Accordion();
+    @FXML
+    private Accordion accordion = new Accordion();
     @FXML
     private Label timeLabel, dateLabel, currentTempLabel, etaLabel, btnMute;
     @FXML
@@ -95,7 +98,10 @@ public class MapViewerController {
     @Inject
     private IMessengerService messenger;
     @Inject
-	private ITextToSpeechService textToSpeech;
+    private ITextToSpeechService textToSpeech;
+    @Inject
+    private IHTTPClientService httpClient;
+
 
     private final Image IMAGE_LEFT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/left.png", 15, 15, true, false, true);
     private final Image IMAGE_RIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/right.jpg", 15, 15, true, false, true);
@@ -110,12 +116,12 @@ public class MapViewerController {
     private final Image IMAGE_FTOM = new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/FaulkToMain.PNG");
     private final Image IMAGE_MTOF = new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/MainToFaulk.PNG");
 
-    private final Image EXIT_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/EXIT_filled.png",45,45,true,true,true);
-    private final Image REST_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/REST_filled.png",45,45,true,false,true);
-    private final Image INFO_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/INFO_filled.png",45,45,true,false,true);
-    private final Image ELEV_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/ELEV_filled.png",45,45,true,false,true);
-    private final Image STAI_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/STAI_filled.png",45,45,true,false,true);
-    private final Image RETL_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/RETL_filled.png",45,45,true,false,true);
+    private final Image EXIT_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/EXIT_filled.png", 45, 45, true, true, true);
+    private final Image REST_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/REST_filled.png", 45, 45, true, false, true);
+    private final Image INFO_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/INFO_filled.png", 45, 45, true, false, true);
+    private final Image ELEV_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/ELEV_filled.png", 45, 45, true, false, true);
+    private final Image STAI_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/STAI_filled.png", 45, 45, true, false, true);
+    private final Image RETL_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/RETL_filled.png", 45, 45, true, false, true);
 
     private Collection<String> deptNodes = new ArrayList<>();
     private Collection<String> labNodes = new ArrayList<>();
@@ -124,17 +130,18 @@ public class MapViewerController {
     private Collection<String> confNodes = new ArrayList<>();
 
     private QuestionnaireController qc;
+    private String currLang = "en";
 
 
     public static final String MAIN = "Main";
 
     @FXML
-    private void initialize() {
+    private void initialize() throws IOException {
         timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
         timerManager.startTimer(() -> timerManager.updateDate(dateLabel), 0, 1000);
         //ToDO: uncomment this when its time to get weather
         //timerManager.startTimer(() -> timerManager.updateWeather(currentTempLabel, currentWeatherIcon), 0,1800000);
-
+        btnNavigate.setText(translate("es",btnNavigate.getText()));
         if (App.doUpdateCacheOnLoad) {
             cache.cacheAllFromDB();
             App.doUpdateCacheOnLoad = false;
@@ -248,7 +255,7 @@ public class MapViewerController {
         btnRobot.setStyle("-jfx-button-type: RAISED;" + "-fx-pref-width: 200;" + "-fx-max-width: 200;" + "-fx-background-color: #00043B;" + "-fx-background-radius:  50;");
         btnRobot.setOnAction(actionEvent -> launchRobot());
 
-        directionButtonsVBox.getChildren().addAll(btnTextMe,btnQR,btnRobot);
+        directionButtonsVBox.getChildren().addAll(btnTextMe, btnQR, btnRobot);
         showDefaultOptions();
 
         // Fill text directions box
@@ -260,7 +267,7 @@ public class MapViewerController {
         etaLabel = new Label("Directions");
         etaLabel.setStyle("-fx-text-fill: white;" + "-fx-font-weight: bold;" + "-fx-font-size: 16;");
 
-        JFXButton speakAllButton = new JFXButton("", new ImageView(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/speakerIcon.png", 0,15,true, false, true)));
+        JFXButton speakAllButton = new JFXButton("", new ImageView(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/speakerIcon.png", 0, 15, true, false, true)));
         speakAllButton.setPadding(Insets.EMPTY);
         speakAllButton.setStyle("-fx-background-color: transparent;" + "-fx-content-display: graphic-only;");
         speakAllButton.setOnAction(e -> speakAllDirections());
@@ -273,11 +280,11 @@ public class MapViewerController {
         HBox muteHBox = new HBox();
         muteHBox.setStyle("-fx-alignment: center-left;" + "-fx-background-color: #00043B;");
 
-        dirListHeader.getChildren().addAll(etaLabel,speakAllButton);
+        dirListHeader.getChildren().addAll(etaLabel, speakAllButton);
         muteHBox.getChildren().addAll(btnMute);
         muteHBox.setAlignment(Pos.CENTER_LEFT);
         muteHBox.setMaxHeight(50);
-        textDirectionsVBox.getChildren().addAll(dirListHeader,dirList, muteHBox);
+        textDirectionsVBox.getChildren().addAll(dirListHeader, dirList, muteHBox);
 
         // Create Screening Button
         btnScreening.setText("Think you have COVID-19?");
@@ -368,54 +375,54 @@ public class MapViewerController {
      */
     @FXML
     private void showLegend() {
-            JFXDialogLayout legendContent = new JFXDialogLayout();
-            Label title = new Label("Map Legend");
-            title.setStyle("-fx-font-size: 30;" + "-fx-text-fill: #0d2e57;" + "-fx-font-weight: bold");
-            legendContent.setHeading(title);
+        JFXDialogLayout legendContent = new JFXDialogLayout();
+        Label title = new Label("Map Legend");
+        title.setStyle("-fx-font-size: 30;" + "-fx-text-fill: #0d2e57;" + "-fx-font-weight: bold");
+        legendContent.setHeading(title);
 
-            HBox contentHBox = new HBox();
-            VBox colorKey = new VBox();
-            colorKey.setMinWidth(300);
-            colorKey.setSpacing(5);
-            VBox iconKey = new VBox();
-            iconKey.setMinWidth(150);
-            iconKey.setSpacing(5);
+        HBox contentHBox = new HBox();
+        VBox colorKey = new VBox();
+        colorKey.setMinWidth(300);
+        colorKey.setSpacing(5);
+        VBox iconKey = new VBox();
+        iconKey.setMinWidth(150);
+        iconKey.setSpacing(5);
 
-            String[] colors = new String[]{" #7DA7D9"," #FCB963"," #FFF77D"," #79BD92"," #8881BD"," #F69679"," #6DCFF6"," #AD87AD"," #BDDEA2"," #F5989D"," #7DA7D9"};
-            String[] colorText = new String[]{"Departments/Clinics/Waiting Area","Stairwell","Restrooms","Food/Shops/Payphone/etc.","Labs/Imaging/Testing Areas",
-            "Exits/Entrances","Info Desk/Security/Lost and Found","Conference Rooms","Elevators","Interpreters/Spiritual/Library/etc","Departments/Clinics/Waiting Area"};
-            Image[] icons = new Image[]{EXIT_filled,REST_filled,INFO_filled,ELEV_filled,STAI_filled,RETL_filled};
-            String[] iconText = new String[]{"Exit/Entrance","Restrooms","Information Desk","Elevator","Stairs","Retail Locations"};
+        String[] colors = new String[]{" #7DA7D9", " #FCB963", " #FFF77D", " #79BD92", " #8881BD", " #F69679", " #6DCFF6", " #AD87AD", " #BDDEA2", " #F5989D", " #7DA7D9"};
+        String[] colorText = new String[]{"Departments/Clinics/Waiting Area", "Stairwell", "Restrooms", "Food/Shops/Payphone/etc.", "Labs/Imaging/Testing Areas",
+                "Exits/Entrances", "Info Desk/Security/Lost and Found", "Conference Rooms", "Elevators", "Interpreters/Spiritual/Library/etc", "Departments/Clinics/Waiting Area"};
+        Image[] icons = new Image[]{EXIT_filled, REST_filled, INFO_filled, ELEV_filled, STAI_filled, RETL_filled};
+        String[] iconText = new String[]{"Exit/Entrance", "Restrooms", "Information Desk", "Elevator", "Stairs", "Retail Locations"};
 
-            for (int i = 0; i < colors.length; i++) {
-                JFXButton colorSwatch = new JFXButton();
-                String fxColor = "-fx-background-color: " + colors[i] +";";
-                colorSwatch.setStyle("-fx-min-height: 30;" + "-fx-min-width: 30;" + "-fx-border-radius: 0;" + fxColor);
+        for (int i = 0; i < colors.length; i++) {
+            JFXButton colorSwatch = new JFXButton();
+            String fxColor = "-fx-background-color: " + colors[i] + ";";
+            colorSwatch.setStyle("-fx-min-height: 30;" + "-fx-min-width: 30;" + "-fx-border-radius: 0;" + fxColor);
 
-                VBox swatchText = new VBox(new Label(colorText[i]));
-                swatchText.setAlignment(Pos.CENTER);
+            VBox swatchText = new VBox(new Label(colorText[i]));
+            swatchText.setAlignment(Pos.CENTER);
 
-                HBox colorRow = new HBox();
-                colorRow.setSpacing(5);
-                colorRow.getChildren().setAll(colorSwatch, swatchText);
+            HBox colorRow = new HBox();
+            colorRow.setSpacing(5);
+            colorRow.getChildren().setAll(colorSwatch, swatchText);
 
-                colorKey.getChildren().add(colorRow);
-            }
+            colorKey.getChildren().add(colorRow);
+        }
 
-            for (int i = 0; i < icons.length; i++){
-                ImageView icon = new ImageView(icons[i]);
+        for (int i = 0; i < icons.length; i++) {
+            ImageView icon = new ImageView(icons[i]);
 
-                VBox displayText = new VBox(new Label(iconText[i]));
-                displayText.setAlignment(Pos.CENTER);
+            VBox displayText = new VBox(new Label(iconText[i]));
+            displayText.setAlignment(Pos.CENTER);
 
-                HBox iconRow = new HBox();
-                iconRow.setSpacing(5);
-                iconRow.getChildren().setAll(icon,displayText);
+            HBox iconRow = new HBox();
+            iconRow.setSpacing(5);
+            iconRow.getChildren().setAll(icon, displayText);
 
-                iconKey.getChildren().add(iconRow);
-            }
+            iconKey.getChildren().add(iconRow);
+        }
 
-            contentHBox.getChildren().addAll(colorKey,iconKey);
+        contentHBox.getChildren().addAll(colorKey, iconKey);
         legendContent.setBody(contentHBox);
 
         JFXDialog legend = new JFXDialog(keyStackPane, legendContent, JFXDialog.DialogTransition.TOP);
@@ -729,13 +736,13 @@ public class MapViewerController {
     }
 
     @FXML
-    public void openScreening() throws IOException{
+    public void openScreening() throws IOException {
 
         qc = new QuestionnaireController(cache.getQuestions());
 
         JFXDialogLayout layout = new JFXDialogLayout();
         layout.getStylesheets().add("/edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css");
-        Label headingLabel = new Label ("Coronavirus Screening Test");
+        Label headingLabel = new Label("Coronavirus Screening Test");
         headingLabel.getStyleClass().add("service-request-header-label-fx");
         headingLabel.setStyle("-fx-font-size: 30;");
         layout.setHeading(headingLabel);
@@ -754,11 +761,11 @@ public class MapViewerController {
         btnNext.getStyleClass().add("save-button-jfx");
         btnNext.setStyle("-fx-pref-width: 75;" + "-fx-pref-height: 50");
         btnNext.setOnAction(e -> {
-            if(!qc.getTestFinished()) {
+            if (!qc.getTestFinished()) {
                 //System.out.println("first statement");
                 qc.calculateScore();
                 layout.setHeading(qc.nextClicked());
-            } else if (qc.getTestFinished() && !qc.getDone()){
+            } else if (qc.getTestFinished() && !qc.getDone()) {
                 //System.out.println("second statement");
                 qc.calculateScore();
                 btnNext.setText("Close");
@@ -804,7 +811,7 @@ public class MapViewerController {
 
     @FXML
     private void goToSelected() {
-		AsyncTaskManager.newTask(() -> textToSpeech.playSpeech(textToSpeech.convertTextToSpeech(dirList.getSelectionModel().getSelectedItem().toString(), "en-US", SsmlVoiceGender.MALE)));
+        AsyncTaskManager.newTask(() -> textToSpeech.playSpeech(textToSpeech.convertTextToSpeech(dirList.getSelectionModel().getSelectedItem().toString(), "en-US", SsmlVoiceGender.MALE)));
         int index = dirList.getSelectionModel().getSelectedIndex();
         ArrayList<Node> subpath = path.getSubpaths().get(index);
         if (dirList.getSelectionModel().getSelectedItem().toString().contains("Navigate")) {
@@ -919,5 +926,34 @@ public class MapViewerController {
         System.out.println("Toggle audio");
         if (btnMute.getText().equals("un-muted")) btnMute.setText("muted");
         else if (btnMute.getText().equals("muted")) btnMute.setText("un-muted");
+    }
+
+    private String translate(String language, String text) throws IOException {
+
+        HttpUrl.Builder urlBuilder
+                = HttpUrl.parse("https://microsoft-azure-translation-v1.p.rapidapi.com/translate").newBuilder();
+        urlBuilder.addQueryParameter("to", language);
+        urlBuilder.addQueryParameter("text", text);
+        urlBuilder.addQueryParameter("from", currLang);
+
+        String url = urlBuilder.build().toString();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .addHeader("x-rapidapi-host", "microsoft-azure-translation-v1.p.rapidapi.com")
+                .addHeader("x-rapidapi-key", "47cff1c2f7msh808be5a504f1a49p175068jsn3e1302e95cb5")
+                .addHeader("accept", "application/json")
+                .build();
+
+        Response response = httpClient.getClient().newCall(request).execute();
+
+        text = response.body().string();
+        log.info(text);
+        int endIndex = text.indexOf('<', 5);
+        int startIndex = text.indexOf('>') + 1;
+        text = text.substring(startIndex, endIndex);
+        log.info(text);
+        return text;
     }
 }
