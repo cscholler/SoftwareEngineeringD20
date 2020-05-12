@@ -43,7 +43,6 @@ public class DatabaseService extends Service implements IDatabaseService {
 			connect();
 		}
 		// Rebuild the database if using Derby
-		// TODO: only rebuild if db doesn't exist and tables dont' exist
 		if (dbType == DB_TYPE.DERBY) {
 			rebuildDatabase();
 		}

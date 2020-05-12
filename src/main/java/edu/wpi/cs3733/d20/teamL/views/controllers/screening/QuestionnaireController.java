@@ -102,19 +102,19 @@ public class QuestionnaireController {
                 if (q.getOrder() == -3) {
                     //always show
                     if(q.getWeight() == 0) {
-                        Label l = new Label("• " + q.getQuestion());
+                        Label l = new Label("\u2022 " + q.getQuestion());
                         l.setStyle("-fx-font-size: 18;");
                         dialogVBox.getChildren().add(l);
                     } else if (q.getRecs() == -10 && q.getWeight() < grandTotal) {
-                        Label l = new Label("• " + q.getQuestion());
+                        Label l = new Label("\u2022 " + q.getQuestion());
                         l.setStyle("-fx-font-size: 18;");
                         dialogVBox.getChildren().add(l);
                     } else if (q.getRecs() == -1 && weights.get(1) > q.getWeight() && weights.get(3) == 0 && weights.get(0) == 0) {
-                        Label l = new Label("• " + q.getQuestion());
+                        Label l = new Label("\u2022 " + q.getQuestion());
                         l.setStyle("-fx-font-size: 18;");
                         dialogVBox.getChildren().add(l);
                     } else if (q.getRecs() == 1 && weights.get(1) > q.getWeight() && (weights.get(3) > 0 || weights.get(0) > 0)) {
-                        Label l = new Label("• " + q.getQuestion());
+                        Label l = new Label("\u2022 " + q.getQuestion());
                         l.setStyle("-fx-font-size: 18;");
                         dialogVBox.getChildren().add(l);
                     }

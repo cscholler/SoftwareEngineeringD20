@@ -1,20 +1,28 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.logged_in;
 
-
+import com.google.inject.Inject;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.cs3733.d20.teamL.App;
-import edu.wpi.cs3733.d20.teamL.entities.*;
+import edu.wpi.cs3733.d20.teamL.entities.Building;
+import edu.wpi.cs3733.d20.teamL.entities.GiftDeliveryRequest;
+import edu.wpi.cs3733.d20.teamL.entities.Node;
+import edu.wpi.cs3733.d20.teamL.entities.ServiceRequest;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
+import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
 import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
 import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
+import edu.wpi.cs3733.d20.teamL.util.TimerManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.geometry.Point2D;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
@@ -23,16 +31,20 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.inject.Inject;
+import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ResourceBundle;
+
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 public class AnalyticsController implements Initializable {
 
+    @Inject
+    private ILoginManager loginManager;
     @FXML
     MapPane map;
     @FXML
@@ -45,7 +57,10 @@ public class AnalyticsController implements Initializable {
     VBox floorSelector;
     @FXML
     JFXButton floorUp, floorDown;
+    @FXML
+    private Label timeLabel;
 
+    private static final TimerManager timerManager = new TimerManager();
     private FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
     private ObservableList<String> timeOptions = FXCollections.observableArrayList("Any time", "Past hour", "Past 24 hours", "Past month", "Past year");
     private ObservableList<ServiceRequest> requests;
@@ -70,6 +85,8 @@ public class AnalyticsController implements Initializable {
             cache.cacheAllFromDB();
             App.doUpdateCacheOnLoad = false;
         }
+        timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
+
         heatBox.setItems(heatOptions);
         timeBox.setItems(timeOptions);
         cache.cacheRequestsFromDB();
@@ -165,11 +182,23 @@ public class AnalyticsController implements Initializable {
     }
 
     @FXML
-    void handleCancel() {
+    private void handleLogout() {
+        loginManager.logOut(true);
         try {
-            loaderFactory.goBack();
-        } catch (Exception ex) {
-            log.error("Encountered Exception.", ex);
+            Parent root = loaderFactory.getFXMLLoader("map_viewer/MapViewer").load();
+            loaderFactory.setupScene(new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
+    }
+
+    @FXML
+    private void handleDashboard() {
+        try {
+            Parent root = loaderFactory.getFXMLLoader("admin/AdminView").load();
+            loaderFactory.setupScene(new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
         }
     }
 
