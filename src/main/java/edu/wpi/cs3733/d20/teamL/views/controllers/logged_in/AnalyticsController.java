@@ -48,8 +48,8 @@ public class AnalyticsController implements Initializable {
     private ObservableList<String> timeOptions = FXCollections.observableArrayList("Any time", "Past hour", "Past 24 hours", "Past month", "Past year");
     private ObservableList<ServiceRequest> requests;
     private ObservableList<GiftDeliveryRequest> giftRequests;
-    ObservableList<String> heatOptions = FXCollections.observableArrayList("Pathfinding", "Gift Delivery", "Security", "Maintenance", "Internal Transportation",
-            "External Transportation", "Medicine", "Sanitation", "IT", "Interpreter", "Reflection Room", "On-Call Bed", "All Service Request Locations");
+    ObservableList<String> heatOptions = FXCollections.observableArrayList("Pathfinding", "All Service Request Locations", "Security", "Maintenance", "Internal Transportation",
+            "IT", "Interpreter","Gift Delivery");
     private Map<String, Integer> freq = new ConcurrentHashMap<>();
 
     private String defaultBuilding = "Faulkner";
@@ -289,53 +289,6 @@ public class AnalyticsController implements Initializable {
     }
 
     @FXML
-    void handleMedicationPieChart() {
-
-        //TODO: Add actual data
-        ObservableList<PieChart.Data> medicationData = FXCollections.observableArrayList(
-                new PieChart.Data("Ibuprofen", 10),
-                new PieChart.Data("Advil", 10),
-                new PieChart.Data("Pain Killers", 10),
-                new PieChart.Data("Other", 10));
-
-        servicePieChart.setTitle("Medication Pie Chart");
-        servicePieChart.setData(medicationData);
-        servicePieChart.setStartAngle(90);
-    }
-
-    @FXML
-    void handleOnCallPieChart() {
-
-        //TODO: Add actual data
-        ObservableList<PieChart.Data> onCallData = FXCollections.observableArrayList(
-                new PieChart.Data("Bed 1", 10),
-                new PieChart.Data("Bed 2", 10),
-                new PieChart.Data("Bed 3", 10),
-                new PieChart.Data("Bed 4", 10),
-                new PieChart.Data("Bed 5", 10),
-                new PieChart.Data("Bed 6", 10),
-                new PieChart.Data("Bed 7", 10));
-
-        servicePieChart.setTitle("On-Call Bed Pie Chart");
-        servicePieChart.setData(onCallData);
-        servicePieChart.setStartAngle(90);
-    }
-
-    @FXML
-    void handleReflectionPieChart() {
-
-        //TODO: Add actual data
-        ObservableList<PieChart.Data> reflectionData = FXCollections.observableArrayList(
-                new PieChart.Data("Floor 1", 10),
-                new PieChart.Data("Floor 3", 10),
-                new PieChart.Data("Floor 4", 10));
-
-        servicePieChart.setTitle("Reflection Room Pie Chart");
-        servicePieChart.setData(reflectionData);
-        servicePieChart.setStartAngle(90);
-    }
-
-    @FXML
     void handleITPieChart() {
 
         ArrayList<ServiceRequest> it = cache.getAllSpecificRequest("IT");
@@ -418,8 +371,39 @@ public class AnalyticsController implements Initializable {
 
     @FXML
     private void switchHeatMap(ActionEvent event) {
+        switch (heatBox.getSelectionModel().getSelectedItem()) {
+            case "Pathfinding":
+                switchBuilding();
+                break;
+            case "All Service Request Locations":
 
+                break;
+            case "Security":
+                break;
+            case "Internal Transportation":
+                break;
+            case "Interpreter":
+                break;
+            case "Gift Delivery":
+                break;
+        }
     }
+
+    private Map<String, Integer> locationFreq (ArrayList<ServiceRequest> reqs) {
+        Map<String, Integer> frequencies = new ConcurrentHashMap<>();
+        for(ServiceRequest request : reqs) {
+            if(request.getLocation() != null) {
+                if (!frequencies.containsKey(request.getLocation())) {
+                    frequencies.put(request.getLocation(), 1);
+                } else {
+                    frequencies.replace(request.getLocation(), frequencies.get(request.getLocation()) + 1);
+                }
+            }
+        }
+        return frequencies;
+    }
+
+    private void burn
 
     private void generateFloorButtons() {
         map.generateFloorButtons(floorSelector, this::handleFloor);
