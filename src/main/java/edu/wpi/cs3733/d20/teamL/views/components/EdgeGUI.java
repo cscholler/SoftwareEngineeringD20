@@ -195,7 +195,9 @@ public class EdgeGUI extends Line implements Highlightable {
 
         Stop[] stops = new Stop [] {
                 new Stop(0.0, Color.TRANSPARENT),
+                new Stop(0.4, new Color(1, 0, 0, 0.5)),
                 new Stop(0.5, Color.RED),
+                new Stop(0.6, new Color(1, 0, 0, 0.5)),
                 new Stop(1.0, Color.TRANSPARENT)
         };
 
