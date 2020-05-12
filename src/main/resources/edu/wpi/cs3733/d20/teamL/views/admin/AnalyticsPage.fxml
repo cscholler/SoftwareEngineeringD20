@@ -43,7 +43,7 @@
                                     </ImageView>
                                  </graphic>
                               </JFXButton>
-                              <JFXComboBox fx:id="timeBox" maxHeight="50.0" maxWidth="384.0" minHeight="50.0" minWidth="300.0" prefHeight="50.0" prefWidth="384.0" promptText="Any time" styleClass="combo-box-jfx">
+                              <JFXComboBox fx:id="timeBox" onAction="#switchTime" maxHeight="50.0" maxWidth="384.0" minHeight="50.0" minWidth="300.0" prefHeight="50.0" prefWidth="384.0" promptText="Any time" styleClass="combo-box-jfx">
                                  <HBox.margin>
                                     <Insets left="200.0" top="10.0" />
                                  </HBox.margin>

@@ -70,16 +70,18 @@ public class AnalyticsController implements Initializable {
             cache.cacheAllFromDB();
             App.doUpdateCacheOnLoad = false;
         }
-
+        heatBox.setItems(heatOptions);
+        timeBox.setItems(timeOptions);
         cache.cacheRequestsFromDB();
+
+        updateDate("Any time");
 
         requests = FXCollections.observableArrayList(cache.getAllRequests());
         giftRequests = FXCollections.observableArrayList(cache.getAllGiftRequests());
         intiFreq();
         updateFreq();
 
-        heatBox.setItems(heatOptions);
-        timeBox.setItems(timeOptions);
+
         setServiceReqHisto();
         handleAllServiceReq();
 
@@ -127,18 +129,24 @@ public class AnalyticsController implements Initializable {
         freq.replace("Gift Delivery", giftRequests.size());
     }
 
-    private void getRequestsByDate(String date) {
+    @FXML
+    private void switchTime() {
+        updateDate(timeBox.getSelectionModel().getSelectedItem());
+        updateFreq();
+    }
+
+    private void updateDate(String date) {
         ArrayList<ServiceRequest> timeMask = new ArrayList<>();
-        String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm aa").format(new Date());
+        String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
         Date newDate = null;
         try {
-            newDate = new SimpleDateFormat("M/dd/yy | h:mm aa").parse(dateAndTime);
+            newDate = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").parse(dateAndTime);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         switch(date) {
             case "Any time":
-                newDate.setYear(newDate.getYear()-100);
+                newDate.setYear(newDate.getYear()-20);
                 break;
             case "Past hour":
                 newDate.setHours(newDate.getHours()-1);
@@ -154,7 +162,6 @@ public class AnalyticsController implements Initializable {
                 break;
         }
         cache.setTimestamp(newDate);
-        updateFreq();
     }
 
     @FXML

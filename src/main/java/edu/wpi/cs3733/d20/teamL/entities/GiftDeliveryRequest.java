@@ -94,7 +94,7 @@ public class GiftDeliveryRequest {
 
 	public Date getActualDateAndTime() {
 		try {
-			return new SimpleDateFormat("M/dd/yy | h:mm aa").parse(dateAndTime);
+			return new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").parse(dateAndTime);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

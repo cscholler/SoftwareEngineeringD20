@@ -99,7 +99,7 @@ public class InterpreterPaneController implements Initializable {
 
             // Status codes-- 0: pending, 1: approved, 2: assigned, 3: denied
             String status = "0";
-            String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm aa").format(new Date());
+            String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
             String user = loginManager.getCurrentUser().getUsername();
             // Adds request info to database
             //patient_id, request_username, assignee_username, location, service, type, notes, status, date_and_time

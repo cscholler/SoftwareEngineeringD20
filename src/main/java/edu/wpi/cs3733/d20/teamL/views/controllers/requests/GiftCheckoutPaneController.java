@@ -163,11 +163,6 @@ public class GiftCheckoutPaneController {
             lastNameText.setStyle("-fx-prompt-text-fill: GRAY");
             patientID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ID, new ArrayList<>(Arrays.asList(firstName, lastName))))).get(0).get(0);
         }
-        if (gifts.toString().length() < 2) {
-            orderTxt.setStyle("-fx-text-fill: RED");
-            validFields = false;
-        } else orderTxt.setStyle("-fx-text-fill: #00043b");
-
 
         int rows = 0;
         if (validFields)

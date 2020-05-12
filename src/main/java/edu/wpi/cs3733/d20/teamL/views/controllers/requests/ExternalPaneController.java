@@ -100,7 +100,7 @@ public class ExternalPaneController implements Initializable {
 
     @FXML
     private void submitClicked() {
-        String start = startLoc.getText() != null ? sf.getNode(startLoc.getText()).getID() : null;
+        String start = startLoc.getText();
         String end = endLoc.getText();
         String type = (String) transportSelector.getValue();
         String dateNeeded = date.getId();
@@ -109,7 +109,7 @@ public class ExternalPaneController implements Initializable {
         String patientID = patient.getText();
 
         String status = "0";
-        String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm:aa").format(new Date());
+        String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
         String concatenatedNotes = end + dateNeeded + "\n" + hourNeeded + " : " + minNeeded;
 
         boolean validFields = true;

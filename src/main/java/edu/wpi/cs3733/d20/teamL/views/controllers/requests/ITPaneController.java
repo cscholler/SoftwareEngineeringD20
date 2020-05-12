@@ -93,7 +93,7 @@ public class ITPaneController implements Initializable {
         String notes = notesText.getText();
 
         String status = "0";
-        String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm aa").format(new Date());
+        String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
 
         boolean validFields = true;
 

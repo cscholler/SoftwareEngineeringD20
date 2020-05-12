@@ -423,7 +423,7 @@ public class DatabaseCache implements IDatabaseCache {
     public ArrayList<ServiceRequest> getAllRequests() {
         ArrayList<ServiceRequest> reqs = new ArrayList<>();
         for(ServiceRequest req : requests) {
-            if(req.getActualDateAndTime().before(timestamp))
+            if(req.getActualDateAndTime().after(timestamp))
                 reqs.add(req);
         }
         return reqs;
@@ -433,7 +433,7 @@ public class DatabaseCache implements IDatabaseCache {
     public ArrayList<GiftDeliveryRequest> getAllGiftRequests() {
         ArrayList<GiftDeliveryRequest> gifts = new ArrayList<>();
         for(GiftDeliveryRequest req : giftRequests) {
-            if(req.getActualDateAndTime().before(timestamp))
+            if(req.getActualDateAndTime().after(timestamp))
                 gifts.add(req);
         }
         return gifts;
@@ -443,7 +443,7 @@ public class DatabaseCache implements IDatabaseCache {
     public ArrayList<ServiceRequest> getAllSpecificRequest(String service) {
         ArrayList<ServiceRequest> reqs = new ArrayList<>();
         for(ServiceRequest req : requests) {
-            if(req.getService().equals(service) && req.getActualDateAndTime().before(timestamp)) {
+            if(req.getService().equals(service) && req.getActualDateAndTime().after(timestamp)) {
                 reqs.add(req);
             }
         }

@@ -92,7 +92,8 @@ public class ServiceRequest {
 
 	public Date getActualDateAndTime() {
 		try {
-			return new SimpleDateFormat("M/dd/yy | h:mm aa").parse(dateAndTime);
+			Date date = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").parse(dateAndTime);
+			return date;
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
