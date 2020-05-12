@@ -74,14 +74,11 @@ public class AddPersonController implements Initializable {
     ObservableList<String> serviceOptions = FXCollections.observableArrayList("Security", "Internal Transport", "External Transport", "Sanitation", "Maintenance", "Gift Shop", "Interpreter", "Information Technology");
     ObservableList<String> languageOptions = FXCollections.observableArrayList("Spanish", "Italian", "Chinese", "ASL", "French");
 
-
     private final FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
-
 
     @Inject
     private IHTTPClientService client;
     boolean pictureTaken = false;
-
 
     @FXML
     private void setBtnCancel() {

@@ -762,14 +762,17 @@ public class MapViewerController {
             generateFloorButtons();
             map.setZoomLevel(.25 * App.UI_SCALE);
         } else {
-            if (!(subpath.get(0).getBuilding().equals(map.getBuilding().getName()))) {
-                map.setBuilding(subpath.get(0).getBuilding());
-                generateFloorButtons();
-                map.setZoomLevel(.25 * App.UI_SCALE);
-                goToSelected();
-            }
-            if (!(subpath.get(0).getFloorAsString().equals(map.getFloor())))
-                setFloor(subpath.get(0).getFloor());
+        	if (subpath.size() > 0) {
+				if (!(subpath.get(0).getBuilding().equals(map.getBuilding().getName()))) {
+					map.setBuilding(subpath.get(0).getBuilding());
+					generateFloorButtons();
+					map.setZoomLevel(.25 * App.UI_SCALE);
+					goToSelected();
+				}
+				if (!(subpath.get(0).getFloorAsString().equals(String.valueOf(map.getFloor())))) {
+					setFloor(subpath.get(0).getFloor());
+				}
+			}
 
             double totalX = 0;
             double totalY = 0;
