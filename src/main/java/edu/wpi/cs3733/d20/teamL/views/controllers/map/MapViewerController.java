@@ -26,6 +26,7 @@ import javafx.scene.control.Accordion;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.TitledPane;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -235,18 +236,18 @@ public class MapViewerController {
         listF5.getItems().addAll(confNodes);
 
         TitledPane departments = new TitledPane("Departments", listF1);
-        departments.setStyle("-fx-font-size: 16;" + "-fx-body-color: #7DA7D9;");
+        departments.setStyle("-fx-font-size: 16; -fx-body-color: #7DA7D9; -fx-padding: 4;");
         TitledPane labs = new TitledPane("Labs", listF2);
-        labs.setStyle("-fx-font-size: 16;" + "-fx-body-color: #8881BD;");
+        labs.setStyle("-fx-font-size: 16; -fx-body-color: #8881BD; -fx-padding: 4;");
         TitledPane services = new TitledPane("Services/Information", listF3);
-        services.setStyle("-fx-font-size: 16;" + "-fx-body-color: #F5989D;");
+        services.setStyle("-fx-font-size: 16; -fx-body-color: #F5989D; -fx-padding: 4;");
         TitledPane amenities = new TitledPane("Amenities", listF4);
-        amenities.setStyle("-fx-font-size: 16;" + "-fx-body-color: #79BD92;");
+        amenities.setStyle("-fx-font-size: 16; -fx-body-color: #79BD92; -fx-padding: 4;");
         TitledPane conferenceRooms = new TitledPane("Conference Rooms", listF5);
-        conferenceRooms.setStyle("-fx-font-size: 16;" + "-fx-body-color: #AD87AD;");
+        conferenceRooms.setStyle("-fx-font-size: 16; -fx-body-color: #AD87AD; -fx-padding: 4;");
 
         accordion.getPanes().addAll(departments, labs, services, amenities, conferenceRooms);
-        accordion.setStyle("-fx-effect: dropshadow(three-pass-box, derive(BLACK, -20%), 10, 0, 2, 2)");
+
         // Create directions buttons
         directionButtonsVBox = new VBox();
         directionButtonsVBox.setAlignment(Pos.CENTER);
