@@ -37,6 +37,8 @@ public class SpeechToTextService extends Service implements ISpeechToTextService
 	private SpeechClient client;
 	private SpeechFileManager speechFileManager;
 	private boolean allowRecording = false;
+	private boolean isStartRecording = false;
+	private boolean isDestRecording = false;
 
 	public SpeechToTextService() {
 		super();
@@ -65,8 +67,8 @@ public class SpeechToTextService extends Service implements ISpeechToTextService
 	}
 
 	@Override
-	public String recordAndConvertAsync() {
-		ForkJoinTask<Object> recordingTask = AsyncTaskManager.newTask(this::recordSpeech);
+	public String recordAndConvertAsync(String type) {
+		ForkJoinTask<Object> recordingTask = AsyncTaskManager.newTask(() -> recordSpeech(type));
 		recordingTask.join();
 		return convertSpeechToText();
 	}
@@ -84,7 +86,9 @@ public class SpeechToTextService extends Service implements ISpeechToTextService
 			List<SpeechRecognitionResult> results = response.getResultsList();
 			for (SpeechRecognitionResult result : results) {
 				SpeechRecognitionAlternative alternative = result.getAlternativesList().get(0);
-				text.append(alternative.getTranscript());
+				String transcription = alternative.getTranscript();
+				text.append(transcription);
+				System.out.println(transcription);
 			}
 		} catch (IOException ex) {
 			log.error("Encountered IOException.", ex);
@@ -95,7 +99,7 @@ public class SpeechToTextService extends Service implements ISpeechToTextService
 	}
 
 	@Override
-	public void recordSpeech() {
+	public void recordSpeech(String type) {
 		AudioFormat format = new AudioFormat(24000, 16, 1, true, false);
 		ByteArrayOutputStream recording = new ByteArrayOutputStream();
 		try {
@@ -104,14 +108,17 @@ public class SpeechToTextService extends Service implements ISpeechToTextService
 			int numBytesRead;
 			byte[] data = new byte[microphone.getBufferSize() / 5];
 			microphone.start();
-			//int bytesRead = 0;
-			while (allowRecording) {
-				numBytesRead = microphone.read(data, 0, 1024);
-				//bytesRead += numBytesRead;
-				System.out.println("Recording...");
-				recording.write(data, 0, numBytesRead);
+			if (type.equals("start")) {
+				while (isStartRecording()) {
+					numBytesRead = microphone.read(data, 0, 1024);
+					recording.write(data, 0, numBytesRead);
+				}
+			} else if (type.equals("dest")) {
+				while (isDestRecording()) {
+					numBytesRead = microphone.read(data, 0, 1024);
+					recording.write(data, 0, numBytesRead);
+				}
 			}
-			System.out.println("Processing...");
 			byte[] audioData = recording.toByteArray();
 			AudioInputStream inputStream = new AudioInputStream(new ByteArrayInputStream(audioData), format, audioData.length / format.getFrameSize());
 			AudioSystem.write(inputStream, AudioFileFormat.Type.WAVE, new File(speechFileManager.getSpeechFileURI(SpeechFileManager.SpeechServiceType.SPEECH_TO_TEXT)));
@@ -123,6 +130,26 @@ public class SpeechToTextService extends Service implements ISpeechToTextService
 		} catch (IOException ex) {
 			log.error("Encountered IOException.", ex);
 		}
+	}
+
+	@Override
+	public boolean isStartRecording() {
+		return isStartRecording;
+	}
+
+	@Override
+	public void setStartRecording(boolean startRecording) {
+		isStartRecording = startRecording;
+	}
+
+	@Override
+	public boolean isDestRecording() {
+		return isDestRecording;
+	}
+
+	@Override
+	public void setDestRecording(boolean destRecording) {
+		isDestRecording = destRecording;
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -70,13 +71,58 @@ public class FeedbackController implements Initializable {
     void handleSubmit() {
 
         boolean validFields = true;
-        String meetExpectation = expectationsGroup.getSelectedToggle().toString();
-        String easy = easyGroup.getSelectedToggle().toString();
-        String navigate = navigateGroup.getSelectedToggle().toString();
-        String next = navigateGroup.getSelectedToggle().toString();
+        String meetExpectation = null;
+        String easy = null;
+        String navigate = null;
+        String next = null;
         String exceedExpectations = expectationsText.getText();
         String application = applicationText.getText();
         String other = otherText.getText();
+
+        RadioButton rbExpectation = (RadioButton)expectationsGroup.getSelectedToggle();
+        if(rbExpectation != null) {
+            meetExpectation = rbExpectation.getText();
+        }
+
+        RadioButton rbEasy = (RadioButton)easyGroup.getSelectedToggle();
+        if(rbEasy != null) {
+            easy = rbEasy.getText();
+        }
+
+        RadioButton rbNavigate = (RadioButton)navigateGroup.getSelectedToggle();
+        if(rbNavigate != null) {
+            navigate = rbNavigate.getText();
+        }
+
+        RadioButton rbNext = (RadioButton)nextGroup.getSelectedToggle();
+        if(rbNext != null) {
+            next = rbNext.getText();
+        }
+
+
+        if(rbExpectation == null) {
+            validFields = false;
+        } else {
+            validFields = true;
+        }
+
+        if(rbEasy == null) {
+            validFields = false;
+        } else {
+            validFields = true;
+        }
+
+        if(rbNavigate == null) {
+            validFields = false;
+        } else {
+            validFields = true;
+        }
+
+        if(rbNext == null) {
+            validFields = false;
+        } else {
+            validFields = true;
+        }
 
         if (exceedExpectations == null || exceedExpectations.isEmpty()) {
             validFields = false;

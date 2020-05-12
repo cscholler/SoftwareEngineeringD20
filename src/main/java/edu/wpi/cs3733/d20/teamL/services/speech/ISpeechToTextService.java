@@ -7,11 +7,19 @@ public interface ISpeechToTextService {
 
 	void createClient();
 
-	String recordAndConvertAsync();
+	String recordAndConvertAsync(String type);
 
 	String convertSpeechToText();
 
-	void recordSpeech();
+	void recordSpeech(String type);
+
+	boolean isStartRecording();
+
+	void setStartRecording(boolean startRecording);
+
+	boolean isDestRecording();
+
+	void setDestRecording(boolean destRecording);
 
 	boolean allowRecording();
 

@@ -7,10 +7,7 @@ import edu.wpi.cs3733.d20.teamL.views.controllers.map.MapViewerController;
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 public class SearchFields {
@@ -89,7 +86,7 @@ public class SearchFields {
     public void applyAutocomplete(JFXTextField textField, JFXAutoCompletePopup<String> autoCompletePopup) {
         autoCompletePopup.setSelectionHandler(event -> textField.setText(event.getObject()));
         textField.textProperty().addListener(observable -> {
-            autoCompletePopup.filter(string -> (isStringFuzzySimilar(string.toLowerCase(), textField.getText().toLowerCase(), 70)));
+            autoCompletePopup.filter(string -> (isStringFuzzySimilar(string.toLowerCase(), textField.getText().toLowerCase(), 75)));
             if (autoCompletePopup.getFilteredSuggestions().isEmpty() || textField.getText().isEmpty()) {
                 autoCompletePopup.hide();
             } else {
@@ -98,8 +95,30 @@ public class SearchFields {
         });
     }
 
-    public boolean isStringFuzzySimilar(String s1, String s2, int ratio) {
-    	return s1.contains(s2) || FuzzySearch.ratio(s1, s2) >= ratio || FuzzySearch.weightedRatio(s1, s2) >= ratio || FuzzySearch.partialRatio(s1, s2) >= ratio;
+    public boolean isStringFuzzySimilar(String suggestion, String search, int ratio) {
+    	return FuzzySearch.ratio(suggestion, search) >= ratio || FuzzySearch.partialRatio(suggestion, search) >= ratio;
+	}
+
+	public int weightedFuzzyRatio(String suggestion, String search) {
+		return (FuzzySearch.ratio(suggestion, search) + FuzzySearch.partialRatio(suggestion, search)) / 2;
+
+	}
+
+	public String findBestMatch(String search) {
+    	String bestMatch = "";
+    	int maxRatio = 0;
+		int currentRatio;
+    	for (String suggestion : getSuggestions()) {
+    		currentRatio = weightedFuzzyRatio(suggestion, search);
+    		if (currentRatio > maxRatio) {
+    			maxRatio = currentRatio;
+    			bestMatch = suggestion;
+    			if (currentRatio >= 90) {
+    				break;
+				}
+			}
+		}
+    	return bestMatch;
 	}
 
     /**
