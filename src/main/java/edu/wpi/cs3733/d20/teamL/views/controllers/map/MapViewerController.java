@@ -260,7 +260,7 @@ public class MapViewerController {
         etaLabel = new Label("Directions");
         etaLabel.setStyle("-fx-text-fill: white;" + "-fx-font-weight: bold;" + "-fx-font-size: 16;");
 
-        JFXButton speakAllButton = new JFXButton("", new ImageView(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/speakerIcon.png", 0,15,true, false, true)));
+        JFXButton speakAllButton = new JFXButton("", new ImageView(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/playArrow.png", 0,15,true, false, true)));
         speakAllButton.setPadding(Insets.EMPTY);
         speakAllButton.setStyle("-fx-background-color: transparent;" + "-fx-content-display: graphic-only;");
         speakAllButton.setOnAction(e -> speakAllDirections());
