@@ -48,7 +48,7 @@ public class AnalyticsController implements Initializable {
     @FXML
     MapPane map;
     @FXML
-    private JFXComboBox<String> timeBox, buildingChooser, heatBox;
+    private JFXComboBox<String> histoTimeBox, mapTimeBox, buildingChooser, heatBox;
     @FXML
     private BarChart<String, Number> ServiceReqHisto;
     @FXML
@@ -88,7 +88,8 @@ public class AnalyticsController implements Initializable {
         timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
 
         heatBox.setItems(heatOptions);
-        timeBox.setItems(timeOptions);
+        histoTimeBox.setItems(timeOptions);
+        mapTimeBox.setItems(timeOptions);
         cache.cacheRequestsFromDB();
 
         updateDate("Any time");
@@ -147,8 +148,14 @@ public class AnalyticsController implements Initializable {
     }
 
     @FXML
-    private void switchTime() {
-        updateDate(timeBox.getSelectionModel().getSelectedItem());
+    private void histoSwitchTime() {
+        updateDate(histoTimeBox.getSelectionModel().getSelectedItem());
+        updateFreq();
+    }
+
+    @FXML
+    private void mapSwitchTime() {
+        updateDate(mapTimeBox.getSelectionModel().getSelectedItem());
         updateFreq();
     }
 
