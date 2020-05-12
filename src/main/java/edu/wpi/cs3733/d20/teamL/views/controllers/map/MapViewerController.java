@@ -20,6 +20,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import edu.wpi.cs3733.d20.teamL.util.TimerManager;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -72,7 +73,7 @@ public class MapViewerController {
     @FXML
     private JFXTextField startingPoint, destination;
     @FXML
-    private JFXButton btnNavigate, floorUp, floorDown, btnScreening, btnTextMe, btnQR, btnRobot, btnTextToSpeechStart, btnTextToSpeechDestination;
+    private JFXButton btnNavigate, floorUp, floorDown, btnScreening, btnTextMe, btnQR, btnRobot, btnTextToSpeechStart, btnTextToSpeechDestination, btnFeedback, btnLegend, btnAbout;
     @FXML
     private VBox sideBox, floorSelector, directionButtonsVBox, textDirectionsVBox;
     @FXML
@@ -91,6 +92,8 @@ public class MapViewerController {
     private Label timeLabel, dateLabel, currentTempLabel, etaLabel, btnMute;
     @FXML
     private ImageView currentWeatherIcon;
+    @FXML
+    private TitledPane departments, amenities, labs, services, conferenceRooms;
 
     @Inject
     private IDatabaseCache cache;
@@ -124,14 +127,19 @@ public class MapViewerController {
     private final Image STAI_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/STAI_filled.png", 45, 45, true, false, true);
     private final Image RETL_filled = new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/RETL_filled.png", 45, 45, true, false, true);
 
-    private Collection<String> deptNodes = new ArrayList<>();
-    private Collection<String> labNodes = new ArrayList<>();
-    private Collection<String> serviceNodes = new ArrayList<>();
-    private Collection<String> retailNodes = new ArrayList<>();
-    private Collection<String> confNodes = new ArrayList<>();
+    private ArrayList<String> deptNodes = new ArrayList<>();
+    private ArrayList<String> labNodes = new ArrayList<>();
+    private ArrayList<String> serviceNodes = new ArrayList<>();
+    private ArrayList<String> retailNodes = new ArrayList<>();
+    private ArrayList<String> confNodes = new ArrayList<>();
+    private ArrayList<String> newDeptNodes = new ArrayList<>();
+    private ArrayList<String> newLabNodes = new ArrayList<>();
+    private ArrayList<String> newServiceNodes = new ArrayList<>();
+    private ArrayList<String> newRetailNodes = new ArrayList<>();
+    private ArrayList<String> newConfNodes = new ArrayList<>();
 
     private QuestionnaireController qc;
-    private String currentLang = "es";
+    private String currentLang = "en";
 
 
     public static final String MAIN = "Main";
@@ -210,7 +218,21 @@ public class MapViewerController {
         JFXListView[] listOfListViews = new JFXListView[]{listF1, listF2, listF3, listF4, listF5};
         for (JFXListView list : listOfListViews) {
             list.addEventHandler(MouseEvent.MOUSE_CLICKED, (mouseEvent -> {
-                destination.setText((String) list.getSelectionModel().getSelectedItem());
+                if (currentLang.equals("en")) {
+                    destination.setText((String) list.getSelectionModel().getSelectedItem());
+                } else {
+                if (listF1.equals(list)) {
+                    destination.setText(deptNodes.get(newDeptNodes.indexOf(listF1.getSelectionModel().getSelectedItem())));
+                } else if (listF2.equals(list)) {
+                    destination.setText(labNodes.get(newLabNodes.indexOf(listF2.getSelectionModel().getSelectedItem())));
+                } else if (listF3.equals(list)) {
+                    destination.setText(serviceNodes.get(newServiceNodes.indexOf(listF3.getSelectionModel().getSelectedItem())));
+                } else if (listF4.equals(list)) {
+                    destination.setText(retailNodes.get(newRetailNodes.indexOf(listF4.getSelectionModel().getSelectedItem())));
+                } else if (listF5.equals(list)) {
+                    destination.setText(confNodes.get(newConfNodes.indexOf(listF5.getSelectionModel().getSelectedItem())));
+                }
+                  }
                 navigate();
             }));
             list.setStyle("-fx-font-size: 16");
@@ -222,15 +244,15 @@ public class MapViewerController {
         listF4.getItems().addAll(retailNodes);
         listF5.getItems().addAll(confNodes);
 
-        TitledPane departments = new TitledPane("Departments", listF1);
+        departments = new TitledPane("Departments", listF1);
         departments.setStyle("-fx-font-size: 16;" + "-fx-body-color: #7DA7D9;");
-        TitledPane labs = new TitledPane("Labs", listF2);
+        labs = new TitledPane("Labs", listF2);
         labs.setStyle("-fx-font-size: 16;" + "-fx-body-color: #8881BD;");
-        TitledPane services = new TitledPane("Services/Information", listF3);
+        services = new TitledPane("Services/Information", listF3);
         services.setStyle("-fx-font-size: 16;" + "-fx-body-color: #F5989D;");
-        TitledPane amenities = new TitledPane("Amenities", listF4);
+        amenities = new TitledPane("Amenities", listF4);
         amenities.setStyle("-fx-font-size: 16;" + "-fx-body-color: #79BD92;");
-        TitledPane conferenceRooms = new TitledPane("Conference Rooms", listF5);
+        conferenceRooms = new TitledPane("Conference Rooms", listF5);
         conferenceRooms.setStyle("-fx-font-size: 16;" + "-fx-body-color: #AD87AD;");
 
         accordion.getPanes().addAll(departments, labs, services, amenities, conferenceRooms);
@@ -388,7 +410,7 @@ public class MapViewerController {
         colorKey.setMinWidth(300);
         colorKey.setSpacing(5);
         VBox iconKey = new VBox();
-        iconKey.setMinWidth(150);
+        iconKey.setMinWidth(160);
         iconKey.setSpacing(5);
 
         String[] colors = new String[]{" #7DA7D9", " #FCB963", " #FFF77D", " #79BD92", " #8881BD", " #F69679", " #6DCFF6", " #AD87AD", " #BDDEA2", " #F5989D", " #7DA7D9"};
@@ -428,7 +450,6 @@ public class MapViewerController {
             }
 
             displayText.setAlignment(Pos.CENTER);
-
 
 
             HBox iconRow = new HBox();
@@ -493,7 +514,7 @@ public class MapViewerController {
             return new ListCell<String>() {
                 private ImageView imageView = new ImageView();
 
-                @SneakyThrows
+
                 protected void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);
                     if (empty || item == null) {
@@ -539,7 +560,11 @@ public class MapViewerController {
                         setWrapText(true);
 
                         if (currentLang != "en") {
-                            setText(httpClient.translate("en", currentLang, item));
+                            try {
+                                setText(httpClient.translate("en", currentLang, item));
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         } else {
                             setText(item);
                         }
@@ -712,8 +737,16 @@ public class MapViewerController {
      * Displays the About page of the application
      */
     @FXML
-    public void handleAbout() throws IOException {
-        translateMapViewer("es");
+    public void handleAbout() {
+        AsyncTaskManager.newTask(() -> {
+            Platform.runLater(() -> {
+                try {
+                    translateMapViewer("es");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        });
 //        JFXDialogLayout content = new JFXDialogLayout();
 //        content.setHeading(new Text("About"));
 //        content.setBody(new Text("WPI Computer Science Department\n" +
@@ -831,7 +864,13 @@ public class MapViewerController {
 
     @FXML
     private void goToSelected() {
-        AsyncTaskManager.newTask(() -> textToSpeech.playSpeech(textToSpeech.convertTextToSpeech(dirList.getSelectionModel().getSelectedItem().toString(), "en-US", SsmlVoiceGender.MALE)));
+        AsyncTaskManager.newTask(() -> {
+            try {
+                textToSpeech.playSpeech( textToSpeech.convertTextToSpeech(currentLang.equals("en") ? dirList.getSelectionModel().getSelectedItem().toString(): httpClient.translate("en", currentLang, dirList.getSelectionModel().getSelectedItem().toString() ), currentLang.equals("en") ? "en-US" : currentLang, SsmlVoiceGender.MALE));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
         int index = dirList.getSelectionModel().getSelectedIndex();
         ArrayList<Node> subpath = path.getSubpaths().get(index);
         if (dirList.getSelectionModel().getSelectedItem().toString().contains("Navigate")) {
@@ -950,10 +989,109 @@ public class MapViewerController {
 
 
     public void translateMapViewer(String language) throws IOException {
-        btnNavigate.setText(httpClient.translate(currentLang, language, btnNavigate.getText()));
+        btnNavigate.setText(httpClient.translate("en", language, "Get Directions"));
         btnScreening.setText(httpClient.translate(currentLang, language, btnScreening.getText()));
+        btnAbout.setText(httpClient.translate(currentLang, language, btnAbout.getText()));
         btnTextMe.setText(httpClient.translate(currentLang, language, btnTextMe.getText()));
         btnRobot.setText(httpClient.translate(currentLang, language, btnRobot.getText()));
         btnQR.setText(httpClient.translate(currentLang, language, btnQR.getText()));
+        btnLegend.setText(httpClient.translate("en", language, "Legend"));
+        btnFeedback.setText(httpClient.translate(currentLang, language, btnFeedback.getText()));
+        departments.setText(httpClient.translate("en", language, "Directions"));
+        labs.setText(httpClient.translate("en", language, "Labs"));
+        services.setText(httpClient.translate("en", language, "Services/Information"));
+        amenities.setText(httpClient.translate("en", language, "Amenities"));
+        conferenceRooms.setText(httpClient.translate("en", language, "Conference Rooms"));
+
+
+        for (String node : deptNodes) {
+            newDeptNodes.add(httpClient.translate(currentLang, language, node));
+        }
+
+        listF1.getItems().removeAll(deptNodes);
+        listF1.getItems().addAll(newDeptNodes);
+
+        for (String node : labNodes) {
+            newLabNodes.add(httpClient.translate(currentLang, language, node));
+        }
+
+        listF2.getItems().removeAll(labNodes);
+        listF2.getItems().addAll(newLabNodes);
+
+        for (String node : serviceNodes) {
+            newServiceNodes.add(httpClient.translate(currentLang, language, node));
+        }
+
+        listF3.getItems().removeAll(serviceNodes);
+        listF3.getItems().addAll(newServiceNodes);
+
+        for (String node : retailNodes) {
+            newRetailNodes.add(httpClient.translate(currentLang, language, node));
+        }
+
+        listF4.getItems().removeAll(retailNodes);
+        listF4.getItems().addAll(newRetailNodes);
+
+        for (String node : confNodes) {
+            newConfNodes.add(httpClient.translate(currentLang, language, node));
+        }
+
+        listF5.getItems().removeAll(confNodes);
+        listF5.getItems().addAll(newConfNodes);
+
+        dirList.setCellFactory(param -> {
+            return new ListCell<String>() {
+                private ImageView imageView = new ImageView();
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setGraphic(null);
+                        setText(null);
+                        // other stuff to do...
+                    } else {
+                        if (item.contains("right")) {
+                            if (item.contains("slight")) {
+                                imageView.setImage(IMAGE_SLRIGHT);
+                            } else if (item.contains("sharp")) {
+                                imageView.setImage(IMAGE_SHRIGHT);
+                            } else {
+                                imageView.setImage(IMAGE_RIGHT);
+                            }
+                        } else if (item.contains("left")) {
+                            if (item.contains("slight")) {
+                                imageView.setImage(IMAGE_SLLEFT);
+                            } else if (item.contains("sharp")) {
+                                imageView.setImage(IMAGE_SHLEFT);
+                            } else {
+                                imageView.setImage(IMAGE_LEFT);
+                            }
+                        } else if (item.contains("elevator")) {
+                            imageView.setImage(IMAGE_ELEV);
+                        } else if (item.contains("stair")) {
+                            imageView.setImage(IMAGE_STAIR);
+                        } else if (item.contains("destination")) {
+                            imageView.setImage(IMAGE_DEST);
+                        } else {
+                            imageView.setImage(IMAGE_STRAIGHT);
+                        }
+                        setText(item);
+                        setGraphic(imageView);
+                        setMinWidth(getWidth());
+                        setMaxWidth(getWidth());
+                        setPrefWidth(getWidth());
+                        // allow wrapping
+                        setWrapText(true);
+                        try {
+                            setText(httpClient.translate("en", language, item));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            };
+        });
+
+
+        currentLang = language;
     }
 }

@@ -1,11 +1,15 @@
 package edu.wpi.cs3733.d20.teamL.util.search;
 
+import com.google.inject.Inject;
 import com.jfoenix.controls.JFXAutoCompletePopup;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
+import edu.wpi.cs3733.d20.teamL.services.HTTPClientService;
+import edu.wpi.cs3733.d20.teamL.services.IHTTPClientService;
 import edu.wpi.cs3733.d20.teamL.views.controllers.map.MapViewerController;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,6 +19,8 @@ import java.util.Map;
 public class SearchFields {
     private List<Node> nodeCache;
     private List<String> suggestions;
+    @Inject
+    private HTTPClientService clientService = new HTTPClientService();
 
     public enum Field {nodeID, longName, shortName, building}
 
@@ -89,25 +95,25 @@ public class SearchFields {
         // TODO: Don't let non-visible nodes show-up
         if (suggestions == null) suggestions = new ArrayList<>();
         for (Node node : nodeCache) {
-            if(node.getType().equals("EXIT")){
-            for (Field field : fields) {
-                switch (field) {
-                    case nodeID:
-                        suggestions.add(node.getID());
-                        break;
-                    case building:
-                        suggestions.add(node.getBuilding());
-                        break;
-                    case longName:
-                        suggestions.add(node.getLongName());
-                        break;
-                    case shortName:
-                        suggestions.add(node.getShortName());
-                        break;
-                    default:
-                        break;
+            if (node.getType().equals("EXIT")) {
+                for (Field field : fields) {
+                    switch (field) {
+                        case nodeID:
+                            suggestions.add(node.getID());
+                            break;
+                        case building:
+                            suggestions.add(node.getBuilding());
+                            break;
+                        case longName:
+                            suggestions.add(node.getLongName());
+                            break;
+                        case shortName:
+                            suggestions.add(node.getShortName());
+                            break;
+                        default:
+                            break;
+                    }
                 }
-            }
             }
         }
         Collections.sort(suggestions);
@@ -154,10 +160,10 @@ public class SearchFields {
         if (query.contains("(Faulkner")) {
             query = query.substring(0, query.length() - 15);
             building = "Faulkner";
-        }else if(query.contains("(" + MapViewerController.MAIN)) {
-            if(query.contains("L2") || query.contains("L1"))
+        } else if (query.contains("(" + MapViewerController.MAIN)) {
+            if (query.contains("L2") || query.contains("L1"))
                 query = query.substring(0, query.length() - 12);
-            else  query = query.substring(0, query.length() - 11);
+            else query = query.substring(0, query.length() - 11);
             building = MapViewerController.MAIN;
         }
 
@@ -175,7 +181,8 @@ public class SearchFields {
 
     public Node getNode(String query, String building, String floor) {
         for (Node node : nodeCache) {
-            if ((query.equals(node.getShortName()) || query.equals(node.getLongName())) && building.equals(node.getBuilding()) && floor.equals(node.getFloorAsString())) return node;
+            if ((query.equals(node.getShortName()) || query.equals(node.getLongName())) && building.equals(node.getBuilding()) && floor.equals(node.getFloorAsString()))
+                return node;
         }
         return null;
     }
