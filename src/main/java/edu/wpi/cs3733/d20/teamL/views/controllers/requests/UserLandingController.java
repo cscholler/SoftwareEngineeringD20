@@ -66,23 +66,17 @@ public class UserLandingController {
     @FXML
     public void launchGiftAPI() throws IOException, edu.wpi.cs3733.d20.teamP.ServiceException {
        APIController.run(0, 0, 1280, 720, "edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css", new String(), new String());
-        resetAndLoadPane("GiftCartPane", "Gift Request");
-        btnGift.setStyle("-fx-background-color: #DCDCDC");
     }
 
     @FXML
     public void launchMaintenanceAPI() throws IOException, ServiceException {
         AudioVisualRequest.run(0, 0, 1280, 720, "edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css", new String(), new String());
-        resetAndLoadPane("MaintenancePane", "Maintenance Request");
-        btnMaintenance.setStyle("-fx-background-color: #DCDCDC");
+
     }
 
 
     @FXML
-    public void launchExternalAPI() throws IOException, flowerapi.ServiceException {
-        FlowerAPI.run(0, 0, 1280, 720, "edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css", new String(), new String());
-        resetAndLoadPane("ExternalPane", "External Transport");
-        btnExternal.setStyle("-fx-background-color: #DCDCDC");
+    public void launchExternalAPI() throws IOException, flowerapi.ServiceException { FlowerAPI.run(0, 0, 1280, 720, "edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css", new String(), new String());
     }
 
     @FXML

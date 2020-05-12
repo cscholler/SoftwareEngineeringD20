@@ -188,15 +188,6 @@
                                           </ImageView>
                                        </graphic>
                                     </JFXButton>
-                                    <JFXButton fx:id="btnLaunchAPI" onAction="#launchAPIntment" styleClass="services-button-jfx" text="Make Appointment" visible="true">
-                                       <graphic>
-                                          <ImageView fitHeight="50.0" fitWidth="50.0">
-                                             <image>
-                                                <Image url="@../../assets/service_icons/schedulerService.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </JFXButton>
                                  </children>
                               </VBox>
                            </content>
@@ -220,7 +211,6 @@
                                  <children>
                                     <JFXButton fx:id="btnGift1" onAction="#launchGiftAPI" styleClass="services-button-jfx" text="Team P Food Request" VBox.vgrow="ALWAYS" />
                                     <JFXButton fx:id="btnMaintenance1" onAction="#launchMaintenanceAPI" styleClass="services-button-jfx" text="Team M A/V Request " />
-                                    <JFXButton fx:id="btnExternal1" onAction="#launchExternalAPI" styleClass="services-button-jfx" text="Team A Flower Request" />
                                  </children>
                               </VBox>
                            </content>
