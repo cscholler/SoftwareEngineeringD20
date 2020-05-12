@@ -4,9 +4,11 @@ import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
+@Slf4j
 public class HTTPClientService implements IHTTPClientService {
     private OkHttpClient client = new OkHttpClient();
     private String currLang = "en";
@@ -50,9 +52,11 @@ public class HTTPClientService implements IHTTPClientService {
         Response response = client.newCall(request).execute();
 
         text = response.body().string();
+        System.out.println(text);
         int endIndex = text.indexOf('<', 5);
         int startIndex = text.indexOf('>') + 1;
         text = text.substring(startIndex, endIndex);
+        log.info(text);
         currLang = language;
         return text;
     }

@@ -1093,5 +1093,6 @@ public class MapViewerController {
 
 
         currentLang = language;
+        httpClient.setCurrLang(currentLang);
     }
 }
