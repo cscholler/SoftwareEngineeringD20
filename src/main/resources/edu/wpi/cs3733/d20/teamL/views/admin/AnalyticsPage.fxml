@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import edu.wpi.cs3733.d20.teamL.views.components.MapPane?>
+<!--<?import edu.wpi.cs3733.d20.teamL.views.components.MapPane?>-->
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="950.0" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.logged_in.AnalyticsController">
    <center>
@@ -212,14 +212,6 @@
                                                    </image>
                                                 </ImageView>
                                              </graphic></JFXButton>
-                                          <JFXButton onAction="#handleMedicationPieChart" styleClass="services-button-jfx" text="Medication">
-                                             <graphic>
-                                                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../../assets/service_icons/medicationRequest.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic></JFXButton>
                                           <JFXButton onAction="#handleSanitationPieChart" styleClass="services-button-jfx" text="Sanitation">
                                              <graphic>
                                                 <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
@@ -241,22 +233,6 @@
                                                 <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../../assets/service_icons/interpreterRequest.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic></JFXButton>
-                                          <JFXButton onAction="#handleReflectionPieChart" styleClass="services-button-jfx" text="Reflection Room">
-                                             <graphic>
-                                                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../../assets/service_icons/reflectionRoom.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic></JFXButton>
-                                          <JFXButton onAction="#handleOnCallPieChart" styleClass="services-button-jfx" text="On-Call Bed">
-                                             <graphic>
-                                                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../../assets/service_icons/sleepingArea.png" />
                                                    </image>
                                                 </ImageView>
                                              </graphic></JFXButton>
