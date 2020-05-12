@@ -688,7 +688,7 @@ public class MapViewerController {
     public void handleCredit() {
 
         JFXDialogLayout content = new JFXDialogLayout();
-        content.setHeading(new Text("Credit"));
+        content.setHeading(new Text("Credits"));
         content.setBody(new Text("Software:\t\t\t" +
                 "Apache Commons\n\t\t\t\t" +
                 "Apache Derby\n\t\t\t\t" +
