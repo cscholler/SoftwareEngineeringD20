@@ -851,4 +851,7 @@ public class MapViewerController {
     private void handleRobotDirections() {
 
     }
+
+	public void handleLocationChange(ActionEvent actionEvent) {
+	}
 }

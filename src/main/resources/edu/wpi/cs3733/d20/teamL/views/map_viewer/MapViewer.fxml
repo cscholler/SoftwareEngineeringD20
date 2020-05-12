@@ -242,7 +242,7 @@
                <children>
                   <ImageView fitHeight="63.0" fitWidth="252.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../assets/home_page/BWH logo.png" />
+                        <Image url="@../../assets/home_page/bwh_logo.png" />
                      </image>
                   </ImageView>
                </children>
