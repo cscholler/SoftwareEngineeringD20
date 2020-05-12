@@ -37,6 +37,7 @@ dependencies {
             'com.twilio.sdk:twilio:7.49.1',
             'com.sendgrid:sendgrid-java:4.4.1',
             'com.github.kenglxn.QRGen:javase:2.6.0',
+            'com.google.cloud:google-cloud-core:1.93.4',
             'com.google.cloud:google-cloud-texttospeech:1.0.2',
             'com.google.cloud:google-cloud-speech:1.23.0',
             'com.github.sarxos:webcam-capture:0.3.12'
@@ -76,9 +77,9 @@ jar {
     manifest {
         attributes 'Main-Class': mainClassName
     }
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    }
+    exclude 'META-INF/.RSA'
+    exclude 'META-INF/.SF'
+    exclude 'META-INF/*.DSA'
 }
 
 def codeCoverageExcludes = [
