@@ -15,9 +15,9 @@ public interface ISpeechToTextService {
 
 	boolean allowStartRecording();
 
-	void setStartRecording(boolean startRecording);
+	void setAllowStartRecording(boolean allowStartRecording);
 
 	boolean allowDestRecording();
 
-	void setDestRecording(boolean destRecording);
+	void setAllowDestRecording(boolean allowDestRecording);
 }

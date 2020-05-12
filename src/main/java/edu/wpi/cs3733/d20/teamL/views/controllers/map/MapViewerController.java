@@ -1,29 +1,20 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 
-import com.google.cloud.texttospeech.v1.SsmlVoiceGender;
-import com.jfoenix.controls.*;
-import edu.wpi.cs3733.d20.teamL.App;
-import edu.wpi.cs3733.d20.teamL.entities.*;
-import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
-import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
-import edu.wpi.cs3733.d20.teamL.services.speech.ISpeechToTextService;
-import edu.wpi.cs3733.d20.teamL.services.speech.ITextToSpeechService;
-import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
-import edu.wpi.cs3733.d20.teamL.views.controllers.screening.QuestionnaireController;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import edu.wpi.cs3733.d20.teamL.util.TimerManager;
+
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -31,29 +22,55 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Accordion;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.TitledPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import com.google.inject.Inject;
 
-import javafx.util.Duration;
+import com.jfoenix.controls.JFXAutoCompletePopup;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
+import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXToggleButton;
+
 import lombok.extern.slf4j.Slf4j;
 
-import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
+import edu.wpi.cs3733.d20.teamL.App;
+import edu.wpi.cs3733.d20.teamL.entities.Building;
+import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.entities.Path;
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
+import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
+import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
+import edu.wpi.cs3733.d20.teamL.services.speech.ISpeechToTextService;
+import edu.wpi.cs3733.d20.teamL.services.speech.ITextToSpeechService;
+import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
+import edu.wpi.cs3733.d20.teamL.util.SearchFields;
+import edu.wpi.cs3733.d20.teamL.util.TimerManager;
 import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
 import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
 import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
+import edu.wpi.cs3733.d20.teamL.views.controllers.screening.QuestionnaireController;
 
 @Slf4j
 public class MapViewerController {
@@ -386,11 +403,11 @@ public class MapViewerController {
     	if (evt.getSource() == btnRecordStart) {
 			if (speechToText.allowStartRecording()) {
 				startMicIcon.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/speech_to_text_ready.png"));
-				speechToText.setStartRecording(false);
+				speechToText.setAllowStartRecording(false);
 			} else {
 				startMicIcon.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/speech_to_text_record.png"));
-				speechToText.setDestRecording(false);
-				speechToText.setStartRecording(true);
+				speechToText.setAllowDestRecording(false);
+				speechToText.setAllowStartRecording(true);
 			}
 			if (speechToText.allowStartRecording()) {
 				AsyncTaskManager.newTask(() -> {
@@ -406,11 +423,11 @@ public class MapViewerController {
 		} else if (evt.getSource() == btnRecordDest) {
     		if (speechToText.allowDestRecording()) {
 				destMicIcon.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/speech_to_text_ready.png"));
-    			speechToText.setDestRecording(false);
+    			speechToText.setAllowDestRecording(false);
 			} else {
 				destMicIcon.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/speech_to_text_record.png"));
-				speechToText.setStartRecording(false);
-				speechToText.setDestRecording(true);
+				speechToText.setAllowStartRecording(false);
+				speechToText.setAllowDestRecording(true);
 			}
 			if (speechToText.allowDestRecording()) {
 				AsyncTaskManager.newTask(() -> {
@@ -856,7 +873,6 @@ public class MapViewerController {
     	if (!textToSpeech.isMuted()) {
 			textToSpeech.convertAndPlayAsync(dirList.getSelectionModel().getSelectedItem().toString());
 		}
-		//AsyncTaskManager.newTask(() -> textToSpeech.playSpeech(textToSpeech.convertTextToSpeech(dirList.getSelectionModel().getSelectedItem().toString(), "en-US", SsmlVoiceGender.MALE)));
         int index = dirList.getSelectionModel().getSelectedIndex();
         ArrayList<Node> subpath = path.getSubpaths().get(index + 1);
         if (dirList.getSelectionModel().getSelectedItem().toString().contains("Navigate")) {

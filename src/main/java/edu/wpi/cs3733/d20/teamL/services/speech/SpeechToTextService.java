@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.concurrent.ForkJoinTask;
+
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -36,8 +37,8 @@ import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
 public class SpeechToTextService extends Service implements ISpeechToTextService {
 	private SpeechClient client;
 	private SpeechFileManager speechFileManager;
-	private boolean isStartRecording = false;
-	private boolean isDestRecording = false;
+	private boolean allowStartRecording = false;
+	private boolean allowDestRecording = false;
 
 	public SpeechToTextService() {
 		super();
@@ -133,21 +134,21 @@ public class SpeechToTextService extends Service implements ISpeechToTextService
 
 	@Override
 	public boolean allowStartRecording() {
-		return isStartRecording;
+		return allowStartRecording;
 	}
 
 	@Override
-	public void setStartRecording(boolean startRecording) {
-		isStartRecording = startRecording;
+	public void setAllowStartRecording(boolean allowStartRecording) {
+		this.allowStartRecording = allowStartRecording;
 	}
 
 	@Override
 	public boolean allowDestRecording() {
-		return isDestRecording;
+		return allowDestRecording;
 	}
 
 	@Override
-	public void setDestRecording(boolean destRecording) {
-		isDestRecording = destRecording;
+	public void setAllowDestRecording(boolean allowDestRecording) {
+		this.allowDestRecording = allowDestRecording;
 	}
 }

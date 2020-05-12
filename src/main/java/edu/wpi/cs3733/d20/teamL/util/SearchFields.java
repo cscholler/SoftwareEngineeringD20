@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamL.util.search;
+package edu.wpi.cs3733.d20.teamL.util;
 
 import com.jfoenix.controls.JFXAutoCompletePopup;
 import com.jfoenix.controls.JFXTextField;
@@ -86,7 +86,7 @@ public class SearchFields {
     public void applyAutocomplete(JFXTextField textField, JFXAutoCompletePopup<String> autoCompletePopup) {
         autoCompletePopup.setSelectionHandler(event -> textField.setText(event.getObject()));
         textField.textProperty().addListener(observable -> {
-            autoCompletePopup.filter(string -> (isStringFuzzySimilar(string.toLowerCase(), textField.getText().toLowerCase(), 75)));
+            autoCompletePopup.filter(string -> (isFuzzySimilar(string.toLowerCase(), textField.getText().toLowerCase(), 75)));
             if (autoCompletePopup.getFilteredSuggestions().isEmpty() || textField.getText().isEmpty()) {
                 autoCompletePopup.hide();
             } else {
@@ -95,13 +95,12 @@ public class SearchFields {
         });
     }
 
-    public boolean isStringFuzzySimilar(String suggestion, String search, int ratio) {
+    public boolean isFuzzySimilar(String suggestion, String search, int ratio) {
     	return FuzzySearch.ratio(suggestion, search) >= ratio || FuzzySearch.partialRatio(suggestion, search) >= ratio;
 	}
 
-	public int weightedFuzzyRatio(String suggestion, String search) {
+	public int averageFuzzyRatio(String suggestion, String search) {
 		return (FuzzySearch.ratio(suggestion, search) + FuzzySearch.partialRatio(suggestion, search)) / 2;
-
 	}
 
 	public String findBestMatch(String search) {
@@ -109,7 +108,7 @@ public class SearchFields {
     	int maxRatio = 0;
 		int currentRatio;
     	for (String suggestion : getSuggestions()) {
-    		currentRatio = weightedFuzzyRatio(suggestion, search);
+    		currentRatio = averageFuzzyRatio(suggestion, search);
     		if (currentRatio > maxRatio) {
     			maxRatio = currentRatio;
     			bestMatch = suggestion;
