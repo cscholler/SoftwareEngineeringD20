@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="root" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" styleClass="background" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.ImportDialogue">
+<BorderPane fx:id="root" prefHeight="250.0" prefWidth="400.0" style="-fx-background-color: white;" styleClass="background" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.ImportDialogue">
     <top>
         <Label alignment="CENTER" prefWidth="600.0" styleClass="service-request-header-label-fx" text="Import a Table" BorderPane.alignment="CENTER">
             <padding>
@@ -19,6 +19,9 @@
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
+         <BorderPane.margin>
+            <Insets top="10.0" />
+         </BorderPane.margin>
         </Label>
     </top>
     <center>
@@ -37,7 +40,7 @@
     <bottom>
         <Label fx:id="message" style="-fx-text-fill: white; -fx-font-size: 16;" text="Label" visible="false" BorderPane.alignment="CENTER">
             <BorderPane.margin>
-                <Insets bottom="20.0" />
+                <Insets bottom="10.0" />
             </BorderPane.margin>
         </Label>
     </bottom>
