@@ -1,22 +1,20 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.game;
 
+import edu.wpi.cs3733.d20.teamL.App;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+//TODO: Call when screensaver timeout hits. Add ability to return to map viewer. Change colors and add background image."
 public class SnakeController {
-	//@FXML
-	//public AnchorPane anchor;
 
 	public SnakeController(Stage stage) {
 		initialize(stage);
@@ -26,8 +24,8 @@ public class SnakeController {
 		UP, DOWN, LEFT, RIGHT
 	}
 
-	private static final int WIDTH = 1280;
-	private static final int HEIGHT = 720;
+	private static final int WIDTH = (int) App.SCREEN_WIDTH;
+	private static final int HEIGHT = (int) App.SCREEN_HEIGHT;
 	private static final int BLOCK_SIZE = 64;
 
 	private Direction direction = Direction.RIGHT;
