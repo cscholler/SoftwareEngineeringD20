@@ -235,7 +235,7 @@
             </HBox>
             <StackPane fx:id="keyStackPane" alignment="TOP_LEFT" layoutY="4.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
                <children>
-                  <JFXButton buttonType="RAISED" graphicTextGap="10.0" onAction="#showLegend" style="-fx-background-color: #00043B; -fx-background-radius: 50;" text="Legend">
+                  <JFXButton fx:id="btnLegend" buttonType="RAISED" graphicTextGap="10.0" onAction="#showLegend" style="-fx-background-color: #00043B; -fx-background-radius: 50;" text="Legend">
                      <graphic>
                         <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" scaleX="1.2" scaleY="1.2">
                            <image>
@@ -279,7 +279,7 @@
             </HBox>
              <HBox alignment="CENTER" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
                  <children>
-                     <JFXButton buttonType="RAISED" onAction="#handleFeedback" prefHeight="57.0" prefWidth="211.0" style="-fx-background-color: #0d2e57; -fx-border-color: white; -fx-border-radius: 10;" text="Give us feedback">
+                     <JFXButton fx:id="btnFeedback" buttonType="RAISED" onAction="#handleFeedback" prefHeight="57.0" prefWidth="211.0" style="-fx-background-color: #0d2e57; -fx-border-color: white; -fx-border-radius: 10;" text="Give us feedback">
                          <font>
                              <Font size="24.0" />
                          </font>

@@ -45,6 +45,7 @@ import javafx.stage.Stage;
 import com.google.inject.Inject;
 
 import javafx.util.Duration;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
@@ -130,7 +131,7 @@ public class MapViewerController {
     private Collection<String> confNodes = new ArrayList<>();
 
     private QuestionnaireController qc;
-    private String currLang = "en";
+    private String currentLang = "es";
 
 
     public static final String MAIN = "Main";
@@ -141,7 +142,6 @@ public class MapViewerController {
         timerManager.startTimer(() -> timerManager.updateDate(dateLabel), 0, 1000);
         //ToDO: uncomment this when its time to get weather
         //timerManager.startTimer(() -> timerManager.updateWeather(currentTempLabel, currentWeatherIcon), 0,1800000);
-        btnNavigate.setText(translate("es",btnNavigate.getText()));
         if (App.doUpdateCacheOnLoad) {
             cache.cacheAllFromDB();
             App.doUpdateCacheOnLoad = false;
@@ -166,6 +166,9 @@ public class MapViewerController {
         if (!main.getNodes().isEmpty()) map.getBuildings().add(main);
         buildingChooser.getItems().addAll("Faulkner", MAIN);
         buildingChooser.getSelectionModel().select(startB);
+
+        //Set Current Language
+
 
         // Add floor buttons
         generateFloorButtons();
@@ -374,7 +377,7 @@ public class MapViewerController {
      * Shows the key popup
      */
     @FXML
-    private void showLegend() {
+    private void showLegend() throws IOException {
         JFXDialogLayout legendContent = new JFXDialogLayout();
         Label title = new Label("Map Legend");
         title.setStyle("-fx-font-size: 30;" + "-fx-text-fill: #0d2e57;" + "-fx-font-weight: bold");
@@ -398,8 +401,13 @@ public class MapViewerController {
             JFXButton colorSwatch = new JFXButton();
             String fxColor = "-fx-background-color: " + colors[i] + ";";
             colorSwatch.setStyle("-fx-min-height: 30;" + "-fx-min-width: 30;" + "-fx-border-radius: 0;" + fxColor);
+            VBox swatchText;
 
-            VBox swatchText = new VBox(new Label(colorText[i]));
+            if (currentLang.equals("en")) {
+                swatchText = new VBox(new Label(colorText[i]));
+            } else {
+                swatchText = new VBox(new Label(httpClient.translate("en", currentLang, colorText[i])));
+            }
             swatchText.setAlignment(Pos.CENTER);
 
             HBox colorRow = new HBox();
@@ -412,8 +420,16 @@ public class MapViewerController {
         for (int i = 0; i < icons.length; i++) {
             ImageView icon = new ImageView(icons[i]);
 
-            VBox displayText = new VBox(new Label(iconText[i]));
+            VBox displayText;
+            if (currentLang.equals("en")) {
+                displayText = new VBox(new Label(iconText[i]));
+            } else {
+                displayText = new VBox(new Label(httpClient.translate("en", currentLang, iconText[i])));
+            }
+
             displayText.setAlignment(Pos.CENTER);
+
+
 
             HBox iconRow = new HBox();
             iconRow.setSpacing(5);
@@ -477,6 +493,7 @@ public class MapViewerController {
             return new ListCell<String>() {
                 private ImageView imageView = new ImageView();
 
+                @SneakyThrows
                 protected void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);
                     if (empty || item == null) {
@@ -521,8 +538,11 @@ public class MapViewerController {
                         // allow wrapping
                         setWrapText(true);
 
-                        setText(item);
-
+                        if (currentLang != "en") {
+                            setText(httpClient.translate("en", currentLang, item));
+                        } else {
+                            setText(item);
+                        }
 
                     }
                 }
@@ -692,34 +712,34 @@ public class MapViewerController {
      * Displays the About page of the application
      */
     @FXML
-    public void handleAbout() {
-
-        JFXDialogLayout content = new JFXDialogLayout();
-        content.setHeading(new Text("About"));
-        content.setBody(new Text("WPI Computer Science Department\n" +
-                "CS3733-D20 Software Engineering\n" +
-                "Prof. Wilson Wong\n" +
-                "Team Coach: Chris Myers\n" +
-                "Lead Software Engineer: Conrad Tulig\n" +
-                "Assistant Lead Software Engineer: Luke Bodwell\n" +
-                "Assistant Lead Software Engineer: Caleb Farwell\n" +
-                "Project Manager: Joshua Hoy\n" +
-                "Scrum Master: Colin Scholler\n" +
-                "Product Owner: Tori Buyck\n" +
-                "Algorithms Specialist: Cameron Jacobson\n" +
-                "UI Engineer: Winnie Ly\n" +
-                "Documentation Analyst: Zaiyang Zhong\n\n" +
-                "Thank you Brigham and Women's Hospital \nand Andrew Shinn for your time and input."));
-        JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
-        JFXButton btnDone = new JFXButton("Done");
-        btnDone.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                dialog.close();
-            }
-        });
-        content.setActions(btnDone);
-        dialog.show();
+    public void handleAbout() throws IOException {
+        translateMapViewer("es");
+//        JFXDialogLayout content = new JFXDialogLayout();
+//        content.setHeading(new Text("About"));
+//        content.setBody(new Text("WPI Computer Science Department\n" +
+//                "CS3733-D20 Software Engineering\n" +
+//                "Prof. Wilson Wong\n" +
+//                "Team Coach: Chris Myers\n" +
+//                "Lead Software Engineer: Conrad Tulig\n" +
+//                "Assistant Lead Software Engineer: Luke Bodwell\n" +
+//                "Assistant Lead Software Engineer: Caleb Farwell\n" +
+//                "Project Manager: Joshua Hoy\n" +
+//                "Scrum Master: Colin Scholler\n" +
+//                "Product Owner: Tori Buyck\n" +
+//                "Algorithms Specialist: Cameron Jacobson\n" +
+//                "UI Engineer: Winnie Ly\n" +
+//                "Documentation Analyst: Zaiyang Zhong\n\n" +
+//                "Thank you Brigham and Women's Hospital \nand Andrew Shinn for your time and input."));
+//        JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
+//        JFXButton btnDone = new JFXButton("Done");
+//        btnDone.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                dialog.close();
+//            }
+//        });
+//        content.setActions(btnDone);
+//        dialog.show();
     }
 
     /**
@@ -928,33 +948,12 @@ public class MapViewerController {
         else if (btnMute.getText().equals("muted")) btnMute.setText("un-muted");
     }
 
-    private String translate(String language, String text) throws IOException {
 
-        HttpUrl.Builder urlBuilder
-                = HttpUrl.parse("https://microsoft-azure-translation-v1.p.rapidapi.com/translate").newBuilder();
-        urlBuilder.addQueryParameter("to", language);
-        urlBuilder.addQueryParameter("text", text);
-        urlBuilder.addQueryParameter("from", currLang);
-
-        String url = urlBuilder.build().toString();
-
-        Request request = new Request.Builder()
-                .url(url)
-                .get()
-                .addHeader("x-rapidapi-host", "microsoft-azure-translation-v1.p.rapidapi.com")
-                .addHeader("x-rapidapi-key", "47cff1c2f7msh808be5a504f1a49p175068jsn3e1302e95cb5")
-                .addHeader("accept", "application/json")
-                .build();
-
-        Response response = httpClient.getClient().newCall(request).execute();
-
-        text = response.body().string();
-        log.info(text);
-        int endIndex = text.indexOf('<', 5);
-        int startIndex = text.indexOf('>') + 1;
-        text = text.substring(startIndex, endIndex);
-        log.info(text);
-        currLang = language;
-        return text;
+    public void translateMapViewer(String language) throws IOException {
+        btnNavigate.setText(httpClient.translate(currentLang, language, btnNavigate.getText()));
+        btnScreening.setText(httpClient.translate(currentLang, language, btnScreening.getText()));
+        btnTextMe.setText(httpClient.translate(currentLang, language, btnTextMe.getText()));
+        btnRobot.setText(httpClient.translate(currentLang, language, btnRobot.getText()));
+        btnQR.setText(httpClient.translate(currentLang, language, btnQR.getText()));
     }
 }
