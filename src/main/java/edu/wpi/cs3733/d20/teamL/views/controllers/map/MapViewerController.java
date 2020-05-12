@@ -634,7 +634,7 @@ public class MapViewerController {
     @FXML
     public void handleAbout() {
     	//Uncomment to run snake
-    	SnakeController snakeController = new SnakeController((Stage) btnNavigate.getScene().getWindow());
+    	//SnakeController snakeController = new SnakeController((Stage) btnNavigate.getScene().getWindow());
 
         JFXDialogLayout content = new JFXDialogLayout();
         content.setHeading(new Text("About"));
