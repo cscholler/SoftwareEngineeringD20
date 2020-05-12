@@ -173,21 +173,14 @@
                         <Font size="15.0" />
                      </font>
                   </JFXButton>
-                  <StackPane fx:id="creditPane" alignment="BOTTOM_CENTER" maxWidth="300.0" minWidth="130.0" prefHeight="197.0" prefWidth="130.0">
-                     <children>
-                        <JFXButton fx:id="btnCredit" buttonType="RAISED" graphicTextGap="0.0" onAction="#handleCredit" prefHeight="37.0" prefWidth="91.0" style="-fx-background-color: transparent;" text="Credit">
-                           <StackPane.margin>
-                              <Insets />
-                           </StackPane.margin>
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </JFXButton>
-                     </children>
+                  <JFXButton fx:id="btnCredit" buttonType="RAISED" graphicTextGap="0.0" onAction="#handleCredit" prefHeight="37.0" prefWidth="91.0" style="-fx-background-color: transparent;" text="Credit">
                      <StackPane.margin>
-                        <Insets left="20.0" right="30.0" />
+                        <Insets right="130.0" />
                      </StackPane.margin>
-                  </StackPane>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </JFXButton>
                </children>
             </StackPane>
          </children>

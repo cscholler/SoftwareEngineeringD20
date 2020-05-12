@@ -76,7 +76,7 @@ public class MapViewerController {
     @FXML
     private JFXListView dirList = new JFXListView();
     @FXML
-    StackPane stackPane, keyStackPane, screeningPane, creditPane;
+    StackPane stackPane, keyStackPane, screeningPane;
     @FXML
     private JFXListView listF1, listF2, listF3, listF4, listF5;
     @FXML
@@ -706,7 +706,7 @@ public class MapViewerController {
                 "Webcam-Capture"
         ));
 
-        JFXDialog creditDialog = new JFXDialog(creditPane, content, JFXDialog.DialogTransition.BOTTOM);
+        JFXDialog creditDialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
         JFXButton btnDone = new JFXButton("Done");
 
         btnDone.setOnAction(new EventHandler<ActionEvent>() {
