@@ -742,8 +742,12 @@ public class MapViewerController {
                 "Algorithms Specialist: Cameron Jacobson\n" +
                 "UI Engineer: Winnie Ly\n" +
                 "Documentation Analyst: Zaiyang Zhong\n\n" +
-                "Thank you Brigham and Women's Hospital \nand Andrew Shinn for your time and input."
-                ));
+                "Thank you Brigham and Women's Hospital \nand Andrew Shinn for your time and input.\n\n" +
+                "The Brigham & Women's Hospital maps and\n" +
+                "data used in this application are copyrighted\n" +
+                "and provided for the sole use of educational purposes."
+
+        ));
 
         JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
         JFXButton btnDone = new JFXButton("Done");
