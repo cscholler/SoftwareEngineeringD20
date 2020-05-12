@@ -623,21 +623,21 @@ public class MapViewerController {
 
         JFXDialogLayout content = new JFXDialogLayout();
         content.setHeading(new Text("Credit"));
-        content.setBody(new Text("External API/Software:\n" +
-                "JSON\n" +
-                "Apache Derby\n" +
+        content.setBody(new Text("External API/Software:\n\n" +
                 "Apache Commons\n" +
-                "JFoenix\n" +
-                "Google Juice\n" +
-                "Twilio\n" +
-                "SendGrid\n" +
-                "QRGen\n" +
-                "jBCrpyt\n" +
+                "Apache Derby\n" +
                 "Cloud Text-to-Speech\n" +
-                "Webcam-Capture\n" +
-                "OkHttp\n" +
+                "Google Juice\n" +
+                "jBCrpyt\n" +
+                "JetBrains\n" +
+                "JFoenix\n" +
+                "JSON\n" +
                 "MySQL Connector\n" +
-                "JetBrains\n"
+                "OkHttp\n" +
+                "QRGen\n" +
+                "SendGrid\n" +
+                "Twilio\n" +
+                "Webcam-Capture"
         ));
 
         JFXDialog creditDialog = new JFXDialog(creditPane, content, JFXDialog.DialogTransition.BOTTOM);
@@ -665,7 +665,7 @@ public class MapViewerController {
         content.setBody(new Text("WPI Computer Science Department\n" +
                 "CS3733-D20 Software Engineering\n" +
                 "Prof. Wilson Wong\n" +
-                "Team Coach: Chris Myers\n\n" +
+                "Team Coach: Chris Myers\n" +
                 "Lead Software Engineer: Conrad Tulig\n" +
                 "Assistant Lead Software Engineer: Luke Bodwell\n" +
                 "Assistant Lead Software Engineer: Caleb Farwell\n" +
@@ -675,7 +675,7 @@ public class MapViewerController {
                 "Algorithms Specialist: Cameron Jacobson\n" +
                 "UI Engineer: Winnie Ly\n" +
                 "Documentation Analyst: Zaiyang Zhong\n\n" +
-                "Thank you Brigham and Women's Hospital \nand Andrew Shinn for your time and input.\n"
+                "Thank you Brigham and Women's Hospital \nand Andrew Shinn for your time and input."
                 ));
 
         JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
