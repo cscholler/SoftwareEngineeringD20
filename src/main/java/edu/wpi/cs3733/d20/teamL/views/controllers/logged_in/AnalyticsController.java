@@ -403,8 +403,6 @@ public class AnalyticsController implements Initializable {
         return frequencies;
     }
 
-    private void burn
-
     private void generateFloorButtons() {
         map.generateFloorButtons(floorSelector, this::handleFloor);
     }
@@ -458,7 +456,7 @@ public class AnalyticsController implements Initializable {
             if(node.getFreq() > 0) {
                 nodeGUI.setVisible(true);
                 //nodeGUI.setHighlightColor(Color.RED);
-                nodeGUI.setGradient(map.getZoomLevel() * nodeGUI.getNode().getFreq() * 5);
+                nodeGUI.setGradient(map.getZoomLevel() * Math.log10(nodeGUI.getNode().getFreq()) * 20);
             } else {
                 nodeGUI.setVisible(false);
             }
@@ -470,7 +468,7 @@ public class AnalyticsController implements Initializable {
             if(edgeGUI.getEdge().getFreq() > 0) {
                 if(edgeGUI != null) {
                     edgeGUI.setVisible(true);
-                    edgeGUI.setGradient(edgeGUI.getEdge().getFreq() * 2);
+                    edgeGUI.setGradient(map.getZoomLevel() * Math.log10(edgeGUI.getEdge().getFreq()) * 20);
                 }
             }
         }
