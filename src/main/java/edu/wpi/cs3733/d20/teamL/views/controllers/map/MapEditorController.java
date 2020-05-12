@@ -171,7 +171,11 @@ public class MapEditorController {
     private void switchBuilding() {
         String selected = buildingChooser.getSelectionModel().getSelectedItem();
 
-        map.setBuilding(selected);
+        setBuildingTo(selected);
+    }
+
+    private void setBuildingTo(String building) {
+        map.setBuilding(building);
 
         int prevFloor = map.getFloor();
         generateFloorButtons();
@@ -296,6 +300,7 @@ public class MapEditorController {
             Graph newGraph = MapParser.parseMapToGraph(data.getNodeFile(), data.getEdgeFile());
             Building faulkner = new Building("Faulkner", newGraph);
             Building BTM = new Building(MapViewerController.MAIN, newGraph);
+            map.getBuildings().clear();
             map.getBuildings().add(faulkner);
             map.getBuildings().add(BTM);
             map.setBuilding(defaultBuilding);
