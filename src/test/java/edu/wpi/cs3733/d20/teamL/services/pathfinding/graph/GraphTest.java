@@ -17,7 +17,7 @@ class GraphTest {
     newGraph.addNode(test_1);
     newGraph.addNode(test_2);
 
-    test_1.addEdgeTwoWay(new Edge(test_1, test_2));
+    test_1.addEdgeTwoWay(new Edge(test_1, test_2, 0));
 
     assertEquals("test_1", test_2.getEdge(test_1).getDestination().getID());
   }

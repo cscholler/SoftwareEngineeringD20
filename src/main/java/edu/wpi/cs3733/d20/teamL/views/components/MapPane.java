@@ -19,6 +19,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -101,6 +102,9 @@ public class MapPane extends ScrollPane {
 
             // Change the zoom level
             setZoomLevelToPosition(prevZoomLevel * (1 + event.getDeltaY() / 500), new Point2D(event.getX(), event.getY()));
+            double dir = event.getDeltaY();
+            //setZoomLevelToPosition((1 + event.getDeltaY() / 500), new Point2D(event.getX(), event.getY()));
+            //else testZoom(1.2, new Point2D(event.getX(), event.getY()));
 
             event.consume();
         });
@@ -136,7 +140,7 @@ public class MapPane extends ScrollPane {
 
                         Node source = tempEdge.getSource().getNode();
 
-                        Edge edge = new Edge(source, dest);
+                        Edge edge = new Edge(source, dest,0);
                         source.addEdgeTwoWay(edge);
 
                         addEdge(edge);
@@ -507,6 +511,10 @@ public class MapPane extends ScrollPane {
         // Scale the image
         mapImage.setFitWidth(mapImage.getFitWidth() * (zoomLevel / this.zoomLevel));
 
+        //mapImage.setScaleX(mapImage.getScaleX() * (zoomLevel / this.zoomLevel));
+        //mapImage.setScaleY(mapImage.getScaleY() * (zoomLevel / this.zoomLevel));
+
+
         this.zoomLevel = zoomLevel;
     }
 
@@ -526,6 +534,19 @@ public class MapPane extends ScrollPane {
 
         scroller.setHvalue(percentX * scroller.getHmax());
         scroller.setVvalue(percentY * scroller.getVmax());
+    }
+
+    private void testZoom(double factor, Point2D mousePos) {
+        //factor = 1.2;
+        // Zoom into the image.
+        mapImage.setScaleX(mapImage.getScaleX() * factor);
+        mapImage.setScaleY(mapImage.getScaleY() * factor);
+        // Calculate displacement of zooming position.
+        double dx = (mousePos.getX() - scroller.getLayoutX()) * (factor - 1);
+        double dy = (mousePos.getY() - scroller.getLayoutY()) * (factor - 1);
+        // Compensate for displacement.
+        scroller.setLayoutX(scroller.getLayoutX() - dx);
+        scroller.setLayoutY(scroller.getLayoutY() - dy);
     }
 
     public boolean isEditable() {
@@ -617,7 +638,7 @@ public class MapPane extends ScrollPane {
                     Node source = tempEdge.getSource().getNode();
                     Node dest = nodeGUI.getNode();
 
-                    Edge edge = new Edge(source, dest);
+                    Edge edge = new Edge(source, dest, 0);
                     source.addEdgeTwoWay(edge);
 
                     addEdge(edge);

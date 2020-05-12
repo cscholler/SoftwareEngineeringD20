@@ -88,7 +88,7 @@ public class SecurityPaneController {
     @FXML
     private void handleSubmit() throws IOException {
         String id = patientIDText.getText();
-        String location = locationText.getText();// == null ? sf.getNode(locationText.getText()).getID() : null;
+        String location = locationText.getText() != null ? sf.getNode(locationText.getText()).getID() : null;
         String reason = reasonText.getText();
         String notes = notesText.getText();
         String personnel = personnelText.getText();
@@ -131,7 +131,7 @@ public class SecurityPaneController {
             if(validFields){
 
             int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
-                    new ArrayList<>(Arrays.asList(null, manager.getCurrentUser().getUsername(), null, location, "security", null, concatenatedNotes, status, dateAndTime)))));
+                    new ArrayList<>(Arrays.asList(null, manager.getCurrentUser().getUsername(), null, location, "Security", reason, concatenatedNotes, status, dateAndTime)))));
 
             if(rows == 0) {
                 //TODO database error window

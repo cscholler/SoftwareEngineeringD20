@@ -65,6 +65,8 @@ public class DerbyConstants {
 					"subtype VARCHAR(16) NOT NULL, " +
 					"description VARCHAR(128) NOT NULL, " +
 					"inventory INT NOT NULL, " +
+					"cost DOUBLE NOT NULL), " +
+					//"url VARCHAR(64), " + ;
 					"PRIMARY KEY (id))";
 
 	public static final String CREATE_GIFT_DELIVERY_REQUEST_TABLE =
@@ -112,6 +114,14 @@ public class DerbyConstants {
 					"date_and_time CHAR(19) NOT NULL, " +
 					"PRIMARY KEY (id))";
 
+	public static final String CREATE_FEEDBACK_TABLE =
+			"CREATE TABLE Feedback(" +
+					"id INT NOT NULL GENERATED ALWAYS AS IDENTITY, " +
+					"expectations VARCHAR(256) NOT NULL, " +
+					"application VARCHAR(256) NOT NULL, " +
+					"notes VARCHAR(256), " +
+					"PRIMARY KEY (id))";
+
 	public static final String DROP_NODE_TABLE =
 			"DROP TABLE Nodes";
 
@@ -138,4 +148,7 @@ public class DerbyConstants {
 
 	public static final String DROP_SERVICE_REQUEST_TABLE =
 			"DROP TABLE Service_Requests";
+
+	public static final String DROP_FEEDBACK_TABLE =
+			"DROP TABLE Feedback";
 }

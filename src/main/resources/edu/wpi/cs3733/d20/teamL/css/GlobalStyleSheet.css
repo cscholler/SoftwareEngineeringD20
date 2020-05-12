@@ -175,9 +175,9 @@
     -jfx-unfocus-color: white;
     -jfx-focus-color: #405784;
     -fx-pref-width: 300;
-    -fx-pref-height: 150;
+    -fx-pref-height: 142;
     -fx-max-width: 300;
-    -fx-max-height: 150;
+    -fx-max-height: 142;
 
     -fx-font-size: 15;
     -jfx-label-float: true;
@@ -277,11 +277,57 @@
     -fx-background-radius: 0;
 }
 
+.sidebar-buttons-jfx {
+    -fx-background-color: #0d2e57;
+    -fx-background-radius: 0;
+}
+
+.sidebar-buttons-jfx:hover {
+    -fx-background-color: #405784;
+}
+
+/*----------------------------Gift Cart------------------------------------*/
+.total-cost-label-fx {
+    -fx-text-fill: #00043B;
+    -fx-font-size: 30;
+}
+
+.cost-amount-label-fx {
+    -fx-text-fill: #00043B;
+    -fx-font-size: 35;
+    -fx-font-weight:bold;
+}
+
+.table-cell {
+    -fx-alignment: center-left;
+    -fx-border-color: white;
+    -fx-font-size: 20;
+}
+
+.table-row-cell {
+    -fx-background-color: white;
+    /*-fx-background-insets: 0, 0 0 1 0;*/
+    -fx-border-color: lightgray;
+}
+
+
+
+.jfx-table-view > .virtual-flow > .clipped-container > .sheet > .table-row-cell:filled:selected {
+    -fx-background-color: rebeccapurple;
+}
+
+/*.table-view {*/
+/*    -fx-pref-width: 464;*/
+/*    -fx-max-width: inherit;*/
+/*    -fx-pref-height: 500;*/
+/*}*/
+
+
 /*-----------------------------Tab Panes-----------------------------------*/
 /*applies automatically*/
 
 .jfx-tab-pane .tab-header-background {
-    -fx-background-color: white;
+    -fx-background-color: lightgrey;
 }
 
 .jfx-tab-pane .tab-selected-line {
@@ -366,7 +412,8 @@
     -fx-shape: "M214 0l0 428l-214 -214l214 -214z";
 }
 
-/*-------------------------Tree Table for Room Scheduler Times -------------------------------------------*/
+/*-------------------------Room Scheduler Times -------------------------------------------*/
+/*applies automatically*/
 .tree-table-cell {
     -fx-alignment: center;
     -fx-font-size: 15;
@@ -419,4 +466,17 @@
     -fx-pref-height: 20;
     -fx-font-size: 14;
     -fx-text-fill: red;
+}
+/*-------------------------Analytics Page -------------------------------------------*/
+.analytics-circle-buttons-jfx {
+    -fx-font-size: 30;
+    -fx-background-color: #00043B;
+    -fx-text-fill: white;
+
+    -fx-pref-width: 80;
+    -fx-pref-height: 60;
+    -fx-max-width: 70;
+    -fx-max-height: 70;
+    -fx-background-radius: 50;
+    -jfx-button-type: RAISED;
 }

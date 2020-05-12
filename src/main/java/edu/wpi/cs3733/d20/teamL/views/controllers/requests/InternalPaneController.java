@@ -107,7 +107,7 @@ public class InternalPaneController implements Initializable {
 
     @FXML
     private void submitClicked() {
-        String start = startLoc.getText();
+        String start = startLoc.getText() != null ? sf.getNode(startLoc.getText()).getID() : null;
         String end = endLoc.getText();
         String type = (String) transportSelector.getValue();
         String dateNeeded = date.getId();
@@ -146,7 +146,7 @@ public class InternalPaneController implements Initializable {
 
         int rows = 0;
         if(validFields)
-            rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST, new ArrayList<>(Arrays.asList(patientID, manager.getCurrentUser().getUsername(), null, start, "internal transportation", type, concatenatedNotes, status, dateAndTime))));
+            rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST, new ArrayList<>(Arrays.asList(patientID, manager.getCurrentUser().getUsername(), null, start, "Internal Transportation", type, concatenatedNotes, status, dateAndTime))));
 
 
         if (rows == 0) {
@@ -159,7 +159,7 @@ public class InternalPaneController implements Initializable {
             startLoc.setText("");
             endLoc.setText("");
             transportSelector.setValue(null);
-            date.setId("");
+            date.setValue(null);
             hour.setText("");
             minutes.setText("");
             patient.setText("");

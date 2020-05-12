@@ -2,6 +2,7 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.Timer;
 
 import com.google.cloud.texttospeech.v1.SsmlVoiceGender;
 import com.google.protobuf.ByteString;
@@ -14,6 +15,7 @@ import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
+import edu.wpi.cs3733.d20.teamL.views.controllers.screening.QuestionnaireController;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -56,30 +58,28 @@ import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
 public class MapViewerController {
 	private final FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
 	private final TimerManager timerManager = new TimerManager();
-	private SearchFields searchFields;
+    private SearchFields searchFields;
 	private JFXAutoCompletePopup<String> autoCompletePopup;
 	private final ObservableList<String> directions = FXCollections.observableArrayList();
 	private Path path = new Path();
+	@FXML
+    private JFXToggleButton handicapToggle;
     @FXML
     private MapPane map;
     @FXML
     private JFXTextField startingPoint, destination;
     @FXML
-    private JFXButton btnNavigate, floorUp, floorDown;
+    private JFXButton btnNavigate, floorUp, floorDown, btnScreening;
     @FXML
-    private ScrollPane scroll;
-    @FXML
-    private VBox sideBox, instructions;
-    @FXML
-    private JFXNodesList textDirNode;
+    private VBox sideBox;
     @FXML
     private VBox floorSelector;
     @FXML
     private JFXListView dirList = new JFXListView();
     @FXML
-    private JFXButton btnTextMe, btnQR;
+    private JFXButton btnTextMe, btnQR, btnRobot;
     @FXML
-    StackPane stackPane, keyStackPane;
+    StackPane stackPane, keyStackPane, screeningPane;
     @FXML
     private JFXListView listF1, listF2, listF3, listF4, listF5;
     @FXML
@@ -87,7 +87,9 @@ public class MapViewerController {
 	@FXML
 	private Accordion accordion = new Accordion();
     @FXML
-    private Label timeLabel, dateLabel;
+    private Label timeLabel, dateLabel, currentTempLabel;
+    @FXML
+    private ImageView currentWeatherIcon;
     @Inject
     private IDatabaseCache cache;
     @Inject
@@ -125,13 +127,15 @@ public class MapViewerController {
     private Collection<String> retailNodes = new ArrayList<>();
     private Collection<String> confNodes = new ArrayList<>();
 
+    private QuestionnaireController qc;
+
     public static final String MAIN = "Main";
-	private final ArrayList<String> test = new ArrayList<>();
 
     @FXML
     private void initialize() {
         timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
         timerManager.startTimer(() -> timerManager.updateDate(dateLabel), 0, 1000);
+        timerManager.startTimer(() -> timerManager.updateWeather(currentTempLabel, currentWeatherIcon), 0,1800000);
 
         if (App.doUpdateCacheOnLoad) {
             cache.cacheAllFromDB();
@@ -142,8 +146,11 @@ public class MapViewerController {
         map.setHighLightColor(Color.GOLD);
         btnNavigate.setDisableVisualFocus(true);
 
+        // Stops stackPanes from stoping you clicking on whats underneath
         stackPane.setPickOnBounds(false);
         keyStackPane.setPickOnBounds(false);
+        screeningPane.setPickOnBounds(false);
+
         dirList.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent -> goToSelected()));
         // Import all the nodes from the cache and set the current building to Faulkner
         String startB = "Faulkner";
@@ -166,7 +173,7 @@ public class MapViewerController {
         // Populate autocomplete
         searchFields = new SearchFields(cache.getNodeCache());
         searchFields.getFields().addAll(Arrays.asList(SearchFields.Field.shortName, SearchFields.Field.longName));
-        searchFields.populateMapSearchFields();
+        searchFields.populateSearchFields();
         autoCompletePopup = new JFXAutoCompletePopup<>();
         autoCompletePopup.getSuggestions().addAll(searchFields.getSuggestions());
 
@@ -220,6 +227,11 @@ public class MapViewerController {
 
         accordion.getPanes().addAll(departments, labs, services, amenities, conferenceRooms);
         showAccordion();
+
+
+        btnScreening.setText("Think you have COVID-19?");
+        btnScreening.setStyle("-fx-font-weight: bold");
+        btnScreening.setMinWidth(300);
     }
 
     private void generateFloorButtons() {
@@ -291,8 +303,10 @@ public class MapViewerController {
             btnTextMe.setVisible(true);
             btnQR.setDisable(false);
             btnQR.setVisible(true);
-           // textDirNode.setDisable(false);
-            //textDirNode.setVisible(true);
+            btnRobot.setDisable(false);
+            btnRobot.setVisible(true);
+//            textDirNode.setDisable(false);
+//            textDirNode.setVisible(true);
         }
         hideAccordion();
         hideTextualDirections();
@@ -305,54 +319,54 @@ public class MapViewerController {
      */
     @FXML
     private void showLegend() {
-		JFXDialogLayout legendContent = new JFXDialogLayout();
-		Label title = new Label("Map Legend");
-		title.setStyle("-fx-font-size: 30;" + "-fx-text-fill: #0d2e57;" + "-fx-font-weight: bold");
-		legendContent.setHeading(title);
+            JFXDialogLayout legendContent = new JFXDialogLayout();
+            Label title = new Label("Map Legend");
+            title.setStyle("-fx-font-size: 30;" + "-fx-text-fill: #0d2e57;" + "-fx-font-weight: bold");
+            legendContent.setHeading(title);
 
-		HBox contentHBox = new HBox();
-		VBox colorKey = new VBox();
-		colorKey.setMinWidth(300);
-		colorKey.setSpacing(5);
-		VBox iconKey = new VBox();
-		iconKey.setMinWidth(150);
-		iconKey.setSpacing(5);
+            HBox contentHBox = new HBox();
+            VBox colorKey = new VBox();
+            colorKey.setMinWidth(300);
+            colorKey.setSpacing(5);
+            VBox iconKey = new VBox();
+            iconKey.setMinWidth(150);
+            iconKey.setSpacing(5);
 
-		String[] colors = new String[]{" #7DA7D9"," #FCB963"," #FFF77D"," #79BD92"," #8881BD"," #F69679"," #6DCFF6"," #AD87AD"," #BDDEA2"," #F5989D"," #7DA7D9"};
-		String[] colorText = new String[]{"Departments/Clinics/Waiting Area","Stairwell","Restrooms","Food/Shops/Payphone/etc.","Labs/Imaging/Testing Areas",
-		"Exits/Entrances","Info Desk/Security/Lost and Found","Conference Rooms","Elevators","Interpreters/Spiritual/Library/etc","Departments/Clinics/Waiting Area"};
-		Image[] icons = new Image[]{EXIT_filled,REST_filled,INFO_filled,ELEV_filled,STAI_filled,RETL_filled};
-		String[] iconText = new String[]{"Exit/Entrance","Restrooms","Information Desk","Elevator","Stairs","Retail Locations"};
+            String[] colors = new String[]{" #7DA7D9"," #FCB963"," #FFF77D"," #79BD92"," #8881BD"," #F69679"," #6DCFF6"," #AD87AD"," #BDDEA2"," #F5989D"," #7DA7D9"};
+            String[] colorText = new String[]{"Departments/Clinics/Waiting Area","Stairwell","Restrooms","Food/Shops/Payphone/etc.","Labs/Imaging/Testing Areas",
+            "Exits/Entrances","Info Desk/Security/Lost and Found","Conference Rooms","Elevators","Interpreters/Spiritual/Library/etc","Departments/Clinics/Waiting Area"};
+            Image[] icons = new Image[]{EXIT_filled,REST_filled,INFO_filled,ELEV_filled,STAI_filled,RETL_filled};
+            String[] iconText = new String[]{"Exit/Entrance","Restrooms","Information Desk","Elevator","Stairs","Retail Locations"};
 
-		for (int i = 0; i < colors.length; i++) {
-			JFXButton colorSwatch = new JFXButton();
-			String fxColor = "-fx-background-color: " + colors[i] +";";
-			colorSwatch.setStyle("-fx-min-height: 30;" + "-fx-min-width: 30;" + "-fx-border-radius: 0;" + fxColor);
+            for (int i = 0; i < colors.length; i++) {
+                JFXButton colorSwatch = new JFXButton();
+                String fxColor = "-fx-background-color: " + colors[i] +";";
+                colorSwatch.setStyle("-fx-min-height: 30;" + "-fx-min-width: 30;" + "-fx-border-radius: 0;" + fxColor);
 
-			VBox swatchText = new VBox(new Label(colorText[i]));
-			swatchText.setAlignment(Pos.CENTER);
+                VBox swatchText = new VBox(new Label(colorText[i]));
+                swatchText.setAlignment(Pos.CENTER);
 
-			HBox colorRow = new HBox();
-			colorRow.setSpacing(5);
-			colorRow.getChildren().setAll(colorSwatch, swatchText);
+                HBox colorRow = new HBox();
+                colorRow.setSpacing(5);
+                colorRow.getChildren().setAll(colorSwatch, swatchText);
 
-			colorKey.getChildren().add(colorRow);
-		}
+                colorKey.getChildren().add(colorRow);
+            }
 
-		for (int i = 0; i < icons.length; i++){
-			ImageView icon = new ImageView(icons[i]);
+            for (int i = 0; i < icons.length; i++){
+                ImageView icon = new ImageView(icons[i]);
 
-			VBox displayText = new VBox(new Label(iconText[i]));
-			displayText.setAlignment(Pos.CENTER);
+                VBox displayText = new VBox(new Label(iconText[i]));
+                displayText.setAlignment(Pos.CENTER);
 
-			HBox iconRow = new HBox();
-			iconRow.setSpacing(5);
-			iconRow.getChildren().setAll(icon,displayText);
+                HBox iconRow = new HBox();
+                iconRow.setSpacing(5);
+                iconRow.getChildren().setAll(icon,displayText);
 
-			iconKey.getChildren().add(iconRow);
-		}
+                iconKey.getChildren().add(iconRow);
+            }
 
-		contentHBox.getChildren().addAll(colorKey,iconKey);
+            contentHBox.getChildren().addAll(colorKey,iconKey);
         legendContent.setBody(contentHBox);
 
         JFXDialog legend = new JFXDialog(keyStackPane, legendContent, JFXDialog.DialogTransition.TOP);
@@ -360,13 +374,21 @@ public class MapViewerController {
 
         JFXButton btnClose = new JFXButton("X");
         btnClose.setStyle("-fx-font-weight: bolder");
-        btnClose.setOnAction(event -> legend.close());
+        btnClose.setOnAction(e -> legend.close());
         legendContent.setActions(btnClose);
 
         legend.show();
     }
 
-    private String highlightSourceToDestination(Node source, Node destination) {
+    /**
+     * Shows the future weather
+     */
+    @FXML
+    private void openNextHoursWeather() {
+
+    }
+
+    private void clearPath() {
         map.getSelector().clear();
 
         if (!path.getPathNodes().isEmpty()) {
@@ -377,6 +399,10 @@ public class MapViewerController {
             map.resetNodeVisibility(end);
         }
         path.getPathNodes().clear();
+    }
+
+    private String highlightSourceToDestination(Node source, Node destination) {
+        clearPath();
 
         path = pathfinderService.pathfind(map.getAllNodes(), source, destination);
         highLightPath();
@@ -447,7 +473,7 @@ public class MapViewerController {
         dirList.getItems().addAll(directions);
 
         for (String direction : message) {
-            builder.append(direction + "\n\n");
+            builder.append(direction).append("\n\n");
         }
 
         return builder.toString();
@@ -497,6 +523,11 @@ public class MapViewerController {
 
     public MapPane getMap() {
         return map;
+    }
+
+    @FXML
+    private void toggleHandicap() {
+        pathfinderService.setHandicapped(handicapToggle.isSelected());
     }
 
     @FXML
@@ -568,6 +599,7 @@ public class MapViewerController {
     @FXML
     private void clearSource() {
         startingPoint.clear();
+        clearPath();
     }
 
     /**
@@ -578,6 +610,7 @@ public class MapViewerController {
         destination.clear();
         hideTextualDirections();
         showAccordion();
+        clearPath();
     }
 
     /**
@@ -641,6 +674,50 @@ public class MapViewerController {
 				});
 			});
 		}
+    }
+
+    @FXML
+    public void openScreening() throws IOException{
+
+        qc = new QuestionnaireController(cache.getQuestions());
+
+        JFXDialogLayout layout = new JFXDialogLayout();
+        layout.getStylesheets().add("/edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css");
+        Label headingLabel = new Label ("Coronavirus Screening Test");
+        headingLabel.getStyleClass().add("service-request-header-label-fx");
+        headingLabel.setStyle("-fx-font-size: 30;");
+        layout.setHeading(headingLabel);
+        layout.setBody(qc.nextClicked());
+
+        JFXDialog screeningDialog = new JFXDialog(screeningPane, layout, JFXDialog.DialogTransition.TOP);
+        screeningDialog.getStylesheets().add("/edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css");
+        screeningDialog.show();
+
+        JFXButton btnClose = new JFXButton("Quit");
+        btnClose.getStyleClass().add("cancel-button-jfx");
+        btnClose.setStyle("-fx-pref-width: 75;" + "-fx-pref-height: 50");
+        btnClose.setOnAction(e -> screeningDialog.close());
+
+        JFXButton btnNext = new JFXButton("Next");
+        btnNext.getStyleClass().add("save-button-jfx");
+        btnNext.setStyle("-fx-pref-width: 75;" + "-fx-pref-height: 50");
+        btnNext.setOnAction(e -> {
+            if(!qc.getTestFinished()) {
+                //System.out.println("first statement");
+                qc.calculateScore();
+                layout.setHeading(qc.nextClicked());
+            } else if (qc.getTestFinished() && !qc.getDone()){
+                //System.out.println("second statement");
+                qc.calculateScore();
+                btnNext.setText("Close");
+                layout.setHeading(qc.nextClicked());
+                btnClose.setVisible(false);
+                btnClose.setDisable(true);
+            } else if (qc.getDone()) {
+                screeningDialog.close();
+            }
+        });
+        layout.setActions(btnClose, btnNext);
     }
 
     @FXML
@@ -752,5 +829,26 @@ public class MapViewerController {
 
     private void hideTextualDirections() {
         sideBox.getChildren().remove(dirList);
+    }
+
+    @FXML
+    private void handleFeedback() {
+        try {
+            Parent root = loaderFactory.getFXMLLoader("map_viewer/Feedback").load();
+            loaderFactory.setupPopup(new Stage(), new Scene(root));
+        } catch (IOException ex) {
+            log.error("Encountered IOException", ex);
+        }
+
+    }
+
+    @FXML
+    private void handleHandicap() {
+
+    }
+
+    @FXML
+    private void handleRobotDirections() {
+
     }
 }

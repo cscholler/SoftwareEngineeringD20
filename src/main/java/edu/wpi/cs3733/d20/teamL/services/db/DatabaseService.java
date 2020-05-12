@@ -8,12 +8,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.services.users.PasswordManager;
@@ -48,7 +43,6 @@ public class DatabaseService extends Service implements IDatabaseService {
 			connect();
 		}
 		// Rebuild the database if using Derby
-		// TODO: only rebuild if db doesn't exist and tables dont' exist
 		if (dbType == DB_TYPE.DERBY) {
 			rebuildDatabase();
 		}
@@ -81,7 +75,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 			log.error("Encountered ClassNotFoundException", ex);
 		}
 		try {
-			connection = DriverManager.getConnection( DBConstants.DB_PREFIX + DBConstants.DB_URL + DBConstants.DB_PORT + DBConstants.DB_NAME_DEV, DBConstants.DB_USER, DBConstants.DB_PASSWORD);
+			connection = DriverManager.getConnection( DBConstants.DB_PREFIX + DBConstants.DB_URL + DBConstants.DB_PORT + DBConstants.DB_NAME_CANARY, DBConstants.DB_USER, DBConstants.DB_PASSWORD);
 			log.info("Connection established.");
 			dbType = DB_TYPE.MY_SQL;
 		} catch (SQLException ex) {
@@ -246,8 +240,9 @@ public class DatabaseService extends Service implements IDatabaseService {
 			updates.add(new SQLEntry(DBConstants.CREATE_MEDICATION_REQUEST_TABLE));
 			updates.add(new SQLEntry(DBConstants.CREATE_SERVICE_REQUEST_TABLE));
 			updates.add(new SQLEntry(DBConstants.CREATE_RESERVATIONS_TABLE));
-			updates.add(new SQLEntry(DBConstants.CREATE_KIOSK_SETTINGS_TABLE));
 			updates.add(new SQLEntry(DBConstants.CREATE_SCREENING_QUESTIONS_TABLE));
+			updates.add(new SQLEntry(DBConstants.CREATE_KIOSK_SETTINGS_TABLE));
+			updates.add(new SQLEntry(DBConstants.CREATE_FEEDBACK_TABLE));
 		} else if (dbType == DB_TYPE.DERBY) {
 			updates.add(new SQLEntry(DerbyConstants.CREATE_NODE_TABLE));
 			updates.add(new SQLEntry(DerbyConstants.CREATE_EDGE_TABLE));
@@ -258,7 +253,8 @@ public class DatabaseService extends Service implements IDatabaseService {
 			updates.add(new SQLEntry(DerbyConstants.CREATE_GIFT_DELIVERY_REQUEST_TABLE));
 			updates.add(new SQLEntry(DerbyConstants.CREATE_MEDICATION_REQUEST_TABLE));
 			updates.add(new SQLEntry(DerbyConstants.CREATE_SERVICE_REQUEST_TABLE));
-			//TODO: add kiosk and screening tables
+			updates.add(new SQLEntry(DerbyConstants.CREATE_FEEDBACK_TABLE));
+			//TODO: add kiosk and screening and feedback tables
 		} else {
 			log.error("Invalid database type.");
 		}
@@ -305,21 +301,41 @@ public class DatabaseService extends Service implements IDatabaseService {
 		executeUpdate(new SQLEntry(DBConstants.ADD_PATIENT, new ArrayList<>(Arrays.asList("456", "Conrad", "Tulig", "123", null, null))));
 
 		// Example Gifts
-		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Flowers", "Roses", "A vase of 7 roses", "100"))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Flowers", "Tulips", "A vase of 10 tulip", "100"))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Flowers", "Dandelion", "A vase of 12 dandelions", "100"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Flowers", "Roses", "A vase of 7 roses", "100", "10.00"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Flowers", "Tulips", "A vase of 10 tulip", "100", "4.87"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Flowers", "Dandelion", "A vase of 12 dandelions", "100", "4.99"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Flowers", "Iris", "A vase of 5 iris", "100","3.99"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Flowers", "Anemone", "A vase of 5 anemone", "100","4.99"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Flowers", "Lily", "A vase of 3 lily", "100","4.99"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Flowers", "Daisy", "A vase of 6 daisy", "100","2.99"))));
 
-		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Toys", "Building blocks", "A container with ", "10"))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Toys", "Play-Do", "A package of 6 Play-do colors in different containers", "10"))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Toys", "Hot Wheels", "A set of 10 Hot Wheels as well as a small race track.", "10"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Toys", "Building blocks", "A container with ", "10", "14.99"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Toys", "Play-Do", "A package of 6 Play-do colors in different containers", "10", "1.99"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Toys", "Hot Wheels", "A set of 10 Hot Wheels as well as a small race track.", "10", "24.99"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Toys", "Children Scooter", "A Multi-Function children scooter.", "10","29.99"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Toys", "Kitchen Playset", "An American plastic kitchen playset", "10","29.99"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Toys", "Magnetic Balls", "A set of magnetic balls building blocks.", "10","9.99"))));
 
-		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Books", "LOTR", "The three Lord of the Rings books from the trilogy", "5"))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Books", "Harry Potter", "The entire Harry Potter series", "3"))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Books", "Inheritance", "The 4 books from the Inheritance cycle series", "1"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Books", "LOTR", "The three Lord of the Rings books from the trilogy", "5", "19.99"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Books", "Harry Potter", "The entire Harry Potter series", "3", "39.99"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Books", "Inheritance", "The 4 books from the Inheritance cycle series", "1", "19.99"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Books", "1984", "A dystopian novel by George Orwell", "5", "19.99"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Books", "The Great Gatsby", "A novel by F. Scott Fitzgerald", "5","13.99"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Books", "The Catcher in the Rye", "A 1945 novel by J.D. Salinger", "5","19.99"))));
 
-		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Movies", "LOTR Films", "The three Lord of the Rings movies from the trilogy", "100"))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Movies", "Star Wars", "All 6 Canon Star Wars movies", "100"))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Movies", "Pulp Fiction", "A copy of the movie Pulp Fiction", "3"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Movies", "LOTR Films", "The three Lord of the Rings movies from the trilogy", "100", "24.99"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Movies", "Star Wars", "All 6 Canon Star Wars movies", "100", "19.99"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Movies", "Pulp Fiction", "A copy of the movie Pulp Fiction", "3", "4.99"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Movies", "Joker", "full movie", "100", "6.99"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Movies", "Parasite", "full movie", "100", "12.99"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Movies", "Avengers", "A collection of Marvel Avengers 1~4", "100", "39.99"))));
+
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Mangas", "Fullmetal Alchemist", "A collection of Japanese manga Fullmetal Alchemist", "500", "199.99"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Mangas", "One-Punch Man", "A collection of Japanese manga One-Punch Man", "500", "99.99"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Mangas", "Death Note", "A collection of Japanese manga Death Note", "123", "99.99"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Mangas", "Attack on Titan", "A collection of Japanese manga Attack on Titan", "2", "199.99"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Mangas", "Slam Dunk", "A collection of Japanese manga Slam Dunk", "100", "299.99"))));
+		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Mangas", "Naruto", "A collection of Japanese manga Naruto", "500", "189.99"))));
 
 		executeUpdate(new SQLEntry(DBConstants.ADD_DEFAULT_KIOSK, new ArrayList<>(Collections.singletonList("LKIOS00101"))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_DEFAULT_KIOSK, new ArrayList<>(Collections.singletonList("LKIOS00103"))));
@@ -358,6 +374,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("Minimize contact with others", "-3", "0", "0"))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("You are not at risk however you could be a carrier remain in self isolation", "-3", "2", "-1"))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_SCREENING_QUESTION, new ArrayList<>(Arrays.asList("You should contact a staff member for immediate testing", "-3", "3", "1"))));
+
 	}
 
 	/**
@@ -372,6 +389,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 		CSVHelper csvReader = new CSVHelper();
 		for (ArrayList<String> row : csvReader.readCSVFile(csvFile, true)) {
 			//updates.add(new SQLEntry(getTableUpdateMappings().get(tableName).get(0), row));
+			row.add(String.valueOf(0));
 			if (tableName.equals("Nodes")) {
 				updates.add(new SQLEntry(DBConstants.ADD_NODE, row));
 			} else if (tableName.equals("Edges")) {
@@ -425,6 +443,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 			updates.add(new SQLEntry(DBConstants.DROP_USER_TABLE));
 			updates.add(new SQLEntry(DBConstants.DROP_EDGE_TABLE));
 			updates.add(new SQLEntry(DBConstants.DROP_NODE_TABLE));
+			updates.add(new SQLEntry(DBConstants.DROP_FEEDBACK_TABLE));
 			executeUpdates(updates);
 		} else if (dbType == DB_TYPE.DERBY) {
 			ResultSet resSet;
@@ -439,6 +458,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 			dropTableUpdates.add(DerbyConstants.DROP_GIFT_DELIVER_REQUEST_TABLE);
 			dropTableUpdates.add(DerbyConstants.DROP_MEDICATION_REQUEST_TABLE);
 			dropTableUpdates.add(DerbyConstants.DROP_SERVICE_REQUEST_TABLE);
+			dropTableUpdates.add(DerbyConstants.DROP_FEEDBACK_TABLE);
 			try {
 				for (int i = 0; i < DBConstants.GET_TABLE_NAMES().size(); i++) {
 					resSet = connection.getMetaData().getTables(null, "APP", DBConstants.GET_TABLE_NAMES().get(i).toUpperCase(), null);

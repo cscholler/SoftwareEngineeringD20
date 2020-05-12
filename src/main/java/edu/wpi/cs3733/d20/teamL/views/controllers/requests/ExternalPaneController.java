@@ -100,7 +100,7 @@ public class ExternalPaneController implements Initializable {
 
     @FXML
     private void submitClicked() {
-        String start = startLoc.getText();
+        String start = startLoc.getText() != null ? sf.getNode(startLoc.getText()).getID() : null;
         String end = endLoc.getText();
         String type = (String) transportSelector.getValue();
         String dateNeeded = date.getId();
@@ -136,7 +136,7 @@ public class ExternalPaneController implements Initializable {
         } else transportSelector.setStyle("-fx-prompt-text-fill: GRAY");
 
         int rows = 0;
-        if(validFields) rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST, new ArrayList<>(Arrays.asList(patientID, manager.getCurrentUser().getUsername(), null, start, "external transportation", type, concatenatedNotes, status, dateAndTime))));
+        if(validFields) rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST, new ArrayList<>(Arrays.asList(patientID, manager.getCurrentUser().getUsername(), null, start, "External Transportation", type, concatenatedNotes, status, dateAndTime))));
 
 
         if (rows == 0) {

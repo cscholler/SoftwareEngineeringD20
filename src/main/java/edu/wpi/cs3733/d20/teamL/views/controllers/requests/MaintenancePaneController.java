@@ -94,8 +94,7 @@ public class MaintenancePaneController implements Initializable {
             urge = urgency.getSelectionModel().getSelectedItem().toString();
         }
         String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm aa").format(new Date());
-        String roomNum = location.getText();
-//                == null ? searchFields.getNode(location.getText()).getID() : null;
+        String roomNum = location.getText() != null ? searchFields.getNode(location.getText()).getID() : null;
 
         String notes = urge + "|" + description.getText();
 
@@ -116,7 +115,7 @@ public class MaintenancePaneController implements Initializable {
 
         if(validFields){
             ArrayList<String> params = new ArrayList<>(Arrays.asList(null, loginManager.getCurrentUser().getUsername(), null, roomNum,
-                    "maintenance", manType, notes, "0", dateAndTime));
+                    "Maintenance", manType, notes, "0", dateAndTime));
             int rows = dbService.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST, params));
 
             if (rows == 0) {
@@ -124,6 +123,8 @@ public class MaintenancePaneController implements Initializable {
                 error.setTextFill(Color.RED);
                 loaderHelper.showAndFade(error);
             } else {
+                urgency.setValue(null);
+                type.setValue(null);
                 location.setText("");
                 description.setText("");
                 loaderHelper.showAndFade(requestReceived);

@@ -11,7 +11,11 @@ public interface IDatabaseCache {
 
 	void cacheNodes(ArrayList<Node> newNodes, ArrayList<Node> editedNodes);
 
-	void cacheEdges(ArrayList<Edge> newEdges);
+	void cacheEdges(ArrayList<Edge> newEdges, ArrayList<Edge> editedEdges);
+
+	void setEditedNodes(ArrayList<Node> editedNodes);
+
+	void setEditedEdges(ArrayList<Edge> editedEdges);
 
 	void updateDB();
 
@@ -61,9 +65,24 @@ public interface IDatabaseCache {
 
 	void clearDoctorCache();
 
+	void cacheRequestsFromDB();
+
+	void clearRequestCache();
+
+	ArrayList<ServiceRequest> getAllRequests();
+
+	ArrayList<GiftDeliveryRequest> getAllGiftRequests();
+
+	ArrayList<ServiceRequest> getAllSpecificRequest(String service);
+
+
 	void cacheKiosksFromDB();
 
 	ArrayList<Kiosk> getKioskCache();
 
 	void clearKioskCache();
+
+	void cacheQuestionsFromDB();
+
+	ArrayList<Question> getQuestions();
 }

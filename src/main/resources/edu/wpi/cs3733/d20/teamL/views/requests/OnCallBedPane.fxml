@@ -29,13 +29,13 @@
             </VBox>
          </center>
          <bottom>
-            <HBox alignment="CENTER" spacing="100.0" BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER" minHeight="100.0" spacing="100.0" BorderPane.alignment="CENTER">
                <children>
                   <JFXButton fx:id="btnSubmit" maxHeight="120.0" onAction="#handleSubmit" prefHeight="120.0" styleClass="save-button-jfx" text="Submit" />
                   <Label fx:id="confirmation" styleClass="submission-failed-label-fx" textFill="RED" visible="false" />
                </children>
                <BorderPane.margin>
-                  <Insets bottom="20.0" />
+                  <Insets />
                </BorderPane.margin>
                <padding>
                   <Insets left="350.0" />
