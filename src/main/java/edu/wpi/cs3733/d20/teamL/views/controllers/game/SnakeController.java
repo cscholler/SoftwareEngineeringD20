@@ -1,15 +1,12 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.game;
 
-import edu.wpi.cs3733.d20.teamL.App;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -18,8 +15,12 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class SnakeController {
-	@FXML
-	public AnchorPane anchor;
+	//@FXML
+	//public AnchorPane anchor;
+
+	public SnakeController(Stage stage) {
+		initialize(stage);
+	}
 
 	public enum Direction {
 		UP, DOWN, LEFT, RIGHT
@@ -38,7 +39,7 @@ public class SnakeController {
 
 	private ObservableList<Node> snake;
 
-	public void initialize() {
+	public void initialize(Stage stage) {
 		Scene scene = new Scene(createPane());
 		scene.setOnKeyPressed(event -> {
 			switch(event.getCode()) {
@@ -73,10 +74,13 @@ public class SnakeController {
 			moved = false;
 		});
 
-		Stage stage = (Stage) anchor.getScene().getWindow();
 		stage.setScene(scene);
 		stage.show();
 		startGame();
+	}
+
+	public Scene getScene() {
+		return new Scene(createPane());
 	}
 
 	private Pane createPane() {

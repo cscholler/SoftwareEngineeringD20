@@ -1,41 +1,29 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.logged_in;
 
 
-import com.jfoenix.controls.JFXAutoCompletePopup;
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
-import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
-import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
-import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
-import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
-import edu.wpi.cs3733.d20.teamL.views.controllers.map.MapViewerController;
+import edu.wpi.cs3733.d20.teamL.views.components.map.EdgeGUI;
+import edu.wpi.cs3733.d20.teamL.views.components.map.MapPane;
+import edu.wpi.cs3733.d20.teamL.views.components.map.NodeGUI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.stage.Stage;
-import javafx.scene.chart.*;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
-import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -44,7 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AnalyticsController implements Initializable {
 
     @FXML
-    MapPane map;
+	MapPane map;
     @FXML
     private JFXComboBox<String> timeBox, buildingChooser, heatBox;
     @FXML

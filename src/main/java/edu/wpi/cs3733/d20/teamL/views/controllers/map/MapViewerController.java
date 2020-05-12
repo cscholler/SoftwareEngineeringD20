@@ -1,74 +1,59 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.Timer;
-
 import com.google.cloud.texttospeech.v1.SsmlVoiceGender;
-import com.google.protobuf.ByteString;
+import com.google.inject.Inject;
 import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamL.App;
+import edu.wpi.cs3733.d20.teamL.entities.Building;
+import edu.wpi.cs3733.d20.teamL.entities.Node;
+import edu.wpi.cs3733.d20.teamL.entities.Path;
 import edu.wpi.cs3733.d20.teamL.services.accessability.ITextToSpeechService;
-import edu.wpi.cs3733.d20.teamL.entities.*;
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
+import edu.wpi.cs3733.d20.teamL.util.TimerManager;
+import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
+import edu.wpi.cs3733.d20.teamL.views.components.map.EdgeGUI;
+import edu.wpi.cs3733.d20.teamL.views.components.map.MapPane;
+import edu.wpi.cs3733.d20.teamL.views.components.map.NodeGUI;
+import edu.wpi.cs3733.d20.teamL.views.controllers.game.SnakeController;
 import edu.wpi.cs3733.d20.teamL.views.controllers.screening.QuestionnaireController;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import edu.wpi.cs3733.d20.teamL.util.TimerManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-<<<<<<< Updated upstream
-import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
-import javafx.event.EventHandler;
-=======
->>>>>>> Stashed changes
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Accordion;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.TitledPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Line;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
-import com.google.inject.Inject;
-
 import javafx.util.Duration;
 import lombok.extern.slf4j.Slf4j;
 
-import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
-<<<<<<< Updated upstream
-import edu.wpi.cs3733.d20.teamL.entities.Path;
-import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
-import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
-import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
-=======
-import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
-import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
-import edu.wpi.cs3733.d20.teamL.services.speech.ISpeechToTextService;
-import edu.wpi.cs3733.d20.teamL.services.speech.ITextToSpeechService;
-import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
-import edu.wpi.cs3733.d20.teamL.util.SearchFields;
-import edu.wpi.cs3733.d20.teamL.util.TimerManager;
-import edu.wpi.cs3733.d20.teamL.views.components.map.EdgeGUI;
-import edu.wpi.cs3733.d20.teamL.views.components.map.MapPane;
-import edu.wpi.cs3733.d20.teamL.views.components.map.NodeGUI;
-import edu.wpi.cs3733.d20.teamL.views.controllers.screening.QuestionnaireController;
->>>>>>> Stashed changes
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 
 @Slf4j
 public class MapViewerController {
@@ -647,12 +632,7 @@ public class MapViewerController {
      */
     @FXML
     public void handleAbout() {
-		try {
-			Parent root = loaderFactory.getFXMLLoader("game/Snake").load();
-			loaderFactory.setupScene(new Scene(root));
-		} catch (IOException ex) {
-			log.error("Encountered IOException", ex);
-		}
+    	SnakeController snakeController = new SnakeController((Stage) btnNavigate.getScene().getWindow());
         /*JFXDialogLayout content = new JFXDialogLayout();
         content.setHeading(new Text("About"));
         content.setBody(new Text("WPI Computer Science Department\n" +
