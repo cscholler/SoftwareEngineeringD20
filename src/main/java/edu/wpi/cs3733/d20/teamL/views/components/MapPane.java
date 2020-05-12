@@ -506,6 +506,14 @@ public class MapPane extends ScrollPane {
             Point2D prevPos = new Point2D(nodeGUI.getXProperty().get(), nodeGUI.getYProperty().get());
             Point2D newPos = prevPos.multiply(zoomLevel / this.zoomLevel);
             nodeGUI.setLayoutPos(newPos);
+            if (nodeGUI.isUsingGradient()) {
+                nodeGUI.setGradient(nodeGUI.getRadius() * (zoomLevel / this.zoomLevel));
+            }
+        }
+
+        for (EdgeGUI edgeGUI : edges.values()) {
+            if (edgeGUI.isUsingGradient())
+                edgeGUI.setGradient(edgeGUI.getStrokeWidth() * (zoomLevel / this.zoomLevel));
         }
 
         // Scale the image
