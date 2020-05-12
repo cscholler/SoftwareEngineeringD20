@@ -5,8 +5,10 @@ import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
+import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import javafx.beans.property.SimpleStringProperty;
@@ -48,16 +50,28 @@ public class ConferenceRoomController {
     @Inject
     private ILoginManager manager;
 
-    private ObservableList<String> conferenceRooms = FXCollections.observableArrayList("Flexible Workspace Conference Room");
+    private ObservableList<String> conferenceRooms = FXCollections.observableArrayList("Flexible Workspace");
     private ArrayList<String> days = new ArrayList<>(Arrays.asList("Monday", "Tuesday", "Wednesday", "thursday", "Friday", "Saturday", "Sunday"));
 
     @FXML
     public void initialize() {
+
+        //db.executeUpdate((new SQLEntry(DBConstants.ADD_ROOM_REQUEST,
+                //new ArrayList<>(Arrays.asList(manager.getCurrentUser().getUsername(), "Flexible Workspace", "Tuesday 05-12", "1:00 PM", "2:00 PM")))));
+
+
+        System.out.println(db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_SPECIFIC_ROOM_REQUEST, new ArrayList<>(Arrays.asList("Flexible Workspace", "Tuesday 05-12", "1:00 PM"))))).size());
+
+
         rooms.setItems(conferenceRooms);
+        rooms.getSelectionModel().selectFirst();
         loadTable();
 
         borderPane.prefWidthProperty().bind(stackPane.widthProperty());
         borderPane.prefHeightProperty().bind(stackPane.heightProperty());
+
+        ArrayList<ArrayList<String>> requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_RESERVATIONS)));
+        System.out.println(requests.size());
     }
 
     /**
@@ -92,6 +106,11 @@ public class ConferenceRoomController {
      */
     @FXML
     private void loadTable() {
+
+        //System.out.println("test");
+
+        String room = (String) rooms.getValue();
+        ArrayList<ArrayList<String>> requests = new ArrayList<>();
 
         LocalDate now = new LocalDate();
 
@@ -179,6 +198,13 @@ public class ConferenceRoomController {
         sunday.setCellValueFactory(param -> param.getValue().getValue().sunday);
         sunday.setPrefWidth(100);
 
+
+
+
+        //requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_RESERVATIONS)));
+
+
+
         ObservableList<TimeSlot> slots = FXCollections.observableArrayList();
         String end = " AM";
         for (int i = 0; i < 24; i++) {
@@ -206,12 +232,38 @@ public class ConferenceRoomController {
                 e = "12:00 AM";
             }
 
+            ArrayList<String> openValues = new ArrayList<>(Arrays.asList("Open", "Open", "Open", "Open", "Open", "Open", "Open"));
+
+            //if (requests.contains(new ArrayList<>(Arrays.asList())))
+
+            for (int j = 0; j < 7; j++) {
+                //openValues.add("Open");
+                String d = weekDates.get(j);
+                requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_ROOM_REQUESTS, new ArrayList<>(Arrays.asList(room, d)))));
+                //System.out.println(requests.size());
+
+
+                //TODO try getting all data outside for loop?
+
+//                if(db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_SPECIFIC_ROOM_REQUEST, new ArrayList<>(Arrays.asList(room, d, s))))).size() != 0) {
+//                    openValues.set(j, "Reserved");
+//                    System.out.println("zfdgxfgngfdsfgh");
+//                }
+
+                for (ArrayList<String> entry : requests) {
+                    if(entry.get(4).equals(s)){
+                        openValues.set(j, "Reserved");
+                    }
+                }
+
+            }
+
             String timeString = s + "-" + e;
 
             //TODO loop through database dates and check if weekDates .contains them and the time, then find proper place in arraylist and add reserved
             //TODO variables for each week day?
 
-            slots.add(new TimeSlot(timeString, "open", "open", "open", "open", "open", "open", "open"));
+            slots.add(new TimeSlot(timeString, openValues.get(0), openValues.get(1), openValues.get(2), openValues.get(3), openValues.get(4), openValues.get(5), openValues.get(6)));
         }
 
         TreeTableView.TreeTableViewSelectionModel<TimeSlot> selection = table.getSelectionModel();
@@ -245,6 +297,8 @@ public class ConferenceRoomController {
         String date = table.getColumns().get(col).getText();
         date = date.substring(date.length()-5);
         System.out.println(date);
+
+        //TODO replace new line with space in date
 
 
     }
