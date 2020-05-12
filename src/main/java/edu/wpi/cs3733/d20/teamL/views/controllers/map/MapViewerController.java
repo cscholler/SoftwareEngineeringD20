@@ -623,37 +623,34 @@ public class MapViewerController {
 
         JFXDialogLayout content = new JFXDialogLayout();
         content.setHeading(new Text("Credit"));
-        content.setBody(new Text(
-                "AppointmentRequest\n" +
-                "jfoenix\n" +
-                "mysql\n" +
-                "apache.derby\n" +
-                "apache.commons\n" +
-                "slf4j\n" +
-                "google.inject\n" +
-                "twilio.sdk        \n" +
-                "sendgrid\n" +
-                "github.kenglxn.QRGen\n" +
-                "jetbrains\n" +
-                "github.kenglxn.QRGen\n" +
-                "mindrot\n" +
-                "amazon.awssdk\n" +
-                "junit.jupiter\n" +
-                "testfx"));
+        content.setBody(new Text("External API/Software:\n" +
+                "JSON\n" +
+                "Apache Derby\n" +
+                "Apache Commons\n" +
+                "JFoenix\n" +
+                "Google Juice\n" +
+                "Twilio\n" +
+                "SendGrid\n" +
+                "QRGen\n" +
+                "jBCrpyt\n" +
+                "Cloud Text-to-Speech\n" +
+                "Webcam-Capture\n" +
+                "OkHttp\n" +
+                "MySQL Connector\n" +
+                "JetBrains\n"
+        ));
 
-        JFXDialog dialog2 = new JFXDialog(creditPane, content, JFXDialog.DialogTransition.BOTTOM);
+        JFXDialog creditDialog = new JFXDialog(creditPane, content, JFXDialog.DialogTransition.BOTTOM);
         JFXButton btnDone = new JFXButton("Done");
 
-
-        dialog2.show();
         btnDone.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                dialog2.close();
+                creditDialog.close();
             }
         });
         content.setActions(btnDone);
-        dialog2.show();
+        creditDialog.show();
     }
 
 

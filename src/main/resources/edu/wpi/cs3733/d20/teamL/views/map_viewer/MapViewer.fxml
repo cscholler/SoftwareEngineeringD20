@@ -116,22 +116,11 @@
                         <Insets />
                      </StackPane.margin>
                   </JFXButton>
-                  <StackPane fx:id="creditPane" alignment="BOTTOM_CENTER" maxHeight="100.0" maxWidth="200.0" minWidth="200.0" prefHeight="74.0" prefWidth="200.0">
-                     <children>
-                        <JFXButton fx:id="btnCredit" buttonType="RAISED" graphicTextGap="0.0" onAction="#handleCredit" prefHeight="37.0" prefWidth="91.0" style="-fx-background-color: transparent;" text="Credit">
-                           <graphic>
-                              <ImageView fitHeight="47.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" translateX="-5.0">
-                                 <image>
-                                    <Image url="@../../assets/home_page/white-info-icon.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </JFXButton>
-                     </children>
+                  <JFXButton fx:id="btnCredit" buttonType="RAISED" graphicTextGap="0.0" onAction="#handleCredit" prefHeight="37.0" prefWidth="91.0" style="-fx-background-color: transparent;" text="Credit">
                      <StackPane.margin>
-                        <Insets right="70.0" />
+                        <Insets right="120.0" />
                      </StackPane.margin>
-                  </StackPane>
+                  </JFXButton>
                </children>
             </StackPane>
          </children>
@@ -215,6 +204,7 @@
                   </JFXButton>
                </children>
             </StackPane>
+            <StackPane fx:id="creditPane" alignment="BOTTOM_CENTER" layoutX="138.0" layoutY="426.0" maxHeight="100.0" maxWidth="200.0" minHeight="300.0" minWidth="300.0" prefHeight="74.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" />
             </children>
         </AnchorPane>
     </center>
