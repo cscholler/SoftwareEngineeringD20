@@ -10,6 +10,7 @@ public class Graph implements Iterable<Node> {
     protected Map<String, Node> nodes = new ConcurrentHashMap<>();
 
     public static Graph graphFromCache(Collection<Node> nodes, Collection<Edge> edges) {
+
         Graph newGraph = new Graph();
         for (Node node : nodes) {
             newGraph.addNode(node);
