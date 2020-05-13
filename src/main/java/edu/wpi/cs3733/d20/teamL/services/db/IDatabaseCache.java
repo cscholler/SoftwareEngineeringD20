@@ -90,4 +90,12 @@ public interface IDatabaseCache {
 	Date getTimestamp();
 
 	void setTimestamp(Date timestamp);
+
+	void cacheReservationsFromDB();
+
+	ArrayList<Reservation> getReservations();
+
+	void clearReservationCache();
+
+
 }

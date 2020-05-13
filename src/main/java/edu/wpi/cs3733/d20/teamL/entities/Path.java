@@ -26,6 +26,16 @@ public class Path implements Iterable<Node> {
         return length;
     }
 
+    public ArrayList<Node> getNodesOnFloor(int floor, String building) {
+        ArrayList<Node> floorPath = new ArrayList<>();
+        for(Node node : pathNodes) {
+            if(node.getBuilding().equals(building) && node.getFloor() == floor) {
+                floorPath.add(node);
+            }
+        }
+        return floorPath;
+    }
+
     /**
      * Gets the sum of the path lengths
      *
@@ -124,7 +134,7 @@ public class Path implements Iterable<Node> {
         String sign;
 
         robotPath.append("2 ");
-        int length = ((int)pathNodes.get(0).getEdge(pathNodes.get(1)).getLength()) * 22;
+        int length = ((int)pathNodes.get(0).getEdge(pathNodes.get(1)).getLength()) * 23;
         robotPath.append(length + ",");
 
         for (int i = 1; i < pathNodes.size() - 1; i++) {
@@ -144,7 +154,7 @@ public class Path implements Iterable<Node> {
 
             }
             robotPath.append("2 ");
-            length = ((int)curr.getEdge(next).getLength()) * 22;
+            length = ((int)curr.getEdge(next).getLength()) * 23;
             robotPath.append(length + ",");
         }
 

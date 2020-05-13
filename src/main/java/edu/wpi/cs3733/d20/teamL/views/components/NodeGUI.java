@@ -4,9 +4,6 @@ import edu.wpi.cs3733.d20.teamL.entities.Node;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.DoublePropertyBase;
 import javafx.geometry.Point2D;
-import javafx.geometry.Pos;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.*;
 import javafx.scene.shape.Circle;
 

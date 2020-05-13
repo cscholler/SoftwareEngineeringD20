@@ -54,7 +54,7 @@ public class FXMLLoaderFactory {
 	 */
 	public void setupScene(Scene scene) {
 		App.stage.setScene(scene);
-		applyLoginTimeout(scene);
+		//applyTimeouts(scene);
 
 		Point2D prevDimensions = new Point2D(App.stage.getWidth(), App.stage.getHeight());
 		App.stage.show();
@@ -72,18 +72,21 @@ public class FXMLLoaderFactory {
 	 */
 	public void setupPopup(Stage stage, Scene scene) {
 		stage.setScene(scene);
-		applyLoginTimeout(scene);
+		//applyTimeouts(scene);
 		stage.initModality(Modality.APPLICATION_MODAL);
 		stage.initOwner(App.stage);
 		stage.showAndWait();
 	}
 
-	private void applyLoginTimeout(Scene scene) {
+	public static void applyTimeouts(Scene scene) {
 		scene.getRoot().addEventHandler(Event.ANY, event -> {
 			App.startIdleTimer();
 			ILoginManager loginManager = injector.getInstance(ILoginManager.class);
 			if (loginManager.isAuthenticated()) {
 				App.startLogoutTimer();
+			}
+			if (!App.isScreenSaverActive) {
+				App.startScreenSaverTimer();
 			}
 		});
 	}

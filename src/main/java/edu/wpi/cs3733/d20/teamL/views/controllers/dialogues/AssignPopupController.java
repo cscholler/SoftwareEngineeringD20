@@ -50,6 +50,7 @@ public class AssignPopupController implements Initializable {
         ArrayList<String> usersInDept = new ArrayList<>();
         ArrayList<ArrayList<String>> allUsers = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_USERS)));
         String dept = loginManager.getCurrentUser().getDept();
+        log.info(dept);
         for (ArrayList<String> userInfo : allUsers) {
             User nextUser = new User(userInfo.get(0), userInfo.get(1), userInfo.get(2), userInfo.get(3), userInfo.get(4), userInfo.get(5), userInfo.get(6));
             if (nextUser.getServices() != null) {

@@ -9,16 +9,13 @@ import java.io.PrintWriter;
 import java.util.*;
 import java.util.Timer;
 
-import com.google.cloud.texttospeech.v1.SsmlVoiceGender;
-import com.jfoenix.controls.*;
-import com.squareup.okhttp.*;
 import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.services.IHTTPClientService;
-import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
+import edu.wpi.cs3733.d20.teamL.views.components.MapLink;
 import edu.wpi.cs3733.d20.teamL.views.controllers.screening.QuestionnaireController;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -27,7 +24,6 @@ import javafx.animation.Timeline;
 import edu.wpi.cs3733.d20.teamL.util.TimerManager;
 import javafx.application.Platform;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -38,11 +34,7 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Accordion;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.TitledPane;
-import javafx.scene.effect.DropShadow;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -73,27 +65,16 @@ import com.jfoenix.controls.JFXToggleButton;
 
 import lombok.extern.slf4j.Slf4j;
 
-import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.entities.Building;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.entities.Path;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
-import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
-import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import edu.wpi.cs3733.d20.teamL.services.speech.ISpeechToTextService;
 import edu.wpi.cs3733.d20.teamL.services.speech.ITextToSpeechService;
-import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import edu.wpi.cs3733.d20.teamL.util.SearchFields;
-import edu.wpi.cs3733.d20.teamL.util.TimerManager;
 import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
 import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
 import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
-import org.json.JSONObject;
-
-import edu.wpi.cs3733.d20.teamL.views.controllers.screening.QuestionnaireController;
-
-import edu.wpi.cs3733.d20.teamL.views.controllers.screening.QuestionnaireController;
 
 @Slf4j
 public class MapViewerController {
@@ -117,7 +98,7 @@ public class MapViewerController {
     @FXML
     private JFXButton btnNavigate, floorUp, floorDown, btnScreening, btnTextMe, btnQR, btnRobot, btnRecordStart, btnLegend, btnFeedback, btnAbout, btnRecordDest;
     @FXML
-    private VBox sideBox, floorSelector, directionButtonsVBox, textDirectionsVBox;
+    private VBox sideBox, floorSelector, directionButtonsVBox, textDirectionsVBox, miniMaps;
     @FXML
     private HBox getDirectionsHBox;
     @FXML
@@ -134,7 +115,10 @@ public class MapViewerController {
     private Label timeLabel, dateLabel, currentTempLabel, etaLabel, btnMute;
     @FXML
     private TitledPane departments, amenities, labs, services, conferenceRooms;
+    @FXML
     private ImageView currentWeatherIcon, startMicIcon, destMicIcon;
+    @FXML
+    private Tooltip startMicToolType, destMicToolType;
 
     @Inject
     private IDatabaseCache cache;
@@ -181,12 +165,11 @@ public class MapViewerController {
     private ArrayList<String> newRetailNodes = new ArrayList<>();
     private ArrayList<String> newConfNodes = new ArrayList<>();
 
-    private ArrayList<String> languages = new ArrayList<String>(Arrays.asList("English - en", "Espanol - es", "French - fr", "Mandarin - zh"));
+    private ArrayList<String> languages = new ArrayList<String>(Arrays.asList("English - en", "Espanol - es", "French - fr", "Mandarin - zh", "Arabic - ar", "Danish - da", "German - de", "Hebrew - he", "Irish - ga", "Italian - it", "Japanese - ja", "Korean - ko", "Thai - th", "Russian - ru", "Greek - el", "Vietnamese - vi"));
 
     private QuestionnaireController qc;
     private String currentLang = "en";
     private boolean accordianVisible = true;
-
 
     public static final String MAIN = "Main";
     public static MapViewerController currentViewer;
@@ -194,13 +177,10 @@ public class MapViewerController {
     @FXML
     public void initialize() {
         currentViewer = this;
-
         httpClient.setCurrLang("en");
-        System.out.println(httpClient.getCurrLang());
         timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
         timerManager.startTimer(() -> timerManager.updateDate(dateLabel), 0, 1000);
-        //ToDO: uncomment this when its time to get weather
-        //timerManager.startTimer(() -> timerManager.updateWeather(currentTempLabel, currentWeatherIcon), 0,1800000);
+        timerManager.startTimer(() -> timerManager.updateWeather(currentTempLabel, currentWeatherIcon), 0,1800000);
         if (App.doUpdateCacheOnLoad) {
             cache.cacheAllFromDB();
             App.doUpdateCacheOnLoad = false;
@@ -211,7 +191,7 @@ public class MapViewerController {
         map.setHighlightThickness(4);
         btnNavigate.setDisableVisualFocus(true);
 
-        // Stops stackPanes from stoping you clicking on whats underneath
+        // Stops stackPanes from stopping you clicking on whats underneath
         stackPane.setPickOnBounds(false);
         keyStackPane.setPickOnBounds(false);
         screeningPane.setPickOnBounds(false);
@@ -296,19 +276,19 @@ public class MapViewerController {
         btnTextMe = new JFXButton();
         btnTextMe.setText("Text me directions");
         btnTextMe.getStyleClass().add("save-button-jfx");
-        btnTextMe.setStyle("-fx-pref-width: 200;" + "-fx-max-width: 200;" + "-fx-background-color: #00043B;" + "-fx-background-radius: 50;");
+        btnTextMe.setStyle("-fx-pref-width: 250;" + "-fx-max-width: 200;" + "-fx-background-color: #00043B;" + "-fx-background-radius: 50;");
         btnTextMe.setOnAction(actionEvent -> handleText());
 
         btnQR = new JFXButton();
         btnQR.setText("Scan directions");
         btnQR.getStyleClass().add("save-button-jfx");
-        btnQR.setStyle("-jfx-button-type: RAISED;" + "-fx-pref-width: 200;" + "-fx-max-width: 200;" + "-fx-background-color: #00043B;" + "-fx-background-radius:  50;");
+        btnQR.setStyle("-jfx-button-type: RAISED;" + "-fx-pref-width: 250;" + "-fx-max-width: 200;" + "-fx-background-color: #00043B;" + "-fx-background-radius:  50;");
         btnQR.setOnAction(actionEvent -> genQR());
 
         btnRobot = new JFXButton();
         btnRobot.setText("Escort me there");
         btnRobot.getStyleClass().add("save-button-jfx");
-        btnRobot.setStyle("-jfx-button-type: RAISED;" + "-fx-pref-width: 200;" + "-fx-max-width: 200;" + "-fx-background-color: #00043B;" + "-fx-background-radius:  50;");
+        btnRobot.setStyle("-jfx-button-type: RAISED;" + "-fx-pref-width: 250;" + "-fx-max-width: 200;" + "-fx-background-color: #00043B;" + "-fx-background-radius:  50;");
         btnRobot.setOnAction(actionEvent -> launchRobot());
 
         directionButtonsVBox.getChildren().addAll(btnTextMe, btnQR, btnRobot);
@@ -364,7 +344,7 @@ public class MapViewerController {
         // Add floor buttons
         generateFloorButtons();
 
-        setFloor(2);
+        setFloor(1);
 
         map.setZoomLevel(0.25 * App.UI_SCALE);
         map.init();
@@ -421,6 +401,19 @@ public class MapViewerController {
         setFloor(Math.max(map.getBuilding().getMinFloor(), Math.min(prevFloor, map.getBuilding().getMaxFloor())));
         map.setZoomLevel(.25 * App.UI_SCALE);
         if (!path.getPathNodes().isEmpty()) highLightPath();
+    }
+
+    public void setBuilding(String building) {
+        Building newBuilding = cache.getBuilding(building);
+        map.setBuilding(newBuilding);
+
+        int prevFloor = map.getFloor();
+        generateFloorButtons();
+        setFloor(Math.max(map.getBuilding().getMinFloor(), Math.min(prevFloor, map.getBuilding().getMaxFloor())));
+        map.setZoomLevel(.25 * App.UI_SCALE);
+        if (!path.getPathNodes().isEmpty()) highLightPath();
+
+        buildingChooser.getSelectionModel().select(building);
     }
 
     @FXML
@@ -501,10 +494,12 @@ public class MapViewerController {
     	if (evt.getSource() == btnRecordStart) {
 			if (speechToText.allowStartRecording()) {
 				startMicIcon.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/speech_to_text_ready.png"));
+                startMicToolType.setText("Click to search with voice");
 				speechToText.setAllowStartRecording(false);
 			} else {
 				startMicIcon.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/speech_to_text_record.png"));
-				speechToText.setAllowDestRecording(false);
+                startMicToolType.setText("Click to stop recording");
+                speechToText.setAllowDestRecording(false);
 				speechToText.setAllowStartRecording(true);
 			}
 			if (speechToText.allowStartRecording()) {
@@ -521,16 +516,17 @@ public class MapViewerController {
 		} else if (evt.getSource() == btnRecordDest) {
     		if (speechToText.allowDestRecording()) {
 				destMicIcon.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/speech_to_text_ready.png"));
-    			speechToText.setAllowDestRecording(false);
+                destMicToolType.setText("Click to search with voice");
+                speechToText.setAllowDestRecording(false);
 			} else {
 				destMicIcon.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/speech_to_text_record.png"));
-				speechToText.setAllowStartRecording(false);
+                destMicToolType.setText("Click to stop recording");
+                speechToText.setAllowStartRecording(false);
 				speechToText.setAllowDestRecording(true);
 			}
 			if (speechToText.allowDestRecording()) {
 				AsyncTaskManager.newTask(() -> {
 					String transcription = speechToText.recordAndConvertAsync("dest");
-					System.out.println(transcription);
 					Platform.runLater(() -> {
 						destination.setText(searchFields.findBestMatch(transcription));
 						if (!startingPoint.getText().isEmpty() && !destination.getText().isEmpty()) {
@@ -639,6 +635,7 @@ public class MapViewerController {
             map.resetNodeVisibility(end);
         }
         path.getPathNodes().clear();
+        miniMaps.getChildren().clear();
     }
 
     private String highlightSourceToDestination(Node source, Node destination) {
@@ -722,18 +719,21 @@ public class MapViewerController {
     }
 
     private void highLightPath() {
+        miniMaps.getChildren().clear();
         Iterator<Node> nodeIterator = path.iterator();
 
         // Loop through each node in the path and select it as well as the edge pointing to the next node
         Node currentNode = nodeIterator.next();
         Node nextNode;
 
+        boolean firstLinkAdded = false;
+
         while (nodeIterator.hasNext()) {
             nextNode = nodeIterator.next();
             EdgeGUI edgeGUI = map.getEdgeGUI(currentNode.getEdge(nextNode));
 
-            // Please help me untangle my spaghetti
             if (edgeGUI != null) {
+                // Animate the path
                 edgeGUI.getHighlightGUI().getStrokeDashArray().setAll(5d, 20d, 20d, 5d);
                 Line highlight = map.getEdgeGUI(currentNode.getEdge(nextNode)).getHighlightGUI();
 
@@ -743,9 +743,23 @@ public class MapViewerController {
 
                 timeline.setCycleCount(Timeline.INDEFINITE);
                 timeline.play();
+
+                map.getSelector().add(edgeGUI);
             }
 
-            if (edgeGUI != null) map.getSelector().add(edgeGUI);
+            if (nextNode.getFloor() != currentNode.getFloor() || !nextNode.getBuilding().equals(currentNode.getBuilding())) {
+                int linkWidth = 120;
+                if (!firstLinkAdded) {
+                    miniMaps.getChildren().add(new MapLink(currentNode.getBuilding(), currentNode.getFloor(), linkWidth, this));
+                    firstLinkAdded = true;
+                }
+                if(currentNode.getBuilding().equals("Faulkner") && nextNode.getBuilding().equals(MAIN)) {
+                    miniMaps.getChildren().add(new MapLink("FaulkToMain", 120, this, IMAGE_FTOM));
+                } if(currentNode.getBuilding().equals(MAIN) && nextNode.getBuilding().equals("Faulkner")) {
+                    miniMaps.getChildren().add(new MapLink("MainToFaulk", 120, this, IMAGE_MTOF));
+                }
+                miniMaps.getChildren().add(new MapLink(nextNode.getBuilding(), nextNode.getFloor(), linkWidth, this));
+            }
 
             currentNode = nextNode;
         }
@@ -803,8 +817,6 @@ public class MapViewerController {
         } else {
             setFloor(Node.floorStringToInt(sourceButton.getText()));
         }
-
-        if (!path.getPathNodes().isEmpty()) highLightPath();
     }
 
     @FXML
@@ -833,6 +845,8 @@ public class MapViewerController {
                     floorButton.getStyleClass().add("selected-floor");
             }
         }
+
+        if (!path.getPathNodes().isEmpty()) highLightPath();
     }
 
     /**
@@ -869,6 +883,49 @@ public class MapViewerController {
             log.error("Encountered IOException", ex);
         }
     }
+
+    /**
+     * Displays the credit page of the application
+     */
+    @FXML
+    public void handleCredit() {
+
+        JFXDialogLayout content = new JFXDialogLayout();
+        content.setHeading(new Text("Credits"));
+        content.setBody(new Text("Software:\t\t\t" +
+                "Apache Commons\n\t\t\t\t" +
+                "Apache Derby\n\t\t\t\t" +
+                "Google Juice\n\t\t\t\t" +
+                "jBCrpyt\n\t\t\t\t" +
+                "JetBrains\n\t\t\t\t" +
+                "JFoenix\n\n" +
+                "Internal APIs:\t\t" +
+                "Food Request, Team P\n\t\t\t\t" +
+                "Audio Visual, Team M\n\n" +
+                "External APIs:\t\t" +
+                "Cloud Text-to-Speech\n\t\t\t\t" +
+                "JSON\n\t\t\t\t" +
+                "MySQL Connector\n\t\t\t\t" +
+                "OkHttp\n\t\t\t\t" +
+                "QRGen\n\t\t\t\t" +
+                "SendGrid\n\t\t\t\t" +
+                "Twilio\n\t\t\t\t" +
+                "Webcam-Capture"
+        ));
+
+        JFXDialog creditDialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
+        JFXButton btnDone = new JFXButton("Done");
+
+        btnDone.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                creditDialog.close();
+            }
+        });
+        content.setActions(btnDone);
+        creditDialog.show();
+    }
+
 
     /**
      * Displays the About page of the application
@@ -956,11 +1013,9 @@ public class MapViewerController {
         btnNext.setStyle("-fx-pref-width: 75;" + "-fx-pref-height: 50");
         btnNext.setOnAction(e -> {
             if (!qc.getTestFinished()) {
-                //System.out.println("first statement");
                 qc.calculateScore();
                 layout.setHeading(qc.nextClicked());
             } else if (qc.getTestFinished() && !qc.getDone()) {
-                //System.out.println("second statement");
                 qc.calculateScore();
                 btnNext.setText("Close");
                 layout.setHeading(qc.nextClicked());
@@ -1026,49 +1081,53 @@ public class MapViewerController {
             generateFloorButtons();
             map.setZoomLevel(.25 * App.UI_SCALE);
         } else {
-            if (!(subpath.get(0).getBuilding().equals(map.getBuilding().getName()))) {
-                map.setBuilding(subpath.get(0).getBuilding());
-                generateFloorButtons();
-                map.setZoomLevel(.25 * App.UI_SCALE);
-                goToSelected();
-            }
-            if (!(subpath.get(0).getFloorAsString().equals(map.getFloor())))
-                setFloor(subpath.get(0).getFloor());
-
-            double totalX = 0;
-            double totalY = 0;
-            double minX = 200000;
-            double maxX = 0;
-            double minY = 200000;
-            double maxY = 0;
-            for (Node node : subpath) {
-                double xPos = node.getPosition().getX();
-                double yPos = node.getPosition().getY();
-                double xPosGui = map.getNodeGUI(node).getLayoutX();
-                double yPosGui = map.getNodeGUI(node).getLayoutY();
-
-                totalX += xPosGui;
-                totalY += yPosGui;
-
-                if (xPos > maxX) maxX = xPos;
-                if (xPos < minX) minX = xPos;
-                if (yPos > maxY) maxY = yPos;
-                if (yPos < minY) minY = yPos;
-            }
-
-            double diffX = maxX - minX;
-            double diffY = maxY - minY;
-            double scale;
-
-            if (diffX > diffY) scale = Math.min(400 / diffX, 2);
-            else scale = Math.min(400 / diffY, 2);
-
-            totalX = totalX / subpath.size();
-            totalY = totalY / subpath.size();
-
-            map.setZoomLevelToPosition(scale, new Point2D(totalX, totalY));
+            zoomToNodes(subpath);
             highLightPath();
         }
+    }
+
+    public void zoomToNodes(ArrayList<Node> subpath) {
+        if (!(subpath.get(0).getBuilding().equals(map.getBuilding().getName()))) {
+            map.setBuilding(subpath.get(0).getBuilding());
+            generateFloorButtons();
+            map.setZoomLevel(.25 * App.UI_SCALE);
+            goToSelected();
+        }
+        if (!(subpath.get(0).getFloorAsString().equals(map.getFloor())))
+            setFloor(subpath.get(0).getFloor());
+
+        double totalX = 0;
+        double totalY = 0;
+        double minX = 200000;
+        double maxX = 0;
+        double minY = 200000;
+        double maxY = 0;
+        for (Node node : subpath) {
+            double xPos = node.getPosition().getX();
+            double yPos = node.getPosition().getY();
+            double xPosGui = map.getNodeGUI(node).getLayoutX();
+            double yPosGui = map.getNodeGUI(node).getLayoutY();
+
+            totalX += xPosGui;
+            totalY += yPosGui;
+
+            if (xPos > maxX) maxX = xPos;
+            if (xPos < minX) minX = xPos;
+            if (yPos > maxY) maxY = yPos;
+            if (yPos < minY) minY = yPos;
+        }
+
+        double diffX = maxX - minX;
+        double diffY = maxY - minY;
+        double scale;
+
+        if (diffX > diffY) scale = Math.min(200 / diffX, .7);
+        else scale = Math.min(200 / diffY, .7);
+
+        totalX = totalX / subpath.size();
+        totalY = totalY / subpath.size();
+
+        map.setZoomLevelToPosition(scale, new Point2D(totalX, totalY));
     }
 
     private void launchRobot() {
@@ -1077,7 +1136,7 @@ public class MapViewerController {
         if(source.getBuilding().equals("Faulkner") && destination.getBuilding().equals("Faulkner") && source.getFloor() == 1 && destination.getFloor() == 1) {
             String robotPath = path.generateRobotPath();
             System.out.println(robotPath);
-            kioskArduino = ports[4];
+            kioskArduino = ports[5];
             kioskArduino.setBaudRate(9600);
             kioskArduino.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 200, 200);
             kioskArduino.openPort();
@@ -1086,8 +1145,23 @@ public class MapViewerController {
             channel = new PrintWriter(kioskArduino.getOutputStream());
             channel.print(robotPath);
             channel.flush();
+
+            channel.print(robotPath);
+            channel.flush();
+
+            channel.print(robotPath);
+            channel.flush();
             System.out.println(robotPath.getBytes()[0]);
             System.out.println(Arrays.toString(robotPath.getBytes()));
+
+            kioskArduino.setBaudRate(9600);
+            kioskArduino.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 200, 200);
+            kioskArduino.openPort();
+            //byte test[] = Arrays.toString(robotPath.getBytes());
+            //kioskArduino.getOutputStream().write(robotPath.getBytes());
+            channel = new PrintWriter(kioskArduino.getOutputStream());
+            channel.print(robotPath);
+            channel.flush();
 
             //kioskArduino.closePort();
         }
@@ -1166,7 +1240,17 @@ public class MapViewerController {
         String l = languagePicker.getValue();
         l = l.substring(l.length() - 2);
         try {
-            translateMapViewer(l);
+            AsyncTaskManager.startTaskWithPopup(()-> {
+               Platform.runLater(()-> {
+                   try {
+                       String lan = languagePicker.getValue();
+                       lan = lan.substring(lan.length() - 2);
+                       translateMapViewer(lan);
+                   } catch (IOException e) {
+                       e.printStackTrace();
+                   }
+               });
+            },httpClient.translate("en", l, "Translating Text"), httpClient.translate("en", l, "Done"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -1174,7 +1258,7 @@ public class MapViewerController {
     }
 
     public void translateMapViewer(String language) throws IOException {
-        btnNavigate.setText(httpClient.translate("en", language, "Get Directions"));
+        btnNavigate.setText(httpClient.translate("en", language, "Get directions"));
         btnScreening.setText(httpClient.translate(currentLang, language, "Think you have COVID-19?"));
         btnAbout.setText(httpClient.translate(currentLang, language, "About"));
         btnTextMe.setText(httpClient.translate(currentLang, language, "Send me directions"));
@@ -1292,8 +1376,22 @@ public class MapViewerController {
             };
         });
 
+        btnFeedback.setTooltip(new Tooltip(btnFeedback.getText()));
+        btnScreening.setTooltip(new Tooltip(btnScreening.getText()));
+        btnNavigate.setTooltip(new Tooltip(btnNavigate.getText()));
+        btnRobot.setTooltip(new Tooltip(btnRobot.getText()));
+        btnLegend.setTooltip(new Tooltip(btnLegend.getText()));
+        btnQR.setTooltip(new Tooltip(btnQR.getText()));
+        btnAbout.setTooltip(new Tooltip(btnAbout.getText()));
+        btnScreening.setTooltip(new Tooltip(btnScreening.getText()));
+
 
         currentLang = language;
         httpClient.setCurrLang(currentLang);
+
+    }
+
+    public Path getPath() {
+        return path;
     }
 }

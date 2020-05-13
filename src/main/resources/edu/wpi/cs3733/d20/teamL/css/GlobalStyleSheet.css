@@ -415,6 +415,8 @@
 .tree-table-cell {
     -fx-alignment: center-left;
     -fx-font-size: 15;
+    -fx-border-color: black;
+    -fx-border-width: 0.5;
 }
 
 .tree-table-row-cell:odd {
@@ -503,3 +505,13 @@
     -fx-font-weight: bold;
 }
 
+
+
+.scheduler-button {
+    -fx-font-size: 15;
+    -fx-background-color: #00043B;
+    -fx-text-fill: white;
+    -fx-pref-height: 40;
+    -fx-pref-width: 67;
+    /*-fx-background-radius: 0;*/
+}

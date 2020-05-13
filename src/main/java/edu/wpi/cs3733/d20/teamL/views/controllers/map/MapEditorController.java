@@ -14,7 +14,10 @@ import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import edu.wpi.cs3733.d20.teamL.util.TimerManager;
 import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
 import edu.wpi.cs3733.d20.teamL.util.SearchFields;
-import edu.wpi.cs3733.d20.teamL.views.components.*;
+import edu.wpi.cs3733.d20.teamL.views.components.EdgeField;
+import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
+import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
+import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
 import edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.DataDialogue;
 
 import javafx.event.ActionEvent;
@@ -55,7 +58,7 @@ public class MapEditorController {
     @FXML
     BorderPane root;
     @FXML
-    MapPane map;
+	MapPane map;
     @FXML
     Label nodeIDText, numberlbl, timeLabel;
     @FXML
@@ -90,7 +93,7 @@ public class MapEditorController {
     private Path path = new Path();
 
     private final List<String> types = Arrays.asList("HALL", "ELEV", "REST", "STAI", "DEPT", "LABS", "INFO", "CONF", "EXIT", "RETL", "SERV", "KIOS", "REFL");
-    private int defaultFloor = 2;
+    private int defaultFloor = 1;
     private String defaultBuilding = "Faulkner";
 
     private Image breadthFirstIcon = new Image("/edu/wpi/cs3733/d20/teamL/assets/map_editor/Breath First.png", 100, 0, true, false, true);

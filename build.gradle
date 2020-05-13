@@ -51,10 +51,11 @@ dependencies {
             'com.sendgrid:sendgrid-java:4.4.1',
             'com.github.kenglxn.QRGen:javase:2.6.0',
             'com.fazecast:jSerialComm:[2.0.0,3.0.0)',
+            'com.github.sarxos:webcam-capture:0.3.12',
             'com.google.cloud:google-cloud-texttospeech:1.0.2',
-            'com.google.cloud:google-cloud-speech:1.23.0',
-            'com.github.sarxos:webcam-capture:0.3.12'
+            'com.google.cloud:google-cloud-speech:1.23.0'
     )
+    compileOnly 'org.apache.tomcat:annotations-api:6.0.53'
 
     testImplementation(
             'org.junit.jupiter:junit-jupiter:5.6.0',
@@ -90,8 +91,8 @@ jar {
     manifest {
         attributes 'Main-Class': mainClassName
     }
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    from  configurations.runtimeClasspath.collect {
+        it.isDirectory() ? it : zipTree(it).matching{exclude{it.path.contains('META-INF')}}
     }
 }
 
