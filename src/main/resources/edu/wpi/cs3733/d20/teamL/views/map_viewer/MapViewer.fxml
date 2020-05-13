@@ -38,11 +38,11 @@
                                           <Insets />
                                       </opaqueInsets>
                                   </JFXTextField>
-                        <JFXButton fx:id="btnTextToSpeechStart" contentDisplay="GRAPHIC_ONLY" onAction="#textToSpeachStartIcon" styleClass="clear-button-jfx">
+                        <JFXButton fx:id="btnRecordStart" contentDisplay="GRAPHIC_ONLY" onAction="#btnRecordClicked" styleClass="clear-button-jfx">
                            <graphic>
-                              <ImageView fitHeight="16.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="startMicIcon" fitHeight="16.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../assets/home_page/textToSpeachReady.png" />
+                                    <Image url="@../../assets/home_page/speech_to_text_ready.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -66,7 +66,7 @@
                           </HBox>
                           <HBox alignment="CENTER" prefHeight="40.0" prefWidth="300.0" style="-fx-border-radius: 10; -fx-background-radius: 10;">
                               <children>
-                                  <JFXTextField fx:id="destination" focusColor="WHITE" maxHeight="30.0" onKeyTyped="#destinationAutocomplete" promptText="Destination" styleClass="search-bar-text-field-jfx" unFocusColor="WHITE">
+                                  <JFXTextField fx:id="destination" focusColor="WHITE" maxHeight="30.0" onKeyReleased="#destinationAutocomplete" promptText="Destination" styleClass="search-bar-text-field-jfx" unFocusColor="WHITE">
                                       <font>
                                           <Font size="16.0" />
                                       </font>
@@ -74,11 +74,11 @@
                                           <Insets />
                                       </HBox.margin>
                                   </JFXTextField>
-                        <JFXButton fx:id="btnTextToSpeechDestination" contentDisplay="GRAPHIC_ONLY" onAction="#textToSpeachDestinationIcon" styleClass="clear-button-jfx">
+                        <JFXButton fx:id="btnRecordDest" contentDisplay="GRAPHIC_ONLY" onAction="#btnRecordClicked" styleClass="clear-button-jfx">
                            <graphic>
-                              <ImageView fitHeight="16.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="destMicIcon" fitHeight="16.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../assets/home_page/textToSpeachReady.png" />
+                                    <Image url="@../../assets/home_page/speech_to_text_ready.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -270,7 +270,7 @@
                <children>
                   <ImageView fitHeight="63.0" fitWidth="252.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../assets/home_page/BWH logo.png" />
+                        <Image url="@../../assets/home_page/bwh_logo.png" />
                      </image>
                   </ImageView>
                </children>

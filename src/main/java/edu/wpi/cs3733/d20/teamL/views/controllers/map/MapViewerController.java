@@ -1,14 +1,16 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 
 import com.google.cloud.texttospeech.v1.SsmlVoiceGender;
 import com.jfoenix.controls.*;
 import com.squareup.okhttp.*;
 import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.services.IHTTPClientService;
-import edu.wpi.cs3733.d20.teamL.services.accessability.ITextToSpeechService;
 import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
@@ -21,10 +23,11 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import edu.wpi.cs3733.d20.teamL.util.TimerManager;
 import javafx.application.Platform;
+
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -32,25 +35,52 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Accordion;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.TitledPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import com.google.inject.Inject;
 
-import javafx.util.Duration;
-import lombok.SneakyThrows;
+import com.jfoenix.controls.JFXAutoCompletePopup;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
+import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXToggleButton;
+
+
 import lombok.extern.slf4j.Slf4j;
 
-import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
+import edu.wpi.cs3733.d20.teamL.App;
+import edu.wpi.cs3733.d20.teamL.entities.Building;
+import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.entities.Path;
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
+import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
+import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
+import edu.wpi.cs3733.d20.teamL.services.speech.ISpeechToTextService;
+import edu.wpi.cs3733.d20.teamL.services.speech.ITextToSpeechService;
+import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
+import edu.wpi.cs3733.d20.teamL.util.SearchFields;
+import edu.wpi.cs3733.d20.teamL.util.TimerManager;
 import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
 import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
 import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
@@ -58,8 +88,11 @@ import org.json.JSONObject;
 
 import static java.awt.Color.BLACK;
 
+import edu.wpi.cs3733.d20.teamL.views.controllers.screening.QuestionnaireController;
+
 @Slf4j
 public class MapViewerController {
+    @FXML
     private final FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
     private final TimerManager timerManager = new TimerManager();
     private SearchFields searchFields;
@@ -73,7 +106,8 @@ public class MapViewerController {
     @FXML
     private JFXTextField startingPoint, destination;
     @FXML
-    private JFXButton btnNavigate, floorUp, floorDown, btnScreening, btnTextMe, btnQR, btnRobot, btnTextToSpeechStart, btnTextToSpeechDestination, btnFeedback, btnLegend, btnAbout;
+    private JFXButton btnNavigate, floorUp, floorDown, btnScreening, btnTextMe, btnQR, btnRobot, btnTextToSpeechStart, btnTextToSpeechDestination, btnFeedback, btnLegend, btnAbout, btnRecordStart, btnRecordDest;
+    ;
     @FXML
     private VBox sideBox, floorSelector, directionButtonsVBox, textDirectionsVBox;
     @FXML
@@ -91,9 +125,8 @@ public class MapViewerController {
     @FXML
     private Label timeLabel, dateLabel, currentTempLabel, etaLabel, btnMute;
     @FXML
-    private ImageView currentWeatherIcon;
-    @FXML
     private TitledPane departments, amenities, labs, services, conferenceRooms;
+    private ImageView currentWeatherIcon, startMicIcon, destMicIcon;
 
     @Inject
     private IDatabaseCache cache;
@@ -103,6 +136,8 @@ public class MapViewerController {
     private IMessengerService messenger;
     @Inject
     private ITextToSpeechService textToSpeech;
+    @Inject
+    private ISpeechToTextService speechToText;
     @Inject
     private IHTTPClientService httpClient;
 
@@ -147,7 +182,7 @@ public class MapViewerController {
     public static final String MAIN = "Main";
 
     @FXML
-    private void initialize(){
+    private void initialize() {
         httpClient.setCurrLang("en");
         System.out.println(httpClient.getCurrLang());
         timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
@@ -160,7 +195,8 @@ public class MapViewerController {
         }
         startingPoint.setLabelFloat(false);
         map.setEditable(false);
-        map.setHighLightColor(Color.SPRINGGREEN);
+        map.setHighLightColor(Color.DARKBLUE);
+        map.setHighlightThickness(4);
         btnNavigate.setDisableVisualFocus(true);
 
         // Stops stackPanes from stoping you clicking on whats underneath
@@ -173,7 +209,6 @@ public class MapViewerController {
         String startB = "Faulkner";
         Building faulkner = cache.getBuilding("Faulkner");
         Building main = cache.getBuilding(MAIN);
-
 
 
         if (!faulkner.getNodes().isEmpty()) map.setBuilding(faulkner);
@@ -348,8 +383,21 @@ public class MapViewerController {
     }
 
     @FXML
-    private void destinationAutocomplete() {
-        searchFields.applyAutocomplete(destination, autoCompletePopup);
+    private void destinationAutocomplete(KeyEvent evt) {
+        if (evt.getCode() == KeyCode.ENTER) {
+            if (!startingPoint.getText().isEmpty()) {
+                navigate();
+            }
+        } else if (evt.getCode() == KeyCode.BACK_SPACE) {
+            if (startingPoint.getText().isEmpty()) {
+                clearSource();
+            }
+            if (destination.getText().isEmpty()) {
+                clearDest();
+            }
+        } else {
+            searchFields.applyAutocomplete(destination, autoCompletePopup);
+        }
     }
 
     public void setStartingPoint(String startingPoint) {
@@ -400,6 +448,52 @@ public class MapViewerController {
         }
         showPathFindingOptions();
 
+    }
+
+    @FXML
+    private void btnRecordClicked(ActionEvent evt) {
+        if (evt.getSource() == btnRecordStart) {
+            if (speechToText.allowStartRecording()) {
+                startMicIcon.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/speech_to_text_ready.png"));
+                speechToText.setAllowStartRecording(false);
+            } else {
+                startMicIcon.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/speech_to_text_record.png"));
+                speechToText.setAllowDestRecording(false);
+                speechToText.setAllowStartRecording(true);
+            }
+            if (speechToText.allowStartRecording()) {
+                AsyncTaskManager.newTask(() -> {
+                    String transcription = speechToText.recordAndConvertAsync("start");
+                    Platform.runLater(() -> {
+                        startingPoint.setText(searchFields.findBestMatch(transcription));
+                        if (!startingPoint.getText().isEmpty() && !destination.getText().isEmpty()) {
+                            navigate();
+                        }
+                    });
+                });
+            }
+        } else if (evt.getSource() == btnRecordDest) {
+            if (speechToText.allowDestRecording()) {
+                destMicIcon.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/speech_to_text_ready.png"));
+                speechToText.setAllowDestRecording(false);
+            } else {
+                destMicIcon.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/speech_to_text_record.png"));
+                speechToText.setAllowStartRecording(false);
+                speechToText.setAllowDestRecording(true);
+            }
+            if (speechToText.allowDestRecording()) {
+                AsyncTaskManager.newTask(() -> {
+                    String transcription = speechToText.recordAndConvertAsync("dest");
+                    System.out.println(transcription);
+                    Platform.runLater(() -> {
+                        destination.setText(searchFields.findBestMatch(transcription));
+                        if (!startingPoint.getText().isEmpty() && !destination.getText().isEmpty()) {
+                            navigate();
+                        }
+                    });
+                });
+            }
+        }
     }
 
     /**
@@ -517,68 +611,66 @@ public class MapViewerController {
 
         dirList.getItems().clear();
         dirList.setStyle("-fx-font-size: 15");
-        dirList.setCellFactory(param -> {
-            return new ListCell<String>() {
-                private ImageView imageView = new ImageView();
+        dirList.setCellFactory(param -> new ListCell<String>() {
+            private ImageView imageView = new ImageView();
 
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setGraphic(null);
+                    setText(null);
+                    // other stuff to do...
+                } else {
 
-                protected void updateItem(String item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (empty || item == null) {
-                        setGraphic(null);
-                        setText(null);
-                        // other stuff to do...
+                    if (item.contains("right")) {
+                        if (item.contains("slight")) {
+                            imageView.setImage(IMAGE_SLRIGHT);
+                        } else if (item.contains("sharp")) {
+                            imageView.setImage(IMAGE_SHRIGHT);
+                        } else {
+                            imageView.setImage(IMAGE_RIGHT);
+                        }
+                    } else if (item.contains("left")) {
+                        if (item.contains("slight")) {
+                            imageView.setImage(IMAGE_SLLEFT);
+                        } else if (item.contains("sharp")) {
+                            imageView.setImage(IMAGE_SHLEFT);
+                        } else {
+                            imageView.setImage(IMAGE_LEFT);
+                        }
+                    } else if (item.contains("elevator")) {
+                        imageView.setImage(IMAGE_ELEV);
+                    } else if (item.contains("stair")) {
+                        imageView.setImage(IMAGE_STAIR);
+                    } else if (item.contains("destination")) {
+                        imageView.setImage(IMAGE_DEST);
                     } else {
-
-                        if (item.contains("right")) {
-                            if (item.contains("slight")) {
-                                imageView.setImage(IMAGE_SLRIGHT);
-                            } else if (item.contains("sharp")) {
-                                imageView.setImage(IMAGE_SHRIGHT);
-                            } else {
-                                imageView.setImage(IMAGE_RIGHT);
-                            }
-                        } else if (item.contains("left")) {
-                            if (item.contains("slight")) {
-                                imageView.setImage(IMAGE_SLLEFT);
-                            } else if (item.contains("sharp")) {
-                                imageView.setImage(IMAGE_SHLEFT);
-                            } else {
-                                imageView.setImage(IMAGE_LEFT);
-                            }
-                        } else if (item.contains("elevator")) {
-                            imageView.setImage(IMAGE_ELEV);
-                        } else if (item.contains("stair")) {
-                            imageView.setImage(IMAGE_STAIR);
-                        } else if (item.contains("destination")) {
-                            imageView.setImage(IMAGE_DEST);
-                        } else {
-                            imageView.setImage(IMAGE_STRAIGHT);
-                        }
-                        setText(item);
-                        setGraphic(imageView);
-
-
-                        setMinWidth(getWidth());
-                        setMaxWidth(getWidth());
-                        setPrefWidth(getWidth());
-
-                        // allow wrapping
-                        setWrapText(true);
-
-                        if (currentLang != "en") {
-                            try {
-                                setText(httpClient.translate("en", currentLang, item));
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            setText(item);
-                        }
-
+                        imageView.setImage(IMAGE_STRAIGHT);
                     }
+
+                    setText(item);
+                    setGraphic(imageView);
+
+
+                    setMinWidth(getWidth());
+                    setMaxWidth(getWidth());
+                    setPrefWidth(getWidth());
+
+                    // allow wrapping
+                    setWrapText(true);
+
+                    if (currentLang != "en") {
+                        try {
+                            setText(httpClient.translate("en", currentLang, item));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        setText(item);
+                    }
+
                 }
-            };
+            }
         });
         directions.clear();
         directions.addAll(message);
@@ -800,19 +892,6 @@ public class MapViewerController {
         dialog.show();
     }
 
-    /**
-     * Changes starting location with destination and vice-versa.
-     */
-    @FXML
-    public void handleLocationChange() {
-
-        String startLoc = startingPoint.getText();
-        String destLoc = destination.getText();
-
-        startingPoint.setText(destLoc);
-        destination.setText(startLoc);
-    }
-
     @FXML
     public void openScreening() throws IOException {
         qc = new QuestionnaireController(cache.getQuestions(), currentLang, httpClient);
@@ -855,7 +934,7 @@ public class MapViewerController {
                 screeningDialog.close();
             }
         });
-        if(!currentLang.equals("en")){
+        if (!currentLang.equals("en")) {
             btnClose.setText(httpClient.translate("en", currentLang, "Quit"));
             btnNext.setText(httpClient.translate("en", currentLang, btnNext.getText()));
         }
@@ -894,6 +973,7 @@ public class MapViewerController {
 
     @FXML
     private void goToSelected() {
+        //TODO fix
         AsyncTaskManager.newTask(() -> {
             try {
                 textToSpeech.playSpeech(textToSpeech.convertTextToSpeech(currentLang.equals("en") ? dirList.getSelectionModel().getSelectedItem().toString() : httpClient.translate("en", currentLang, dirList.getSelectionModel().getSelectedItem().toString()), currentLang.equals("en") ? "en-US" : currentLang, SsmlVoiceGender.MALE));
@@ -901,8 +981,11 @@ public class MapViewerController {
                 e.printStackTrace();
             }
         });
+        if (!textToSpeech.isMuted()) {
+            textToSpeech.convertAndPlayAsync(dirList.getSelectionModel().getSelectedItem().toString());
+        }
         int index = dirList.getSelectionModel().getSelectedIndex();
-        ArrayList<Node> subpath = path.getSubpaths().get(index);
+        ArrayList<Node> subpath = path.getSubpaths().get(index + 1);
         if (dirList.getSelectionModel().getSelectedItem().toString().contains("Navigate")) {
             if (subpath.get(0).getBuilding().equals("Faulkner")) {
                 map.setBuilding(new Building("Google"));
@@ -980,12 +1063,6 @@ public class MapViewerController {
         if (!sideBox.getChildren().contains(directionButtonsVBox)) sideBox.getChildren().add(directionButtonsVBox);
     }
 
-    public void textToSpeachStartIcon(ActionEvent actionEvent) {
-    }
-
-    public void textToSpeachDestinationIcon(ActionEvent actionEvent) {
-    }
-
     @FXML
     private void handleFeedback() {
         try {
@@ -1008,26 +1085,32 @@ public class MapViewerController {
     }
 
     private void speakAllDirections() {
-        System.out.println("Ok time to talk now");
+        if (!textToSpeech.isMuted()) {
+            StringBuilder allDirections = new StringBuilder();
+            for (String step : directions) {
+                allDirections.append(step).append(". ");
+            }
+            textToSpeech.convertAndPlayAsync(allDirections.toString());
+        }
     }
 
     private void toggleAudio() {
-        System.out.println("Toggle audio");
         if (btnMute.getText().equals("un-muted")) btnMute.setText("muted");
         else if (btnMute.getText().equals("muted")) btnMute.setText("un-muted");
+        textToSpeech.setMuted(!textToSpeech.isMuted());
     }
 
-@FXML
-public void languageChosen(){
+    @FXML
+    public void languageChosen() {
         String l = languagePicker.getValue();
-        l = l.substring(l.length()-2);
-    try {
-        translateMapViewer(l);
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
+        l = l.substring(l.length() - 2);
+        try {
+            translateMapViewer(l);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-}
+    }
 
     public void translateMapViewer(String language) throws IOException {
         btnNavigate.setText(httpClient.translate("en", language, "Get Directions"));
@@ -1044,45 +1127,57 @@ public void languageChosen(){
         amenities.setText(httpClient.translate("en", language, "Amenities"));
         conferenceRooms.setText(httpClient.translate("en", language, "Conference Rooms"));
 
-
-        for (String node : deptNodes) {
-            newDeptNodes.add(httpClient.translate(currentLang, language, node));
-        }
-
+        listF1.getItems().removeAll(newDeptNodes);
         listF1.getItems().removeAll(deptNodes);
-        listF1.getItems().addAll(newDeptNodes);
-
-        for (String node : labNodes) {
-            newLabNodes.add(httpClient.translate(currentLang, language, node));
-        }
-
+        listF2.getItems().removeAll(newLabNodes);
         listF2.getItems().removeAll(labNodes);
-        listF2.getItems().addAll(newLabNodes);
-
-        for (String node : serviceNodes) {
-            newServiceNodes.add(httpClient.translate(currentLang, language, node));
-        }
-
         listF3.getItems().removeAll(serviceNodes);
-        listF3.getItems().addAll(newServiceNodes);
-
-        for (String node : retailNodes) {
-            newRetailNodes.add(httpClient.translate(currentLang, language, node));
-        }
-
+        listF3.getItems().removeAll(newServiceNodes);
         listF4.getItems().removeAll(retailNodes);
-        listF4.getItems().addAll(newRetailNodes);
-
-        for (String node : confNodes) {
-            newConfNodes.add(httpClient.translate(currentLang, language, node));
-        }
-
+        listF4.getItems().removeAll(newRetailNodes);
         listF5.getItems().removeAll(confNodes);
-        listF5.getItems().addAll(newConfNodes);
+        listF5.getItems().removeAll(newConfNodes);
+
+
+        if (language.equals("en")) {
+
+            listF1.getItems().addAll(deptNodes);
+            listF2.getItems().addAll(labNodes);
+            listF3.getItems().addAll(serviceNodes);
+            listF4.getItems().addAll(retailNodes);
+            listF5.getItems().addAll(confNodes);
+        } else {
+            for (String node : deptNodes) {
+                newDeptNodes.add(httpClient.translate(currentLang, language, node));
+            }
+            listF1.getItems().addAll(newDeptNodes);
+
+            for (String node : labNodes) {
+                newLabNodes.add(httpClient.translate(currentLang, language, node));
+            }
+            listF2.getItems().addAll(newLabNodes);
+
+            for (String node : serviceNodes) {
+                newServiceNodes.add(httpClient.translate(currentLang, language, node));
+            }
+            listF3.getItems().addAll(newServiceNodes);
+
+            for (String node : retailNodes) {
+                newRetailNodes.add(httpClient.translate(currentLang, language, node));
+            }
+            listF4.getItems().addAll(newRetailNodes);
+
+            for (String node : confNodes) {
+                newConfNodes.add(httpClient.translate(currentLang, language, node));
+            }
+            listF5.getItems().addAll(newConfNodes);
+
+        }
 
         dirList.setCellFactory(param -> {
             return new ListCell<String>() {
                 private ImageView imageView = new ImageView();
+
                 protected void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);
                     if (empty || item == null) {
@@ -1122,10 +1217,14 @@ public void languageChosen(){
                         setPrefWidth(getWidth());
                         // allow wrapping
                         setWrapText(true);
-                        try {
-                            setText(httpClient.translate("en", language, item));
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                        if(language.equals("en")){
+                         setText(item);
+                        }else {
+                            try {
+                                setText(httpClient.translate("en", language, item));
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }

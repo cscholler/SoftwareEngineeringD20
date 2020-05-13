@@ -211,7 +211,7 @@ public class Path implements Iterable<Node> {
                     sign = determineDirection(start, end);
 
                     if (lastRoom != null) {
-                        builder.append("After you pass the " + parseLongName(lastRoom) + ", take ");
+                        builder.append("After you pass the " + lastRoom + ", take ");
                     } else builder.append("Continue forward and take ");
 
                     if (lefts > 0 && sign.equals("left")) {
@@ -223,7 +223,7 @@ public class Path implements Iterable<Node> {
                     }
 
                     if (next.equals(goal)) {
-                        builder.append(" to the " + parseLongName(goal.getLongName()));
+                        builder.append(" to the " + goal.getLongName());
                         lastStatement = false;
                     }
                     builder.append(".");
@@ -314,16 +314,6 @@ public class Path implements Iterable<Node> {
         if (angle < 45) return "slight ";
         else if (angle > 95) return "sharp ";
         else return "";
-    }
-
-    private String parseLongName(String name) {
-        for (int i = 0; i < name.length() - 1; i++) {
-            if (checkNumber(name.substring(i, i + 1))) {
-                return name.substring(0, i - 1).toLowerCase();
-            }
-        }
-
-        return name;
     }
 
     private boolean checkNumber(String s) {

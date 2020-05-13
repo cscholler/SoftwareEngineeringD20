@@ -6,7 +6,7 @@ import javax.inject.Inject;
 
 import com.jfoenix.controls.JFXTextArea;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
-import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
+import edu.wpi.cs3733.d20.teamL.util.SearchFields;
 import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
