@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="895.0" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.ReflectionRoomController">
+<StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="895.0" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.ConferenceRoomController">
    <children>
       <BorderPane fx:id="borderPane" prefHeight="200.0" prefWidth="200.0">
          <center>
@@ -50,13 +50,13 @@
             </VBox>
          </center>
          <bottom>
-            <HBox alignment="CENTER" minHeight="100.0" spacing="100.0" BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER" spacing="100.0" BorderPane.alignment="CENTER">
                <children>
                   <JFXButton fx:id="btnSubmit" maxHeight="120.0" onAction="#handleSubmit" prefHeight="120.0" styleClass="save-button-jfx" text="Submit" />
                   <Label fx:id="confirmation" styleClass="submission-failed-label-fx" textFill="RED" visible="false" />
                </children>
                <BorderPane.margin>
-                  <Insets />
+                  <Insets bottom="20.0" />
                </BorderPane.margin>
                <padding>
                   <Insets left="350.0" />
