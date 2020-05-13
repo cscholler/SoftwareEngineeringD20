@@ -1,9 +1,6 @@
 package edu.wpi.cs3733.d20.teamL.services.speech;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -76,25 +73,37 @@ public class SpeechToTextService extends Service implements ISpeechToTextService
 	@Override
 	public String convertSpeechToText() {
 		StringBuilder text = new StringBuilder();
+		/*Path path = Paths.get((speechFileManager.getSpeechFile(SpeechFileManager.SpeechServiceType.SPEECH_TO_TEXT)).toURI());
+
 		try {
-			Path path = Paths.get(speechFileManager.getSpeechFileURI(SpeechFileManager.SpeechServiceType.SPEECH_TO_TEXT));
-			byte[] data = Files.readAllBytes(path);
-			ByteString audioBytes = ByteString.copyFrom(data);
-			RecognitionConfig config = RecognitionConfig.newBuilder().setEncoding(RecognitionConfig.AudioEncoding.LINEAR16).setSampleRateHertz(24000).setLanguageCode("en-US").build();
-			RecognitionAudio audio = RecognitionAudio.newBuilder().setContent(audioBytes).build();
-			RecognizeResponse response = client.recognize(config, audio);
-			List<SpeechRecognitionResult> results = response.getResultsList();
-			for (SpeechRecognitionResult result : results) {
-				SpeechRecognitionAlternative alternative = result.getAlternativesList().get(0);
-				String transcription = alternative.getTranscript();
-				text.append(transcription);
-				System.out.println(transcription);
-			}
-		} catch (IOException ex) {
-			log.error("Encountered IOException.", ex);
-		} catch (URISyntaxException ex) {
-			log.error("Encountered URISyntaxException", ex);
+			data = Files.readAllBytes(path);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}*/
+		FileInputStream is = null;
+		File file = speechFileManager.getSpeechFile(SpeechFileManager.SpeechServiceType.SPEECH_TO_TEXT);
+		try {
+			is = new FileInputStream(file);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		}
+		byte[] data = new byte[(int) file.length()];
+		try {
+			is.read(data);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		ByteString audioBytes = ByteString.copyFrom(data);
+		RecognitionConfig config = RecognitionConfig.newBuilder().setEncoding(RecognitionConfig.AudioEncoding.LINEAR16).setSampleRateHertz(24000).setLanguageCode("en-US").build();
+		RecognitionAudio audio = RecognitionAudio.newBuilder().setContent(audioBytes).build();
+		RecognizeResponse response = client.recognize(config, audio);
+		List<SpeechRecognitionResult> results = response.getResultsList();
+		for (SpeechRecognitionResult result : results) {
+			SpeechRecognitionAlternative alternative = result.getAlternativesList().get(0);
+			String transcription = alternative.getTranscript();
+			text.append(transcription);
+		}
+		System.out.println(text);
 		return text.toString();
 	}
 
@@ -121,12 +130,10 @@ public class SpeechToTextService extends Service implements ISpeechToTextService
 			}
 			byte[] audioData = recording.toByteArray();
 			AudioInputStream inputStream = new AudioInputStream(new ByteArrayInputStream(audioData), format, audioData.length / format.getFrameSize());
-			AudioSystem.write(inputStream, AudioFileFormat.Type.WAVE, new File(speechFileManager.getSpeechFileURI(SpeechFileManager.SpeechServiceType.SPEECH_TO_TEXT)));
+			AudioSystem.write(inputStream, AudioFileFormat.Type.WAVE, speechFileManager.getSpeechFile(SpeechFileManager.SpeechServiceType.SPEECH_TO_TEXT));
 			microphone.close();
 		} catch (LineUnavailableException ex) {
 			log.error("Encountered LineUnavailableException.", ex);
-		} catch (URISyntaxException ex) {
-			log.error("Encountered URISyntaxException.", ex);
 		} catch (IOException ex) {
 			log.error("Encountered IOException.", ex);
 		}
