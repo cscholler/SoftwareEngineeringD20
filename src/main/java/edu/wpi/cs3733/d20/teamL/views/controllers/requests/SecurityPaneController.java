@@ -57,10 +57,10 @@ public class SecurityPaneController {
     private Label confirmation, urgencyLbl;
 
     @FXML
-    private VBox fieldsVBox;
+    private VBox feildsVBox;
 
     public void initialize() throws IOException {
-        fieldsVBox.setBackground(new Background(new BackgroundImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/hexagons.png", 1000, 0, true, true, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT)));
+        feildsVBox.setBackground(new Background(new BackgroundImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/hexagons.png", 1000, 0, true, true, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT)));
 
         // restrict key input to numerals on personnel needed textfield
         personnelText.addEventFilter(KeyEvent.KEY_TYPED, keyEvent -> {
