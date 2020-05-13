@@ -1,7 +1,6 @@
 package edu.wpi.cs3733.d20.teamL.views.components;
 
 import javafx.geometry.Point2D;
-import javafx.scene.Cursor;
 
 import java.util.*;
 

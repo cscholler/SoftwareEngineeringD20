@@ -6,12 +6,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
-import com.google.cloud.texttospeech.v1.SsmlVoiceGender;
-import com.jfoenix.controls.*;
-import com.squareup.okhttp.*;
 import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.services.IHTTPClientService;
-import edu.wpi.cs3733.d20.teamL.entities.*;
 import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
@@ -25,7 +21,6 @@ import javafx.animation.Timeline;
 import edu.wpi.cs3733.d20.teamL.util.TimerManager;
 import javafx.application.Platform;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -37,7 +32,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -67,27 +61,16 @@ import com.jfoenix.controls.JFXToggleButton;
 
 import lombok.extern.slf4j.Slf4j;
 
-import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.entities.Building;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.entities.Path;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
-import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
-import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import edu.wpi.cs3733.d20.teamL.services.speech.ISpeechToTextService;
 import edu.wpi.cs3733.d20.teamL.services.speech.ITextToSpeechService;
-import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import edu.wpi.cs3733.d20.teamL.util.SearchFields;
-import edu.wpi.cs3733.d20.teamL.util.TimerManager;
 import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
 import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
 import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
-import org.json.JSONObject;
-
-import edu.wpi.cs3733.d20.teamL.views.controllers.screening.QuestionnaireController;
-
-import edu.wpi.cs3733.d20.teamL.views.controllers.screening.QuestionnaireController;
 
 @Slf4j
 public class MapViewerController {
@@ -189,7 +172,6 @@ public class MapViewerController {
         currentViewer = this;
 
         httpClient.setCurrLang("en");
-        System.out.println(httpClient.getCurrLang());
         timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
         timerManager.startTimer(() -> timerManager.updateDate(dateLabel), 0, 1000);
         //ToDO: uncomment this when its time to get weather
@@ -204,7 +186,7 @@ public class MapViewerController {
         map.setHighlightThickness(4);
         btnNavigate.setDisableVisualFocus(true);
 
-        // Stops stackPanes from stoping you clicking on whats underneath
+        // Stops stackPanes from stopping you clicking on whats underneath
         stackPane.setPickOnBounds(false);
         keyStackPane.setPickOnBounds(false);
         screeningPane.setPickOnBounds(false);
@@ -540,7 +522,6 @@ public class MapViewerController {
 			if (speechToText.allowDestRecording()) {
 				AsyncTaskManager.newTask(() -> {
 					String transcription = speechToText.recordAndConvertAsync("dest");
-					System.out.println(transcription);
 					Platform.runLater(() -> {
 						destination.setText(searchFields.findBestMatch(transcription));
 						if (!startingPoint.getText().isEmpty() && !destination.getText().isEmpty()) {
@@ -1027,11 +1008,9 @@ public class MapViewerController {
         btnNext.setStyle("-fx-pref-width: 75;" + "-fx-pref-height: 50");
         btnNext.setOnAction(e -> {
             if (!qc.getTestFinished()) {
-                //System.out.println("first statement");
                 qc.calculateScore();
                 layout.setHeading(qc.nextClicked());
             } else if (qc.getTestFinished() && !qc.getDone()) {
-                //System.out.println("second statement");
                 qc.calculateScore();
                 btnNext.setText("Close");
                 layout.setHeading(qc.nextClicked());
@@ -1147,7 +1126,6 @@ public class MapViewerController {
     }
 
     private void launchRobot() {
-        System.out.println("Wheres the robot Conrad?!?");
     }
 
     private void showAccordion() {

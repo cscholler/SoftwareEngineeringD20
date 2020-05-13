@@ -12,7 +12,7 @@ import java.util.TimerTask;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import edu.wpi.cs3733.d20.teamL.services.IHTTPClientService;
-import edu.wpi.cs3733.d20.teamL.views.controllers.map.MapViewerController;
+import edu.wpi.cs3733.d20.teamL.views.controllers.game.SnakeController;
 import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -117,54 +117,57 @@ public class TimerManager {
 	}
 
 	public void logOutTick() {
-		Platform.runLater(() -> {
-			if (!isLogoutDialogueOpen && loginManager.isAuthenticated()) {
-				isLogoutDialogueOpen = true;
-				logoutWarning = new Alert(Alert.AlertType.WARNING);
-				logoutWarning.setContentText("Press 'OK' to remain logged in.");
-				logoutWarning.setHeaderText("Session will expire in " + logoutTicks + " seconds.");
-				Optional<ButtonType> result = logoutWarning.showAndWait();
-				if (result.isPresent()) {
-					if (result.get() == ButtonType.OK) {
+		if (!App.isScreenSaverActive) {
+			Platform.runLater(() -> {
+				if (!isLogoutDialogueOpen && loginManager.isAuthenticated()) {
+					isLogoutDialogueOpen = true;
+					logoutWarning = new Alert(Alert.AlertType.WARNING);
+					logoutWarning.setContentText("Press 'OK' to remain logged in.");
+					logoutWarning.setHeaderText("Session will expire in " + logoutTicks + " seconds.");
+					Optional<ButtonType> result = logoutWarning.showAndWait();
+					if (result.isPresent()) {
+						if (result.get() == ButtonType.OK) {
+							logoutTickTimer.cancel();
+							isLogoutDialogueOpen = false;
+							logoutTicks = 15;
+						}
+					}
+				} else {
+					if (logoutTicks > 0) {
+						logoutTicks--;
+					}
+					if (logoutWarning != null) {
+						logoutWarning.setHeaderText("Session will expire in " + logoutTicks + " seconds.");
+					}
+					if (logoutTicks == 0) {
+						log.info("No input for " + millisToMinsAndSecs(logoutTimeoutPeriod) + ". Ending session...");
+						if (loginManager.isAuthenticated()) {
+							loginManager.logOut(true);
+						}
+						FXMLLoaderFactory.resetHistory();
+						Object[] windowObjects =  Stage.getWindows().toArray();
+						ArrayList<Stage> openStages = new ArrayList<>();
+						for (Object obj : windowObjects) {
+							openStages.add((Stage) obj);
+						}
+						for (Stage stage : openStages) {
+							if (!stage.equals(App.stage)) {
+								stage.close();
+							}
+						}
+						try {
+							Parent root = loaderFactory.getFXMLLoader("map_viewer/MapViewer").load();
+							loaderFactory.setupScene(new Scene(root));
+						} catch (IOException ex) {
+							log.error("Encountered IOException", ex);
+						}
 						logoutTickTimer.cancel();
 						isLogoutDialogueOpen = false;
 						logoutTicks = 15;
 					}
 				}
-			} else {
-				if (logoutTicks > 0) {
-					logoutTicks--;
-				}
-				logoutWarning.setHeaderText("Session will expire in " + logoutTicks + " seconds.");
-				if (logoutTicks == 0) {
-					log.info("No input for " + millisToMinsAndSecs(logoutTimeoutPeriod) + ". Ending session...");
-					if (loginManager.isAuthenticated()) {
-						loginManager.logOut(true);
-					}
-					FXMLLoaderFactory.resetHistory();
-					Object[] windowObjects =  Stage.getWindows().toArray();
-					ArrayList<Stage> openStages = new ArrayList<>();
-					for (Object obj : windowObjects) {
-						openStages.add((Stage) obj);
-					}
-					for (Stage stage : openStages) {
-						if (!stage.equals(App.stage)) {
-							log.info("closing stage: " + stage.getTitle());
-							stage.close();
-						}
-					}
-					try {
-						Parent root = loaderFactory.getFXMLLoader("map_viewer/MapViewer").load();
-						loaderFactory.setupScene(new Scene(root));
-					} catch (IOException ex) {
-						log.error("Encountered IOException", ex);
-					}
-					logoutTickTimer.cancel();
-					isLogoutDialogueOpen = false;
-					logoutTicks = 15;
-				}
-			}
-		});
+			});
+		}
 	}
 
 	public void showLogoutDialogueIfNoInput() {
@@ -172,12 +175,15 @@ public class TimerManager {
 			if (logoutTickTimer != null) {
 				logoutTickTimer.cancel();
 			}
-			logoutTickTimer = startTimer(this::logOutTick, 0, 1000);
+			if (App.isScreenSaverActive) {
+				logoutTickTimer = startTimer(this::logOutTick, 0, 1000);
+			}
 		});
 	}
 
 	public void updateCacheIfNoInput() {
 		Platform.runLater(() -> {
+			App.startForceUpdateTimer();
 			if (!isCacheBeingUpdated && App.allowCacheUpdates) {
 				isCacheBeingUpdated = true;
 				log.info("No input for " + millisToMinsAndSecs(idleCacheTimeoutPeriod) + ". Caching from database...");
@@ -188,7 +194,6 @@ public class TimerManager {
 					resetMapViewer();
 				}
 				determineTimeoutPeriods();
-				App.startForceUpdateTimer();
 			}
 			isCacheBeingUpdated = false;
 		});
@@ -224,8 +229,10 @@ public class TimerManager {
 	public void showScreensaverIfNoInput() {
 		Platform.runLater(() -> {
 			log.info(millisToMinsAndSecs(screenSaverTimeoutPeriod) + " since last update. Showing screensaver...");
-			assert cache != null;
-			cache.cacheAllFromDB();
+			loginManager.logOut(true);
+			SnakeController snakeController = new SnakeController();
+			snakeController.setStage(App.stage);
+			snakeController.setup(snakeController.getStage());
 		});
 	}
 

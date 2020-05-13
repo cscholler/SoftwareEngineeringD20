@@ -1,19 +1,13 @@
 package edu.wpi.cs3733.d20.teamL.views.components;
 
 import edu.wpi.cs3733.d20.teamL.entities.Edge;
-import javafx.animation.Interpolator;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.paint.*;
 import javafx.scene.shape.Line;
-import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Vector;
 
 public class EdgeGUI extends Line implements Highlightable {
 

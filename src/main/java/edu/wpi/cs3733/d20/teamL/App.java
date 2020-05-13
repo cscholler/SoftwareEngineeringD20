@@ -28,6 +28,7 @@ public class App extends Application {
 	public static final double SCREEN_HEIGHT = Screen.getPrimary().getVisualBounds().getHeight();
 	public static boolean doUpdateCacheOnLoad = true;
 	public static boolean allowCacheUpdates = true;
+	public static boolean isScreenSaverActive = false;
 	public static double UI_SCALE = 1.34 * (SCREEN_WIDTH / 1920);
 
 	public static void startLogoutTimer() {
@@ -56,6 +57,21 @@ public class App extends Application {
 			screenSaverTimer.cancel();
 		}
 		screenSaverTimer = timerManager.startTimer(timerManager::showScreensaverIfNoInput, "showScreensaverIfNoInput");
+	}
+
+	public static void stopTimers() {
+		if (idleLogoutTimer != null) {
+			idleLogoutTimer.cancel();
+		}
+		if (idleCacheUpdateTimer != null) {
+			idleCacheUpdateTimer.cancel();
+		}
+		if (forceCacheUpdateTimer != null) {
+			forceCacheUpdateTimer.cancel();
+		}
+		if (screenSaverTimer != null) {
+			screenSaverTimer.cancel();
+		}
 	}
 
 	@Override

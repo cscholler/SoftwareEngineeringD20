@@ -57,7 +57,6 @@ public class SpeechFileManager {
 
 	public File getSpeechFile(SpeechServiceType type) {
 		File file = new File(tempDir.toString() + getFileNameByServiceType(type) + ".wav");
-		System.out.println(file.toString());
 		return file;
 	}
 
