@@ -183,13 +183,9 @@ public class TimerManager {
 				log.info("No input for " + millisToMinsAndSecs(idleCacheTimeoutPeriod) + ". Caching from database...");
 				assert cache != null;
 				cache.cacheAllFromDB();
-				try {
-					FXMLLoaderFactory.resetHistory();
-					FXMLLoaderFactory fxmlLoaderFactory = new FXMLLoaderFactory();
-					Scene homeScene = new Scene(loaderFactory.getFXMLLoader("map_viewer/MapViewer").load());
-					fxmlLoaderFactory.setupScene(homeScene);
-				} catch (IOException ex) {
-					log.error("Encountered IOException", ex);
+				// Reinitialize if the screen is on the map viewer
+				if (FXMLLoaderFactory.getHistory().size() == 1) {
+					resetMapViewer();
 				}
 				determineTimeoutPeriods();
 				App.startForceUpdateTimer();
@@ -205,17 +201,24 @@ public class TimerManager {
 				log.info(millisToMinsAndSecs(forceCacheTimeoutPeriod) + " since last update. Caching from database...");
 				assert cache != null;
 				cache.cacheAllFromDB();
-				try {
-					FXMLLoaderFactory.resetHistory();
-					FXMLLoaderFactory fxmlLoaderFactory = new FXMLLoaderFactory();
-					Scene homeScene = new Scene(loaderFactory.getFXMLLoader("map_viewer/MapViewer").load());
-					fxmlLoaderFactory.setupScene(homeScene);
-				} catch (IOException ex) {
-					log.error("Encountered IOException", ex);
+				// Reinitialize if the screen is on the map viewer
+				if (FXMLLoaderFactory.getHistory().size() == 1) {
+					resetMapViewer();
 				}
 			}
 			isCacheBeingUpdated = false;
 		});
+	}
+
+	private void resetMapViewer() {
+		try {
+			FXMLLoaderFactory.resetHistory();
+			FXMLLoaderFactory fxmlLoaderFactory = new FXMLLoaderFactory();
+			Scene homeScene = new Scene(loaderFactory.getFXMLLoader("map_viewer/MapViewer").load());
+			fxmlLoaderFactory.setupScene(homeScene);
+		} catch (IOException ex) {
+			log.error("Encountered IOException", ex);
+		}
 	}
 
 	public void showScreensaverIfNoInput() {

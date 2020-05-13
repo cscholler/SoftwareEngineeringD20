@@ -11,8 +11,9 @@ import edu.wpi.cs3733.d20.teamL.util.SearchFields;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 import javax.inject.Inject;
@@ -50,7 +51,12 @@ public class SanitationPaneController {
     private Label confirmation, tagTxt, priorityTxt;
 
     @FXML
+    private VBox fieldsVBox;
+
+    @FXML
     public void initialize(){
+        fieldsVBox.setBackground(new Background(new BackgroundImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/hexagons.png", 1000, 0, true, true, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT)));
+
         sf = new SearchFields(dbCache.getNodeCache());
         sf.getFields().add(SearchFields.Field.nodeID);
         sf.populateSearchFields();
