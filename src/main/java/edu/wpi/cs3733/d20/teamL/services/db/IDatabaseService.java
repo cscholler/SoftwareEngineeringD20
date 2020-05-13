@@ -12,11 +12,6 @@ import java.util.Map;
 import java.util.Properties;
 
 public interface IDatabaseService {
-
-	void startService();
-
-	void stopService();
-
 	void connect();
 
 	ResultSet executeQuery(SQLEntry query);

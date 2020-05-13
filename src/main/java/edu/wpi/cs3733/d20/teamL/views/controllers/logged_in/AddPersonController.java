@@ -14,7 +14,7 @@ import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 import edu.wpi.cs3733.d20.teamL.services.users.PasswordManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
-import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
+import edu.wpi.cs3733.d20.teamL.util.SearchFields;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -178,20 +178,22 @@ public class AddPersonController implements Initializable {
     @FXML
     private void submitDoc() throws IOException {
         int rows = 0;
+int rows1 = 0;
 
         String firstName = doctorFN.getText();
         String lastName = doctorLN.getText();
         String username = doctorUn.getText();
         String password = doctorPw.getText();
         String doctorID = doctorIDText.getText();
-        String roomNum = officeText.getText();
+        String roomNum = officeText.getText() != null ? sf.getNode(officeText.getText()).getID() : null;
         String additionalInfo = addlInfoText.getText();
         String type = "2";
         String services = null;
-        String manager = "pharmacist";
+        String manager = "pharmacy";
 
         rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(firstName, lastName, username, PasswordManager.hashPassword(password), type, services, manager))));
-        db.executeUpdate(new SQLEntry(DBConstants.ADD_DOCTOR, new ArrayList<>(Arrays.asList(doctorID, firstName, lastName, null, roomNum, additionalInfo))));
+        rows1 = db.executeUpdate(new SQLEntry(DBConstants.ADD_DOCTOR, new ArrayList<>(Arrays.asList(doctorID, firstName, lastName, username, roomNum, additionalInfo))));
+        log.info(rows1+ "");
         confirm(rows);
         if(rows == 1 && pictureTaken){
             sendFace(username);

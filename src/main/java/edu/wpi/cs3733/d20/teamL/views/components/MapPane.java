@@ -364,6 +364,17 @@ public class MapPane extends ScrollPane {
             nodeGUI.getCircle().setFill(nodeColor);
     }
 
+    public Color getHallNodeColor() {
+        return hallNodeColor;
+    }
+
+    public void setHallNodeColor(Color hallNodeColor) {
+        this.hallNodeColor = hallNodeColor;
+        for (NodeGUI nodeGUI : nodes.values())
+            if (nodeGUI.getNode().getType().equals("HALL"))
+                nodeGUI.getCircle().setFill(hallNodeColor);
+    }
+
     public Color getEdgeColor() {
         return edgeColor;
     }
@@ -395,7 +406,7 @@ public class MapPane extends ScrollPane {
         for (NodeGUI nodeGUI : nodes.values())
             nodeGUI.setHighlightThickness(this.highlightThickness);
         for (EdgeGUI edgeGUI : edges.values())
-            setHighlightThickness(highlightThickness);
+            edgeGUI.setHighlightThickness(highlightThickness);
     }
 
     public double getEdgeThickness() {
@@ -506,6 +517,21 @@ public class MapPane extends ScrollPane {
             Point2D prevPos = new Point2D(nodeGUI.getXProperty().get(), nodeGUI.getYProperty().get());
             Point2D newPos = prevPos.multiply(zoomLevel / this.zoomLevel);
             nodeGUI.setLayoutPos(newPos);
+            if (nodeGUI.isUsingGradient()) {
+                nodeGUI.setGradient(nodeGUI.getRadius() * (zoomLevel / this.zoomLevel));
+            }
+        }
+
+        for (EdgeGUI edgeGUI : edges.values()) {
+            if (edgeGUI.isUsingGradient())
+                edgeGUI.setGradient(edgeGUI.getStrokeWidth() * (zoomLevel / this.zoomLevel));
+        }
+
+        if (isEditable()) {
+            if (zoomLevel < 0.55 * App.UI_SCALE)
+                setHallVisibility(false);
+            else
+                setHallVisibility(true);
         }
 
         // Scale the image
@@ -516,6 +542,15 @@ public class MapPane extends ScrollPane {
 
 
         this.zoomLevel = zoomLevel;
+    }
+
+    public void setHallVisibility(boolean visibility) {
+        for (NodeGUI nodeGUI : nodes.values()) {
+            if (nodeGUI.getNode().getType().equals("HALL")) {
+                nodeGUI.setVisible(visibility);
+                nodeGUI.setMouseTransparent(!visibility);
+            }
+        }
     }
 
     /**

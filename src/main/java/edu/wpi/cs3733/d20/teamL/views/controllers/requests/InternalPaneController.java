@@ -11,23 +11,20 @@ import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
-import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
+import edu.wpi.cs3733.d20.teamL.util.SearchFields;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.DateCell;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.util.Callback;
+
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.*;
 
 public class InternalPaneController implements Initializable {
@@ -50,6 +47,8 @@ public class InternalPaneController implements Initializable {
     StackPane stackPane;
     @FXML
     ImageView requestReceived;
+    @FXML
+    private VBox fieldsVBox;
     @Inject
     private IDatabaseService db;
     @Inject
@@ -60,6 +59,8 @@ public class InternalPaneController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        fieldsVBox.setBackground(new Background(new BackgroundImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/hexagons.png", 1000, 0, true, true, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT)));
+
         sf = new SearchFields(dbCache.getNodeCache());
         sf.getFields().add(SearchFields.Field.nodeID);
         sf.populateSearchFields();
@@ -117,7 +118,7 @@ public class InternalPaneController implements Initializable {
 
 
         String status = "0";
-        String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm:aa").format(new Date());
+        String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
         String concatenatedNotes = end + dateNeeded + "\n" + hourNeeded + " : " + minNeeded;
 
 

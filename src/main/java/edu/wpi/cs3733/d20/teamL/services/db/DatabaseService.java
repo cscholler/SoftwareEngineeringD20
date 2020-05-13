@@ -60,7 +60,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 	 * Stops the database service
 	 */
 	@Override
-	public void stopService() {
+	protected void stopService() {
 		disconnect();
 	}
 
@@ -329,13 +329,6 @@ public class DatabaseService extends Service implements IDatabaseService {
 		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Movies", "Joker", "full movie", "100", "6.99"))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Movies", "Parasite", "full movie", "100", "12.99"))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Movies", "Avengers", "A collection of Marvel Avengers 1~4", "100", "39.99"))));
-
-		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Mangas", "Fullmetal Alchemist", "A collection of Japanese manga Fullmetal Alchemist", "500", "199.99"))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Mangas", "One-Punch Man", "A collection of Japanese manga One-Punch Man", "500", "99.99"))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Mangas", "Death Note", "A collection of Japanese manga Death Note", "123", "99.99"))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Mangas", "Attack on Titan", "A collection of Japanese manga Attack on Titan", "2", "199.99"))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Mangas", "Slam Dunk", "A collection of Japanese manga Slam Dunk", "100", "299.99"))));
-		executeUpdate(new SQLEntry(DBConstants.ADD_GIFT, new ArrayList<>(Arrays.asList("Mangas", "Naruto", "A collection of Japanese manga Naruto", "500", "189.99"))));
 
 		executeUpdate(new SQLEntry(DBConstants.ADD_DEFAULT_KIOSK, new ArrayList<>(Collections.singletonList("LKIOS00101"))));
 		executeUpdate(new SQLEntry(DBConstants.ADD_DEFAULT_KIOSK, new ArrayList<>(Collections.singletonList("LKIOS00103"))));

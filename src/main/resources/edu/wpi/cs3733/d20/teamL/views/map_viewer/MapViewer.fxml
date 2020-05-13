@@ -18,7 +18,6 @@
 <?import javafx.scene.text.Font?>
 
 <?import edu.wpi.cs3733.d20.teamL.views.components.MapPane?>
-
 <BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.map.MapViewerController">
     <left>
       <AnchorPane>
@@ -38,16 +37,16 @@
                                           <Insets />
                                       </opaqueInsets>
                                   </JFXTextField>
-                        <JFXButton fx:id="btnTextToSpeechStart" contentDisplay="GRAPHIC_ONLY" onAction="#textToSpeachStartIcon" styleClass="clear-button-jfx">
+                        <JFXButton fx:id="btnRecordStart" contentDisplay="GRAPHIC_ONLY" onAction="#btnRecordClicked" styleClass="clear-button-jfx">
                            <graphic>
-                              <ImageView fitHeight="16.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="startMicIcon" fitHeight="16.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../assets/home_page/textToSpeachReady.png" />
+                                    <Image url="@../../assets/home_page/speech_to_text_ready.png" />
                                  </image>
                               </ImageView>
                            </graphic>
                            <tooltip>
-                              <Tooltip text="Click to search with voice" />
+                              <Tooltip fx:id="startMicToolType" text="Click to search with voice" />
                            </tooltip>
                         </JFXButton>
                                   <JFXButton contentDisplay="GRAPHIC_ONLY" maxHeight="30.0" onAction="#clearSource" prefWidth="29.0" style="-fx-font-size: 10; -fx-pref-width: 30;" styleClass="clear-button-jfx" textFill="WHITE">
@@ -66,7 +65,7 @@
                           </HBox>
                           <HBox alignment="CENTER" prefHeight="40.0" prefWidth="300.0" style="-fx-border-radius: 10; -fx-background-radius: 10;">
                               <children>
-                                  <JFXTextField fx:id="destination" focusColor="WHITE" maxHeight="30.0" onKeyTyped="#destinationAutocomplete" promptText="Destination" styleClass="search-bar-text-field-jfx" unFocusColor="WHITE">
+                                  <JFXTextField fx:id="destination" focusColor="WHITE" maxHeight="30.0" onKeyReleased="#destinationAutocomplete" promptText="Destination" styleClass="search-bar-text-field-jfx" unFocusColor="WHITE">
                                       <font>
                                           <Font size="16.0" />
                                       </font>
@@ -74,16 +73,16 @@
                                           <Insets />
                                       </HBox.margin>
                                   </JFXTextField>
-                        <JFXButton fx:id="btnTextToSpeechDestination" contentDisplay="GRAPHIC_ONLY" onAction="#textToSpeachDestinationIcon" styleClass="clear-button-jfx">
+                        <JFXButton fx:id="btnRecordDest" contentDisplay="GRAPHIC_ONLY" onAction="#btnRecordClicked" styleClass="clear-button-jfx">
                            <graphic>
-                              <ImageView fitHeight="16.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="destMicIcon" fitHeight="16.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../assets/home_page/textToSpeachReady.png" />
+                                    <Image url="@../../assets/home_page/speech_to_text_ready.png" />
                                  </image>
                               </ImageView>
                            </graphic>
                            <tooltip>
-                              <Tooltip text="Click to search with voice" />
+                              <Tooltip fx:id="destMicToolType" text="Click to search with voice" />
                            </tooltip>
                         </JFXButton>
                                   <JFXButton contentDisplay="GRAPHIC_ONLY" maxHeight="30.0" onAction="#clearDest" style="-fx-font-size: 10;" styleClass="clear-button-jfx" stylesheets="@../../css/GlobalStyleSheet.css" textFill="WHITE">
@@ -239,14 +238,16 @@
                         </JFXButton>
                     </children>
                 </VBox>
-            <HBox alignment="BOTTOM_CENTER" layoutX="369.0" layoutY="570.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0">
+            <HBox alignment="BOTTOM_CENTER" layoutX="369.0" layoutY="570.0" spacing="50.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0">
                <children>
                   <JFXComboBox fx:id="buildingChooser" onAction="#switchBuilding" promptText="Select Building" style="-fx-border-color: #0d2e57; -fx-border-width: 3; -fx-background-color: white;" styleClass="combo-box-jfx" />
+                  <JFXComboBox fx:id="languagePicker" onAction="#languageChosen" style="-fx-border-color: #0d2e57; -fx-border-width: 3px; -fx-background-color: white;" styleClass="combo-box-jfx" />
                </children>
             </HBox>
+            <VBox fx:id="miniMaps" layoutX="14.0" layoutY="102.0" spacing="10" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="102.0" />
             <StackPane fx:id="keyStackPane" alignment="TOP_LEFT" layoutY="4.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
                <children>
-                  <JFXButton buttonType="RAISED" graphicTextGap="10.0" onAction="#showLegend" style="-fx-background-color: #00043B; -fx-background-radius: 50;" text="Legend">
+                  <JFXButton fx:id="btnLegend" buttonType="RAISED" graphicTextGap="10.0" onAction="#showLegend" style="-fx-background-color: #00043B; -fx-background-radius: 50;" text="Legend">
                      <graphic>
                         <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" scaleX="1.2" scaleY="1.2">
                            <image>
@@ -280,7 +281,7 @@
                <children>
                   <ImageView fitHeight="63.0" fitWidth="252.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../assets/home_page/BWH logo.png" />
+                        <Image url="@../../assets/home_page/bwh_logo.png" />
                      </image>
                   </ImageView>
                </children>
@@ -290,7 +291,7 @@
             </HBox>
              <HBox alignment="CENTER" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
                  <children>
-                     <JFXButton buttonType="RAISED" onAction="#handleFeedback" prefHeight="57.0" prefWidth="211.0" style="-fx-background-color: #0d2e57; -fx-border-color: white; -fx-border-radius: 10;" text="Give us feedback">
+                     <JFXButton fx:id="btnFeedback" buttonType="RAISED" onAction="#handleFeedback" prefHeight="57.0" prefWidth="211.0" style="-fx-background-color: #0d2e57; -fx-border-color: white; -fx-border-radius: 10;" text="Give us feedback">
                          <font>
                              <Font size="24.0" />
                          </font>

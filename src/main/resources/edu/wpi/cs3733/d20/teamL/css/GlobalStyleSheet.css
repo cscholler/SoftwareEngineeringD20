@@ -415,6 +415,8 @@
 .tree-table-cell {
     -fx-alignment: center-left;
     -fx-font-size: 15;
+    -fx-border-color: black;
+    -fx-border-width: 0.5;
 }
 
 .tree-table-row-cell:odd {
@@ -502,3 +504,4 @@
 {
     -fx-font-weight: bold;
 }
+

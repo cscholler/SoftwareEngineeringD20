@@ -24,6 +24,7 @@ import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.entities.Question;
 import edu.wpi.cs3733.d20.teamL.entities.ServiceRequest;
 import edu.wpi.cs3733.d20.teamL.entities.User;
+import java.util.Date;
 
 @Slf4j
 public class DatabaseCache implements IDatabaseCache {
@@ -43,6 +44,8 @@ public class DatabaseCache implements IDatabaseCache {
     private final ArrayList<Edge> deletedEdges = new ArrayList<>();
 	private ArrayList<Node> editedNodes = new ArrayList<>();
     private ArrayList<Edge> editedEdges = new ArrayList<>();
+    private Date timestamp;
+
     @Inject
     private IDatabaseService db;
 
@@ -418,22 +421,40 @@ public class DatabaseCache implements IDatabaseCache {
 
     @Override
     public ArrayList<ServiceRequest> getAllRequests() {
-        return requests;
+        ArrayList<ServiceRequest> reqs = new ArrayList<>();
+        for(ServiceRequest req : requests) {
+            if(req.getActualDateAndTime().after(timestamp))
+                reqs.add(req);
+        }
+        return reqs;
     }
 
     @Override
     public ArrayList<GiftDeliveryRequest> getAllGiftRequests() {
-        return giftRequests;
+        ArrayList<GiftDeliveryRequest> gifts = new ArrayList<>();
+        for(GiftDeliveryRequest req : giftRequests) {
+            if(req.getActualDateAndTime().after(timestamp))
+                gifts.add(req);
+        }
+        return gifts;
     }
 
     @Override
     public ArrayList<ServiceRequest> getAllSpecificRequest(String service) {
         ArrayList<ServiceRequest> reqs = new ArrayList<>();
         for(ServiceRequest req : requests) {
-            if(req.getService().equals(service)) {
+            if(req.getService().equals(service) && req.getActualDateAndTime().after(timestamp)) {
                 reqs.add(req);
             }
         }
         return reqs;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
     }
 }

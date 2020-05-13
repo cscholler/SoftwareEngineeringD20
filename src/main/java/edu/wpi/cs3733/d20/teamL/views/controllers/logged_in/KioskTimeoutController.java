@@ -5,14 +5,12 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import com.jfoenix.controls.JFXAutoCompletePopup;
-import com.mysql.cj.x.protobuf.MysqlxDatatypes;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
-import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
+import edu.wpi.cs3733.d20.teamL.util.SearchFields;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.paint.Color;
 
 import com.google.inject.Inject;
 

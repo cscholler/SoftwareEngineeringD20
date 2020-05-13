@@ -1,5 +1,10 @@
 package edu.wpi.cs3733.d20.teamL.entities;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.SimpleFormatter;
+
 public class ServiceRequest {
 	private String id;
 	private String patientID;
@@ -83,5 +88,15 @@ public class ServiceRequest {
 
 	public String getDateAndTime() {
 		return dateAndTime;
+	}
+
+	public Date getActualDateAndTime() {
+		try {
+			Date date = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").parse(dateAndTime);
+			return date;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

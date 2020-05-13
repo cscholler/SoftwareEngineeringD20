@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamL.entities;
 import java.util.*;
 
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
+import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import javafx.geometry.Point2D;
@@ -14,6 +15,8 @@ public class Path implements Iterable<Node> {
     private int length = 0;
 
     private final IDatabaseCache cache = FXMLLoaderFactory.injector.getInstance(IDatabaseCache.class);
+    private final IPathfinderService pathfinder = FXMLLoaderFactory.injector.getInstance(IPathfinderService.class);
+
 
     public List<Node> getPathNodes() {
         return pathNodes;
@@ -21,6 +24,16 @@ public class Path implements Iterable<Node> {
 
     public int getLength() {
         return length;
+    }
+
+    public ArrayList<Node> getNodesOnFloor(int floor, String building) {
+        ArrayList<Node> floorPath = new ArrayList<>();
+        for(Node node : pathNodes) {
+            if(node.getBuilding().equals(building) && node.getFloor() == floor) {
+                floorPath.add(node);
+            }
+        }
+        return floorPath;
     }
 
     /**
@@ -131,8 +144,8 @@ public class Path implements Iterable<Node> {
             editedEdges.add(edge);
             editedEdges.add(adjEdge);
             if(!edge.getSource().getBuilding().equals(edge.getDestination().getBuilding())) {
-                if(transportation.equals("driving")) time += 10000;
-                else if (transportation.equals("walking")) time += 100000;
+                if(transportation.equals("driving")) time += 1780;
+                else if (transportation.equals("walking")) time += 1780;
             } else if (edge.getSource().getFloor() != edge.getDestination().getFloor()) {
                 if(edge.getSource().getType().equals("ELEV")) time += 15 / .338;
                 else time += 11 / .338;
@@ -146,6 +159,9 @@ public class Path implements Iterable<Node> {
 			cache.updateDB();
 		});
 
+        if(pathfinder.isHandicapped()) {
+            return (int) Math.round(time * .338 / 60) * 2;
+        }
         return (int) Math.round(time * .338 / 60);
     }
 
@@ -211,7 +227,7 @@ public class Path implements Iterable<Node> {
                     sign = determineDirection(start, end);
 
                     if (lastRoom != null) {
-                        builder.append("After you pass the " + parseLongName(lastRoom) + ", take ");
+                        builder.append("After you pass the " + lastRoom + ", take ");
                     } else builder.append("Continue forward and take ");
 
                     if (lefts > 0 && sign.equals("left")) {
@@ -223,7 +239,7 @@ public class Path implements Iterable<Node> {
                     }
 
                     if (next.equals(goal)) {
-                        builder.append(" to the " + parseLongName(goal.getLongName()));
+                        builder.append(" to the " + goal.getLongName());
                         lastStatement = false;
                     }
                     builder.append(".");
@@ -314,16 +330,6 @@ public class Path implements Iterable<Node> {
         if (angle < 45) return "slight ";
         else if (angle > 95) return "sharp ";
         else return "";
-    }
-
-    private String parseLongName(String name) {
-        for (int i = 0; i < name.length() - 1; i++) {
-            if (checkNumber(name.substring(i, i + 1))) {
-                return name.substring(0, i - 1).toLowerCase();
-            }
-        }
-
-        return name;
     }
 
     private boolean checkNumber(String s) {

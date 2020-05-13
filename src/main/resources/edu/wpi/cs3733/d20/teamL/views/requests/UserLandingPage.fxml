@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTabPane?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -63,135 +65,161 @@
       </BorderPane>
    </center>
    <left>
-      <VBox alignment="CENTER" maxHeight="1000.0" prefHeight="826.0" prefWidth="385.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label alignment="CENTER" maxHeight="30.0" prefHeight="30.0" prefWidth="385.0" style="-fx-background-color: #00042B;" text="Service Requests " textAlignment="CENTER" textFill="WHITE">
-               <font>
-                  <Font size="40.0" />
-               </font>
-            </Label>
-            <ScrollPane hbarPolicy="NEVER" prefHeight="1000.0" prefWidth="385.0">
-               <content>
-                  <VBox alignment="CENTER_LEFT" prefWidth="385.0">
+      <JFXTabPane style="-fx-pref-width: 385;" styleClass="JFX-tab-pane">
+         <tabs>
+            <Tab style="-fx-pref-width: 187;" text="Service Requests">
+              <content>
+                  <VBox alignment="CENTER" maxHeight="1000.0" prefHeight="826.0" prefWidth="385.0">
                      <children>
-                        <JFXButton fx:id="btnGift" onAction="#launchGiftPane" styleClass="services-button-jfx" text="Gift Delivery" VBox.vgrow="ALWAYS">
-                           <graphic>
-                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../assets/service_icons/giftDelivery.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </JFXButton>
-                        <JFXButton fx:id="btnSecurity" onAction="#launchSecurityPane" styleClass="services-button-jfx" text="Security">
-                           <graphic>
-                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../assets/service_icons/securityRequest.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </JFXButton>
-                        <JFXButton fx:id="btnMaintenance" onAction="#launchMaintenancePane" styleClass="services-button-jfx" text="Maintenance">
-                           <graphic>
-                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../assets/service_icons/mantinenceRequest.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </JFXButton>
-                        <JFXButton fx:id="btnInternal" onAction="#launchInternalPane" styleClass="services-button-jfx" text="Internal Transport">
-                           <graphic>
-                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../assets/service_icons/internalTransport.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </JFXButton>
-                        <JFXButton fx:id="btnExternal" onAction="#launchExternalPane" styleClass="services-button-jfx" text="External Transport">
-                           <graphic>
-                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../assets/service_icons/externalTransport.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </JFXButton>
-                        <JFXButton fx:id="btnMedication" onAction="#launchMedicationPane" styleClass="services-button-jfx" text="Medication">
-                           <graphic>
-                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../assets/service_icons/medicationRequest.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </JFXButton>
-                        <JFXButton fx:id="btnSanitation" onAction="#launchSanitationPane" styleClass="services-button-jfx" text="Sanitation">
-                           <graphic>
-                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../assets/service_icons/sanitationService.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </JFXButton>
-                        <JFXButton fx:id="btnIT" onAction="#launchITPane" styleClass="services-button-jfx" text="IT">
-                           <graphic>
-                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../assets/service_icons/informationTechnology.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </JFXButton>
-                        <JFXButton fx:id="btnInterpreter" onAction="#launchInterpreterPane" styleClass="services-button-jfx" text="Interpreter">
-                           <graphic>
-                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../assets/service_icons/interpreterRequest.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </JFXButton>
-                        <JFXButton fx:id="btnReflectionRoom" onAction="#launchReflectionRoomPane" styleClass="services-button-jfx" text="Reflection Room">
-                           <graphic>
-                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../assets/service_icons/reflectionRoom.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic></JFXButton>
-                        <JFXButton fx:id="btnOnCallBed" onAction="#launchOnCallBedPane" styleClass="services-button-jfx" text="On-Call Bed">
-                           <graphic>
-                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../assets/service_icons/sleepingArea.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic></JFXButton>
-                        <JFXButton fx:id="btnAddPatient" onAction="#launchAddPatient" styleClass="services-button-jfx" text="Add Patient" visible="false">
-                           <graphic>
-                              <ImageView fitHeight="50.0" fitWidth="50.0">
-                                 <image>
-                                    <Image url="@../../assets/service_icons/addPerson.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic></JFXButton>
-                        <JFXButton fx:id="btnLaunchAPI" onAction="#launchAPIntment" styleClass="services-button-jfx" text="Make Appointment" visible="true">
-                           <graphic>
-                              <ImageView fitHeight="50.0" fitWidth="50.0">
-                                 <image>
-                                    <Image url="@../../assets/service_icons/schedulerService.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic></JFXButton>
+                        <Label alignment="CENTER" maxHeight="30.0" prefHeight="30.0" prefWidth="385.0" style="-fx-background-color: #00042B;" text="Service Requests " textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                              <Font size="40.0" />
+                           </font>
+                        </Label>
+                        <ScrollPane hbarPolicy="NEVER" prefHeight="1000.0" prefWidth="385.0">
+                           <content>
+                              <VBox alignment="CENTER_LEFT" prefWidth="385.0">
+                                 <children>
+                                    <JFXButton fx:id="btnGift" onAction="#launchGiftPane" styleClass="services-button-jfx" text="Gift Delivery" VBox.vgrow="ALWAYS">
+                                       <graphic>
+                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../assets/service_icons/giftDelivery.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </JFXButton>
+                                    <JFXButton fx:id="btnSecurity" onAction="#launchSecurityPane" styleClass="services-button-jfx" text="Security">
+                                       <graphic>
+                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../assets/service_icons/securityRequest.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </JFXButton>
+                                    <JFXButton fx:id="btnMaintenance" onAction="#launchMaintenancePane" styleClass="services-button-jfx" text="Maintenance">
+                                       <graphic>
+                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../assets/service_icons/mantinenceRequest.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </JFXButton>
+                                    <JFXButton fx:id="btnInternal" onAction="#launchInternalPane" styleClass="services-button-jfx" text="Internal Transport">
+                                       <graphic>
+                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../assets/service_icons/internalTransport.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </JFXButton>
+                                    <JFXButton fx:id="btnExternal" onAction="#launchExternalPane" styleClass="services-button-jfx" text="External Transport">
+                                       <graphic>
+                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../assets/service_icons/externalTransport.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </JFXButton>
+                                    <JFXButton fx:id="btnMedication" onAction="#launchMedicationPane" styleClass="services-button-jfx" text="Medication">
+                                       <graphic>
+                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../assets/service_icons/medicationRequest.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </JFXButton>
+                                    <JFXButton fx:id="btnSanitation" onAction="#launchSanitationPane" styleClass="services-button-jfx" text="Sanitation">
+                                       <graphic>
+                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../assets/service_icons/sanitationService.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </JFXButton>
+                                    <JFXButton fx:id="btnIT" onAction="#launchITPane" styleClass="services-button-jfx" text="IT">
+                                       <graphic>
+                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../assets/service_icons/informationTechnology.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </JFXButton>
+                                    <JFXButton fx:id="btnInterpreter" onAction="#launchInterpreterPane" styleClass="services-button-jfx" text="Interpreter">
+                                       <graphic>
+                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../assets/service_icons/interpreterRequest.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </JFXButton>
+                                    <JFXButton fx:id="btnReflectionRoom" onAction="#launchReflectionRoomPane" styleClass="services-button-jfx" text="Reflection Room">
+                                       <graphic>
+                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../assets/service_icons/reflectionRoom.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </JFXButton>
+                                    <JFXButton fx:id="btnOnCallBed" onAction="#launchOnCallBedPane" styleClass="services-button-jfx" text="On-Call Bed">
+                                       <graphic>
+                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../assets/service_icons/sleepingArea.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </JFXButton>
+                                    <JFXButton fx:id="btnAddPatient" onAction="#launchAddPatient" styleClass="services-button-jfx" text="Add Patient" visible="false">
+                                       <graphic>
+                                          <ImageView fitHeight="50.0" fitWidth="50.0">
+                                             <image>
+                                                <Image url="@../../assets/service_icons/addPerson.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </JFXButton>
+                                 </children>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </VBox>
+              </content>
+            </Tab>
+            <Tab style="-fx-pref-width: 187;" text="APIs">
+               <content>
+                  <VBox alignment="CENTER" maxHeight="1000.0" prefHeight="826.0" prefWidth="385.0">
+                     <children>
+                        <Label alignment="CENTER" maxHeight="30.0" prefHeight="30.0" prefWidth="385.0" style="-fx-background-color: #00042B;" text="APIs" textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                              <Font size="40.0" />
+                           </font>
+                        </Label>
+                        <ScrollPane hbarPolicy="NEVER" prefHeight="1000.0" prefWidth="385.0">
+                           <content>
+                              <VBox alignment="CENTER_LEFT" prefWidth="385.0">
+                                 <children>
+                                    <JFXButton fx:id="btnGift1" onAction="#launchGiftAPI" styleClass="services-button-jfx" text="Team P Food Request" VBox.vgrow="ALWAYS" />
+                                    <JFXButton fx:id="btnMaintenance1" onAction="#launchMaintenanceAPI" styleClass="services-button-jfx" text="Team M A/V Request " />
+                                 </children>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
                      </children>
                   </VBox>
                </content>
-            </ScrollPane>
-         </children>
-      </VBox>
+            </Tab>
+         </tabs>
+      </JFXTabPane>
    </left>
 </BorderPane>
