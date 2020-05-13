@@ -128,8 +128,8 @@ public class Path implements Iterable<Node> {
             angle = start.angle(end);
 
             robotPath.append("2 ");
-            int length = (int)curr.getEdge(next).getLength();
-            robotPath.append((length*10) + ",");
+            int length = ((int)curr.getEdge(next).getLength()) * 10;
+            robotPath.append(length + ",");
 
             if (angle > 10) {
                 sign = determineDirection(start, end);
