@@ -28,6 +28,7 @@ public class App extends Application {
 	public static final double SCREEN_HEIGHT = Screen.getPrimary().getVisualBounds().getHeight();
 	public static boolean doUpdateCacheOnLoad = true;
 	public static boolean allowCacheUpdates = true;
+	public static boolean isScreenSaverActive = false;
 	public static double UI_SCALE = 1.34 * (SCREEN_WIDTH / 1920);
 
 	public static void startLogoutTimer() {

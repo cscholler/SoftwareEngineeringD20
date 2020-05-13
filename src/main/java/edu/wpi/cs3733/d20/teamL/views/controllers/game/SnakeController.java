@@ -1,12 +1,15 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.game;
 
 import edu.wpi.cs3733.d20.teamL.App;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -15,9 +18,14 @@ import javafx.util.Duration;
 
 //TODO: Call when screensaver timeout hits. Add ability to return to map viewer. Change colors and add background image."
 public class SnakeController {
+	private Stage stage;
 
-	public SnakeController(Stage stage) {
-		initialize(stage);
+	public Stage getStage() {
+		return stage;
+	}
+
+	public void setStage(Stage stage) {
+		this.stage = stage;
 	}
 
 	public enum Direction {
@@ -37,8 +45,9 @@ public class SnakeController {
 
 	private ObservableList<Node> snake;
 
-	public void initialize(Stage stage) {
+	public void setup(Stage stage) {
 		Scene scene = new Scene(createPane());
+		FXMLLoaderFactory.applyTimeouts(scene);
 		scene.setOnKeyPressed(event -> {
 			switch(event.getCode()) {
 				case UP:
@@ -83,7 +92,8 @@ public class SnakeController {
 
 	private Pane createPane() {
 		Pane root = new Pane();
-
+		ImageView background = new ImageView(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/FaulknerFloor2LM.png", App.SCREEN_WIDTH, 0, true, false, true));
+		background.setStyle("-fx-translate-y: -100");
 		Group snakeBody = new Group();
 		snake = snakeBody.getChildren();
 		Rectangle food = new Rectangle(BLOCK_SIZE, BLOCK_SIZE);
@@ -155,7 +165,7 @@ public class SnakeController {
 		timeline.getKeyFrames().add(frame);
 		timeline.setCycleCount(Timeline.INDEFINITE);
 
-		root.getChildren().addAll(food, snakeBody);
+		root.getChildren().addAll(background, food, snakeBody);
 
 		return root;
 	}

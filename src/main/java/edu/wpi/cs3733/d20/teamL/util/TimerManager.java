@@ -207,7 +207,9 @@ public class TimerManager {
 		Platform.runLater(() -> {
 			log.info(millisToMinsAndSecs(screenSaverTimeoutPeriod) + " since last update. Showing screensaver...");
 			loginManager.logOut(true);
-			SnakeController snakeController = new SnakeController(App.stage);
+			SnakeController snakeController = new SnakeController();
+			snakeController.setStage(App.stage);
+			snakeController.setup(snakeController.getStage());
 		});
 	}
 

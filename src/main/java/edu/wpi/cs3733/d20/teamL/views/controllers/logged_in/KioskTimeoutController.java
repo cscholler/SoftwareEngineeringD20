@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import com.jfoenix.controls.JFXAutoCompletePopup;
+import edu.wpi.cs3733.d20.teamL.App;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import edu.wpi.cs3733.d20.teamL.util.SearchFields;
 import javafx.fxml.FXML;
@@ -80,17 +81,18 @@ public class KioskTimeoutController {
 		String idleCacheTimeoutPeriod = String.valueOf(idleCacheTimeoutText.getValue());
 		String forceCacheTimeoutPeriod = String.valueOf(forceCacheTimeoutText.getValue());
 		String screenSaverTimeoutPeriod = String.valueOf(screenSaverTimeoutText.getValue());
-		boolean isLogoutTimeoutValid = !logoutTimeoutPeriod.isEmpty() && StringUtils.isNumeric(logoutTimeoutPeriod) && Long.parseLong(logoutTimeoutPeriod) * 1000 >= 300000;
-		boolean isIdleCacheTimeoutValid = !idleCacheTimeoutPeriod.isEmpty() && StringUtils.isNumeric(idleCacheTimeoutPeriod) && Long.parseLong(logoutTimeoutPeriod) * 1000 >= 150000;
-		boolean isForceCacheTimeoutValid = !forceCacheTimeoutPeriod.isEmpty() && StringUtils.isNumeric(forceCacheTimeoutPeriod) && Long.parseLong(logoutTimeoutPeriod) * 1000 >= 300000;
-		boolean isScreenSaverTimeoutValid = !screenSaverTimeoutPeriod.isEmpty() && StringUtils.isNumeric(screenSaverTimeoutPeriod)  && Long.parseLong(logoutTimeoutPeriod) * 1000 >= 300000;;
+		boolean isLogoutTimeoutValid = !logoutTimeoutPeriod.isEmpty() && Long.parseLong(logoutTimeoutPeriod) * 1000 >= 30000;
+		boolean isIdleCacheTimeoutValid = !idleCacheTimeoutPeriod.isEmpty() && Long.parseLong(idleCacheTimeoutPeriod) * 1000 >= 15000;
+		boolean isForceCacheTimeoutValid = !forceCacheTimeoutPeriod.isEmpty() && Long.parseLong(forceCacheTimeoutPeriod) * 1000 >= 30000;
+		boolean isScreenSaverTimeoutValid = !screenSaverTimeoutPeriod.isEmpty() && Long.parseLong(screenSaverTimeoutPeriod) * 1000 >= 30000;;
 		boolean isKioskLocationValid = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_NODE, new ArrayList<>(Collections.singletonList(kioskLocation))))).size() == 1;
 		int rows = 0;
+		System.out.println(isKioskLocationValid && isIdleCacheTimeoutValid && isForceCacheTimeoutValid && isLogoutTimeoutValid && isScreenSaverTimeoutValid);
 		if (isKioskLocationValid) {
 			 rows = db.executeUpdate(new SQLEntry(DBConstants.UPDATE_KIOSK_TIMEOUTS, new ArrayList<>(Arrays.asList(kioskLocation, isLogoutTimeoutValid ? String.valueOf(Long.parseLong(logoutTimeoutPeriod) * 1000) :
 					String.valueOf(currentKiosk.getLogoutTimeoutPeriod()), isIdleCacheTimeoutValid ? String.valueOf(Long.parseLong(idleCacheTimeoutPeriod) * 1000) : String.valueOf(currentKiosk.getIdleCacheTimeout()),
-					isForceCacheTimeoutValid ? String.valueOf(Long.parseLong(forceCacheTimeoutPeriod)) : String.valueOf(currentKiosk.getForceCacheTimout()), isScreenSaverTimeoutValid ?
-					String.valueOf(Long.parseLong(screenSaverTimeoutPeriod)) : String.valueOf(currentKiosk.getScreenSaverTimeout()), currentKiosk.getID()))));
+					isForceCacheTimeoutValid ? String.valueOf(Long.parseLong(forceCacheTimeoutPeriod) * 1000) : String.valueOf(currentKiosk.getForceCacheTimout()), isScreenSaverTimeoutValid ?
+					String.valueOf(Long.parseLong(screenSaverTimeoutPeriod) * 1000) : String.valueOf(currentKiosk.getScreenSaverTimeout()), currentKiosk.getID()))));
 			((Stage) btnClose.getScene().getWindow()).close();
 		} else {
 			locationInvalid.setVisible(true);
@@ -103,6 +105,10 @@ public class KioskTimeoutController {
 			//confirmationLabel.setTextFill(Color.BLACK);
 			//confirmationLabel.setText("Timeouts updated");
 			cache.cacheKiosksFromDB();
+			App.startLogoutTimer();
+			App.startIdleTimer();
+			App.startForceUpdateTimer();
+			App.startScreenSaverTimer();
 		} else {
 			log.error("SQL update affected more than 1 row.");
 		}
