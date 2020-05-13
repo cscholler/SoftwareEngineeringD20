@@ -124,7 +124,7 @@ public class Path implements Iterable<Node> {
         String sign;
 
         robotPath.append("2 ");
-        int length = ((int)pathNodes.get(0).getEdge(pathNodes.get(1)).getLength()) * 20;
+        int length = ((int)pathNodes.get(0).getEdge(pathNodes.get(1)).getLength()) * 22;
         robotPath.append(length + ",");
 
         for (int i = 1; i < pathNodes.size() - 1; i++) {
@@ -144,7 +144,7 @@ public class Path implements Iterable<Node> {
 
             }
             robotPath.append("2 ");
-            length = ((int)curr.getEdge(next).getLength()) * 20;
+            length = ((int)curr.getEdge(next).getLength()) * 22;
             robotPath.append(length + ",");
         }
 
