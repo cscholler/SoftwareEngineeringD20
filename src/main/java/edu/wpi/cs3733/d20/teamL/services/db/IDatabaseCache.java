@@ -70,4 +70,12 @@ public interface IDatabaseCache {
 	void cacheQuestionsFromDB();
 
 	ArrayList<Question> getQuestions();
+
+	void cacheReservationsFromDB();
+
+	ArrayList<Reservation> getReservations();
+
+	void clearReservationCache();
+
+
 }

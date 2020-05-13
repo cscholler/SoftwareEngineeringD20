@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import edu.wpi.cs3733.d20.teamL.entities.Reservation;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
@@ -42,6 +43,8 @@ public class ConferenceRoomController {
     private StackPane stackPane;
     @FXML
     private ImageView requestReceived;
+    @FXML
+    private Label confirmation;
     private FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
     @Inject
     private IDatabaseService db;
@@ -50,18 +53,11 @@ public class ConferenceRoomController {
     @Inject
     private ILoginManager manager;
 
-    private ObservableList<String> conferenceRooms = FXCollections.observableArrayList("Flexible Workspace");
-    private ArrayList<String> days = new ArrayList<>(Arrays.asList("Monday", "Tuesday", "Wednesday", "thursday", "Friday", "Saturday", "Sunday"));
+    private ObservableList<String> conferenceRooms = FXCollections.observableArrayList("Conference Room 1");
+    private ArrayList<String> days = new ArrayList<>(Arrays.asList("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"));
 
     @FXML
     public void initialize() {
-
-        //db.executeUpdate((new SQLEntry(DBConstants.ADD_ROOM_REQUEST,
-                //new ArrayList<>(Arrays.asList(manager.getCurrentUser().getUsername(), "Flexible Workspace", "Tuesday 05-12", "1:00 PM", "2:00 PM")))));
-
-
-        System.out.println(db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_SPECIFIC_ROOM_REQUEST, new ArrayList<>(Arrays.asList("Flexible Workspace", "Tuesday 05-12", "1:00 PM"))))).size());
-
 
         rooms.setItems(conferenceRooms);
         rooms.getSelectionModel().selectFirst();
@@ -70,8 +66,6 @@ public class ConferenceRoomController {
         borderPane.prefWidthProperty().bind(stackPane.widthProperty());
         borderPane.prefHeightProperty().bind(stackPane.heightProperty());
 
-        ArrayList<ArrayList<String>> requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_RESERVATIONS)));
-        System.out.println(requests.size());
     }
 
     /**
@@ -107,14 +101,12 @@ public class ConferenceRoomController {
     @FXML
     private void loadTable() {
 
-        //System.out.println("test");
-
         String room = (String) rooms.getValue();
-        ArrayList<ArrayList<String>> requests = new ArrayList<>();
 
         LocalDate now = new LocalDate();
 
         LocalDate mon = now.withDayOfWeek(DateTimeConstants.MONDAY);
+
         //account for week on table
         mon = mon.plusWeeks(weeks);
 
@@ -142,9 +134,6 @@ public class ConferenceRoomController {
         //account for week on table
         sun = sun.plusWeeks(weeks);
 
-        String su = sun.toString();
-        su = su.substring(5);
-
         String mo = mon.toString();
         mo = mo.substring(5);
 
@@ -163,8 +152,10 @@ public class ConferenceRoomController {
         String sa = sat.toString();
         sa = sa.substring(5);
 
-        ArrayList<String> weekDates = new ArrayList<>(Arrays.asList("Monday " + mo, "Tuesday " + tu, "Wednesday " + we, "Thursday " + th, "friday " + fr, "Saturday " + sa, "Sunday" + su));
+        String su = sun.toString();
+        su = su.substring(5);
 
+        ArrayList<String> weekDates = new ArrayList<>(Arrays.asList("Monday " + mo, "Tuesday " + tu, "Wednesday " + we, "Thursday " + th, "Friday " + fr, "Saturday " + sa, "Sunday " + su));
 
         JFXTreeTableColumn<TimeSlot, String> time = new JFXTreeTableColumn<>("Time Slot");
         time.setCellValueFactory(param -> param.getValue().getValue().time);
@@ -198,12 +189,7 @@ public class ConferenceRoomController {
         sunday.setCellValueFactory(param -> param.getValue().getValue().sunday);
         sunday.setPrefWidth(100);
 
-
-
-
-        //requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_RESERVATIONS)));
-
-
+        ArrayList<Reservation> requests = dbCache.getReservations();
 
         ObservableList<TimeSlot> slots = FXCollections.observableArrayList();
         String end = " AM";
@@ -232,26 +218,13 @@ public class ConferenceRoomController {
                 e = "12:00 AM";
             }
 
-            ArrayList<String> openValues = new ArrayList<>(Arrays.asList("Open", "Open", "Open", "Open", "Open", "Open", "Open"));
-
-            //if (requests.contains(new ArrayList<>(Arrays.asList())))
+            ArrayList<String> openValues = new ArrayList<>(Arrays.asList("", "", "", "", "", "", ""));
 
             for (int j = 0; j < 7; j++) {
-                //openValues.add("Open");
                 String d = weekDates.get(j);
-                requests = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_ROOM_REQUESTS, new ArrayList<>(Arrays.asList(room, d)))));
-                //System.out.println(requests.size());
 
-
-                //TODO try getting all data outside for loop?
-
-//                if(db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_SPECIFIC_ROOM_REQUEST, new ArrayList<>(Arrays.asList(room, d, s))))).size() != 0) {
-//                    openValues.set(j, "Reserved");
-//                    System.out.println("zfdgxfgngfdsfgh");
-//                }
-
-                for (ArrayList<String> entry : requests) {
-                    if(entry.get(4).equals(s)){
+                for (Reservation res : requests) {
+                    if(res.getPlace().equals(room) && res.getDate().equals(d) && res.getStartTime().equals(s)) {
                         openValues.set(j, "Reserved");
                     }
                 }
@@ -260,46 +233,83 @@ public class ConferenceRoomController {
 
             String timeString = s + "-" + e;
 
-            //TODO loop through database dates and check if weekDates .contains them and the time, then find proper place in arraylist and add reserved
-            //TODO variables for each week day?
-
             slots.add(new TimeSlot(timeString, openValues.get(0), openValues.get(1), openValues.get(2), openValues.get(3), openValues.get(4), openValues.get(5), openValues.get(6)));
         }
 
         TreeTableView.TreeTableViewSelectionModel<TimeSlot> selection = table.getSelectionModel();
-        //selection.setSelectionMode(SelectionMode.MULTIPLE);
         selection.setCellSelectionEnabled(true);
 
         final TreeItem<TimeSlot> root = new RecursiveTreeItem<>(slots, RecursiveTreeObject::getChildren);
         table.getColumns().setAll(time, monday, tuesday, wednesday, thursday, friday, saturday, sunday);
         table.setRoot(root);
         table.setShowRoot(false);
+
     }
 
     @FXML
     private void handleSubmit() {
 
-        TreeTableView.TreeTableViewSelectionModel<TimeSlot> selection = table.getSelectionModel();
+        //check for null values
+        if(rooms.getValue() == null || table.getSelectionModel().isEmpty()) {
+            confirmation.setText("Select a Valid Room and Time");
+            loaderHelper.showAndFade(confirmation);
+        } else {
 
-        final ObservableList<TreeTablePosition<TimeSlot, ?>> selectedCells = table.getSelectionModel().getSelectedCells();
+            //check if date is valid
+            final ObservableList<TreeTablePosition<TimeSlot, ?>> selectedCells = table.getSelectionModel().getSelectedCells();
 
-        TreeTablePosition<TimeSlot, ?> pos = selectedCells.get(0);
+            TreeTablePosition<TimeSlot, ?> pos = selectedCells.get(0);
 
-        int col = pos.getColumn();
+            int col = pos.getColumn();
 
-        TreeItem<TimeSlot> ti = pos.getTreeItem();
+            TreeItem<TimeSlot> ti = pos.getTreeItem();
+            TimeSlot t = ti.getValue();
 
-        TimeSlot t = ti.getValue();
+            String room = (String) rooms.getValue();
 
-        //System.out.println(selection.getFocusedIndex());
-        System.out.println(t.availabilities.get(0));
+            String date = table.getColumns().get(col).getText();
+            date = date.replaceAll("\n", " ");
 
-        String date = table.getColumns().get(col).getText();
-        date = date.substring(date.length()-5);
-        System.out.println(date);
+            LocalDate chosenDate = new LocalDate();
 
-        //TODO replace new line with space in date
+            chosenDate = chosenDate.withDayOfWeek(DateTimeConstants.MONDAY);
+            chosenDate = chosenDate.plusWeeks(weeks);
+            chosenDate = chosenDate.plusDays(col-1);
 
+            if(chosenDate.isBefore(LocalDate.now())) {
+                confirmation.setText("Select a Valid Date");
+                loaderHelper.showAndFade(confirmation);
+            } else {
+
+                //check if room is available
+                if (t.availabilities.get(col).equals("Reserved")) {
+                    confirmation.setText("Select an Open Time Slot");
+                    loaderHelper.showAndFade(confirmation);
+                } else {
+
+                    //the time slot
+                    String time = t.availabilities.get(0);
+                    String[] times = time.split("-");
+                    String st = times[0];
+                    String et = times[1];
+
+                    int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_ROOM_REQUEST,
+                            new ArrayList<>(Arrays.asList(manager.getCurrentUser().getUsername(), room, date, st, et)))));
+
+                    if(rows == 0) {
+                        confirmation.setText("Submission Failed");
+                        loaderHelper.showAndFade(confirmation);
+                    } else {
+                        loaderHelper.showAndFade(requestReceived);
+                        requestReceived.toBack();
+                        dbCache.cacheReservationsFromDB();
+                        loadTable();
+                    }
+                }
+            }
+        }
+
+        table.getSelectionModel().clearSelection();
 
     }
 

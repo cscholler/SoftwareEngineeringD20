@@ -30,6 +30,7 @@ public class DatabaseCache implements IDatabaseCache {
     private final ArrayList<Node> deletedNodes = new ArrayList<>();
     private final ArrayList<Edge> deletedEdges = new ArrayList<>();
     private ArrayList<Question> questionCache = new ArrayList<>();
+    private ArrayList<Reservation> reservationCache = new ArrayList<>();
 
 
 
@@ -47,6 +48,7 @@ public class DatabaseCache implements IDatabaseCache {
         cacheDoctorsFromDB();
         cacheQuestionsFromDB();
         cacheKiosksFromDB();
+        cacheReservationsFromDB();
     }
 
     /**
@@ -364,4 +366,20 @@ public class DatabaseCache implements IDatabaseCache {
     public ArrayList<Question> getQuestions() {
         return questionCache;
     }
+
+    @Override
+    public void cacheReservationsFromDB() {
+        ArrayList<ArrayList<String>> reservationTable = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.SELECT_ALL_RESERVATIONS)));
+        clearReservationCache();
+        for (ArrayList<String> row : reservationTable) {
+            reservationCache.add(new Reservation(row.get(1), row.get(2), row.get(3), row.get(4), row.get(5)));
+        }
+    }
+
+    @Override
+    public ArrayList<Reservation> getReservations() { return reservationCache; }
+
+    @Override
+    public void clearReservationCache() { reservationCache.clear(); }
+
 }
