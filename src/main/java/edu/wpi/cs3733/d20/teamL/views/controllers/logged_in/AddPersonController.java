@@ -1,28 +1,42 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.logged_in;
 
+import com.github.sarxos.webcam.Webcam;
 import com.google.inject.Inject;
 import com.jfoenix.controls.*;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
+import edu.wpi.cs3733.d20.teamL.services.IHTTPClientService;
 import edu.wpi.cs3733.d20.teamL.services.db.DBConstants;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 import edu.wpi.cs3733.d20.teamL.services.users.PasswordManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
-import edu.wpi.cs3733.d20.teamL.util.io.DBTableFormatter;
-import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
+import edu.wpi.cs3733.d20.teamL.util.SearchFields;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.ResourceBundle;
 
 @Slf4j
@@ -35,22 +49,15 @@ public class AddPersonController implements Initializable {
     @Inject
     private IDatabaseCache cache;
     @FXML
-    private Label lblConfirmation, confirmation;
+    private Label lblConfirmation;
     @FXML
     private JFXTextArea addlInfoText;
     @FXML
-    private JFXTextField doctorFN, doctorLN, docID, officeText;
-
-    //for user
-    ObservableList<String> serviceOptions = FXCollections.observableArrayList("Security", "Internal Transport", "External Transport", "Sanitation", "Maintenance", "Gift Shop", "Interpreter", "Information Technology");
-    ObservableList<String> userOptions = FXCollections.observableArrayList("Staff", "Nurse", "Doctor", "Admin");
-    ObservableList<String> languageOptions = FXCollections.observableArrayList("Spanish", "Italian", "Chinese", "ASL", "French");
-
-
-    private final FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
-
+    private JFXTextField doctorFN, doctorLN, officeText;
     @FXML
-    JFXTextField doctorIDText, doctorUn,  sFName, sLName, sUn, mFName, mLName, mUn, nFName, nLName, nUn, aFName, aLName, aUn;
+    private ImageView face;
+    @FXML
+    JFXTextField doctorIDText, doctorUn, sFName, sLName, sUn, mFName, mLName, mUn, nFName, nLName, nUn, aFName, aLName, aUn;
     @FXML
     JFXPasswordField doctorPw, sPw, mPw, nPw, aPw;
     @FXML
@@ -61,6 +68,20 @@ public class AddPersonController implements Initializable {
     private VBox boxOService;
     @FXML
     private JFXButton btnCancel;
+    private BufferedImage image;
+
+    //for user
+    ObservableList<String> serviceOptions = FXCollections.observableArrayList("Security", "Internal Transport", "External Transport", "Sanitation", "Maintenance", "Gift Shop", "Interpreter", "Information Technology");
+    ObservableList<String> languageOptions = FXCollections.observableArrayList("Spanish", "Italian", "Chinese", "ASL", "French");
+
+
+    private final FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
+
+
+    @Inject
+    private IHTTPClientService client;
+    boolean pictureTaken = false;
+
 
     @FXML
     private void setBtnCancel() {
@@ -73,7 +94,6 @@ public class AddPersonController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         serviceCombo.setItems(serviceOptions);
         languages.setItems(languageOptions);
-
         sf = new SearchFields(cache.getNodeCache());
         sf.getFields().add(SearchFields.Field.nodeID);
         sf.populateSearchFields();
@@ -93,7 +113,7 @@ public class AddPersonController implements Initializable {
 
     //Nurse
     @FXML
-    private void submitNurse() {
+    private void submitNurse() throws IOException {
         int rows = 0;
 
         String firstName = nFName.getText();
@@ -106,11 +126,15 @@ public class AddPersonController implements Initializable {
 
         rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(firstName, lastName, username, PasswordManager.hashPassword(password), type, services, manager))));
         confirm(rows);
+        if(rows == 1 && pictureTaken){
+            sendFace(username);
+            delete();
+        }
     }
 
     //Admin
     @FXML
-    private void submitAdmin() {
+    private void submitAdmin() throws IOException {
         int rows = 0;
 
         String firstName = aFName.getText();
@@ -123,11 +147,15 @@ public class AddPersonController implements Initializable {
 
         rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(firstName, lastName, username, PasswordManager.hashPassword(password), type, services, manager))));
         confirm(rows);
+        if(rows == 1 && pictureTaken){
+            sendFace(username);
+            delete();
+        }
     }
 
     //Manager
     @FXML
-    private void submitManager() {
+    private void submitManager() throws IOException {
         int rows = 0;
 
         String firstName = mFName.getText();
@@ -140,11 +168,15 @@ public class AddPersonController implements Initializable {
 
         rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(firstName, lastName, username, PasswordManager.hashPassword(password), type, services, manager))));
         confirm(rows);
+        if(rows == 1 && pictureTaken){
+            sendFace(username);
+            delete();
+        }
     }
 
     //Doctor
     @FXML
-    private void submitDoc() {
+    private void submitDoc() throws IOException {
         int rows = 0;
 
         String firstName = doctorFN.getText();
@@ -159,13 +191,17 @@ public class AddPersonController implements Initializable {
         String manager = "pharmacist";
 
         rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(firstName, lastName, username, PasswordManager.hashPassword(password), type, services, manager))));
-        int rows1 = db.executeUpdate(new SQLEntry(DBConstants.ADD_DOCTOR, new ArrayList<>(Arrays.asList(doctorID, firstName, lastName, null, roomNum, additionalInfo))));
+        db.executeUpdate(new SQLEntry(DBConstants.ADD_DOCTOR, new ArrayList<>(Arrays.asList(doctorID, firstName, lastName, null, roomNum, additionalInfo))));
         confirm(rows);
+        if(rows == 1 && pictureTaken){
+            sendFace(username);
+            delete();
+        }
     }
 
     //Staff
     @FXML
-    private void submitStaff() {
+    private void submitStaff() throws IOException {
         int rows = 0;
 
         String firstName = sFName.getText();
@@ -223,9 +259,13 @@ public class AddPersonController implements Initializable {
 
         rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_USER, new ArrayList<>(Arrays.asList(firstName, lastName, username, PasswordManager.hashPassword(password), type, services, manager))));
         confirm(rows);
+        if(rows == 1 && pictureTaken){
+            sendFace(username);
+            delete();
+        }
     }
 
-    private void confirm(int rows){
+    private void confirm(int rows) {
         if (rows == 0) {
             lblConfirmation.setTextFill(Color.RED);
             lblConfirmation.setText("Submission failed");
@@ -259,10 +299,59 @@ public class AddPersonController implements Initializable {
     }
 
     @FXML
-    private void userSelected(){
-       languages.setDisable(false);
+    private void userSelected() {
+        languages.setDisable(false);
+
+    }
+
+
+    @FXML
+    private void capture() throws IOException {
+        Webcam webcam = Webcam.getDefault();
+        webcam.open();
+        image = webcam.getImage();
+        Image setimage = SwingFXUtils.toFXImage(image, null);
+        face.setImage(setimage);
+        webcam.close();
+        pictureTaken = true;
+    }
+
+    private void sendFace(String username) throws IOException {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ImageIO.write(image, "PNG", bos);
+        byte[] fileContent = bos.toByteArray();
+        String encodedString = Base64.getEncoder().encodeToString(fileContent);
+
+        JSONObject json = new JSONObject();
+        json.put("image", encodedString);
+        json.put("gallery_name", "users");
+        json.put("subject_id", username);
+
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, json.toString());
+        log.info(json.toString());
+        Request request = new Request.Builder()
+                .url("https://kairosapi-karios-v1.p.rapidapi.com/enroll")
+                .post(body)
+                .addHeader("x-rapidapi-host", "kairosapi-karios-v1.p.rapidapi.com")
+                .addHeader("x-rapidapi-key", "e9d19d8ab2mshee9ab7d6044378bp106222jsnc2e9a579d919")
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .build();
+
+        Response response = client.getClient().newCall(request).execute();
+        log.info("" + response.code());
+        log.info(response.body().string());
+    }
+
+    @FXML
+    private void delete(){
+        face.setImage(new Image("edu/wpi/cs3733/d20/teamL/assets/gift_delivery/noImage.png"));
+        pictureTaken = false;
     }
 }
+
 
 
 

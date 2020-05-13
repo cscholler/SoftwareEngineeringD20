@@ -11,12 +11,10 @@ import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
-import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
+import edu.wpi.cs3733.d20.teamL.util.SearchFields;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -124,7 +122,7 @@ public class InterpreterPaneController implements Initializable {
 
             int rows = 0;
             if(validFields) rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
-                    new ArrayList<>(Arrays.asList(patientID, user, null, roomNumber, "interpreter", interpreterType, concatenatedNotes, status, dateAndTime)))));
+                    new ArrayList<>(Arrays.asList(patientID, user, null, roomNumber, "Interpreter", interpreterType, concatenatedNotes, status, dateAndTime)))));
 
             if(rows == 0) {
                 confirmation.setTextFill(Color.RED);

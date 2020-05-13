@@ -10,4 +10,8 @@ public interface IPathfinderService {
     PathfinderService.PathfindingMethod getPathfindingMethod();
 
 	void setPathfindingMethod(PathfinderService.PathfindingMethod pathfindingMethod);
+
+	boolean isHandicapped();
+
+	void setHandicapped(boolean handicapped);
 }

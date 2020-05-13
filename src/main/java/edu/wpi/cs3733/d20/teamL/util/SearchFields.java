@@ -1,15 +1,13 @@
-package edu.wpi.cs3733.d20.teamL.util.search;
+package edu.wpi.cs3733.d20.teamL.util;
 
 import com.jfoenix.controls.JFXAutoCompletePopup;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.views.controllers.map.MapViewerController;
+import me.xdrop.fuzzywuzzy.FuzzySearch;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 public class SearchFields {
@@ -51,40 +49,6 @@ public class SearchFields {
         Collections.sort(suggestions);
     }
 
-
-//    /**
-//     * populates search arrayList to be searched by navigation bar.
-//     */
-//    public void populateSearchFields() {
-//        // TODO: Don't let non-visible nodes show-up
-//        StringBuilder sb = new StringBuilder();
-//        String additionLong;
-//        String additionShort;
-//        if (suggestions == null) suggestions = new ArrayList<>();
-//        for (Node node : nodeCache) {
-//            for (Field field : fields) {
-//                switch (field) {
-//                    case nodeID:
-//                        suggestions.add(node.getID());
-//                        break;
-//                    case building:
-//                        suggestions.add(node.getBuilding());
-//                        break;
-//                    case longName:
-//                        suggestions.add(node.getLongName());
-//                        break;
-//                    case shortName:
-//                        suggestions.add(node.getShortName());
-//                        break;
-//                    default:
-//                        break;
-//                }
-//            }
-//        }
-//        Collections.sort(suggestions);
-//    }
-
-
     public void populateWithExits() {
         // TODO: Don't let non-visible nodes show-up
         if (suggestions == null) suggestions = new ArrayList<>();
@@ -122,16 +86,39 @@ public class SearchFields {
     public void applyAutocomplete(JFXTextField textField, JFXAutoCompletePopup<String> autoCompletePopup) {
         autoCompletePopup.setSelectionHandler(event -> textField.setText(event.getObject()));
         textField.textProperty().addListener(observable -> {
-            autoCompletePopup.filter(string ->
-                    string.toLowerCase().contains(textField.getText().toLowerCase()));
-            if (autoCompletePopup.getFilteredSuggestions().isEmpty() ||
-                    textField.getText().isEmpty()) {
+            autoCompletePopup.filter(string -> (isFuzzySimilar(string.toLowerCase(), textField.getText().toLowerCase(), 75)));
+            if (autoCompletePopup.getFilteredSuggestions().isEmpty() || textField.getText().isEmpty()) {
                 autoCompletePopup.hide();
             } else {
                 autoCompletePopup.show(textField);
             }
         });
     }
+
+    public boolean isFuzzySimilar(String suggestion, String search, int ratio) {
+    	return FuzzySearch.ratio(suggestion, search) >= ratio || FuzzySearch.partialRatio(suggestion, search) >= ratio;
+	}
+
+	public int averageFuzzyRatio(String suggestion, String search) {
+		return (FuzzySearch.ratio(suggestion, search) + FuzzySearch.partialRatio(suggestion, search)) / 2;
+	}
+
+	public String findBestMatch(String search) {
+    	String bestMatch = "";
+    	int maxRatio = 0;
+		int currentRatio;
+    	for (String suggestion : getSuggestions()) {
+    		currentRatio = averageFuzzyRatio(suggestion, search);
+    		if (currentRatio > maxRatio) {
+    			maxRatio = currentRatio;
+    			bestMatch = suggestion;
+    			if (currentRatio >= 90) {
+    				break;
+				}
+			}
+		}
+    	return bestMatch;
+	}
 
     /**
      * Gives an arraylist of strings to display in the suggestions. This should be passed into the JFXAutoCompletePopup.
@@ -149,8 +136,6 @@ public class SearchFields {
      * @return If keyword is found it'll return that node, otherwise null if your node isn't found.
      */
     public Node getNode(String query) {
-        System.out.println("Here");
-
         String building = "";
 
         if (query.contains("(Faulkner")) {

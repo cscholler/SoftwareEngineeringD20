@@ -13,11 +13,10 @@ import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import edu.wpi.cs3733.d20.teamL.util.TimerManager;
 import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
-import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
+import edu.wpi.cs3733.d20.teamL.util.SearchFields;
 import edu.wpi.cs3733.d20.teamL.views.components.*;
 import edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.DataDialogue;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
@@ -172,7 +171,11 @@ public class MapEditorController {
     private void switchBuilding() {
         String selected = buildingChooser.getSelectionModel().getSelectedItem();
 
-        map.setBuilding(selected);
+        setBuildingTo(selected);
+    }
+
+    private void setBuildingTo(String building) {
+        map.setBuilding(building);
 
         int prevFloor = map.getFloor();
         generateFloorButtons();
@@ -243,7 +246,7 @@ public class MapEditorController {
         ArrayList<Edge> newEdges = new ArrayList<>(nodes.getEdgesOneWay());
 
         cache.cacheNodes(new ArrayList<>(nodes.getNodes()), map.getEditedNodes());
-        cache.cacheEdges(newEdges);
+        cache.cacheEdges(newEdges, new ArrayList<>());
 
         AsyncTaskManager.startTaskWithPopup(cache::updateDB, "Saving...", "Saved successfully");
 
@@ -297,6 +300,7 @@ public class MapEditorController {
             Graph newGraph = MapParser.parseMapToGraph(data.getNodeFile(), data.getEdgeFile());
             Building faulkner = new Building("Faulkner", newGraph);
             Building BTM = new Building(MapViewerController.MAIN, newGraph);
+            map.getBuildings().clear();
             map.getBuildings().add(faulkner);
             map.getBuildings().add(BTM);
             map.setBuilding(defaultBuilding);
