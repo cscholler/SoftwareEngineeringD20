@@ -9,16 +9,16 @@ import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 
-import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
+import edu.wpi.cs3733.d20.teamL.util.SearchFields;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,7 +40,6 @@ public class ITPaneController implements Initializable {
     ObservableList<String> options = FXCollections.observableArrayList("General Help", "Data Backup", "Hardware/Software Issues", "Cyber Attacks");
 
     private FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
-    private SearchFields sf;
     private JFXAutoCompletePopup<String> autoCompletePopup = new JFXAutoCompletePopup<>();
 
     @Inject
@@ -52,22 +51,20 @@ public class ITPaneController implements Initializable {
     @FXML
     private Label confirmation;
     @FXML
-    private JFXButton btnSubmit;
-    @FXML
     private JFXTextField locationText;
     @FXML
     private JFXTextArea notesText;
     @FXML
     private JFXComboBox<String> typeBox;
+    @FXML
+    private VBox fieldsVBox;
 
 	private SearchFields searchFields;
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-//        sf = new SearchFields(dbCache.getNodeCache());
-//        sf.getFields().add(SearchFields.Field.longName);
-//        sf.getFields().add(SearchFields.Field.shortName);
-//        sf.populateSearchFields();
-		searchFields = new SearchFields(dbCache.getNodeCache());
+        fieldsVBox.setBackground(new Background(new BackgroundImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/hexagons.png", 1000, 0, true, true, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT)));
+
+        searchFields = new SearchFields(dbCache.getNodeCache());
 		searchFields.getFields().add(SearchFields.Field.nodeID);
 		searchFields.populateSearchFields();
 		autoCompletePopup.getSuggestions().addAll(searchFields.getSuggestions());
@@ -84,7 +81,7 @@ public class ITPaneController implements Initializable {
      */
     @FXML
     private void autoComplete() {
-        sf.applyAutocomplete(locationText, autoCompletePopup);
+        searchFields.applyAutocomplete(locationText, autoCompletePopup);
     }
 
     /**
@@ -95,27 +92,27 @@ public class ITPaneController implements Initializable {
     @FXML
     private void submitClicked() {
         String userName = loginManager.getCurrentUser().getUsername();
-        String location = locationText.getText();
+        String location = locationText.getText() != null ? searchFields.getNode(locationText.getText()).getID() : null;
         String type = typeBox.getValue();
         String notes = notesText.getText();
 
         String status = "0";
-        String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm aa").format(new Date());
+        String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
 
         boolean validFields = true;
 
-        if(location == null || location.length() == 0) {
+        if (location == null || location.length() == 0) {
             locationText.setStyle("-fx-prompt-text-fill: RED");
             validFields = false;
         } else locationText.setStyle("-fx-prompt-text-fill: GRAY");
-        if(type == null || type.length() == 0) {
+        if (type == null || type.length() == 0) {
             typeBox.setStyle("-fx-prompt-text-fill: RED");
             validFields = false;
         } else typeBox.setStyle("-fx-text-fill: GRAY");
 
         int rows = 0;
         if(validFields) rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
-                new ArrayList<>(Arrays.asList(null, userName, null, location, "information technology", type, notes, status, dateAndTime))));
+                new ArrayList<>(Arrays.asList(null, userName, null, location, "IT", type, notes, status, dateAndTime))));
 
         if (rows == 0) {
             confirmation.setTextFill(Color.RED);

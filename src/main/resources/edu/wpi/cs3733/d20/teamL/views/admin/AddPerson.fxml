@@ -3,29 +3,74 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<?import com.jfoenix.controls.JFXPasswordField?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="950.0" styleClass="JFX-tab-pane" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.logged_in.AddPersonController">
    <center>
-      <JFXTabPane BorderPane.alignment="CENTER">
+      <JFXTabPane tabMaxWidth="30.0" BorderPane.alignment="CENTER">
          <tabs>
-            <Tab text="Add User">
+            <Tab style="-fx-pref-width: 160;" text="Add Staff">
               <content>
                   <BorderPane>
-                     <left>
-                        <VBox fx:id="boxOService" alignment="CENTER_LEFT" prefHeight="563.0" prefWidth="159.0" spacing="20.0" visible="false" BorderPane.alignment="CENTER_LEFT">
+                     <center>
+                        <VBox alignment="CENTER" prefHeight="563.0" prefWidth="630.0" spacing="40.0" BorderPane.alignment="CENTER">
                            <children>
-                              <Label prefHeight="17.0" prefWidth="142.0" text="Capable Service Requests" />
+                              <HBox alignment="CENTER" spacing="20.0">
+                                 <children>
+                                    <VBox spacing="30.0">
+                                       <children>
+                                          <JFXTextField fx:id="sFName" promptText="First Name " styleClass="text-field-jfx" />
+                                          <JFXTextField fx:id="sLName" promptText="Last Name " styleClass="text-field-jfx" />
+                                       </children>
+                                    </VBox>
+                                    <VBox spacing="30.0">
+                                       <children>
+                                          <JFXTextField fx:id="sUn" promptText="Username" styleClass="text-field-jfx" />
+                                          <JFXPasswordField fx:id="sPw" promptText="Password" styleClass="text-field-jfx" />
+                                          <HBox alignment="CENTER_LEFT" spacing="40.0">
+                                             <VBox.margin>
+                                                <Insets />
+                                             </VBox.margin>
+                                             <children>
+                                                <JFXComboBox fx:id="languages" disable="true" promptText="Languages" styleClass="combo-box-jfx" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </center>
+                     <bottom>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <JFXButton fx:id="btnCancel" onAction="#setBtnCancel" styleClass="cancel-button-jfx" text="Close" />
+                              <JFXButton onAction="#submitStaff" styleClass="save-button-jfx" text="Submit" />
+                              <Label fx:id="lblConfirmation" styleClass="submission-failed-label-fx" />
+                           </children>
+                        </HBox>
+                     </bottom>
+                     <right>
+                        <VBox fx:id="boxOService" alignment="CENTER_LEFT" prefHeight="463.0" prefWidth="215.0" spacing="20.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <Label alignment="CENTER" prefHeight="17.0" prefWidth="158.0" text="Capable Service Requests">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Label>
                               <JFXCheckBox fx:id="securityBox" styleClass="check-box-jfx" text="Security" />
                               <JFXCheckBox fx:id="inTransportBox" styleClass="check-box-jfx" text="Internal Export" />
                               <JFXCheckBox fx:id="exTransportBox" styleClass="check-box-jfx" text="External Export" />
@@ -39,78 +84,28 @@
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
-                           <padding>
-                              <Insets left="20.0" />
-                           </padding>
                         </VBox>
-                     </left>
-                     <center>
-                        <VBox alignment="CENTER" prefHeight="563.0" prefWidth="630.0" spacing="40.0" BorderPane.alignment="CENTER">
-                           <children>
-                              <HBox alignment="CENTER_LEFT" spacing="40.0">
-                                 <children>
-                                    <JFXComboBox fx:id="userCombo" onAction="#userSelected" promptText="Type of User" styleClass="combo-box-jfx" />
-                                    <JFXCheckBox fx:id="managerBox" onAction="#userSelected" styleClass="check-box-jfx" text="Manager" visible="false" />
-                                    <JFXComboBox fx:id="serviceCombo" prefHeight="25.0" prefWidth="125.0" promptText="Service" styleClass="user-combo-box-jfx" visible="false" />
-                                 </children>
-                                 <VBox.margin>
-                                    <Insets left="10.0" />
-                                 </VBox.margin>
-                              </HBox>
-                              <HBox alignment="CENTER" spacing="20.0">
-                                 <children>
-                                    <VBox spacing="30.0">
-                                       <children>
-                                          <JFXTextField fx:id="fNameText" promptText="First Name " styleClass="text-field-jfx" />
-                                          <JFXTextField fx:id="usernameText" promptText="Username" styleClass="text-field-jfx" />
-                                          <JFXComboBox fx:id="languages" promptText="Languages" styleClass="combo-box-jfx" visible="false" />
-                                          <JFXTextField fx:id="doctorIDText" promptText="Doctor ID" styleClass="text-field-jfx" visible="false" />
-                                       </children>
-                                    </VBox>
-                                    <VBox spacing="30.0">
-                                       <children>
-                                          <JFXTextField fx:id="lNameText" promptText="Last Name " styleClass="text-field-jfx" />
-                                          <JFXPasswordField fx:id="passwordText" promptText="Password" styleClass="text-field-jfx" />
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </HBox>
-                           </children>
-                        </VBox>
-                     </center>
-                     <right>
-                        <Pane prefHeight="563.0" prefWidth="150.0" BorderPane.alignment="CENTER" />
                      </right>
-                     <bottom>
-                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
-                           <children>
-                              <JFXButton fx:id="btnCancel" onAction="#setBtnCancel" styleClass="cancel-button-jfx" text="Close" />
-                              <JFXButton onAction="#submitClicked" styleClass="save-button-jfx" text="Submit" />
-                              <Label fx:id="lblConfirmation" styleClass="submission-failed-label-fx" />
-                           </children>
-                        </HBox>
-                     </bottom>
                   </BorderPane>
               </content>
             </Tab>
-            <Tab text="Add Doctor">
+            <Tab style="-fx-pref-width: 160;" text="Add Doctor">
                <content>
                   <BorderPane>
                      <center>
-                        <HBox alignment="CENTER" prefHeight="562.8" prefWidth="800.0" spacing="30.0">
+                        <HBox alignment="CENTER" prefHeight="562.8" prefWidth="800.0" spacing="50.0">
                            <children>
-                              <VBox alignment="TOP_CENTER" prefHeight="563.0" prefWidth="300.0" spacing="40.0">
+                              <VBox alignment="CENTER" prefHeight="419.0" prefWidth="300.0" spacing="40.0">
                                  <children>
                                     <JFXTextField fx:id="doctorFN" promptText="Doctor First Name" styleClass="text-field-jfx" />
                                     <JFXTextField fx:id="doctorLN" promptText="Doctor Last Name" styleClass="text-field-jfx" />
-                                    <JFXTextField fx:id="docID" promptText="Doctor ID" styleClass="text-field-jfx" />
+                                    <JFXTextField fx:id="doctorUn" promptText="Username" styleClass="text-field-jfx" />
+                                    <JFXPasswordField fx:id="doctorPw" promptText="Password" styleClass="text-field-jfx" />
                                  </children>
-                                 <padding>
-                                    <Insets top="126.0" />
-                                 </padding>
                               </VBox>
                               <VBox alignment="CENTER" prefHeight="563.0" prefWidth="300.0" spacing="30.0">
                                  <children>
+                                    <JFXTextField fx:id="doctorIDText" promptText="Doctor ID" styleClass="text-field-jfx" />
                                     <JFXTextField fx:id="officeText" onKeyTyped="#autocomplete" promptText="Office " styleClass="text-field-jfx" />
                                     <JFXTextArea fx:id="addlInfoText" promptText="Additonal Information" styleClass="text-area-jfx" />
                                  </children>
@@ -122,13 +117,156 @@
                         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
                            <children>
                               <JFXButton fx:id="btnCancel" onAction="#setBtnCancel" styleClass="cancel-button-jfx" text="Close" />
-                              <JFXButton fx:id="btnSubmit" onAction="#btnSubmitClicked" styleClass="save-button-jfx" text="Submit" />
+                              <JFXButton fx:id="btnSubmit" onAction="#submitDoc" styleClass="save-button-jfx" text="Submit" />
                               <Label fx:id="confirmation" styleClass="submission-failed-label-fx" />
                            </children>
                         </HBox>
                      </bottom>
                   </BorderPane>
                </content>
+            </Tab>
+            <Tab style="-fx-pref-width: 160;" text="Add Nurse">
+              <content>
+                  <BorderPane>
+                     <center>
+                        <HBox alignment="CENTER" prefHeight="562.8" prefWidth="950.0" spacing="50.0">
+                           <children>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="300.0" spacing="30.0">
+                                 <children>
+                                    <JFXTextField fx:id="nFName" promptText="First Name" styleClass="text-field-jfx" />
+                                    <JFXTextField fx:id="nLName" promptText="Last Name" styleClass="text-field-jfx" />
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="300.0" spacing="30.0">
+                                 <children>
+                                    <JFXTextField fx:id="nUn" promptText="Username" styleClass="text-field-jfx" />
+                                    <JFXPasswordField fx:id="nPw" promptText="Password" styleClass="text-field-jfx" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </center>
+                     <bottom>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <JFXButton fx:id="btnCancel2" onAction="#setBtnCancel" styleClass="cancel-button-jfx" text="Close" />
+                              <JFXButton fx:id="btnSubmit1" onAction="#submitNurse" styleClass="save-button-jfx" text="Submit" />
+                              <Label fx:id="confirmation1" styleClass="submission-failed-label-fx" />
+                           </children>
+                        </HBox>
+                     </bottom>
+                  </BorderPane>
+              </content>
+            </Tab>
+            <Tab style="-fx-pref-width: 160;" text="Add Admin">
+              <content>
+                  <BorderPane>
+                     <center>
+                        <HBox alignment="CENTER" prefHeight="562.8" prefWidth="950.0" spacing="50.0">
+                           <children>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="300.0" spacing="30.0">
+                                 <children>
+                                    <JFXTextField fx:id="aFName" promptText="First Name" styleClass="text-field-jfx" />
+                                    <JFXTextField fx:id="aLName" promptText="Last Name" styleClass="text-field-jfx" />
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="300.0" spacing="30.0">
+                                 <children>
+                                    <JFXTextField fx:id="aUn" promptText="Username" styleClass="text-field-jfx" />
+                                    <JFXPasswordField fx:id="aPw" promptText="Password" styleClass="text-field-jfx" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </center>
+                     <bottom>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <JFXButton fx:id="btnCancel3" onAction="#setBtnCancel" styleClass="cancel-button-jfx" text="Close" />
+                              <JFXButton fx:id="btnSubmit2" onAction="#submitAdmin" styleClass="save-button-jfx" text="Submit" />
+                              <Label fx:id="confirmation2" styleClass="submission-failed-label-fx" />
+                           </children>
+                        </HBox>
+                     </bottom>
+                  </BorderPane>
+              </content>
+            </Tab>
+            <Tab style="-fx-pref-width: 160;" text="Add Manager">
+               <content>
+                  <BorderPane>
+                     <center>
+                        <VBox alignment="CENTER" prefHeight="563.0" prefWidth="630.0" spacing="40.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <HBox alignment="CENTER" spacing="20.0">
+                                 <children>
+                                    <VBox spacing="30.0">
+                                       <children>
+                                          <JFXTextField fx:id="mFName" promptText="First Name " styleClass="text-field-jfx" />
+                                          <JFXTextField fx:id="mLName" promptText="Last Name " styleClass="text-field-jfx" />
+                                       </children>
+                                    </VBox>
+                                    <VBox spacing="30.0">
+                                       <children>
+                                          <JFXTextField fx:id="mUn" promptText="Username" styleClass="text-field-jfx" />
+                                          <JFXPasswordField fx:id="mPw" promptText="Password" styleClass="text-field-jfx" />
+                                          <HBox alignment="CENTER_LEFT" spacing="40.0">
+                                             <children>
+                                                <JFXComboBox fx:id="serviceCombo" prefHeight="25.0" prefWidth="125.0" promptText="Service" styleClass="user-combo-box-jfx" />
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets />
+                                             </VBox.margin>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </center>
+                     <bottom>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <JFXButton fx:id="btnCancel1" onAction="#setBtnCancel" styleClass="cancel-button-jfx" text="Close" />
+                              <JFXButton onAction="#submitManager" styleClass="save-button-jfx" text="Submit" />
+                              <Label fx:id="lblConfirmation1" styleClass="submission-failed-label-fx" />
+                           </children>
+                        </HBox>
+                     </bottom>
+                  </BorderPane>
+               </content>
+            </Tab>
+            <Tab style="-fx-pref-width: 75;">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0">
+                     <children>
+                        <BorderPane layoutX="400.0" layoutY="207.0" prefHeight="563.0" prefWidth="950.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <center>
+                              <ImageView fx:id="face" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/gift_delivery/noImage.png" />
+                                 </image>
+                              </ImageView>
+                           </center>
+                           <bottom>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <JFXButton onAction="#delete" styleClass="cancel-button-jfx" text="Delete Picture" />
+                                    <JFXButton onAction="#capture" styleClass="save-button-jfx" text="Take Picture" />
+                                 </children>
+                              </HBox>
+                           </bottom>
+                        </BorderPane>
+                     </children>
+                  </AnchorPane>
+              </content>
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../assets/service_icons/facial_recog.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Tab>
          </tabs></JFXTabPane>
    </center>

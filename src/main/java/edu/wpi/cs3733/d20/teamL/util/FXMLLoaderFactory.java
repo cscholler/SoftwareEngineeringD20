@@ -54,7 +54,7 @@ public class FXMLLoaderFactory {
 	 */
 	public void setupScene(Scene scene) {
 		App.stage.setScene(scene);
-		applyLoginTimeout(scene);
+		applyTimeouts(scene);
 
 		Point2D prevDimensions = new Point2D(App.stage.getWidth(), App.stage.getHeight());
 		App.stage.show();
@@ -72,18 +72,21 @@ public class FXMLLoaderFactory {
 	 */
 	public void setupPopup(Stage stage, Scene scene) {
 		stage.setScene(scene);
-		applyLoginTimeout(scene);
+		applyTimeouts(scene);
 		stage.initModality(Modality.APPLICATION_MODAL);
 		stage.initOwner(App.stage);
 		stage.showAndWait();
 	}
 
-	private void applyLoginTimeout(Scene scene) {
+	public static void applyTimeouts(Scene scene) {
 		scene.getRoot().addEventHandler(Event.ANY, event -> {
 			App.startIdleTimer();
 			ILoginManager loginManager = injector.getInstance(ILoginManager.class);
 			if (loginManager.isAuthenticated()) {
 				App.startLogoutTimer();
+			}
+			if (App.isScreenSaverActive) {
+				App.startScreenSaverTimer();
 			}
 		});
 	}
@@ -103,14 +106,8 @@ public class FXMLLoaderFactory {
 	 */
 	public void showAndFade(Label label){
 		label.setVisible(true);
-
 		FadeTransition fadeTransition = new FadeTransition(Duration.millis(2000), label);
-		fadeTransition.setDelay(Duration.millis(2000));
-		fadeTransition.setFromValue(1.0);
-		fadeTransition.setToValue(0.0);
-		fadeTransition.setCycleCount(1);
-
-		fadeTransition.play();
+		playFadeTransition(fadeTransition);
 	}
 
 	/**
@@ -120,13 +117,15 @@ public class FXMLLoaderFactory {
 	 */
 	public void showAndFade(ImageView image){
 		image.setVisible(true);
-
 		FadeTransition fadeTransition = new FadeTransition(Duration.millis(2000), image);
+		playFadeTransition(fadeTransition);
+	}
+
+	private void playFadeTransition(FadeTransition fadeTransition) {
 		fadeTransition.setDelay(Duration.millis(2000));
 		fadeTransition.setFromValue(1.0);
 		fadeTransition.setToValue(0.0);
 		fadeTransition.setCycleCount(1);
-
 		fadeTransition.play();
 	}
 }

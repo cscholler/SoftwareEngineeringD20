@@ -10,15 +10,15 @@ import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
-import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
+import edu.wpi.cs3733.d20.teamL.util.SearchFields;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 import javax.inject.Inject;
@@ -56,7 +56,12 @@ public class SecurityPaneController {
     @FXML
     private Label confirmation, urgencyLbl;
 
+    @FXML
+    private VBox fieldsVBox;
+
     public void initialize() throws IOException {
+        fieldsVBox.setBackground(new Background(new BackgroundImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/hexagons.png", 1000, 0, true, true, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT)));
+
         // restrict key input to numerals on personnel needed textfield
         personnelText.addEventFilter(KeyEvent.KEY_TYPED, keyEvent -> {
             if (!"0123456789".contains(keyEvent.getCharacter())) {
@@ -88,7 +93,7 @@ public class SecurityPaneController {
     @FXML
     private void handleSubmit() throws IOException {
         String id = patientIDText.getText();
-        String location = locationText.getText();// == null ? sf.getNode(locationText.getText()).getID() : null;
+        String location = locationText.getText() != null ? sf.getNode(locationText.getText()).getID() : null;
         String reason = reasonText.getText();
         String notes = notesText.getText();
         String personnel = personnelText.getText();
@@ -100,7 +105,7 @@ public class SecurityPaneController {
         }
 
         String status = "0";
-        String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm aa").format(new Date());
+        String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
         String concatenatedNotes = "Urgency: " + urgencyText + "\nPersonnel Needed: " + personnel + "\nReason: " + reason + "\nAdditional Notes: " + notes;
 
 
@@ -131,7 +136,7 @@ public class SecurityPaneController {
             if(validFields){
 
             int rows = db.executeUpdate((new SQLEntry(DBConstants.ADD_SERVICE_REQUEST,
-                    new ArrayList<>(Arrays.asList(null, manager.getCurrentUser().getUsername(), null, location, "security", null, concatenatedNotes, status, dateAndTime)))));
+                    new ArrayList<>(Arrays.asList(null, manager.getCurrentUser().getUsername(), null, location, "Security", reason, concatenatedNotes, status, dateAndTime)))));
 
             if(rows == 0) {
                 //TODO database error window

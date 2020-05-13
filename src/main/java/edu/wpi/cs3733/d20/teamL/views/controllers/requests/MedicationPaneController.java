@@ -11,7 +11,7 @@ import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXTextArea;
 import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
-import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
+import edu.wpi.cs3733.d20.teamL.util.SearchFields;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -92,7 +92,7 @@ public class MedicationPaneController implements Initializable {
 		String dose = doseText.getText();
 		String patientFName = patFNameText.getText();
 		String patientLName = patLNameText.getText();
-		String roomNum = roomNumText.getText();
+		String roomNum = roomNumText.getText() != null ? sf.getNode(roomNumText.getText()).getID() : null;
 		String additionalInfo = addInfoText.getText();
 		String doctorID = "";
 		String patientID = "";
@@ -100,7 +100,7 @@ public class MedicationPaneController implements Initializable {
 
 		// Status codes-- 0: pending, 1: approved, 2: delivered, 3: denied,
 		String status = "0";
-		String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm aa").format(new Date());
+		String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
 		String nurseUsername = loginManager.getCurrentUser().getUsername();
 		// Adds request info to database
 

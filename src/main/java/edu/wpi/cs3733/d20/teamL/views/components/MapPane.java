@@ -24,7 +24,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Line;
 
 import java.io.IOException;
 
@@ -101,6 +100,9 @@ public class MapPane extends ScrollPane {
 
             // Change the zoom level
             setZoomLevelToPosition(prevZoomLevel * (1 + event.getDeltaY() / 500), new Point2D(event.getX(), event.getY()));
+            double dir = event.getDeltaY();
+            //setZoomLevelToPosition((1 + event.getDeltaY() / 500), new Point2D(event.getX(), event.getY()));
+            //else testZoom(1.2, new Point2D(event.getX(), event.getY()));
 
             event.consume();
         });
@@ -136,7 +138,7 @@ public class MapPane extends ScrollPane {
 
                         Node source = tempEdge.getSource().getNode();
 
-                        Edge edge = new Edge(source, dest);
+                        Edge edge = new Edge(source, dest,0);
                         source.addEdgeTwoWay(edge);
 
                         addEdge(edge);
@@ -360,6 +362,17 @@ public class MapPane extends ScrollPane {
             nodeGUI.getCircle().setFill(nodeColor);
     }
 
+    public Color getHallNodeColor() {
+        return hallNodeColor;
+    }
+
+    public void setHallNodeColor(Color hallNodeColor) {
+        this.hallNodeColor = hallNodeColor;
+        for (NodeGUI nodeGUI : nodes.values())
+            if (nodeGUI.getNode().getType().equals("HALL"))
+                nodeGUI.getCircle().setFill(hallNodeColor);
+    }
+
     public Color getEdgeColor() {
         return edgeColor;
     }
@@ -391,7 +404,7 @@ public class MapPane extends ScrollPane {
         for (NodeGUI nodeGUI : nodes.values())
             nodeGUI.setHighlightThickness(this.highlightThickness);
         for (EdgeGUI edgeGUI : edges.values())
-            setHighlightThickness(highlightThickness);
+            edgeGUI.setHighlightThickness(highlightThickness);
     }
 
     public double getEdgeThickness() {
@@ -502,12 +515,40 @@ public class MapPane extends ScrollPane {
             Point2D prevPos = new Point2D(nodeGUI.getXProperty().get(), nodeGUI.getYProperty().get());
             Point2D newPos = prevPos.multiply(zoomLevel / this.zoomLevel);
             nodeGUI.setLayoutPos(newPos);
+            if (nodeGUI.isUsingGradient()) {
+                nodeGUI.setGradient(nodeGUI.getRadius() * (zoomLevel / this.zoomLevel));
+            }
+        }
+
+        for (EdgeGUI edgeGUI : edges.values()) {
+            if (edgeGUI.isUsingGradient())
+                edgeGUI.setGradient(edgeGUI.getStrokeWidth() * (zoomLevel / this.zoomLevel));
+        }
+
+        if (isEditable()) {
+            if (zoomLevel < 0.55 * App.UI_SCALE)
+                setHallVisibility(false);
+            else
+                setHallVisibility(true);
         }
 
         // Scale the image
         mapImage.setFitWidth(mapImage.getFitWidth() * (zoomLevel / this.zoomLevel));
 
+        //mapImage.setScaleX(mapImage.getScaleX() * (zoomLevel / this.zoomLevel));
+        //mapImage.setScaleY(mapImage.getScaleY() * (zoomLevel / this.zoomLevel));
+
+
         this.zoomLevel = zoomLevel;
+    }
+
+    public void setHallVisibility(boolean visibility) {
+        for (NodeGUI nodeGUI : nodes.values()) {
+            if (nodeGUI.getNode().getType().equals("HALL")) {
+                nodeGUI.setVisible(visibility);
+                nodeGUI.setMouseTransparent(!visibility);
+            }
+        }
     }
 
     /**
@@ -526,6 +567,19 @@ public class MapPane extends ScrollPane {
 
         scroller.setHvalue(percentX * scroller.getHmax());
         scroller.setVvalue(percentY * scroller.getVmax());
+    }
+
+    private void testZoom(double factor, Point2D mousePos) {
+        //factor = 1.2;
+        // Zoom into the image.
+        mapImage.setScaleX(mapImage.getScaleX() * factor);
+        mapImage.setScaleY(mapImage.getScaleY() * factor);
+        // Calculate displacement of zooming position.
+        double dx = (mousePos.getX() - scroller.getLayoutX()) * (factor - 1);
+        double dy = (mousePos.getY() - scroller.getLayoutY()) * (factor - 1);
+        // Compensate for displacement.
+        scroller.setLayoutX(scroller.getLayoutX() - dx);
+        scroller.setLayoutY(scroller.getLayoutY() - dy);
     }
 
     public boolean isEditable() {
@@ -617,7 +671,7 @@ public class MapPane extends ScrollPane {
                     Node source = tempEdge.getSource().getNode();
                     Node dest = nodeGUI.getNode();
 
-                    Edge edge = new Edge(source, dest);
+                    Edge edge = new Edge(source, dest, 0);
                     source.addEdgeTwoWay(edge);
 
                     addEdge(edge);

@@ -10,6 +10,8 @@ import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,15 +20,20 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.control.skin.TableHeaderRow;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.util.Callback;
+import org.apache.commons.math3.util.Precision;
 
 import javax.inject.Inject;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class GiftCheckoutPaneController {
-    private Map<String,Integer> cart = new HashMap<>();
+    private Map<String, Integer> cart = new HashMap<>();
+    private double totalCost = 0;
 
     @Inject
     private IDatabaseCache cache;
@@ -40,63 +47,95 @@ public class GiftCheckoutPaneController {
     @FXML
     private TableView orderTable;
     @FXML
-    private TableColumn giftColumn, qtyColumn, removeColumn;
+    private TableColumn giftColumn, qtyColumn, costColumn, removeColumn;
     @FXML
     private JFXTextField firstNameText, lastNameText, senderText;
     @FXML
     private JFXTextArea additionalNotesText, specialMessageText;
     @FXML
-    private Label confirmation, orderTxt;
+    private Label confirmation, orderTxt, totalCostLbl, orderSubmitted;
 
     @FXML
     public void initialize() {
         cart = cache.getCartCache();
         ObservableList<GiftDetails> giftDetailsObservableList = FXCollections.observableArrayList();
-        requestReceived.setPickOnBounds(false);
+        //requestReceived.setPickOnBounds(false);
 
-        giftColumn.setCellValueFactory(
-                new PropertyValueFactory<GiftDetails, String>("name"));
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+
+        giftColumn.setCellValueFactory(new PropertyValueFactory<GiftDetails, String>("name"));
         qtyColumn.setCellValueFactory(new PropertyValueFactory<GiftDetails, TextField>("qty"));
+        costColumn.setCellValueFactory(new PropertyValueFactory<GiftDetails, TextField>("cost"));
 
         removeColumn.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
         Callback<TableColumn<GiftDetails, String>, TableCell<GiftDetails, String>> cellFactory = new Callback<>() {
-                    @Override
-                    public TableCell call(final TableColumn<GiftDetails, String> param) {
-                        final TableCell<GiftDetails, String> cell = new TableCell<>() {
-                            final Button btn = new Button("X");
-                            {
-                                btn.setOnAction(event -> {
-                                    GiftDetails deletedItem = (GiftDetails) orderTable.getItems().get(getIndex());
-                                    orderTable.getItems().remove(getIndex());
-                                    cart.remove(deletedItem.getName());
-                                });
-                            }
+            @Override
+            public TableCell call(final TableColumn<GiftDetails, String> param) {
+                final TableCell<GiftDetails, String> cell = new TableCell<>() {
+                    final Button btn = new Button("X");
 
-                            @Override
-                            public void updateItem(String item, boolean empty) {
-                                super.updateItem(item, empty);
-                                if (empty) {
-                                    setGraphic(null);
-                                } else {
-                                    setGraphic(btn);
-                                }
-                                setText(null);
-                            }
-                        };
-                        return cell;
+                    {
+                        btn.setOnAction(event -> {
+                            GiftDetails deletedItem = (GiftDetails) orderTable.getItems().get(getIndex());
+                            orderTable.getItems().remove(getIndex());
+                            cart.remove(deletedItem.getName());
+
+                            totalCost -= deletedItem.getCostAsDouble();
+                            Precision.round(totalCost,-2);
+                            totalCostLbl.setText(formatter.format(totalCost));
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                        setText(null);
                     }
                 };
+                return cell;
+            }
+        };
 
         removeColumn.setEditable(true);
         orderTable.setEditable(true);
 
-        for (String giftType : cart.keySet()) {
-            GiftDetails gd = new GiftDetails(giftType,cart.get(giftType));
-            giftDetailsObservableList.add(gd);
+        ArrayList<Gift> allGifts = cache.getGiftCache();
+        for (Gift gift : allGifts) {
+            if (cart.containsKey(gift.getSubtype())) {
+                int qty = cart.get(gift.getSubtype());
+                double cost = gift.getCost() * qty;
+                GiftDetails gd = new GiftDetails(gift.getSubtype(), qty, gift.costToString(qty));
+                giftDetailsObservableList.add(gd);
+                totalCost += cost;
+            }
         }
+
+        Precision.round(totalCost,-2);
+        totalCostLbl.setText(formatter.format(totalCost));
 
         orderTable.setItems(giftDetailsObservableList);
         removeColumn.setCellFactory(cellFactory);
+
+        //removes header
+        orderTable.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                Pane header = (Pane) orderTable.lookup("TableHeaderRow");
+                if (header!= null && header.isVisible()){
+                    header.setMaxHeight(1);
+                    header.setMinHeight(0);
+                    header.setPrefHeight(1);
+                    header.setVisible(false);
+                    header.setManaged(false);
+                }
+
+            }
+        });
     }
 
     public void placeOrder(ActionEvent actionEvent) {
@@ -112,15 +151,15 @@ public class GiftCheckoutPaneController {
 
         cart = cache.getCartCache();
         int index = 0;
-        for(String giftType : cart.keySet()) {
+        for (String giftType : cart.keySet()) {
             int inv = cart.get(giftType);
-            gifts.append("(" + inv + "x) " + giftType + (cart.keySet().size()-1 != index ? ", " : "."));
-            index ++;
+            gifts.append("(" + inv + "x) " + giftType + (cart.keySet().size() - 1 != index ? ", " : "."));
+            index++;
         }
 
         boolean validFields = true;
 
-        if(db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ID, new ArrayList<>(Arrays.asList(firstName, lastName))))).size() == 0) {
+        if (db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ID, new ArrayList<>(Arrays.asList(firstName, lastName))))).size() == 0) {
             firstNameText.setStyle("-fx-prompt-text-fill: RED");
             lastNameText.setStyle("-fx-prompt-text-fill: RED");
             validFields = false;
@@ -129,17 +168,13 @@ public class GiftCheckoutPaneController {
             lastNameText.setStyle("-fx-prompt-text-fill: GRAY");
             patientID = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_PATIENT_ID, new ArrayList<>(Arrays.asList(firstName, lastName))))).get(0).get(0);
         }
-        if (gifts.toString().length() < 2) {
-            orderTxt.setStyle("-fx-text-fill: RED");
-            validFields = false;
-        } else orderTxt.setStyle("-fx-text-fill: #00043b");
-
 
         int rows = 0;
-        if(validFields) rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_GIFT_DELIVERY_REQUEST, new ArrayList<>(Arrays.asList(patientID, sender, loginManager.getCurrentUser().getUsername(), null,
-               gifts.toString(), specialMessage, deliveryInstructions, status, dateAndTime))));
+        if (validFields)
+            rows = db.executeUpdate(new SQLEntry(DBConstants.ADD_GIFT_DELIVERY_REQUEST, new ArrayList<>(Arrays.asList(patientID, sender, loginManager.getCurrentUser().getUsername(), null,
+                    gifts.toString(), specialMessage, deliveryInstructions, status, dateAndTime))));
 
-        if(rows == 0) {
+        if (rows == 0) {
             confirmation.setVisible(true);
             confirmation.setStyle("-fx-text-fill: RED");
             confirmation.setText("Submission failed");
@@ -155,7 +190,9 @@ public class GiftCheckoutPaneController {
             additionalNotesText.setText("");
             specialMessageText.setText("");
 
-            loaderHelper.showAndFade(requestReceived);
+            totalCostLbl.setText("");
+            orderSubmitted.setVisible(true);
+            cart.clear();
         }
 
 //        loaderHelper.showAndFade(confirmation);
@@ -164,10 +201,12 @@ public class GiftCheckoutPaneController {
     public class GiftDetails {
         private String name;
         private Integer qty;
+        private String cost;
 
-        private GiftDetails(String name, Integer qty) {
+        private GiftDetails(String name, Integer qty, String cost) {
             this.name = name;
             this.qty = qty;
+            this.cost = cost;
         }
 
         public String getName() {
@@ -180,6 +219,14 @@ public class GiftCheckoutPaneController {
 
         public void setQty(Integer qty) {
             this.qty = qty;
+        }
+
+        public String getCost() {
+            return cost;
+        }
+
+        public double getCostAsDouble() {
+            return Double.parseDouble(cost.substring(1));
         }
     }
 }
