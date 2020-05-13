@@ -1,33 +1,23 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.map;
 
-import com.google.cloud.texttospeech.v1.SsmlVoiceGender;
-import com.google.inject.Inject;
-import com.jfoenix.controls.*;
-import edu.wpi.cs3733.d20.teamL.App;
-import edu.wpi.cs3733.d20.teamL.entities.Building;
-import edu.wpi.cs3733.d20.teamL.entities.Node;
-import edu.wpi.cs3733.d20.teamL.entities.Path;
-import edu.wpi.cs3733.d20.teamL.services.accessability.ITextToSpeechService;
-import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
-import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
-import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
-import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
-import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
-import edu.wpi.cs3733.d20.teamL.util.TimerManager;
-import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
-import edu.wpi.cs3733.d20.teamL.views.components.map.EdgeGUI;
-import edu.wpi.cs3733.d20.teamL.views.components.map.MapPane;
-import edu.wpi.cs3733.d20.teamL.views.components.map.NodeGUI;
-import edu.wpi.cs3733.d20.teamL.views.controllers.game.SnakeController;
-import edu.wpi.cs3733.d20.teamL.views.controllers.screening.QuestionnaireController;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -38,6 +28,8 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.TitledPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -48,19 +40,43 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
+import com.google.inject.Inject;
+
+import com.jfoenix.controls.JFXAutoCompletePopup;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
+import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXToggleButton;
+
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
+import edu.wpi.cs3733.d20.teamL.App;
+import edu.wpi.cs3733.d20.teamL.entities.Building;
+import edu.wpi.cs3733.d20.teamL.entities.Node;
+import edu.wpi.cs3733.d20.teamL.entities.Path;
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
+import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
+import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
+import edu.wpi.cs3733.d20.teamL.services.speech.ISpeechToTextService;
+import edu.wpi.cs3733.d20.teamL.services.speech.ITextToSpeechService;
+import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
+import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
+import edu.wpi.cs3733.d20.teamL.util.SearchFields;
+import edu.wpi.cs3733.d20.teamL.util.TimerManager;
+import edu.wpi.cs3733.d20.teamL.views.components.map.EdgeGUI;
+import edu.wpi.cs3733.d20.teamL.views.components.map.MapPane;
+import edu.wpi.cs3733.d20.teamL.views.components.map.NodeGUI;
+import edu.wpi.cs3733.d20.teamL.views.controllers.screening.QuestionnaireController;
 
 @Slf4j
 public class MapViewerController {
 	private final FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
 	private final TimerManager timerManager = new TimerManager();
-    private SearchFields searchFields;
+	private SearchFields searchFields;
 	private JFXAutoCompletePopup<String> autoCompletePopup;
 	private final ObservableList<String> directions = FXCollections.observableArrayList();
 	private Path path = new Path();
@@ -71,15 +87,13 @@ public class MapViewerController {
     @FXML
     private JFXTextField startingPoint, destination;
     @FXML
-    private JFXButton btnNavigate, floorUp, floorDown, btnScreening;
+    private JFXButton btnNavigate, floorUp, floorDown, btnScreening, btnTextMe, btnQR, btnRobot, btnRecordStart, btnRecordDest;
     @FXML
-    private VBox sideBox;
+    private VBox sideBox, floorSelector, directionButtonsVBox, textDirectionsVBox;
     @FXML
-    private VBox floorSelector;
+    private HBox getDirectionsHBox;
     @FXML
     private JFXListView dirList = new JFXListView();
-    @FXML
-    private JFXButton btnTextMe, btnQR, btnRobot;
     @FXML
     StackPane stackPane, keyStackPane, screeningPane;
     @FXML
@@ -89,9 +103,9 @@ public class MapViewerController {
 	@FXML
 	private Accordion accordion = new Accordion();
     @FXML
-    private Label timeLabel, dateLabel, currentTempLabel;
+    private Label timeLabel, dateLabel, currentTempLabel, etaLabel, btnMute;
     @FXML
-    private ImageView currentWeatherIcon;
+    private ImageView currentWeatherIcon, startMicIcon, destMicIcon;
 
     @Inject
     private IDatabaseCache cache;
@@ -101,6 +115,8 @@ public class MapViewerController {
     private IMessengerService messenger;
     @Inject
 	private ITextToSpeechService textToSpeech;
+	@Inject
+	private ISpeechToTextService speechToText;
 
     private final Image IMAGE_LEFT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/left.png", 15, 15, true, false, true);
     private final Image IMAGE_RIGHT = new Image("/edu/wpi/cs3733/d20/teamL/assets/Directions/right.jpg", 15, 15, true, false, true);
@@ -137,7 +153,8 @@ public class MapViewerController {
     private void initialize() {
         timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
         timerManager.startTimer(() -> timerManager.updateDate(dateLabel), 0, 1000);
-        timerManager.startTimer(() -> timerManager.updateWeather(currentTempLabel, currentWeatherIcon), 0,1800000);
+        //ToDO: uncomment this when its time to get weather
+        //timerManager.startTimer(() -> timerManager.updateWeather(currentTempLabel, currentWeatherIcon), 0,1800000);
 
         if (App.doUpdateCacheOnLoad) {
             cache.cacheAllFromDB();
@@ -145,7 +162,8 @@ public class MapViewerController {
         }
         startingPoint.setLabelFloat(false);
         map.setEditable(false);
-        map.setHighLightColor(Color.GOLD);
+        map.setHighLightColor(Color.DARKBLUE);
+        map.setHighlightThickness(4);
         btnNavigate.setDisableVisualFocus(true);
 
         // Stops stackPanes from stoping you clicking on whats underneath
@@ -217,20 +235,73 @@ public class MapViewerController {
         listF5.getItems().addAll(confNodes);
 
         TitledPane departments = new TitledPane("Departments", listF1);
-        departments.setStyle("-fx-font-size: 16");
+        departments.setStyle("-fx-font-size: 16;" + "-fx-body-color: #7DA7D9;");
         TitledPane labs = new TitledPane("Labs", listF2);
-        labs.setStyle("-fx-font-size: 16");
+        labs.setStyle("-fx-font-size: 16;" + "-fx-body-color: #8881BD;");
         TitledPane services = new TitledPane("Services/Information", listF3);
-        services.setStyle("-fx-font-size: 16");
+        services.setStyle("-fx-font-size: 16;" + "-fx-body-color: #F5989D;");
         TitledPane amenities = new TitledPane("Amenities", listF4);
-        amenities.setStyle("-fx-font-size: 16");
+        amenities.setStyle("-fx-font-size: 16;" + "-fx-body-color: #79BD92;");
         TitledPane conferenceRooms = new TitledPane("Conference Rooms", listF5);
-        conferenceRooms.setStyle("-fx-font-size: 16");
+        conferenceRooms.setStyle("-fx-font-size: 16;" + "-fx-body-color: #AD87AD;");
 
         accordion.getPanes().addAll(departments, labs, services, amenities, conferenceRooms);
-        showAccordion();
+        accordion.setStyle("-fx-effect: dropshadow(three-pass-box, derive(BLACK, -20%), 10, 0, 2, 2)");
+        // Create directions buttons
+        directionButtonsVBox = new VBox();
+        directionButtonsVBox.setAlignment(Pos.CENTER);
+        directionButtonsVBox.setSpacing(10);
 
+        btnTextMe = new JFXButton();
+        btnTextMe.setText("Text me directions");
+        btnTextMe.getStyleClass().add("save-button-jfx");
+        btnTextMe.setStyle("-fx-pref-width: 200;" + "-fx-max-width: 200;" + "-fx-background-color: #00043B;" + "-fx-background-radius: 50;");
+        btnTextMe.setOnAction(actionEvent -> handleText());
 
+        btnQR = new JFXButton();
+        btnQR.setText("Scan directions");
+        btnQR.getStyleClass().add("save-button-jfx");
+        btnQR.setStyle("-jfx-button-type: RAISED;" + "-fx-pref-width: 200;" + "-fx-max-width: 200;" + "-fx-background-color: #00043B;" + "-fx-background-radius:  50;");
+        btnQR.setOnAction(actionEvent -> genQR());
+
+        btnRobot = new JFXButton();
+        btnRobot.setText("Escort me there");
+        btnRobot.getStyleClass().add("save-button-jfx");
+        btnRobot.setStyle("-jfx-button-type: RAISED;" + "-fx-pref-width: 200;" + "-fx-max-width: 200;" + "-fx-background-color: #00043B;" + "-fx-background-radius:  50;");
+        btnRobot.setOnAction(actionEvent -> launchRobot());
+
+        directionButtonsVBox.getChildren().addAll(btnTextMe,btnQR,btnRobot);
+        showDefaultOptions();
+
+        // Fill text directions box
+        textDirectionsVBox = new VBox();
+        textDirectionsVBox.setStyle("-fx-effect: dropshadow(three-pass-box, derive(BLACK, -20%), 10, 0, 2, 2)");
+        HBox dirListHeader = new HBox();
+        dirListHeader.setStyle("-fx-alignment: center;" + "-fx-background-color: #00043B;");
+
+        etaLabel = new Label("Directions");
+        etaLabel.setStyle("-fx-text-fill: white;" + "-fx-font-weight: bold;" + "-fx-font-size: 16;");
+
+        JFXButton speakAllButton = new JFXButton("", new ImageView(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/speakerIcon.png", 0,15,true, false, true)));
+        speakAllButton.setPadding(Insets.EMPTY);
+        speakAllButton.setStyle("-fx-background-color: transparent;" + "-fx-content-display: graphic-only;");
+        speakAllButton.setOnAction(e -> speakAllDirections());
+
+        btnMute = new Label("un-muted");
+        btnMute.setStyle("-fx-text-fill: white;" + "-fx-font-size: 16;" + "-fx-background-color: transparent;" + "-fx-max-height: 15;");
+        btnMute.setPadding(Insets.EMPTY);
+        btnMute.setOnMouseClicked(e -> toggleAudio());
+
+        HBox muteHBox = new HBox();
+        muteHBox.setStyle("-fx-alignment: center-left;" + "-fx-background-color: #00043B;");
+
+        dirListHeader.getChildren().addAll(etaLabel,speakAllButton);
+        muteHBox.getChildren().addAll(btnMute);
+        muteHBox.setAlignment(Pos.CENTER_LEFT);
+        muteHBox.setMaxHeight(50);
+        textDirectionsVBox.getChildren().addAll(dirListHeader,dirList, muteHBox);
+
+        // Create Screening Button
         btnScreening.setText("Think you have COVID-19?");
         btnScreening.setStyle("-fx-font-weight: bold");
         btnScreening.setMinWidth(300);
@@ -260,8 +331,21 @@ public class MapViewerController {
     }
 
     @FXML
-    private void destinationAutocomplete() {
-        searchFields.applyAutocomplete(destination, autoCompletePopup);
+    private void destinationAutocomplete(KeyEvent evt) {
+        if (evt.getCode() == KeyCode.ENTER) {
+        	if (!startingPoint.getText().isEmpty()) {
+				navigate();
+			}
+		} else if (evt.getCode() == KeyCode.BACK_SPACE) {
+			if (startingPoint.getText().isEmpty()) {
+				clearSource();
+			}
+			if (destination.getText().isEmpty()) {
+				clearDest();
+			}
+		} else {
+			searchFields.applyAutocomplete(destination, autoCompletePopup);
+		}
     }
 
     public void setStartingPoint(String startingPoint) {
@@ -310,11 +394,55 @@ public class MapViewerController {
 //            textDirNode.setDisable(false);
 //            textDirNode.setVisible(true);
         }
-        hideAccordion();
-        hideTextualDirections();
-        showTextualDirections();
+        showPathFindingOptions();
 
     }
+
+	@FXML
+	private void btnRecordClicked(ActionEvent evt) {
+    	if (evt.getSource() == btnRecordStart) {
+			if (speechToText.allowStartRecording()) {
+				startMicIcon.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/speech_to_text_ready.png"));
+				speechToText.setAllowStartRecording(false);
+			} else {
+				startMicIcon.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/speech_to_text_record.png"));
+				speechToText.setAllowDestRecording(false);
+				speechToText.setAllowStartRecording(true);
+			}
+			if (speechToText.allowStartRecording()) {
+				AsyncTaskManager.newTask(() -> {
+					String transcription = speechToText.recordAndConvertAsync("start");
+					Platform.runLater(() -> {
+						startingPoint.setText(searchFields.findBestMatch(transcription));
+						if (!startingPoint.getText().isEmpty() && !destination.getText().isEmpty()) {
+							navigate();
+						}
+					});
+				});
+			}
+		} else if (evt.getSource() == btnRecordDest) {
+    		if (speechToText.allowDestRecording()) {
+				destMicIcon.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/speech_to_text_ready.png"));
+    			speechToText.setAllowDestRecording(false);
+			} else {
+				destMicIcon.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/speech_to_text_record.png"));
+				speechToText.setAllowStartRecording(false);
+				speechToText.setAllowDestRecording(true);
+			}
+			if (speechToText.allowDestRecording()) {
+				AsyncTaskManager.newTask(() -> {
+					String transcription = speechToText.recordAndConvertAsync("dest");
+					System.out.println(transcription);
+					Platform.runLater(() -> {
+						destination.setText(searchFields.findBestMatch(transcription));
+						if (!startingPoint.getText().isEmpty() && !destination.getText().isEmpty()) {
+							navigate();
+						}
+					});
+				});
+			}
+		}
+	}
 
     /**
      * Shows the key popup
@@ -411,65 +539,67 @@ public class MapViewerController {
 
         path.generateTextMessage();
         ArrayList<String> message = path.getMessage();
+        //TODO: make this a separate thing
+        etaLabel.setText(message.get(0));
+        message.remove(0);
+
         StringBuilder builder = new StringBuilder();
 
         dirList.getItems().clear();
         dirList.setStyle("-fx-font-size: 15");
-        dirList.setCellFactory(param -> {
-            return new ListCell<String>() {
-                private ImageView imageView = new ImageView();
+        dirList.setCellFactory(param -> new ListCell<String>() {
+			private ImageView imageView = new ImageView();
 
-                protected void updateItem(String item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (empty || item == null) {
-                        setGraphic(null);
-                        setText(null);
-                        // other stuff to do...
-                    } else {
+			protected void updateItem(String item, boolean empty) {
+				super.updateItem(item, empty);
+				if (empty || item == null) {
+					setGraphic(null);
+					setText(null);
+					// other stuff to do...
+				} else {
 
-                        if (item.contains("right")) {
-                            if (item.contains("slight")) {
-                                imageView.setImage(IMAGE_SLRIGHT);
-                            } else if (item.contains("sharp")) {
-                                imageView.setImage(IMAGE_SHRIGHT);
-                            } else {
-                                imageView.setImage(IMAGE_RIGHT);
-                            }
-                        } else if (item.contains("left")) {
-                            if (item.contains("slight")) {
-                                imageView.setImage(IMAGE_SLLEFT);
-                            } else if (item.contains("sharp")) {
-                                imageView.setImage(IMAGE_SHLEFT);
-                            } else {
-                                imageView.setImage(IMAGE_LEFT);
-                            }
-                        } else if (item.contains("elevator")) {
-                            imageView.setImage(IMAGE_ELEV);
-                        } else if (item.contains("stair")) {
-                            imageView.setImage(IMAGE_STAIR);
-                        } else if (item.contains("destination")) {
-                            imageView.setImage(IMAGE_DEST);
-                        } else {
-                            imageView.setImage(IMAGE_STRAIGHT);
-                        }
-                        setText(item);
-                        setGraphic(imageView);
-
-
-                        setMinWidth(getWidth());
-                        setMaxWidth(getWidth());
-                        setPrefWidth(getWidth());
-
-                        // allow wrapping
-                        setWrapText(true);
-
-                        setText(item);
+					if (item.contains("right")) {
+						if (item.contains("slight")) {
+							imageView.setImage(IMAGE_SLRIGHT);
+						} else if (item.contains("sharp")) {
+							imageView.setImage(IMAGE_SHRIGHT);
+						} else {
+							imageView.setImage(IMAGE_RIGHT);
+						}
+					} else if (item.contains("left")) {
+						if (item.contains("slight")) {
+							imageView.setImage(IMAGE_SLLEFT);
+						} else if (item.contains("sharp")) {
+							imageView.setImage(IMAGE_SHLEFT);
+						} else {
+							imageView.setImage(IMAGE_LEFT);
+						}
+					} else if (item.contains("elevator")) {
+						imageView.setImage(IMAGE_ELEV);
+					} else if (item.contains("stair")) {
+						imageView.setImage(IMAGE_STAIR);
+					} else if (item.contains("destination")) {
+						imageView.setImage(IMAGE_DEST);
+					} else {
+						imageView.setImage(IMAGE_STRAIGHT);
+					}
+					setText(item);
+					setGraphic(imageView);
 
 
-                    }
-                }
-            };
-        });
+					setMinWidth(getWidth());
+					setMaxWidth(getWidth());
+					setPrefWidth(getWidth());
+
+					// allow wrapping
+					setWrapText(true);
+
+					setText(item);
+
+
+				}
+			}
+		});
         directions.clear();
         directions.addAll(message);
         dirList.getItems().addAll(directions);
@@ -601,6 +731,8 @@ public class MapViewerController {
     @FXML
     private void clearSource() {
         startingPoint.clear();
+        map.getSelector().clear();
+        showDefaultOptions();
         clearPath();
     }
 
@@ -610,8 +742,8 @@ public class MapViewerController {
     @FXML
     private void clearDest() {
         destination.clear();
-        hideTextualDirections();
-        showAccordion();
+        map.getSelector().clear();
+        showDefaultOptions();
         clearPath();
     }
 
@@ -633,9 +765,6 @@ public class MapViewerController {
      */
     @FXML
     public void handleAbout() {
-    	//Uncomment to run snake
-    	//SnakeController snakeController = new SnakeController((Stage) btnNavigate.getScene().getWindow());
-
         JFXDialogLayout content = new JFXDialogLayout();
         content.setHeading(new Text("About"));
         content.setBody(new Text("WPI Computer Science Department\n" +
@@ -657,19 +786,6 @@ public class MapViewerController {
         btnDone.setOnAction(event -> dialog.close());
         content.setActions(btnDone);
         dialog.show();
-    }
-
-    /**
-     * Changes starting location with destination and vice-versa.
-     */
-    @FXML
-    public void handleLocationChange() {
-
-        String startLoc = startingPoint.getText();
-        String destLoc = destination.getText();
-
-        startingPoint.setText(destLoc);
-        destination.setText(startLoc);
     }
 
     @FXML
@@ -748,9 +864,11 @@ public class MapViewerController {
 
     @FXML
     private void goToSelected() {
-		AsyncTaskManager.newTask(() -> textToSpeech.playSpeech(textToSpeech.convertTextToSpeech(dirList.getSelectionModel().getSelectedItem().toString(), "en-US", SsmlVoiceGender.MALE)));
+    	if (!textToSpeech.isMuted()) {
+			textToSpeech.convertAndPlayAsync(dirList.getSelectionModel().getSelectedItem().toString());
+		}
         int index = dirList.getSelectionModel().getSelectedIndex();
-        ArrayList<Node> subpath = path.getSubpaths().get(index);
+        ArrayList<Node> subpath = path.getSubpaths().get(index + 1);
         if (dirList.getSelectionModel().getSelectedItem().toString().contains("Navigate")) {
             if (subpath.get(0).getBuilding().equals("Faulkner")) {
                 map.setBuilding(new Building("Google"));
@@ -808,21 +926,24 @@ public class MapViewerController {
         }
     }
 
-    private void showAccordion() {
-        sideBox.getChildren().add(2, accordion); //eventually this should be 1
+    private void launchRobot() {
+        System.out.println("Wheres the robot Conrad?!?");
     }
 
-    private void hideAccordion() {
-        accordion.getPanes().removeAll();
-        sideBox.getChildren().remove(accordion);
+    private void showDefaultOptions() {
+        if (sideBox.getChildren().contains(textDirectionsVBox)) sideBox.getChildren().remove(textDirectionsVBox);
+        if (sideBox.getChildren().contains(directionButtonsVBox)) sideBox.getChildren().remove(directionButtonsVBox);
+
+        if (!sideBox.getChildren().contains(getDirectionsHBox)) sideBox.getChildren().add(getDirectionsHBox);
+        if (!sideBox.getChildren().contains(accordion)) sideBox.getChildren().add(accordion);
     }
 
-    private void showTextualDirections() {
-        sideBox.getChildren().add(2, dirList); //eventually this should be 2
-    }
+    private void showPathFindingOptions() {
+        if (sideBox.getChildren().contains(accordion)) sideBox.getChildren().remove(accordion);
+        if (sideBox.getChildren().contains(getDirectionsHBox)) sideBox.getChildren().remove(getDirectionsHBox);
 
-    private void hideTextualDirections() {
-        sideBox.getChildren().remove(dirList);
+        if (!sideBox.getChildren().contains(textDirectionsVBox)) sideBox.getChildren().add(textDirectionsVBox);
+        if (!sideBox.getChildren().contains(directionButtonsVBox)) sideBox.getChildren().add(directionButtonsVBox);
     }
 
     @FXML
@@ -844,5 +965,21 @@ public class MapViewerController {
     @FXML
     private void handleRobotDirections() {
 
+    }
+
+    private void speakAllDirections() {
+    	if (!textToSpeech.isMuted()) {
+			StringBuilder allDirections = new StringBuilder();
+			for (String step : directions) {
+				allDirections.append(step).append(". ");
+			}
+			textToSpeech.convertAndPlayAsync(allDirections.toString());
+		}
+    }
+
+    private void toggleAudio() {
+        if (btnMute.getText().equals("un-muted")) btnMute.setText("muted");
+        else if (btnMute.getText().equals("muted")) btnMute.setText("un-muted");
+		textToSpeech.setMuted(!textToSpeech.isMuted());
     }
 }

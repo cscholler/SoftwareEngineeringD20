@@ -12,6 +12,7 @@ import java.util.TimerTask;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import edu.wpi.cs3733.d20.teamL.services.IHTTPClientService;
+import edu.wpi.cs3733.d20.teamL.views.controllers.game.SnakeController;
 import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -134,7 +135,9 @@ public class TimerManager {
 				if (logoutTicks > 0) {
 					logoutTicks--;
 				}
-				logoutWarning.setHeaderText("Session will expire in " + logoutTicks + " seconds.");
+				if (logoutWarning != null) {
+					logoutWarning.setHeaderText("Session will expire in " + logoutTicks + " seconds.");
+				}
 				if (logoutTicks == 0) {
 					log.info("No input for " + millisToMinsAndSecs(logoutTimeoutPeriod) + ". Ending session...");
 					if (loginManager.isAuthenticated()) {
@@ -148,7 +151,6 @@ public class TimerManager {
 					}
 					for (Stage stage : openStages) {
 						if (!stage.equals(App.stage)) {
-							log.info("closing stage: " + stage.getTitle());
 							stage.close();
 						}
 					}
@@ -204,8 +206,8 @@ public class TimerManager {
 	public void showScreensaverIfNoInput() {
 		Platform.runLater(() -> {
 			log.info(millisToMinsAndSecs(screenSaverTimeoutPeriod) + " since last update. Showing screensaver...");
-			assert cache != null;
-			cache.cacheAllFromDB();
+			loginManager.logOut(true);
+			SnakeController snakeController = new SnakeController(App.stage);
 		});
 	}
 

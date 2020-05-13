@@ -2,35 +2,87 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0"
-            prefWidth="700.0" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.logged_in.KioskTimeoutController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="500.0" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.logged_in.KioskTimeoutController">
     <top>
-        <Label styleClass="service-request-header-label-fx" text="Kiosk Timeout Settings"
-               BorderPane.alignment="CENTER"/>
+        <Label styleClass="service-request-header-label-fx" text="Kiosk Settings" BorderPane.alignment="CENTER" />
     </top>
     <center>
-        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="30.0" BorderPane.alignment="CENTER">
+        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" BorderPane.alignment="CENTER">
             <children>
-                <JFXTextField fx:id="logoutTimeoutText" promptText="Logout Timeout" styleClass="text-field-jfx"/>
-                <JFXTextField fx:id="idleCacheTimeoutText" promptText="Idle Cache Timeout" styleClass="text-field-jfx"/>
-                <JFXTextField fx:id="forceCacheTimeoutText" promptText="Forced Cache Update Timeout"
-                              styleClass="text-field-jfx"/>
-                <JFXTextField fx:id="screenSaverTimeoutText" promptText="Screen Timeout" styleClass="text-field-jfx"/>
+            <JFXTextField fx:id="kioskLocationText" onKeyPressed="#autocomplete" promptText="Kiosk Location" styleClass="text-field-jfx">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </JFXTextField>
+            <Label fx:id="locationInvalid" text="Location invalid!" textFill="RED" visible="false" />
+            <HBox alignment="CENTER_RIGHT" maxWidth="350.0">
+               <children>
+                  <Label text="Logout Timeout (sec):">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <padding>
+                        <Insets right="10.0" />
+                     </padding>
+                  </Label>
+                  <Spinner fx:id="logoutTimeoutText" style="-fx-pref-width: 100;" styleClass="text-field-jfx" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" maxWidth="350.0">
+               <children>
+                  <Label text="Idle Cache Timeout (sec):">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <padding>
+                        <Insets right="10.0" />
+                     </padding>
+                  </Label>
+                  <Spinner fx:id="idleCacheTimeoutText" style="-fx-pref-width: 100;" styleClass="text-field-jfx" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" maxWidth="350.0">
+               <children>
+                  <Label text="Forced Cache Update Timeout (sec):">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <padding>
+                        <Insets right="10.0" />
+                     </padding>
+                  </Label>
+                  <Spinner fx:id="forceCacheTimeoutText" style="-fx-pref-width: 100;" styleClass="text-field-jfx" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" maxWidth="350.0">
+               <children>
+                  <Label text="Screen Timeout (sec):">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <padding>
+                        <Insets right="10.0" />
+                     </padding>
+                  </Label>
+                  <Spinner fx:id="screenSaverTimeoutText" style="-fx-pref-width: 100;" styleClass="text-field-jfx" />
+               </children>
+            </HBox>
             </children>
         </VBox>
     </center>
     <bottom>
         <HBox alignment="CENTER" prefHeight="90.0" prefWidth="700.0" spacing="40.0" BorderPane.alignment="CENTER">
             <children>
-                <JFXButton fx:id="btnClose" onAction="#btnClosePressed" styleClass="cancel-button-jfx" text="Close"/>
-                <JFXButton onAction="#btnSavePressed" styleClass="save-button-jfx" text="Save"/>
+                <JFXButton fx:id="btnClose" onAction="#btnClosePressed" styleClass="cancel-button-jfx" text="Close" />
+                <JFXButton onAction="#btnSavePressed" styleClass="save-button-jfx" text="Save" />
             </children>
         </HBox>
     </bottom>
