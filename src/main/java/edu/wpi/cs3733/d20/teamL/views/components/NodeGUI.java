@@ -18,6 +18,8 @@ public class NodeGUI extends Circle implements Highlightable {
 
     private double highlightRadius;
 
+    private boolean usingGradient = false;
+
     private DoubleProperty xProperty = new DoublePropertyBase() {
         @Override
         public Object getBean() {
@@ -95,19 +97,21 @@ public class NodeGUI extends Circle implements Highlightable {
         getCircle().setStroke(color);
     }
 
-    public void setGradientNode() {
+    @Override
+    public void setGradient(double intensity) {
+
+        usingGradient = true;
 
         Stop[] stops = new Stop [] {
                 new Stop(0.0, Color.RED),
-                new Stop (0.5, Color.LIGHTYELLOW),
-                new Stop(1.0, Color.LIGHTGREEN)
+                new Stop(1.0, Color.TRANSPARENT)
         };
-        getCircle().getRadius();
 
         RadialGradient radialGradient = new RadialGradient(0,0, getCenterX(), getCenterY(), getCircle().getRadius(),
                 false, CycleMethod.NO_CYCLE, stops);
 
         getCircle().setFill(radialGradient);
+        getCircle().setRadius(intensity);
     }
 
     public void setSelected(boolean selected) {
@@ -147,5 +151,9 @@ public class NodeGUI extends Circle implements Highlightable {
 
     public Node getNode() {
         return node;
+    }
+
+    public boolean isUsingGradient() {
+        return usingGradient;
     }
 }

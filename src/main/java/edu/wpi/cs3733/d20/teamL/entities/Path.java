@@ -123,6 +123,10 @@ public class Path implements Iterable<Node> {
         double angle;
         String sign;
 
+        robotPath.append("2 ");
+        int length = ((int)pathNodes.get(0).getEdge(pathNodes.get(1)).getLength()) * 20;
+        robotPath.append(length + ",");
+
         for (int i = 1; i < pathNodes.size() - 1; i++) {
             prev = pathNodes.get(i - 1);
             curr = pathNodes.get(i);
@@ -132,10 +136,6 @@ public class Path implements Iterable<Node> {
             end = delta(curr, next);
             angle = start.angle(end);
 
-            robotPath.append("2 ");
-            int length = ((int)curr.getEdge(next).getLength()) * 10;
-            robotPath.append(length + ",");
-
             if (angle > 10) {
                 sign = determineDirection(start, end);
 
@@ -143,6 +143,9 @@ public class Path implements Iterable<Node> {
                 else robotPath.append("3,");
 
             }
+            robotPath.append("2 ");
+            length = ((int)curr.getEdge(next).getLength()) * 20;
+            robotPath.append(length + ",");
         }
 
         robotPath.append("#");
