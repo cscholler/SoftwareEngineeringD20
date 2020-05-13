@@ -11,12 +11,10 @@ import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
-import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
+import edu.wpi.cs3733.d20.teamL.util.SearchFields;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -99,7 +97,7 @@ public class InterpreterPaneController implements Initializable {
 
             // Status codes-- 0: pending, 1: approved, 2: assigned, 3: denied
             String status = "0";
-            String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm aa").format(new Date());
+            String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
             String user = loginManager.getCurrentUser().getUsername();
             // Adds request info to database
             //patient_id, request_username, assignee_username, location, service, type, notes, status, date_and_time

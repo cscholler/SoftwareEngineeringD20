@@ -11,7 +11,7 @@ import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseService;
 import edu.wpi.cs3733.d20.teamL.services.db.SQLEntry;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
-import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
+import edu.wpi.cs3733.d20.teamL.util.SearchFields;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -93,7 +93,7 @@ public class MaintenancePaneController implements Initializable {
         if(urgency.getSelectionModel().getSelectedItem() != null) {
             urge = urgency.getSelectionModel().getSelectedItem().toString();
         }
-        String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm aa").format(new Date());
+        String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
         String roomNum = location.getText() != null ? searchFields.getNode(location.getText()).getID() : null;
 
         String notes = urge + "|" + description.getText();

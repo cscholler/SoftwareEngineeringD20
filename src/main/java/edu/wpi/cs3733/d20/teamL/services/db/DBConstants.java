@@ -262,6 +262,11 @@ public class DBConstants {
 					"FROM Nodes " +
 					"ORDER BY id";
 
+	public static final String GET_NODE =
+			"SELECT * " +
+					"FROM Nodes " +
+					"WHERE id = ?";
+
 	public static final String SELECT_ALL_EDGES =
 			"SELECT * " +
 					"FROM Edges " +
@@ -517,13 +522,9 @@ public class DBConstants {
 					"SET notes = ? " +
 					"WHERE id = ?";
 
-	public static final String UPDATE_KIOSK_LOCATION =
-			"UPDATE Kiosk_Settings " +
-					"SET node_id = ?";
-
 	public static final String UPDATE_KIOSK_TIMEOUTS =
 			"UPDATE Kiosk_Settings " +
-					"SET logout_timeout = ?, idle_cache_timeout = ?, force_cache_timeout = ?, screen_saver_timeout = ? " +
+					"SET node_id = ?, logout_timeout = ?, idle_cache_timeout = ?, force_cache_timeout = ?, screen_saver_timeout = ? " +
 					"WHERE id = ?";
 
 	public static final String UPDATE_SCREENING_QUESTIONS =

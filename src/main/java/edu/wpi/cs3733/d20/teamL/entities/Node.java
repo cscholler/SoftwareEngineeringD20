@@ -282,7 +282,7 @@ public class Node {
      * @param toRemove The edge that will be removed
      */
     public void removeEdge(Edge toRemove) {
-        toRemove.setSource(null);
+        edges.remove(toRemove);
     }
 
     /**

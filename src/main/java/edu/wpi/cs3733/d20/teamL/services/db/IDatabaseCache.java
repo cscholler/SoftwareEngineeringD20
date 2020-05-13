@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamL.services.db;
 import edu.wpi.cs3733.d20.teamL.entities.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -85,4 +86,8 @@ public interface IDatabaseCache {
 	void cacheQuestionsFromDB();
 
 	ArrayList<Question> getQuestions();
+
+	Date getTimestamp();
+
+	void setTimestamp(Date timestamp);
 }
