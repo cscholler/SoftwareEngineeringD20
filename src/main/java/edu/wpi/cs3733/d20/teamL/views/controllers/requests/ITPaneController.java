@@ -16,9 +16,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import lombok.extern.slf4j.Slf4j;
 
@@ -56,11 +56,15 @@ public class ITPaneController implements Initializable {
     private JFXTextArea notesText;
     @FXML
     private JFXComboBox<String> typeBox;
+    @FXML
+    private VBox fieldsVBox;
 
 	private SearchFields searchFields;
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-		searchFields = new SearchFields(dbCache.getNodeCache());
+        fieldsVBox.setBackground(new Background(new BackgroundImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/hexagons.png", 1000, 0, true, true, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT)));
+
+        searchFields = new SearchFields(dbCache.getNodeCache());
 		searchFields.getFields().add(SearchFields.Field.nodeID);
 		searchFields.populateSearchFields();
 		autoCompletePopup.getSuggestions().addAll(searchFields.getSuggestions());
