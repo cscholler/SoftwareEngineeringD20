@@ -33,7 +33,7 @@
             <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
          </right>
          <center>
-            <VBox alignment="TOP_CENTER" prefHeight="562.0" prefWidth="435.0" spacing="50.0">
+            <VBox fx:id="fieldsVBox" alignment="TOP_CENTER" spacing="50.0">
                <children>
                   <JFXComboBox fx:id="typeBox" focusColor="#0d2e57" prefHeight="40.0" prefWidth="360.0" promptText="Request Type" styleClass="combo-box-jfx" unFocusColor="WHITE" />
                   <JFXTextField fx:id="locationText" focusColor="#0d2e57" labelFloat="true" onKeyTyped="#autoComplete" prefHeight="40.0" prefWidth="300.0" promptText="Location" styleClass="text-field-jfx">
