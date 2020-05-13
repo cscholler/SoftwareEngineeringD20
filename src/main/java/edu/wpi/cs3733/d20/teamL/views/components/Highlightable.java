@@ -26,4 +26,8 @@ public interface Highlightable {
     Collection<Node> getAllNodes();
 
     Node getGUI();
+
+    void setGradient(double intensity);
+
+    boolean isUsingGradient();
 }

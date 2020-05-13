@@ -6,6 +6,10 @@ public class Question {
     int weight;
     int recs;
 
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
     public Question(String question, int order, int weight, int recs) {
         this.question = question;
         this.order = order;
