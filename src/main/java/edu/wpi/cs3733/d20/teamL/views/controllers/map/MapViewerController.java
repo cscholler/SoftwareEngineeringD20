@@ -123,7 +123,10 @@ public class MapViewerController {
     private Label timeLabel, dateLabel, currentTempLabel, etaLabel, btnMute;
     @FXML
     private TitledPane departments, amenities, labs, services, conferenceRooms;
+    @FXML
     private ImageView currentWeatherIcon, startMicIcon, destMicIcon;
+    @FXML
+    private Tooltip startMicToolType, destMicToolType;
 
     @Inject
     private IDatabaseCache cache;
@@ -490,10 +493,12 @@ public class MapViewerController {
     	if (evt.getSource() == btnRecordStart) {
 			if (speechToText.allowStartRecording()) {
 				startMicIcon.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/speech_to_text_ready.png"));
+                startMicToolType.setText("Click to search with voice");
 				speechToText.setAllowStartRecording(false);
 			} else {
 				startMicIcon.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/speech_to_text_record.png"));
-				speechToText.setAllowDestRecording(false);
+                startMicToolType.setText("Click to stop recording");
+                speechToText.setAllowDestRecording(false);
 				speechToText.setAllowStartRecording(true);
 			}
 			if (speechToText.allowStartRecording()) {
@@ -510,10 +515,12 @@ public class MapViewerController {
 		} else if (evt.getSource() == btnRecordDest) {
     		if (speechToText.allowDestRecording()) {
 				destMicIcon.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/speech_to_text_ready.png"));
-    			speechToText.setAllowDestRecording(false);
+                destMicToolType.setText("Click to search with voice");
+                speechToText.setAllowDestRecording(false);
 			} else {
 				destMicIcon.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/speech_to_text_record.png"));
-				speechToText.setAllowStartRecording(false);
+                destMicToolType.setText("Click to stop recording");
+                speechToText.setAllowStartRecording(false);
 				speechToText.setAllowDestRecording(true);
 			}
 			if (speechToText.allowDestRecording()) {
