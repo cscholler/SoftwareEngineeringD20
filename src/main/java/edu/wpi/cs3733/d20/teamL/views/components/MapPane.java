@@ -406,7 +406,7 @@ public class MapPane extends ScrollPane {
         for (NodeGUI nodeGUI : nodes.values())
             nodeGUI.setHighlightThickness(this.highlightThickness);
         for (EdgeGUI edgeGUI : edges.values())
-            setHighlightThickness(highlightThickness);
+            edgeGUI.setHighlightThickness(highlightThickness);
     }
 
     public double getEdgeThickness() {
