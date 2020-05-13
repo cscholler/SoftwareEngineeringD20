@@ -35,10 +35,7 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Accordion;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -1148,7 +1145,7 @@ public class MapViewerController {
     }
 
     public void translateMapViewer(String language) throws IOException {
-        btnNavigate.setText(httpClient.translate("en", language, "Get Directions"));
+        btnNavigate.setText(httpClient.translate("en", language, "Get directions"));
         btnScreening.setText(httpClient.translate(currentLang, language, "Think you have COVID-19?"));
         btnAbout.setText(httpClient.translate(currentLang, language, "About"));
         btnTextMe.setText(httpClient.translate(currentLang, language, "Send me directions"));
@@ -1266,8 +1263,18 @@ public class MapViewerController {
             };
         });
 
+        btnFeedback.setTooltip(new Tooltip(btnFeedback.getText()));
+        btnScreening.setTooltip(new Tooltip(btnScreening.getText()));
+        btnNavigate.setTooltip(new Tooltip(btnNavigate.getText()));
+        btnRobot.setTooltip(new Tooltip(btnRobot.getText()));
+        btnLegend.setTooltip(new Tooltip(btnLegend.getText()));
+        btnQR.setTooltip(new Tooltip(btnQR.getText()));
+        btnAbout.setTooltip(new Tooltip(btnAbout.getText()));
+        btnScreening.setTooltip(new Tooltip(btnScreening.getText()));
+
 
         currentLang = language;
         httpClient.setCurrLang(currentLang);
+
     }
 }
