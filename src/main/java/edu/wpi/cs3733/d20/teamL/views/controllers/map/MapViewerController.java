@@ -36,10 +36,7 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Accordion;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -127,7 +124,10 @@ public class MapViewerController {
     private Label timeLabel, dateLabel, currentTempLabel, etaLabel, btnMute;
     @FXML
     private TitledPane departments, amenities, labs, services, conferenceRooms;
+    @FXML
     private ImageView currentWeatherIcon, startMicIcon, destMicIcon;
+    @FXML
+    private Tooltip startMicToolType, destMicToolType;
 
     @Inject
     private IDatabaseCache cache;
@@ -174,7 +174,7 @@ public class MapViewerController {
     private ArrayList<String> newRetailNodes = new ArrayList<>();
     private ArrayList<String> newConfNodes = new ArrayList<>();
 
-    private ArrayList<String> languages = new ArrayList<String>(Arrays.asList("English - en", "Espanol - es", "French - fr", "Mandarin - zh"));
+    private ArrayList<String> languages = new ArrayList<String>(Arrays.asList("English - en", "Espanol - es", "French - fr", "Mandarin - zh", "Arabic - ar", "Danish - da", "German - de", "Hebrew - he", "Irish - ga", "Italian - it", "Japanese - ja", "Korean - ko", "Thai - th", "Russian - ru", "Greek - el", "Vietnamese - vi"));
 
     private QuestionnaireController qc;
     private String currentLang = "en";
@@ -289,19 +289,19 @@ public class MapViewerController {
         btnTextMe = new JFXButton();
         btnTextMe.setText("Text me directions");
         btnTextMe.getStyleClass().add("save-button-jfx");
-        btnTextMe.setStyle("-fx-pref-width: 200;" + "-fx-max-width: 200;" + "-fx-background-color: #00043B;" + "-fx-background-radius: 50;");
+        btnTextMe.setStyle("-fx-pref-width: 250;" + "-fx-max-width: 200;" + "-fx-background-color: #00043B;" + "-fx-background-radius: 50;");
         btnTextMe.setOnAction(actionEvent -> handleText());
 
         btnQR = new JFXButton();
         btnQR.setText("Scan directions");
         btnQR.getStyleClass().add("save-button-jfx");
-        btnQR.setStyle("-jfx-button-type: RAISED;" + "-fx-pref-width: 200;" + "-fx-max-width: 200;" + "-fx-background-color: #00043B;" + "-fx-background-radius:  50;");
+        btnQR.setStyle("-jfx-button-type: RAISED;" + "-fx-pref-width: 250;" + "-fx-max-width: 200;" + "-fx-background-color: #00043B;" + "-fx-background-radius:  50;");
         btnQR.setOnAction(actionEvent -> genQR());
 
         btnRobot = new JFXButton();
         btnRobot.setText("Escort me there");
         btnRobot.getStyleClass().add("save-button-jfx");
-        btnRobot.setStyle("-jfx-button-type: RAISED;" + "-fx-pref-width: 200;" + "-fx-max-width: 200;" + "-fx-background-color: #00043B;" + "-fx-background-radius:  50;");
+        btnRobot.setStyle("-jfx-button-type: RAISED;" + "-fx-pref-width: 250;" + "-fx-max-width: 200;" + "-fx-background-color: #00043B;" + "-fx-background-radius:  50;");
         btnRobot.setOnAction(actionEvent -> launchRobot());
 
         directionButtonsVBox.getChildren().addAll(btnTextMe, btnQR, btnRobot);
@@ -507,10 +507,12 @@ public class MapViewerController {
     	if (evt.getSource() == btnRecordStart) {
 			if (speechToText.allowStartRecording()) {
 				startMicIcon.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/speech_to_text_ready.png"));
+                startMicToolType.setText("Click to search with voice");
 				speechToText.setAllowStartRecording(false);
 			} else {
 				startMicIcon.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/speech_to_text_record.png"));
-				speechToText.setAllowDestRecording(false);
+                startMicToolType.setText("Click to stop recording");
+                speechToText.setAllowDestRecording(false);
 				speechToText.setAllowStartRecording(true);
 			}
 			if (speechToText.allowStartRecording()) {
@@ -527,10 +529,12 @@ public class MapViewerController {
 		} else if (evt.getSource() == btnRecordDest) {
     		if (speechToText.allowDestRecording()) {
 				destMicIcon.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/speech_to_text_ready.png"));
-    			speechToText.setAllowDestRecording(false);
+                destMicToolType.setText("Click to search with voice");
+                speechToText.setAllowDestRecording(false);
 			} else {
 				destMicIcon.setImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/home_page/speech_to_text_record.png"));
-				speechToText.setAllowStartRecording(false);
+                destMicToolType.setText("Click to stop recording");
+                speechToText.setAllowStartRecording(false);
 				speechToText.setAllowDestRecording(true);
 			}
 			if (speechToText.allowDestRecording()) {
@@ -1176,7 +1180,17 @@ public class MapViewerController {
         String l = languagePicker.getValue();
         l = l.substring(l.length() - 2);
         try {
-            translateMapViewer(l);
+            AsyncTaskManager.startTaskWithPopup(()-> {
+               Platform.runLater(()-> {
+                   try {
+                       String lan = languagePicker.getValue();
+                       lan = lan.substring(lan.length() - 2);
+                       translateMapViewer(lan);
+                   } catch (IOException e) {
+                       e.printStackTrace();
+                   }
+               });
+            },httpClient.translate("en", l, "Translating Text"), httpClient.translate("en", l, "Done"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -1184,7 +1198,7 @@ public class MapViewerController {
     }
 
     public void translateMapViewer(String language) throws IOException {
-        btnNavigate.setText(httpClient.translate("en", language, "Get Directions"));
+        btnNavigate.setText(httpClient.translate("en", language, "Get directions"));
         btnScreening.setText(httpClient.translate(currentLang, language, "Think you have COVID-19?"));
         btnAbout.setText(httpClient.translate(currentLang, language, "About"));
         btnTextMe.setText(httpClient.translate(currentLang, language, "Send me directions"));
@@ -1302,9 +1316,19 @@ public class MapViewerController {
             };
         });
 
+        btnFeedback.setTooltip(new Tooltip(btnFeedback.getText()));
+        btnScreening.setTooltip(new Tooltip(btnScreening.getText()));
+        btnNavigate.setTooltip(new Tooltip(btnNavigate.getText()));
+        btnRobot.setTooltip(new Tooltip(btnRobot.getText()));
+        btnLegend.setTooltip(new Tooltip(btnLegend.getText()));
+        btnQR.setTooltip(new Tooltip(btnQR.getText()));
+        btnAbout.setTooltip(new Tooltip(btnAbout.getText()));
+        btnScreening.setTooltip(new Tooltip(btnScreening.getText()));
+
 
         currentLang = language;
         httpClient.setCurrLang(currentLang);
+
     }
 
     public Path getPath() {
