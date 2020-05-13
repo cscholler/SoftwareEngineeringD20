@@ -257,6 +257,7 @@
                   </JFXButton>
                </children>
             </StackPane>
+            <VBox fx:id="miniMaps" layoutX="14.0" layoutY="102.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="102.0" spacing="10"/>
             </children>
         </AnchorPane>
     </center>

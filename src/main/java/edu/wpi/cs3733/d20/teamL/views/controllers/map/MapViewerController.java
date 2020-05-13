@@ -16,6 +16,7 @@ import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
+import edu.wpi.cs3733.d20.teamL.views.components.MapLink;
 import edu.wpi.cs3733.d20.teamL.views.controllers.screening.QuestionnaireController;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -109,7 +110,7 @@ public class MapViewerController {
     @FXML
     private JFXButton btnNavigate, floorUp, floorDown, btnScreening, btnTextMe, btnQR, btnRobot, btnRecordStart, btnLegend, btnFeedback, btnAbout, btnRecordDest;
     @FXML
-    private VBox sideBox, floorSelector, directionButtonsVBox, textDirectionsVBox;
+    private VBox sideBox, floorSelector, directionButtonsVBox, textDirectionsVBox, miniMaps;
     @FXML
     private HBox getDirectionsHBox;
     @FXML
@@ -415,6 +416,19 @@ public class MapViewerController {
         if (!path.getPathNodes().isEmpty()) highLightPath();
     }
 
+    public void setBuilding(String building) {
+        Building newBuilding = cache.getBuilding(building);
+        map.setBuilding(newBuilding);
+
+        int prevFloor = map.getFloor();
+        generateFloorButtons();
+        setFloor(Math.max(map.getBuilding().getMinFloor(), Math.min(prevFloor, map.getBuilding().getMaxFloor())));
+        map.setZoomLevel(.25 * App.UI_SCALE);
+        if (!path.getPathNodes().isEmpty()) highLightPath();
+
+        buildingChooser.getSelectionModel().select(building);
+    }
+
     @FXML
     private void startingPointAutocomplete() {
         searchFields.applyAutocomplete(startingPoint, autoCompletePopup);
@@ -631,6 +645,7 @@ public class MapViewerController {
             map.resetNodeVisibility(end);
         }
         path.getPathNodes().clear();
+        miniMaps.getChildren().clear();
     }
 
     private String highlightSourceToDestination(Node source, Node destination) {
@@ -714,18 +729,21 @@ public class MapViewerController {
     }
 
     private void highLightPath() {
+        miniMaps.getChildren().clear();
         Iterator<Node> nodeIterator = path.iterator();
 
         // Loop through each node in the path and select it as well as the edge pointing to the next node
         Node currentNode = nodeIterator.next();
         Node nextNode;
 
+        boolean firstLinkAdded = false;
+
         while (nodeIterator.hasNext()) {
             nextNode = nodeIterator.next();
             EdgeGUI edgeGUI = map.getEdgeGUI(currentNode.getEdge(nextNode));
 
-            // Please help me untangle my spaghetti
             if (edgeGUI != null) {
+                // Animate the path
                 edgeGUI.getHighlightGUI().getStrokeDashArray().setAll(5d, 20d, 20d, 5d);
                 Line highlight = map.getEdgeGUI(currentNode.getEdge(nextNode)).getHighlightGUI();
 
@@ -735,9 +753,18 @@ public class MapViewerController {
 
                 timeline.setCycleCount(Timeline.INDEFINITE);
                 timeline.play();
+
+                map.getSelector().add(edgeGUI);
             }
 
-            if (edgeGUI != null) map.getSelector().add(edgeGUI);
+            if (nextNode.getFloor() != currentNode.getFloor() || !nextNode.getBuilding().equals(currentNode.getBuilding())) {
+                int linkWidth = 120;
+                if (!firstLinkAdded) {
+                    miniMaps.getChildren().add(new MapLink(currentNode.getBuilding(), currentNode.getFloor(), linkWidth, this));
+                    firstLinkAdded = true;
+                }
+                miniMaps.getChildren().add(new MapLink(nextNode.getBuilding(), nextNode.getFloor(), linkWidth, this));
+            }
 
             currentNode = nextNode;
         }
@@ -795,8 +822,6 @@ public class MapViewerController {
         } else {
             setFloor(Node.floorStringToInt(sourceButton.getText()));
         }
-
-        if (!path.getPathNodes().isEmpty()) highLightPath();
     }
 
     @FXML
@@ -825,6 +850,8 @@ public class MapViewerController {
                     floorButton.getStyleClass().add("selected-floor");
             }
         }
+
+        if (!path.getPathNodes().isEmpty()) highLightPath();
     }
 
     /**
