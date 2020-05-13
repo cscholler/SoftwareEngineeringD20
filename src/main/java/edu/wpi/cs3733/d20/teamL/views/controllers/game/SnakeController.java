@@ -1,51 +1,61 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.game;
 
 import edu.wpi.cs3733.d20.teamL.App;
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
+import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import lombok.extern.slf4j.Slf4j;
 
-//TODO: Call when screensaver timeout hits. Add ability to return to map viewer. Change colors and add background image."
+import javax.swing.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
+
+@Slf4j
 public class SnakeController {
-	private Stage stage;
-
-	public Stage getStage() {
-		return stage;
-	}
-
-	public void setStage(Stage stage) {
-		this.stage = stage;
-	}
-
 	public enum Direction {
 		UP, DOWN, LEFT, RIGHT
 	}
 
+	private Stage stage;
+	private Direction direction = Direction.RIGHT;
 	private static final int WIDTH = (int) App.SCREEN_WIDTH;
 	private static final int HEIGHT = (int) App.SCREEN_HEIGHT;
 	private static final int BLOCK_SIZE = 64;
-
-	private Direction direction = Direction.RIGHT;
-
-	private boolean moved = false;
+	private static final Color hallNodeColor = Color.rgb(13, 46, 87);
 	private boolean running = false;
-
-	private Timeline timeline = new Timeline();
-
+	private final Timeline timeline = new Timeline();
+	private final ArrayList<edu.wpi.cs3733.d20.teamL.entities.Node> nodes = new ArrayList<>();
+	private final FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
+	private final IDatabaseCache cache = FXMLLoaderFactory.injector.getInstance(IDatabaseCache.class);
 	private ObservableList<Node> snake;
+	private int lossCount = 0;
 
 	public void setup(Stage stage) {
+		App.isScreenSaverActive = true;
+		for (edu.wpi.cs3733.d20.teamL.entities.Node node : cache.getNodeCache()) {
+			if (node.getBuilding().equals("Faulkner") && node.getFloorAsString().equals("2")) {
+				nodes.add(node);
+			}
+		}
 		Scene scene = new Scene(createPane());
 		FXMLLoaderFactory.applyTimeouts(scene);
 		scene.setOnKeyPressed(event -> {
@@ -77,8 +87,11 @@ public class SnakeController {
 						direction = Direction.RIGHT;
 					}
 				}
+				break;
+				case ESCAPE: {
+					returnToMapViewer();
+				}
 			}
-			moved = false;
 		});
 
 		stage.setScene(scene);
@@ -92,26 +105,30 @@ public class SnakeController {
 
 	private Pane createPane() {
 		Pane root = new Pane();
-		ImageView background = new ImageView(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/FaulknerFloor2LM.png", App.SCREEN_WIDTH, 0, true, false, true));
+		ImageView background = new ImageView(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/snake_map.png", App.SCREEN_WIDTH, 0, true, false, true));
 		background.setStyle("-fx-translate-y: -100");
 		Group snakeBody = new Group();
 		snake = snakeBody.getChildren();
-		Rectangle food = new Rectangle(BLOCK_SIZE, BLOCK_SIZE);
-		food.setFill(Color.BLUE);
-		food.setTranslateX((int) (Math.random() * (WIDTH - BLOCK_SIZE)) / BLOCK_SIZE * BLOCK_SIZE);
-		food.setTranslateY((int) (Math.random() * (HEIGHT - BLOCK_SIZE)) / BLOCK_SIZE * BLOCK_SIZE);
+		Circle food = new Circle((BLOCK_SIZE / 2) * 1.5);
+		int nodeIndex = new Random().nextInt(nodes.size());
+		edu.wpi.cs3733.d20.teamL.entities.Node node = nodes.get(nodeIndex);
+		Point2D nodePos = node.getPosition();
+		food.setTranslateX(nodePos.getX());
+		food.setTranslateY(nodePos.getY());
+		if (node.getType().equals("HALL")) {
+			food.setFill(hallNodeColor);
+		} else {
+			food.setFill(new ImagePattern(new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/" + node.getType() + "_filled.png")));
+		}
 
-		KeyFrame frame = new KeyFrame(Duration.seconds(0.2), event -> {
+		KeyFrame frame = new KeyFrame(Duration.seconds(0.1), event -> {
 			if (!running) {
 				return;
 			}
-			boolean toRemove = snake.size() > 1;
-
-			Node tail = toRemove ? snake.remove(snake.size() - 1) : snake.get(0);
-
+			boolean allowRemoval = snake.size() > 1;
+			Node tail = allowRemoval ? snake.remove(snake.size() - 1) : snake.get(0);
 			double tailX = tail.getTranslateX();
 			double tailY = tail.getTranslateY();
-
 			switch (direction) {
 				case UP: {
 					tail.setTranslateX(snake.get(0).getTranslateX());
@@ -133,45 +150,48 @@ public class SnakeController {
 					tail.setTranslateY(snake.get(0).getTranslateY());
 				}
 			}
-			moved = true;
-
-			if (toRemove) {
+			if (allowRemoval) {
 				snake.add(0, tail);
 			}
-
-			for (Node node : snake) {
-				if (node != tail && tail.getTranslateX() == node.getTranslateX() && tail.getTranslateY() == node.getTranslateY()) {
+			for (Node bodyPart : snake) {
+				if (bodyPart != tail && tail.getTranslateX() == bodyPart.getTranslateX() && tail.getTranslateY() == bodyPart.getTranslateY()) {
 					restartGame();
 					break;
 				}
 			}
-
 			if (tail.getTranslateX() < 0 || tail.getTranslateX() >= WIDTH || tail.getTranslateY() < 0 || tail.getTranslateY() >= HEIGHT) {
 				restartGame();
 			}
-
-			if (tail.getTranslateX() == food.getTranslateX() && tail.getTranslateY() == food.getTranslateY()) {
-				food.setTranslateX((int) (Math.random() * (WIDTH - BLOCK_SIZE)) / BLOCK_SIZE * BLOCK_SIZE);
-				food.setTranslateY((int) (Math.random() * (HEIGHT - BLOCK_SIZE)) / BLOCK_SIZE * BLOCK_SIZE);
-
+			if (Math.abs(tail.getTranslateX() - food.getTranslateX()) <= BLOCK_SIZE && Math.abs(tail.getTranslateY() - food.getTranslateY()) <= BLOCK_SIZE) {
+				int newNodeIndex = new Random().nextInt(nodes.size());
+				edu.wpi.cs3733.d20.teamL.entities.Node newNode = nodes.get(newNodeIndex);
+				Point2D newNodePos = newNode.getPosition();
+				food.setTranslateX(newNodePos.getX());
+				food.setTranslateY(newNodePos.getY());
+				if (newNode.getType().equals("HALL")) {
+					food.setFill(hallNodeColor);
+				} else {
+					food.setFill(new ImagePattern(new Image("/edu/wpi/cs3733/d20/teamL/assets/nodes_filled/" + newNode.getType() + "_filled.png")));
+				}
 				Rectangle rect = new Rectangle(BLOCK_SIZE, BLOCK_SIZE);
 				rect.setTranslateX(tailX);
 				rect.setTranslateY(tailY);
-
+				rect.setFill(Color.SPRINGGREEN);
 				snake.add(rect);
 			}
 		});
-
 		timeline.getKeyFrames().add(frame);
 		timeline.setCycleCount(Timeline.INDEFINITE);
-
 		root.getChildren().addAll(background, food, snakeBody);
-
 		return root;
 	}
 
 	private void restartGame() {
 		stopGame();
+		lossCount++;
+		if (lossCount == 3) {
+			returnToMapViewer();
+		}
 		startGame();
 	}
 
@@ -181,11 +201,29 @@ public class SnakeController {
 		snake.clear();
 	}
 
+	private void returnToMapViewer() {
+		try {
+			Parent root = loaderFactory.getFXMLLoader("map_viewer/MapViewer").load();
+			loaderFactory.setupScene(new Scene(root));
+		} catch (IOException ex) {
+			log.error("Encountered IOException", ex);
+		}
+	}
+
 	private void startGame() {
 		direction = Direction.RIGHT;
 		Rectangle head = new Rectangle(BLOCK_SIZE, BLOCK_SIZE);
+		head.setFill(Color.SPRINGGREEN);
 		snake.add(head);
 		timeline.play();
 		running = true;
+	}
+
+	public Stage getStage() {
+		return stage;
+	}
+
+	public void setStage(Stage stage) {
+		this.stage = stage;
 	}
 }

@@ -80,12 +80,14 @@ public class FXMLLoaderFactory {
 
 	public static void applyTimeouts(Scene scene) {
 		scene.getRoot().addEventHandler(Event.ANY, event -> {
+			App.startIdleTimer();
 			ILoginManager loginManager = injector.getInstance(ILoginManager.class);
 			if (loginManager.isAuthenticated()) {
 				App.startLogoutTimer();
 			}
-			App.startIdleTimer();
-			App.startScreenSaverTimer();
+			if (App.isScreenSaverActive) {
+				App.startScreenSaverTimer();
+			}
 		});
 	}
 

@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
+import edu.wpi.cs3733.d20.teamL.views.controllers.game.SnakeController;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -957,18 +958,10 @@ public class MapViewerController {
 
     }
 
-    @FXML
-    private void handleHandicap() {
-
-    }
-
-    @FXML
-    private void handleRobotDirections() {
-
-    }
-
-    public void launchSnake(ActionEvent actionEvent) {
-        System.out.println("Snake time");
+    public void launchSnake() {
+		SnakeController snakeController = new SnakeController();
+		snakeController.setStage(App.stage);
+		snakeController.setup(snakeController.getStage());
     }
 
     private void speakAllDirections() {
