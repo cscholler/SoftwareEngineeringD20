@@ -50,6 +50,7 @@ public class SnakeController {
 	private int lossCount = 0;
 
 	public void setup(Stage stage) {
+		App.stopTimers();
 		App.isScreenSaverActive = true;
 		for (edu.wpi.cs3733.d20.teamL.entities.Node node : cache.getNodeCache()) {
 			if (node.getBuilding().equals("Faulkner") && node.getFloorAsString().equals("2")) {

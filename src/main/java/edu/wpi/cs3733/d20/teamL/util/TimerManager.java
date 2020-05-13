@@ -183,6 +183,7 @@ public class TimerManager {
 
 	public void updateCacheIfNoInput() {
 		Platform.runLater(() -> {
+			App.startForceUpdateTimer();
 			if (!isCacheBeingUpdated && App.allowCacheUpdates) {
 				isCacheBeingUpdated = true;
 				log.info("No input for " + millisToMinsAndSecs(idleCacheTimeoutPeriod) + ". Caching from database...");
@@ -193,7 +194,6 @@ public class TimerManager {
 					resetMapViewer();
 				}
 				determineTimeoutPeriods();
-				App.startForceUpdateTimer();
 			}
 			isCacheBeingUpdated = false;
 		});

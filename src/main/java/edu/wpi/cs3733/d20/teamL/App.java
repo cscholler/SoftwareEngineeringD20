@@ -59,6 +59,21 @@ public class App extends Application {
 		screenSaverTimer = timerManager.startTimer(timerManager::showScreensaverIfNoInput, "showScreensaverIfNoInput");
 	}
 
+	public static void stopTimers() {
+		if (idleLogoutTimer != null) {
+			idleLogoutTimer.cancel();
+		}
+		if (idleCacheUpdateTimer != null) {
+			idleCacheUpdateTimer.cancel();
+		}
+		if (forceCacheUpdateTimer != null) {
+			forceCacheUpdateTimer.cancel();
+		}
+		if (screenSaverTimer != null) {
+			screenSaverTimer.cancel();
+		}
+	}
+
 	@Override
 	public void init() {
 		log.info("Starting Up");
