@@ -967,6 +967,10 @@ public class MapViewerController {
 
     }
 
+    public void launchSnake(ActionEvent actionEvent) {
+        System.out.println("Snake time");
+    }
+
     private void speakAllDirections() {
     	if (!textToSpeech.isMuted()) {
 			StringBuilder allDirections = new StringBuilder();

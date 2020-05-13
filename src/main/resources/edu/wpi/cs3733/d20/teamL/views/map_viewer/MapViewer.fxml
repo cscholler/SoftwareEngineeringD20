@@ -55,18 +55,18 @@
                                           <Font name="Corbel Light" size="10.0" />
                                       </font>
                            <graphic>
-                              <ImageView fitHeight="16.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="0.9">
+                              <ImageView fitHeight="20.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" scaleX="1.5" scaleY="1.5">
                                  <image>
-                                    <Image url="@../../assets/staff_view/close.png" />
+                                    <Image url="@../../assets/map_editor/switchWhite.png" />
                                  </image>
                               </ImageView>
                            </graphic>
-                                  </JFXButton>
+                        </JFXButton>
                               </children>
                           </HBox>
-                          <HBox alignment="CENTER" prefHeight="40.0" prefWidth="300.0" style="-fx-border-radius: 10; -fx-background-radius: 10;">
+                          <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="300.0" style="-fx-border-radius: 10; -fx-background-radius: 10;">
                               <children>
-                                  <JFXTextField fx:id="destination" focusColor="WHITE" maxHeight="30.0" onKeyReleased="#destinationAutocomplete" promptText="Destination" styleClass="search-bar-text-field-jfx" unFocusColor="WHITE">
+                                  <JFXTextField fx:id="destination" focusColor="WHITE" maxHeight="30.0" onKeyTyped="#destinationAutocomplete" promptText="Destination" styleClass="search-bar-text-field-jfx" unFocusColor="WHITE">
                                       <font>
                                           <Font size="16.0" />
                                       </font>
@@ -256,6 +256,15 @@
                   </JFXButton>
                </children>
             </StackPane>
+            <JFXButton buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" layoutX="36.0" layoutY="574.0" onAction="#launchSnake" style="-fx-background-radius: 50; -fx-background-color: transparent;" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0">
+               <graphic>
+                  <ImageView fitHeight="150.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../assets/home_page/snake.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </JFXButton>
             </children>
         </AnchorPane>
     </center>
