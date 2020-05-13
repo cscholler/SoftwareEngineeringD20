@@ -1090,8 +1090,8 @@ public class MapViewerController {
         double diffY = maxY - minY;
         double scale;
 
-        if (diffX > diffY) scale = Math.min(400 / diffX, 2);
-        else scale = Math.min(400 / diffY, 2);
+        if (diffX > diffY) scale = Math.min(200 / diffX, .7);
+        else scale = Math.min(200 / diffY, .7);
 
         totalX = totalX / subpath.size();
         totalY = totalY / subpath.size();
