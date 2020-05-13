@@ -7,23 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import edu.wpi.cs3733.d20.teamL.entities.*;
 import javafx.geometry.Point2D;
 
 import lombok.extern.slf4j.Slf4j;
 
 import com.google.inject.Inject;
 
-import edu.wpi.cs3733.d20.teamL.entities.Building;
-import edu.wpi.cs3733.d20.teamL.entities.Doctor;
-import edu.wpi.cs3733.d20.teamL.entities.Edge;
-import edu.wpi.cs3733.d20.teamL.entities.Gift;
-import edu.wpi.cs3733.d20.teamL.entities.GiftDeliveryRequest;
-import edu.wpi.cs3733.d20.teamL.entities.Graph;
-import edu.wpi.cs3733.d20.teamL.entities.Kiosk;
-import edu.wpi.cs3733.d20.teamL.entities.Node;
-import edu.wpi.cs3733.d20.teamL.entities.Question;
-import edu.wpi.cs3733.d20.teamL.entities.ServiceRequest;
-import edu.wpi.cs3733.d20.teamL.entities.User;
 import java.util.Date;
 
 @Slf4j
@@ -45,7 +35,6 @@ public class DatabaseCache implements IDatabaseCache {
 	private ArrayList<Node> editedNodes = new ArrayList<>();
     private ArrayList<Edge> editedEdges = new ArrayList<>();
     private Date timestamp;
-    private ArrayList<Question> questionCache = new ArrayList<>();
     private ArrayList<Reservation> reservationCache = new ArrayList<>();
 
 
@@ -460,8 +449,6 @@ public class DatabaseCache implements IDatabaseCache {
 
     @Override
     public void clearReservationCache() { reservationCache.clear(); }
-
-}
 
     @Override
     public ArrayList<ServiceRequest> getAllSpecificRequest(String service) {

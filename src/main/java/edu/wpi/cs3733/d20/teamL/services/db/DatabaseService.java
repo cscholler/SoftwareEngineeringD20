@@ -43,9 +43,9 @@ public class DatabaseService extends Service implements IDatabaseService {
 			connect();
 		}
 		// Rebuild the database if using Derby
-		if (dbType == DB_TYPE.DERBY) {
+		//if (dbType == DB_TYPE.DERBY) {
 			rebuildDatabase();
-		}
+		//}
 	}
 
 	private void populateTableUpdateMappings() {
@@ -75,7 +75,7 @@ public class DatabaseService extends Service implements IDatabaseService {
 			log.error("Encountered ClassNotFoundException", ex);
 		}
 		try {
-			connection = DriverManager.getConnection( DBConstants.DB_PREFIX + DBConstants.DB_URL + DBConstants.DB_PORT + DBConstants.DB_NAME_CANARY, DBConstants.DB_USER, DBConstants.DB_PASSWORD);
+			connection = DriverManager.getConnection( DBConstants.DB_PREFIX + DBConstants.DB_URL + DBConstants.DB_PORT + DBConstants.DB_NAME_DEV, DBConstants.DB_USER, DBConstants.DB_PASSWORD);
 			log.info("Connection established.");
 			dbType = DB_TYPE.MY_SQL;
 		} catch (SQLException ex) {
