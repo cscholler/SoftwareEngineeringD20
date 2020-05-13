@@ -36,17 +36,20 @@
                                     <Insets left="150.0" top="10.0" />
                                  </HBox.margin>
                               </JFXComboBox>
-                              <JFXButton minHeight="52.0" minWidth="160.0" onAction="#handleLive" prefHeight="61.0" prefWidth="160.0" styleClass="save-button-jfx" text="Live" textFill="WHITE">
+                              <JFXButton fx:id="btnLive" alignment="TOP_LEFT" buttonType="RAISED" onAction="#handleLive" prefWidth="150.0" style="-fx-background-color: white; -fx-border-color: grey;" text="⚫ Live" textAlignment="CENTER" textFill="GREY">
                                  <HBox.margin>
                                     <Insets left="480.0" top="10.0" />
                                  </HBox.margin>
                                  <font>
                                     <Font size="30.0" />
                                  </font>
+                                 <padding>
+                                    <Insets left="5.0" top="-0.1" />
+                                 </padding>
                               </JFXButton>
-                              <JFXButton alignment="CENTER" contentDisplay="CENTER" maxHeight="78.0" maxWidth="83.0" minHeight="78.0" minWidth="80.0" onAction="#handleRefresh" prefHeight="78.0" prefWidth="83.0" styleClass="analytics-circle-buttons-jfx" text=" ">
+                              <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#handleRefresh" prefHeight="50.0" prefWidth="50.0" styleClass="analytics-circle-buttons-jfx" text=" ">
                                  <graphic>
-                                    <ImageView fitHeight="50.0" fitWidth="53.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="50.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" scaleX="1.5" scaleY="1.5">
                                        <image>
                                           <Image url="@../../assets/analytics/refresh.png" />
                                        </image>
@@ -65,7 +68,7 @@
                         <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
                      </left>
                      <center>
-                        <BarChart fx:id="ServiceReqHisto" prefHeight="496.0" prefWidth="750.0" title="Service Requests" BorderPane.alignment="CENTER">
+                        <BarChart fx:id="ServiceReqHisto" legendVisible="false" prefHeight="496.0" prefWidth="750.0" title="Service Requests" BorderPane.alignment="CENTER">
                           <xAxis>
                             <CategoryAxis prefHeight="45.0" prefWidth="672.0" tickLabelGap="10.0">
                                  <tickLabelFont>
@@ -188,27 +191,21 @@
                         <MapPane fx:id="map" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                         <VBox alignment="BOTTOM_RIGHT" cache="true" layoutX="883.0" layoutY="510.0" maxHeight="100.0" maxWidth="50.0" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="20.0">
                            <children>
-                              <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" minHeight="40.0" minWidth="40.0" onAction="#zoomIn" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 20 20 0 0; -fx-pref-width: 40; -fx-pref-height: 40; -fx-background-color: #0d2e57;" text="+" textAlignment="CENTER">
+                              <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TEXT_ONLY" graphicTextGap="0.0" minHeight="40.0" minWidth="40.0" onAction="#zoomIn" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 20 20 0 0; -fx-pref-width: 40; -fx-pref-height: 40; -fx-background-color: #0d2e57;" text="+" textAlignment="CENTER" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
                                  </font>
-                                 <padding>
-                                    <Insets right="20.0" />
-                                 </padding>
                               </JFXButton>
-                              <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" minHeight="40.0" minWidth="40.0" onAction="#zoomOut" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 0 0 20 20; -fx-pref-height: 40; -fx-pref-width: 40; -fx-background-color: #0d2e57;" text="-" textAlignment="CENTER">
+                              <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TEXT_ONLY" minHeight="40.0" minWidth="40.0" onAction="#zoomOut" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 0 0 20 20; -fx-pref-height: 40; -fx-pref-width: 40; -fx-background-color: #0d2e57;" text="-" textAlignment="CENTER" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
                                  </font>
-                                 <padding>
-                                    <Insets right="20.0" />
-                                 </padding>
                               </JFXButton>
                            </children>
                         </VBox>
                         <VBox fx:id="floorSelector" maxHeight="300.0" maxWidth="40.0" prefHeight="720.0" prefWidth="855.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
                            <children>
-                              <JFXButton fx:id="floorUp" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#handleFloor" prefWidth="0.0" ripplerFill="WHITE" style="-fx-background-color: #0d2e57; -fx-background-radius: 20 20 0 0;" styleClass="floor-buttons" text="▲" textAlignment="CENTER" textFill="WHITE">
+                              <JFXButton fx:id="floorUp" alignment="CENTER" buttonType="RAISED" contentDisplay="TEXT_ONLY" onAction="#handleFloor" ripplerFill="WHITE" style="-fx-background-color: #0d2e57; -fx-background-radius: 20 20 0 0;" styleClass="floor-buttons" text="▲" textAlignment="CENTER" textFill="WHITE">
                                  <VBox.margin>
                                     <Insets top="5.0" />
                                  </VBox.margin>

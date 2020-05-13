@@ -56,7 +56,7 @@ public class AnalyticsController implements Initializable {
     @FXML
     VBox floorSelector;
     @FXML
-    JFXButton floorUp, floorDown;
+    JFXButton floorUp, floorDown, btnLive;
     @FXML
     private Label timeLabel;
 
@@ -71,6 +71,7 @@ public class AnalyticsController implements Initializable {
     private Map<String, Integer> locations = new ConcurrentHashMap<>();
 
     private boolean pathfinding = true;
+    private boolean liveUpdating = false;
 
     private String defaultBuilding = "Faulkner";
     private int defaultFloor = 2;
@@ -211,6 +212,13 @@ public class AnalyticsController implements Initializable {
 
     @FXML
     public void handleLive() {
+        if (liveUpdating) {
+            liveUpdating = false;
+            btnLive.setStyle("-fx-text-fill: grey; -fx-border-color: grey;");
+        } else {
+            liveUpdating = true;
+            btnLive.setStyle("-fx-text-fill: red; -fx-border-color: red;");
+        }
     }
 
     @FXML
