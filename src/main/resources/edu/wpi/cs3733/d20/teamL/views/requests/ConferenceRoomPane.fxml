@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="895.0" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.ConferenceRoomController">
+   <children>
+      <BorderPane fx:id="borderPane" prefHeight="200.0" prefWidth="200.0">
+         <center>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" BorderPane.alignment="CENTER">
+               <children>
+                  <JFXComboBox fx:id="rooms" promptText="Select Room" style="-fx-pref-height: 40; -fx-pref-width: 350; -fx-max-width: 350;" styleClass="combo-box-jfx" />
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <JFXButton contentDisplay="GRAPHIC_ONLY" onAction="#lastWeekClicked" style="-fx-background-radius: 20 0 0 20;" styleClass="scheduler-button">
+                           <graphic>
+                              <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/staff_view/backwardIcon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
+                        <JFXButton onAction="#todayClicked" style="-fx-background-radius: 0 0 0 0;" styleClass="scheduler-button" text="Today" />
+                        <JFXButton contentDisplay="GRAPHIC_ONLY" onAction="#nextWeekClicked" style="-fx-background-radius: 0 20 20 0;" styleClass="scheduler-button">
+                           <graphic>
+                              <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/staff_view/forwardIcon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
+                     </children>
+                  </HBox>
+                  <JFXTreeTableView fx:id="table" stylesheets="@../../css/RoomSchedulerStyles.css" />
+               </children>
+               <BorderPane.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </BorderPane.margin>
+            </VBox>
+         </center>
+         <bottom>
+            <HBox alignment="CENTER" spacing="100.0" BorderPane.alignment="CENTER">
+               <children>
+                  <JFXButton fx:id="btnSubmit" maxHeight="120.0" onAction="#handleSubmit" prefHeight="120.0" styleClass="save-button-jfx" text="Submit" />
+                  <Label fx:id="confirmation" styleClass="submission-failed-label-fx" textFill="RED" visible="false" />
+               </children>
+               <BorderPane.margin>
+                  <Insets bottom="20.0" />
+               </BorderPane.margin>
+               <padding>
+                  <Insets left="350.0" />
+               </padding>
+            </HBox>
+         </bottom>
+      </BorderPane>
+      <ImageView fx:id="requestReceived" fitHeight="150.0" fitWidth="206.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../../assets/service_icons/serviceRecieved.png" />
+         </image>
+         <StackPane.margin>
+            <Insets />
+         </StackPane.margin>
+      </ImageView>
+   </children>
+</StackPane>

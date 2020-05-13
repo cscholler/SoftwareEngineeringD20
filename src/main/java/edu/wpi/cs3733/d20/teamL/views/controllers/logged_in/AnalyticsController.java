@@ -1,54 +1,192 @@
 package edu.wpi.cs3733.d20.teamL.views.controllers.logged_in;
 
 import com.google.inject.Inject;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import edu.wpi.cs3733.d20.teamL.App;
+import edu.wpi.cs3733.d20.teamL.entities.Building;
+import edu.wpi.cs3733.d20.teamL.entities.GiftDeliveryRequest;
+import edu.wpi.cs3733.d20.teamL.entities.Node;
+import edu.wpi.cs3733.d20.teamL.entities.ServiceRequest;
+import edu.wpi.cs3733.d20.teamL.services.db.IDatabaseCache;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
+import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
+import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
+import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
 import edu.wpi.cs3733.d20.teamL.util.TimerManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.chart.*;
 import javafx.scene.control.Label;
+import javafx.geometry.Point2D;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 public class AnalyticsController implements Initializable {
 
     @Inject
     private ILoginManager loginManager;
-
     @FXML
-    private JFXComboBox<String> timeBox;
-
+    MapPane map;
+    @FXML
+    private JFXComboBox<String> histoTimeBox, mapTimeBox, buildingChooser, heatBox;
     @FXML
     private BarChart<String, Number> ServiceReqHisto;
-
     @FXML
     private PieChart servicePieChart;
-
+    @FXML
+    VBox floorSelector;
+    @FXML
+    JFXButton floorUp, floorDown, btnLive;
     @FXML
     private Label timeLabel;
 
     private static final TimerManager timerManager = new TimerManager();
     private FXMLLoaderFactory loaderFactory = new FXMLLoaderFactory();
+    private ObservableList<String> timeOptions = FXCollections.observableArrayList("Any time", "Past hour", "Past 24 hours", "Past month", "Past year");
+    private ObservableList<ServiceRequest> requests;
+    private ObservableList<GiftDeliveryRequest> giftRequests;
+    ObservableList<String> heatOptions = FXCollections.observableArrayList("Pathfinding", "All Service Request Locations", "Security", "Maintenance", "Internal Transportation",
+            "IT", "Interpreter");
+    private Map<String, Integer> freq = new ConcurrentHashMap<>();
+    private Map<String, Integer> locations = new ConcurrentHashMap<>();
 
-    ObservableList<String> timeOptions = FXCollections.observableArrayList("Any time", "Past hour", "Past 24 hours", "Past month", "Past year");
+    private boolean pathfinding = true;
+    private boolean liveUpdating = false;
+
+    private String defaultBuilding = "Faulkner";
+    private int defaultFloor = 2;
+    public static final String MAIN = "Main";
+
+    @Inject
+    private IDatabaseCache cache;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        if (App.doUpdateCacheOnLoad) {
+            cache.cacheAllFromDB();
+            App.doUpdateCacheOnLoad = false;
+        }
         timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
-        timeBox.setItems(timeOptions);
+
+        heatBox.setItems(heatOptions);
+        histoTimeBox.setItems(timeOptions);
+        mapTimeBox.setItems(timeOptions);
+        cache.cacheRequestsFromDB();
+
+        updateDate("Any time");
+
+        requests = FXCollections.observableArrayList(cache.getAllRequests());
+        giftRequests = FXCollections.observableArrayList(cache.getAllGiftRequests());
+        intiFreq();
+        updateFreq();
+
+
         setServiceReqHisto();
         handleAllServiceReq();
+
+        map.setEditable(false);
+        map.setHighLightColor(Color.GOLD);
+
+        // Import all the nodes from the cache and set the current building to Faulkner
+        String startB = "Faulkner";
+        Building faulkner = cache.getBuilding("Faulkner");
+        Building main = cache.getBuilding(MAIN);
+
+        if (!faulkner.getNodes().isEmpty()) map.setBuilding(faulkner);
+        if (!main.getNodes().isEmpty()) map.getBuildings().add(main);
+        buildingChooser.getItems().addAll("Faulkner", MAIN);
+        buildingChooser.getSelectionModel().select(startB);
+
+        // Add floor buttons
+        generateFloorButtons();
+
+        setFloor(2);
+
+        map.setZoomLevel(0.25 * App.UI_SCALE);
+        map.init();
+
+        burnAllNodes(map.getCurrentFloor().getNodes());
+        burnAllEdges(map.getEdges());
+    }
+
+    private void intiFreq() {
+        List<String> requests = Arrays.asList("Gift Delivery", "Security", "Maintenance", "Internal Transportation", "External Transportation", "IT", "Interpreter", "Reflection Room","On-Call Bed");
+
+        for(String req : requests) {
+            freq.put(req, 0);
+        }
+    }
+
+    private void updateFreq() {
+        for(ServiceRequest request : requests) {
+            if (!freq.containsKey(request.getService())) {
+                freq.put(request.getService(), 1);
+            } else {
+                freq.replace(request.getService(), freq.get(request.getService()) + 1);
+            }
+        }
+        freq.replace("Gift Delivery", giftRequests.size());
+    }
+
+    @FXML
+    private void histoSwitchTime() {
+        updateDate(histoTimeBox.getSelectionModel().getSelectedItem());
+        updateFreq();
+    }
+
+    @FXML
+    private void mapSwitchTime() {
+        updateDate(mapTimeBox.getSelectionModel().getSelectedItem());
+        updateFreq();
+    }
+
+    private void updateDate(String date) {
+        ArrayList<ServiceRequest> timeMask = new ArrayList<>();
+        String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
+        Date newDate = null;
+        try {
+            newDate = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").parse(dateAndTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        switch(date) {
+            case "Any time":
+                newDate.setYear(newDate.getYear()-20);
+                break;
+            case "Past hour":
+                newDate.setHours(newDate.getHours()-1);
+                break;
+            case "Past 24 hours":
+                newDate.setDate(newDate.getDate()-1);
+                break;
+            case "Past month":
+                newDate.setMonth(newDate.getMonth()-1);
+                break;
+            case "Past year":
+                newDate.setYear(newDate.getYear()-1);
+                break;
+        }
+        cache.setTimestamp(newDate);
     }
 
     @FXML
@@ -74,6 +212,13 @@ public class AnalyticsController implements Initializable {
 
     @FXML
     public void handleLive() {
+        if (liveUpdating) {
+            liveUpdating = false;
+            btnLive.setStyle("-fx-text-fill: grey; -fx-border-color: grey;");
+        } else {
+            liveUpdating = true;
+            btnLive.setStyle("-fx-text-fill: red; -fx-border-color: red;");
+        }
     }
 
     @FXML
@@ -85,61 +230,81 @@ public class AnalyticsController implements Initializable {
         XYChart.Series set = new XYChart.Series<>();
         set.setName("Type of Request");
 
-        //Hard-coded Data
-        //TODO: Add actual data
-        set.getData().add(new XYChart.Data("Gift Delivery", 10));
-        set.getData().add(new XYChart.Data("Security", 20));
-        set.getData().add(new XYChart.Data("Maintenance", 14));
-        set.getData().add(new XYChart.Data("Internal", 23));
-        set.getData().add(new XYChart.Data("External", 36));
-        set.getData().add(new XYChart.Data("Medicine", 47));
-        set.getData().add(new XYChart.Data("Sanitation", 50));
-        set.getData().add(new XYChart.Data("IT", 13));
-        set.getData().add(new XYChart.Data("Interpreter", 25));
-        set.getData().add(new XYChart.Data("Reflection Room", 33));
-        set.getData().add(new XYChart.Data("On-Call Bed", 55));
+        for (String type : freq.keySet()) {
+            set.getData().add(new XYChart.Data(type, freq.get(type)));
+        }
 
         ServiceReqHisto.getData().addAll(set);
 
     }
 
+    private Map<String, Integer> typeFreq (ArrayList<ServiceRequest> reqs) {
+        Map<String, Integer> frequencies = new ConcurrentHashMap<>();
+        for(ServiceRequest request : reqs) {
+            if(!frequencies.containsKey(request.getType())) {
+                frequencies.put(request.getType(), 1);
+            } else {
+                frequencies.replace(request.getType(), frequencies.get(request.getType())+1);
+            }
+        }
+        return frequencies;
+    }
+
+    private Map<String, Integer> totalGiftFreq (ArrayList<GiftDeliveryRequest> reqs) {
+        Map<String, Integer> frequencies = new ConcurrentHashMap<>();
+        for(GiftDeliveryRequest request : reqs) {
+            Map<String, Integer> oneGift = oneGiftFreq(request.getGifts());
+            for(String gift : oneGift.keySet()) {
+                if (!frequencies.containsKey(gift)) {
+                    frequencies.put(gift, oneGift.get(gift));
+                } else {
+                    frequencies.replace(gift, frequencies.get(gift) + oneGift.get(gift));
+                }
+            }
+        }
+        return frequencies;
+    }
+
+    private Map<String, Integer> oneGiftFreq (String gifts) {
+        Map<String, Integer> freqs = new ConcurrentHashMap<>();
+
+        while(gifts.length() > 1) {
+            int freq = Integer.parseInt(gifts.substring(1, gifts.indexOf("x")));
+            gifts = gifts.substring(gifts.indexOf("x") + 3);
+            String gift;
+            if(gifts.contains(",")) {
+                gift = gifts.substring(0, gifts.indexOf(","));
+                gifts = gifts.substring(gifts.indexOf(",") + 2);
+            } else {
+                gift = gifts.substring(0, gifts.indexOf("."));
+                gifts = gifts.substring(gifts.indexOf("."));
+            }
+            freqs.put(gift, freq);
+        }
+        return freqs;
+    }
+
     public void handleAllServiceReq() {
-        //Hard-coded Test Data
-        //TODO: Add actual data
-        ObservableList<PieChart.Data> serviceReqData = FXCollections.observableArrayList(
-                new PieChart.Data("Gift Delivery", 20),
-                new PieChart.Data("Security", 10),
-                new PieChart.Data("Maintenance", 5),
-                new PieChart.Data("Internal Transportation", 25),
-                new PieChart.Data("External Transportation", 30),
-                new PieChart.Data("Medicine", 10),
-                new PieChart.Data("IT", 25),
-                new PieChart.Data("Interpreter", 40),
-                new PieChart.Data("Reflection Room", 35),
-                new PieChart.Data("On-Call Bed", 10));
+        ObservableList<PieChart.Data> allData = FXCollections.observableArrayList();
+        for (String type : freq.keySet()) {
+            allData.add(new PieChart.Data(type, freq.get(type)));
+        }
 
         servicePieChart.setTitle("Service Request Pie Chart");
-        servicePieChart.setData(serviceReqData);
+        servicePieChart.setData(allData);
         servicePieChart.setStartAngle(90);
     }
 
     @FXML
     void handleGiftPieChart() {
+        ArrayList<GiftDeliveryRequest> giftRequests = cache.getAllGiftRequests();
+        Map<String, Integer> freq = totalGiftFreq(giftRequests);
 
-        //TODO: Add actual data
-        ObservableList<PieChart.Data> giftData = FXCollections.observableArrayList(
-                new PieChart.Data("Roses", 10),
-                new PieChart.Data("Tulips", 10),
-                new PieChart.Data("Dandelions", 10),
-                new PieChart.Data("Building blocks", 10),
-                new PieChart.Data("Play-Do", 10),
-                new PieChart.Data("Hot Wheels", 10),
-                new PieChart.Data("LOTR", 10),
-                new PieChart.Data("Harry Potter", 10),
-                new PieChart.Data("Inheritance", 10),
-                new PieChart.Data("LORT films", 10),
-                new PieChart.Data("Star Wars", 10),
-                new PieChart.Data("Pulp Fiction", 10));
+        ObservableList<PieChart.Data> giftData = FXCollections.observableArrayList();
+        for (String type : freq.keySet()) {
+            giftData.add(new PieChart.Data(type, freq.get(type)));
+        }
+
 
         servicePieChart.setTitle("Gift Delivery Pie Chart");
         servicePieChart.setData(giftData);
@@ -147,11 +312,13 @@ public class AnalyticsController implements Initializable {
     }
     @FXML
     void handleSanitationPieChart() {
+        ArrayList<ServiceRequest> sanitation = cache.getAllSpecificRequest("Sanitation");
+        Map<String, Integer> freq = typeFreq(sanitation);
 
-        //TODO: Add actual data
-        ObservableList<PieChart.Data> sanitationData = FXCollections.observableArrayList(
-                new PieChart.Data("Biohazard", 10),
-                new PieChart.Data("Spill", 10));
+        ObservableList<PieChart.Data> sanitationData = FXCollections.observableArrayList();
+        for (String type : freq.keySet()) {
+            sanitationData.add(new PieChart.Data(type, freq.get(type)));
+        }
 
         servicePieChart.setTitle("Sanitation Pie Chart");
         servicePieChart.setData(sanitationData);
@@ -161,11 +328,13 @@ public class AnalyticsController implements Initializable {
     @FXML
     void handleSecurityPieChart() {
 
-        //TODO: Add actual data
-        ObservableList<PieChart.Data> securityData = FXCollections.observableArrayList(
-                new PieChart.Data("High Priority", 10),
-                new PieChart.Data("Medium Priority", 10),
-                new PieChart.Data("Low Priority", 10));
+        ArrayList<ServiceRequest> security = cache.getAllSpecificRequest("Security");
+        Map<String, Integer> freq = typeFreq(security);
+
+        ObservableList<PieChart.Data> securityData = FXCollections.observableArrayList();
+        for (String type : freq.keySet()) {
+            securityData.add(new PieChart.Data(type, freq.get(type)));
+        }
 
         servicePieChart.setTitle("Security Pie Chart");
         servicePieChart.setData(securityData);
@@ -175,13 +344,13 @@ public class AnalyticsController implements Initializable {
     @FXML
     void handleMaintenancePieChart() {
 
-        //TODO: Add actual data
-        ObservableList<PieChart.Data> maintenanceData = FXCollections.observableArrayList(
-                new PieChart.Data("Plumbing", 10),
-                new PieChart.Data("Medical Equipment", 10),
-                new PieChart.Data("Electrical", 10),
-                new PieChart.Data("IT", 10),
-                new PieChart.Data("Other", 10));
+        ArrayList<ServiceRequest> maintenance = cache.getAllSpecificRequest("Maintenance");
+        Map<String, Integer> freq = typeFreq(maintenance);
+
+        ObservableList<PieChart.Data> maintenanceData = FXCollections.observableArrayList();
+        for (String type : freq.keySet()) {
+            maintenanceData.add(new PieChart.Data(type, freq.get(type)));
+        }
 
         servicePieChart.setTitle("Maintenance Pie Chart");
         servicePieChart.setData(maintenanceData);
@@ -189,62 +358,15 @@ public class AnalyticsController implements Initializable {
     }
 
     @FXML
-    void handleMedicationPieChart() {
-
-        //TODO: Add actual data
-        ObservableList<PieChart.Data> medicationData = FXCollections.observableArrayList(
-                new PieChart.Data("Ibuprofen", 10),
-                new PieChart.Data("Advil", 10),
-                new PieChart.Data("Pain Killers", 10),
-                new PieChart.Data("Other", 10));
-
-        servicePieChart.setTitle("Medication Pie Chart");
-        servicePieChart.setData(medicationData);
-        servicePieChart.setStartAngle(90);
-    }
-
-    @FXML
-    void handleOnCallPieChart() {
-
-        //TODO: Add actual data
-        ObservableList<PieChart.Data> onCallData = FXCollections.observableArrayList(
-                new PieChart.Data("Bed 1", 10),
-                new PieChart.Data("Bed 2", 10),
-                new PieChart.Data("Bed 3", 10),
-                new PieChart.Data("Bed 4", 10),
-                new PieChart.Data("Bed 5", 10),
-                new PieChart.Data("Bed 6", 10),
-                new PieChart.Data("Bed 7", 10));
-
-        servicePieChart.setTitle("On-Call Bed Pie Chart");
-        servicePieChart.setData(onCallData);
-        servicePieChart.setStartAngle(90);
-    }
-
-    @FXML
-    void handleReflectionPieChart() {
-
-        //TODO: Add actual data
-        ObservableList<PieChart.Data> reflectionData = FXCollections.observableArrayList(
-                new PieChart.Data("Floor 1", 10),
-                new PieChart.Data("Floor 3", 10),
-                new PieChart.Data("Floor 4", 10));
-
-        servicePieChart.setTitle("Reflection Room Pie Chart");
-        servicePieChart.setData(reflectionData);
-        servicePieChart.setStartAngle(90);
-    }
-
-    @FXML
     void handleITPieChart() {
 
-        //TODO: Add actual data
-        ObservableList<PieChart.Data> ITData = FXCollections.observableArrayList(
-                new PieChart.Data("General Help", 10),
-                new PieChart.Data("Data Backup", 10),
-                new PieChart.Data("Hardware/Software Issues", 10),
-                new PieChart.Data("Cyber Attacks", 10));
+        ArrayList<ServiceRequest> it = cache.getAllSpecificRequest("IT");
+        Map<String, Integer> freq = typeFreq(it);
 
+        ObservableList<PieChart.Data> ITData = FXCollections.observableArrayList();
+        for (String type : freq.keySet()) {
+            ITData.add(new PieChart.Data(type, freq.get(type)));
+        }
         servicePieChart.setTitle("IT Pie Chart");
         servicePieChart.setData(ITData);
         servicePieChart.setStartAngle(90);
@@ -254,13 +376,13 @@ public class AnalyticsController implements Initializable {
     @FXML
     void handleInternalPieChart() {
 
-        //TODO: Add actual data
-        ObservableList<PieChart.Data> internalData = FXCollections.observableArrayList(
-                new PieChart.Data("Wheelchair w/ Operator", 10),
-                new PieChart.Data("Wheelchair w/o Operator", 10),
-                new PieChart.Data("Crutches", 10),
-                new PieChart.Data("Walker", 10),
-                new PieChart.Data("Gurnie", 10));
+        ArrayList<ServiceRequest> internal = cache.getAllSpecificRequest("Internal Transportation");
+        Map<String, Integer> freq = typeFreq(internal);
+
+        ObservableList<PieChart.Data> internalData = FXCollections.observableArrayList();
+        for (String type : freq.keySet()) {
+            internalData.add(new PieChart.Data(type, freq.get(type)));
+        }
 
         servicePieChart.setTitle("Internal Transportation Pie Chart");
         servicePieChart.setData(internalData);
@@ -270,12 +392,13 @@ public class AnalyticsController implements Initializable {
     @FXML
     void handleExternalPieChart() {
 
-        //TODO: Add actual data
-        ObservableList<PieChart.Data> externalData = FXCollections.observableArrayList(
-                new PieChart.Data("Taxi", 10),
-                new PieChart.Data("Bus", 10),
-                new PieChart.Data("Uber", 10),
-                new PieChart.Data("Lyft", 10));
+        ArrayList<ServiceRequest> external = cache.getAllSpecificRequest("External Transportation");
+        Map<String, Integer> freq = typeFreq(external);
+
+        ObservableList<PieChart.Data> externalData = FXCollections.observableArrayList();
+        for (String type : freq.keySet()) {
+            externalData.add(new PieChart.Data(type, freq.get(type)));
+        }
 
         servicePieChart.setTitle("External Transportation Pie Chart");
         servicePieChart.setData(externalData);
@@ -285,16 +408,163 @@ public class AnalyticsController implements Initializable {
     @FXML
     void handleInterpreterPieChart() {
 
-        //TODO: Add actual data
-        ObservableList<PieChart.Data> interpreterData = FXCollections.observableArrayList(
-                new PieChart.Data("French", 10),
-                new PieChart.Data("Chinese", 10),
-                new PieChart.Data("American Sign Language", 10),
-                new PieChart.Data("Spanish", 10),
-                new PieChart.Data("Italian", 10));
+        ArrayList<ServiceRequest> interpreter = cache.getAllSpecificRequest("Interpreter");
+        Map<String, Integer> freq = typeFreq(interpreter);
+
+        ObservableList<PieChart.Data> interpreterData = FXCollections.observableArrayList();
+        for (String type : freq.keySet()) {
+            interpreterData.add(new PieChart.Data(type, freq.get(type)));
+        }
 
         servicePieChart.setTitle("Interpreter Pie Chart");
         servicePieChart.setData(interpreterData);
         servicePieChart.setStartAngle(90);
+    }
+
+
+    // -------------------------- HEAT MAP CODE ------------------------- //
+
+    @FXML
+    private void switchBuilding() {
+        String selected = buildingChooser.getSelectionModel().getSelectedItem();
+
+        Building newBuilding = cache.getBuilding(selected);
+        map.setBuilding(newBuilding);
+
+        int prevFloor = map.getFloor();
+        generateFloorButtons();
+        setFloor(Math.max(map.getBuilding().getMinFloor(), Math.min(prevFloor, map.getBuilding().getMaxFloor())));
+        map.setZoomLevel(.25 * App.UI_SCALE);
+    }
+
+    @FXML
+    private void switchHeatMap(ActionEvent event) {
+        pathfinding = false;
+
+        switch (heatBox.getSelectionModel().getSelectedItem()) {
+            case "Pathfinding":
+                pathfinding = true;
+                break;
+            case "All Service Request Locations":
+                locationFreq(cache.getAllRequests());
+                break;
+            case "Security":
+                locationFreq(cache.getAllSpecificRequest("Security"));
+                break;
+            case "Internal Transportation":
+                locationFreq(cache.getAllSpecificRequest("Internal Transportation"));
+                break;
+            case "Interpreter":
+                locationFreq(cache.getAllSpecificRequest("Interpreter"));
+                break;
+            case "IT":
+                locationFreq(cache.getAllSpecificRequest("IT"));
+                break;
+            case "Maintenance":
+                locationFreq(cache.getAllSpecificRequest("Maintenance"));
+                break;
+        }
+        switchBuilding();
+    }
+
+    private void locationFreq (ArrayList<ServiceRequest> reqs) {
+        locations.clear();
+        for(ServiceRequest request : reqs) {
+            if(request.getLocation() != null) {
+                if (!locations.containsKey(request.getLocation())) {
+                    locations.put(request.getLocation(), 1);
+                } else {
+                    locations.replace(request.getLocation(), locations.get(request.getLocation()) + 1);
+                }
+            }
+        }
+    }
+
+    private void burnServiceNodes(Map<String, Integer> nodes) {
+        for(Node node : map.getCurrentFloor().getNodes()) {
+            NodeGUI nodeGUI =  map.getNodeGUI(node);
+            if(nodes.containsKey(node.getID()))
+                applyBurn(nodeGUI, nodes.get(node.getID()));
+            else
+                applyBurn(nodeGUI, 0);
+        }
+    }
+
+    private void generateFloorButtons() {
+        map.generateFloorButtons(floorSelector, this::handleFloor);
+    }
+
+    @FXML
+    public void handleFloor(ActionEvent event) {
+        JFXButton sourceButton = (JFXButton) event.getSource();
+
+        if (event.getSource() == floorUp && map.getFloor() < 5) {
+            setFloor(map.getFloor() + 1);
+        } else if (event.getSource() == floorDown) {
+            setFloor(map.getFloor() - 1);
+        } else {
+            setFloor(Node.floorStringToInt(sourceButton.getText()));
+        }
+    }
+
+    public void setFloor(int newFloor) {
+        map.setFloor(Math.max(map.getBuilding().getMinFloor(), Math.min(newFloor, map.getBuilding().getMaxFloor())));
+
+        for (javafx.scene.Node node : floorSelector.getChildren()) {
+            JFXButton floorButton = (JFXButton) node;
+            if (!floorButton.getText().equals(Node.floorIntToString(map.getFloor()))) {
+                if (floorButton.getStyleClass().contains("selected-floor")) {
+                    floorButton.getStyleClass().clear();
+                    floorButton.getStyleClass().add("button");
+                    floorButton.getStyleClass().add("floor-buttons");
+                }
+            } else {
+                if (!floorButton.getStyleClass().contains("selected-floor"))
+                    floorButton.getStyleClass().add("selected-floor");
+            }
+        }
+        if(pathfinding) {
+            burnAllNodes(map.getCurrentFloor().getNodes());
+            burnAllEdges(map.getEdges());
+        } else {
+            burnServiceNodes(locations);
+        }
+    }
+
+    @FXML
+    private void zoomIn() {
+        map.setZoomLevelToPosition(map.getZoomLevel() * 1.2, new Point2D(map.getBody().getWidth() / 2, map.getBody().getHeight() / 2));
+    }
+
+    @FXML
+    private void zoomOut() {
+        map.setZoomLevelToPosition(map.getZoomLevel() * 0.8, new Point2D(map.getBody().getWidth() / 2, map.getBody().getHeight() / 2));
+    }
+
+    private void burnAllNodes(Collection<Node> nodes) {
+        for(Node node : nodes) {
+            NodeGUI nodeGUI =  map.getNodeGUI(node);
+            applyBurn(nodeGUI, nodeGUI.getNode().getFreq());
+        }
+    }
+
+    private void applyBurn(NodeGUI nodeGUI, int freq) {
+        if(freq > 0) {
+            nodeGUI.setVisible(true);
+            nodeGUI.setGradient(map.getZoomLevel() * freq * 5);
+        } else {
+            nodeGUI.setVisible(false);
+        }
+    }
+
+    private void burnAllEdges(Collection<EdgeGUI> edges) {
+        for(EdgeGUI edgeGUI : edges) {
+            if(edgeGUI.getEdge().getFreq() > 0) {
+                if(edgeGUI != null) {
+                    edgeGUI.setVisible(true);
+                    edgeGUI.setGradient(map.getZoomLevel() * Math.log10(edgeGUI.getEdge().getFreq()) * 20);
+                }
+            }
+        }
     }
 }

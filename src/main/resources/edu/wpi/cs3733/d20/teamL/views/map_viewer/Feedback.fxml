@@ -11,11 +11,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1100.0" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.FeedbackController">
+<BorderPane fx:id="bord" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1100.0" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.FeedbackController">
    <top>
       <HBox alignment="TOP_CENTER" prefHeight="70.0" prefWidth="600.0" style="-fx-background-color: #00043B;" BorderPane.alignment="CENTER">
          <children>
-            <Label text="Feedback Request Form" textFill="WHITE">
+            <Label fx:id="title" text="Feedback Request Form" textFill="WHITE">
                <HBox.margin>
                   <Insets top="10.0" />
                </HBox.margin>
@@ -29,7 +29,7 @@
    <center>
       <HBox prefHeight="193.0" prefWidth="900.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="510.0" prefWidth="513.0" spacing="20.0">
+            <VBox fx:id="radioBox" prefHeight="510.0" prefWidth="513.0" spacing="20.0">
                <children>
                   <Label text="Did we meet your expectations?">
                      <font>
@@ -100,7 +100,7 @@
                   <Insets left="20.0" top="20.0" />
                </HBox.margin>
             </VBox>
-            <VBox prefHeight="510.0" prefWidth="519.0" spacing="20.0">
+            <VBox fx:id="txtBox" prefHeight="510.0" prefWidth="519.0" spacing="20.0">
                <children>
                   <Label text="How could we have exceeded your expectations?">
                      <font>
@@ -150,7 +150,7 @@
       </HBox>
    </center>
    <bottom>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="900.0" spacing="30.0" BorderPane.alignment="CENTER">
+      <HBox fx:id="botBox" alignment="CENTER" prefHeight="100.0" prefWidth="900.0" spacing="30.0" BorderPane.alignment="CENTER">
          <children>
             <JFXButton fx:id="btnCancel" buttonType="RAISED" onAction="#handleCancel" styleClass="cancel-button-jfx" text="Cancel">
                <HBox.margin>

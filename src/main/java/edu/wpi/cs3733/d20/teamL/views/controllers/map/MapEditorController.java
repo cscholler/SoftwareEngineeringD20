@@ -14,10 +14,10 @@ import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import edu.wpi.cs3733.d20.teamL.util.TimerManager;
 import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
 import edu.wpi.cs3733.d20.teamL.util.SearchFields;
-import edu.wpi.cs3733.d20.teamL.views.components.map.EdgeField;
-import edu.wpi.cs3733.d20.teamL.views.components.map.EdgeGUI;
-import edu.wpi.cs3733.d20.teamL.views.components.map.MapPane;
-import edu.wpi.cs3733.d20.teamL.views.components.map.NodeGUI;
+import edu.wpi.cs3733.d20.teamL.views.components.EdgeField;
+import edu.wpi.cs3733.d20.teamL.views.components.EdgeGUI;
+import edu.wpi.cs3733.d20.teamL.views.components.MapPane;
+import edu.wpi.cs3733.d20.teamL.views.components.NodeGUI;
 import edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.DataDialogue;
 
 import javafx.event.ActionEvent;

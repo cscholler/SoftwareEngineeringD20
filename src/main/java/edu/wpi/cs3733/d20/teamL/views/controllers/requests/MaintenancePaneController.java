@@ -15,9 +15,9 @@ import edu.wpi.cs3733.d20.teamL.util.SearchFields;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 import java.net.URL;
@@ -56,7 +56,11 @@ public class MaintenancePaneController implements Initializable {
     private String loggedInUsername;
 
     @FXML
+    private VBox fieldsVBox;
+
+    @FXML
     public void initialize(URL location, ResourceBundle resources) {
+        fieldsVBox.setBackground(new Background(new BackgroundImage(new Image("/edu/wpi/cs3733/d20/teamL/assets/hexagons.png", 1000, 0, true, true, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT)));
 
         // Setup autocomplete
         searchFields = new SearchFields(dbCache.getNodeCache());
@@ -93,7 +97,7 @@ public class MaintenancePaneController implements Initializable {
         if(urgency.getSelectionModel().getSelectedItem() != null) {
             urge = urgency.getSelectionModel().getSelectedItem().toString();
         }
-        String dateAndTime = new SimpleDateFormat("M/dd/yy | h:mm aa").format(new Date());
+        String dateAndTime = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss").format(new Date());
         String roomNum = location.getText() != null ? searchFields.getNode(location.getText()).getID() : null;
 
         String notes = urge + "|" + description.getText();

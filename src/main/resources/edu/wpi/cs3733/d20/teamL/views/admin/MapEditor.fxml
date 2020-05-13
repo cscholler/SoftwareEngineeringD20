@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import edu.wpi.cs3733.d20.teamL.views.components.map.MapPane?>
+<?import edu.wpi.cs3733.d20.teamL.views.components.MapPane?>
 <BorderPane fx:id="root" prefHeight="720" prefWidth="1280" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.map.MapEditorController">
     <center>
     </center>

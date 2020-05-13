@@ -117,55 +117,57 @@ public class TimerManager {
 	}
 
 	public void logOutTick() {
-		Platform.runLater(() -> {
-			if (!isLogoutDialogueOpen && loginManager.isAuthenticated()) {
-				isLogoutDialogueOpen = true;
-				logoutWarning = new Alert(Alert.AlertType.WARNING);
-				logoutWarning.setContentText("Press 'OK' to remain logged in.");
-				logoutWarning.setHeaderText("Session will expire in " + logoutTicks + " seconds.");
-				Optional<ButtonType> result = logoutWarning.showAndWait();
-				if (result.isPresent()) {
-					if (result.get() == ButtonType.OK) {
+		if (!App.isScreenSaverActive) {
+			Platform.runLater(() -> {
+				if (!isLogoutDialogueOpen && loginManager.isAuthenticated()) {
+					isLogoutDialogueOpen = true;
+					logoutWarning = new Alert(Alert.AlertType.WARNING);
+					logoutWarning.setContentText("Press 'OK' to remain logged in.");
+					logoutWarning.setHeaderText("Session will expire in " + logoutTicks + " seconds.");
+					Optional<ButtonType> result = logoutWarning.showAndWait();
+					if (result.isPresent()) {
+						if (result.get() == ButtonType.OK) {
+							logoutTickTimer.cancel();
+							isLogoutDialogueOpen = false;
+							logoutTicks = 15;
+						}
+					}
+				} else {
+					if (logoutTicks > 0) {
+						logoutTicks--;
+					}
+					if (logoutWarning != null) {
+						logoutWarning.setHeaderText("Session will expire in " + logoutTicks + " seconds.");
+					}
+					if (logoutTicks == 0) {
+						log.info("No input for " + millisToMinsAndSecs(logoutTimeoutPeriod) + ". Ending session...");
+						if (loginManager.isAuthenticated()) {
+							loginManager.logOut(true);
+						}
+						FXMLLoaderFactory.resetHistory();
+						Object[] windowObjects =  Stage.getWindows().toArray();
+						ArrayList<Stage> openStages = new ArrayList<>();
+						for (Object obj : windowObjects) {
+							openStages.add((Stage) obj);
+						}
+						for (Stage stage : openStages) {
+							if (!stage.equals(App.stage)) {
+								stage.close();
+							}
+						}
+						try {
+							Parent root = loaderFactory.getFXMLLoader("map_viewer/MapViewer").load();
+							loaderFactory.setupScene(new Scene(root));
+						} catch (IOException ex) {
+							log.error("Encountered IOException", ex);
+						}
 						logoutTickTimer.cancel();
 						isLogoutDialogueOpen = false;
 						logoutTicks = 15;
 					}
 				}
-			} else {
-				if (logoutTicks > 0) {
-					logoutTicks--;
-				}
-				if (logoutWarning != null) {
-					logoutWarning.setHeaderText("Session will expire in " + logoutTicks + " seconds.");
-				}
-				if (logoutTicks == 0) {
-					log.info("No input for " + millisToMinsAndSecs(logoutTimeoutPeriod) + ". Ending session...");
-					if (loginManager.isAuthenticated()) {
-						loginManager.logOut(true);
-					}
-					FXMLLoaderFactory.resetHistory();
-					Object[] windowObjects =  Stage.getWindows().toArray();
-					ArrayList<Stage> openStages = new ArrayList<>();
-					for (Object obj : windowObjects) {
-						openStages.add((Stage) obj);
-					}
-					for (Stage stage : openStages) {
-						if (!stage.equals(App.stage)) {
-							stage.close();
-						}
-					}
-					try {
-						Parent root = loaderFactory.getFXMLLoader("map_viewer/MapViewer").load();
-						loaderFactory.setupScene(new Scene(root));
-					} catch (IOException ex) {
-						log.error("Encountered IOException", ex);
-					}
-					logoutTickTimer.cancel();
-					isLogoutDialogueOpen = false;
-					logoutTicks = 15;
-				}
-			}
-		});
+			});
+		}
 	}
 
 	public void showLogoutDialogueIfNoInput() {
@@ -173,7 +175,9 @@ public class TimerManager {
 			if (logoutTickTimer != null) {
 				logoutTickTimer.cancel();
 			}
-			logoutTickTimer = startTimer(this::logOutTick, 0, 1000);
+			if (App.isScreenSaverActive) {
+				logoutTickTimer = startTimer(this::logOutTick, 0, 1000);
+			}
 		});
 	}
 
@@ -184,6 +188,10 @@ public class TimerManager {
 				log.info("No input for " + millisToMinsAndSecs(idleCacheTimeoutPeriod) + ". Caching from database...");
 				assert cache != null;
 				cache.cacheAllFromDB();
+				// Reinitialize if the screen is on the map viewer
+				if (FXMLLoaderFactory.getHistory().size() == 1) {
+					resetMapViewer();
+				}
 				determineTimeoutPeriods();
 				App.startForceUpdateTimer();
 			}
@@ -198,9 +206,24 @@ public class TimerManager {
 				log.info(millisToMinsAndSecs(forceCacheTimeoutPeriod) + " since last update. Caching from database...");
 				assert cache != null;
 				cache.cacheAllFromDB();
+				// Reinitialize if the screen is on the map viewer
+				if (FXMLLoaderFactory.getHistory().size() == 1) {
+					resetMapViewer();
+				}
 			}
 			isCacheBeingUpdated = false;
 		});
+	}
+
+	private void resetMapViewer() {
+		try {
+			FXMLLoaderFactory.resetHistory();
+			FXMLLoaderFactory fxmlLoaderFactory = new FXMLLoaderFactory();
+			Scene homeScene = new Scene(loaderFactory.getFXMLLoader("map_viewer/MapViewer").load());
+			fxmlLoaderFactory.setupScene(homeScene);
+		} catch (IOException ex) {
+			log.error("Encountered IOException", ex);
+		}
 	}
 
 	public void showScreensaverIfNoInput() {

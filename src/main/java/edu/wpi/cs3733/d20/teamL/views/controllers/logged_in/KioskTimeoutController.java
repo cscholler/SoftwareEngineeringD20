@@ -84,7 +84,7 @@ public class KioskTimeoutController {
 		boolean isLogoutTimeoutValid = !logoutTimeoutPeriod.isEmpty() && Long.parseLong(logoutTimeoutPeriod) * 1000 >= 30000;
 		boolean isIdleCacheTimeoutValid = !idleCacheTimeoutPeriod.isEmpty() && Long.parseLong(idleCacheTimeoutPeriod) * 1000 >= 15000;
 		boolean isForceCacheTimeoutValid = !forceCacheTimeoutPeriod.isEmpty() && Long.parseLong(forceCacheTimeoutPeriod) * 1000 >= 30000;
-		boolean isScreenSaverTimeoutValid = !screenSaverTimeoutPeriod.isEmpty() && Long.parseLong(screenSaverTimeoutPeriod) * 1000 >= 30000;;
+		boolean isScreenSaverTimeoutValid = !screenSaverTimeoutPeriod.isEmpty() && Long.parseLong(screenSaverTimeoutPeriod) * 1000 >= 30000;
 		boolean isKioskLocationValid = db.getTableFromResultSet(db.executeQuery(new SQLEntry(DBConstants.GET_NODE, new ArrayList<>(Collections.singletonList(kioskLocation))))).size() == 1;
 		int rows = 0;
 		System.out.println(isKioskLocationValid && isIdleCacheTimeoutValid && isForceCacheTimeoutValid && isLogoutTimeoutValid && isScreenSaverTimeoutValid);
@@ -98,21 +98,15 @@ public class KioskTimeoutController {
 			locationInvalid.setVisible(true);
 		}
 
-		if (rows == 0) {
-			//confirmationLabel.setTextFill(Color.RED);
-			//confirmationLabel.setText("Submission failed");
-		} else if (rows == 1) {
-			//confirmationLabel.setTextFill(Color.BLACK);
-			//confirmationLabel.setText("Timeouts updated");
+		if (rows == 1) {
 			cache.cacheKiosksFromDB();
 			App.startLogoutTimer();
 			App.startIdleTimer();
 			App.startForceUpdateTimer();
 			App.startScreenSaverTimer();
-		} else {
+		} else if (rows != 0){
 			log.error("SQL update affected more than 1 row.");
 		}
-		//loaderFactory.showAndFade(confirmationLabel);
 	}
 
 	@FXML

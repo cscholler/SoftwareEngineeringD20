@@ -109,7 +109,7 @@ public class SnakeController {
 		background.setStyle("-fx-translate-y: -100");
 		Group snakeBody = new Group();
 		snake = snakeBody.getChildren();
-		Circle food = new Circle((BLOCK_SIZE / 2) * 1.5);
+		Circle food = new Circle((BLOCK_SIZE / 2) * 1.25);
 		int nodeIndex = new Random().nextInt(nodes.size());
 		edu.wpi.cs3733.d20.teamL.entities.Node node = nodes.get(nodeIndex);
 		Point2D nodePos = node.getPosition();
@@ -205,6 +205,7 @@ public class SnakeController {
 		try {
 			Parent root = loaderFactory.getFXMLLoader("map_viewer/MapViewer").load();
 			loaderFactory.setupScene(new Scene(root));
+			App.isScreenSaverActive = false;
 		} catch (IOException ex) {
 			log.error("Encountered IOException", ex);
 		}
