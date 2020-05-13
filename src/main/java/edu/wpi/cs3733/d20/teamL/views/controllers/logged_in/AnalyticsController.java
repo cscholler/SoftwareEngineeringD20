@@ -91,42 +91,10 @@ public class AnalyticsController implements Initializable {
         heatBox.setItems(heatOptions);
         histoTimeBox.setItems(timeOptions);
         mapTimeBox.setItems(timeOptions);
-        cache.cacheRequestsFromDB();
 
         updateDate("Any time");
 
-        requests = FXCollections.observableArrayList(cache.getAllRequests());
-        giftRequests = FXCollections.observableArrayList(cache.getAllGiftRequests());
-        intiFreq();
-        updateFreq();
-
-
-        setServiceReqHisto();
-        handleAllServiceReq();
-
-        map.setEditable(false);
-        map.setHighLightColor(Color.GOLD);
-
-        // Import all the nodes from the cache and set the current building to Faulkner
-        String startB = "Faulkner";
-        Building faulkner = cache.getBuilding("Faulkner");
-        Building main = cache.getBuilding(MAIN);
-
-        if (!faulkner.getNodes().isEmpty()) map.setBuilding(faulkner);
-        if (!main.getNodes().isEmpty()) map.getBuildings().add(main);
-        buildingChooser.getItems().addAll("Faulkner", MAIN);
-        buildingChooser.getSelectionModel().select(startB);
-
-        // Add floor buttons
-        generateFloorButtons();
-
-        setFloor(2);
-
-        map.setZoomLevel(0.25 * App.UI_SCALE);
-        map.init();
-
-        burnAllNodes(map.getCurrentFloor().getNodes());
-        burnAllEdges(map.getEdges());
+        handleRefresh();
     }
 
     private void intiFreq() {
@@ -223,6 +191,40 @@ public class AnalyticsController implements Initializable {
 
     @FXML
     public void handleRefresh() {
+        cache.cacheRequestsFromDB();
+
+        requests = FXCollections.observableArrayList(cache.getAllRequests());
+        giftRequests = FXCollections.observableArrayList(cache.getAllGiftRequests());
+        intiFreq();
+        updateFreq();
+
+
+        setServiceReqHisto();
+        handleAllServiceReq();
+
+        map.setEditable(false);
+        map.setHighLightColor(Color.GOLD);
+
+        // Import all the nodes from the cache and set the current building to Faulkner
+        String startB = "Faulkner";
+        Building faulkner = cache.getBuilding("Faulkner");
+        Building main = cache.getBuilding(MAIN);
+
+        if (!faulkner.getNodes().isEmpty()) map.setBuilding(faulkner);
+        if (!main.getNodes().isEmpty()) map.getBuildings().add(main);
+        buildingChooser.getItems().addAll("Faulkner", MAIN);
+        buildingChooser.getSelectionModel().select(startB);
+
+        // Add floor buttons
+        generateFloorButtons();
+
+        setFloor(2);
+
+        map.setZoomLevel(0.25 * App.UI_SCALE);
+        map.init();
+
+        burnAllNodes(map.getCurrentFloor().getNodes());
+        burnAllEdges(map.getEdges());
     }
 
     public void setServiceReqHisto() {
