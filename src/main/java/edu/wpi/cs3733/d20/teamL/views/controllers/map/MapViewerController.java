@@ -175,7 +175,7 @@ public class MapViewerController {
         timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
         timerManager.startTimer(() -> timerManager.updateDate(dateLabel), 0, 1000);
         //ToDO: uncomment this when its time to get weather
-        //timerManager.startTimer(() -> timerManager.updateWeather(currentTempLabel, currentWeatherIcon), 0,1800000);
+        timerManager.startTimer(() -> timerManager.updateWeather(currentTempLabel, currentWeatherIcon), 0,1800000);
         if (App.doUpdateCacheOnLoad) {
             cache.cacheAllFromDB();
             App.doUpdateCacheOnLoad = false;
