@@ -44,6 +44,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -176,12 +177,16 @@ public class MapViewerController {
 
     private QuestionnaireController qc;
     private String currentLang = "en";
+    private boolean accordianVisible = true;
 
 
     public static final String MAIN = "Main";
+    public static MapViewerController currentViewer;
 
     @FXML
-    private void initialize() {
+    public void initialize() {
+        currentViewer = this;
+
         httpClient.setCurrLang("en");
         System.out.println(httpClient.getCurrLang());
         timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
@@ -204,34 +209,12 @@ public class MapViewerController {
         screeningPane.setPickOnBounds(false);
 
         dirList.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent -> goToSelected()));
-        // Import all the nodes from the cache and set the current building to Faulkner
-        String startB = "Faulkner";
-        Building faulkner = cache.getBuilding("Faulkner");
-        Building main = cache.getBuilding(MAIN);
 
-        if (!faulkner.getNodes().isEmpty()) map.setBuilding(faulkner);
-        if (!main.getNodes().isEmpty()) map.getBuildings().add(main);
-        buildingChooser.getItems().addAll("Faulkner", MAIN);
-        buildingChooser.getSelectionModel().select(startB);
+        updateBuildings();
 
         //Set Current Language
         languagePicker.getItems().addAll(languages);
         languagePicker.setValue("English - en");
-
-        // Add floor buttons
-        generateFloorButtons();
-
-        setFloor(2);
-
-        map.setZoomLevel(0.25 * App.UI_SCALE);
-        map.init();
-
-        // Populate autocomplete
-        searchFields = new SearchFields(cache.getNodeCache());
-        searchFields.getFields().addAll(Arrays.asList(SearchFields.Field.shortName, SearchFields.Field.longName));
-        searchFields.populateSearchFields();
-        autoCompletePopup = new JFXAutoCompletePopup<>();
-        autoCompletePopup.getSuggestions().addAll(searchFields.getSuggestions());
 
         Collection<Node> allNodes = map.getBuilding().getNodes();
 
@@ -355,10 +338,67 @@ public class MapViewerController {
         btnScreening.setText("Think you have COVID-19?");
         btnScreening.setStyle("-fx-font-weight: bold");
         btnScreening.setMinWidth(300);
+
+        map.getBody().addEventHandler(MouseEvent.MOUSE_CLICKED, this::clickNode);
+    }
+
+    public void updateBuildings() {
+        // Import all the nodes from the cache and set the current building to Faulkner
+        String startB = "Faulkner";
+        Building faulkner = cache.getBuilding("Faulkner");
+        Building main = cache.getBuilding(MAIN);
+
+        if (!faulkner.getNodes().isEmpty()) map.setBuilding(faulkner);
+        if (!main.getNodes().isEmpty()) map.getBuildings().add(main);
+        buildingChooser.getItems().addAll("Faulkner", MAIN);
+        buildingChooser.getSelectionModel().select(startB);
+
+        // Add floor buttons
+        generateFloorButtons();
+
+        setFloor(2);
+
+        map.setZoomLevel(0.25 * App.UI_SCALE);
+        map.init();
+
+        // Populate autocomplete
+        searchFields = new SearchFields(cache.getNodeCache());
+        searchFields.getFields().addAll(Arrays.asList(SearchFields.Field.shortName, SearchFields.Field.longName));
+        searchFields.populateSearchFields();
+        autoCompletePopup = new JFXAutoCompletePopup<>();
+        autoCompletePopup.getSuggestions().addAll(searchFields.getSuggestions());
     }
 
     private void generateFloorButtons() {
         map.generateFloorButtons(floorSelector, this::handleFloor);
+    }
+
+    @FXML
+    private void clickNode(MouseEvent e) {
+        if (e.getButton().equals(MouseButton.PRIMARY) && e.isStillSincePress()) {
+            double dist;
+            double closest = Integer.MAX_VALUE;
+            Node closestNode = null;
+
+            Collection<Node> allNodes = map.getBuilding().getFloor(map.getFloor()).getNodes();
+
+            // Sort through every node on the floor (except hallway nodes) and find the closest one to the mouse
+            for (Node node : allNodes) {
+                if (!node.getType().equals("HALL")) {
+                    dist = map.getNodeGUI(node).getLayoutPos().distance(new Point2D(e.getX(), e.getY()));
+                    if (dist < closest) {
+                        closest = dist;
+                        closestNode = node;
+                    }
+                }
+            }
+
+            // Autofill and navigate to the respective node only if it is within a certain radius of the mouse and there is a starting point
+            if (closest < 50 && !startingPoint.getText().isBlank()) {
+                destination.setText(closestNode.getLongName() + " - (" + closestNode.getBuilding() + " " + closestNode.getFloor() + ")");
+                navigate();
+            }
+        }
     }
 
     @FXML
@@ -1025,6 +1065,21 @@ public class MapViewerController {
 
     private void launchRobot() {
         System.out.println("Wheres the robot Conrad?!?");
+    }
+
+    private void showAccordion() {
+        if (!accordianVisible) {
+            sideBox.getChildren().add(2, accordion); //eventually this should be 1
+            accordianVisible = true;
+        }
+    }
+
+    private void hideAccordion() {
+        if (accordianVisible) {
+            accordion.getPanes().removeAll();
+            sideBox.getChildren().remove(accordion);
+            accordianVisible = false;
+        }
     }
 
     private void showDefaultOptions() {
