@@ -77,7 +77,7 @@ public class MapLink extends StackPane {
         setOnMouseClicked(mouseEvent -> {
             controller.setBuilding(this.building);
             controller.setFloor(this.floor);
-            controller.getMap().setZoomLevel(.5);
+            controller.zoomToNodes(controller.getPath().getNodesOnFloor(floor, building));
         });
 
         setCursor(Cursor.HAND);
