@@ -19,7 +19,7 @@
    <children>
       <BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="services-pane-jfx">
          <center>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" BorderPane.alignment="CENTER">
+            <VBox fx:id="fieldsVBox" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" BorderPane.alignment="CENTER">
                <children>
                   <JFXTextField fx:id="patientIDText" promptText="Patient ID" styleClass="text-field-jfx" />
                   <JFXTextField fx:id="locationText" onKeyTyped="#autocomplete" promptText="Location" styleClass="text-field-jfx" />
