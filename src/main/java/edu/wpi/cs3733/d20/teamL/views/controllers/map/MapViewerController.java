@@ -880,6 +880,49 @@ public class MapViewerController {
     }
 
     /**
+     * Displays the credit page of the application
+     */
+    @FXML
+    public void handleCredit() {
+
+        JFXDialogLayout content = new JFXDialogLayout();
+        content.setHeading(new Text("Credits"));
+        content.setBody(new Text("Software:\t\t\t" +
+                "Apache Commons\n\t\t\t\t" +
+                "Apache Derby\n\t\t\t\t" +
+                "Google Juice\n\t\t\t\t" +
+                "jBCrpyt\n\t\t\t\t" +
+                "JetBrains\n\t\t\t\t" +
+                "JFoenix\n\n" +
+                "Internal APIs:\t\t" +
+                "Food Request, Team P\n\t\t\t\t" +
+                "Audio Visual, Team M\n\n" +
+                "External APIs:\t\t" +
+                "Cloud Text-to-Speech\n\t\t\t\t" +
+                "JSON\n\t\t\t\t" +
+                "MySQL Connector\n\t\t\t\t" +
+                "OkHttp\n\t\t\t\t" +
+                "QRGen\n\t\t\t\t" +
+                "SendGrid\n\t\t\t\t" +
+                "Twilio\n\t\t\t\t" +
+                "Webcam-Capture"
+        ));
+
+        JFXDialog creditDialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
+        JFXButton btnDone = new JFXButton("Done");
+
+        btnDone.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                creditDialog.close();
+            }
+        });
+        content.setActions(btnDone);
+        creditDialog.show();
+    }
+
+
+    /**
      * Displays the About page of the application
      */
     @FXML
