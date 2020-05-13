@@ -288,19 +288,19 @@ public class MapViewerController {
         btnTextMe = new JFXButton();
         btnTextMe.setText("Text me directions");
         btnTextMe.getStyleClass().add("save-button-jfx");
-        btnTextMe.setStyle("-fx-pref-width: 200;" + "-fx-max-width: 200;" + "-fx-background-color: #00043B;" + "-fx-background-radius: 50;");
+        btnTextMe.setStyle("-fx-pref-width: 250;" + "-fx-max-width: 200;" + "-fx-background-color: #00043B;" + "-fx-background-radius: 50;");
         btnTextMe.setOnAction(actionEvent -> handleText());
 
         btnQR = new JFXButton();
         btnQR.setText("Scan directions");
         btnQR.getStyleClass().add("save-button-jfx");
-        btnQR.setStyle("-jfx-button-type: RAISED;" + "-fx-pref-width: 200;" + "-fx-max-width: 200;" + "-fx-background-color: #00043B;" + "-fx-background-radius:  50;");
+        btnQR.setStyle("-jfx-button-type: RAISED;" + "-fx-pref-width: 250;" + "-fx-max-width: 200;" + "-fx-background-color: #00043B;" + "-fx-background-radius:  50;");
         btnQR.setOnAction(actionEvent -> genQR());
 
         btnRobot = new JFXButton();
         btnRobot.setText("Escort me there");
         btnRobot.getStyleClass().add("save-button-jfx");
-        btnRobot.setStyle("-jfx-button-type: RAISED;" + "-fx-pref-width: 200;" + "-fx-max-width: 200;" + "-fx-background-color: #00043B;" + "-fx-background-radius:  50;");
+        btnRobot.setStyle("-jfx-button-type: RAISED;" + "-fx-pref-width: 250;" + "-fx-max-width: 200;" + "-fx-background-color: #00043B;" + "-fx-background-radius:  50;");
         btnRobot.setOnAction(actionEvent -> launchRobot());
 
         directionButtonsVBox.getChildren().addAll(btnTextMe, btnQR, btnRobot);
