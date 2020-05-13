@@ -26,6 +26,16 @@ public class Path implements Iterable<Node> {
         return length;
     }
 
+    public ArrayList<Node> getNodesOnFloor(int floor, String building) {
+        ArrayList<Node> floorPath = new ArrayList<>();
+        for(Node node : pathNodes) {
+            if(node.getBuilding().equals(building) && node.getFloor() == floor) {
+                floorPath.add(node);
+            }
+        }
+        return floorPath;
+    }
+
     /**
      * Gets the sum of the path lengths
      *

@@ -16,6 +16,7 @@ import edu.wpi.cs3733.d20.teamL.services.messaging.IMessengerService;
 import edu.wpi.cs3733.d20.teamL.services.pathfinding.IPathfinderService;
 import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
+import edu.wpi.cs3733.d20.teamL.views.components.MapLink;
 import edu.wpi.cs3733.d20.teamL.views.controllers.screening.QuestionnaireController;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -106,7 +107,7 @@ public class MapViewerController {
     @FXML
     private JFXButton btnNavigate, floorUp, floorDown, btnScreening, btnTextMe, btnQR, btnRobot, btnRecordStart, btnLegend, btnFeedback, btnAbout, btnRecordDest;
     @FXML
-    private VBox sideBox, floorSelector, directionButtonsVBox, textDirectionsVBox;
+    private VBox sideBox, floorSelector, directionButtonsVBox, textDirectionsVBox, miniMaps;
     @FXML
     private HBox getDirectionsHBox;
     @FXML
@@ -415,6 +416,19 @@ public class MapViewerController {
         if (!path.getPathNodes().isEmpty()) highLightPath();
     }
 
+    public void setBuilding(String building) {
+        Building newBuilding = cache.getBuilding(building);
+        map.setBuilding(newBuilding);
+
+        int prevFloor = map.getFloor();
+        generateFloorButtons();
+        setFloor(Math.max(map.getBuilding().getMinFloor(), Math.min(prevFloor, map.getBuilding().getMaxFloor())));
+        map.setZoomLevel(.25 * App.UI_SCALE);
+        if (!path.getPathNodes().isEmpty()) highLightPath();
+
+        buildingChooser.getSelectionModel().select(building);
+    }
+
     @FXML
     private void startingPointAutocomplete() {
         searchFields.applyAutocomplete(startingPoint, autoCompletePopup);
@@ -635,6 +649,7 @@ public class MapViewerController {
             map.resetNodeVisibility(end);
         }
         path.getPathNodes().clear();
+        miniMaps.getChildren().clear();
     }
 
     private String highlightSourceToDestination(Node source, Node destination) {
@@ -718,18 +733,21 @@ public class MapViewerController {
     }
 
     private void highLightPath() {
+        miniMaps.getChildren().clear();
         Iterator<Node> nodeIterator = path.iterator();
 
         // Loop through each node in the path and select it as well as the edge pointing to the next node
         Node currentNode = nodeIterator.next();
         Node nextNode;
 
+        boolean firstLinkAdded = false;
+
         while (nodeIterator.hasNext()) {
             nextNode = nodeIterator.next();
             EdgeGUI edgeGUI = map.getEdgeGUI(currentNode.getEdge(nextNode));
 
-            // Please help me untangle my spaghetti
             if (edgeGUI != null) {
+                // Animate the path
                 edgeGUI.getHighlightGUI().getStrokeDashArray().setAll(5d, 20d, 20d, 5d);
                 Line highlight = map.getEdgeGUI(currentNode.getEdge(nextNode)).getHighlightGUI();
 
@@ -739,9 +757,23 @@ public class MapViewerController {
 
                 timeline.setCycleCount(Timeline.INDEFINITE);
                 timeline.play();
+
+                map.getSelector().add(edgeGUI);
             }
 
-            if (edgeGUI != null) map.getSelector().add(edgeGUI);
+            if (nextNode.getFloor() != currentNode.getFloor() || !nextNode.getBuilding().equals(currentNode.getBuilding())) {
+                int linkWidth = 120;
+                if (!firstLinkAdded) {
+                    miniMaps.getChildren().add(new MapLink(currentNode.getBuilding(), currentNode.getFloor(), linkWidth, this));
+                    firstLinkAdded = true;
+                }
+                if(currentNode.getBuilding().equals("Faulkner") && nextNode.getBuilding().equals(MAIN)) {
+                    miniMaps.getChildren().add(new MapLink("FaulkToMain", 120, this, IMAGE_FTOM));
+                } if(currentNode.getBuilding().equals(MAIN) && nextNode.getBuilding().equals("Faulkner")) {
+                    miniMaps.getChildren().add(new MapLink("MainToFaulk", 120, this, IMAGE_MTOF));
+                }
+                miniMaps.getChildren().add(new MapLink(nextNode.getBuilding(), nextNode.getFloor(), linkWidth, this));
+            }
 
             currentNode = nextNode;
         }
@@ -799,8 +831,6 @@ public class MapViewerController {
         } else {
             setFloor(Node.floorStringToInt(sourceButton.getText()));
         }
-
-        if (!path.getPathNodes().isEmpty()) highLightPath();
     }
 
     @FXML
@@ -829,6 +859,8 @@ public class MapViewerController {
                     floorButton.getStyleClass().add("selected-floor");
             }
         }
+
+        if (!path.getPathNodes().isEmpty()) highLightPath();
     }
 
     /**
@@ -1022,49 +1054,53 @@ public class MapViewerController {
             generateFloorButtons();
             map.setZoomLevel(.25 * App.UI_SCALE);
         } else {
-            if (!(subpath.get(0).getBuilding().equals(map.getBuilding().getName()))) {
-                map.setBuilding(subpath.get(0).getBuilding());
-                generateFloorButtons();
-                map.setZoomLevel(.25 * App.UI_SCALE);
-                goToSelected();
-            }
-            if (!(subpath.get(0).getFloorAsString().equals(map.getFloor())))
-                setFloor(subpath.get(0).getFloor());
-
-            double totalX = 0;
-            double totalY = 0;
-            double minX = 200000;
-            double maxX = 0;
-            double minY = 200000;
-            double maxY = 0;
-            for (Node node : subpath) {
-                double xPos = node.getPosition().getX();
-                double yPos = node.getPosition().getY();
-                double xPosGui = map.getNodeGUI(node).getLayoutX();
-                double yPosGui = map.getNodeGUI(node).getLayoutY();
-
-                totalX += xPosGui;
-                totalY += yPosGui;
-
-                if (xPos > maxX) maxX = xPos;
-                if (xPos < minX) minX = xPos;
-                if (yPos > maxY) maxY = yPos;
-                if (yPos < minY) minY = yPos;
-            }
-
-            double diffX = maxX - minX;
-            double diffY = maxY - minY;
-            double scale;
-
-            if (diffX > diffY) scale = Math.min(400 / diffX, 2);
-            else scale = Math.min(400 / diffY, 2);
-
-            totalX = totalX / subpath.size();
-            totalY = totalY / subpath.size();
-
-            map.setZoomLevelToPosition(scale, new Point2D(totalX, totalY));
+            zoomToNodes(subpath);
             highLightPath();
         }
+    }
+
+    public void zoomToNodes(ArrayList<Node> subpath) {
+        if (!(subpath.get(0).getBuilding().equals(map.getBuilding().getName()))) {
+            map.setBuilding(subpath.get(0).getBuilding());
+            generateFloorButtons();
+            map.setZoomLevel(.25 * App.UI_SCALE);
+            goToSelected();
+        }
+        if (!(subpath.get(0).getFloorAsString().equals(map.getFloor())))
+            setFloor(subpath.get(0).getFloor());
+
+        double totalX = 0;
+        double totalY = 0;
+        double minX = 200000;
+        double maxX = 0;
+        double minY = 200000;
+        double maxY = 0;
+        for (Node node : subpath) {
+            double xPos = node.getPosition().getX();
+            double yPos = node.getPosition().getY();
+            double xPosGui = map.getNodeGUI(node).getLayoutX();
+            double yPosGui = map.getNodeGUI(node).getLayoutY();
+
+            totalX += xPosGui;
+            totalY += yPosGui;
+
+            if (xPos > maxX) maxX = xPos;
+            if (xPos < minX) minX = xPos;
+            if (yPos > maxY) maxY = yPos;
+            if (yPos < minY) minY = yPos;
+        }
+
+        double diffX = maxX - minX;
+        double diffY = maxY - minY;
+        double scale;
+
+        if (diffX > diffY) scale = Math.min(200 / diffX, .7);
+        else scale = Math.min(200 / diffY, .7);
+
+        totalX = totalX / subpath.size();
+        totalY = totalY / subpath.size();
+
+        map.setZoomLevelToPosition(scale, new Point2D(totalX, totalY));
     }
 
     private void launchRobot() {
@@ -1293,5 +1329,9 @@ public class MapViewerController {
         currentLang = language;
         httpClient.setCurrLang(currentLang);
 
+    }
+
+    public Path getPath() {
+        return path;
     }
 }
