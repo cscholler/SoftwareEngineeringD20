@@ -173,7 +173,7 @@ public class MapViewerController {
     private ArrayList<String> newRetailNodes = new ArrayList<>();
     private ArrayList<String> newConfNodes = new ArrayList<>();
 
-    private ArrayList<String> languages = new ArrayList<String>(Arrays.asList("English - en", "Espanol - es", "French - fr", "Mandarin - zh"));
+    private ArrayList<String> languages = new ArrayList<String>(Arrays.asList("English - en", "Espanol - es", "French - fr", "Mandarin - zh", "Arabic - ar", "Danish - da", "German - de", "Hebrew - he", "Irish - ga", "Italian - it", "Japanese - ja", "Korean - ko", "Thai - th", "Russian - ru", "Greek - el", "Vietnamese - vi"));
 
     private QuestionnaireController qc;
     private String currentLang = "en";
