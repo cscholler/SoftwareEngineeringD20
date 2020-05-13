@@ -130,9 +130,9 @@ public class DBConstants {
 					"id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
 					"username VARCHAR(32) NOT NULL REFERENCES Users(username), " +
 					"place VARCHAR(32) NOT NULL, " +
-					"date CHAR(10) NOT NULL, " +
-					"start_time CHAR(5) NOT NULL, " +
-					"end_time CHAR(5) NOT NULL)";
+					"date VARCHAR(16) NOT NULL, " +
+					"start_time VARCHAR(16) NOT NULL, " +
+					"end_time VARCHAR(16))";
 
 	public static final String CREATE_KIOSK_SETTINGS_TABLE =
 			"CREATE TABLE Kiosk_Settings(" +
@@ -391,6 +391,16 @@ public class DBConstants {
 			"SELECT * " +
 					"FROM Reservations " +
 					"WHERE place = ? AND date = ?";
+
+	public static final String SELECT_SPECIFIC_ROOM_REQUEST =
+			"SELECT * " +
+					"FROM Reservations "+
+					"WHERE place = ? AND date = ? AND start_time = ?";
+
+	public static final String SELECT_ALL_RESERVATIONS =
+			"SELECT * " +
+					"FROM Reservations "+
+					"ORDER BY id";
 
 	public static final String SELECT_ALL_KIOSK_SETTINGS =
 			"SELECT * " +

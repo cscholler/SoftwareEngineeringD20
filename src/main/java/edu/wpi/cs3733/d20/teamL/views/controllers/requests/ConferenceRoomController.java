@@ -28,9 +28,7 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class OnCallBedController {
-
-
+public class ConferenceRoomController {
 
     //iterate when previous/next weeks are clicked
     private int weeks = 0;
@@ -55,24 +53,19 @@ public class OnCallBedController {
     @Inject
     private ILoginManager manager;
 
-    private ObservableList<String> bedsList = FXCollections.observableArrayList("Bed 1", "Bed 2", "Bed 3", "Bed 4", "Bed 5", "Bed 6", "Bed 7");
+    private ObservableList<String> conferenceRooms = FXCollections.observableArrayList("Conference Room 1");
     private ArrayList<String> days = new ArrayList<>(Arrays.asList("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"));
 
     @FXML
     public void initialize() {
 
-        rooms.setItems(bedsList);
+        rooms.setItems(conferenceRooms);
         rooms.getSelectionModel().selectFirst();
         loadTable();
 
         borderPane.prefWidthProperty().bind(stackPane.widthProperty());
         borderPane.prefHeightProperty().bind(stackPane.heightProperty());
 
-        rooms.valueProperty().addListener((observable, oldBed, newBed) -> {
-            if(rooms.getValue() != null) {
-                loadTable();
-            }
-        });
     }
 
     /**
@@ -307,7 +300,6 @@ public class OnCallBedController {
                         confirmation.setText("Submission Failed");
                         loaderHelper.showAndFade(confirmation);
                     } else {
-                        requestReceived.toFront();
                         loaderHelper.showAndFade(requestReceived);
                         requestReceived.toBack();
                         dbCache.cacheReservationsFromDB();
