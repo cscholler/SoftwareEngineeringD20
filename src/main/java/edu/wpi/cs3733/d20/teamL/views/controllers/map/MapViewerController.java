@@ -189,9 +189,12 @@ public class MapViewerController {
 
 
     public static final String MAIN = "Main";
+    public static MapViewerController currentViewer;
 
     @FXML
-    private void initialize() {
+    public void initialize() {
+        currentViewer = this;
+
         httpClient.setCurrLang("en");
         System.out.println(httpClient.getCurrLang());
         timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
@@ -214,34 +217,12 @@ public class MapViewerController {
         screeningPane.setPickOnBounds(false);
 
         dirList.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent -> goToSelected()));
-        // Import all the nodes from the cache and set the current building to Faulkner
-        String startB = "Faulkner";
-        Building faulkner = cache.getBuilding("Faulkner");
-        Building main = cache.getBuilding(MAIN);
 
-        if (!faulkner.getNodes().isEmpty()) map.setBuilding(faulkner);
-        if (!main.getNodes().isEmpty()) map.getBuildings().add(main);
-        buildingChooser.getItems().addAll("Faulkner", MAIN);
-        buildingChooser.getSelectionModel().select(startB);
+        updateBuildings();
 
         //Set Current Language
         languagePicker.getItems().addAll(languages);
         languagePicker.setValue("English - en");
-
-        // Add floor buttons
-        generateFloorButtons();
-
-        setFloor(2);
-
-        map.setZoomLevel(0.25 * App.UI_SCALE);
-        map.init();
-
-        // Populate autocomplete
-        searchFields = new SearchFields(cache.getNodeCache());
-        searchFields.getFields().addAll(Arrays.asList(SearchFields.Field.shortName, SearchFields.Field.longName));
-        searchFields.populateSearchFields();
-        autoCompletePopup = new JFXAutoCompletePopup<>();
-        autoCompletePopup.getSuggestions().addAll(searchFields.getSuggestions());
 
         Collection<Node> allNodes = map.getBuilding().getNodes();
 
@@ -367,6 +348,33 @@ public class MapViewerController {
         btnScreening.setMinWidth(300);
 
         map.getBody().addEventHandler(MouseEvent.MOUSE_CLICKED, this::clickNode);
+    }
+
+    public void updateBuildings() {
+        // Import all the nodes from the cache and set the current building to Faulkner
+        String startB = "Faulkner";
+        Building faulkner = cache.getBuilding("Faulkner");
+        Building main = cache.getBuilding(MAIN);
+
+        if (!faulkner.getNodes().isEmpty()) map.setBuilding(faulkner);
+        if (!main.getNodes().isEmpty()) map.getBuildings().add(main);
+        buildingChooser.getItems().addAll("Faulkner", MAIN);
+        buildingChooser.getSelectionModel().select(startB);
+
+        // Add floor buttons
+        generateFloorButtons();
+
+        setFloor(2);
+
+        map.setZoomLevel(0.25 * App.UI_SCALE);
+        map.init();
+
+        // Populate autocomplete
+        searchFields = new SearchFields(cache.getNodeCache());
+        searchFields.getFields().addAll(Arrays.asList(SearchFields.Field.shortName, SearchFields.Field.longName));
+        searchFields.populateSearchFields();
+        autoCompletePopup = new JFXAutoCompletePopup<>();
+        autoCompletePopup.getSuggestions().addAll(searchFields.getSuggestions());
     }
 
     private void generateFloorButtons() {
