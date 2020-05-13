@@ -915,12 +915,7 @@ public class MapViewerController {
                 "JFoenix\n\n" +
                 "Internal APIs:\t\t" +
                 "Food Request, Team P\n\t\t\t\t" +
-                "Flower Request, Team A\n\t\t\t\t" +
-                "Audio Visual, Team M\n\t\t\t\t" +
-                "Maintenance Request, Team F\n\t\t\t\t" +
-                "Security Request, Team O\n\t\t\t\t" +
-                "On-Call Beds, Team E\n\t\t\t\t" +
-                "Internal Transportation, Team D\n\n" +
+                "Audio Visual, Team M\n\n" +
                 "External APIs:\t\t" +
                 "Cloud Text-to-Speech\n\t\t\t\t" +
                 "JSON\n\t\t\t\t" +
