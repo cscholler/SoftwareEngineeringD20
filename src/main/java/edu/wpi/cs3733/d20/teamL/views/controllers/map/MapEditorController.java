@@ -13,11 +13,10 @@ import edu.wpi.cs3733.d20.teamL.util.AsyncTaskManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
 import edu.wpi.cs3733.d20.teamL.util.TimerManager;
 import edu.wpi.cs3733.d20.teamL.util.io.CSVHelper;
-import edu.wpi.cs3733.d20.teamL.util.search.SearchFields;
+import edu.wpi.cs3733.d20.teamL.util.SearchFields;
 import edu.wpi.cs3733.d20.teamL.views.components.*;
 import edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.DataDialogue;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;

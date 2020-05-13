@@ -24,8 +24,10 @@ import javafx.scene.control.skin.TableHeaderRow;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.util.Callback;
+import org.apache.commons.math3.util.Precision;
 
 import javax.inject.Inject;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -51,7 +53,7 @@ public class GiftCheckoutPaneController {
     @FXML
     private JFXTextArea additionalNotesText, specialMessageText;
     @FXML
-    private Label confirmation, orderTxt, totalCostLbl;
+    private Label confirmation, orderTxt, totalCostLbl, orderSubmitted;
 
     @FXML
     public void initialize() {
@@ -59,6 +61,7 @@ public class GiftCheckoutPaneController {
         ObservableList<GiftDetails> giftDetailsObservableList = FXCollections.observableArrayList();
         //requestReceived.setPickOnBounds(false);
 
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
 
         giftColumn.setCellValueFactory(new PropertyValueFactory<GiftDetails, String>("name"));
         qtyColumn.setCellValueFactory(new PropertyValueFactory<GiftDetails, TextField>("qty"));
@@ -77,8 +80,9 @@ public class GiftCheckoutPaneController {
                             orderTable.getItems().remove(getIndex());
                             cart.remove(deletedItem.getName());
 
-                            totalCost -= deletedItem.getQty() * deletedItem.getCostAsDouble();
-                            totalCostLbl.setText("$" + totalCost);
+                            totalCost -= deletedItem.getCostAsDouble();
+                            Precision.round(totalCost,-2);
+                            totalCostLbl.setText(formatter.format(totalCost));
                         });
                     }
 
@@ -111,7 +115,8 @@ public class GiftCheckoutPaneController {
             }
         }
 
-        totalCostLbl.setText("$" + totalCost);
+        Precision.round(totalCost,-2);
+        totalCostLbl.setText(formatter.format(totalCost));
 
         orderTable.setItems(giftDetailsObservableList);
         removeColumn.setCellFactory(cellFactory);
@@ -185,7 +190,9 @@ public class GiftCheckoutPaneController {
             additionalNotesText.setText("");
             specialMessageText.setText("");
 
-            //loaderHelper.showAndFade(requestReceived);
+            totalCostLbl.setText("");
+            orderSubmitted.setVisible(true);
+            cart.clear();
         }
 
 //        loaderHelper.showAndFade(confirmation);

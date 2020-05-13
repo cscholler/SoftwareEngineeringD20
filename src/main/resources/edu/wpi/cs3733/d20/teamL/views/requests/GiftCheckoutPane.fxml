@@ -15,13 +15,48 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <BorderPane minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: white;" styleClass="services-pane-jfx" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.requests.GiftCheckoutPaneController">
-   <center>
-      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+   <bottom>
+      <AnchorPane BorderPane.alignment="CENTER">
          <BorderPane.margin>
-            <Insets bottom="10.0" />
+            <Insets />
          </BorderPane.margin>
+         <children>
+            <HBox alignment="CENTER" layoutY="11.0" spacing="30.0" AnchorPane.rightAnchor="20.0">
+               <children>
+                  <HBox spacing="10.0">
+                     <children>
+                        <Label fx:id="orderSubmitted" styleClass="total-cost-label-fx" text="Order Submitted!       " visible="false" />
+                        <Label styleClass="total-cost-label-fx" text="Total:" />
+                        <Label fx:id="totalCostLbl" alignment="CENTER" prefHeight="45.0" prefWidth="143.0" styleClass="cost-amount-label-fx" text="\$888.88" textOverrun="CLIP">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <JFXButton onAction="#placeOrder" style="-fx-background-radius: 10;" styleClass="save-button-jfx" text="Place Order" />
+               </children>
+            </HBox>
+            <Label fx:id="confirmation" alignment="CENTER" text="Submission Failed" visible="false">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+         </children>
+         <padding>
+            <Insets bottom="10.0" />
+         </padding>
+      </AnchorPane>
+   </bottom>
+   <effect>
+      <DropShadow />
+   </effect>
+   <top>
+      <Label prefHeight="68.0" prefWidth="240.0" styleClass="service-request-header-label-fx" text="Checkout" BorderPane.alignment="CENTER" />
+   </top>
+   <right>
+      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: white;">
          <content>
             <VBox alignment="TOP_CENTER" style="-fx-background-color: white;">
                <children>
@@ -37,9 +72,6 @@
                      <padding>
                         <Insets right="30.0" />
                      </padding>
-                     <effect>
-                        <DropShadow />
-                     </effect>
                   </HBox>
                   <Label prefHeight="30.0" prefWidth="137.0" styleClass="service-request-label-fx" text="Delivery Details">
                      <VBox.margin>
@@ -67,43 +99,5 @@
             </VBox>
          </content>
       </ScrollPane>
-   </center>
-   <bottom>
-      <AnchorPane BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets />
-         </BorderPane.margin>
-         <children>
-            <HBox alignment="CENTER" layoutY="11.0" spacing="30.0" AnchorPane.rightAnchor="20.0">
-               <children>
-                  <HBox spacing="10.0">
-                     <children>
-                        <Label styleClass="total-cost-label-fx" text="Total:" />
-                        <Label fx:id="totalCostLbl" alignment="CENTER" prefHeight="45.0" prefWidth="143.0" styleClass="cost-amount-label-fx" text="\$888.88">
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <JFXButton onAction="#placeOrder" style="-fx-background-radius: 10;" styleClass="save-button-jfx" text="Place Order" />
-               </children>
-            </HBox>
-            <Label fx:id="confirmation" alignment="CENTER" text="Submission Failed" visible="false">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
-         </children>
-         <padding>
-            <Insets bottom="10.0" />
-         </padding>
-      </AnchorPane>
-   </bottom>
-   <effect>
-      <DropShadow />
-   </effect>
-   <top>
-      <Label prefHeight="68.0" prefWidth="240.0" styleClass="service-request-header-label-fx" text="Checkout" BorderPane.alignment="CENTER" />
-   </top>
+   </right>
 </BorderPane>
