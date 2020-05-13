@@ -85,7 +85,7 @@ public class FXMLLoaderFactory {
 			if (loginManager.isAuthenticated()) {
 				App.startLogoutTimer();
 			}
-			if (App.isScreenSaverActive) {
+			if (!App.isScreenSaverActive) {
 				App.startScreenSaverTimer();
 			}
 		});
