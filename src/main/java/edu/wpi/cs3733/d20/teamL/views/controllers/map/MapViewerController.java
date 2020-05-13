@@ -763,6 +763,11 @@ public class MapViewerController {
                     miniMaps.getChildren().add(new MapLink(currentNode.getBuilding(), currentNode.getFloor(), linkWidth, this));
                     firstLinkAdded = true;
                 }
+                if(currentNode.getBuilding().equals("Faulkner") && nextNode.getBuilding().equals(MAIN)) {
+                    miniMaps.getChildren().add(new MapLink("FaulkToMain", 120, this, IMAGE_FTOM));
+                } if(currentNode.getBuilding().equals(MAIN) && nextNode.getBuilding().equals("Faulkner")) {
+                    miniMaps.getChildren().add(new MapLink("MainToFaulk", 120, this, IMAGE_MTOF));
+                }
                 miniMaps.getChildren().add(new MapLink(nextNode.getBuilding(), nextNode.getFloor(), linkWidth, this));
             }
 
@@ -1045,49 +1050,53 @@ public class MapViewerController {
             generateFloorButtons();
             map.setZoomLevel(.25 * App.UI_SCALE);
         } else {
-            if (!(subpath.get(0).getBuilding().equals(map.getBuilding().getName()))) {
-                map.setBuilding(subpath.get(0).getBuilding());
-                generateFloorButtons();
-                map.setZoomLevel(.25 * App.UI_SCALE);
-                goToSelected();
-            }
-            if (!(subpath.get(0).getFloorAsString().equals(map.getFloor())))
-                setFloor(subpath.get(0).getFloor());
-
-            double totalX = 0;
-            double totalY = 0;
-            double minX = 200000;
-            double maxX = 0;
-            double minY = 200000;
-            double maxY = 0;
-            for (Node node : subpath) {
-                double xPos = node.getPosition().getX();
-                double yPos = node.getPosition().getY();
-                double xPosGui = map.getNodeGUI(node).getLayoutX();
-                double yPosGui = map.getNodeGUI(node).getLayoutY();
-
-                totalX += xPosGui;
-                totalY += yPosGui;
-
-                if (xPos > maxX) maxX = xPos;
-                if (xPos < minX) minX = xPos;
-                if (yPos > maxY) maxY = yPos;
-                if (yPos < minY) minY = yPos;
-            }
-
-            double diffX = maxX - minX;
-            double diffY = maxY - minY;
-            double scale;
-
-            if (diffX > diffY) scale = Math.min(400 / diffX, 2);
-            else scale = Math.min(400 / diffY, 2);
-
-            totalX = totalX / subpath.size();
-            totalY = totalY / subpath.size();
-
-            map.setZoomLevelToPosition(scale, new Point2D(totalX, totalY));
+            zoomToNodes(subpath);
             highLightPath();
         }
+    }
+
+    public void zoomToNodes(ArrayList<Node> subpath) {
+        if (!(subpath.get(0).getBuilding().equals(map.getBuilding().getName()))) {
+            map.setBuilding(subpath.get(0).getBuilding());
+            generateFloorButtons();
+            map.setZoomLevel(.25 * App.UI_SCALE);
+            goToSelected();
+        }
+        if (!(subpath.get(0).getFloorAsString().equals(map.getFloor())))
+            setFloor(subpath.get(0).getFloor());
+
+        double totalX = 0;
+        double totalY = 0;
+        double minX = 200000;
+        double maxX = 0;
+        double minY = 200000;
+        double maxY = 0;
+        for (Node node : subpath) {
+            double xPos = node.getPosition().getX();
+            double yPos = node.getPosition().getY();
+            double xPosGui = map.getNodeGUI(node).getLayoutX();
+            double yPosGui = map.getNodeGUI(node).getLayoutY();
+
+            totalX += xPosGui;
+            totalY += yPosGui;
+
+            if (xPos > maxX) maxX = xPos;
+            if (xPos < minX) minX = xPos;
+            if (yPos > maxY) maxY = yPos;
+            if (yPos < minY) minY = yPos;
+        }
+
+        double diffX = maxX - minX;
+        double diffY = maxY - minY;
+        double scale;
+
+        if (diffX > diffY) scale = Math.min(400 / diffX, 2);
+        else scale = Math.min(400 / diffY, 2);
+
+        totalX = totalX / subpath.size();
+        totalY = totalY / subpath.size();
+
+        map.setZoomLevelToPosition(scale, new Point2D(totalX, totalY));
     }
 
     private void launchRobot() {
@@ -1296,5 +1305,9 @@ public class MapViewerController {
 
         currentLang = language;
         httpClient.setCurrLang(currentLang);
+    }
+
+    public Path getPath() {
+        return path;
     }
 }

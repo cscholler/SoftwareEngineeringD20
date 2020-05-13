@@ -234,6 +234,7 @@
                   <JFXComboBox fx:id="languagePicker" onAction="#languageChosen" styleClass="combo-box-jfx" />
                </children>
             </HBox>
+            <VBox fx:id="miniMaps" layoutX="14.0" layoutY="102.0" spacing="10" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="102.0" />
             <StackPane fx:id="keyStackPane" alignment="TOP_LEFT" layoutY="4.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
                <children>
                   <JFXButton fx:id="btnLegend" buttonType="RAISED" graphicTextGap="10.0" onAction="#showLegend" style="-fx-background-color: #00043B; -fx-background-radius: 50;" text="Legend">
@@ -257,7 +258,6 @@
                   </JFXButton>
                </children>
             </StackPane>
-            <VBox fx:id="miniMaps" layoutX="14.0" layoutY="102.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="102.0" spacing="10"/>
             </children>
         </AnchorPane>
     </center>

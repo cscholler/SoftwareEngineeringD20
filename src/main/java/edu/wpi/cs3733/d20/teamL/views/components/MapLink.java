@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamL.views.components;
 
+import edu.wpi.cs3733.d20.teamL.entities.Building;
 import edu.wpi.cs3733.d20.teamL.entities.Node;
 import edu.wpi.cs3733.d20.teamL.views.controllers.map.MapViewerController;
 import javafx.geometry.Pos;
@@ -10,6 +11,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
+
 
 public class MapLink extends StackPane {
 
@@ -19,6 +22,36 @@ public class MapLink extends StackPane {
 
     private String building;
     private int floor;
+
+    public MapLink(String building, int fitWidth, MapViewerController controller, Image img) {
+        super();
+        setAlignment(Pos.CENTER);
+
+        this.building = building;
+        this.floor = 1;
+        this.controller = controller;
+
+        map = new ImageView(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/" + building + ".PNG"));
+        map.setPreserveRatio(true);
+        map.setFitWidth(fitWidth);
+
+        label = new Label();
+        label.setText("Drive");
+        label.setTextFill(Color.BLACK);
+        label.setStyle("-fx-font-size: 20; -fx-font-weight: bolder;");
+
+        getChildren().add(map);
+        getChildren().add(label);
+
+        setOnMouseClicked(mouseEvent -> {
+            controller.getMap().setBuilding(new Building("Google"));
+            controller.getMap().setMapImage(img);
+            controller.getMap().setZoomLevel(.5);
+        });
+
+        setCursor(Cursor.HAND);
+        setStyle("-fx-border-color: black;");
+    }
 
     public MapLink(String building, int floor, double fitWidth, MapViewerController controller) {
         super();
@@ -31,7 +64,8 @@ public class MapLink extends StackPane {
         label = new Label();
         label.setText(building + " " + Node.floorIntToString(floor));
         label.setTextFill(Color.BLACK);
-        label.setStyle("-fx-font-size: 20; -fx-font-style: bold; -fx-font-family: Roboto;");
+        label.setStyle("-fx-font-size: 20; -fx-font-weight: bolder;");
+
 
         map = new ImageView(new Image("/edu/wpi/cs3733/d20/teamL/assets/maps/" + building + "Floor" + Node.floorIntToString(floor) + "LM.png"));
         map.setPreserveRatio(true);
@@ -43,6 +77,7 @@ public class MapLink extends StackPane {
         setOnMouseClicked(mouseEvent -> {
             controller.setBuilding(this.building);
             controller.setFloor(this.floor);
+            controller.getMap().setZoomLevel(.5);
         });
 
         setCursor(Cursor.HAND);
