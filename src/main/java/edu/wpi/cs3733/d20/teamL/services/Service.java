@@ -9,5 +9,5 @@ public abstract class Service {
 
 	public abstract void startService();
 
-	public abstract void stopService();
+	protected abstract void stopService();
 }

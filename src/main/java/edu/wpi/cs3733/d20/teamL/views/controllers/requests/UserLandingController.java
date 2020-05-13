@@ -2,9 +2,15 @@ package edu.wpi.cs3733.d20.teamL.views.controllers.requests;
 
 import com.jfoenix.controls.JFXButton;
 //import edu.wpi.cs3733.c20.teamR.AppointmentRequest;
+import edu.wpi.cs3733.d20.teamE.onCallBeds;
 import edu.wpi.cs3733.d20.teamL.services.users.ILoginManager;
 import edu.wpi.cs3733.d20.teamL.util.FXMLLoaderFactory;
+import edu.wpi.cs3733.d20.teamM.AudioVisualRequest;
+import edu.wpi.cs3733.d20.teamM.ServiceException;
+import edu.wpi.cs3733.d20.teamP.APIController;
+import flowerapi.FlowerAPI;
 import javafx.application.Platform;
+import edu.wpi.cs3733.d20.teamL.util.TimerManager;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,22 +18,20 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
-import javafx.util.Duration;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
 
 @Slf4j
 public class UserLandingController {
+
     public ImageView btnClose;
     public JFXButton btnAddPatient;
-    FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
+
+    private FXMLLoaderFactory loaderHelper = new FXMLLoaderFactory();
+    private static final TimerManager timerManager = new TimerManager();
+
     @FXML
     private Label timeLabel, requestLabel, userLabel;
     @FXML
@@ -40,16 +44,9 @@ public class UserLandingController {
 
     @FXML
     public void initialize() throws IOException {
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                Platform.runLater(() -> timeLabel.setText(new SimpleDateFormat("E, MMM d | h:mm aa").format(new Date())));
-            }
-        }, 0, 1000);
 
+        timerManager.startTimer(() -> timerManager.updateTime(timeLabel), 0, 1000);
         userLabel.setText("Hello, " + login.getCurrentUser().getFName());
-
 
         launchDefaultPane();
 
@@ -59,11 +56,20 @@ public class UserLandingController {
     }
 
     @FXML
-    private void launchAPIntment() throws Exception {
-//        AppointmentRequest app = new AppointmentRequest();
-//        app.run(0, 0, 1280,720,"/edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css", null, null);
+    public void launchGiftAPI() throws IOException, edu.wpi.cs3733.d20.teamP.ServiceException {
+       APIController.run(0, 0, 1280, 720, "edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css", new String(), new String());
     }
 
+    @FXML
+    public void launchMaintenanceAPI() throws IOException, ServiceException {
+        AudioVisualRequest.run(0, 0, 1280, 720, "edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css", new String(), new String());
+
+    }
+
+
+    @FXML
+    public void launchExternalAPI() throws IOException, flowerapi.ServiceException { FlowerAPI.run(0, 0, 1280, 720, "edu/wpi/cs3733/d20/teamL/css/GlobalStyleSheet.css", new String(), new String());
+    }
 
     @FXML
     public void launchDefaultPane() throws IOException{

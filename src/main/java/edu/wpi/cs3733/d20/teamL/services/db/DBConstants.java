@@ -19,7 +19,8 @@ public class DBConstants {
 	public static final String SERVICE_NAME = "mysql-db-01";
 
 	public static ArrayList<String> GET_TABLE_NAMES() {
-		return new ArrayList<>(Arrays.asList("Nodes", "Edges", "Users", "Doctors", "Patients", "Gifts", "Gift_Delivery_Requests", "Medication_Requests", "Service_Requests", "Reservations", "Screening_Questions"));
+		return new ArrayList<>(Arrays.asList("Nodes", "Edges", "Users", "Doctors", "Patients", "Gifts", "Gift_Delivery_Requests", "Medication_Requests", "Service_Requests",
+				"Reservations", "Kiosk_Settings", "Screening Questions", "Feedback"));
 	}
 
 	public static final String CREATE_NODE_TABLE =
@@ -31,13 +32,15 @@ public class DBConstants {
 					"building VARCHAR(64) NOT NULL, " +
 					"node_type CHAR(4) NOT NULL, " +
 					"l_name VARCHAR(64) NOT NULL, " +
-					"s_name VARCHAR(64) NOT NULL)";
+					"s_name VARCHAR(64) NOT NULL, " +
+					"freq INT)";
 
 	public static final String CREATE_EDGE_TABLE =
 			"CREATE TABLE Edges(" +
 					"id VARCHAR(21) NOT NULL PRIMARY KEY, " +
 					"node_start VARCHAR(16) NOT NULL REFERENCES Nodes(id), " +
-					"node_end VARCHAR(16) NOT NULL REFERENCES Nodes(id))";
+					"node_end VARCHAR(16) NOT NULL REFERENCES Nodes(id), " +
+					"freq INT)";
 
 	public static final String CREATE_USER_TABLE =
 			"CREATE TABLE Users(" +
@@ -74,7 +77,7 @@ public class DBConstants {
 			"CREATE TABLE Gifts(" +
 					"id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
 					"type VARCHAR(16) NOT NULL, " +
-					"subtype VARCHAR(16) NOT NULL, " +
+					"subtype VARCHAR(32) NOT NULL, " +
 					"description VARCHAR(128) NOT NULL, " +
 					"inventory INT NOT NULL, " +
 					"cost DOUBLE NOT NULL)";
@@ -148,6 +151,17 @@ public class DBConstants {
 					"weight INT, " +
 					"reqs INT)";
 
+	public static final String CREATE_FEEDBACK_TABLE =
+			"CREATE TABLE Feedback(" +
+					"id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
+					"q1 VARCHAR(3) NOT NULL, " +
+					"q2 VARCHAR(3) NOT NULL, " +
+					"q3 VARCHAR(3) NOT NULL, " +
+					"q4 VARCHAR(3) NOT NULL, " +
+					"q5 VARCHAR(256) NOT NULL, " +
+					"q6 VARCHAR(256) NOT NULL, " +
+					"q7 VARCHAR(256))";
+
 	public static final String DROP_NODE_TABLE =
 			"DROP TABLE IF EXISTS Nodes";
 
@@ -184,13 +198,16 @@ public class DBConstants {
 	public static final String DROP_SCREENING_QUESTIONS_TABLE =
 			"DROP TABLE IF EXISTS Screening_Questions";
 
+	public static final String DROP_FEEDBACK_TABLE =
+			"DROP TABLE IF EXISTS Feedback";
+
 	public static final String ADD_NODE =
-			"INSERT INTO Nodes(id, x_pos, y_pos, floor, building, node_type, l_name, s_name)" +
-					"VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+			"INSERT INTO Nodes(id, x_pos, y_pos, floor, building, node_type, l_name, s_name, freq)" +
+					"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	public static final String ADD_EDGE =
-			"INSERT INTO Edges(id, node_start, node_end)" +
-					"VALUES(?, ?, ?)";
+			"INSERT INTO Edges(id, node_start, node_end, freq)" +
+					"VALUES(?, ?, ?, ?)";
 
 	public static final String ADD_USER =
 			"INSERT INTO Users(f_name, l_name, username, password, acct_type, services, manager)" +
@@ -236,10 +253,19 @@ public class DBConstants {
 			"INSERT INTO Screening_Questions(question, page, weight, reqs)" +
 					"VALUES(?, ?, ?, ?)";
 
+	public static final String ADD_FEEDBACK =
+			"INSERT INTO Feedback(q1, q2, q3, q4, q5, q6, q7)" +
+					"VALUES(?, ?, ?, ?, ?, ?, ?)";
+
 	public static final String SELECT_ALL_NODES =
 			"SELECT * " +
 					"FROM Nodes " +
 					"ORDER BY id";
+
+	public static final String GET_NODE =
+			"SELECT * " +
+					"FROM Nodes " +
+					"WHERE id = ?";
 
 	public static final String SELECT_ALL_EDGES =
 			"SELECT * " +
@@ -363,7 +389,7 @@ public class DBConstants {
 
 	public static final String SELECT_ALL_ROOM_REQUESTS =
 			"SELECT * " +
-					"FROM Reservations "+
+					"FROM Reservations " +
 					"WHERE place = ? AND date = ?";
 
 	public static final String SELECT_SPECIFIC_ROOM_REQUEST =
@@ -386,6 +412,11 @@ public class DBConstants {
 					"FROM Screening_Questions " +
 					"ORDER BY id";
 
+	public static final String GET_ALL_FEEDBACK =
+			"SELECT * " +
+					"FROM Feedback " +
+					"ORDER BY id";
+
 	public static final String GET_KIOSK_SETTINGS =
 			"SELECT * " +
 					"FROM Kiosk_Settings " +
@@ -393,12 +424,12 @@ public class DBConstants {
 
 	public static final String UPDATE_NODE =
 			"UPDATE Nodes " +
-					"SET x_pos = ?, y_pos = ?, floor = ?, building = ?, node_type = ?, l_name = ?, s_name = ? " +
+					"SET x_pos = ?, y_pos = ?, floor = ?, building = ?, node_type = ?, l_name = ?, s_name = ?, freq = ? " +
 					"WHERE id = ?";
 
 	public static final String UPDATE_EDGE =
 			"UPDATE Edges " +
-					"SET node_start = ?, node_end = ? " +
+					"SET node_start = ?, node_end = ?, freq = ? " +
 					"WHERE id = ?";
 
 	public static final String UPDATE_GIFT =
@@ -501,13 +532,10 @@ public class DBConstants {
 					"SET notes = ? " +
 					"WHERE id = ?";
 
-	public static final String UPDATE_KIOSK_LOCATION =
-			"UPDATE Kiosk_Settings " +
-					"SET node_id = ?";
-
 	public static final String UPDATE_KIOSK_TIMEOUTS =
 			"UPDATE Kiosk_Settings " +
-					"SET logout_timout = ?, idle_cache_timeout = ?, force_cache_timeout = ?, screen_saver_timout = ?";
+					"SET node_id = ?, logout_timeout = ?, idle_cache_timeout = ?, force_cache_timeout = ?, screen_saver_timeout = ? " +
+					"WHERE id = ?";
 
 	public static final String UPDATE_SCREENING_QUESTIONS =
 			"UPDATE Screening_Questions " +

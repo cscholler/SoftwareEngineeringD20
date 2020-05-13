@@ -7,13 +7,13 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
+import javafx.scene.paint.*;
 import javafx.scene.shape.Line;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Vector;
 
 public class EdgeGUI extends Line implements Highlightable {
 
@@ -21,7 +21,7 @@ public class EdgeGUI extends Line implements Highlightable {
     private Edge edge;
     private NodeGUI source;
     private boolean selected = false;
-
+    private boolean usingGradient = false;
 
     public EdgeGUI(int strokeWidth, Color nodeColor, Paint highLightColor, double highlightThickness) {
         this.setStrokeWidth(strokeWidth);
@@ -185,5 +185,34 @@ public class EdgeGUI extends Line implements Highlightable {
         return edge;
     }
 
+    public boolean isUsingGradient() {
+        return usingGradient;
+    }
+
+    @Override
+    public void setGradient(double intensity) {
+        usingGradient = true;
+
+        Stop[] stops = new Stop [] {
+                new Stop(0.0, Color.TRANSPARENT),
+                new Stop(0.4, new Color(1, 0, 0, 0.5)),
+                new Stop(0.5, Color.RED),
+                new Stop(0.6, new Color(1, 0, 0, 0.5)),
+                new Stop(1.0, Color.TRANSPARENT)
+        };
+
+        Point2D centerPoint = getStartPos().add(getEndPos().subtract(getStartPos()).multiply(0.5));
+        Point2D lineVector = getEndPos().subtract(getStartPos());
+        Point2D perpVector = new Point2D(lineVector.getY(), -lineVector.getX());
+
+        Point2D gradientStart = centerPoint.subtract(perpVector.normalize().multiply(getHighlightThickness()));
+        Point2D gradientEnd = centerPoint.subtract(perpVector.normalize().multiply(-getHighlightThickness()));
+
+        setStrokeWidth(intensity);
+        LinearGradient linearGradient = new LinearGradient(gradientStart.getX(), gradientStart.getY(), gradientEnd.getX(), gradientEnd.getY(),
+                false, CycleMethod.NO_CYCLE, stops);
+
+        setStroke(linearGradient);
+    }
 
 }

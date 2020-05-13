@@ -9,6 +9,8 @@ public interface ILoginManager {
 
 	void logIn(String username, String password);
 
+	void logInFR(String username, double confidence);
+
 	void logOut(boolean verbose);
 
 	void updateUserInfo(ArrayList<String> fieldsToUpdate, ArrayList<String> newValues);

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXRadioButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="bord" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1100.0" stylesheets="@../../css/GlobalStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamL.views.controllers.dialogues.FeedbackController">
+   <top>
+      <HBox alignment="TOP_CENTER" prefHeight="70.0" prefWidth="600.0" style="-fx-background-color: #00043B;" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="title" text="Feedback Request Form" textFill="WHITE">
+               <HBox.margin>
+                  <Insets top="10.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="System Bold" size="30.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <HBox prefHeight="193.0" prefWidth="900.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox fx:id="radioBox" prefHeight="510.0" prefWidth="513.0" spacing="20.0">
+               <children>
+                  <Label text="Did we meet your expectations?">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <JFXRadioButton fx:id="expectationsYes" styleClass="radio-button-jfx" text="Yes">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="expectationsGroup" />
+                     </toggleGroup>
+                  </JFXRadioButton>
+                  <JFXRadioButton fx:id="expectationsNo" styleClass="radio-button-jfx" text="No" toggleGroup="$expectationsGroup">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </JFXRadioButton>
+                  <Label prefHeight="21.0" prefWidth="322.0" text="Was it easy to find what you were looking for?">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <JFXRadioButton fx:id="easyYes" styleClass="radio-button-jfx" text="Yes">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="easyGroup" />
+                     </toggleGroup>
+                  </JFXRadioButton>
+                  <JFXRadioButton fx:id="easyNo" styleClass="radio-button-jfx" text="No" toggleGroup="$easyGroup">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </JFXRadioButton>
+                  <Label text="Was it easy to navigate to where you were going?">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <JFXRadioButton fx:id="navigateYes" styleClass="radio-button-jfx" text="Yes">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="navigateGroup" />
+                     </toggleGroup>
+                  </JFXRadioButton>
+                  <JFXRadioButton fx:id="navigateNo" styleClass="radio-button-jfx" text="No" toggleGroup="$navigateGroup">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </JFXRadioButton>
+                  <Label text="Would you use this application again upon your next visit?">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <JFXRadioButton fx:id="nextYes" styleClass="radio-button-jfx" text="Yes">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="nextGroup" />
+                     </toggleGroup></JFXRadioButton>
+                  <JFXRadioButton fx:id="nextNo" styleClass="radio-button-jfx" text="No" toggleGroup="$nextGroup" />
+               </children>
+               <HBox.margin>
+                  <Insets left="20.0" top="20.0" />
+               </HBox.margin>
+            </VBox>
+            <VBox fx:id="txtBox" prefHeight="510.0" prefWidth="519.0" spacing="20.0">
+               <children>
+                  <Label text="How could we have exceeded your expectations?">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <JFXTextArea fx:id="expectationsText" minHeight="90.0" minWidth="480.0" prefHeight="90.0" prefWidth="246.0" promptText="Enter your response here" style="-fx-background-color: #dcdcdc;">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets right="10.0" />
+                     </VBox.margin>
+                  </JFXTextArea>
+                  <Label text="What do you like most about the application?">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <JFXTextArea fx:id="applicationText" minHeight="90.0" prefHeight="90.0" promptText="Enter your response here" style="-fx-background-color: #dcdcdc;">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets right="10.0" />
+                     </VBox.margin>
+                  </JFXTextArea>
+                  <Label text="Is there anything else you would like us to know about your experience?">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <JFXTextArea fx:id="otherText" prefHeight="140.0" promptText="Enter your response here" style="-fx-background-color: #dcdcdc;">
+                     <VBox.margin>
+                        <Insets right="10.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </JFXTextArea>
+               </children>
+               <HBox.margin>
+                  <Insets left="10.0" top="20.0" />
+               </HBox.margin>
+            </VBox>
+         </children>
+      </HBox>
+   </center>
+   <bottom>
+      <HBox fx:id="botBox" alignment="CENTER" prefHeight="100.0" prefWidth="900.0" spacing="30.0" BorderPane.alignment="CENTER">
+         <children>
+            <JFXButton fx:id="btnCancel" buttonType="RAISED" onAction="#handleCancel" styleClass="cancel-button-jfx" text="Cancel">
+               <HBox.margin>
+                  <Insets left="270.0" />
+               </HBox.margin></JFXButton>
+            <JFXButton fx:id="btnSubmit" buttonType="RAISED" onAction="#handleSubmit" styleClass="save-button-jfx" text="Submit" />
+            <Label fx:id="submissionLabel" minHeight="20.0" minWidth="250.0" text="Please fill out all fields" textFill="RED" visible="false">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+   </bottom>
+</BorderPane>

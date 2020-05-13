@@ -7,7 +7,7 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Paint;
+import javafx.scene.paint.*;
 import javafx.scene.shape.Circle;
 
 import java.util.ArrayList;
@@ -17,6 +17,8 @@ public class NodeGUI extends Circle implements Highlightable {
     private boolean highlighted;
 
     private double highlightRadius;
+
+    private boolean usingGradient = false;
 
     private DoubleProperty xProperty = new DoublePropertyBase() {
         @Override
@@ -95,6 +97,23 @@ public class NodeGUI extends Circle implements Highlightable {
         getCircle().setStroke(color);
     }
 
+    @Override
+    public void setGradient(double intensity) {
+
+        usingGradient = true;
+
+        Stop[] stops = new Stop [] {
+                new Stop(0.0, Color.RED),
+                new Stop(1.0, Color.TRANSPARENT)
+        };
+
+        RadialGradient radialGradient = new RadialGradient(0,0, getCenterX(), getCenterY(), getCircle().getRadius(),
+                false, CycleMethod.NO_CYCLE, stops);
+
+        getCircle().setFill(radialGradient);
+        getCircle().setRadius(intensity);
+    }
+
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
@@ -132,5 +151,9 @@ public class NodeGUI extends Circle implements Highlightable {
 
     public Node getNode() {
         return node;
+    }
+
+    public boolean isUsingGradient() {
+        return usingGradient;
     }
 }

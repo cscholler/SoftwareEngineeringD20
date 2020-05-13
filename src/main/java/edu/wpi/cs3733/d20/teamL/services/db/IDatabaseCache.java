@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamL.services.db;
 import edu.wpi.cs3733.d20.teamL.entities.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +12,11 @@ public interface IDatabaseCache {
 
 	void cacheNodes(ArrayList<Node> newNodes, ArrayList<Node> editedNodes);
 
-	void cacheEdges(ArrayList<Edge> newEdges);
+	void cacheEdges(ArrayList<Edge> newEdges, ArrayList<Edge> editedEdges);
+
+	void setEditedNodes(ArrayList<Node> editedNodes);
+
+	void setEditedEdges(ArrayList<Edge> editedEdges);
 
 	void updateDB();
 
@@ -61,6 +66,17 @@ public interface IDatabaseCache {
 
 	void clearDoctorCache();
 
+	void cacheRequestsFromDB();
+
+	void clearRequestCache();
+
+	ArrayList<ServiceRequest> getAllRequests();
+
+	ArrayList<GiftDeliveryRequest> getAllGiftRequests();
+
+	ArrayList<ServiceRequest> getAllSpecificRequest(String service);
+
+
 	void cacheKiosksFromDB();
 
 	ArrayList<Kiosk> getKioskCache();
@@ -70,6 +86,10 @@ public interface IDatabaseCache {
 	void cacheQuestionsFromDB();
 
 	ArrayList<Question> getQuestions();
+
+	Date getTimestamp();
+
+	void setTimestamp(Date timestamp);
 
 	void cacheReservationsFromDB();
 

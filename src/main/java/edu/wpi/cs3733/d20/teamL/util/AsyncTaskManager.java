@@ -19,8 +19,8 @@ public class AsyncTaskManager {
     private static final ForkJoinPool forkJoinPool = new ForkJoinPool();
     public static boolean isTaskRunning = false;
 
-    public static ForkJoinTask newTask(VoidMethod task) {
-        ForkJoinTask newForkJoinTask = new ForkJoinTask() {
+    public static ForkJoinTask<Object> newTask(VoidMethod task) {
+        ForkJoinTask<Object> newForkJoinTask = new ForkJoinTask<>() {
             @Override
             public Object getRawResult() {
                 return null;
@@ -68,7 +68,7 @@ public class AsyncTaskManager {
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException ex) {
-                        log.error("{}", ex);
+                        log.error("Encountered InterruptedException.", ex);
                     }
                     Runnable action = showing ? loading::close : loading::show;
                     Platform.runLater(action);
