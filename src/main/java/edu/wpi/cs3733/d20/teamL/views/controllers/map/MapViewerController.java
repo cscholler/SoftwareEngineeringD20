@@ -123,6 +123,7 @@ public class MapViewerController {
     private Label timeLabel, dateLabel, currentTempLabel, etaLabel, btnMute;
     @FXML
     private TitledPane departments, amenities, labs, services, conferenceRooms;
+    @FXML
     private ImageView currentWeatherIcon, startMicIcon, destMicIcon;
 
     @Inject

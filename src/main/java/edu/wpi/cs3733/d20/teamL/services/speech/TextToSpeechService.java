@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamL.services.speech;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -77,12 +78,7 @@ public class TextToSpeechService extends Service implements ITextToSpeechService
 
 	@Override
 	public ByteString convertTextToSpeech(String text) {
-		SynthesisInput input = SynthesisInput.newBuilder().setText(text).build();
-		VoiceSelectionParams voice = VoiceSelectionParams.newBuilder().setLanguageCode("en-US").setSsmlGender(SsmlVoiceGender.MALE).build();
-		SynthesizeSpeechResponse response = client.synthesizeSpeech(input, voice, audioConfig);
-		ByteString audioContent = response.getAudioContent();
-		speechFileManager.writeSpeechToFile(audioContent.toByteArray(), SpeechFileManager.SpeechServiceType.TEXT_TO_SPEECH);
-		return audioContent;
+		return convertTextToSpeech(text, "en-us", SsmlVoiceGender.MALE);
 	}
 
 	@Override
@@ -102,14 +98,12 @@ public class TextToSpeechService extends Service implements ITextToSpeechService
 			currentClip.close();
 		}
 		try {
-			File audioFile = new File(speechFileManager.getSpeechFileURI(SpeechFileManager.SpeechServiceType.TEXT_TO_SPEECH));
+			File audioFile = speechFileManager.getSpeechFile(SpeechFileManager.SpeechServiceType.TEXT_TO_SPEECH);
 			AudioInputStream stream = AudioSystem.getAudioInputStream(audioFile);
 			Clip clip = (Clip) AudioSystem.getLine(new DataLine.Info(Clip.class, stream.getFormat()));
 			clip.open(stream);
 			clip.start();
 			activeClips.add(clip);
-		} catch (URISyntaxException ex) {
-			log.error("Encountered URISyntaxException", ex);
 		} catch (UnsupportedAudioFileException ex) {
 			log.error("Encountered UnsupportedAudioFileException", ex);
 		} catch (LineUnavailableException ex) {
