@@ -1137,7 +1137,17 @@ public class MapViewerController {
         String l = languagePicker.getValue();
         l = l.substring(l.length() - 2);
         try {
-            translateMapViewer(l);
+            AsyncTaskManager.startTaskWithPopup(()-> {
+               Platform.runLater(()-> {
+                   try {
+                       String lan = languagePicker.getValue();
+                       lan = lan.substring(lan.length() - 2);
+                       translateMapViewer(lan);
+                   } catch (IOException e) {
+                       e.printStackTrace();
+                   }
+               });
+            },httpClient.translate("en", l, "Translating Text"), httpClient.translate("en", l, "Done"));
         } catch (IOException e) {
             e.printStackTrace();
         }
